@@ -14,6 +14,7 @@ import 'package:lemonade_design_system/lemonade_design_system.dart';
 ///   context,
 ///   voice: LemonadeToastVoice.success,
 ///   message: 'Quick message',
+///   duration: LemonadeToastDuration.short,
 /// );
 ///
 /// Using custom duration
@@ -21,7 +22,7 @@ import 'package:lemonade_design_system/lemonade_design_system.dart';
 ///   context,
 ///   voice: LemonadeToastVoice.error,
 ///   message: 'Important message',
-///   duration: LemonadeToastDuration.long,
+///   duration: Duration(seconds: 5),
 /// );
 /// ```
 class LemonadeToastDuration {
@@ -90,7 +91,7 @@ class LemonadeToastManager {
   /// Shows a toast notification with the specified voice/variant.
   ///
   /// The toast will appear at the bottom of the screen and automatically
-  /// dismiss after [duration] (defaults to 3 seconds).
+  /// dismiss after [duration] (defaults to LemonadeToastDuration.short (3 seconds)).
   ///
   /// Set [dismissible] to false to prevent dismissing the toast by swiping down.
   /// By default, toasts can be dismissed with a downward swipe gesture.
@@ -178,67 +179,71 @@ class LemonadeToastManager {
     // Clear pending immediately so new requests during animation don't get lost
     _pendingRequest = null;
 
-    if (overlay != null) {
-      if (state != null) {
-        state._animateOut(hasPending: pending != null).then((_) {
-          overlay.remove();
-          if (_currentOverlay == overlay) {
-            _currentOverlay = null;
-            _currentState = null;
-          }
-          _isProcessing = false;
+    if (overlay == null) return;
 
-          // Check for new pending toast that might have been set during animation
-          final newPending = _pendingRequest;
-          if (newPending != null && newPending.context.mounted) {
-            _pendingRequest = null;
-            _isProcessing = true;
-            _displayToast(
-              newPending.context,
-              toast: newPending.toast,
-              duration: newPending.duration,
-              dismissible: newPending.dismissible,
-            );
-          } else if (pending != null && pending.context.mounted) {
-            // Show original pending toast if no new one was set
-            _isProcessing = true;
-            _displayToast(
-              pending.context,
-              toast: pending.toast,
-              duration: pending.duration,
-              dismissible: pending.dismissible,
-            );
-          }
-        });
-      } else {
-        // Fallback: remove immediately if state not found
-        overlay.remove();
+    if (state == null) {
+      // Fallback: remove immediately if state not found
+      overlay.remove();
+      _currentOverlay = null;
+      _currentState = null;
+      _isProcessing = false;
+
+      final newPendingToast = _pendingRequest;
+
+      // Check for new pending toast that might have been set
+      if (newPendingToast != null && newPendingToast.context.mounted) {
+        _pendingRequest = null;
+        _isProcessing = true;
+
+        _displayToast(
+          newPendingToast.context,
+          toast: newPendingToast.toast,
+          duration: newPendingToast.duration,
+          dismissible: newPendingToast.dismissible,
+        );
+      } else if (pending != null && pending.context.mounted) {
+        _isProcessing = true;
+
+        _displayToast(
+          pending.context,
+          toast: pending.toast,
+          duration: pending.duration,
+          dismissible: pending.dismissible,
+        );
+      }
+      return;
+    }
+
+    state._animateOut(hasPending: pending != null).then((_) {
+      overlay.remove();
+
+      if (_currentOverlay == overlay) {
         _currentOverlay = null;
         _currentState = null;
-        _isProcessing = false;
-
-        // Check for new pending toast that might have been set
-        final newPending = _pendingRequest;
-        if (newPending != null && newPending.context.mounted) {
-          _pendingRequest = null;
-          _isProcessing = true;
-          _displayToast(
-            newPending.context,
-            toast: newPending.toast,
-            duration: newPending.duration,
-            dismissible: newPending.dismissible,
-          );
-        } else if (pending != null && pending.context.mounted) {
-          _isProcessing = true;
-          _displayToast(
-            pending.context,
-            toast: pending.toast,
-            duration: pending.duration,
-            dismissible: pending.dismissible,
-          );
-        }
       }
-    }
+      _isProcessing = false;
+      final newPendingToast = _pendingRequest;
+
+      // Check for new pending toast that might have been set during animation
+      if (newPendingToast != null && newPendingToast.context.mounted) {
+        _pendingRequest = null;
+        _isProcessing = true;
+        _displayToast(
+          newPendingToast.context,
+          toast: newPendingToast.toast,
+          duration: newPendingToast.duration,
+          dismissible: newPendingToast.dismissible,
+        );
+      } else if (pending != null && pending.context.mounted) {
+        _isProcessing = true;
+        _displayToast(
+          pending.context,
+          toast: pending.toast,
+          duration: pending.duration,
+          dismissible: pending.dismissible,
+        );
+      }
+    });
   }
 
   static void _showToast(
@@ -304,12 +309,14 @@ class LemonadeToastManager {
     // Auto-dismiss after duration
     _dismissTimer = Timer(duration, () {
       final hasPending = _pendingRequest != null;
+
       overlayState?._animateOut(hasPending: hasPending).then((_) {
         overlayEntry.remove();
         if (_currentOverlay == overlayEntry) {
           _currentOverlay = null;
           _currentState = null;
         }
+
         _dismissTimer = null;
         _isProcessing = false;
 
@@ -425,10 +432,12 @@ class _ToastOverlayState extends State<_ToastOverlay>
           );
 
       // Update the animations
-      setState(() {
-        _slideAnimation = slideUp;
-        _fadeAnimation = fadeOut;
-      });
+      if (mounted) {
+        setState(() {
+          _slideAnimation = slideUp;
+          _fadeAnimation = fadeOut;
+        });
+      }
 
       // Reset and run the exit animation
       _controller.reset();
