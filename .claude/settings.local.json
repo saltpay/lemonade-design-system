@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pod install:*)",
+      "Bash(xcodebuild:*)",
+      "Bash(swift:*)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(git rebase:*)",
+      "Bash(git stash:*)",
+      "Bash(./gradlew:*)",
+      "Bash(find:*)",
+      "mcp__figma-dev-mode-mcp-server__get_code",
+      "mcp__figma-dev-mode-mcp-server__get_image",
+      "mcp__figma-dev-mode-mcp-server__get_variable_defs",
+      "Bash(kotlin:*)",
+      "Skill(ralph-wiggum:ralph-loop)"
+    ],
+    "deny": [
+      "Read(.kotlin)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "mobile-mcp",
+    "figma-dev-mode-mcp-server"
+  ]
+}

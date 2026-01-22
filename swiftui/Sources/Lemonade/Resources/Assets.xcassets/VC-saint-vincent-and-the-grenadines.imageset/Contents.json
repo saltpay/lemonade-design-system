@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "VC-saint-vincent-and-the-grenadines.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

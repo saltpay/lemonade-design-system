@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "WF-wallis-and-futuna.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

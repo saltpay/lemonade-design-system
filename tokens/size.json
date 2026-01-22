@@ -1,0 +1,539 @@
+{
+  "id": "VariableCollectionId:3183:2054",
+  "name": "Size",
+  "modes": {
+    "3183:0": "Default"
+  },
+  "variableIds": [
+    "VariableID:3183:2055",
+    "VariableID:3183:2056",
+    "VariableID:3183:2057",
+    "VariableID:3183:2058",
+    "VariableID:3183:2059",
+    "VariableID:3183:2060",
+    "VariableID:3183:2061",
+    "VariableID:3183:2062",
+    "VariableID:3183:2063",
+    "VariableID:3183:2064",
+    "VariableID:3183:2065",
+    "VariableID:3260:5769",
+    "VariableID:3183:2066",
+    "VariableID:3183:2067",
+    "VariableID:3183:2068",
+    "VariableID:3183:2069",
+    "VariableID:3183:2070",
+    "VariableID:3183:2071",
+    "VariableID:3183:2072",
+    "VariableID:3183:2073",
+    "VariableID:3183:2074",
+    "VariableID:3183:2075"
+  ],
+  "variables": [
+    {
+      "id": "VariableID:3183:2055",
+      "name": "size-0",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 0
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 0,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size0",
+        "iOS": "context.lemonade.sizes.size0"
+      }
+    },
+    {
+      "id": "VariableID:3183:2056",
+      "name": "size-50",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 2
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 2,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size50",
+        "iOS": "context.lemonade.sizes.size50"
+      }
+    },
+    {
+      "id": "VariableID:3183:2057",
+      "name": "size-100",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 4
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 4,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size100",
+        "iOS": "context.lemonade.sizes.size100"
+      }
+    },
+    {
+      "id": "VariableID:3183:2058",
+      "name": "size-150",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 6
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 6,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size150",
+        "iOS": "context.lemonade.sizes.size150"
+      }
+    },
+    {
+      "id": "VariableID:3183:2059",
+      "name": "size-200",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 8
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 8,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size200",
+        "iOS": "context.lemonade.sizes.size200"
+      }
+    },
+    {
+      "id": "VariableID:3183:2060",
+      "name": "size-250",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 10
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 10,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size250",
+        "iOS": "context.lemonade.sizes.size250"
+      }
+    },
+    {
+      "id": "VariableID:3183:2061",
+      "name": "size-300",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 12
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 12,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size300",
+        "iOS": "context.lemonade.sizes.size300"
+      }
+    },
+    {
+      "id": "VariableID:3183:2062",
+      "name": "size-350",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 14
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 14,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size350",
+        "iOS": "context.lemonade.sizes.size350"
+      }
+    },
+    {
+      "id": "VariableID:3183:2063",
+      "name": "size-400",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 16
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 16,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size400",
+        "iOS": "context.lemonade.sizes.size400"
+      }
+    },
+    {
+      "id": "VariableID:3183:2064",
+      "name": "size-450",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 18
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 18,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size450",
+        "iOS": "context.lemonade.sizes.size450"
+      }
+    },
+    {
+      "id": "VariableID:3183:2065",
+      "name": "size-500",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 20
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 20,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size500",
+        "iOS": "context.lemonade.sizes.size500"
+      }
+    },
+    {
+      "id": "VariableID:3183:2066",
+      "name": "size-600",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 24
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 24,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size600",
+        "iOS": "context.lemonade.sizes.size600"
+      }
+    },
+    {
+      "id": "VariableID:3183:2067",
+      "name": "size-700",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 28
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 28,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size700",
+        "iOS": "context.lemonade.sizes.size700"
+      }
+    },
+    {
+      "id": "VariableID:3183:2068",
+      "name": "size-750",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 30
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 30,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size750",
+        "iOS": "context.lemonade.sizes.size750"
+      }
+    },
+    {
+      "id": "VariableID:3183:2069",
+      "name": "size-800",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 32
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 32,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size800",
+        "iOS": "context.lemonade.sizes.size800"
+      }
+    },
+    {
+      "id": "VariableID:3183:2070",
+      "name": "size-900",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 36
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 36,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size900",
+        "iOS": "context.lemonade.sizes.size900"
+      }
+    },
+    {
+      "id": "VariableID:3183:2071",
+      "name": "size-1000",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 40
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 40,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size1000",
+        "iOS": "context.lemonade.sizes.size1000"
+      }
+    },
+    {
+      "id": "VariableID:3183:2072",
+      "name": "size-1100",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 44
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 44,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size1100",
+        "iOS": "context.lemonade.sizes.size1100"
+      }
+    },
+    {
+      "id": "VariableID:3183:2073",
+      "name": "size-1200",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 48
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 48,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size1200",
+        "iOS": "context.lemonade.sizes.size1200"
+      }
+    },
+    {
+      "id": "VariableID:3183:2074",
+      "name": "size-1400",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 56
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 56,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size1400",
+        "iOS": "context.lemonade.sizes.size1400"
+      }
+    },
+    {
+      "id": "VariableID:3183:2075",
+      "name": "size-1600",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 64
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 64,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size1600",
+        "iOS": "context.lemonade.sizes.size1600"
+      }
+    },
+    {
+      "id": "VariableID:3260:5769",
+      "name": "size-550",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 22
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 22,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size550",
+        "iOS": "context.lemonade.sizes.size550"
+      }
+    }
+  ]
+}
