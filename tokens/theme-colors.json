@@ -1,0 +1,3679 @@
+{
+  "id": "VariableCollectionId:3037:1920",
+  "name": "Theme",
+  "modes": {
+    "3037:0": "Light"
+  },
+  "variableIds": [
+    "VariableID:3037:2081",
+    "VariableID:3037:2050",
+    "VariableID:3037:2068",
+    "VariableID:3037:2060",
+    "VariableID:3139:2120",
+    "VariableID:3037:2058",
+    "VariableID:3037:2048",
+    "VariableID:3037:2042",
+    "VariableID:3037:2052",
+    "VariableID:3037:2040",
+    "VariableID:3037:2076",
+    "VariableID:3037:2051",
+    "VariableID:3037:2055",
+    "VariableID:3037:2072",
+    "VariableID:3037:2074",
+    "VariableID:3037:2039",
+    "VariableID:3037:2037",
+    "VariableID:3037:2035",
+    "VariableID:3037:2080",
+    "VariableID:3037:2049",
+    "VariableID:3037:2034",
+    "VariableID:3037:2031",
+    "VariableID:3037:2043",
+    "VariableID:3037:2066",
+    "VariableID:3037:2029",
+    "VariableID:3037:2028",
+    "VariableID:3037:2027",
+    "VariableID:3037:2054",
+    "VariableID:3037:2047",
+    "VariableID:3037:2030",
+    "VariableID:3409:1865",
+    "VariableID:3037:2078",
+    "VariableID:3037:2016",
+    "VariableID:3037:2008",
+    "VariableID:3037:2077",
+    "VariableID:3037:2036",
+    "VariableID:3037:2045",
+    "VariableID:3037:2064",
+    "VariableID:3037:2070",
+    "VariableID:3037:2062",
+    "VariableID:3037:2075",
+    "VariableID:3037:2067",
+    "VariableID:3037:2073",
+    "VariableID:3037:2053",
+    "VariableID:3037:2069",
+    "VariableID:3037:2061",
+    "VariableID:3037:2065",
+    "VariableID:3106:2190",
+    "VariableID:3037:2025",
+    "VariableID:3037:2024",
+    "VariableID:3037:2033",
+    "VariableID:3037:2023",
+    "VariableID:3037:2041",
+    "VariableID:3037:2022",
+    "VariableID:3037:2046",
+    "VariableID:3037:2021",
+    "VariableID:3037:2020",
+    "VariableID:3037:2019",
+    "VariableID:3037:2018",
+    "VariableID:3037:2017",
+    "VariableID:3037:2015",
+    "VariableID:3037:2014",
+    "VariableID:3037:2012",
+    "VariableID:3037:2011",
+    "VariableID:3106:2204",
+    "VariableID:3037:2010",
+    "VariableID:3037:2009",
+    "VariableID:3037:2071",
+    "VariableID:3037:2013",
+    "VariableID:3037:2007",
+    "VariableID:3037:2038",
+    "VariableID:3037:2063",
+    "VariableID:3139:2121",
+    "VariableID:3037:2059",
+    "VariableID:3383:9871",
+    "VariableID:3037:2006",
+    "VariableID:3037:2057",
+    "VariableID:3037:2026",
+    "VariableID:3037:2044",
+    "VariableID:3037:2032",
+    "VariableID:3037:2005",
+    "VariableID:3037:2079",
+    "VariableID:3037:2056",
+    "VariableID:3037:2004",
+    "VariableID:3037:2003",
+    "VariableID:3037:2002",
+    "VariableID:3125:1886",
+    "VariableID:3125:1887",
+    "VariableID:3125:1888",
+    "VariableID:3125:1889",
+    "VariableID:3384:9896",
+    "VariableID:3125:1890",
+    "VariableID:3125:1891",
+    "VariableID:3125:1892",
+    "VariableID:3125:1893",
+    "VariableID:3125:1894",
+    "VariableID:3125:1895",
+    "VariableID:3125:1896",
+    "VariableID:3125:1897",
+    "VariableID:3125:1898",
+    "VariableID:3125:1899",
+    "VariableID:3125:1900",
+    "VariableID:3146:2419",
+    "VariableID:3146:2420",
+    "VariableID:3146:2421",
+    "VariableID:3146:2422",
+    "VariableID:3146:2423"
+  ],
+  "variables": [
+    {
+      "id": "VariableID:3037:2002",
+      "name": "Interaction/Interactive/Background/bg-neutral-subtle-interactive",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:ae8560772211bb8815cd52e02cc9732ea401524e/109:39"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.20000000298023224
+          },
+          "alias": "VariableID:ae8560772211bb8815cd52e02cc9732ea401524e/109:39",
+          "aliasName": "black/200"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgNeutralSubtleInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgNeutralSubtleInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2003",
+      "name": "Interaction/Interactive/Background/bg-positive-subtle-interactive",
+      "description": "Use for interactive states on subtle positive backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:cd519cce5202dd4608f48c522bd2274976028603/76:405"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.4872932434082031,
+            "g": 0.8099173903465271,
+            "b": 0,
+            "a": 0.20000000298023224
+          },
+          "alias": "VariableID:cd519cce5202dd4608f48c522bd2274976028603/76:405",
+          "aliasName": "green-lime/alpha/200"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgPositiveSubtleInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgPositiveSubtleInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2004",
+      "name": "Interaction/Interactive/Background/bg-info-subtle-interactive",
+      "description": "Use for interactive states on subtle info backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:8f72eca7a9211f9081c968931c670339bf8a84a6/76:317"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.16862745583057404,
+            "g": 0.49803921580314636,
+            "b": 1,
+            "a": 0.20000000298023224
+          },
+          "alias": "VariableID:8f72eca7a9211f9081c968931c670339bf8a84a6/76:317",
+          "aliasName": "blue/alpha/200"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgInfoSubtleInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgInfoSubtleInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2005",
+      "name": "Interaction/Interactive/Background/bg-neutral-interactive",
+      "description": "Use for interactive states in neutral scenarios.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:0ca47174bf1ac58faf64ed34cb58524c31493729/320:24"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.2556000351905823,
+            "g": 0.29159998893737793,
+            "b": 0.2484000027179718,
+            "a": 1
+          },
+          "alias": "VariableID:0ca47174bf1ac58faf64ed34cb58524c31493729/320:24",
+          "aliasName": "neutral/700"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgNeutralInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgNeutralInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2006",
+      "name": "Interaction/Interactive/Background/bg-brand-high-interactive",
+      "description": "Use for interactive states on brand backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:32edd553f4f45306d1ba866c5595851700a96c50/121:75"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.1595725268125534,
+            "g": 0.19419847428798676,
+            "b": 0.04580152779817581,
+            "a": 1
+          },
+          "alias": "VariableID:32edd553f4f45306d1ba866c5595851700a96c50/121:75",
+          "aliasName": "yellow-lime/900"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgBrandHighInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgBrandHighInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2007",
+      "name": "Interaction/Interactive/Background/bg-default-interactive",
+      "description": "Use for interactive states on the default background.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:592bebe32cb3538b9658b266a4f3988cafef06c5/320:69"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.28519999980926514,
+            "g": 0.33480000495910645,
+            "b": 0.28519999980926514,
+            "a": 0.029999999329447746
+          },
+          "alias": "VariableID:592bebe32cb3538b9658b266a4f3988cafef06c5/320:69",
+          "aliasName": "neutral/alpha/50"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgDefaultInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgDefaultInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2008",
+      "name": "Content/Brand/content-accent",
+      "description": "Use for emphasis or highlights outside the brand palette.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:563fc565566653ef6b34fd115a7a339c9b54a0b6/72:140"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0,
+            "g": 0.5741972923278809,
+            "b": 0.722572386264801,
+            "a": 1
+          },
+          "alias": "VariableID:563fc565566653ef6b34fd115a7a339c9b54a0b6/72:140",
+          "aliasName": "cyan/600"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": true,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentAccent",
+        "iOS": "context.lemonade.colors.content.contentAccent"
+      }
+    },
+    {
+      "id": "VariableID:3037:2009",
+      "name": "Border/Inverse/border-brand-inverse",
+      "description": "Use for brand borders on dark or inverted backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.8820960521697998,
+            "g": 0.8995633125305176,
+            "b": 0.10043667256832123,
+            "a": 1
+          },
+          "alias": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87",
+          "aliasName": "yellow-lime/500"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderBrandInverse",
+        "iOS": "context.lemonade.colors.border.borderBrandInverse"
+      }
+    },
+    {
+      "id": "VariableID:3037:2010",
+      "name": "Border/Inverse/border-selected-inverse",
+      "description": "Use to indicate selection or active state on dark or inverted backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:da189a1c97802242459d05a6be7f95e529766c99/109:30"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.699999988079071
+          },
+          "alias": "VariableID:da189a1c97802242459d05a6be7f95e529766c99/109:30",
+          "aliasName": "white/700"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderSelectedInverse",
+        "iOS": "context.lemonade.colors.border.borderSelectedInverse"
+      }
+    },
+    {
+      "id": "VariableID:3037:2011",
+      "name": "Border/Inverse/border-neutral-medium-inverse",
+      "description": "Use for standard borders on dark or inverted backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:a55954920e7c4af5b152459fc69045e42fb15a48/109:26"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.30000001192092896
+          },
+          "alias": "VariableID:a55954920e7c4af5b152459fc69045e42fb15a48/109:26",
+          "aliasName": "white/300"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderNeutralMediumInverse",
+        "iOS": "context.lemonade.colors.border.borderNeutralMediumInverse"
+      }
+    },
+    {
+      "id": "VariableID:3037:2012",
+      "name": "Border/Inverse/border-neutral-low-inverse",
+      "description": "Use for subtle borders on dark or inverted backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24",
+          "aliasName": "white/100"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderNeutralLowInverse",
+        "iOS": "context.lemonade.colors.border.borderNeutralLowInverse"
+      }
+    },
+    {
+      "id": "VariableID:3037:2013",
+      "name": "Border/Fixed/border-always-dark",
+      "description": "Use for borders that must always appear dark, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/320:262"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.0284000001847744,
+            "g": 0.05159999802708626,
+            "b": 0.0284000001847744,
+            "a": 0.925000011920929
+          },
+          "alias": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/320:262",
+          "aliasName": "neutral/alpha/900"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderAlwaysDark",
+        "iOS": "context.lemonade.colors.border.borderAlwaysDark"
+      }
+    },
+    {
+      "id": "VariableID:3037:2014",
+      "name": "Border/Voice/border-positive-subtle",
+      "description": "Use for subtle borders that convey success or positive feedback.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:d552f32ae476ccc33dde28fe6a2399edf9c3e984/76:411"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.4872932434082031,
+            "g": 0.8099173903465271,
+            "b": 0,
+            "a": 0.5
+          },
+          "alias": "VariableID:d552f32ae476ccc33dde28fe6a2399edf9c3e984/76:411",
+          "aliasName": "green-lime/alpha/500"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderPositiveSubtle",
+        "iOS": "context.lemonade.colors.border.borderPositiveSubtle"
+      }
+    },
+    {
+      "id": "VariableID:3037:2015",
+      "name": "Border/Voice/border-info-subtle",
+      "description": "Use for subtle borders that support informational messages.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:a238bb720cac500abd6019af3b7b95a684532ce1/76:323"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.16862745583057404,
+            "g": 0.49803921580314636,
+            "b": 1,
+            "a": 0.5
+          },
+          "alias": "VariableID:a238bb720cac500abd6019af3b7b95a684532ce1/76:323",
+          "aliasName": "blue/alpha/500"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderInfoSubtle",
+        "iOS": "context.lemonade.colors.border.borderInfoSubtle"
+      }
+    },
+    {
+      "id": "VariableID:3037:2016",
+      "name": "Content/Brand/content-on-brand-low",
+      "description": "Use for text/icons on subtle or low-emphasis brand backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:6d9c92c71562a356221eeae95c51cd6962648e80/394:22"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.42639997601509094,
+            "g": 0.46799999475479126,
+            "b": 0.052000001072883606,
+            "a": 1
+          },
+          "alias": "VariableID:6d9c92c71562a356221eeae95c51cd6962648e80/394:22",
+          "aliasName": "yellow-lime/700"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentOnBrandLow",
+        "iOS": "context.lemonade.colors.content.contentOnBrandLow"
+      }
+    },
+    {
+      "id": "VariableID:3037:2017",
+      "name": "Border/Voice/border-caution-subtle",
+      "description": "Use for subtle borders that signal caution with low emphasis.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:abce4d57296f17fc98ebc1e7b04b511b49b5a4eb/76:462"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 0.4107343256473541,
+            "b": 0,
+            "a": 0.5
+          },
+          "alias": "VariableID:abce4d57296f17fc98ebc1e7b04b511b49b5a4eb/76:462",
+          "aliasName": "orange/alpha/500"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderCautionSubtle",
+        "iOS": "context.lemonade.colors.border.borderCautionSubtle"
+      }
+    },
+    {
+      "id": "VariableID:3037:2018",
+      "name": "Border/Voice/border-critical-subtle",
+      "description": "Use for subtle borders related to error or destructive contexts.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:921f3376efa5b7a39732146c578910aca6a59941/76:448"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.9826614260673523,
+            "g": 0.17179709672927856,
+            "b": 0.21307030320167542,
+            "a": 0.5
+          },
+          "alias": "VariableID:921f3376efa5b7a39732146c578910aca6a59941/76:448",
+          "aliasName": "red/alpha/500"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderCriticalSubtle",
+        "iOS": "context.lemonade.colors.border.borderCriticalSubtle"
+      }
+    },
+    {
+      "id": "VariableID:3037:2019",
+      "name": "Border/Voice/border-positive",
+      "description": "Use for borders that indicate success or confirmation states.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.2848081886768341,
+            "g": 0.49150213599205017,
+            "b": 0,
+            "a": 1
+          },
+          "alias": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181",
+          "aliasName": "green-lime/700"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderPositive",
+        "iOS": "context.lemonade.colors.border.borderPositive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2020",
+      "name": "Border/Voice/border-info",
+      "description": "Use for borders that indicate informational or neutral states.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:a6ed5840402749dbf76d19a0d797da45c091b8a4/72:129"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.0779077485203743,
+            "g": 0.27913516759872437,
+            "b": 0.9017744660377502,
+            "a": 1
+          },
+          "alias": "VariableID:a6ed5840402749dbf76d19a0d797da45c091b8a4/72:129",
+          "aliasName": "blue/700"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderInfo",
+        "iOS": "context.lemonade.colors.border.borderInfo"
+      }
+    },
+    {
+      "id": "VariableID:3037:2021",
+      "name": "Border/Voice/border-caution",
+      "description": "Use for borders that indicate warnings or potential risks.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:deae95126cb95b53a3cbd5871b992b3bfca35319/72:202"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.7317888140678406,
+            "g": 0.30102330446243286,
+            "b": 0,
+            "a": 1
+          },
+          "alias": "VariableID:deae95126cb95b53a3cbd5871b992b3bfca35319/72:202",
+          "aliasName": "amber/700"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderCaution",
+        "iOS": "context.lemonade.colors.border.borderCaution"
+      }
+    },
+    {
+      "id": "VariableID:3037:2022",
+      "name": "Border/Brand/border-accent",
+      "description": "Use for borders that need visual emphasis outside the brand palette.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:eef25792a986dbba70361752246fe8c68c395611/72:146"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0,
+            "g": 0.45903703570365906,
+            "b": 0.5832521915435791,
+            "a": 1
+          },
+          "alias": "VariableID:eef25792a986dbba70361752246fe8c68c395611/72:146",
+          "aliasName": "cyan/700"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": true,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderAccent",
+        "iOS": "context.lemonade.colors.border.borderAccent"
+      }
+    },
+    {
+      "id": "VariableID:3037:2023",
+      "name": "Border/Brand/border-on-brand-medium",
+      "description": "Use for medium-emphasis borders on brand surfaces.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:6b52be630b90a02df7b3a03f5e58a12ed596a2c3/109:28"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.5
+          },
+          "alias": "VariableID:6b52be630b90a02df7b3a03f5e58a12ed596a2c3/109:28",
+          "aliasName": "white/500"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderOnBrandMedium",
+        "iOS": "context.lemonade.colors.border.borderOnBrandMedium"
+      }
+    },
+    {
+      "id": "VariableID:3037:2024",
+      "name": "Border/Brand/border-brand",
+      "description": "Use for borders that reinforce brand identity or highlight key interactive elements.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:6d9c92c71562a356221eeae95c51cd6962648e80/394:22"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.42639997601509094,
+            "g": 0.46799999475479126,
+            "b": 0.052000001072883606,
+            "a": 1
+          },
+          "alias": "VariableID:6d9c92c71562a356221eeae95c51cd6962648e80/394:22",
+          "aliasName": "yellow-lime/700"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderBrand",
+        "iOS": "context.lemonade.colors.border.borderBrand"
+      }
+    },
+    {
+      "id": "VariableID:3037:2025",
+      "name": "Border/border-selected",
+      "description": "Use to indicate a selected or active state on components.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/320:262"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.0284000001847744,
+            "g": 0.05159999802708626,
+            "b": 0.0284000001847744,
+            "a": 0.925000011920929
+          },
+          "alias": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/320:262",
+          "aliasName": "neutral/alpha/900"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderSelected",
+        "iOS": "context.lemonade.colors.border.borderSelected"
+      }
+    },
+    {
+      "id": "VariableID:3037:2026",
+      "name": "Interaction/Interactive/Background/bg-caution-interactive",
+      "description": "Use for interactive states in cautionary scenarios.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:c1a53fba3a8ca45de5366caf5bdcae724b8140ab/72:241"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.9607054591178894,
+            "g": 0.2881907522678375,
+            "b": 0,
+            "a": 1
+          },
+          "alias": "VariableID:c1a53fba3a8ca45de5366caf5bdcae724b8140ab/72:241",
+          "aliasName": "orange/600"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgCautionInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgCautionInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2027",
+      "name": "Background/Fixed/bg-transparent",
+      "description": "Use for transparent surfaces or when layering elements.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 0
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0
+          },
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgTransparent",
+        "iOS": "context.lemonade.colors.background.bgTransparent"
+      }
+    },
+    {
+      "id": "VariableID:3037:2028",
+      "name": "Background/Fixed/bg-always-light",
+      "description": "Use for surfaces that must always appear light, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/115:49"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/115:49",
+          "aliasName": "white/950"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgAlwaysLight",
+        "iOS": "context.lemonade.colors.background.bgAlwaysLight"
+      }
+    },
+    {
+      "id": "VariableID:3037:2029",
+      "name": "Background/Fixed/bg-always-dark",
+      "description": "Use for surfaces that must always appear dark, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:e2ff829425d0c35a1fd5d5f7e58553fb93d8c5ec/320:276"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.038499996066093445,
+            "g": 0.06149999424815178,
+            "b": 0.038499996066093445,
+            "a": 0.9800000190734863
+          },
+          "alias": "VariableID:e2ff829425d0c35a1fd5d5f7e58553fb93d8c5ec/320:276",
+          "aliasName": "neutral/alpha/950"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgAlwaysDark",
+        "iOS": "context.lemonade.colors.background.bgAlwaysDark"
+      }
+    },
+    {
+      "id": "VariableID:3037:2030",
+      "name": "Content/Brand/content-brand",
+      "description": "Use for brand-coloured text or icons to reinforce identity.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:6d9c92c71562a356221eeae95c51cd6962648e80/394:22"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.42639997601509094,
+            "g": 0.46799999475479126,
+            "b": 0.052000001072883606,
+            "a": 1
+          },
+          "alias": "VariableID:6d9c92c71562a356221eeae95c51cd6962648e80/394:22",
+          "aliasName": "yellow-lime/700"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentBrand",
+        "iOS": "context.lemonade.colors.content.contentBrand"
+      }
+    },
+    {
+      "id": "VariableID:3037:2031",
+      "name": "Background/Inverse/bg-default-inverse",
+      "description": "Use as the inverse of bg-default, typically for dark backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:c97bf8aac4abe5f86d9d48fdf23be25e851540b1/320:32"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.06346666812896729,
+            "g": 0.07980000227689743,
+            "b": 0.060200002044439316,
+            "a": 1
+          },
+          "alias": "VariableID:c97bf8aac4abe5f86d9d48fdf23be25e851540b1/320:32",
+          "aliasName": "neutral/950"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgDefaultInverse",
+        "iOS": "context.lemonade.colors.background.bgDefaultInverse"
+      }
+    },
+    {
+      "id": "VariableID:3037:2032",
+      "name": "Interaction/Interactive/Background/bg-positive-interactive",
+      "description": "Use for interactive states in positive scenarios.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:a42113c6629bb91bae8d01d8fcc64054dc203a48/72:180"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.36872008442878723,
+            "g": 0.647489070892334,
+            "b": 0,
+            "a": 1
+          },
+          "alias": "VariableID:a42113c6629bb91bae8d01d8fcc64054dc203a48/72:180",
+          "aliasName": "green-lime/600"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgPositiveInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgPositiveInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2033",
+      "name": "Border/Brand/border-on-brand-low",
+      "description": "Use for subtle borders placed on brand-coloured surfaces.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:a55954920e7c4af5b152459fc69045e42fb15a48/109:26"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.30000001192092896
+          },
+          "alias": "VariableID:a55954920e7c4af5b152459fc69045e42fb15a48/109:26",
+          "aliasName": "white/300"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderOnBrandLow",
+        "iOS": "context.lemonade.colors.border.borderOnBrandLow"
+      }
+    },
+    {
+      "id": "VariableID:3037:2034",
+      "name": "Background/Voice/bg-neutral-subtle",
+      "description": "Use for subtle backgrounds without strong semantic meaning.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/320:79"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.1931999921798706,
+            "g": 0.22680000960826874,
+            "b": 0.1931999921798706,
+            "a": 0.05000000074505806
+          },
+          "alias": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/320:79",
+          "aliasName": "neutral/alpha/100"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgNeutralSubtle",
+        "iOS": "context.lemonade.colors.background.bgNeutralSubtle"
+      }
+    },
+    {
+      "id": "VariableID:3037:2035",
+      "name": "Background/Voice/bg-caution-subtle",
+      "description": "Use for subtle backgrounds indicating caution.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:0aa49d6b6d51cd34a538da859f6db0a2c5c62dbf/76:139"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.994271457195282,
+            "g": 0.6020927429199219,
+            "b": 0,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:0aa49d6b6d51cd34a538da859f6db0a2c5c62dbf/76:139",
+          "aliasName": "amber/alpha/100"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgCautionSubtle",
+        "iOS": "context.lemonade.colors.background.bgCautionSubtle"
+      }
+    },
+    {
+      "id": "VariableID:3037:2036",
+      "name": "Content/Voice/content-caution",
+      "description": "Use for cautionary text/icons, such as warnings.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:deae95126cb95b53a3cbd5871b992b3bfca35319/72:202"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.7317888140678406,
+            "g": 0.30102330446243286,
+            "b": 0,
+            "a": 1
+          },
+          "alias": "VariableID:deae95126cb95b53a3cbd5871b992b3bfca35319/72:202",
+          "aliasName": "amber/700"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentCaution",
+        "iOS": "context.lemonade.colors.content.contentCaution"
+      }
+    },
+    {
+      "id": "VariableID:3037:2037",
+      "name": "Background/Voice/bg-critical-subtle",
+      "description": "Use for subtle backgrounds indicating critical context.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/76:449"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.9826614260673523,
+            "g": 0.17179709672927856,
+            "b": 0.21307030320167542,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/76:449",
+          "aliasName": "red/alpha/100"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgCriticalSubtle",
+        "iOS": "context.lemonade.colors.background.bgCriticalSubtle"
+      }
+    },
+    {
+      "id": "VariableID:3037:2038",
+      "name": "Interaction/Interactive/Background/bg-subtle-interactive",
+      "description": "Use for interactive states on subtle neutral backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/320:79"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.1931999921798706,
+            "g": 0.22680000960826874,
+            "b": 0.1931999921798706,
+            "a": 0.05000000074505806
+          },
+          "alias": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/320:79",
+          "aliasName": "neutral/alpha/100"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgSubtleInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgSubtleInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2039",
+      "name": "Background/Voice/bg-neutral",
+      "description": "Use for neutral states that don’t carry positive, caution, or critical meaning.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:24c08dfd7f4ff5eaec42f78097cb8353cf15e38b/320:21"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.3263999819755554,
+            "g": 0.36039999127388,
+            "b": 0.31960001587867737,
+            "a": 1
+          },
+          "alias": "VariableID:24c08dfd7f4ff5eaec42f78097cb8353cf15e38b/320:21",
+          "aliasName": "neutral/600"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgNeutral",
+        "iOS": "context.lemonade.colors.background.bgNeutral"
+      }
+    },
+    {
+      "id": "VariableID:3037:2040",
+      "name": "Background/Brand/bg-accent",
+      "description": "Use for brand accent areas, such as highlights or supporting UI elements.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:563fc565566653ef6b34fd115a7a339c9b54a0b6/72:140"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0,
+            "g": 0.5741972923278809,
+            "b": 0.722572386264801,
+            "a": 1
+          },
+          "alias": "VariableID:563fc565566653ef6b34fd115a7a339c9b54a0b6/72:140",
+          "aliasName": "cyan/600"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": true,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgAccent",
+        "iOS": "context.lemonade.colors.background.bgAccent"
+      }
+    },
+    {
+      "id": "VariableID:3037:2041",
+      "name": "Border/Brand/border-on-brand-high",
+      "description": "Use for strong or high-contrast borders on brand surfaces.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:da189a1c97802242459d05a6be7f95e529766c99/109:30"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.699999988079071
+          },
+          "alias": "VariableID:da189a1c97802242459d05a6be7f95e529766c99/109:30",
+          "aliasName": "white/700"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderOnBrandHigh",
+        "iOS": "context.lemonade.colors.border.borderOnBrandHigh"
+      }
+    },
+    {
+      "id": "VariableID:3037:2042",
+      "name": "Background/Brand/bg-brand-subtle",
+      "description": "Use for elevated brand surfaces, such as cards or containers with brand emphasis.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:3bbf8a2abae8146f7e88c9bdee7c57dac0c4b757/90:26"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.8823529481887817,
+            "g": 0.8980392217636108,
+            "b": 0.10196078568696976,
+            "a": 0.20000000298023224
+          },
+          "alias": "VariableID:3bbf8a2abae8146f7e88c9bdee7c57dac0c4b757/90:26",
+          "aliasName": "yellow-lime/alpha/200"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgBrandSubtle",
+        "iOS": "context.lemonade.colors.background.bgBrandSubtle"
+      }
+    },
+    {
+      "id": "VariableID:3037:2043",
+      "name": "Background/Inverse/bg-subtle-inverse",
+      "description": "Use as the inverse of bg-subtle, for elevated surfaces on dark backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:7d9595539067d82e8aadb39f37080c2221e2dbea/320:28"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.10339999198913574,
+            "g": 0.11990000307559967,
+            "b": 0.10009999573230743,
+            "a": 1
+          },
+          "alias": "VariableID:7d9595539067d82e8aadb39f37080c2221e2dbea/320:28",
+          "aliasName": "neutral/900"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgSubtleInverse",
+        "iOS": "context.lemonade.colors.background.bgSubtleInverse"
+      }
+    },
+    {
+      "id": "VariableID:3037:2044",
+      "name": "Interaction/Interactive/Background/bg-info-interactive",
+      "description": "Use for interactive states in informational scenarios.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:8606e789d83dbafb138cbb989a290014dd9416b1/72:133"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.08361909538507462,
+            "g": 0.36441710591316223,
+            "b": 0.9863430857658386,
+            "a": 1
+          },
+          "alias": "VariableID:8606e789d83dbafb138cbb989a290014dd9416b1/72:133",
+          "aliasName": "blue/600"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgInfoInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgInfoInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2045",
+      "name": "Content/Voice/content-info",
+      "description": "Use for informational text/icons, such as neutral alerts.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:3a44dd03043bca6b311f1a5548657a613b9e0a86/72:136"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.09978122264146805,
+            "g": 0.23377007246017456,
+            "b": 0.7229224443435669,
+            "a": 1
+          },
+          "alias": "VariableID:3a44dd03043bca6b311f1a5548657a613b9e0a86/72:136",
+          "aliasName": "blue/800"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentInfo",
+        "iOS": "context.lemonade.colors.content.contentInfo"
+      }
+    },
+    {
+      "id": "VariableID:3037:2046",
+      "name": "Border/Voice/border-critical",
+      "description": "Use for borders that indicate errors or destructive actions.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:a17656e99cc45a002894f8a0fc808807399ae7f0/72:256"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.7568846940994263,
+            "g": 0,
+            "b": 0.02875453606247902,
+            "a": 1
+          },
+          "alias": "VariableID:a17656e99cc45a002894f8a0fc808807399ae7f0/72:256",
+          "aliasName": "red/700"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderCritical",
+        "iOS": "context.lemonade.colors.border.borderCritical"
+      }
+    },
+    {
+      "id": "VariableID:3037:2047",
+      "name": "Content/content-tertiary",
+      "description": "Use for tertiary text, such as metadata, placeholders, or helper text.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:c3574904535c2bf808ae1ecb322386bbc65fdcca/320:168"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.006000000052154064,
+            "g": 0.07400000095367432,
+            "b": 0.006000000052154064,
+            "a": 0.36500000953674316
+          },
+          "alias": "VariableID:c3574904535c2bf808ae1ecb322386bbc65fdcca/320:168",
+          "aliasName": "neutral/alpha/400"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentTertiary",
+        "iOS": "context.lemonade.colors.content.contentTertiary"
+      }
+    },
+    {
+      "id": "VariableID:3037:2048",
+      "name": "Background/Brand/bg-brand-elevated",
+      "description": "Use for brand surfaces with subtle emphasis, such as secondary actions or accents.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:53fdaf2207681c3d4096ddebf8e27b6ebff08f55/109:27"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.4000000059604645
+          },
+          "alias": "VariableID:53fdaf2207681c3d4096ddebf8e27b6ebff08f55/109:27",
+          "aliasName": "white/400"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgBrandElevated",
+        "iOS": "context.lemonade.colors.background.bgBrandElevated"
+      }
+    },
+    {
+      "id": "VariableID:3037:2049",
+      "name": "Background/Voice/bg-positive-subtle",
+      "description": "Use for subtle backgrounds indicating positivity or success.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:169b48022f4a60164b3d49fb0e10aced4427846a/76:403"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.4872932434082031,
+            "g": 0.8099173903465271,
+            "b": 0,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:169b48022f4a60164b3d49fb0e10aced4427846a/76:403",
+          "aliasName": "green-lime/alpha/100"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgPositiveSubtle",
+        "iOS": "context.lemonade.colors.background.bgPositiveSubtle"
+      }
+    },
+    {
+      "id": "VariableID:3037:2050",
+      "name": "Background/bg-default",
+      "description": "Use for the primary background of screens and surfaces.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/115:49"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/115:49",
+          "aliasName": "white/950"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgDefault",
+        "iOS": "context.lemonade.colors.background.bgDefault"
+      }
+    },
+    {
+      "id": "VariableID:3037:2051",
+      "name": "Background/Voice/bg-critical",
+      "description": "Use for critical states, such as destructive actions or errors.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/72:255"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.9826614260673523,
+            "g": 0.17179709672927856,
+            "b": 0.21307030320167542,
+            "a": 1
+          },
+          "alias": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/72:255",
+          "aliasName": "red/500"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgCritical",
+        "iOS": "context.lemonade.colors.background.bgCritical"
+      }
+    },
+    {
+      "id": "VariableID:3037:2052",
+      "name": "Background/Brand/bg-brand-high",
+      "description": "Use for strong brand emphasis, such as headers, banners, or high-priority surfaces.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:db0c89a3c7ec6dc8f937d204e16c7e56e408d8d8/121:68"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.2726779878139496,
+            "g": 0.32054421305656433,
+            "b": 0.05945578217506409,
+            "a": 1
+          },
+          "alias": "VariableID:db0c89a3c7ec6dc8f937d204e16c7e56e408d8d8/121:68",
+          "aliasName": "yellow-lime/800"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgBrandHigh",
+        "iOS": "context.lemonade.colors.background.bgBrandHigh"
+      }
+    },
+    {
+      "id": "VariableID:3037:2053",
+      "name": "Content/Fixed/content-always-light",
+      "description": "Use for text or icons that must always appear light, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/115:49"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/115:49",
+          "aliasName": "white/950"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentAlwaysLight",
+        "iOS": "context.lemonade.colors.content.contentAlwaysLight"
+      }
+    },
+    {
+      "id": "VariableID:3037:2054",
+      "name": "Content/content-secondary",
+      "description": "Use for secondary text, such as body copy or supporting content.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:6fa2ed1327e0bd729cf431fbfdf0a2e6e70741be/320:215"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.01280000526458025,
+            "g": 0.06720002740621567,
+            "b": 0.01280000526458025,
+            "a": 0.6850000023841858
+          },
+          "alias": "VariableID:6fa2ed1327e0bd729cf431fbfdf0a2e6e70741be/320:215",
+          "aliasName": "neutral/alpha/600"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentSecondary",
+        "iOS": "context.lemonade.colors.content.contentSecondary"
+      }
+    },
+    {
+      "id": "VariableID:3037:2055",
+      "name": "Background/Voice/bg-caution",
+      "description": "Use for cautionary states, such as warnings or potential risks.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:41033fa93dfdd2518235ad4db6a7935a815f5e18/72:201"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.8837689161300659,
+            "g": 0.4433509111404419,
+            "b": 0,
+            "a": 1
+          },
+          "alias": "VariableID:41033fa93dfdd2518235ad4db6a7935a815f5e18/72:201",
+          "aliasName": "amber/600"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgCaution",
+        "iOS": "context.lemonade.colors.background.bgCaution"
+      }
+    },
+    {
+      "id": "VariableID:3037:2056",
+      "name": "Interaction/Interactive/Background/bg-caution-subtle-interactive",
+      "description": "Use for interactive states on subtle caution backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:034080f4f6e812d5e9ae5cd4bf8bf4f223134028/76:458"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 0.4107343256473541,
+            "b": 0,
+            "a": 0.20000000298023224
+          },
+          "alias": "VariableID:034080f4f6e812d5e9ae5cd4bf8bf4f223134028/76:458",
+          "aliasName": "orange/alpha/200"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgCautionSubtleInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgCautionSubtleInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2057",
+      "name": "Interaction/Interactive/Background/bg-critical-interactive",
+      "description": "Use for interactive states in critical scenarios.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/72:257"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.9064575433731079,
+            "g": 0,
+            "b": 0.04221484810113907,
+            "a": 1
+          },
+          "alias": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/72:257",
+          "aliasName": "red/600"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgCriticalInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgCriticalInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2058",
+      "name": "Background/Brand/bg-brand",
+      "description": "Use for primary brand surfaces, such as key actions or highlights.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.8820960521697998,
+            "g": 0.8995633125305176,
+            "b": 0.10043667256832123,
+            "a": 1
+          },
+          "alias": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87",
+          "aliasName": "yellow-lime/500"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgBrand",
+        "iOS": "context.lemonade.colors.background.bgBrand"
+      }
+    },
+    {
+      "id": "VariableID:3037:2059",
+      "name": "Interaction/Interactive/Background/bg-brand-interactive",
+      "description": "Use for interactive states on brand backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:e101b2da4e92f186cf4f636e7e0ac67eb6e5bd72/394:32"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.7161332964897156,
+            "g": 0.7379999756813049,
+            "b": 0.0820000097155571,
+            "a": 1
+          },
+          "alias": "VariableID:e101b2da4e92f186cf4f636e7e0ac67eb6e5bd72/394:32",
+          "aliasName": "yellow-lime/600"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgBrandInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgBrandInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2060",
+      "name": "Background/bg-elevated",
+      "description": "Use to create a higher elevation background against bg-default or bg-subtle.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/320:79"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.1931999921798706,
+            "g": 0.22680000960826874,
+            "b": 0.1931999921798706,
+            "a": 0.05000000074505806
+          },
+          "alias": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/320:79",
+          "aliasName": "neutral/alpha/100"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgElevated",
+        "iOS": "context.lemonade.colors.background.bgElevated"
+      }
+    },
+    {
+      "id": "VariableID:3037:2061",
+      "name": "Border/border-neutral-low",
+      "description": "Use for subtle dividers or low-emphasis element boundaries.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/320:79"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.1931999921798706,
+            "g": 0.22680000960826874,
+            "b": 0.1931999921798706,
+            "a": 0.05000000074505806
+          },
+          "alias": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/320:79",
+          "aliasName": "neutral/alpha/100"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderNeutralLow",
+        "iOS": "context.lemonade.colors.border.borderNeutralLow"
+      }
+    },
+    {
+      "id": "VariableID:3037:2062",
+      "name": "Content/Inverse/content-primary-inverse",
+      "description": "Use as the primary content colour on dark backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/115:49"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/115:49",
+          "aliasName": "white/950"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentPrimaryInverse",
+        "iOS": "context.lemonade.colors.content.contentPrimaryInverse"
+      }
+    },
+    {
+      "id": "VariableID:3037:2063",
+      "name": "Interaction/Interactive/Background/bg-elevated-interactive",
+      "description": "Use for interactive states on elevated backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/320:107"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.05159999802708626,
+            "g": 0.188400000333786,
+            "b": 0.05159999802708626,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/320:107",
+          "aliasName": "neutral/alpha/200"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgElevatedInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgElevatedInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2064",
+      "name": "Content/Voice/content-positive",
+      "description": "Use for positive text/icons, such as confirmations.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.2848081886768341,
+            "g": 0.49150213599205017,
+            "b": 0,
+            "a": 1
+          },
+          "alias": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181",
+          "aliasName": "green-lime/700"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentPositive",
+        "iOS": "context.lemonade.colors.content.contentPositive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2065",
+      "name": "Border/border-neutral-medium",
+      "description": "Use for standard borders and general element outlines.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/320:107"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.05159999802708626,
+            "g": 0.188400000333786,
+            "b": 0.05159999802708626,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/320:107",
+          "aliasName": "neutral/alpha/200"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderNeutralMedium",
+        "iOS": "context.lemonade.colors.border.borderNeutralMedium"
+      }
+    },
+    {
+      "id": "VariableID:3037:2066",
+      "name": "Background/Inverse/bg-elevated-inverse",
+      "description": "Use as the inverse of bg-elevated, for higher elevation on dark backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:644365395869c07f1342bc4eda3f2d2a8aed61c7/109:23"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.05000000074505806
+          },
+          "alias": "VariableID:644365395869c07f1342bc4eda3f2d2a8aed61c7/109:23",
+          "aliasName": "white/50"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgElevatedInverse",
+        "iOS": "context.lemonade.colors.background.bgElevatedInverse"
+      }
+    },
+    {
+      "id": "VariableID:3037:2067",
+      "name": "Content/Inverse/content-tertiary-inverse",
+      "description": "Use as the tertiary content colour on dark backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:da189a1c97802242459d05a6be7f95e529766c99/109:30"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.699999988079071
+          },
+          "alias": "VariableID:da189a1c97802242459d05a6be7f95e529766c99/109:30",
+          "aliasName": "white/700"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentTertiaryInverse",
+        "iOS": "context.lemonade.colors.content.contentTertiaryInverse"
+      }
+    },
+    {
+      "id": "VariableID:3037:2068",
+      "name": "Background/bg-subtle",
+      "description": "Use for secondary backgrounds, such as cards, containers, or inputs placed on bg-default.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:9f761b742653cb7d7a95963c2ba467fe50bc2c15/320:0"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.9790000319480896,
+            "g": 0.9810000061988831,
+            "b": 0.9790000319480896,
+            "a": 1
+          },
+          "alias": "VariableID:9f761b742653cb7d7a95963c2ba467fe50bc2c15/320:0",
+          "aliasName": "neutral/50"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgSubtle",
+        "iOS": "context.lemonade.colors.background.bgSubtle"
+      }
+    },
+    {
+      "id": "VariableID:3037:2069",
+      "name": "Content/Fixed/content-always-dark",
+      "description": "Use for text or icons that must always appear dark, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:e2ff829425d0c35a1fd5d5f7e58553fb93d8c5ec/320:276"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.038499996066093445,
+            "g": 0.06149999424815178,
+            "b": 0.038499996066093445,
+            "a": 0.9800000190734863
+          },
+          "alias": "VariableID:e2ff829425d0c35a1fd5d5f7e58553fb93d8c5ec/320:276",
+          "aliasName": "neutral/alpha/950"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentAlwaysDark",
+        "iOS": "context.lemonade.colors.content.contentAlwaysDark"
+      }
+    },
+    {
+      "id": "VariableID:3037:2070",
+      "name": "Content/Voice/content-neutral",
+      "description": "Use for neutral or non-semantic text/icons.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:c97bf8aac4abe5f86d9d48fdf23be25e851540b1/320:32"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.06346666812896729,
+            "g": 0.07980000227689743,
+            "b": 0.060200002044439316,
+            "a": 1
+          },
+          "alias": "VariableID:c97bf8aac4abe5f86d9d48fdf23be25e851540b1/320:32",
+          "aliasName": "neutral/950"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentNeutral",
+        "iOS": "context.lemonade.colors.content.contentNeutral"
+      }
+    },
+    {
+      "id": "VariableID:3037:2071",
+      "name": "Border/Fixed/border-always-light",
+      "description": "Use for borders that must always appear light, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/115:49"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/115:49",
+          "aliasName": "white/950"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderAlwaysLight",
+        "iOS": "context.lemonade.colors.border.borderAlwaysLight"
+      }
+    },
+    {
+      "id": "VariableID:3037:2072",
+      "name": "Background/Voice/bg-info",
+      "description": "Use for informational states, such as system feedback or neutral alerts.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:8606e789d83dbafb138cbb989a290014dd9416b1/72:133"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.08361909538507462,
+            "g": 0.36441710591316223,
+            "b": 0.9863430857658386,
+            "a": 1
+          },
+          "alias": "VariableID:8606e789d83dbafb138cbb989a290014dd9416b1/72:133",
+          "aliasName": "blue/600"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgInfo",
+        "iOS": "context.lemonade.colors.background.bgInfo"
+      }
+    },
+    {
+      "id": "VariableID:3037:2073",
+      "name": "Content/Inverse/content-brand-inverse",
+      "description": "Use for brand-coloured text/icons on dark backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.8820960521697998,
+            "g": 0.8995633125305176,
+            "b": 0.10043667256832123,
+            "a": 1
+          },
+          "alias": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87",
+          "aliasName": "yellow-lime/500"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentBrandInverse",
+        "iOS": "context.lemonade.colors.content.contentBrandInverse"
+      }
+    },
+    {
+      "id": "VariableID:3037:2074",
+      "name": "Background/Voice/bg-positive",
+      "description": "Use for positive states, such as success messages or confirmations.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:a42113c6629bb91bae8d01d8fcc64054dc203a48/72:180"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.36872008442878723,
+            "g": 0.647489070892334,
+            "b": 0,
+            "a": 1
+          },
+          "alias": "VariableID:a42113c6629bb91bae8d01d8fcc64054dc203a48/72:180",
+          "aliasName": "green-lime/600"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgPositive",
+        "iOS": "context.lemonade.colors.background.bgPositive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2075",
+      "name": "Content/Inverse/content-secondary-inverse",
+      "description": "Use as the secondary content colour on dark backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:1cde25931e5330368f430707ddecf5da880df6d6/109:32"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.8999999761581421
+          },
+          "alias": "VariableID:1cde25931e5330368f430707ddecf5da880df6d6/109:32",
+          "aliasName": "white/900"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentSecondaryInverse",
+        "iOS": "context.lemonade.colors.content.contentSecondaryInverse"
+      }
+    },
+    {
+      "id": "VariableID:3037:2076",
+      "name": "Background/Brand/bg-accent-subtle",
+      "description": "Use for background fills that need a light accent emphasis without overwhelming other elements.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:e950c1611e1f6d7063d6d1a0db67185918839908/76:337"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0,
+            "g": 0.7218724489212036,
+            "b": 0.8573380708694458,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:e950c1611e1f6d7063d6d1a0db67185918839908/76:337",
+          "aliasName": "cyan/alpha/100"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": true,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgAccentSubtle",
+        "iOS": "context.lemonade.colors.background.bgAccentSubtle"
+      }
+    },
+    {
+      "id": "VariableID:3037:2077",
+      "name": "Content/Voice/content-critical",
+      "description": "Use for critical text/icons, such as errors or destructive actions.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/72:257"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.9064575433731079,
+            "g": 0,
+            "b": 0.04221484810113907,
+            "a": 1
+          },
+          "alias": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/72:257",
+          "aliasName": "red/600"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentCritical",
+        "iOS": "context.lemonade.colors.content.contentCritical"
+      }
+    },
+    {
+      "id": "VariableID:3037:2078",
+      "name": "Content/Brand/content-on-brand-high",
+      "description": "Use for text/icons on high-emphasis brand backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:32edd553f4f45306d1ba866c5595851700a96c50/121:75"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.1595725268125534,
+            "g": 0.19419847428798676,
+            "b": 0.04580152779817581,
+            "a": 1
+          },
+          "alias": "VariableID:32edd553f4f45306d1ba866c5595851700a96c50/121:75",
+          "aliasName": "yellow-lime/900"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentOnBrandHigh",
+        "iOS": "context.lemonade.colors.content.contentOnBrandHigh"
+      }
+    },
+    {
+      "id": "VariableID:3037:2079",
+      "name": "Interaction/Interactive/Background/bg-critical-subtle-interactive",
+      "description": "Use for interactive states on subtle critical backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:b1fe30e3320da67c3864e50f532848b06c78b19e/76:446"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.9826614260673523,
+            "g": 0.17179709672927856,
+            "b": 0.21307030320167542,
+            "a": 0.20000000298023224
+          },
+          "alias": "VariableID:b1fe30e3320da67c3864e50f532848b06c78b19e/76:446",
+          "aliasName": "red/alpha/200"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgCriticalSubtleInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgCriticalSubtleInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3037:2080",
+      "name": "Background/Voice/bg-info-subtle",
+      "description": "Use for subtle backgrounds indicating information.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.16933248937129974,
+            "g": 0.49804946780204773,
+            "b": 1,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315",
+          "aliasName": "blue/alpha/100"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgInfoSubtle",
+        "iOS": "context.lemonade.colors.background.bgInfoSubtle"
+      }
+    },
+    {
+      "id": "VariableID:3037:2081",
+      "name": "Content/content-primary",
+      "description": "Use for main text, titles, and essential content.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/320:262"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.0284000001847744,
+            "g": 0.05159999802708626,
+            "b": 0.0284000001847744,
+            "a": 0.925000011920929
+          },
+          "alias": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/320:262",
+          "aliasName": "neutral/alpha/900"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentPrimary",
+        "iOS": "context.lemonade.colors.content.contentPrimary"
+      }
+    },
+    {
+      "id": "VariableID:3106:2190",
+      "name": "Border/border-neutral-high",
+      "description": "Use for high-contrast borders or strong dividers that require clear visual separation.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/320:129"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.04200000315904617,
+            "g": 0.15800000727176666,
+            "b": 0.04200000315904617,
+            "a": 0.18000000715255737
+          },
+          "alias": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/320:129",
+          "aliasName": "neutral/alpha/300"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderNeutralHigh",
+        "iOS": "context.lemonade.colors.border.borderNeutralHigh"
+      }
+    },
+    {
+      "id": "VariableID:3106:2204",
+      "name": "Border/Inverse/border-neutral-high-inverse",
+      "description": "Use for standard borders on dark or inverted backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:53fdaf2207681c3d4096ddebf8e27b6ebff08f55/109:27"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.4000000059604645
+          },
+          "alias": "VariableID:53fdaf2207681c3d4096ddebf8e27b6ebff08f55/109:27",
+          "aliasName": "white/400"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderNeutralHighInverse",
+        "iOS": "context.lemonade.colors.border.LemonadeTheme.colors.border.borderNeutralHighInverse"
+      }
+    },
+    {
+      "id": "VariableID:3125:1886",
+      "name": "Interaction/Pressed/Background/bg-default-pressed",
+      "description": "Use for pressed/tap feedback on elements over bg-default",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/320:79"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.1931999921798706,
+            "g": 0.22680000960826874,
+            "b": 0.1931999921798706,
+            "a": 0.05000000074505806
+          },
+          "alias": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/320:79",
+          "aliasName": "neutral/alpha/100"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bfDefaultPressed",
+        "iOS": "context.lemonade.colors.interaction.bgDefaultPressed"
+      }
+    },
+    {
+      "id": "VariableID:3125:1887",
+      "name": "Interaction/Pressed/Background/bg-subtle-pressed",
+      "description": "Use for pressed/tap feedback on elements over bg-subtle",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "r": 0.05159999802708626,
+          "g": 0.188400000333786,
+          "b": 0.05159999802708626,
+          "a": 0.10000000149011612
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.05159999802708626,
+            "g": 0.188400000333786,
+            "b": 0.05159999802708626,
+            "a": 0.10000000149011612
+          },
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgSubtlePressed",
+        "iOS": "context.lemonade.colors.interaction.bgSubtlePressed"
+      }
+    },
+    {
+      "id": "VariableID:3125:1888",
+      "name": "Interaction/Pressed/Background/bg-elevated-pressed",
+      "description": "Use for pressed/tap feedback on elements over bg-elevated",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/320:129"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.04200000315904617,
+            "g": 0.15800000727176666,
+            "b": 0.04200000315904617,
+            "a": 0.18000000715255737
+          },
+          "alias": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/320:129",
+          "aliasName": "neutral/alpha/300"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgElevatedPressed",
+        "iOS": "context.lemonade.colors.interaction.bgElevatedPressed"
+      }
+    },
+    {
+      "id": "VariableID:3125:1889",
+      "name": "Interaction/Pressed/Background/bg-brand-pressed",
+      "description": "Use for pressed/tap feedback on brand surfaces",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:6d9c92c71562a356221eeae95c51cd6962648e80/394:22"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.42639997601509094,
+            "g": 0.46799999475479126,
+            "b": 0.052000001072883606,
+            "a": 1
+          },
+          "alias": "VariableID:6d9c92c71562a356221eeae95c51cd6962648e80/394:22",
+          "aliasName": "yellow-lime/700"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgBrandPressed",
+        "iOS": "context.lemonade.colors.interaction.bgBrandPressed"
+      }
+    },
+    {
+      "id": "VariableID:3125:1890",
+      "name": "Interaction/Pressed/Background/bg-brand-high-pressed",
+      "description": "Use for pressed/tap feedback on high-emphasis brand surfaces",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:42c4e072fa330a540702e501522d153308f72deb/121:80"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.11600000411272049,
+            "g": 0.1550000011920929,
+            "b": 0.02500000037252903,
+            "a": 1
+          },
+          "alias": "VariableID:42c4e072fa330a540702e501522d153308f72deb/121:80",
+          "aliasName": "yellow-lime/950"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgBrandHighPressed",
+        "iOS": "context.lemonade.colors.interaction.bgBrandHighPressed"
+      }
+    },
+    {
+      "id": "VariableID:3125:1891",
+      "name": "Interaction/Pressed/Background/bg-critical-pressed",
+      "description": "Use for pressed/tap feedback in critical contexts",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:a17656e99cc45a002894f8a0fc808807399ae7f0/72:256"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.7568846940994263,
+            "g": 0,
+            "b": 0.02875453606247902,
+            "a": 1
+          },
+          "alias": "VariableID:a17656e99cc45a002894f8a0fc808807399ae7f0/72:256",
+          "aliasName": "red/700"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgCriticalPressed",
+        "iOS": "context.lemonade.colors.interaction.bgCriticalPressed"
+      }
+    },
+    {
+      "id": "VariableID:3125:1892",
+      "name": "Interaction/Pressed/Background/bg-caution-pressed",
+      "description": "Use for pressed/tap feedback in caution contexts",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:deae95126cb95b53a3cbd5871b992b3bfca35319/72:202"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.7317888140678406,
+            "g": 0.30102330446243286,
+            "b": 0,
+            "a": 1
+          },
+          "alias": "VariableID:deae95126cb95b53a3cbd5871b992b3bfca35319/72:202",
+          "aliasName": "amber/700"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgCautionPressed",
+        "iOS": "context.lemonade.colors.interaction.bgCautionPressed"
+      }
+    },
+    {
+      "id": "VariableID:3125:1893",
+      "name": "Interaction/Pressed/Background/bg-info-pressed",
+      "description": "Use for pressed/tap feedback in info contexts",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:a6ed5840402749dbf76d19a0d797da45c091b8a4/72:129"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.0779077485203743,
+            "g": 0.27913516759872437,
+            "b": 0.9017744660377502,
+            "a": 1
+          },
+          "alias": "VariableID:a6ed5840402749dbf76d19a0d797da45c091b8a4/72:129",
+          "aliasName": "blue/700"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgInfoPressed",
+        "iOS": "context.lemonade.colors.interaction.bgInfoPressed"
+      }
+    },
+    {
+      "id": "VariableID:3125:1894",
+      "name": "Interaction/Pressed/Background/bg-positive-pressed",
+      "description": "Use for pressed/tap feedback in positive contexts",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.2848081886768341,
+            "g": 0.49150213599205017,
+            "b": 0,
+            "a": 1
+          },
+          "alias": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181",
+          "aliasName": "green-lime/700"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgPositivePressed",
+        "iOS": "context.lemonade.colors.interaction.bgPositivePressed"
+      }
+    },
+    {
+      "id": "VariableID:3125:1895",
+      "name": "Interaction/Pressed/Background/bg-neutral-pressed",
+      "description": "Use for pressed/tap feedback in neutral contexts",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:b0e81dc5713f650a189d2dc33e1b7cd95f66e545/320:27"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.15866665542125702,
+            "g": 0.18699999153614044,
+            "b": 0.15300001204013824,
+            "a": 1
+          },
+          "alias": "VariableID:b0e81dc5713f650a189d2dc33e1b7cd95f66e545/320:27",
+          "aliasName": "neutral/800"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgNeutralPressed",
+        "iOS": "context.lemonade.colors.interaction.bgNeutralPressed"
+      }
+    },
+    {
+      "id": "VariableID:3125:1896",
+      "name": "Interaction/Pressed/Background/bg-critical-subtle-pressed",
+      "description": "Use for pressed/tap feedback on subtle critical backgrounds",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "r": 0.9826614260673523,
+          "g": 0.17179709672927856,
+          "b": 0.21307030320167542,
+          "a": 0.30000001192092896
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.9826614260673523,
+            "g": 0.17179709672927856,
+            "b": 0.21307030320167542,
+            "a": 0.30000001192092896
+          },
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgCriticalSubtlePressed",
+        "iOS": "context.lemonade.colors.interaction.bgCriticalSubtlePressed"
+      }
+    },
+    {
+      "id": "VariableID:3125:1897",
+      "name": "Interaction/Pressed/Background/bg-caution-subtle-pressed",
+      "description": "Use for pressed/tap feedback on subtle caution backgrounds",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:f834d81784c5a60e2d3b1d8f7c9cd809d125f9cf/76:143"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.994271457195282,
+            "g": 0.6020927429199219,
+            "b": 0,
+            "a": 0.30000001192092896
+          },
+          "alias": "VariableID:f834d81784c5a60e2d3b1d8f7c9cd809d125f9cf/76:143",
+          "aliasName": "amber/alpha/300"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgCautionSubtlePressed",
+        "iOS": "context.lemonade.colors.interaction.bgCautionSubtlePressed"
+      }
+    },
+    {
+      "id": "VariableID:3125:1898",
+      "name": "Interaction/Pressed/Background/bg-info-subtle-pressed",
+      "description": "Use for pressed/tap feedback on subtle info backgrounds",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:1c3bca3074c95cca953150dced0b68c56a5b4cf7/76:319"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.16933248937129974,
+            "g": 0.49804946780204773,
+            "b": 1,
+            "a": 0.30000001192092896
+          },
+          "alias": "VariableID:1c3bca3074c95cca953150dced0b68c56a5b4cf7/76:319",
+          "aliasName": "blue/alpha/300"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgInfoSubtlePressed",
+        "iOS": "context.lemonade.colors.interaction.bgInfoSubtlePressed"
+      }
+    },
+    {
+      "id": "VariableID:3125:1899",
+      "name": "Interaction/Pressed/Background/bg-positive-subtle-pressed",
+      "description": "Use for pressed/tap feedback on subtle positive backgrounds",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:b32450d86a0a89b66789a934ac8c531e6fb946eb/76:407"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.4872932434082031,
+            "g": 0.8099173903465271,
+            "b": 0,
+            "a": 0.30000001192092896
+          },
+          "alias": "VariableID:b32450d86a0a89b66789a934ac8c531e6fb946eb/76:407",
+          "aliasName": "green-lime/alpha/300"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgPositiveSubtlePressed",
+        "iOS": "context.lemonade.colors.interaction.bgPositiveSubtlePressed"
+      }
+    },
+    {
+      "id": "VariableID:3125:1900",
+      "name": "Interaction/Pressed/Background/bg-neutral-subtle-pressed",
+      "description": "Use for pressed/tap feedback on subtle neutral backgrounds",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:d4d4f121adfa1b7ca3f43b12471f34202a373690/109:40"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.30000001192092896
+          },
+          "alias": "VariableID:d4d4f121adfa1b7ca3f43b12471f34202a373690/109:40",
+          "aliasName": "black/300"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgNeutralSubtlePressed",
+        "iOS": "context.lemonade.colors.interaction.bgNeutralSubtlePressed"
+      }
+    },
+    {
+      "id": "VariableID:3139:2120",
+      "name": "Background/bg-elevated-high",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/320:107"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.05159999802708626,
+            "g": 0.188400000333786,
+            "b": 0.05159999802708626,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/320:107",
+          "aliasName": "neutral/alpha/200"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgElevatedHigh",
+        "iOS": "context.lemonade.colors.background.bgElevatedHigh"
+      }
+    },
+    {
+      "id": "VariableID:3139:2121",
+      "name": "Interaction/Interactive/Background/bg-elevated-high-interactive",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/320:129"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.04200000315904617,
+            "g": 0.15800000727176666,
+            "b": 0.04200000315904617,
+            "a": 0.18000000715255737
+          },
+          "alias": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/320:129",
+          "aliasName": "neutral/alpha/300"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgElevatedHighInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgElevatedHighInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3146:2419",
+      "name": "Content/Voice/On Color/content-critical-on-color",
+      "description": "A strong background used for critical messages, errors, or destructive actions that require high visibility.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "r": 1,
+          "g": 0.3911527395248413,
+          "b": 0.40385687351226807,
+          "a": 1
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 0.3911527395248413,
+            "b": 0.40385687351226807,
+            "a": 1
+          },
+          "alias": null
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentCriticalOnColor",
+        "iOS": "context.lemonade.colors.content.contentCriticalOnColor"
+      }
+    },
+    {
+      "id": "VariableID:3146:2420",
+      "name": "Content/Voice/On Color/content-caution-on-color",
+      "description": "A strong background used to signal warnings or cautionary states that require user attention without implying error.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:e37bef0d14979b03cf97c6b3c7608ebf73123a5c/72:200"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.9930035471916199,
+            "g": 0.7819446325302124,
+            "b": 0,
+            "a": 1
+          },
+          "alias": "VariableID:e37bef0d14979b03cf97c6b3c7608ebf73123a5c/72:200",
+          "aliasName": "amber/400"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentCautionOnColor",
+        "iOS": "context.lemonade.colors.content.contentCautionOnColor"
+      }
+    },
+    {
+      "id": "VariableID:3146:2421",
+      "name": "Content/Voice/On Color/content-info-on-color",
+      "description": "A clear background used to present informative messages or neutral system states that guide the user.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.3157993257045746,
+            "g": 0.6355904340744019,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134",
+          "aliasName": "blue/400"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentInfoOnColor",
+        "iOS": "context.lemonade.colors.content.contentInfoOnColor"
+      }
+    },
+    {
+      "id": "VariableID:3146:2422",
+      "name": "Content/Voice/On Color/content-positive-on-color",
+      "description": "A strong background used to confirm success, completion, or positive feedback that needs visual emphasis.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.6024433970451355,
+            "g": 0.9016712307929993,
+            "b": 0,
+            "a": 1
+          },
+          "alias": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175",
+          "aliasName": "green-lime/400"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentPositiveOnColor",
+        "iOS": "context.lemonade.colors.content.contentPositiveOnColor"
+      }
+    },
+    {
+      "id": "VariableID:3146:2423",
+      "name": "Content/Voice/On Color/content-neutral-on-color",
+      "description": "A strong background used to confirm success, completion, or positive feedback that needs visual emphasis.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:da189a1c97802242459d05a6be7f95e529766c99/109:30"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.699999988079071
+          },
+          "alias": "VariableID:da189a1c97802242459d05a6be7f95e529766c99/109:30",
+          "aliasName": "white/700"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentNeutralOnColor",
+        "iOS": "context.lemonade.colors.content.contentNeutralOnColor"
+      }
+    },
+    {
+      "id": "VariableID:3383:9871",
+      "name": "Interaction/Interactive/Background/bg-brand-elevated-interactive",
+      "description": "Use for interactive states on brand elevated backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:6b52be630b90a02df7b3a03f5e58a12ed596a2c3/109:28"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.5
+          },
+          "alias": "VariableID:6b52be630b90a02df7b3a03f5e58a12ed596a2c3/109:28",
+          "aliasName": "white/500"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgBrandElevatedInteractive",
+        "iOS": "context.lemonade.colors.interaction.bgBrandElevatedInteractive"
+      }
+    },
+    {
+      "id": "VariableID:3384:9896",
+      "name": "Interaction/Pressed/Background/bg-brand-elevated-pressed",
+      "description": "Use for pressed/tap feedback on brand elevated surfaces",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:34078c143a73dc340a495ef80e13d1db6dd8cf2a/109:29"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.6000000238418579
+          },
+          "alias": "VariableID:34078c143a73dc340a495ef80e13d1db6dd8cf2a/109:29",
+          "aliasName": "white/600"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgBrandElevatedPressed",
+        "iOS": "context.lemonade.colors.interaction.bgBrandElevatedPressed"
+      }
+    },
+    {
+      "id": "VariableID:3409:1865",
+      "name": "Content/Brand/content-brand-high",
+      "description": "Use for brand-colored text or icons to reinforce identity.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:db0c89a3c7ec6dc8f937d204e16c7e56e408d8d8/121:68"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.2726779878139496,
+            "g": 0.32054421305656433,
+            "b": 0.05945578217506409,
+            "a": 1
+          },
+          "alias": "VariableID:db0c89a3c7ec6dc8f937d204e16c7e56e408d8d8/121:68",
+          "aliasName": "yellow-lime/800"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentBrand",
+        "iOS": "context.lemonade.colors.content.contentBrand"
+      }
+    }
+  ]
+}

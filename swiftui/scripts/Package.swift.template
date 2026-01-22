@@ -1,0 +1,26 @@
+// swift-tools-version: 5.9
+// Lemonade Design System - Binary Distribution
+// This file is auto-generated during release. Do not edit manually.
+
+import PackageDescription
+
+let package = Package(
+    name: "Lemonade",
+    platforms: [
+        .iOS(.v15),
+        .macOS(.v12)
+    ],
+    products: [
+        .library(
+            name: "Lemonade",
+            targets: ["Lemonade"]
+        ),
+    ],
+    targets: [
+        .binaryTarget(
+            name: "Lemonade",
+            url: "https://saltpay.jfrog.io/artifactory/main-maven-local/com/teya/teya-lemonade-ds/lemonade-swiftui/__VERSION__/Lemonade.xcframework.zip",
+            checksum: "__CHECKSUM__"
+        ),
+    ]
+)

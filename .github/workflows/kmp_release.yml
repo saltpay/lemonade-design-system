@@ -1,0 +1,108 @@
+name: Publish to Jfrog
+
+on:
+  push:
+    tags:
+      - 'lemonade-kmp-*'  # Triggers on tags starting with 'lemonade-kmp-' (e.g., lemonade-kmp-v0.0.1)
+env:
+  JFROG_USER: ${{ secrets.JFROG_USER }}
+  JFROG_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
+
+jobs:
+  publish:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Fetch tags
+        run: git fetch origin '+refs/tags/*:refs/tags/*'
+
+      - name: Setup Gradle
+        uses: ./.github/actions/setup-gradle
+
+      - name: Set version
+        run: |
+          # Extract version from tag (remove 'lemonade-kmp-' prefix)
+          echo "PUBLICATION_VERSION=${GITHUB_REF#refs/tags/lemonade-kmp-}" >> $GITHUB_ENV
+
+      - name: Get previous tag
+        id: previous-tag
+        run: |
+          # Get all tags matching the pattern, sorted by version
+          CURRENT_TAG="${GITHUB_REF#refs/tags/}"
+          PREVIOUS_TAG=$(git tag -l 'lemonade-kmp-*' --sort=-version:refname | grep -A1 "^${CURRENT_TAG}$" | tail -n1)
+
+          if [ "$PREVIOUS_TAG" != "$CURRENT_TAG" ] && [ -n "$PREVIOUS_TAG" ]; then
+            echo "previous-tag=${PREVIOUS_TAG}" >> $GITHUB_OUTPUT
+            echo "has-previous=true" >> $GITHUB_OUTPUT
+            echo "Previous tag found: ${PREVIOUS_TAG}"
+          else
+            echo "has-previous=false" >> $GITHUB_OUTPUT
+            echo "No previous tag found"
+          fi
+
+      - name: Generate changelog
+        id: changelog
+        if: steps.previous-tag.outputs.has-previous == 'true'
+        run: |
+          PREVIOUS_TAG="${{ steps.previous-tag.outputs.previous-tag }}"
+          CURRENT_TAG="${GITHUB_REF#refs/tags/}"
+
+          # Generate changelog for commits that touched kmp/ folder only
+          CHANGELOG=$(git log ${PREVIOUS_TAG}..${CURRENT_TAG} --oneline --no-merges -- kmp/ | sed 's/^/• /')
+
+          if [ -z "$CHANGELOG" ]; then
+            CHANGELOG="• No changes to kmp/ folder in this release"
+          fi
+
+          # Save to output (handle multiline)
+          echo "changes<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Debug Environment Variables
+        run: |
+          echo "Checking environment variables..."
+          echo "PUBLICATION_VERSION: $PUBLICATION_VERSION"
+          echo "JFROG_USER is set: ${{ secrets.JFROG_USER != '' }}"
+          echo "JFROG_PASSWORD is set: ${{ secrets.JFROG_PASSWORD != '' }}"
+
+      - name: Publish Lemonade KMP to JFrog
+        id: publish
+        timeout-minutes: 50
+        run: |
+          echo "Starting publication with debug output..."
+          echo "SDK_VERSION: $PUBLICATION_VERSION"
+          cd kmp
+          ./gradlew publishAllPublicationsToJFrogRepository --no-daemon --info --stacktrace
+          cd ..
+        env:
+          JFROG_USER: ${{ secrets.JFROG_USER }}
+          JFROG_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
+          SDK_VERSION: ${{ env.SDK_VERSION }}
+
+      - name: Send Slack notification
+        if: ${{ !cancelled() && !failure() }}
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          channel-id: 'C09JFLZKR3P'
+          slack-message: |
+            :kotlin-full:
+            *[KMP RELEASE] Lemonade KMP Published*
+
+            *Release Info*
+            • Version: `${{ env.PUBLICATION_VERSION }}`
+            • Triggered by: `${{ github.actor }}`
+
+            *What's Changed*
+            ${{ steps.previous-tag.outputs.has-previous == 'true' && steps.changelog.outputs.changes || '• First release - no previous tag to compare' }}
+
+            <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|:link: View Build Details>
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

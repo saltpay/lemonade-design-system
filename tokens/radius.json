@@ -1,0 +1,275 @@
+{
+  "id": "VariableCollectionId:3096:1600",
+  "name": "Radius",
+  "modes": {
+    "3096:0": "Default"
+  },
+  "variableIds": [
+    "VariableID:3131:2103",
+    "VariableID:3096:1601",
+    "VariableID:3096:1602",
+    "VariableID:3096:1603",
+    "VariableID:3096:1604",
+    "VariableID:3096:1605",
+    "VariableID:3096:1606",
+    "VariableID:3096:1607",
+    "VariableID:3096:1608",
+    "VariableID:3096:1609",
+    "VariableID:3097:1600"
+  ],
+  "variables": [
+    {
+      "id": "VariableID:3096:1601",
+      "name": "radius-50",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3096:0": 2
+      },
+      "resolvedValuesByMode": {
+        "3096:0": {
+          "resolvedValue": 2,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius50",
+        "iOS": "context.lemonade.radius.radius50"
+      }
+    },
+    {
+      "id": "VariableID:3096:1602",
+      "name": "radius-100",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3096:0": 4
+      },
+      "resolvedValuesByMode": {
+        "3096:0": {
+          "resolvedValue": 4,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius100",
+        "iOS": "context.lemonade.radius.radius100"
+      }
+    },
+    {
+      "id": "VariableID:3096:1603",
+      "name": "radius-150",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3096:0": 6
+      },
+      "resolvedValuesByMode": {
+        "3096:0": {
+          "resolvedValue": 6,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius150",
+        "iOS": "context.lemonade.radius.radius150"
+      }
+    },
+    {
+      "id": "VariableID:3096:1604",
+      "name": "radius-200",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3096:0": 8
+      },
+      "resolvedValuesByMode": {
+        "3096:0": {
+          "resolvedValue": 8,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius200",
+        "iOS": "context.lemonade.radius.radius200"
+      }
+    },
+    {
+      "id": "VariableID:3096:1605",
+      "name": "radius-300",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3096:0": 12
+      },
+      "resolvedValuesByMode": {
+        "3096:0": {
+          "resolvedValue": 12,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius300",
+        "iOS": "context.lemonade.radius.radius300"
+      }
+    },
+    {
+      "id": "VariableID:3096:1606",
+      "name": "radius-400",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3096:0": 16
+      },
+      "resolvedValuesByMode": {
+        "3096:0": {
+          "resolvedValue": 16,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius400",
+        "iOS": "context.lemonade.radius.radius400"
+      }
+    },
+    {
+      "id": "VariableID:3096:1607",
+      "name": "radius-500",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3096:0": 20
+      },
+      "resolvedValuesByMode": {
+        "3096:0": {
+          "resolvedValue": 20,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius500",
+        "iOS": "context.lemonade.radius.radius500"
+      }
+    },
+    {
+      "id": "VariableID:3096:1608",
+      "name": "radius-600",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3096:0": 24
+      },
+      "resolvedValuesByMode": {
+        "3096:0": {
+          "resolvedValue": 24,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius600",
+        "iOS": "context.lemonade.radius.radius600"
+      }
+    },
+    {
+      "id": "VariableID:3096:1609",
+      "name": "radius-800",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3096:0": 32
+      },
+      "resolvedValuesByMode": {
+        "3096:0": {
+          "resolvedValue": 32,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius800",
+        "iOS": "context.lemonade.radius.radius800"
+      }
+    },
+    {
+      "id": "VariableID:3097:1600",
+      "name": "radius-full",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3096:0": 999
+      },
+      "resolvedValuesByMode": {
+        "3096:0": {
+          "resolvedValue": 999,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radiusfull",
+        "iOS": "context.lemonade.radius.radiusfull"
+      }
+    },
+    {
+      "id": "VariableID:3131:2103",
+      "name": "radius-0",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3096:0": 0
+      },
+      "resolvedValuesByMode": {
+        "3096:0": {
+          "resolvedValue": 0,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius0",
+        "iOS": "context.lemonade.radius.radius0"
+      }
+    }
+  ]
+}

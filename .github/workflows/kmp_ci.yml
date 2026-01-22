@@ -1,0 +1,26 @@
+name: KMP Compilation check
+
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - 'kmp/**'
+  pull_request:
+    branches: [ "master" ]
+    paths:
+      - 'kmp/**'
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Gradle
+        uses: ./.github/actions/setup-gradle
+
+      - name: Build Project
+        run: ./gradlew build --no-daemon
+        working-directory: ./kmp
