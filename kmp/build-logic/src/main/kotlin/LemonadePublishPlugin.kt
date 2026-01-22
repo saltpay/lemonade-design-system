@@ -10,6 +10,11 @@ class LemonadePublishPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply(MavenPublishBasePlugin::class.java)
 
+        extensions.configure<MavenPublishBaseExtension> {
+            @Suppress("UnstableApiUsage")
+            configureBasedOnAppliedPlugins(sourcesJar = true, javadocJar = true)
+        }
+
         val extension = extensions
             .create("lemonadePublishing", LemonadePublishingPluginExtension::class.java)
 
@@ -32,7 +37,9 @@ class LemonadePublishPlugin : Plugin<Project> {
             )
 
             publishToMavenCentral(true)
-            signAllPublications()
+            if (hasSigningKey()) {
+              signAllPublications()
+            }
 
             pom()
         }
@@ -66,6 +73,11 @@ class LemonadePublishPlugin : Plugin<Project> {
             }
         }
     }
+}
+
+private fun hasSigningKey(): Boolean {
+  val hasSigningKey = !System.getenv("ORG_GRADLE_PROJECT_signingInMemoryKey").isNullOrEmpty()
+  return hasSigningKey
 }
 
 private inline fun <reified T> Project.findEnvironmentVariable(variable: String): T {
