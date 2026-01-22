@@ -82,7 +82,7 @@ jobs:
           echo "Starting publication with debug output..."
           echo "SDK_VERSION: $PUBLICATION_VERSION"
           cd kmp
-          ./gradlew publishAllPublicationsToMavenCentral --no-daemon --info --stacktrace
+          ./gradlew publishToMavenCentral --no-daemon
           cd ..
         env:
           SDK_VERSION: ${{ env.SDK_VERSION }}
