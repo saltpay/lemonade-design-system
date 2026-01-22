@@ -96,25 +96,30 @@ class LemonadeToastManager {
   /// Set [dismissible] to false to prevent dismissing the toast by swiping down.
   /// By default, toasts can be dismissed with a downward swipe gesture.
   ///
+  /// **Note:** The [icon] parameter can only be used with [LemonadeToastVoice.neutral].
+  /// If you need to use a custom icon, set [voice] to [LemonadeToastVoice.neutral]
+  /// and provide the [icon]. For [LemonadeToastVoice.success] and [LemonadeToastVoice.error],
+  /// the icons are predefined and cannot be customized.
+  ///
   /// ## Example
   /// ```dart
-  /// Using predefined duration
+  /// Success toast (predefined icon)
   /// LemonadeToastManager.show(
   ///   context,
   ///   voice: LemonadeToastVoice.success,
   ///   message: 'Changes saved successfully',
   /// );
   ///
-  /// Using custom duration
+  /// Neutral toast with custom icon
   /// LemonadeToastManager.show(
   ///   context,
   ///   voice: LemonadeToastVoice.neutral,
   ///   message: 'Added to favorites',
   ///   icon: LemonadeIcons.heart,
-  /// duration: LemonadeToastDuration.long,
+  ///   duration: LemonadeToastDuration.long,
   /// );
   ///
-  /// Non-dismissible toast
+  /// Non-dismissible error toast (predefined icon)
   /// LemonadeToastManager.show(
   ///   context,
   ///   voice: LemonadeToastVoice.error,
@@ -131,6 +136,12 @@ class LemonadeToastManager {
     String? semanticLabel,
     bool dismissible = true,
   }) {
+    assert(
+      icon == null || voice == LemonadeToastVoice.neutral,
+      'Custom icons can only be used with LemonadeToastVoice.neutral. '
+      'For success and error toasts, icons are predefined.',
+    );
+
     _showToast(
       context,
       toast: LemonadeToast(
