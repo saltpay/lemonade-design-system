@@ -2,11 +2,11 @@ name: SwiftUI Compilation Check
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "main" ]
     paths:
       - 'swiftui/**'
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "main" ]
     paths:
       - 'swiftui/**'
 
