@@ -1,12 +1,16 @@
-name: Publish to Jfrog
+name: Publish to Maven Central
 
 on:
   push:
     tags:
       - 'lemonade-kmp-*'  # Triggers on tags starting with 'lemonade-kmp-' (e.g., lemonade-kmp-v0.0.1)
+
 env:
-  JFROG_USER: ${{ secrets.JFROG_USER }}
-  JFROG_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
+  ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.ORG_GRADLE_PROJECT_mavenCentralUsername }}
+  ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.ORG_GRADLE_PROJECT_mavenCentralPassword }}
+  ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKey }}
+  ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyId }}
+  ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyPassword }}
 
 jobs:
   publish:
@@ -70,21 +74,17 @@ jobs:
         run: |
           echo "Checking environment variables..."
           echo "PUBLICATION_VERSION: $PUBLICATION_VERSION"
-          echo "JFROG_USER is set: ${{ secrets.JFROG_USER != '' }}"
-          echo "JFROG_PASSWORD is set: ${{ secrets.JFROG_PASSWORD != '' }}"
 
-      - name: Publish Lemonade KMP to JFrog
+      - name: Publish Lemonade KMP to Maven Central
         id: publish
         timeout-minutes: 50
         run: |
           echo "Starting publication with debug output..."
           echo "SDK_VERSION: $PUBLICATION_VERSION"
           cd kmp
-          ./gradlew publishAllPublicationsToJFrogRepository --no-daemon --info --stacktrace
+          ./gradlew publishAllPublicationsToMavenCentral --no-daemon --info --stacktrace
           cd ..
         env:
-          JFROG_USER: ${{ secrets.JFROG_USER }}
-          JFROG_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
           SDK_VERSION: ${{ env.SDK_VERSION }}
 
       - name: Send Slack notification
