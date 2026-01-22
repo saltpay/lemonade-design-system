@@ -282,7 +282,6 @@ class LemonadeToastManager {
     bool dismissible = true,
   }) {
     final overlay = Overlay.of(context);
-    final theme = LemonadeTheme.of(context);
 
     late OverlayEntry overlayEntry;
     late _ToastOverlayState? overlayState;
@@ -290,7 +289,6 @@ class LemonadeToastManager {
     overlayEntry = OverlayEntry(
       builder: (context) => _ToastOverlay(
         toast: toast,
-        bottomPadding: theme.spaces.spacing600,
         dismissible: dismissible,
         onStateCreated: (state) {
           overlayState = state;
@@ -338,14 +336,12 @@ class LemonadeToastManager {
 class _ToastOverlay extends StatefulWidget {
   const _ToastOverlay({
     required this.toast,
-    required this.bottomPadding,
     this.dismissible = true,
     this.onStateCreated,
     this.onDismissed,
   });
 
   final Widget toast;
-  final double bottomPadding;
   final bool dismissible;
   final void Function(_ToastOverlayState)? onStateCreated;
   final VoidCallback? onDismissed;
@@ -453,6 +449,10 @@ class _ToastOverlayState extends State<_ToastOverlay>
   Widget build(BuildContext context) {
     final theme = LemonadeTheme.of(context);
 
+    final mediaQuery = MediaQuery.of(context);
+    final dynamicBottomPadding =
+        mediaQuery.padding.bottom + mediaQuery.viewInsets.bottom;
+
     Widget toastContent = FadeTransition(
       opacity: _fadeAnimation,
       child: SlideTransition(
@@ -482,7 +482,7 @@ class _ToastOverlayState extends State<_ToastOverlay>
     return Positioned(
       left: 0,
       right: 0,
-      bottom: widget.bottomPadding,
+      bottom: dynamicBottomPadding,
       child: toastContent,
     );
   }
