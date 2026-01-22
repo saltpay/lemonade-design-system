@@ -1,4 +1,3 @@
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lemonade_design_system/lemonade_design_system.dart';
 
 /// The voice/variant of a toast notification.
@@ -51,7 +50,11 @@ class LemonadeToast extends StatelessWidget {
     this.semanticIdentifier,
     this.semanticLabel,
     super.key,
-  });
+  }) : assert(
+         voice == LemonadeToastVoice.neutral || icon == null,
+         'Icon parameter can only be used with LemonadeToastVoice.neutral. '
+         'Success and error toasts have fixed icons.',
+       );
 
   /// Creates a success toast with a checkmark icon.
   ///
@@ -131,15 +134,7 @@ class LemonadeToast extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SvgPicture.asset(
-              iconAsset,
-              width: toastTheme.iconSize,
-              height: toastTheme.iconSize,
-              colorFilter: ColorFilter.mode(
-                iconColor,
-                BlendMode.srcIn,
-              ),
-            ),
+            LemonadeIcon(icon: iconAsset, color: iconColor),
             SizedBox(width: toastTheme.iconLabelGap),
             Flexible(
               child: Text(
@@ -161,12 +156,11 @@ class LemonadeToast extends StatelessWidget {
     };
   }
 
-  String _getIconAsset() {
+  LemonadeIcons _getIconAsset() {
     return switch (voice) {
-      LemonadeToastVoice.success => LemonadeIcons.circleCheck.assetPath,
-      LemonadeToastVoice.error => LemonadeIcons.circleX.assetPath,
-      LemonadeToastVoice.neutral =>
-        icon?.assetPath ?? LemonadeIcons.circleAlert.assetPath,
+      LemonadeToastVoice.success => LemonadeIcons.circleCheck,
+      LemonadeToastVoice.error => LemonadeIcons.circleX,
+      LemonadeToastVoice.neutral => icon ?? LemonadeIcons.circleAlert,
     };
   }
 }

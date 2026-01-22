@@ -20,6 +20,7 @@ import 'package:lemonade_example/examples/symbol_container_example.dart';
 import 'package:lemonade_example/examples/tag_example.dart';
 import 'package:lemonade_example/examples/text_field_example.dart';
 import 'package:lemonade_example/examples/tile_example.dart';
+import 'package:lemonade_example/examples/toast_example.dart';
 import 'package:lemonade_example/main.dart';
 
 /// The router configuration for the Lemonade example application.
@@ -113,6 +114,10 @@ final router = GoRouter(
     GoRoute(
       path: '/tile',
       builder: (context, state) => const TileExampleScreen(),
+    ),
+    GoRoute(
+      path: '/toast',
+      builder: (context, state) => const ToastExampleScreen(),
     ),
   ],
 );

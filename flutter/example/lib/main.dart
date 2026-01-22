@@ -122,6 +122,10 @@ class MainScreen extends StatelessWidget {
               title: 'Tile',
               onPressed: () => context.push('/tile'),
             ),
+            ExampleListTile(
+              title: 'Toast',
+              onPressed: () => context.push('/toast'),
+            ),
           ],
         ),
       ),
