@@ -287,53 +287,49 @@ class LemonadeToastManager {
     final overlay = Overlay.of(context);
 
     late OverlayEntry overlayEntry;
-    late _ToastOverlayState? overlayState;
 
     overlayEntry = OverlayEntry(
       builder: (context) => _ToastOverlay(
         toast: toast,
+        duration: duration,
         dismissible: dismissible,
         onStateCreated: (state) {
-          overlayState = state;
           _currentState = state;
         },
         onDismissed: dismiss,
+        onAutoDismiss: () {
+          final hasPending = _pendingRequest != null;
+          _currentState?._animateOut(hasPending: hasPending).then((_) {
+            overlayEntry.remove();
+            if (_currentOverlay == overlayEntry) {
+              _currentOverlay = null;
+              _currentState = null;
+            }
+
+            _dismissTimer = null;
+            _isProcessing = false;
+
+            // Show pending toast if exists and context is still valid
+            final pending = _pendingRequest;
+            if (pending != null && pending.context.mounted) {
+              _pendingRequest = null;
+              _isProcessing = true;
+              _displayToast(
+                pending.context,
+                toast: pending.toast,
+                duration: pending.duration,
+                dismissible: pending.dismissible,
+              );
+            } else if (pending != null) {
+              _pendingRequest = null;
+            }
+          });
+        },
       ),
     );
 
     _currentOverlay = overlayEntry;
     overlay.insert(overlayEntry);
-
-    // Auto-dismiss after duration
-    _dismissTimer = Timer(duration, () {
-      final hasPending = _pendingRequest != null;
-
-      overlayState?._animateOut(hasPending: hasPending).then((_) {
-        overlayEntry.remove();
-        if (_currentOverlay == overlayEntry) {
-          _currentOverlay = null;
-          _currentState = null;
-        }
-
-        _dismissTimer = null;
-        _isProcessing = false;
-
-        // Show pending toast if exists and context is still valid
-        final pending = _pendingRequest;
-        if (pending != null && pending.context.mounted) {
-          _pendingRequest = null;
-          _isProcessing = true;
-          _displayToast(
-            pending.context,
-            toast: pending.toast,
-            duration: pending.duration,
-            dismissible: pending.dismissible,
-          );
-        } else if (pending != null) {
-          _pendingRequest = null;
-        }
-      });
-    });
   }
 }
 
@@ -341,15 +337,19 @@ class LemonadeToastManager {
 class _ToastOverlay extends StatefulWidget {
   const _ToastOverlay({
     required this.toast,
+    required this.duration,
     this.dismissible = true,
     this.onStateCreated,
     this.onDismissed,
+    this.onAutoDismiss,
   });
 
   final Widget toast;
+  final Duration duration;
   final bool dismissible;
   final void Function(_ToastOverlayState)? onStateCreated;
   final VoidCallback? onDismissed;
+  final VoidCallback? onAutoDismiss;
 
   @override
   State<_ToastOverlay> createState() => _ToastOverlayState();
@@ -360,6 +360,7 @@ class _ToastOverlayState extends State<_ToastOverlay>
   late AnimationController _controller;
   late Animation<Offset> _slideAnimation;
   late Animation<double> _fadeAnimation;
+  Timer? _autoDismissTimer;
 
   static const _animationDuration = Duration(milliseconds: 300);
 
@@ -398,6 +399,13 @@ class _ToastOverlayState extends State<_ToastOverlay>
 
     // Notify parent that state is ready
     widget.onStateCreated?.call(this);
+
+    // Set up auto-dismiss timer
+    _autoDismissTimer = Timer(widget.duration, () {
+      if (mounted) {
+        widget.onAutoDismiss?.call();
+      }
+    });
   }
 
   /// Animates the toast out and returns a future that completes when done.
@@ -448,6 +456,7 @@ class _ToastOverlayState extends State<_ToastOverlay>
 
   @override
   void dispose() {
+    _autoDismissTimer?.cancel();
     _controller.dispose();
     super.dispose();
   }
