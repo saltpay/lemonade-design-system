@@ -2,11 +2,11 @@ name: KMP Compilation check
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "main" ]
     paths:
       - 'kmp/**'
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "main" ]
     paths:
       - 'kmp/**'
 
