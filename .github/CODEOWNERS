@@ -2,5 +2,7 @@
 # Each line is a file pattern (for a specific dir) followed by one or more owners.
 
 # Default owners will be asked to review when someone opens a pull request.
-# *       @<ADD_TEAM_OR_EMAILS>
 * @saltpay/lemonade
+
+# Folder-specific owners
+/flutter/   @Filmaluco @matheuslutero
