@@ -1,0 +1,355 @@
+{
+  "id": "VariableCollectionId:236:17445",
+  "name": "Opacity",
+  "modes": {
+    "236:2": "Default"
+  },
+  "variableIds": [
+    "VariableID:236:17468",
+    "VariableID:3176:2053",
+    "VariableID:236:17478",
+    "VariableID:3056:2",
+    "VariableID:236:17472",
+    "VariableID:236:17466",
+    "VariableID:3056:4",
+    "VariableID:3056:5",
+    "VariableID:3056:6",
+    "VariableID:236:17464",
+    "VariableID:3056:7",
+    "VariableID:3056:8",
+    "VariableID:3056:9",
+    "VariableID:236:17473"
+  ],
+  "variables": [
+    {
+      "id": "VariableID:236:17464",
+      "name": "base/opacity-60",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "236:2": 60
+      },
+      "resolvedValuesByMode": {
+        "236:2": {
+          "resolvedValue": 60,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "OPACITY"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.opacities.base.opacity60",
+        "iOS": "context.lemonade.opacity.base.opacity60"
+      }
+    },
+    {
+      "id": "VariableID:236:17466",
+      "name": "base/opacity-20",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "236:2": 20
+      },
+      "resolvedValuesByMode": {
+        "236:2": {
+          "resolvedValue": 20,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "OPACITY"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.opacities.base.opacity20",
+        "iOS": "context.lemonade.opacity.base.opacity20"
+      }
+    },
+    {
+      "id": "VariableID:236:17468",
+      "name": "state/opacity-disabled",
+      "description": "Add for when it need to define a disabled state through opacity.",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "236:2": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:3056:5"
+        }
+      },
+      "resolvedValuesByMode": {
+        "236:2": {
+          "resolvedValue": 40,
+          "alias": "VariableID:3056:5",
+          "aliasName": "base/opacity-40"
+        }
+      },
+      "scopes": [
+        "OPACITY"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.opacities.state.opacityDisabled",
+        "iOS": "context.lemonade.opacity.state.opacityDisabled"
+      }
+    },
+    {
+      "id": "VariableID:236:17472",
+      "name": "base/opacity-10",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "236:2": 10
+      },
+      "resolvedValuesByMode": {
+        "236:2": {
+          "resolvedValue": 10,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "OPACITY"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.opacities.base.opacity10",
+        "iOS": "context.lemonade.opacity.base.opacity10"
+      }
+    },
+    {
+      "id": "VariableID:236:17473",
+      "name": "base/opacity-100",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "236:2": 100
+      },
+      "resolvedValuesByMode": {
+        "236:2": {
+          "resolvedValue": 100,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "OPACITY"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.opacities.base.opacity100",
+        "iOS": "context.lemonade.opacity.base.opacity100"
+      }
+    },
+    {
+      "id": "VariableID:236:17478",
+      "name": "base/opacity-0",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "236:2": 0
+      },
+      "resolvedValuesByMode": {
+        "236:2": {
+          "resolvedValue": 0,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "OPACITY"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.opacities.base.opacity0",
+        "iOS": "context.lemonade.opacity.base.opacity0"
+      }
+    },
+    {
+      "id": "VariableID:3056:2",
+      "name": "base/opacity-5",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "236:2": 5
+      },
+      "resolvedValuesByMode": {
+        "236:2": {
+          "resolvedValue": 5,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "OPACITY"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.opacities.base.opacity5",
+        "iOS": "context.lemonade.opacity.base.opacity5"
+      }
+    },
+    {
+      "id": "VariableID:3056:4",
+      "name": "base/opacity-30",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "236:2": 30
+      },
+      "resolvedValuesByMode": {
+        "236:2": {
+          "resolvedValue": 30,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "OPACITY"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.opacities.base.opacity30",
+        "iOS": "context.lemonade.opacity.base.opacity30"
+      }
+    },
+    {
+      "id": "VariableID:3056:5",
+      "name": "base/opacity-40",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "236:2": 40
+      },
+      "resolvedValuesByMode": {
+        "236:2": {
+          "resolvedValue": 40,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "OPACITY"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.opacities.base.opacity40",
+        "iOS": "context.lemonade.opacity.base.opacity40"
+      }
+    },
+    {
+      "id": "VariableID:3056:6",
+      "name": "base/opacity-50",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "236:2": 50
+      },
+      "resolvedValuesByMode": {
+        "236:2": {
+          "resolvedValue": 50,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "OPACITY"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.opacities.base.opacity50",
+        "iOS": "context.lemonade.opacity.base.opacity50"
+      }
+    },
+    {
+      "id": "VariableID:3056:7",
+      "name": "base/opacity-70",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "236:2": 70
+      },
+      "resolvedValuesByMode": {
+        "236:2": {
+          "resolvedValue": 70,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "OPACITY"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.opacities.base.opacity70",
+        "iOS": "context.lemonade.opacity.base.opacity70"
+      }
+    },
+    {
+      "id": "VariableID:3056:8",
+      "name": "base/opacity-80",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "236:2": 80
+      },
+      "resolvedValuesByMode": {
+        "236:2": {
+          "resolvedValue": 80,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "OPACITY"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.opacities.base.opacity80",
+        "iOS": "context.lemonade.opacity.base.opacity80"
+      }
+    },
+    {
+      "id": "VariableID:3056:9",
+      "name": "base/opacity-90",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "236:2": 90
+      },
+      "resolvedValuesByMode": {
+        "236:2": {
+          "resolvedValue": 90,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "OPACITY"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.opacities.base.opacity90",
+        "iOS": "context.lemonade.opacity.base.opacity90"
+      }
+    },
+    {
+      "id": "VariableID:3176:2053",
+      "name": "state/opacity-pressed",
+      "description": "Add for when it need to define a pressed state through opacity.",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "236:2": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:236:17466"
+        }
+      },
+      "resolvedValuesByMode": {
+        "236:2": {
+          "resolvedValue": 20,
+          "alias": "VariableID:236:17466",
+          "aliasName": "base/opacity-20"
+        }
+      },
+      "scopes": [
+        "OPACITY"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.opacities.state.opacityPressed",
+        "iOS": "context.lemonade.opacity.state.opacityPressed"
+      }
+    }
+  ]
+}

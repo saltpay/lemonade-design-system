@@ -1,0 +1,30 @@
+name: PR Title Check
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  check-pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR Title Format
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "Checking PR title: $PR_TITLE"
+
+          # Pattern: [XXX-##] Title description
+          # Where XXX is uppercase letters and ## is numbers
+          if echo "$PR_TITLE" | grep -qE '^\[[A-Z]+-[0-9]+\]\s+.+$'; then
+            echo "✓ PR title follows the required format: [TICKET-ID] Description"
+            exit 0
+          else
+            echo "✗ PR title does not follow the required format"
+            echo ""
+            echo "Expected format: [TICKET-ID] Description"
+            echo "Example: [LDS-39] Add chip component"
+            echo ""
+            echo "Your title: $PR_TITLE"
+            exit 1
+          fi

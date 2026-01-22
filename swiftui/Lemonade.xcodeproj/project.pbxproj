@@ -1,0 +1,745 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		057823D7FEDAE4BC9E517786 /* LemonadeShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C40CD56F4FBC06ED54B7FE /* LemonadeShadow.swift */; };
+		07044DB3F54ED2F658CE9486 /* RadioButtonDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78C8CB708AD129000C9E182 /* RadioButtonDisplayView.swift */; };
+		10196BC8EE1EDBF4D905BB23 /* LemonadeFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7835AEB1F1A959BDF06118ED /* LemonadeFonts.swift */; };
+		106F4C9B4C3E989E2E97206D /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 119984E30EE1DEF0D7D08145 /* Fonts */; };
+		11B9B0C2E69D237CF421FE9B /* SizesDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5523AEF9D40C8E7F2DB99F5F /* SizesDisplayView.swift */; };
+		1AA5973F63F9312D57F8CB1C /* TextFieldDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB80379B626EBCD54537619 /* TextFieldDisplayView.swift */; };
+		1B32FA9A8ECC79401CBFE50B /* LemonadeSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DB101C9FE700156B3D7699 /* LemonadeSizes.swift */; };
+		1BC665489BC2C0A52001DE16 /* LemonadeCountryFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0025C6F06A07174C5A65B81C /* LemonadeCountryFlag.swift */; };
+		1FBD07E2C3DDAA5EF0736268 /* LemonadeOpacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669B5CDC0953A5AA950281D8 /* LemonadeOpacity.swift */; };
+		208A86FCBF7C524573AE1848 /* LemonadeSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDB92FB366436D3BCCADC1A /* LemonadeSegmentedControl.swift */; };
+		22440FA4EA82B792690CDFFD /* LemonadeSemanticColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A713F34FA979D72691318D0A /* LemonadeSemanticColors.swift */; };
+		24795DF70056F2868F15CB66 /* BorderWidthDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32EA7FDD08DB1671ECC5A181 /* BorderWidthDisplayView.swift */; };
+		28FEF266275655E666B15D44 /* LemonadeBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747C8645171E32C0151FEAA2 /* LemonadeBundle.swift */; };
+		35D06933A0FC07F68790C0E2 /* SegmentedControlDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0FE00739D9EC1D0D781DBE1 /* SegmentedControlDisplayView.swift */; };
+		38A4477EB25293A0D342E9E8 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707483451DC517FF1245E815 /* HomeView.swift */; };
+		4236C35CE0C567203CF74E91 /* LemonadeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94708CC26C49F2A293272282 /* LemonadeText.swift */; };
+		438C17D053E052708E7246AC /* ShadowsDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D8497539460CFDAFB730EF /* ShadowsDisplayView.swift */; };
+		48B4AF965E3410516AA80402 /* ChipDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC4E577A992EC3F5CFC898A3 /* ChipDisplayView.swift */; };
+		5041602F7C5DC3FFD9A2BD2A /* LemonadeUi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E25CA038CC2E91DEB0D036 /* LemonadeUi.swift */; };
+		51BA607A037FF932F3A64E0A /* FlagsDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7285C1DDEE5B35BE06264E87 /* FlagsDisplayView.swift */; };
+		523AB39842EA3C91C1AEE44D /* ButtonDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B5022CC336B966ECF3AD77 /* ButtonDisplayView.swift */; };
+		5356CA0E4BD7C4F2F50C6418 /* TextDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D43E190B99FE705D867E05A /* TextDisplayView.swift */; };
+		54AEAFAD61E034A05ADA0EE1 /* LemonadeListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9847921AD923342FFE5804E3 /* LemonadeListItem.swift */; };
+		5715F1F52048277B252D8CB4 /* Lemonade.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7062E2A9E901ABEF06AF2148 /* Lemonade.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		658E2F545E9F07ABE4E7456B /* SpacingDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6631230E1E48D13C320FE0FA /* SpacingDisplayView.swift */; };
+		67E232B29C4892E4BA908324 /* LemonadeSpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C230658AADDE26737C95BC7 /* LemonadeSpacing.swift */; };
+		691AFFC71CFF61FCED18B497 /* LemonadeSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466F43A7753A08A92D05A10B /* LemonadeSwitch.swift */; };
+		69CF1DACE921261B1550808A /* BrandLogosDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CC87622FE026817E028AA9 /* BrandLogosDisplayView.swift */; };
+		6BC4489A425B8BF16AA8BFA4 /* TileDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FEF54CB4A25D2FD3E87F9E /* TileDisplayView.swift */; };
+		6CD5ABCD12345678ABCDEF01 /* IconButtonDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD5ABCD12345678ABCDEF02 /* IconButtonDisplayView.swift */; };
+		7205ECEA08E2C8D1BF1B3ECE /* LemonadeSearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71044E7D8369565930297EC6 /* LemonadeSearchField.swift */; };
+		74267910DDD8CBD0E1E2371F /* Lemonade.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7062E2A9E901ABEF06AF2148 /* Lemonade.framework */; };
+		752844F8BDB1ABAE91F0DFF1 /* LemonadeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86241CEAF25BFC947DEA348 /* LemonadeCard.swift */; };
+		7D8908469D82EBBD82555B00 /* LemonadeBrandLogos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346081D5BE9F2603583391F8 /* LemonadeBrandLogos.swift */; };
+		888A84C3D6D79E92239F3555 /* SearchFieldDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE3E02DEE7AA790F1454AD /* SearchFieldDisplayView.swift */; };
+		9065B57068A4520169A55124 /* LemonadeChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B6B5368067DD19A870DCEC /* LemonadeChip.swift */; };
+		9BFCE355C073CFA5A50629CF /* CheckboxDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D1A0AC839EC3EF64263863 /* CheckboxDisplayView.swift */; };
+		A3BA8A376F011644C8A6BC19 /* LemonadeCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624A8C715ADEA72A999938BB /* LemonadeCheckbox.swift */; };
+		A5797DEB4E5308A6759B90F8 /* ColorsDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5C7B4A04531F1245ECF213 /* ColorsDisplayView.swift */; };
+		A6CF5FB325689ADC79BF2C87 /* SwitchDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A123D1086D640EF9115AA9CA /* SwitchDisplayView.swift */; };
+		A6FE7D4A30AD95ABD2A1F555 /* LemonadeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6AEB9B2BC6A819D92224CC /* LemonadeButton.swift */; };
+		AB237EDCF244374BB40445A1 /* LemonadeBrandLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE58BF3E61E443C432276FA5 /* LemonadeBrandLogo.swift */; };
+		AB82B862D5DC1D1A1DBC3432 /* LemonadeIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859CF0D948C7FBEBA570E014 /* LemonadeIcon.swift */; };
+		ABCD1234567890ABCDEF0001 /* LemonadeIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD1234567890ABCDEF0002 /* LemonadeIconButton.swift */; };
+		B0549DDE170EDD8246C85EFB /* LemonadeTypography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7861CDFD9D53E564A25EF61A /* LemonadeTypography.swift */; };
+		B571BB80FC6A86D8C8BB881A /* IconsDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED78A33540384F23A692F38 /* IconsDisplayView.swift */; };
+		B579339C01F3B314291B383E /* RadiusDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE64A12F963CE478335AF04 /* RadiusDisplayView.swift */; };
+		B5D30A1CAD5F5B44E1D1E402 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDAE9861867D763DA08E5126 /* Assets.xcassets */; };
+		BB6860A845F463E38F669D11 /* LemonadeTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3769FDCA7B142885A491F2 /* LemonadeTextField.swift */; };
+		BDA4239CD9AA40CA8E48A3E3 /* LemonadeTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3280F4308F4F8C907074DC88 /* LemonadeTag.swift */; };
+		BE175C6921226C1FEC034F56 /* OpacityDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5EE55559BBBD865967D97F /* OpacityDisplayView.swift */; };
+		C4AE5EBAD8126D58F385CA1C /* LemonadeSymbolContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102DD2FA9EEDD18ECF928E2F /* LemonadeSymbolContainer.swift */; };
+		C53937F392122D9AE6E143B3 /* LemonadeBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84754AC7EA41CD450B4A3D3 /* LemonadeBadge.swift */; };
+		C8C19A4E8981500F1F78DCD0 /* LemonadeIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821C65AE0A806A5CE3A5420C /* LemonadeIcons.swift */; };
+		D1AB07B96CF6C8DBDD04EF33 /* LemonadeRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E6EF804019369C94B35CE07 /* LemonadeRadius.swift */; };
+		D315792A0232E7EBBCAADAF4 /* LemonadeRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B437513D91475400F9989B /* LemonadeRadioButton.swift */; };
+		D62BBD607DF9115DEBC9A233 /* LemonadeTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A5B05AB1009ED997AE0B33 /* LemonadeTile.swift */; };
+		DB3ECB0BB0D89E238C4C70EE /* LemonadeBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B43803EB4523DAB434B4A8 /* LemonadeBorder.swift */; };
+		DB70928625BBAB7006CD2F03 /* TagDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D38253A95E9AE0FED8C76E46 /* TagDisplayView.swift */; };
+		E20E18F5A1C1CB8D589D3159 /* LemonadeSampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915B5AD63B91E060EE42A352 /* LemonadeSampleApp.swift */; };
+		E34ECE5B8B0D8862B1741DA3 /* CardDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA5D577532CC7CD6E2FFEA3 /* CardDisplayView.swift */; };
+		E59C9AD28DAD5F949DBB2E96 /* BadgeDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B87F817DD4C81339D64D5E /* BadgeDisplayView.swift */; };
+		E85FBD3B6880048D5BC8C55F /* LemonadeBorderWidth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5362981AB7584402825A46BE /* LemonadeBorderWidth.swift */; };
+		EA10A8801629FA57290419E5 /* SymbolContainerDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90230C017C806FE74DE7DAB /* SymbolContainerDisplayView.swift */; };
+		EB1F3180DA92EDBDE36FF039 /* LemonadeCountryFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7FF4626CF4DF8CA48A3D94 /* LemonadeCountryFlags.swift */; };
+		EC4A04313F50043FF5A98616 /* LemonadeLightTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B16A5C6148598A4C9F6863 /* LemonadeLightTheme.swift */; };
+		EFA42A9AE4A04A9DD371A729 /* LemonadeTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBBB6C04C853C8B88545DD5 /* LemonadeTheme.swift */; };
+		F365FCAA6B106D0E0B738398 /* LemonadePrimitiveColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C1043D4EDC3F7CA8D3FE97 /* LemonadePrimitiveColors.swift */; };
+		F42CFCBA2ECE4415C9556A67 /* ListItemDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDCF61E536A8E991993DC70 /* ListItemDisplayView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		02A1607FBC8734434DD39D39 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4609FFF7AA1922A4ED8EBB25 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C7DACE3EFA5DA962624B096D;
+			remoteInfo = Lemonade;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		35D3EEDBE780EDBE612FC833 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				5715F1F52048277B252D8CB4 /* Lemonade.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0025C6F06A07174C5A65B81C /* LemonadeCountryFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeCountryFlag.swift; sourceTree = "<group>"; };
+		09D8497539460CFDAFB730EF /* ShadowsDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowsDisplayView.swift; sourceTree = "<group>"; };
+		0B5C7B4A04531F1245ECF213 /* ColorsDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsDisplayView.swift; sourceTree = "<group>"; };
+		0B5EE55559BBBD865967D97F /* OpacityDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpacityDisplayView.swift; sourceTree = "<group>"; };
+		0BBBB6C04C853C8B88545DD5 /* LemonadeTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeTheme.swift; sourceTree = "<group>"; };
+		0FA5D577532CC7CD6E2FFEA3 /* CardDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDisplayView.swift; sourceTree = "<group>"; };
+		102DD2FA9EEDD18ECF928E2F /* LemonadeSymbolContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeSymbolContainer.swift; sourceTree = "<group>"; };
+		10B43803EB4523DAB434B4A8 /* LemonadeBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeBorder.swift; sourceTree = "<group>"; };
+		119984E30EE1DEF0D7D08145 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = Sources/Lemonade/Resources/Fonts; sourceTree = SOURCE_ROOT; };
+		2EDCF61E536A8E991993DC70 /* ListItemDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemDisplayView.swift; sourceTree = "<group>"; };
+		2FB80379B626EBCD54537619 /* TextFieldDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldDisplayView.swift; sourceTree = "<group>"; };
+		3280F4308F4F8C907074DC88 /* LemonadeTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeTag.swift; sourceTree = "<group>"; };
+		32EA7FDD08DB1671ECC5A181 /* BorderWidthDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderWidthDisplayView.swift; sourceTree = "<group>"; };
+		346081D5BE9F2603583391F8 /* LemonadeBrandLogos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeBrandLogos.swift; sourceTree = "<group>"; };
+		3C230658AADDE26737C95BC7 /* LemonadeSpacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeSpacing.swift; sourceTree = "<group>"; };
+		3D43E190B99FE705D867E05A /* TextDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextDisplayView.swift; sourceTree = "<group>"; };
+		466F43A7753A08A92D05A10B /* LemonadeSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeSwitch.swift; sourceTree = "<group>"; };
+		48E25CA038CC2E91DEB0D036 /* LemonadeUi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeUi.swift; sourceTree = "<group>"; };
+		51D1A0AC839EC3EF64263863 /* CheckboxDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxDisplayView.swift; sourceTree = "<group>"; };
+		5362981AB7584402825A46BE /* LemonadeBorderWidth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeBorderWidth.swift; sourceTree = "<group>"; };
+		5523AEF9D40C8E7F2DB99F5F /* SizesDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizesDisplayView.swift; sourceTree = "<group>"; };
+		56B87F817DD4C81339D64D5E /* BadgeDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeDisplayView.swift; sourceTree = "<group>"; };
+		5CDB92FB366436D3BCCADC1A /* LemonadeSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeSegmentedControl.swift; sourceTree = "<group>"; };
+		624A8C715ADEA72A999938BB /* LemonadeCheckbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeCheckbox.swift; sourceTree = "<group>"; };
+		62A5B05AB1009ED997AE0B33 /* LemonadeTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeTile.swift; sourceTree = "<group>"; };
+		64E3930F2EB4F38B7DEBBD0F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		6631230E1E48D13C320FE0FA /* SpacingDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacingDisplayView.swift; sourceTree = "<group>"; };
+		669B5CDC0953A5AA950281D8 /* LemonadeOpacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeOpacity.swift; sourceTree = "<group>"; };
+		6D7FF4626CF4DF8CA48A3D94 /* LemonadeCountryFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeCountryFlags.swift; sourceTree = "<group>"; };
+		7062E2A9E901ABEF06AF2148 /* Lemonade.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Lemonade.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		707483451DC517FF1245E815 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		6CD5ABCD12345678ABCDEF02 /* IconButtonDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconButtonDisplayView.swift; sourceTree = "<group>"; };
+		71044E7D8369565930297EC6 /* LemonadeSearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeSearchField.swift; sourceTree = "<group>"; };
+		7285C1DDEE5B35BE06264E87 /* FlagsDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagsDisplayView.swift; sourceTree = "<group>"; };
+		747C8645171E32C0151FEAA2 /* LemonadeBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeBundle.swift; sourceTree = "<group>"; };
+		77B5022CC336B966ECF3AD77 /* ButtonDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonDisplayView.swift; sourceTree = "<group>"; };
+		7835AEB1F1A959BDF06118ED /* LemonadeFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeFonts.swift; sourceTree = "<group>"; };
+		7861CDFD9D53E564A25EF61A /* LemonadeTypography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeTypography.swift; sourceTree = "<group>"; };
+		821C65AE0A806A5CE3A5420C /* LemonadeIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeIcons.swift; sourceTree = "<group>"; };
+		859CF0D948C7FBEBA570E014 /* LemonadeIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeIcon.swift; sourceTree = "<group>"; };
+		ABCD1234567890ABCDEF0002 /* LemonadeIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeIconButton.swift; sourceTree = "<group>"; };
+		88CE3E02DEE7AA790F1454AD /* SearchFieldDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldDisplayView.swift; sourceTree = "<group>"; };
+		8E6EF804019369C94B35CE07 /* LemonadeRadius.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeRadius.swift; sourceTree = "<group>"; };
+		8ED78A33540384F23A692F38 /* IconsDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconsDisplayView.swift; sourceTree = "<group>"; };
+		90B16A5C6148598A4C9F6863 /* LemonadeLightTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeLightTheme.swift; sourceTree = "<group>"; };
+		915B5AD63B91E060EE42A352 /* LemonadeSampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeSampleApp.swift; sourceTree = "<group>"; };
+		93B6B5368067DD19A870DCEC /* LemonadeChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeChip.swift; sourceTree = "<group>"; };
+		94708CC26C49F2A293272282 /* LemonadeText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeText.swift; sourceTree = "<group>"; };
+		9847921AD923342FFE5804E3 /* LemonadeListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeListItem.swift; sourceTree = "<group>"; };
+		A0B437513D91475400F9989B /* LemonadeRadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeRadioButton.swift; sourceTree = "<group>"; };
+		A0FEF54CB4A25D2FD3E87F9E /* TileDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileDisplayView.swift; sourceTree = "<group>"; };
+		A123D1086D640EF9115AA9CA /* SwitchDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchDisplayView.swift; sourceTree = "<group>"; };
+		A713F34FA979D72691318D0A /* LemonadeSemanticColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeSemanticColors.swift; sourceTree = "<group>"; };
+		AB330F9076927BFAE5AD597C /* LemonadeSampleApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LemonadeSampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B78C8CB708AD129000C9E182 /* RadioButtonDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtonDisplayView.swift; sourceTree = "<group>"; };
+		C5DB101C9FE700156B3D7699 /* LemonadeSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeSizes.swift; sourceTree = "<group>"; };
+		C84754AC7EA41CD450B4A3D3 /* LemonadeBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeBadge.swift; sourceTree = "<group>"; };
+		CE6AEB9B2BC6A819D92224CC /* LemonadeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeButton.swift; sourceTree = "<group>"; };
+		CF3769FDCA7B142885A491F2 /* LemonadeTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeTextField.swift; sourceTree = "<group>"; };
+		D0FE00739D9EC1D0D781DBE1 /* SegmentedControlDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlDisplayView.swift; sourceTree = "<group>"; };
+		D38253A95E9AE0FED8C76E46 /* TagDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDisplayView.swift; sourceTree = "<group>"; };
+		DDAE9861867D763DA08E5126 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DDE64A12F963CE478335AF04 /* RadiusDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadiusDisplayView.swift; sourceTree = "<group>"; };
+		E2CC87622FE026817E028AA9 /* BrandLogosDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandLogosDisplayView.swift; sourceTree = "<group>"; };
+		E6C1043D4EDC3F7CA8D3FE97 /* LemonadePrimitiveColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadePrimitiveColors.swift; sourceTree = "<group>"; };
+		EC4E577A992EC3F5CFC898A3 /* ChipDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipDisplayView.swift; sourceTree = "<group>"; };
+		F86241CEAF25BFC947DEA348 /* LemonadeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeCard.swift; sourceTree = "<group>"; };
+		F90230C017C806FE74DE7DAB /* SymbolContainerDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolContainerDisplayView.swift; sourceTree = "<group>"; };
+		F9C40CD56F4FBC06ED54B7FE /* LemonadeShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeShadow.swift; sourceTree = "<group>"; };
+		FE58BF3E61E443C432276FA5 /* LemonadeBrandLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeBrandLogo.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F310C5F0779D6355BF752D4F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74267910DDD8CBD0E1E2371F /* Lemonade.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		31958ED0F0ED07544A25AA1D /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				C84754AC7EA41CD450B4A3D3 /* LemonadeBadge.swift */,
+				FE58BF3E61E443C432276FA5 /* LemonadeBrandLogo.swift */,
+				CE6AEB9B2BC6A819D92224CC /* LemonadeButton.swift */,
+				F86241CEAF25BFC947DEA348 /* LemonadeCard.swift */,
+				624A8C715ADEA72A999938BB /* LemonadeCheckbox.swift */,
+				93B6B5368067DD19A870DCEC /* LemonadeChip.swift */,
+				0025C6F06A07174C5A65B81C /* LemonadeCountryFlag.swift */,
+				859CF0D948C7FBEBA570E014 /* LemonadeIcon.swift */,
+				ABCD1234567890ABCDEF0002 /* LemonadeIconButton.swift */,
+				9847921AD923342FFE5804E3 /* LemonadeListItem.swift */,
+				A0B437513D91475400F9989B /* LemonadeRadioButton.swift */,
+				71044E7D8369565930297EC6 /* LemonadeSearchField.swift */,
+				5CDB92FB366436D3BCCADC1A /* LemonadeSegmentedControl.swift */,
+				466F43A7753A08A92D05A10B /* LemonadeSwitch.swift */,
+				102DD2FA9EEDD18ECF928E2F /* LemonadeSymbolContainer.swift */,
+				3280F4308F4F8C907074DC88 /* LemonadeTag.swift */,
+				94708CC26C49F2A293272282 /* LemonadeText.swift */,
+				CF3769FDCA7B142885A491F2 /* LemonadeTextField.swift */,
+				62A5B05AB1009ED997AE0B33 /* LemonadeTile.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		5432F34117D4BEC8366060E7 /* Lemonade */ = {
+			isa = PBXGroup;
+			children = (
+				64E3930F2EB4F38B7DEBBD0F /* Info.plist */,
+				5362981AB7584402825A46BE /* LemonadeBorderWidth.swift */,
+				346081D5BE9F2603583391F8 /* LemonadeBrandLogos.swift */,
+				747C8645171E32C0151FEAA2 /* LemonadeBundle.swift */,
+				6D7FF4626CF4DF8CA48A3D94 /* LemonadeCountryFlags.swift */,
+				7835AEB1F1A959BDF06118ED /* LemonadeFonts.swift */,
+				821C65AE0A806A5CE3A5420C /* LemonadeIcons.swift */,
+				90B16A5C6148598A4C9F6863 /* LemonadeLightTheme.swift */,
+				669B5CDC0953A5AA950281D8 /* LemonadeOpacity.swift */,
+				E6C1043D4EDC3F7CA8D3FE97 /* LemonadePrimitiveColors.swift */,
+				8E6EF804019369C94B35CE07 /* LemonadeRadius.swift */,
+				A713F34FA979D72691318D0A /* LemonadeSemanticColors.swift */,
+				F9C40CD56F4FBC06ED54B7FE /* LemonadeShadow.swift */,
+				C5DB101C9FE700156B3D7699 /* LemonadeSizes.swift */,
+				3C230658AADDE26737C95BC7 /* LemonadeSpacing.swift */,
+				0BBBB6C04C853C8B88545DD5 /* LemonadeTheme.swift */,
+				7861CDFD9D53E564A25EF61A /* LemonadeTypography.swift */,
+				48E25CA038CC2E91DEB0D036 /* LemonadeUi.swift */,
+				31958ED0F0ED07544A25AA1D /* Components */,
+				D2C34FD59DCF55604F1EC4D7 /* Modifiers */,
+				5DBD20C5BBAEFE6DEBFD59E8 /* Resources */,
+			);
+			path = Lemonade;
+			sourceTree = "<group>";
+		};
+		5C9F8A3BE8A2E1D3DF8A6C71 /* SampleApp */ = {
+			isa = PBXGroup;
+			children = (
+				56B87F817DD4C81339D64D5E /* BadgeDisplayView.swift */,
+				32EA7FDD08DB1671ECC5A181 /* BorderWidthDisplayView.swift */,
+				E2CC87622FE026817E028AA9 /* BrandLogosDisplayView.swift */,
+				77B5022CC336B966ECF3AD77 /* ButtonDisplayView.swift */,
+				0FA5D577532CC7CD6E2FFEA3 /* CardDisplayView.swift */,
+				51D1A0AC839EC3EF64263863 /* CheckboxDisplayView.swift */,
+				EC4E577A992EC3F5CFC898A3 /* ChipDisplayView.swift */,
+				0B5C7B4A04531F1245ECF213 /* ColorsDisplayView.swift */,
+				7285C1DDEE5B35BE06264E87 /* FlagsDisplayView.swift */,
+				707483451DC517FF1245E815 /* HomeView.swift */,
+				6CD5ABCD12345678ABCDEF02 /* IconButtonDisplayView.swift */,
+				8ED78A33540384F23A692F38 /* IconsDisplayView.swift */,
+				915B5AD63B91E060EE42A352 /* LemonadeSampleApp.swift */,
+				2EDCF61E536A8E991993DC70 /* ListItemDisplayView.swift */,
+				0B5EE55559BBBD865967D97F /* OpacityDisplayView.swift */,
+				B78C8CB708AD129000C9E182 /* RadioButtonDisplayView.swift */,
+				DDE64A12F963CE478335AF04 /* RadiusDisplayView.swift */,
+				88CE3E02DEE7AA790F1454AD /* SearchFieldDisplayView.swift */,
+				D0FE00739D9EC1D0D781DBE1 /* SegmentedControlDisplayView.swift */,
+				09D8497539460CFDAFB730EF /* ShadowsDisplayView.swift */,
+				5523AEF9D40C8E7F2DB99F5F /* SizesDisplayView.swift */,
+				6631230E1E48D13C320FE0FA /* SpacingDisplayView.swift */,
+				A123D1086D640EF9115AA9CA /* SwitchDisplayView.swift */,
+				F90230C017C806FE74DE7DAB /* SymbolContainerDisplayView.swift */,
+				D38253A95E9AE0FED8C76E46 /* TagDisplayView.swift */,
+				3D43E190B99FE705D867E05A /* TextDisplayView.swift */,
+				2FB80379B626EBCD54537619 /* TextFieldDisplayView.swift */,
+				A0FEF54CB4A25D2FD3E87F9E /* TileDisplayView.swift */,
+			);
+			path = SampleApp;
+			sourceTree = "<group>";
+		};
+		5DBD20C5BBAEFE6DEBFD59E8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DDAE9861867D763DA08E5126 /* Assets.xcassets */,
+				119984E30EE1DEF0D7D08145 /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		60DCF52F3B472EB8CF527E44 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				5432F34117D4BEC8366060E7 /* Lemonade */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		865D9770A57D884D35955B4A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7062E2A9E901ABEF06AF2148 /* Lemonade.framework */,
+				AB330F9076927BFAE5AD597C /* LemonadeSampleApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C663508EAA12A059CA48B9C8 = {
+			isa = PBXGroup;
+			children = (
+				5C9F8A3BE8A2E1D3DF8A6C71 /* SampleApp */,
+				60DCF52F3B472EB8CF527E44 /* Sources */,
+				865D9770A57D884D35955B4A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D2C34FD59DCF55604F1EC4D7 /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				10B43803EB4523DAB434B4A8 /* LemonadeBorder.swift */,
+			);
+			path = Modifiers;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		18EF78C9D6D0D026CD33DB49 /* LemonadeSampleApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 30EB5A24DBA50FCF0B359816 /* Build configuration list for PBXNativeTarget "LemonadeSampleApp" */;
+			buildPhases = (
+				EEAD1E66D36038351E9443DE /* Sources */,
+				F310C5F0779D6355BF752D4F /* Frameworks */,
+				35D3EEDBE780EDBE612FC833 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				200DBFAAB23EA98D05910D1D /* PBXTargetDependency */,
+			);
+			name = LemonadeSampleApp;
+			packageProductDependencies = (
+			);
+			productName = LemonadeSampleApp;
+			productReference = AB330F9076927BFAE5AD597C /* LemonadeSampleApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C7DACE3EFA5DA962624B096D /* Lemonade */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 609AD91E5DBED42CB35D903C /* Build configuration list for PBXNativeTarget "Lemonade" */;
+			buildPhases = (
+				458B837F9622C4CF2B3D3E7C /* Sources */,
+				6BDD2644BE90C82C25D3A83E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Lemonade;
+			packageProductDependencies = (
+			);
+			productName = Lemonade;
+			productReference = 7062E2A9E901ABEF06AF2148 /* Lemonade.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4609FFF7AA1922A4ED8EBB25 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = 6A42056CA641876704F55FB9 /* Build configuration list for PBXProject "Lemonade" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = C663508EAA12A059CA48B9C8;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C7DACE3EFA5DA962624B096D /* Lemonade */,
+				18EF78C9D6D0D026CD33DB49 /* LemonadeSampleApp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6BDD2644BE90C82C25D3A83E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5D30A1CAD5F5B44E1D1E402 /* Assets.xcassets in Resources */,
+				106F4C9B4C3E989E2E97206D /* Fonts in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		458B837F9622C4CF2B3D3E7C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C53937F392122D9AE6E143B3 /* LemonadeBadge.swift in Sources */,
+				DB3ECB0BB0D89E238C4C70EE /* LemonadeBorder.swift in Sources */,
+				E85FBD3B6880048D5BC8C55F /* LemonadeBorderWidth.swift in Sources */,
+				AB237EDCF244374BB40445A1 /* LemonadeBrandLogo.swift in Sources */,
+				7D8908469D82EBBD82555B00 /* LemonadeBrandLogos.swift in Sources */,
+				28FEF266275655E666B15D44 /* LemonadeBundle.swift in Sources */,
+				A6FE7D4A30AD95ABD2A1F555 /* LemonadeButton.swift in Sources */,
+				752844F8BDB1ABAE91F0DFF1 /* LemonadeCard.swift in Sources */,
+				A3BA8A376F011644C8A6BC19 /* LemonadeCheckbox.swift in Sources */,
+				9065B57068A4520169A55124 /* LemonadeChip.swift in Sources */,
+				1BC665489BC2C0A52001DE16 /* LemonadeCountryFlag.swift in Sources */,
+				EB1F3180DA92EDBDE36FF039 /* LemonadeCountryFlags.swift in Sources */,
+				10196BC8EE1EDBF4D905BB23 /* LemonadeFonts.swift in Sources */,
+				AB82B862D5DC1D1A1DBC3432 /* LemonadeIcon.swift in Sources */,
+				ABCD1234567890ABCDEF0001 /* LemonadeIconButton.swift in Sources */,
+				C8C19A4E8981500F1F78DCD0 /* LemonadeIcons.swift in Sources */,
+				EC4A04313F50043FF5A98616 /* LemonadeLightTheme.swift in Sources */,
+				54AEAFAD61E034A05ADA0EE1 /* LemonadeListItem.swift in Sources */,
+				1FBD07E2C3DDAA5EF0736268 /* LemonadeOpacity.swift in Sources */,
+				F365FCAA6B106D0E0B738398 /* LemonadePrimitiveColors.swift in Sources */,
+				D315792A0232E7EBBCAADAF4 /* LemonadeRadioButton.swift in Sources */,
+				D1AB07B96CF6C8DBDD04EF33 /* LemonadeRadius.swift in Sources */,
+				7205ECEA08E2C8D1BF1B3ECE /* LemonadeSearchField.swift in Sources */,
+				208A86FCBF7C524573AE1848 /* LemonadeSegmentedControl.swift in Sources */,
+				22440FA4EA82B792690CDFFD /* LemonadeSemanticColors.swift in Sources */,
+				057823D7FEDAE4BC9E517786 /* LemonadeShadow.swift in Sources */,
+				1B32FA9A8ECC79401CBFE50B /* LemonadeSizes.swift in Sources */,
+				67E232B29C4892E4BA908324 /* LemonadeSpacing.swift in Sources */,
+				691AFFC71CFF61FCED18B497 /* LemonadeSwitch.swift in Sources */,
+				C4AE5EBAD8126D58F385CA1C /* LemonadeSymbolContainer.swift in Sources */,
+				BDA4239CD9AA40CA8E48A3E3 /* LemonadeTag.swift in Sources */,
+				4236C35CE0C567203CF74E91 /* LemonadeText.swift in Sources */,
+				BB6860A845F463E38F669D11 /* LemonadeTextField.swift in Sources */,
+				EFA42A9AE4A04A9DD371A729 /* LemonadeTheme.swift in Sources */,
+				D62BBD607DF9115DEBC9A233 /* LemonadeTile.swift in Sources */,
+				B0549DDE170EDD8246C85EFB /* LemonadeTypography.swift in Sources */,
+				5041602F7C5DC3FFD9A2BD2A /* LemonadeUi.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EEAD1E66D36038351E9443DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E59C9AD28DAD5F949DBB2E96 /* BadgeDisplayView.swift in Sources */,
+				24795DF70056F2868F15CB66 /* BorderWidthDisplayView.swift in Sources */,
+				69CF1DACE921261B1550808A /* BrandLogosDisplayView.swift in Sources */,
+				523AB39842EA3C91C1AEE44D /* ButtonDisplayView.swift in Sources */,
+				E34ECE5B8B0D8862B1741DA3 /* CardDisplayView.swift in Sources */,
+				9BFCE355C073CFA5A50629CF /* CheckboxDisplayView.swift in Sources */,
+				48B4AF965E3410516AA80402 /* ChipDisplayView.swift in Sources */,
+				A5797DEB4E5308A6759B90F8 /* ColorsDisplayView.swift in Sources */,
+				51BA607A037FF932F3A64E0A /* FlagsDisplayView.swift in Sources */,
+				38A4477EB25293A0D342E9E8 /* HomeView.swift in Sources */,
+				6CD5ABCD12345678ABCDEF01 /* IconButtonDisplayView.swift in Sources */,
+				B571BB80FC6A86D8C8BB881A /* IconsDisplayView.swift in Sources */,
+				E20E18F5A1C1CB8D589D3159 /* LemonadeSampleApp.swift in Sources */,
+				F42CFCBA2ECE4415C9556A67 /* ListItemDisplayView.swift in Sources */,
+				BE175C6921226C1FEC034F56 /* OpacityDisplayView.swift in Sources */,
+				07044DB3F54ED2F658CE9486 /* RadioButtonDisplayView.swift in Sources */,
+				B579339C01F3B314291B383E /* RadiusDisplayView.swift in Sources */,
+				888A84C3D6D79E92239F3555 /* SearchFieldDisplayView.swift in Sources */,
+				35D06933A0FC07F68790C0E2 /* SegmentedControlDisplayView.swift in Sources */,
+				438C17D053E052708E7246AC /* ShadowsDisplayView.swift in Sources */,
+				11B9B0C2E69D237CF421FE9B /* SizesDisplayView.swift in Sources */,
+				658E2F545E9F07ABE4E7456B /* SpacingDisplayView.swift in Sources */,
+				A6CF5FB325689ADC79BF2C87 /* SwitchDisplayView.swift in Sources */,
+				EA10A8801629FA57290419E5 /* SymbolContainerDisplayView.swift in Sources */,
+				DB70928625BBAB7006CD2F03 /* TagDisplayView.swift in Sources */,
+				5356CA0E4BD7C4F2F50C6418 /* TextDisplayView.swift in Sources */,
+				1AA5973F63F9312D57F8CB1C /* TextFieldDisplayView.swift in Sources */,
+				6BC4489A425B8BF16AA8BFA4 /* TileDisplayView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		200DBFAAB23EA98D05910D1D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C7DACE3EFA5DA962624B096D /* Lemonade */;
+			targetProxy = 02A1607FBC8734434DD39D39 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		09113F9F36ABDD483E1EE433 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		1E2EB6308CB210A509CDB13D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_GENERATION_MODE = GeneratedFile;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teya.lemonade.sampleapp;
+				PRODUCT_NAME = LemonadeSampleApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		56D0970A7F4AA4DB4CC1279E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Sources/Lemonade/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.teya.lemonade;
+				PRODUCT_NAME = Lemonade;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		68DFF5CF1413166E9DA7F746 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		7509C199CE7EE2D760C1DA5C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_GENERATION_MODE = GeneratedFile;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teya.lemonade.sampleapp;
+				PRODUCT_NAME = LemonadeSampleApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A71A2618A9B32F7C3CA47905 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Sources/Lemonade/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.teya.lemonade;
+				PRODUCT_NAME = Lemonade;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		30EB5A24DBA50FCF0B359816 /* Build configuration list for PBXNativeTarget "LemonadeSampleApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7509C199CE7EE2D760C1DA5C /* Debug */,
+				1E2EB6308CB210A509CDB13D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		609AD91E5DBED42CB35D903C /* Build configuration list for PBXNativeTarget "Lemonade" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				56D0970A7F4AA4DB4CC1279E /* Debug */,
+				A71A2618A9B32F7C3CA47905 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6A42056CA641876704F55FB9 /* Build configuration list for PBXProject "Lemonade" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				09113F9F36ABDD483E1EE433 /* Debug */,
+				68DFF5CF1413166E9DA7F746 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4609FFF7AA1922A4ED8EBB25 /* Project object */;
+}

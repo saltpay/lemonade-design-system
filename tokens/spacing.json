@@ -1,0 +1,371 @@
+{
+  "id": "VariableCollectionId:3067:127",
+  "name": "Spacing",
+  "modes": {
+    "3067:9": "Default"
+  },
+  "variableIds": [
+    "VariableID:3085:1744",
+    "VariableID:3067:128",
+    "VariableID:3067:129",
+    "VariableID:3067:130",
+    "VariableID:3067:131",
+    "VariableID:3067:132",
+    "VariableID:3067:133",
+    "VariableID:3067:134",
+    "VariableID:3067:135",
+    "VariableID:3067:136",
+    "VariableID:3067:137",
+    "VariableID:3067:138",
+    "VariableID:3067:139",
+    "VariableID:3067:140",
+    "VariableID:3067:141"
+  ],
+  "variables": [
+    {
+      "id": "VariableID:3067:128",
+      "name": "spacing-50",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3067:9": 2
+      },
+      "resolvedValuesByMode": {
+        "3067:9": {
+          "resolvedValue": 2,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.spaces.spacing50",
+        "iOS": "context.lemonade.spaces.spacing50"
+      }
+    },
+    {
+      "id": "VariableID:3067:129",
+      "name": "spacing-100",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3067:9": 4
+      },
+      "resolvedValuesByMode": {
+        "3067:9": {
+          "resolvedValue": 4,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.spaces.spacing100",
+        "iOS": "context.lemonade.spaces.spacing100"
+      }
+    },
+    {
+      "id": "VariableID:3067:130",
+      "name": "spacing-200",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3067:9": 8
+      },
+      "resolvedValuesByMode": {
+        "3067:9": {
+          "resolvedValue": 8,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.spaces.spacing200",
+        "iOS": "context.lemonade.spaces.spacing200"
+      }
+    },
+    {
+      "id": "VariableID:3067:131",
+      "name": "spacing-300",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3067:9": 12
+      },
+      "resolvedValuesByMode": {
+        "3067:9": {
+          "resolvedValue": 12,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.spaces.spacing300",
+        "iOS": "context.lemonade.spaces.spacing300"
+      }
+    },
+    {
+      "id": "VariableID:3067:132",
+      "name": "spacing-400",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3067:9": 16
+      },
+      "resolvedValuesByMode": {
+        "3067:9": {
+          "resolvedValue": 16,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.spaces.spacing400",
+        "iOS": "context.lemonade.spaces.spacing400"
+      }
+    },
+    {
+      "id": "VariableID:3067:133",
+      "name": "spacing-500",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3067:9": 20
+      },
+      "resolvedValuesByMode": {
+        "3067:9": {
+          "resolvedValue": 20,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.spaces.spacing500",
+        "iOS": "context.lemonade.spaces.spacing500"
+      }
+    },
+    {
+      "id": "VariableID:3067:134",
+      "name": "spacing-600",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3067:9": 24
+      },
+      "resolvedValuesByMode": {
+        "3067:9": {
+          "resolvedValue": 24,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.spaces.spacing600",
+        "iOS": "context.lemonade.spaces.spacing600"
+      }
+    },
+    {
+      "id": "VariableID:3067:135",
+      "name": "spacing-800",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3067:9": 32
+      },
+      "resolvedValuesByMode": {
+        "3067:9": {
+          "resolvedValue": 32,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.spaces.spacing800",
+        "iOS": "context.lemonade.spaces.spacing800"
+      }
+    },
+    {
+      "id": "VariableID:3067:136",
+      "name": "spacing-1000",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3067:9": 40
+      },
+      "resolvedValuesByMode": {
+        "3067:9": {
+          "resolvedValue": 40,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.spaces.spacing1000",
+        "iOS": "context.lemonade.spaces.spacing1000"
+      }
+    },
+    {
+      "id": "VariableID:3067:137",
+      "name": "spacing-1200",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3067:9": 48
+      },
+      "resolvedValuesByMode": {
+        "3067:9": {
+          "resolvedValue": 48,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.spaces.spacing1200",
+        "iOS": "context.lemonade.spaces.spacing1200"
+      }
+    },
+    {
+      "id": "VariableID:3067:138",
+      "name": "spacing-1400",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3067:9": 56
+      },
+      "resolvedValuesByMode": {
+        "3067:9": {
+          "resolvedValue": 56,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.spaces.spacing1400",
+        "iOS": "context.lemonade.spaces.spacing1400"
+      }
+    },
+    {
+      "id": "VariableID:3067:139",
+      "name": "spacing-1600",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3067:9": 64
+      },
+      "resolvedValuesByMode": {
+        "3067:9": {
+          "resolvedValue": 64,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.spaces.spacing1600",
+        "iOS": "context.lemonade.spaces.spacing1600"
+      }
+    },
+    {
+      "id": "VariableID:3067:140",
+      "name": "spacing-1800",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3067:9": 72
+      },
+      "resolvedValuesByMode": {
+        "3067:9": {
+          "resolvedValue": 72,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.spaces.spacing1800",
+        "iOS": "context.lemonade.spaces.spacing1800"
+      }
+    },
+    {
+      "id": "VariableID:3067:141",
+      "name": "spacing-2000",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3067:9": 80
+      },
+      "resolvedValuesByMode": {
+        "3067:9": {
+          "resolvedValue": 80,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.spaces.spacing2000",
+        "iOS": "context.lemonade.spaces.spacing2000"
+      }
+    },
+    {
+      "id": "VariableID:3085:1744",
+      "name": "spacing-0",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3067:9": 0
+      },
+      "resolvedValuesByMode": {
+        "3067:9": {
+          "resolvedValue": 0,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.spaces.spacing0",
+        "iOS": "context.lemonade.spaces.spacing0"
+      }
+    }
+  ]
+}

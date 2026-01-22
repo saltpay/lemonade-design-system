@@ -1,0 +1,157 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code related
+.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# iOS related
+**/ios/**/*.mode1v3
+**/ios/**/*.mode2v3
+**/ios/**/*.moved-aside
+**/ios/**/*.pbxuser
+**/ios/**/*.perspectivev3
+**/ios/**/UserInterfaceState.xcuserstate
+**/ios/.generated/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+
+# Xcode user-specific files
+**/xcuserdata/
+**/project.xcworkspace/xcuserdata/
+
+# macOS related
+**/macos/Flutter/GeneratedPluginRegistrant.swift
+
+# Coverage
+coverage/
+
+# Exceptions to above rules.
+!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Node.js related (if any)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# JetBrains IDEs
+.idea/
+*.iml
+out/
+
+# Gradle (already covered in cmp/.gitignore but adding for safety)
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+
+# Kotlin
+.kotlin/
+
+# Local configuration files
+local.properties
+
+# Generated files
+*.g.dart
+*.mocks.dart
+*.config.dart
+
+# Test coverage
+lcov.info
+coverage/
+
+# FVM Version Cache
+.fvm/
+
+# Swift/iOS/Xcode specific
+# Swift Package Manager build directory
+swiftui/.build/
+swiftui/.swiftpm/
+
+# Xcode user-specific files
+swiftui/**/*.xcodeproj/xcuserdata/
+swiftui/**/*.xcworkspace/xcuserdata/
+swiftui/**/*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Xcode build products
+swiftui/build/
+swiftui/DerivedData/
+
+# CocoaPods (if used)
+swiftui/Pods/
+swiftui/Podfile.lock
+
+# Carthage (if used)
+swiftui/Carthage/Build/
+
+# Accio dependency management
+swiftui/Dependencies/
+swiftui/.accio/
+
+# fastlane specific
+swiftui/fastlane/report.xml
+swiftui/fastlane/Preview.html
+swiftui/fastlane/screenshots/**/*.png
+swiftui/fastlane/test_output
+
+# Swift Package Manager resolved file
+swiftui/Package.resolved
