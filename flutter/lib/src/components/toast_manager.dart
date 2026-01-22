@@ -165,6 +165,34 @@ class LemonadeToastManager {
     );
   }
 
+  /// Processes any pending toast requests.
+  ///
+  /// Checks for new pending toasts set during async operations,
+  /// or falls back to the original pending toast if still valid.
+  static void _processPendingToast(_ToastRequest? originalPending) {
+    final newPendingToast = _pendingRequest;
+
+    // Check for new pending toast that might have been set during async operations
+    if (newPendingToast != null && newPendingToast.context.mounted) {
+      _pendingRequest = null;
+      _isProcessing = true;
+      _displayToast(
+        newPendingToast.context,
+        toast: newPendingToast.toast,
+        duration: newPendingToast.duration,
+        dismissible: newPendingToast.dismissible,
+      );
+    } else if (originalPending != null && originalPending.context.mounted) {
+      _isProcessing = true;
+      _displayToast(
+        originalPending.context,
+        toast: originalPending.toast,
+        duration: originalPending.duration,
+        dismissible: originalPending.dismissible,
+      );
+    }
+  }
+
   /// Dismisses the currently showing toast with animation.
   static void dismiss() {
     _dismissTimer?.cancel();
@@ -188,29 +216,7 @@ class LemonadeToastManager {
       _currentState = null;
       _isProcessing = false;
 
-      final newPendingToast = _pendingRequest;
-
-      // Check for new pending toast that might have been set
-      if (newPendingToast != null && newPendingToast.context.mounted) {
-        _pendingRequest = null;
-        _isProcessing = true;
-
-        _displayToast(
-          newPendingToast.context,
-          toast: newPendingToast.toast,
-          duration: newPendingToast.duration,
-          dismissible: newPendingToast.dismissible,
-        );
-      } else if (pending != null && pending.context.mounted) {
-        _isProcessing = true;
-
-        _displayToast(
-          pending.context,
-          toast: pending.toast,
-          duration: pending.duration,
-          dismissible: pending.dismissible,
-        );
-      }
+      _processPendingToast(pending);
       return;
     }
 
@@ -222,27 +228,8 @@ class LemonadeToastManager {
         _currentState = null;
       }
       _isProcessing = false;
-      final newPendingToast = _pendingRequest;
 
-      // Check for new pending toast that might have been set during animation
-      if (newPendingToast != null && newPendingToast.context.mounted) {
-        _pendingRequest = null;
-        _isProcessing = true;
-        _displayToast(
-          newPendingToast.context,
-          toast: newPendingToast.toast,
-          duration: newPendingToast.duration,
-          dismissible: newPendingToast.dismissible,
-        );
-      } else if (pending != null && pending.context.mounted) {
-        _isProcessing = true;
-        _displayToast(
-          pending.context,
-          toast: pending.toast,
-          duration: pending.duration,
-          dismissible: pending.dismissible,
-        );
-      }
+      _processPendingToast(pending);
     });
   }
 
