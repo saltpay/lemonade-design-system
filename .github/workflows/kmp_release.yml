@@ -3,7 +3,7 @@ name: Publish to Maven Central
 on:
   push:
     tags:
-      - 'lemonade-kmp-*'  # Triggers on tags starting with 'lemonade-kmp-' (e.g., lemonade-kmp-v0.0.1)
+      - 'lemonade-kmp-*'  # Triggers on tags starting with 'lemonade-kmp-' (e.g., lemonade-kmp-0.0.1)
 
 env:
   ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.ORG_GRADLE_PROJECT_mavenCentralUsername }}
