@@ -9,7 +9,7 @@ import 'package:lemonade_design_system/lemonade_design_system.dart';
 ///
 /// ## Example
 /// ```dart
-/// Using predefined durations
+/// // Using predefined durations
 /// LemonadeToastManager.show(
 ///   context,
 ///   voice: LemonadeToastVoice.success,
@@ -17,7 +17,7 @@ import 'package:lemonade_design_system/lemonade_design_system.dart';
 ///   duration: LemonadeToastDuration.short,
 /// );
 ///
-/// Using custom duration
+/// // Using custom duration
 /// LemonadeToastManager.show(
 ///   context,
 ///   voice: LemonadeToastVoice.error,
@@ -61,7 +61,7 @@ class _ToastRequest {
 ///
 /// ## Example
 /// ```dart
-/// Generic method with voice parameter
+/// // Generic method with voice parameter
 /// LemonadeToastManager.show(
 ///   context,
 ///   voice: LemonadeToastVoice.success,
@@ -103,14 +103,14 @@ class LemonadeToastManager {
   ///
   /// ## Example
   /// ```dart
-  /// Success toast (predefined icon)
+  /// // Success toast (predefined icon)
   /// LemonadeToastManager.show(
   ///   context,
   ///   voice: LemonadeToastVoice.success,
   ///   message: 'Changes saved successfully',
   /// );
   ///
-  /// Neutral toast with custom icon
+  /// //Neutral toast with custom icon
   /// LemonadeToastManager.show(
   ///   context,
   ///   voice: LemonadeToastVoice.neutral,
@@ -119,7 +119,7 @@ class LemonadeToastManager {
   ///   duration: LemonadeToastDuration.long,
   /// );
   ///
-  /// Non-dismissible error toast (predefined icon)
+  /// // Non-dismissible error toast (predefined icon)
   /// LemonadeToastManager.show(
   ///   context,
   ///   voice: LemonadeToastVoice.error,
