@@ -3,7 +3,6 @@ import com.vanniktech.maven.publish.MavenPublishBasePlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.provider.Property
-import org.gradle.api.publish.PublishingExtension
 import org.gradle.kotlin.dsl.configure
 
 class LemonadePublishPlugin : Plugin<Project> {
@@ -13,8 +12,6 @@ class LemonadePublishPlugin : Plugin<Project> {
 
         val extension = extensions
             .create("lemonadePublishing", LemonadePublishingPluginExtension::class.java)
-
-        configureJfrogRepository()
 
         afterEvaluate {
             val artifactId = extension.artifactId.orNull ?: run {
@@ -29,25 +26,43 @@ class LemonadePublishPlugin : Plugin<Project> {
         extensions.configure<MavenPublishBaseExtension> {
             val version: String = findEnvironmentVariable("PUBLICATION_VERSION")
             coordinates(
-                groupId = "com.teya.teya-lemonade-ds",
+                groupId = "com.teya.foundation",
                 artifactId = artifactId,
                 version = version
             )
+
+            publishToMavenCentral(true)
+            signAllPublications()
+
+            pom()
         }
     }
 
-    private fun Project.configureJfrogRepository() {
-        extensions.configure<PublishingExtension> {
-            repositories {
-                maven {
-                    name = "JFrog"
-                    url = uri("https://saltpay.jfrog.io/artifactory/main-maven-virtual/")
-
-                    credentials {
-                        username = System.getenv("JFROG_USER")
-                        password = System.getenv("JFROG_PASSWORD")
-                    }
+    private fun MavenPublishBaseExtension.pom() {
+        pom {
+            name.set("Teya Lemonade Design System")
+            description.set("Compose Multiplatform implementation of Teya's lemonade design system")
+            inceptionYear.set("2026")
+            url.set("https://teya.com")
+            licenses {
+                license {
+                    name.set("The Apache License, Version 2.0")
+                    url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    distribution.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
                 }
+            }
+            developers {
+                developer {
+                    id.set("teya")
+                    name.set("Teya")
+                    url.set("https://teya.com")
+                    email.set("terminal-team@teya.com")
+                }
+            }
+            scm {
+                url.set("https://github.com/saltpay/lemonade-design-system/")
+                connection.set("scm:git:git://github.com/saltpay/lemonade-design-system.git")
+                developerConnection.set("scm:git:ssh://git@github.com/saltpay/lemonade-design-system.git")
             }
         }
     }
