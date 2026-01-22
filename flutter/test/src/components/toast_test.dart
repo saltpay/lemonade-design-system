@@ -183,7 +183,7 @@ void main() {
         final toastWidget = tester.widget<LemonadeToast>(
           find.byType(LemonadeToast),
         );
-        expect(toastWidget.icon, equals(LemonadeIcons.circleCheck));
+        expect(toastWidget.voice, equals(LemonadeToastVoice.neutral));
 
         final svgPicture = tester.widget<SvgPicture>(find.byType(SvgPicture));
         final pictureProvider = svgPicture.bytesLoader as SvgAssetLoader;
