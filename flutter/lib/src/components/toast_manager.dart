@@ -110,7 +110,7 @@ class LemonadeToastManager {
   ///   message: 'Changes saved successfully',
   /// );
   ///
-  /// //Neutral toast with custom icon
+  /// // Neutral toast with custom icon
   /// LemonadeToastManager.show(
   ///   context,
   ///   voice: LemonadeToastVoice.neutral,
