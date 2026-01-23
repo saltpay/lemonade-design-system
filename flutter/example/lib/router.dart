@@ -6,6 +6,7 @@ import 'package:lemonade_example/examples/button_example.dart';
 import 'package:lemonade_example/examples/card_example.dart';
 import 'package:lemonade_example/examples/checkbox_example.dart';
 import 'package:lemonade_example/examples/chip_example.dart';
+import 'package:lemonade_example/examples/content_item_example.dart';
 import 'package:lemonade_example/examples/country_flag_example.dart';
 import 'package:lemonade_example/examples/date_picker_example.dart';
 import 'package:lemonade_example/examples/icon_example.dart';
@@ -57,6 +58,10 @@ final router = GoRouter(
     GoRoute(
       path: '/chip',
       builder: (context, state) => const ChipExampleScreen(),
+    ),
+    GoRoute(
+      path: '/content_item',
+      builder: (context, state) => const ContentItemExampleScreen(),
     ),
     GoRoute(
       path: '/country_flag',

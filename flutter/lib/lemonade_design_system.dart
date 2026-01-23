@@ -11,6 +11,7 @@ export 'src/components/button.dart';
 export 'src/components/card.dart';
 export 'src/components/checkbox.dart';
 export 'src/components/chip.dart';
+export 'src/components/content_item.dart';
 export 'src/components/country_flag.dart';
 export 'src/components/date_picker.dart';
 export 'src/components/icon.dart';
