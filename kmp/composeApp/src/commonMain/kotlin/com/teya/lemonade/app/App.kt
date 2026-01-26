@@ -37,7 +37,7 @@ internal expect fun App()
 
 internal expect val platformScreens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit) -> Unit>
 
-internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit) -> Unit> = mapOf(
+internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit) -> Unit> = platformScreens + mapOf(
     Displays.Home to { onNavigate -> HomeDisplay(onNavigate = onNavigate) },
     Displays.Colors to { _ -> ColorsDisplay() },
     Displays.Icons to { _ -> IconsDisplay() },
@@ -67,4 +67,4 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.Opacity to { _ -> OpacityDisplay() },
     Displays.BorderWidth to { _ -> BorderWidthDisplay() },
     Displays.Spinner to { _ -> SpinnerDisplay() },
-) + platformScreens
+)

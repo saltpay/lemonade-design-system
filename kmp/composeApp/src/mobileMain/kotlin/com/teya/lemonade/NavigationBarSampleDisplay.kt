@@ -1,0 +1,86 @@
+package com.teya.lemonade
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import com.teya.lemonade.core.LemonadeAssetSize
+import com.teya.lemonade.core.LemonadeIconButtonSize
+import com.teya.lemonade.core.LemonadeIcons
+
+@Composable
+internal fun NavigationBarSampleDisplay() {
+    val scrollState = rememberScrollState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(LemonadeTheme.colors.background.bgSubtle)
+            .statusBarsPadding()
+            .navigationBarsPadding(),
+    ) {
+        LemonadeUi.NavigationBar(
+            title = "Navigation Bar",
+            contentScrollState = scrollState,
+            leadingSlot = {
+                LemonadeUi.IconButton(
+                    icon = LemonadeIcons.ChevronLeft,
+                    contentDescription = "Back",
+                    size = LemonadeIconButtonSize.Medium,
+                    onClick = { },
+                )
+            },
+            trailingSlot = {
+                LemonadeUi.IconButton(
+                    icon = LemonadeIcons.EllipsisVertical,
+                    contentDescription = "More",
+                    size = LemonadeIconButtonSize.Medium,
+                    onClick = { },
+                )
+            },
+        )
+
+        Column(
+            modifier = Modifier
+                .verticalScroll(state = scrollState)
+                .padding(LemonadeTheme.spaces.spacing400),
+        ) {
+            LemonadeUi.Text(
+                text = SAMPLE_TEXT,
+                textStyle = LemonadeTheme.typography.bodyMediumRegular,
+            )
+        }
+    }
+}
+
+private const val SAMPLE_TEXT = """
+The navigation bar is a fundamental component in mobile applications that provides users with context about their current location within the app and offers navigation controls. This component demonstrates the collapsing behavior of the navigation bar as you scroll through the content.
+
+When the user scrolls down, the large title smoothly collapses into a compact inline title in the center of the navigation bar. This behavior is commonly seen in iOS applications and provides a clean, modern user experience that maximizes screen real estate while maintaining context.
+
+The navigation bar supports several customization options including leading and trailing slots for action buttons, a bottom slot for additional content like search fields or segmented controls, and the title text itself.
+
+As you continue scrolling through this content, notice how the transition between the expanded and collapsed states is smooth and responsive. The animation uses a fade transition to create a polished look that feels native to the platform.
+
+This pattern is particularly useful for screens with long-form content, lists, or any interface where maximizing the content area is important. The collapsing behavior allows users to see more content while still having quick access to navigation controls when needed.
+
+The implementation uses Compose's ScrollState to track the scroll position and calculate the collapse percentage. This approach ensures that the animation is perfectly synchronized with the user's scroll gesture, providing a fluid and intuitive experience.
+
+One of the key benefits of this design pattern is that it reduces visual clutter when the user is focused on content consumption, while still providing full navigation context at the top of the screen before scrolling begins.
+
+The navigation bar also includes a subtle divider that appears when the title is fully collapsed. This helps visually separate the navigation bar from the content below and provides a clear boundary between the fixed navigation area and the scrollable content.
+
+In terms of accessibility, the navigation bar maintains proper contrast ratios and touch targets for all interactive elements. The leading and trailing slots are designed to accommodate standard icon buttons that meet accessibility guidelines for minimum touch target size.
+
+This component is part of the Lemonade Design System and follows the established patterns and conventions used throughout the system. It integrates seamlessly with other components like IconButton, Text, and the theming system to provide a consistent user experience.
+
+The flexibility of the slot-based API allows developers to customize the navigation bar for various use cases without modifying the core component. Whether you need a simple back button, multiple action items, or additional UI elements in the bottom slot, the navigation bar can accommodate these requirements while maintaining its core collapsing behavior.
+
+Thank you for exploring this navigation bar sample. Feel free to scroll up and down to see the collapsing animation in action, and notice how the divider appears and disappears based on the collapse state.
+"""

@@ -1,3 +1,12 @@
 package com.teya.lemonade
 
-internal actual val platformSpecificEntries: List<Displays> = emptyList()
+import kotlinx.serialization.Serializable
+
+@Serializable
+internal data object NavigationBarDisplay : Displays {
+    override val label: String = "NavigationBar"
+}
+
+internal actual val platformSpecificEntries: List<Displays> = listOf(
+    NavigationBarDisplay,
+)
