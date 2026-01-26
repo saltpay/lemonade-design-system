@@ -278,7 +278,7 @@ class _LemonadeDatePickerState extends State<LemonadeDatePicker> {
     // For allowAfterToday = false, we only allow going to a month that
     // has at least one day <= today.
     final nextMonth = _monthFromPage(_currentPageIndex + 1);
-    final firstDayNextMonth = DateTime(nextMonth.year, nextMonth.month, 1);
+    final firstDayNextMonth = DateTime(nextMonth.year, nextMonth.month);
 
     return !firstDayNextMonth.isAfter(_today);
   }
