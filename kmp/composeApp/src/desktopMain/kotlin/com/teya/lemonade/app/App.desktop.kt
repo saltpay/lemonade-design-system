@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.Display
+import com.teya.lemonade.Displays
 
 @Composable
 internal actual fun App() {
@@ -42,3 +43,6 @@ internal actual fun App() {
         }
     }
 }
+
+internal actual val platformScreens: Map<Displays, @Composable ((onNavigate: (Displays) -> Unit) -> Unit)> =
+    emptyMap()
