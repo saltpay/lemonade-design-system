@@ -35,6 +35,7 @@ class DatePickerExampleScreen extends StatefulWidget {
 class _DatePickerExampleScreenState extends State<DatePickerExampleScreen> {
   DateTime? selectedDate;
   DateTime? selectedDateFutureOnly;
+  DateTime? selectedDatePastOnly;
   DateTime? rangeStartDate;
   DateTime? rangeEndDate;
 
@@ -102,6 +103,35 @@ class _DatePickerExampleScreenState extends State<DatePickerExampleScreen> {
             if (selectedDateFutureOnly != null)
               Text(
                 'Selected: ${_formatDate(selectedDateFutureOnly!)}',
+                style: theme.typography.bodySmallMedium.copyWith(
+                  color: theme.colors.content.contentSecondary,
+                ),
+              ),
+            SizedBox(height: theme.spaces.spacing600),
+            ExampleRow(
+              label: 'Past dates only (allowAfterToday: false)',
+              children: [
+                Container(
+                  decoration: ShapeDecoration(
+                    color: theme.colors.background.bgSubtle,
+                    shape: theme.shapes.radius200,
+                  ),
+                  child: LemonadeDatePicker(
+                    monthHeaderFormatter: _formatMonthHeader,
+                    weekdayAbbreviations: _kWeekdayAbbreviations,
+                    allowAfterToday: false,
+                    onDateChanged: (DateTime newDate) {
+                      setState(() {
+                        selectedDatePastOnly = newDate;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            if (selectedDatePastOnly != null)
+              Text(
+                'Selected: ${_formatDate(selectedDatePastOnly!)}',
                 style: theme.typography.bodySmallMedium.copyWith(
                   color: theme.colors.content.contentSecondary,
                 ),
