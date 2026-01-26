@@ -559,7 +559,8 @@ class _MonthGrid extends StatelessWidget {
               !isDateRange &&
               selectedDate != null &&
               _sameDay(current, selectedDate!);
-          final isBeforeDisallowed = !allowBeforeToday && current.isBefore(today);
+          final isBeforeDisallowed =
+              !allowBeforeToday && current.isBefore(today);
           final isAfterDisallowed = !allowAfterToday && current.isAfter(today);
           final isDisabled = isBeforeDisallowed || isAfterDisallowed;
 

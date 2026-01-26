@@ -296,8 +296,7 @@ void main() {
                 widget.data != null &&
                 widget.data!.contains('202'),
           );
-          final headerBefore =
-              tester.widget<Text>(headerFinder.first).data;
+          final headerBefore = tester.widget<Text>(headerFinder.first).data;
 
           // Try to navigate to next month
           final rightChevron = find.byWidgetPredicate(
@@ -309,8 +308,7 @@ void main() {
           await tester.pumpAndSettle();
 
           // Header should remain unchanged (navigation disabled)
-          final headerAfter =
-              tester.widget<Text>(headerFinder.first).data;
+          final headerAfter = tester.widget<Text>(headerFinder.first).data;
           expect(headerAfter, equals(headerBefore));
         },
       );
