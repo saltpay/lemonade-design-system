@@ -80,7 +80,7 @@ class _DatePickerExampleScreenState extends State<DatePickerExampleScreen> {
               ),
             SizedBox(height: theme.spaces.spacing600),
             ExampleRow(
-              label: 'Future dates only',
+              label: 'Future dates only (minDate: today)',
               children: [
                 Container(
                   decoration: ShapeDecoration(
@@ -90,7 +90,7 @@ class _DatePickerExampleScreenState extends State<DatePickerExampleScreen> {
                   child: LemonadeDatePicker(
                     monthHeaderFormatter: _formatMonthHeader,
                     weekdayAbbreviations: _kWeekdayAbbreviations,
-                    allowBeforeToday: false,
+                    minDate: DateTime.now(),
                     onDateChanged: (DateTime newDate) {
                       setState(() {
                         selectedDateFutureOnly = newDate;
@@ -109,7 +109,7 @@ class _DatePickerExampleScreenState extends State<DatePickerExampleScreen> {
               ),
             SizedBox(height: theme.spaces.spacing600),
             ExampleRow(
-              label: 'Past dates only (allowAfterToday: false)',
+              label: 'Past dates only (maxDate: today)',
               children: [
                 Container(
                   decoration: ShapeDecoration(
@@ -119,7 +119,7 @@ class _DatePickerExampleScreenState extends State<DatePickerExampleScreen> {
                   child: LemonadeDatePicker(
                     monthHeaderFormatter: _formatMonthHeader,
                     weekdayAbbreviations: _kWeekdayAbbreviations,
-                    allowAfterToday: false,
+                    maxDate: DateTime.now(),
                     onDateChanged: (DateTime newDate) {
                       setState(() {
                         selectedDatePastOnly = newDate;

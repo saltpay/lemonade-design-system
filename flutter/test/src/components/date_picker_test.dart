@@ -159,144 +159,150 @@ void main() {
       expect(find.text(expectedHeader), findsOneWidget);
     });
 
-    group('allowBeforeToday', () {
-      testWidgets('allows selecting past dates when true', (tester) async {
+    group('minDate', () {
+      testWidgets('allows selecting dates on or after minDate', (tester) async {
         DateTime? selectedDate;
-        final pastDate = DateTime(2020, 1, 15);
+        final minDate = DateTime(2025, 6, 10);
 
         await tester.pumpLemonadeWidget(
           LemonadeDatePicker(
             monthHeaderFormatter: monthHeaderFormatter,
             weekdayAbbreviations: weekdayAbbreviations,
-            initialDate: pastDate,
+            initialDate: DateTime(2025, 6, 15),
+            minDate: minDate,
             onDateChanged: (date) {
               selectedDate = date;
             },
           ),
         );
 
-        // Tap on day 1
-        await tester.tap(find.text('1').first);
+        // Day 15 should be selectable (after minDate)
+        await tester.tap(find.text('15').first);
         await tester.pump();
 
         expect(selectedDate, isNotNull);
+        expect(selectedDate!.day, equals(15));
       });
 
-      testWidgets('prevents selecting past dates when false', (tester) async {
+      testWidgets('prevents selecting dates before minDate', (tester) async {
         DateTime? selectedDate;
-        // Use a date far in the future to have selectable days
-        final futureDate = DateTime(2030, 6, 15);
+        final minDate = DateTime(2025, 6, 10);
 
         await tester.pumpLemonadeWidget(
           LemonadeDatePicker(
             monthHeaderFormatter: monthHeaderFormatter,
             weekdayAbbreviations: weekdayAbbreviations,
-            initialDate: futureDate,
-            allowBeforeToday: false,
+            initialDate: DateTime(2025, 6, 15),
+            minDate: minDate,
             onDateChanged: (date) {
               selectedDate = date;
             },
           ),
         );
 
-        // Day 1 should be in the past relative to today
-        // Since we're viewing June 2030, all days should be selectable
-        await tester.tap(find.text('1').first);
+        // Day 5 should not be selectable (before minDate)
+        await tester.tap(find.text('5').first);
         await tester.pump();
 
-        expect(selectedDate, isNotNull);
+        expect(selectedDate, isNull);
+      });
+
+      testWidgets('clamps initialDate to minDate if before', (tester) async {
+        await tester.pumpLemonadeWidget(
+          LemonadeDatePicker(
+            monthHeaderFormatter: monthHeaderFormatter,
+            weekdayAbbreviations: weekdayAbbreviations,
+            initialDate: DateTime(2025, 2),
+            minDate: DateTime(2025, 6, 15),
+          ),
+        );
+
+        // Should show June 2025 (minDate's month) not February 2025
+        expect(find.text('June 2025'), findsOneWidget);
       });
     });
 
-    group('allowAfterToday', () {
-      testWidgets('allows selecting future dates when true', (tester) async {
+    group('maxDate', () {
+      testWidgets('allows selecting dates on or before maxDate', (
+        tester,
+      ) async {
         DateTime? selectedDate;
-        final futureDate = DateTime(2030, 6, 15);
+        final maxDate = DateTime(2025, 6, 20);
 
         await tester.pumpLemonadeWidget(
           LemonadeDatePicker(
             monthHeaderFormatter: monthHeaderFormatter,
             weekdayAbbreviations: weekdayAbbreviations,
-            initialDate: futureDate,
+            initialDate: DateTime(2025, 6, 15),
+            maxDate: maxDate,
             onDateChanged: (date) {
               selectedDate = date;
             },
           ),
         );
 
-        // Tap on day 20
-        await tester.tap(find.text('20').first);
+        // Day 15 should be selectable (before maxDate)
+        await tester.tap(find.text('15').first);
         await tester.pump();
 
         expect(selectedDate, isNotNull);
+        expect(selectedDate!.day, equals(15));
+      });
+
+      testWidgets('prevents selecting dates after maxDate', (tester) async {
+        DateTime? selectedDate;
+        final maxDate = DateTime(2025, 6, 10);
+
+        await tester.pumpLemonadeWidget(
+          LemonadeDatePicker(
+            monthHeaderFormatter: monthHeaderFormatter,
+            weekdayAbbreviations: weekdayAbbreviations,
+            initialDate: DateTime(2025, 6, 5),
+            maxDate: maxDate,
+            onDateChanged: (date) {
+              selectedDate = date;
+            },
+          ),
+        );
+
+        // Day 15 should not be selectable (after maxDate)
+        await tester.tap(find.text('15').first);
+        await tester.pump();
+
+        expect(selectedDate, isNull);
+      });
+
+      testWidgets('clamps initialDate to maxDate if after', (tester) async {
+        await tester.pumpLemonadeWidget(
+          LemonadeDatePicker(
+            monthHeaderFormatter: monthHeaderFormatter,
+            weekdayAbbreviations: weekdayAbbreviations,
+            initialDate: DateTime(2030, 12),
+            maxDate: DateTime(2025, 6, 15),
+          ),
+        );
+
+        // Should show June 2025 (maxDate's month) not December 2030
+        expect(find.text('June 2025'), findsOneWidget);
       });
 
       testWidgets(
-        'allows selecting past dates when allowAfterToday is false',
+        'disables next month navigation when at maxDate month',
         (tester) async {
-          DateTime? selectedDate;
-          // Use a date in the past
-          final pastDate = DateTime(2020, 1, 15);
+          final maxDate = DateTime(2025, 6, 15);
 
           await tester.pumpLemonadeWidget(
             LemonadeDatePicker(
               monthHeaderFormatter: monthHeaderFormatter,
               weekdayAbbreviations: weekdayAbbreviations,
-              initialDate: pastDate,
-              allowAfterToday: false,
-              onDateChanged: (date) {
-                selectedDate = date;
-              },
-            ),
-          );
-
-          // Since we're viewing January 2020, all days should be in the past
-          // and selectable when allowAfterToday is false
-          await tester.tap(find.text('10').first);
-          await tester.pump();
-
-          expect(selectedDate, isNotNull);
-        },
-      );
-
-      testWidgets(
-        'does not show future month when allowAfterToday is false',
-        (tester) async {
-          final futureDate = DateTime(2030, 6, 15);
-
-          await tester.pumpLemonadeWidget(
-            LemonadeDatePicker(
-              monthHeaderFormatter: monthHeaderFormatter,
-              weekdayAbbreviations: weekdayAbbreviations,
-              initialDate: futureDate,
-              allowAfterToday: false,
-            ),
-          );
-
-          // Should not show June 2030 (the provided initialDate)
-          expect(find.text('June 2030'), findsNothing);
-        },
-      );
-
-      testWidgets(
-        'disables next month navigation when allowAfterToday is false',
-        (tester) async {
-          await tester.pumpLemonadeWidget(
-            LemonadeDatePicker(
-              monthHeaderFormatter: monthHeaderFormatter,
-              weekdayAbbreviations: weekdayAbbreviations,
-              allowAfterToday: false,
+              initialDate: DateTime(2025, 6, 10),
+              maxDate: maxDate,
             ),
           );
 
           // Capture current header before tapping
-          final headerFinder = find.byWidgetPredicate(
-            (widget) =>
-                widget is Text &&
-                widget.data != null &&
-                widget.data!.contains('202'),
-          );
-          final headerBefore = tester.widget<Text>(headerFinder.first).data;
+          const headerBefore = 'June 2025';
+          expect(find.text(headerBefore), findsOneWidget);
 
           // Try to navigate to next month
           final rightChevron = find.byWidgetPredicate(
@@ -308,10 +314,49 @@ void main() {
           await tester.pumpAndSettle();
 
           // Header should remain unchanged (navigation disabled)
-          final headerAfter = tester.widget<Text>(headerFinder.first).data;
-          expect(headerAfter, equals(headerBefore));
+          expect(find.text(headerBefore), findsOneWidget);
         },
       );
+    });
+
+    group('minDate and maxDate combined', () {
+      testWidgets('restricts selection to date range', (tester) async {
+        DateTime? selectedDate;
+        final minDate = DateTime(2025, 6, 10);
+        final maxDate = DateTime(2025, 6, 20);
+
+        await tester.pumpLemonadeWidget(
+          LemonadeDatePicker(
+            monthHeaderFormatter: monthHeaderFormatter,
+            weekdayAbbreviations: weekdayAbbreviations,
+            initialDate: DateTime(2025, 6, 15),
+            minDate: minDate,
+            maxDate: maxDate,
+            onDateChanged: (date) {
+              selectedDate = date;
+            },
+          ),
+        );
+
+        // Day 15 should be selectable (within range)
+        await tester.tap(find.text('15').first);
+        await tester.pump();
+        expect(selectedDate, isNotNull);
+        expect(selectedDate!.day, equals(15));
+
+        // Reset
+        selectedDate = null;
+
+        // Day 5 should not be selectable (before minDate)
+        await tester.tap(find.text('5').first);
+        await tester.pump();
+        expect(selectedDate, isNull);
+
+        // Day 25 should not be selectable (after maxDate)
+        await tester.tap(find.text('25').first);
+        await tester.pump();
+        expect(selectedDate, isNull);
+      });
     });
 
     testWidgets('displays chevron navigation icons', (tester) async {
