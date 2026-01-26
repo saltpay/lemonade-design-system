@@ -26,6 +26,7 @@ export 'src/components/tag.dart';
 export 'src/components/text_field.dart';
 export 'src/components/tile.dart';
 export 'src/components/toast.dart';
+export 'src/components/toast_manager.dart';
 export 'src/foundation/assets.dart';
 export 'src/foundation/border.dart';
 export 'src/foundation/opacity.dart';
