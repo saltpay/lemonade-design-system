@@ -70,6 +70,7 @@ class LemonadeDatePicker extends StatefulWidget {
     this.initialDate,
     this.onDateChanged,
     this.allowBeforeToday = true,
+    this.allowAfterToday = true,
     this.semanticIdentifier,
     this.semanticLabel,
     this.isDateRange = false,
@@ -104,6 +105,14 @@ class LemonadeDatePicker extends StatefulWidget {
   /// be tapped. Defaults to true.
   /// {@endtemplate}
   final bool allowBeforeToday;
+
+  /// {@template LemonadeDatePicker.allowAfterToday}
+  /// Whether dates after today can be selected.
+  ///
+  /// When false, future dates are displayed with reduced opacity and cannot
+  /// be tapped. Defaults to true.
+  /// {@endtemplate}
+  final bool allowAfterToday;
 
   /// {@template LemonadeDatePicker.monthHeaderFormatter}
   /// Formatter for the month header.
@@ -214,6 +223,9 @@ class _LemonadeDatePickerState extends State<LemonadeDatePicker> {
     if (!widget.allowBeforeToday && effectiveInitial.isBefore(_today)) {
       effectiveInitial = _today;
     }
+    if (!widget.allowAfterToday && effectiveInitial.isAfter(_today)) {
+      effectiveInitial = _today;
+    }
 
     _baseMonth = DateTime(effectiveInitial.year, effectiveInitial.month);
     _centerPageIndex = _monthsTotal ~/ 2;
@@ -259,8 +271,20 @@ class _LemonadeDatePickerState extends State<LemonadeDatePicker> {
     );
   }
 
+  bool _canGoToNextMonth() {
+    if (_currentPageIndex >= _monthsTotal - 1) return false;
+    if (widget.allowAfterToday) return true;
+
+    // For allowAfterToday = false, we only allow going to a month that
+    // has at least one day <= today.
+    final nextMonth = _monthFromPage(_currentPageIndex + 1);
+    final firstDayNextMonth = DateTime(nextMonth.year, nextMonth.month, 1);
+
+    return !firstDayNextMonth.isAfter(_today);
+  }
+
   void _goToNextMonth() {
-    if (_currentPageIndex >= _monthsTotal - 1) return;
+    if (!_canGoToNextMonth()) return;
     _pageController.nextPage(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
@@ -312,9 +336,8 @@ class _LemonadeDatePickerState extends State<LemonadeDatePicker> {
     final visibleMonth = _monthFromPage(_currentPageIndex);
     final headerLabel = _formatMonthHeader(visibleMonth);
 
-    final isLastPage = _currentPageIndex == _monthsTotal - 1;
     final canGoPrev = _canGoToPreviousMonth();
-    final canGoNext = !isLastPage;
+    final canGoNext = _canGoToNextMonth();
 
     return Semantics(
       identifier: widget.semanticIdentifier,
@@ -413,6 +436,7 @@ class _LemonadeDatePickerState extends State<LemonadeDatePicker> {
                     baseTextStyle: baseTextStyle,
                     today: _today,
                     allowBeforeToday: widget.allowBeforeToday,
+                    allowAfterToday: widget.allowAfterToday,
                     onDateSelected: _handleDateSelected,
                     isDateRange: widget.isDateRange,
                     rangeStartDate: _rangeStartDate,
@@ -437,6 +461,7 @@ class _MonthGrid extends StatelessWidget {
     required this.onDateSelected,
     required this.today,
     required this.allowBeforeToday,
+    required this.allowAfterToday,
     required this.isDateRange,
     required this.rangeStartDate,
     required this.rangeEndDate,
@@ -449,6 +474,7 @@ class _MonthGrid extends StatelessWidget {
   final ValueChanged<DateTime> onDateSelected;
   final DateTime today;
   final bool allowBeforeToday;
+  final bool allowAfterToday;
   final bool isDateRange;
   final DateTime? rangeStartDate;
   final DateTime? rangeEndDate;
@@ -532,7 +558,9 @@ class _MonthGrid extends StatelessWidget {
               !isDateRange &&
               selectedDate != null &&
               _sameDay(current, selectedDate!);
-          final isDisabled = !allowBeforeToday && current.isBefore(today);
+          final isBeforeAllowed = !allowBeforeToday && current.isBefore(today);
+          final isAfterAllowed = !allowAfterToday && current.isAfter(today);
+          final isDisabled = isBeforeAllowed || isAfterAllowed;
 
           // Range states - only show range visuals when both dates selected
           final isRangeComplete =

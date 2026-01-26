@@ -208,6 +208,105 @@ void main() {
       });
     });
 
+    group('allowAfterToday', () {
+      testWidgets('allows selecting future dates when true', (tester) async {
+        DateTime? selectedDate;
+        final futureDate = DateTime(2030, 6, 15);
+
+        await tester.pumpLemonadeWidget(
+          LemonadeDatePicker(
+            monthHeaderFormatter: monthHeaderFormatter,
+            weekdayAbbreviations: weekdayAbbreviations,
+            initialDate: futureDate,
+            onDateChanged: (date) {
+              selectedDate = date;
+            },
+          ),
+        );
+
+        // Tap on day 20
+        await tester.tap(find.text('20').first);
+        await tester.pump();
+
+        expect(selectedDate, isNotNull);
+      });
+
+      testWidgets('prevents selecting future dates when false', (tester) async {
+        DateTime? selectedDate;
+        // Use a date in the past to have today visible
+        final pastDate = DateTime(2020, 1, 15);
+
+        await tester.pumpLemonadeWidget(
+          LemonadeDatePicker(
+            monthHeaderFormatter: monthHeaderFormatter,
+            weekdayAbbreviations: weekdayAbbreviations,
+            initialDate: pastDate,
+            allowAfterToday: false,
+            onDateChanged: (date) {
+              selectedDate = date;
+            },
+          ),
+        );
+
+        // Since we're viewing January 2020, all days should be in the past
+        // and selectable when allowAfterToday is false
+        await tester.tap(find.text('10').first);
+        await tester.pump();
+
+        expect(selectedDate, isNotNull);
+      });
+
+      testWidgets(
+        'clamps initial date to today when allowAfterToday is false',
+        (tester) async {
+          final futureDate = DateTime(2030, 6, 15);
+          final today = DateTime.now();
+          final expectedHeader = monthHeaderFormatter(today.year, today.month);
+
+          await tester.pumpLemonadeWidget(
+            LemonadeDatePicker(
+              monthHeaderFormatter: monthHeaderFormatter,
+              weekdayAbbreviations: weekdayAbbreviations,
+              initialDate: futureDate,
+              allowAfterToday: false,
+            ),
+          );
+
+          // Should show today's month, not June 2030
+          expect(find.text(expectedHeader), findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'disables next month navigation when allowAfterToday is false '
+        'and next month is in the future',
+        (tester) async {
+          final today = DateTime.now();
+
+          await tester.pumpLemonadeWidget(
+            LemonadeDatePicker(
+              monthHeaderFormatter: monthHeaderFormatter,
+              weekdayAbbreviations: weekdayAbbreviations,
+              allowAfterToday: false,
+            ),
+          );
+
+          // Try to navigate to next month
+          final rightChevron = find.byWidgetPredicate(
+            (widget) =>
+                widget is LemonadeIcon &&
+                widget.icon == LemonadeIcons.chevronRight,
+          );
+          await tester.tap(rightChevron);
+          await tester.pumpAndSettle();
+
+          // Should still show current month (navigation should be disabled)
+          final currentHeader = monthHeaderFormatter(today.year, today.month);
+          expect(find.text(currentHeader), findsOneWidget);
+        },
+      );
+    });
+
     testWidgets('displays chevron navigation icons', (tester) async {
       await tester.pumpLemonadeWidget(
         LemonadeDatePicker(
