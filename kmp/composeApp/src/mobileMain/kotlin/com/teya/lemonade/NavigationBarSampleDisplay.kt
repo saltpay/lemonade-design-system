@@ -10,7 +10,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIconButtonSize
 import com.teya.lemonade.core.LemonadeIcons
 
@@ -32,7 +31,7 @@ internal fun NavigationBarSampleDisplay() {
                 LemonadeUi.IconButton(
                     icon = LemonadeIcons.ChevronLeft,
                     contentDescription = "Back",
-                    size = LemonadeIconButtonSize.Medium,
+                    size = LemonadeIconButtonSize.Small,
                     onClick = { },
                 )
             },
@@ -40,7 +39,7 @@ internal fun NavigationBarSampleDisplay() {
                 LemonadeUi.IconButton(
                     icon = LemonadeIcons.EllipsisVertical,
                     contentDescription = "More",
-                    size = LemonadeIconButtonSize.Medium,
+                    size = LemonadeIconButtonSize.Small,
                     onClick = { },
                 )
             },
