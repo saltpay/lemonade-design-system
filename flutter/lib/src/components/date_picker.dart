@@ -19,7 +19,8 @@ typedef DateRangeChangedCallback =
 ///
 /// A [LemonadeDatePicker] provides a scrollable month view that allows users
 /// to select a date. It features smooth page animations between months and
-/// supports restricting selection to dates from today onwards.
+/// supports restricting selection to future dates only ([allowBeforeToday])
+/// or past dates only ([allowAfterToday]).
 ///
 /// The picker supports two modes:
 /// - **Single date mode** (default): Select a single date
@@ -558,9 +559,9 @@ class _MonthGrid extends StatelessWidget {
               !isDateRange &&
               selectedDate != null &&
               _sameDay(current, selectedDate!);
-          final isBeforeAllowed = !allowBeforeToday && current.isBefore(today);
-          final isAfterAllowed = !allowAfterToday && current.isAfter(today);
-          final isDisabled = isBeforeAllowed || isAfterAllowed;
+          final isBeforeDisallowed = !allowBeforeToday && current.isBefore(today);
+          final isAfterDisallowed = !allowAfterToday && current.isAfter(today);
+          final isDisabled = isBeforeDisallowed || isAfterDisallowed;
 
           // Range states - only show range visuals when both dates selected
           final isRangeComplete =
