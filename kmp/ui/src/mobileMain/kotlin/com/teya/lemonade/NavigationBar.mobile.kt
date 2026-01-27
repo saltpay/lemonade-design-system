@@ -5,15 +5,23 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 
@@ -62,49 +70,82 @@ internal fun CoreNavigationBar(
     variant: NavigationBarVariant,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(
-        modifier = modifier,
-    ) {
-        stickyHeader { _ ->
-            CoreNavigationBarContent(
-                leadingSlot = leadingSlot,
-                trailingSlot = trailingSlot,
-                label = label,
-                variant = variant,
-                modifier = Modifier
-                    .background(color = variant.backgroundColor)
-                    .fillMaxWidth()
-                    .padding(horizontal = LocalSpaces.current.spacing300)
-                    .padding(bottom = LocalSpaces.current.spacing200),
-            )
+    val listState = rememberLazyListState()
+    val labelTextVisibilityPercentage by remember {
+        derivedStateOf {
+            listState.layoutInfo.visibleItemsInfo
+                .firstOrNull { item -> item.index == 0 }
+                ?.let { labelItemInfo ->
+                    val percentageOffset =
+                        (labelItemInfo.size + labelItemInfo.offset).toFloat() / labelItemInfo.size
+                    percentageOffset.coerceIn(
+                        minimumValue = 0f,
+                        maximumValue = 1f,
+                    )
+                }
+                ?: 0f
         }
+    }
 
-        item {
-            LemonadeUi.Text(
-                text = label,
-                textStyle = LocalTypographies.current.headingLarge,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 2,
-                modifier = Modifier
-                    .background(color = variant.backgroundColor)
-                    .fillMaxWidth()
-                    .padding(horizontal = LocalSpaces.current.spacing300)
-                    .padding(bottom = LocalSpaces.current.spacing200),
-            )
-        }
+    Column(modifier = modifier) {
+        CoreNavigationBarContent(
+            leadingSlot = leadingSlot,
+            trailingSlot = trailingSlot,
+            label = label,
+            labelAlpha = 1f - labelTextVisibilityPercentage,
+            variant = variant,
+            modifier = Modifier
+                .background(color = variant.backgroundColor)
+                .fillMaxWidth()
+                .padding(horizontal = LocalSpaces.current.spacing300)
+                .padding(bottom = LocalSpaces.current.spacing200),
+        )
 
-        bottomSlot?.let { bottomContent ->
-            stickyHeader { _ ->
+        /**
+         * fixme - replace by LemonadeUi.Divider once it is created
+         */
+        Spacer(
+            modifier = Modifier
+                .alpha(alpha = 1f - labelTextVisibilityPercentage)
+                .background(color = LocalColors.current.border.borderNeutralMedium)
+                .fillMaxWidth()
+                .height(height = LocalBorderWidths.current.base.border25),
+        )
+
+        LazyColumn(
+            state = listState,
+        ) {
+            item {
                 Box(
-                    content = bottomContent,
                     modifier = Modifier
                         .background(color = variant.backgroundColor)
-                        .fillMaxWidth(),
-                )
+                        .fillMaxWidth()
+                        .padding(horizontal = LocalSpaces.current.spacing300)
+                        .padding(bottom = LocalSpaces.current.spacing200),
+                ) {
+                    LemonadeUi.Text(
+                        text = label,
+                        textStyle = LocalTypographies.current.headingLarge,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 2,
+                        modifier = Modifier.alpha(alpha = labelTextVisibilityPercentage),
+                    )
+                }
             }
-        }
 
-        content()
+            bottomSlot?.let { bottomContent ->
+                stickyHeader { _ ->
+                    Box(
+                        content = bottomContent,
+                        modifier = Modifier
+                            .background(color = variant.backgroundColor)
+                            .fillMaxWidth(),
+                    )
+                }
+            }
+
+            content()
+        }
     }
 }
 
@@ -113,6 +154,7 @@ internal fun CoreNavigationBarContent(
     leadingSlot: @Composable (BoxScope.() -> Unit)?,
     trailingSlot: @Composable (RowScope.() -> Unit)?,
     label: String,
+    labelAlpha: Float,
     variant: NavigationBarVariant,
     modifier: Modifier = Modifier,
 ) {
@@ -133,6 +175,7 @@ internal fun CoreNavigationBarContent(
             textStyle = LocalTypographies.current.headingXXSmall,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
+            modifier = Modifier.alpha(alpha = labelAlpha),
         )
 
         Row(

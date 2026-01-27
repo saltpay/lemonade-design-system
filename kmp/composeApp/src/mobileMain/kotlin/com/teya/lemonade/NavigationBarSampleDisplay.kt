@@ -25,7 +25,7 @@ internal fun NavigationBarSampleDisplay() {
         LemonadeUi.NavigationBar(
             label = "Navigation Bar",
             contentScrollState = scrollState,
-            variant = NavigationBarVariant.Default,
+            variant = NavigationBarVariant.Subtle,
             leadingSlot = {
                 LemonadeUi.IconButton(
                     icon = LemonadeIcons.ChevronLeft,
