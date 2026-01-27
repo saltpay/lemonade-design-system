@@ -4,10 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeIconButtonSize
@@ -25,8 +23,9 @@ internal fun NavigationBarSampleDisplay() {
             .navigationBarsPadding(),
     ) {
         LemonadeUi.NavigationBar(
-            title = "Navigation Bar",
+            label = "Navigation Bar",
             contentScrollState = scrollState,
+            variant = NavigationBarVariant.Default,
             leadingSlot = {
                 LemonadeUi.IconButton(
                     icon = LemonadeIcons.ChevronLeft,
@@ -43,18 +42,15 @@ internal fun NavigationBarSampleDisplay() {
                     onClick = { },
                 )
             },
+            content = {
+                item {
+                    LemonadeUi.Text(
+                        text = SAMPLE_TEXT,
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    )
+                }
+            }
         )
-
-        Column(
-            modifier = Modifier
-                .verticalScroll(state = scrollState)
-                .padding(LemonadeTheme.spaces.spacing400),
-        ) {
-            LemonadeUi.Text(
-                text = SAMPLE_TEXT,
-                textStyle = LemonadeTheme.typography.bodyMediumRegular,
-            )
-        }
     }
 }
 
