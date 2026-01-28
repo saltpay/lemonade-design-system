@@ -27,25 +27,28 @@ class _ResourceListItemScreenState extends State<ResourceListItemScreen> {
                 label: 'With addon',
                 children: [
                   LemonadeCard(
-                    padding: LemonadeCardPadding.xSmall,
                     child: Column(
                       children: [
-                        LemonadeResourceListItem(
-                          leadingSlot: (_) =>
-                              const LemonadeSymbolContainer.custom(
-                                child: LemonadeBrandLogo(
-                                  logo: LemonadeBrandLogos.mastercard,
+                        ...List.generate(
+                          3,
+                          (it) => LemonadeResourceListItem(
+                            leadingSlot: (_) =>
+                                const LemonadeSymbolContainer.custom(
+                                  child: LemonadeBrandLogo(
+                                    logo: LemonadeBrandLogos.mastercard,
+                                  ),
                                 ),
-                              ),
-                          label: 'Credit ···· 9074',
-                          description: '18:25 • Camden Corner',
-                          value: '£64.25',
-                          addonSlot: (_) => const LemonadeTag(
-                            label: 'Approved',
-                            voice: LemonadeTagVoice.positive,
-                            icon: LemonadeIcons.circleCheck,
+                            label: 'Credit ···· 9074',
+                            description: '18:25 • Camden Corner',
+                            value: '£64.25',
+                            addonSlot: (_) => const LemonadeTag(
+                              label: 'Approved',
+                              voice: LemonadeTagVoice.positive,
+                              icon: LemonadeIcons.circleCheck,
+                            ),
+                            showDivider: it < 2,
+                            onPressed: () => {},
                           ),
-                          onPressed: () => {},
                         ),
                       ],
                     ),
@@ -57,20 +60,23 @@ class _ResourceListItemScreenState extends State<ResourceListItemScreen> {
                 label: 'Without addon',
                 children: [
                   LemonadeCard(
-                    padding: LemonadeCardPadding.xSmall,
                     child: Column(
                       children: [
-                        LemonadeResourceListItem(
-                          leadingSlot: (_) =>
-                              const LemonadeSymbolContainer.custom(
-                                child: LemonadeBrandLogo(
-                                  logo: LemonadeBrandLogos.mastercard,
+                        ...List.generate(
+                          3,
+                          (it) => LemonadeResourceListItem(
+                            leadingSlot: (_) =>
+                                const LemonadeSymbolContainer.custom(
+                                  child: LemonadeBrandLogo(
+                                    logo: LemonadeBrandLogos.mastercard,
+                                  ),
                                 ),
-                              ),
-                          label: 'Credit ···· 9074',
-                          description: '18:25 • Camden Corner',
-                          value: '£64.25',
-                          onPressed: () => {},
+                            label: 'Credit ···· 9074',
+                            description: '18:25 • Camden Corner',
+                            value: '£64.25',
+                            showDivider: it < 2,
+                            onPressed: () => {},
+                          ),
                         ),
                       ],
                     ),
@@ -82,26 +88,29 @@ class _ResourceListItemScreenState extends State<ResourceListItemScreen> {
                 label: 'Disabled',
                 children: [
                   LemonadeCard(
-                    padding: LemonadeCardPadding.xSmall,
                     child: Column(
                       children: [
-                        LemonadeResourceListItem(
-                          leadingSlot: (_) =>
-                              const LemonadeSymbolContainer.custom(
-                                child: LemonadeBrandLogo(
-                                  logo: LemonadeBrandLogos.mastercard,
+                        ...List.generate(
+                          3,
+                          (it) => LemonadeResourceListItem(
+                            leadingSlot: (_) =>
+                                const LemonadeSymbolContainer.custom(
+                                  child: LemonadeBrandLogo(
+                                    logo: LemonadeBrandLogos.mastercard,
+                                  ),
                                 ),
-                              ),
-                          label: 'Credit ···· 9074',
-                          description: '18:25 • Camden Corner',
-                          value: '£64.25',
-                          addonSlot: (_) => const LemonadeTag(
-                            label: 'Approved',
-                            voice: LemonadeTagVoice.positive,
-                            icon: LemonadeIcons.circleCheck,
+                            label: 'Credit ···· 9074',
+                            description: '18:25 • Camden Corner',
+                            value: '£64.25',
+                            addonSlot: (_) => const LemonadeTag(
+                              label: 'Approved',
+                              voice: LemonadeTagVoice.positive,
+                              icon: LemonadeIcons.circleCheck,
+                            ),
+                            showDivider: it < 2,
+                            onPressed: () => {},
+                            enabled: false,
                           ),
-                          onPressed: () => {},
-                          enabled: false,
                         ),
                       ],
                     ),

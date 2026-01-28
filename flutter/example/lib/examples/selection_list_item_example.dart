@@ -34,7 +34,6 @@ class _SelectionListItemExampleScreenState
                 title: 'Single Selection (Radio)',
                 children: [
                   LemonadeCard(
-                    padding: LemonadeCardPadding.xSmall,
                     child: Column(
                       children: [
                         LemonadeSelectionListItem(
@@ -47,7 +46,7 @@ class _SelectionListItemExampleScreenState
                         ),
                         LemonadeSelectionListItem(
                           label: 'Option 2',
-                          supportText: 'With support text',
+                          // supportText: 'With support text',
                           type: LemonadeSelectionListItemType.single,
                           checked: _singleSelection == 1,
                           onPressed: () {
@@ -72,7 +71,6 @@ class _SelectionListItemExampleScreenState
                 title: 'Multiple Selection (Checkbox)',
                 children: [
                   LemonadeCard(
-                    padding: LemonadeCardPadding.xSmall,
                     child: Column(
                       children: [
                         LemonadeSelectionListItem(
@@ -128,7 +126,6 @@ class _SelectionListItemExampleScreenState
                 title: 'With Leading Icon',
                 children: [
                   LemonadeCard(
-                    padding: LemonadeCardPadding.xSmall,
                     child: Column(
                       children: [
                         LemonadeSelectionListItem(
@@ -161,7 +158,6 @@ class _SelectionListItemExampleScreenState
                 title: 'Toggle Selection (Switch)',
                 children: [
                   LemonadeCard(
-                    padding: LemonadeCardPadding.xSmall,
                     child: Column(
                       children: [
                         LemonadeSelectionListItem(
@@ -196,7 +192,6 @@ class _SelectionListItemExampleScreenState
                 title: 'Disabled State',
                 children: [
                   LemonadeCard(
-                    padding: LemonadeCardPadding.xSmall,
                     child: Column(
                       children: [
                         LemonadeSelectionListItem(
