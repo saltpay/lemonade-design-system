@@ -54,36 +54,23 @@ private val NavigationBarVariant.backgroundColor: Color
  */
 @Stable
 public class NavigationBarState internal constructor() {
-    /**
-     * The current scroll offset in pixels. Ranges from 0 (fully expanded)
-     * to [maxScrollOffset] (fully collapsed).
-     */
+
     internal var scrollOffset: Float by mutableFloatStateOf(0f)
         private set
 
-    /**
-     * Maximum scroll offset in pixels before the title is fully collapsed.
-     * Set internally after layout measurement.
-     */
     internal var maxScrollOffset: Float by mutableFloatStateOf(0f)
 
-    /**
-     * Progress of the collapse animation, ranging from 0f (fully expanded)
-     * to 1f (fully collapsed).
-     *
-     * Use this value to animate UI elements during the collapse transition.
-     */
     public val collapseProgress: Float by derivedStateOf {
         if (maxScrollOffset > 0f) {
-            (scrollOffset / maxScrollOffset).coerceIn(0f, 1f)
+            (scrollOffset / maxScrollOffset).coerceIn(
+                minimumValue = 0f,
+                maximumValue = 1f,
+            )
         } else {
             0f
         }
     }
 
-    /**
-     * The height reduction to apply to the expanded title area based on scroll.
-     */
     internal val heightOffset: Float by derivedStateOf {
         -scrollOffset
     }
@@ -91,6 +78,10 @@ public class NavigationBarState internal constructor() {
     /**
      * [NestedScrollConnection] that captures scroll events from child scrollable content.
      * Apply this to your scrollable content using [Modifier.nestedScroll][androidx.compose.ui.input.nestedscroll.nestedScroll].
+     *
+     * The scroll behavior is:
+     * - **Collapse (scroll down)**: Navigation bar collapses first, then list scrolls
+     * - **Expand (scroll up)**: List scrolls to top first, then navigation bar expands
      *
      * ## Usage
      * ```kotlin
@@ -104,13 +95,45 @@ public class NavigationBarState internal constructor() {
      * ```
      */
     public val nestedScrollConnection: NestedScrollConnection = object : NestedScrollConnection {
-        override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+        override fun onPreScroll(
+            available: Offset,
+            source: NestedScrollSource,
+        ): Offset {
             val delta = available.y
-            val newOffset = scrollOffset - delta
-            val previousOffset = scrollOffset
-            scrollOffset = newOffset.coerceIn(0f, maxScrollOffset)
-            val consumed = previousOffset - scrollOffset
-            return Offset(0f, consumed)
+            if (delta < 0 && scrollOffset < maxScrollOffset) {
+                val newOffset = scrollOffset - delta
+                val previousOffset = scrollOffset
+                scrollOffset = newOffset.coerceIn(
+                    minimumValue = 0f,
+                    maximumValue = maxScrollOffset,
+                )
+                return Offset(
+                    x = 0f,
+                    y = previousOffset - scrollOffset,
+                )
+            }
+            return Offset.Zero
+        }
+
+        override fun onPostScroll(
+            consumed: Offset,
+            available: Offset,
+            source: NestedScrollSource,
+        ): Offset {
+            val delta = available.y
+            if (delta > 0 && scrollOffset > 0f) {
+                val newOffset = scrollOffset - delta
+                val previousOffset = scrollOffset
+                scrollOffset = newOffset.coerceIn(
+                    minimumValue = 0f,
+                    maximumValue = maxScrollOffset,
+                )
+                return Offset(
+                    x = 0f,
+                    y = previousOffset - scrollOffset,
+                )
+            }
+            return Offset.Zero
         }
     }
 }
@@ -150,7 +173,7 @@ public fun rememberNavigationBarState(): NavigationBarState {
  * into a smaller inline title as the user scrolls through content.
  *
  * The NavigationBar works with external scrollable content through [NestedScrollConnection].
- * Use [rememberNavigationBarState] to create the state and apply its [nestedScrollConnection]
+ * Use [rememberNavigationBarState] to create the state and apply its [NavigationBarState.nestedScrollConnection]
  * [NavigationBarState.nestedScrollConnection] to your scrollable content via
  * [Modifier.nestedScroll][androidx.compose.ui.input.nestedscroll.nestedScroll].
  *
@@ -207,6 +230,27 @@ public fun LemonadeUi.NavigationBar(
     leadingSlot: @Composable (BoxScope.() -> Unit)? = null,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
+) {
+    CoreNavigationBar(
+        label = label,
+        state = state,
+        variant = variant,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        bottomSlot = bottomSlot,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun CoreNavigationBar(
+    label: String,
+    state: NavigationBarState,
+    variant: NavigationBarVariant,
+    leadingSlot: @Composable (BoxScope.() -> Unit)?,
+    trailingSlot: @Composable (RowScope.() -> Unit)?,
+    bottomSlot: @Composable (BoxScope.() -> Unit)?,
+    modifier: Modifier = Modifier,
 ) {
     NavigationBarLayout(
         state = state,
@@ -287,7 +331,7 @@ internal fun NavigationBarLayout(
 
             expandedTitle(
                 Modifier
-                    .layoutId(LAYOUT_ID_EXPANDED_TITLE)
+                    .layoutId(layoutId = LAYOUT_ID_EXPANDED_TITLE)
                     .graphicsLayer {
                         translationY = state.heightOffset
                         alpha = 1f - state.collapseProgress
@@ -302,25 +346,25 @@ internal fun NavigationBarLayout(
         },
         measurePolicy = { measurables, constraints ->
             val fixedHeaderPlaceable = measurables
-                .first { it.layoutId == LAYOUT_ID_FIXED_HEADER }
-                .measure(constraints)
+                .first { measurable -> measurable.layoutId == LAYOUT_ID_FIXED_HEADER }
+                .measure(constraints = constraints)
 
             val dividerPlaceable = measurables
-                .first { it.layoutId == LAYOUT_ID_DIVIDER }
-                .measure(constraints)
+                .first { measurable -> measurable.layoutId == LAYOUT_ID_DIVIDER }
+                .measure(constraints = constraints)
 
             val expandedTitlePlaceable = measurables
-                .first { it.layoutId == LAYOUT_ID_EXPANDED_TITLE }
-                .measure(constraints)
+                .first { measurable -> measurable.layoutId == LAYOUT_ID_EXPANDED_TITLE }
+                .measure(constraints = constraints)
 
             val bottomSlotPlaceable = measurables
-                .find { it.layoutId == LAYOUT_ID_BOTTOM_SLOT }
-                ?.measure(constraints)
+                .find { measurable -> measurable.layoutId == LAYOUT_ID_BOTTOM_SLOT }
+                ?.measure(constraints = constraints)
 
             state.maxScrollOffset = expandedTitlePlaceable.height.toFloat()
 
             val visibleExpandedTitleHeight = (expandedTitlePlaceable.height + state.heightOffset)
-                .coerceAtLeast(0f)
+                .coerceAtLeast(minimumValue = 0f)
                 .roundToInt()
 
             val totalHeight = fixedHeaderPlaceable.height +
@@ -328,19 +372,34 @@ internal fun NavigationBarLayout(
                     visibleExpandedTitleHeight +
                     (bottomSlotPlaceable?.height ?: 0)
 
-            layout(constraints.maxWidth, totalHeight) {
+            layout(
+                width = constraints.maxWidth,
+                height = totalHeight,
+            ) {
                 var yPosition = 0
 
-                fixedHeaderPlaceable.placeRelative(0, yPosition)
+                fixedHeaderPlaceable.placeRelative(
+                    x = 0,
+                    y = yPosition,
+                )
                 yPosition += fixedHeaderPlaceable.height
 
-                dividerPlaceable.placeRelative(0, yPosition)
+                dividerPlaceable.placeRelative(
+                    x = 0,
+                    y = yPosition,
+                )
                 yPosition += dividerPlaceable.height
 
-                expandedTitlePlaceable.placeRelative(0, yPosition)
+                expandedTitlePlaceable.placeRelative(
+                    x = 0,
+                    y = yPosition,
+                )
                 yPosition += visibleExpandedTitleHeight
 
-                bottomSlotPlaceable?.placeRelative(0, yPosition)
+                bottomSlotPlaceable?.placeRelative(
+                    x = 0,
+                    y = yPosition,
+                )
             }
         }
     )
