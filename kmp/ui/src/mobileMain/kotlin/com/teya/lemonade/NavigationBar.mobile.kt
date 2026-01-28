@@ -289,6 +289,9 @@ public fun LemonadeUi.NavigationBar(
         collapsedLabel = collapsedLabel,
         state = state,
         variant = variant,
+        modifier = modifier,
+        trailingSlot = trailingSlot,
+        bottomSlot = bottomSlot,
         leadingSlot = {
             if (navigationAction != null && onNavigationActionClicked != null) {
                 val interactionSource = remember { MutableInteractionSource() }
@@ -324,9 +327,21 @@ public fun LemonadeUi.NavigationBar(
                 }
             }
         },
-        trailingSlot = trailingSlot,
-        bottomSlot = bottomSlot,
-        modifier = modifier,
+        collapsableSlot = { expandedModifier ->
+            Box(
+                modifier = expandedModifier
+                    .fillMaxWidth()
+                    .padding(horizontal = LocalSpaces.current.spacing300)
+                    .padding(bottom = LocalSpaces.current.spacing200),
+            ) {
+                LemonadeUi.Text(
+                    text = label,
+                    textStyle = LocalTypographies.current.headingLarge,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 2,
+                )
+            }
+        },
     )
 }
 
@@ -338,6 +353,7 @@ private fun CoreNavigationBar(
     variant: NavigationBarVariant,
     leadingSlot: @Composable (BoxScope.() -> Unit)?,
     trailingSlot: @Composable (RowScope.() -> Unit)?,
+    collapsableSlot: @Composable (modifier: Modifier) -> Unit,
     bottomSlot: @Composable (BoxScope.() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
@@ -358,21 +374,7 @@ private fun CoreNavigationBar(
                     .padding(bottom = LocalSpaces.current.spacing200),
             )
         },
-        collapsableSlot = { expandedModifier ->
-            Box(
-                modifier = expandedModifier
-                    .fillMaxWidth()
-                    .padding(horizontal = LocalSpaces.current.spacing300)
-                    .padding(bottom = LocalSpaces.current.spacing200),
-            ) {
-                LemonadeUi.Text(
-                    text = label,
-                    textStyle = LocalTypographies.current.headingLarge,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 2,
-                )
-            }
-        },
+        collapsableSlot = collapsableSlot,
         bottomStickySlot = bottomSlot?.let { content ->
             { bottomSlotModifier ->
                 Box(
