@@ -263,9 +263,9 @@ public fun rememberNavigationBarState(): NavigationBarState {
 @Composable
 public fun LemonadeUi.NavigationBar(
     label: String,
-    state: NavigationBarState,
     variant: NavigationBarVariant,
     modifier: Modifier = Modifier,
+    state: NavigationBarState = rememberNavigationBarState(),
     collapsedLabel: String? = null,
     leadingSlot: @Composable (BoxScope.() -> Unit)? = null,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
