@@ -3,17 +3,20 @@ package com.teya.lemonade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.teya.lemonade.core.LemonadeIconButtonSize
 import com.teya.lemonade.core.LemonadeIcons
 
 @Composable
 internal fun NavigationBarSampleDisplay() {
-    val scrollState = rememberScrollState()
+    val navigationBarState = rememberNavigationBarState()
 
     Column(
         modifier = Modifier
@@ -24,7 +27,7 @@ internal fun NavigationBarSampleDisplay() {
     ) {
         LemonadeUi.NavigationBar(
             label = "Navigation Bar",
-            contentScrollState = scrollState,
+            state = navigationBarState,
             variant = NavigationBarVariant.Subtle,
             leadingSlot = {
                 LemonadeUi.IconButton(
@@ -42,15 +45,23 @@ internal fun NavigationBarSampleDisplay() {
                     onClick = { },
                 )
             },
-            content = {
-                item {
-                    LemonadeUi.Text(
-                        text = SAMPLE_TEXT,
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    )
-                }
-            }
         )
+
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .nestedScroll(navigationBarState.nestedScrollConnection)
+                .background(LemonadeTheme.colors.background.bgSubtle),
+        ) {
+            item {
+                LemonadeUi.Text(
+                    text = SAMPLE_TEXT,
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    modifier = Modifier.padding(horizontal = LemonadeTheme.spaces.spacing300),
+                )
+            }
+        }
     }
 }
 
