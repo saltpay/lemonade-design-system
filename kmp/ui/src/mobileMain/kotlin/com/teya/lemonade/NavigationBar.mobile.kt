@@ -32,23 +32,11 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.zIndex
-import kotlin.math.roundToInt
+import com.teya.lemonade.core.NavigationBarVariant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
-public enum class NavigationBarVariant {
-    Default,
-    Subtle,
-}
-
-private val NavigationBarVariant.backgroundColor: Color
-    @Composable get() {
-        return when (this) {
-            NavigationBarVariant.Default -> LocalColors.current.background.bgDefault
-            NavigationBarVariant.Subtle -> LocalColors.current.background.bgSubtle
-        }
-    }
+import kotlin.math.roundToInt
 
 /**
  * State holder for [NavigationBar][LemonadeUi.NavigationBar] that manages the collapse/expand
@@ -262,7 +250,8 @@ public fun rememberNavigationBarState(): NavigationBarState {
  * }
  * ```
  *
- * @param label The title text displayed in both expanded (large) and collapsed (small) states.
+ * @param label The title text displayed in both expanded (large) and collapsed (small - if [collapsedLabel] is null) states.
+ * @param collapsedLabel The title text displayed in collapsed (small) state. If not set it will display [label] instead.
  * @param state The [NavigationBarState] that manages collapse behavior. Create with [rememberNavigationBarState].
  * @param variant Visual variant of the navigation bar. See [NavigationBarVariant].
  * @param modifier [Modifier] applied to the navigation bar container.
@@ -277,12 +266,14 @@ public fun LemonadeUi.NavigationBar(
     state: NavigationBarState,
     variant: NavigationBarVariant,
     modifier: Modifier = Modifier,
+    collapsedLabel: String? = null,
     leadingSlot: @Composable (BoxScope.() -> Unit)? = null,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
     CoreNavigationBar(
         label = label,
+        collapsedLabel = collapsedLabel,
         state = state,
         variant = variant,
         leadingSlot = leadingSlot,
@@ -295,6 +286,7 @@ public fun LemonadeUi.NavigationBar(
 @Composable
 private fun CoreNavigationBar(
     label: String,
+    collapsedLabel: String?,
     state: NavigationBarState,
     variant: NavigationBarVariant,
     leadingSlot: @Composable (BoxScope.() -> Unit)?,
@@ -309,7 +301,7 @@ private fun CoreNavigationBar(
             CoreNavigationBarContent(
                 leadingSlot = leadingSlot,
                 trailingSlot = trailingSlot,
-                label = label,
+                label = collapsedLabel ?: label,
                 labelAlpha = state.collapseProgress,
                 variant = variant,
                 modifier = headerModifier
@@ -434,11 +426,6 @@ internal fun NavigationBarLayout(
                 )
                 yPosition += fixedHeaderPlaceable.height
 
-                dividerPlaceable.placeRelative(
-                    x = 0,
-                    y = yPosition,
-                )
-                yPosition += dividerPlaceable.height
 
                 expandedTitlePlaceable.placeRelative(
                     x = 0,
@@ -447,6 +434,12 @@ internal fun NavigationBarLayout(
                 yPosition += visibleExpandedTitleHeight
 
                 bottomSlotPlaceable?.placeRelative(
+                    x = 0,
+                    y = yPosition,
+                )
+                yPosition += bottomSlotPlaceable?.height ?: 0
+
+                dividerPlaceable.placeRelative(
                     x = 0,
                     y = yPosition,
                 )
@@ -496,3 +489,11 @@ internal fun CoreNavigationBarContent(
         }
     }
 }
+
+private val NavigationBarVariant.backgroundColor: Color
+    @Composable get() {
+        return when (this) {
+            NavigationBarVariant.Default -> LocalColors.current.background.bgDefault
+            NavigationBarVariant.Subtle -> LocalColors.current.background.bgSubtle
+        }
+    }

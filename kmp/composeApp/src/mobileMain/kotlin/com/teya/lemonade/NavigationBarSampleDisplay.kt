@@ -15,6 +15,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.teya.lemonade.core.LemonadeIconButtonSize
 import com.teya.lemonade.core.LemonadeIconButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.NavigationBarVariant
 import kotlinx.coroutines.launch
 
 @Composable
@@ -31,6 +32,7 @@ internal fun NavigationBarSampleDisplay() {
     ) {
         LemonadeUi.NavigationBar(
             label = "Navigation Bar",
+            collapsedLabel = "Collapsed Navigation Bar",
             state = navigationBarState,
             variant = NavigationBarVariant.Subtle,
             leadingSlot = {
