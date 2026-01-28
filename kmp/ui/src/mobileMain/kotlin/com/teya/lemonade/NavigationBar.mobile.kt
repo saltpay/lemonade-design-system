@@ -1,9 +1,13 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -32,9 +36,13 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.zIndex
+import com.teya.lemonade.core.LemonadeAssetSize
+import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.NavigationBarAction
 import com.teya.lemonade.core.NavigationBarVariant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -257,8 +265,9 @@ public fun rememberNavigationBarState(): NavigationBarState {
  * @param collapsedLabel The title text displayed in collapsed (small) state. If not set it will display [label] instead.
  * @param state The [NavigationBarState] that manages collapse behavior. Create with [rememberNavigationBarState].
  * @param variant Visual variant of the navigation bar. See [NavigationBarVariant].
+ * @param navigationAction Visual variant of the navigation bar's action. See [NavigationBarAction].
+ * @param onNavigationActionClicked Callback triggered when the [navigationAction] visual representation is clicked.
  * @param modifier [Modifier] applied to the navigation bar container.
- * @param leadingSlot Optional composable displayed at the start of the fixed header (typically a back button).
  * @param trailingSlot Optional composable displayed at the end of the fixed header (typically action buttons).
  * @param bottomSlot Optional composable displayed below the expanded title. This content remains
  *        visible and acts as a sticky area when fully collapsed.
@@ -270,7 +279,8 @@ public fun LemonadeUi.NavigationBar(
     modifier: Modifier = Modifier,
     state: NavigationBarState = rememberNavigationBarState(),
     collapsedLabel: String? = null,
-    leadingSlot: @Composable (BoxScope.() -> Unit)? = null,
+    navigationAction: NavigationBarAction? = null,
+    onNavigationActionClicked: (() -> Unit)? = null,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
@@ -279,7 +289,41 @@ public fun LemonadeUi.NavigationBar(
         collapsedLabel = collapsedLabel,
         state = state,
         variant = variant,
-        leadingSlot = leadingSlot,
+        leadingSlot = {
+            if (navigationAction != null && onNavigationActionClicked != null) {
+                val interactionSource = remember { MutableInteractionSource() }
+                val isPressed by interactionSource.collectIsPressedAsState()
+                val backgroundColor by animateColorAsState(
+                    targetValue = when {
+                        isPressed -> LocalColors.current.interaction.bgNeutralSubtlePressed
+                        else -> LocalColors.current.interaction.bgNeutralSubtlePressed.copy(
+                            alpha = LocalOpacities.current.base.opacity0,
+                        )
+                    }
+                )
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .matchParentSize()
+                        .background(
+                            color = backgroundColor,
+                            shape = LocalShapes.current.radius300,
+                        )
+                        .clickable(
+                            role = Role.Button,
+                            onClick = onNavigationActionClicked,
+                            interactionSource = interactionSource,
+                            indication = null,
+                        )
+                ) {
+                    LemonadeUi.Icon(
+                        icon = navigationAction.icon,
+                        contentDescription = navigationAction.name,
+                        size = LemonadeAssetSize.Medium,
+                    )
+                }
+            }
+        },
         trailingSlot = trailingSlot,
         bottomSlot = bottomSlot,
         modifier = modifier,
@@ -502,5 +546,13 @@ private val NavigationBarVariant.backgroundColor: Color
         return when (this) {
             NavigationBarVariant.Default -> LocalColors.current.background.bgDefault
             NavigationBarVariant.Subtle -> LocalColors.current.background.bgSubtle
+        }
+    }
+
+private val NavigationBarAction.icon: LemonadeIcons
+    @Composable get() {
+        return when (this) {
+            NavigationBarAction.Back -> LemonadeIcons.ArrowLeft
+            NavigationBarAction.Close -> LemonadeIcons.CircleX
         }
     }

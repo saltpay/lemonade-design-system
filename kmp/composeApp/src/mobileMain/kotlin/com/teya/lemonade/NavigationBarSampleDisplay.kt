@@ -15,6 +15,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.teya.lemonade.core.LemonadeIconButtonSize
 import com.teya.lemonade.core.LemonadeIconButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.NavigationBarAction
 import com.teya.lemonade.core.NavigationBarVariant
 import kotlinx.coroutines.launch
 
@@ -35,21 +36,14 @@ internal fun NavigationBarSampleDisplay() {
             collapsedLabel = "Collapsed Navigation Bar",
             state = navigationBarState,
             variant = NavigationBarVariant.Subtle,
-            leadingSlot = {
-                LemonadeUi.IconButton(
-                    icon = LemonadeIcons.ChevronLeft,
-                    variant = LemonadeIconButtonVariant.Ghost,
-                    contentDescription = "Back",
-                    size = LemonadeIconButtonSize.Small,
-                    onClick = { },
-                )
-            },
+            navigationAction = NavigationBarAction.Back,
+            onNavigationActionClicked = { /* Action Clicked */ },
             trailingSlot = {
                 LemonadeUi.IconButton(
                     icon = LemonadeIcons.ChevronDown,
                     variant = LemonadeIconButtonVariant.Ghost,
                     contentDescription = "Expand",
-                    size = LemonadeIconButtonSize.Small,
+                    size = LemonadeIconButtonSize.Medium,
                     onClick = {
                         coroutineScope.launch {
                             navigationBarState.expand()
@@ -60,7 +54,7 @@ internal fun NavigationBarSampleDisplay() {
                     icon = LemonadeIcons.ChevronTop,
                     variant = LemonadeIconButtonVariant.Ghost,
                     contentDescription = "Collapse",
-                    size = LemonadeIconButtonSize.Small,
+                    size = LemonadeIconButtonSize.Medium,
                     onClick = {
                         coroutineScope.launch {
                             navigationBarState.collapse()

@@ -4,3 +4,8 @@ public enum class NavigationBarVariant {
     Default,
     Subtle,
 }
+
+public enum class NavigationBarAction {
+    Back,
+    Close,
+}
