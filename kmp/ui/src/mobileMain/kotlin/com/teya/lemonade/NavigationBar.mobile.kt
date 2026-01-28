@@ -331,8 +331,11 @@ public fun LemonadeUi.NavigationBar(
             Box(
                 modifier = expandedModifier
                     .fillMaxWidth()
-                    .padding(horizontal = LocalSpaces.current.spacing300)
-                    .padding(bottom = LocalSpaces.current.spacing200),
+                    .padding(horizontal = LocalSpaces.current.spacing400)
+                    .padding(
+                        top = LocalSpaces.current.spacing50,
+                        bottom = LocalSpaces.current.spacing200,
+                    ),
             ) {
                 LemonadeUi.Text(
                     text = label,
@@ -370,8 +373,10 @@ private fun CoreNavigationBar(
                 modifier = headerModifier
                     .background(color = variant.backgroundColor)
                     .zIndex(zIndex = 1f)
-                    .padding(horizontal = LocalSpaces.current.spacing300)
-                    .padding(bottom = LocalSpaces.current.spacing200),
+                    .padding(
+                        horizontal = LocalSpaces.current.spacing200,
+                        vertical = LocalSpaces.current.spacing50,
+                    ),
             )
         },
         collapsableSlot = collapsableSlot,
@@ -533,10 +538,7 @@ internal fun CoreNavigationBarContent(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.requiredHeightIn(max = LocalSizes.current.size1000),
-            horizontalArrangement = Arrangement.spacedBy(
-                space = LocalSpaces.current.spacing200,
-                alignment = Alignment.End,
-            ),
+            horizontalArrangement = Arrangement.End,
         ) {
             trailingSlot?.invoke(this)
         }
