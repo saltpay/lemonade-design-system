@@ -557,6 +557,6 @@ private val NavigationBarAction.icon: LemonadeIcons
     @Composable get() {
         return when (this) {
             NavigationBarAction.Back -> LemonadeIcons.ArrowLeft
-            NavigationBarAction.Close -> LemonadeIcons.CircleX
+            NavigationBarAction.Close -> LemonadeIcons.Times
         }
     }

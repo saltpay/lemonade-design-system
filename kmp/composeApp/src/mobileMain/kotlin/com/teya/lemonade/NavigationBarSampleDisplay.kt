@@ -36,7 +36,7 @@ internal fun NavigationBarSampleDisplay() {
             collapsedLabel = "Collapsed Navigation Bar",
             state = navigationBarState,
             variant = NavigationBarVariant.Subtle,
-            navigationAction = NavigationBarAction.Back,
+            navigationAction = NavigationBarAction.Close,
             onNavigationActionClicked = { /* Action Clicked */ },
             trailingSlot = {
                 LemonadeUi.IconButton(
