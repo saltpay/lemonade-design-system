@@ -1,5 +1,8 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +33,9 @@ import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.zIndex
 import kotlin.math.roundToInt
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 public enum class NavigationBarVariant {
     Default,
@@ -55,8 +61,12 @@ private val NavigationBarVariant.backgroundColor: Color
 @Stable
 public class NavigationBarState internal constructor() {
 
-    internal var scrollOffset: Float by mutableFloatStateOf(0f)
-        private set
+    private val scrollOffsetAnimatable = Animatable(initialValue = 0f)
+
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+
+    internal val scrollOffset: Float
+        get() = scrollOffsetAnimatable.value
 
     internal var maxScrollOffset: Float by mutableFloatStateOf(0f)
 
@@ -73,6 +83,40 @@ public class NavigationBarState internal constructor() {
 
     internal val heightOffset: Float by derivedStateOf {
         -scrollOffset
+    }
+
+    /**
+     * Animates the navigation bar to the fully collapsed state.
+     * Does nothing if already fully collapsed.
+     *
+     * @param animationSpec The animation specification to use. Defaults to a 300ms tween.
+     */
+    public suspend fun collapse(
+        animationSpec: AnimationSpec<Float> = tween(durationMillis = 300),
+    ) {
+        if (scrollOffset < maxScrollOffset) {
+            scrollOffsetAnimatable.animateTo(
+                targetValue = maxScrollOffset,
+                animationSpec = animationSpec,
+            )
+        }
+    }
+
+    /**
+     * Animates the navigation bar to the fully expanded state.
+     * Does nothing if already fully expanded.
+     *
+     * @param animationSpec The animation specification to use. Defaults to a 300ms tween.
+     */
+    public suspend fun expand(
+        animationSpec: AnimationSpec<Float> = tween(durationMillis = 300),
+    ) {
+        if (scrollOffset > 0f) {
+            scrollOffsetAnimatable.animateTo(
+                targetValue = 0f,
+                animationSpec = animationSpec,
+            )
+        }
     }
 
     /**
@@ -103,13 +147,16 @@ public class NavigationBarState internal constructor() {
             if (delta < 0 && scrollOffset < maxScrollOffset) {
                 val newOffset = scrollOffset - delta
                 val previousOffset = scrollOffset
-                scrollOffset = newOffset.coerceIn(
+                val targetOffset = newOffset.coerceIn(
                     minimumValue = 0f,
                     maximumValue = maxScrollOffset,
                 )
+                coroutineScope.launch {
+                    scrollOffsetAnimatable.snapTo(targetValue = targetOffset)
+                }
                 return Offset(
                     x = 0f,
-                    y = previousOffset - scrollOffset,
+                    y = previousOffset - targetOffset,
                 )
             }
             return Offset.Zero
@@ -124,13 +171,16 @@ public class NavigationBarState internal constructor() {
             if (delta > 0 && scrollOffset > 0f) {
                 val newOffset = scrollOffset - delta
                 val previousOffset = scrollOffset
-                scrollOffset = newOffset.coerceIn(
+                val targetOffset = newOffset.coerceIn(
                     minimumValue = 0f,
                     maximumValue = maxScrollOffset,
                 )
+                coroutineScope.launch {
+                    scrollOffsetAnimatable.snapTo(targetValue = targetOffset)
+                }
                 return Offset(
                     x = 0f,
-                    y = previousOffset - scrollOffset,
+                    y = previousOffset - targetOffset,
                 )
             }
             return Offset.Zero

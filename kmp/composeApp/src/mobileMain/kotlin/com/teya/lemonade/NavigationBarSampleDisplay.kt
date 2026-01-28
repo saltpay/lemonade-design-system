@@ -9,14 +9,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.teya.lemonade.core.LemonadeIconButtonSize
+import com.teya.lemonade.core.LemonadeIconButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun NavigationBarSampleDisplay() {
     val navigationBarState = rememberNavigationBarState()
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -32,6 +36,7 @@ internal fun NavigationBarSampleDisplay() {
             leadingSlot = {
                 LemonadeUi.IconButton(
                     icon = LemonadeIcons.ChevronLeft,
+                    variant = LemonadeIconButtonVariant.Ghost,
                     contentDescription = "Back",
                     size = LemonadeIconButtonSize.Small,
                     onClick = { },
@@ -39,10 +44,26 @@ internal fun NavigationBarSampleDisplay() {
             },
             trailingSlot = {
                 LemonadeUi.IconButton(
-                    icon = LemonadeIcons.EllipsisVertical,
-                    contentDescription = "More",
+                    icon = LemonadeIcons.ChevronDown,
+                    variant = LemonadeIconButtonVariant.Ghost,
+                    contentDescription = "Expand",
                     size = LemonadeIconButtonSize.Small,
-                    onClick = { },
+                    onClick = {
+                        coroutineScope.launch {
+                            navigationBarState.expand()
+                        }
+                    },
+                )
+                LemonadeUi.IconButton(
+                    icon = LemonadeIcons.ChevronTop,
+                    variant = LemonadeIconButtonVariant.Ghost,
+                    contentDescription = "Collapse",
+                    size = LemonadeIconButtonSize.Small,
+                    onClick = {
+                        coroutineScope.launch {
+                            navigationBarState.collapse()
+                        }
+                    },
                 )
             },
         )
