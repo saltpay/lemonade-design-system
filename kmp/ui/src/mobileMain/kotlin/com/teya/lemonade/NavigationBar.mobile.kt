@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeightIn
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
@@ -30,6 +32,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.zIndex
 import com.teya.lemonade.core.NavigationBarVariant
@@ -297,7 +300,7 @@ private fun CoreNavigationBar(
     NavigationBarLayout(
         state = state,
         modifier = modifier.background(color = variant.backgroundColor),
-        fixedHeader = { headerModifier ->
+        fixedHeaderSlot = { headerModifier ->
             CoreNavigationBarContent(
                 leadingSlot = leadingSlot,
                 trailingSlot = trailingSlot,
@@ -311,16 +314,7 @@ private fun CoreNavigationBar(
                     .padding(bottom = LocalSpaces.current.spacing200),
             )
         },
-        divider = { dividerModifier ->
-            Spacer(
-                modifier = dividerModifier
-                    .alpha(alpha = state.collapseProgress)
-                    .fillMaxWidth()
-                    .background(color = LocalColors.current.border.borderNeutralMedium)
-                    .height(height = LocalBorderWidths.current.base.border25),
-            )
-        },
-        expandedTitle = { expandedModifier ->
+        collapsableSlot = { expandedModifier ->
             Box(
                 modifier = expandedModifier
                     .fillMaxWidth()
@@ -335,13 +329,22 @@ private fun CoreNavigationBar(
                 )
             }
         },
-        bottomSlot = bottomSlot?.let { content ->
+        bottomStickySlot = bottomSlot?.let { content ->
             { bottomSlotModifier ->
                 Box(
                     content = content,
                     modifier = bottomSlotModifier.fillMaxWidth(),
                 )
             }
+        },
+        dividerSlot = { dividerModifier ->
+            Spacer(
+                modifier = dividerModifier
+                    .alpha(alpha = state.collapseProgress)
+                    .fillMaxWidth()
+                    .background(color = LocalColors.current.border.borderNeutralMedium)
+                    .height(height = LocalBorderWidths.current.base.border25),
+            )
         },
     )
 }
@@ -354,24 +357,24 @@ private const val LAYOUT_ID_BOTTOM_SLOT = "bottom_slot"
 @Composable
 internal fun NavigationBarLayout(
     state: NavigationBarState,
-    fixedHeader: @Composable (modifier: Modifier) -> Unit,
-    divider: @Composable (modifier: Modifier) -> Unit,
-    expandedTitle: @Composable (modifier: Modifier) -> Unit,
-    bottomSlot: (@Composable (modifier: Modifier) -> Unit)? = null,
+    fixedHeaderSlot: @Composable (modifier: Modifier) -> Unit,
+    dividerSlot: @Composable (modifier: Modifier) -> Unit,
+    collapsableSlot: @Composable (modifier: Modifier) -> Unit,
+    bottomStickySlot: (@Composable (modifier: Modifier) -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     Layout(
         modifier = modifier,
         content = {
-            fixedHeader(
+            fixedHeaderSlot(
                 Modifier.layoutId(layoutId = LAYOUT_ID_FIXED_HEADER),
             )
 
-            divider(
+            dividerSlot(
                 Modifier.layoutId(layoutId = LAYOUT_ID_DIVIDER),
             )
 
-            expandedTitle(
+            collapsableSlot(
                 Modifier
                     .layoutId(layoutId = LAYOUT_ID_EXPANDED_TITLE)
                     .graphicsLayer {
@@ -380,8 +383,8 @@ internal fun NavigationBarLayout(
                     },
             )
 
-            if (bottomSlot != null) {
-                bottomSlot(
+            if (bottomStickySlot != null) {
+                bottomStickySlot(
                     Modifier.layoutId(layoutId = LAYOUT_ID_BOTTOM_SLOT),
                 )
             }
@@ -391,11 +394,7 @@ internal fun NavigationBarLayout(
                 .first { measurable -> measurable.layoutId == LAYOUT_ID_FIXED_HEADER }
                 .measure(constraints = constraints)
 
-            val dividerPlaceable = measurables
-                .first { measurable -> measurable.layoutId == LAYOUT_ID_DIVIDER }
-                .measure(constraints = constraints)
-
-            val expandedTitlePlaceable = measurables
+            val collapsablePlaceable = measurables
                 .first { measurable -> measurable.layoutId == LAYOUT_ID_EXPANDED_TITLE }
                 .measure(constraints = constraints)
 
@@ -403,9 +402,13 @@ internal fun NavigationBarLayout(
                 .find { measurable -> measurable.layoutId == LAYOUT_ID_BOTTOM_SLOT }
                 ?.measure(constraints = constraints)
 
-            state.maxScrollOffset = expandedTitlePlaceable.height.toFloat()
+            val dividerPlaceable = measurables
+                .first { measurable -> measurable.layoutId == LAYOUT_ID_DIVIDER }
+                .measure(constraints = constraints)
 
-            val visibleExpandedTitleHeight = (expandedTitlePlaceable.height + state.heightOffset)
+            state.maxScrollOffset = collapsablePlaceable.height.toFloat()
+
+            val visibleExpandedTitleHeight = (collapsablePlaceable.height + state.heightOffset)
                 .coerceAtLeast(minimumValue = 0f)
                 .roundToInt()
 
@@ -427,7 +430,7 @@ internal fun NavigationBarLayout(
                 yPosition += fixedHeaderPlaceable.height
 
 
-                expandedTitlePlaceable.placeRelative(
+                collapsablePlaceable.placeRelative(
                     x = 0,
                     y = yPosition,
                 )
@@ -463,7 +466,8 @@ internal fun CoreNavigationBarContent(
         modifier = modifier,
     ) {
         Box(
-            modifier = Modifier.weight(weight = 1f),
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.requiredSize(size = LocalSizes.current.size1000),
             content = {
                 leadingSlot?.invoke(this)
             },
@@ -473,13 +477,16 @@ internal fun CoreNavigationBarContent(
             text = label,
             textStyle = LocalTypographies.current.headingXXSmall,
             overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center,
             maxLines = 1,
-            modifier = Modifier.alpha(alpha = labelAlpha),
+            modifier = Modifier
+                .weight(weight = 1f)
+                .alpha(alpha = labelAlpha),
         )
 
         Row(
-            modifier = Modifier.weight(weight = 1f),
             verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.requiredHeightIn(max = LocalSizes.current.size1000),
             horizontalArrangement = Arrangement.spacedBy(
                 space = LocalSpaces.current.spacing200,
                 alignment = Alignment.End,
