@@ -9,7 +9,7 @@ env:
   JFROG_USER: ${{ secrets.JFROG_USER }}
   JFROG_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
   # Using main-maven-local with Maven path structure (same as KMP)
-  JFROG_BASE_URL: "https://saltpay.jfrog.io/artifactory/main-maven-local/com/teya/teya-lemonade-ds/lemonade-swiftui"
+  JFROG_BASE_URL: "https://saltpay.jfrog.io/artifactory/main-maven-local/com/teya/lemonade-design-system/lemonade-swiftui"
 
 jobs:
   publish:
