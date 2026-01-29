@@ -35,6 +35,8 @@ class DatePickerExampleScreen extends StatefulWidget {
 class _DatePickerExampleScreenState extends State<DatePickerExampleScreen> {
   DateTime? selectedDate;
   DateTime? selectedDateFutureOnly;
+  DateTime? selectedDatePastOnly;
+  DateTime? selectedDateRange;
   DateTime? rangeStartDate;
   DateTime? rangeEndDate;
 
@@ -79,7 +81,7 @@ class _DatePickerExampleScreenState extends State<DatePickerExampleScreen> {
               ),
             SizedBox(height: theme.spaces.spacing600),
             ExampleRow(
-              label: 'Future dates only',
+              label: 'Future dates only (minDate: today)',
               children: [
                 Container(
                   decoration: ShapeDecoration(
@@ -89,7 +91,7 @@ class _DatePickerExampleScreenState extends State<DatePickerExampleScreen> {
                   child: LemonadeDatePicker(
                     monthHeaderFormatter: _formatMonthHeader,
                     weekdayAbbreviations: _kWeekdayAbbreviations,
-                    allowBeforeToday: false,
+                    minDate: DateTime.now(),
                     onDateChanged: (DateTime newDate) {
                       setState(() {
                         selectedDateFutureOnly = newDate;
@@ -102,6 +104,65 @@ class _DatePickerExampleScreenState extends State<DatePickerExampleScreen> {
             if (selectedDateFutureOnly != null)
               Text(
                 'Selected: ${_formatDate(selectedDateFutureOnly!)}',
+                style: theme.typography.bodySmallMedium.copyWith(
+                  color: theme.colors.content.contentSecondary,
+                ),
+              ),
+            SizedBox(height: theme.spaces.spacing600),
+            ExampleRow(
+              label: 'Past dates only (maxDate: today)',
+              children: [
+                Container(
+                  decoration: ShapeDecoration(
+                    color: theme.colors.background.bgSubtle,
+                    shape: theme.shapes.radius200,
+                  ),
+                  child: LemonadeDatePicker(
+                    monthHeaderFormatter: _formatMonthHeader,
+                    weekdayAbbreviations: _kWeekdayAbbreviations,
+                    maxDate: DateTime.now(),
+                    onDateChanged: (DateTime newDate) {
+                      setState(() {
+                        selectedDatePastOnly = newDate;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            if (selectedDatePastOnly != null)
+              Text(
+                'Selected: ${_formatDate(selectedDatePastOnly!)}',
+                style: theme.typography.bodySmallMedium.copyWith(
+                  color: theme.colors.content.contentSecondary,
+                ),
+              ),
+            SizedBox(height: theme.spaces.spacing600),
+            ExampleRow(
+              label: 'Custom range (minDate & maxDate)',
+              children: [
+                Container(
+                  decoration: ShapeDecoration(
+                    color: theme.colors.background.bgSubtle,
+                    shape: theme.shapes.radius200,
+                  ),
+                  child: LemonadeDatePicker(
+                    monthHeaderFormatter: _formatMonthHeader,
+                    weekdayAbbreviations: _kWeekdayAbbreviations,
+                    minDate: DateTime.now().subtract(const Duration(days: 7)),
+                    maxDate: DateTime.now().add(const Duration(days: 7)),
+                    onDateChanged: (DateTime newDate) {
+                      setState(() {
+                        selectedDateRange = newDate;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            if (selectedDateRange != null)
+              Text(
+                'Selected: ${_formatDate(selectedDateRange!)}',
                 style: theme.typography.bodySmallMedium.copyWith(
                   color: theme.colors.content.contentSecondary,
                 ),
