@@ -36,4 +36,5 @@ internal enum class Display(
     Opacity(label = "Opacity"),
     BorderWidth(label = "Border Width"),
     Spinner(label = "Spinner"),
+    Divider(label = "Divider"),
 }

@@ -92,7 +92,8 @@ internal object DisplayRegistry {
                 Display.Badge,
                 Display.SymbolContainer,
                 Display.Card,
-                Display.Spinner
+                Display.Spinner,
+                Display.Divider,
             )
         ),
         DisplayData(
