@@ -155,12 +155,12 @@ jobs:
 
             *Installation (CocoaPods)*
             ```ruby
-            pod 'Lemonade', :http => 'https://saltpay.jfrog.io/artifactory/main-maven-local/com/teya/teya-lemonade-ds/lemonade-swiftui/${{ env.LEMONADE_VERSION }}/Lemonade.xcframework.zip'
+            pod 'Lemonade', :http => 'https://saltpay.jfrog.io/artifactory/main-maven-local/com/teya/lemonade-design-system/lemonade-swiftui/${{ env.LEMONADE_VERSION }}/Lemonade.xcframework.zip'
             ```
 
             *Installation (SPM)*
             ```
-            URL: https://saltpay.jfrog.io/artifactory/main-maven-local/com/teya/teya-lemonade-ds/lemonade-swiftui/${{ env.LEMONADE_VERSION }}/Package.swift
+            URL: https://saltpay.jfrog.io/artifactory/main-maven-local/com/teya/lemonade-design-system/lemonade-swiftui/${{ env.LEMONADE_VERSION }}/Package.swift
             ```
 
             <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|:link: View Build Details>
