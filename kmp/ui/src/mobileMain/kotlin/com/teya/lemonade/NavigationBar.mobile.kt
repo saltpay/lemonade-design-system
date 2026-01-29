@@ -25,6 +25,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,7 +46,6 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.NavigationBarAction
 import com.teya.lemonade.core.NavigationBarVariant
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -55,10 +55,15 @@ import kotlin.math.roundToInt
  *
  * Use [rememberNavigationBarState] to create and remember an instance.
  *
+ * @param coroutineScope The [CoroutineScope] used to launch scroll-offset animations.
+ * @param startCollapsed When `true`, the navigation bar starts in the collapsed state.
+ * @param lockGestureAnimation When `true`, scroll gestures will not collapse or expand the
+ *        navigation bar; only programmatic calls to [collapse] and [expand] will work.
  * @see rememberNavigationBarState
  */
 @Stable
 public class NavigationBarState internal constructor(
+    private val coroutineScope: CoroutineScope,
     private val startCollapsed: Boolean = false,
     private val lockGestureAnimation: Boolean = false,
 ) {
@@ -71,8 +76,6 @@ public class NavigationBarState internal constructor(
             },
         )
     }
-
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     internal val scrollOffset: Float
         get() = scrollOffsetAnimatable.value
@@ -99,14 +102,16 @@ public class NavigationBarState internal constructor(
      *
      * @param animationSpec The animation specification to use. Defaults to a 300ms tween.
      */
-    public suspend fun collapse(
+    public fun collapse(
         animationSpec: AnimationSpec<Float> = tween(durationMillis = 300),
     ) {
         if (scrollOffset < maxScrollOffset) {
-            scrollOffsetAnimatable.animateTo(
-                targetValue = maxScrollOffset,
-                animationSpec = animationSpec,
-            )
+            coroutineScope.launch {
+                scrollOffsetAnimatable.animateTo(
+                    targetValue = maxScrollOffset,
+                    animationSpec = animationSpec,
+                )
+            }
         }
     }
 
@@ -116,14 +121,16 @@ public class NavigationBarState internal constructor(
      *
      * @param animationSpec The animation specification to use. Defaults to a 300ms tween.
      */
-    public suspend fun expand(
+    public fun expand(
         animationSpec: AnimationSpec<Float> = tween(durationMillis = 300),
     ) {
         if (scrollOffset > 0f) {
-            scrollOffsetAnimatable.animateTo(
-                targetValue = 0f,
-                animationSpec = animationSpec,
-            )
+            coroutineScope.launch {
+                scrollOffsetAnimatable.animateTo(
+                    targetValue = 0f,
+                    animationSpec = animationSpec,
+                )
+            }
         }
     }
 
@@ -134,6 +141,9 @@ public class NavigationBarState internal constructor(
      * The scroll behavior is:
      * - **Collapse (scroll down)**: Navigation bar collapses first, then list scrolls
      * - **Expand (scroll up)**: List scrolls to top first, then navigation bar expands
+     *
+     * **Note:** When [lockGestureAnimation] is `true`, this connection becomes a no-op—all scroll
+     * events pass through to the content unchanged.
      *
      * ## Usage
      * ```kotlin
@@ -208,6 +218,8 @@ public class NavigationBarState internal constructor(
  * @param startCollapsed When `true`, the navigation bar starts in the collapsed state.
  *        The collapsable content will be hidden and the inline title will be visible immediately.
  *        Defaults to `false`.
+ * @param coroutineScope The [CoroutineScope] used for scroll-offset animations. Defaults to
+ *        [rememberCoroutineScope].
  * @param lockGestureAnimation When `true`, scroll gestures from nested scrollable content
  *        will not collapse or expand the navigation bar. The bar can still be collapsed or
  *        expanded programmatically via [NavigationBarState.collapse] and [NavigationBarState.expand].
@@ -239,11 +251,13 @@ public class NavigationBarState internal constructor(
 
 @Composable
 public fun rememberNavigationBarState(
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
     startCollapsed: Boolean = false,
     lockGestureAnimation: Boolean = false,
 ): NavigationBarState {
     return remember(startCollapsed, lockGestureAnimation) {
         NavigationBarState(
+            coroutineScope = coroutineScope,
             startCollapsed = startCollapsed,
             lockGestureAnimation = lockGestureAnimation,
         )
