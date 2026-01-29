@@ -42,7 +42,8 @@ public extension LemonadeUi {
     ///     supportText: "Support Text",
     ///     type: .single,
     ///     checked: true,
-    ///     onItemClicked: { /* action */ }
+    ///     onItemClicked: { /* action */ },
+    ///     showDivider: true
     /// )
     /// ```
     ///
@@ -52,6 +53,7 @@ public extension LemonadeUi {
     ///   - checked: Flag defining if item is selected or not
     ///   - onItemClicked: Callback triggered on click interaction
     ///   - enabled: Flag that defines if component is enabled. Defaults to true
+    ///   - showDivider: Flag to show a divider below the list item. Defaults to false
     ///   - supportText: Text to be displayed below the label
     ///   - leadingSlot: Content to be placed in leading position
     ///   - trailingSlot: Content to be placed before the selection control
@@ -63,6 +65,7 @@ public extension LemonadeUi {
         checked: Bool,
         onItemClicked: @escaping () -> Void,
         enabled: Bool = true,
+        showDivider: Bool = false,
         supportText: String? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent
@@ -72,6 +75,7 @@ public extension LemonadeUi {
             supportText: supportText,
             voice: .neutral,
             enabled: enabled,
+            showDivider: showDivider,
             onListItemClick: {
                 switch type {
                 case .single:
@@ -114,6 +118,7 @@ public extension LemonadeUi {
         checked: Bool,
         onItemClicked: @escaping () -> Void,
         enabled: Bool = true,
+        showDivider: Bool = false,
         supportText: String? = nil,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent
     ) -> some View {
@@ -123,6 +128,7 @@ public extension LemonadeUi {
             checked: checked,
             onItemClicked: onItemClicked,
             enabled: enabled,
+            showDivider: showDivider,
             supportText: supportText,
             leadingSlot: { EmptyView() },
             trailingSlot: trailingSlot
@@ -137,6 +143,7 @@ public extension LemonadeUi {
         checked: Bool,
         onItemClicked: @escaping () -> Void,
         enabled: Bool = true,
+        showDivider: Bool = false,
         supportText: String? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent
     ) -> some View {
@@ -146,6 +153,7 @@ public extension LemonadeUi {
             checked: checked,
             onItemClicked: onItemClicked,
             enabled: enabled,
+            showDivider: showDivider,
             supportText: supportText,
             leadingSlot: leadingSlot,
             trailingSlot: { EmptyView() }
@@ -160,6 +168,7 @@ public extension LemonadeUi {
         checked: Bool,
         onItemClicked: @escaping () -> Void,
         enabled: Bool = true,
+        showDivider: Bool = false,
         supportText: String? = nil
     ) -> some View {
         SelectListItem(
@@ -168,6 +177,7 @@ public extension LemonadeUi {
             checked: checked,
             onItemClicked: onItemClicked,
             enabled: enabled,
+            showDivider: showDivider,
             supportText: supportText,
             leadingSlot: { EmptyView() },
             trailingSlot: { EmptyView() }
@@ -185,7 +195,8 @@ public extension LemonadeUi {
     /// LemonadeUi.ResourceListItem(
     ///     label: "Label",
     ///     value: "Value",
-    ///     supportText: "Support Text"
+    ///     supportText: "Support Text",
+    ///     showDivider: true
     /// ) {
     ///     LemonadeUi.SymbolContainer(icon: .heart, contentDescription: nil)
     /// }
@@ -196,6 +207,7 @@ public extension LemonadeUi {
     ///   - value: Value String to be displayed in trailing position
     ///   - supportText: String to be displayed as support text
     ///   - enabled: Flag to define if component is enabled. Defaults to true
+    ///   - showDivider: Flag to show a divider below the list item. Defaults to false
     ///   - onItemClicked: Callback called when component is tapped
     ///   - addonSlot: Slot to be displayed below the value
     ///   - leadingSlot: Slot component to be placed in leading position
@@ -206,6 +218,7 @@ public extension LemonadeUi {
         value: String,
         supportText: String? = nil,
         enabled: Bool = true,
+        showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil,
         @ViewBuilder addonSlot: @escaping () -> AddonContent,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent
@@ -215,6 +228,7 @@ public extension LemonadeUi {
             supportText: supportText,
             voice: .neutral,
             enabled: enabled,
+            showDivider: showDivider,
             onListItemClick: onItemClicked,
             leadingSlot: {
                 leadingSlot()
@@ -241,6 +255,7 @@ public extension LemonadeUi {
         value: String,
         supportText: String? = nil,
         enabled: Bool = true,
+        showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent
     ) -> some View {
@@ -249,6 +264,7 @@ public extension LemonadeUi {
             value: value,
             supportText: supportText,
             enabled: enabled,
+            showDivider: showDivider,
             onItemClicked: onItemClicked,
             addonSlot: { EmptyView() },
             leadingSlot: leadingSlot
@@ -266,6 +282,7 @@ public extension LemonadeUi {
     /// LemonadeUi.ActionListItem(
     ///     label: "Label",
     ///     supportText: "Support Text",
+    ///     showDivider: true,
     ///     onItemClicked: { /* action */ },
     ///     leadingSlot: { LemonadeUi.Icon(icon: .heart, contentDescription: nil) },
     ///     trailingSlot: { LemonadeUi.Tag(label: "New", voice: .warning) }
@@ -278,6 +295,7 @@ public extension LemonadeUi {
     ///   - voice: LemonadeListItemVoice to define tone of voice. Defaults to .neutral
     ///   - showNavigationIndicator: Indicates navigation visually
     ///   - enabled: Flag to define if component is enabled. Defaults to true
+    ///   - showDivider: Flag to show a divider below the list item. Defaults to false
     ///   - onItemClicked: Callback called when component is tapped
     ///   - leadingSlot: Slot content to be placed in leading position
     ///   - trailingSlot: Slot content to be placed in trailing position
@@ -289,6 +307,7 @@ public extension LemonadeUi {
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
         enabled: Bool = true,
+        showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent
@@ -298,6 +317,7 @@ public extension LemonadeUi {
             supportText: supportText,
             voice: voice,
             enabled: enabled,
+            showDivider: showDivider,
             onListItemClick: onItemClicked,
             leadingSlot: leadingSlot,
             trailingSlot: {
@@ -326,6 +346,7 @@ public extension LemonadeUi {
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
         enabled: Bool = true,
+        showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent
     ) -> some View {
@@ -335,6 +356,7 @@ public extension LemonadeUi {
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,
             enabled: enabled,
+            showDivider: showDivider,
             onItemClicked: onItemClicked,
             leadingSlot: leadingSlot,
             trailingSlot: { EmptyView() }
@@ -349,6 +371,7 @@ public extension LemonadeUi {
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
         enabled: Bool = true,
+        showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent
     ) -> some View {
@@ -358,6 +381,7 @@ public extension LemonadeUi {
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,
             enabled: enabled,
+            showDivider: showDivider,
             onItemClicked: onItemClicked,
             leadingSlot: { EmptyView() },
             trailingSlot: trailingSlot
@@ -372,6 +396,7 @@ public extension LemonadeUi {
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
         enabled: Bool = true,
+        showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil
     ) -> some View {
         ActionListItem(
@@ -380,6 +405,7 @@ public extension LemonadeUi {
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,
             enabled: enabled,
+            showDivider: showDivider,
             onItemClicked: onItemClicked,
             leadingSlot: { EmptyView() },
             trailingSlot: { EmptyView() }
@@ -394,19 +420,22 @@ private struct LemonadeCoreListItemView<LeadingContent: View, TrailingContent: V
     let supportText: String?
     let voice: LemonadeListItemVoice
     let enabled: Bool
+    let showDivider: Bool
     let onListItemClick: (() -> Void)?
     let leadingSlot: () -> LeadingContent
     let trailingSlot: () -> TrailingContent
 
     var body: some View {
-        if let onClick = onListItemClick, enabled {
-            Button(action: onClick) {
+        ListItemSafeArea(showDivider: showDivider) {
+            if let onClick = onListItemClick, enabled {
+                Button(action: onClick) {
+                    listItemContent
+                }
+                .buttonStyle(ListItemButtonStyle(voice: voice))
+                .disabled(!enabled)
+            } else {
                 listItemContent
             }
-            .buttonStyle(ListItemButtonStyle(voice: voice))
-            .disabled(!enabled)
-        } else {
-            listItemContent
         }
     }
 
@@ -444,6 +473,28 @@ private struct LemonadeCoreListItemView<LeadingContent: View, TrailingContent: V
     }
 }
 
+// MARK: - SafeArea Wrapper
+
+private struct ListItemSafeArea<Content: View>: View {
+    let showDivider: Bool
+    @ViewBuilder let content: () -> Content
+
+    var body: some View {
+        VStack(spacing: 0) {
+            content()
+                .padding(LemonadeTheme.spaces.spacing100)
+
+            if showDivider {
+                LemonadeUi.HorizontalDivider(
+                    color: LemonadeTheme.colors.border.borderNeutralLow
+                )
+                .padding(.horizontal, LemonadeTheme.spaces.spacing400)
+            }
+        }
+        .background(Color.clear)
+    }
+}
+
 // MARK: - ListItem Button Style
 
 private struct ListItemButtonStyle: ButtonStyle {
@@ -467,32 +518,36 @@ private struct ListItemButtonStyle: ButtonStyle {
 #if DEBUG
 struct LemonadeListItem_Previews: PreviewProvider {
     static var previews: some View {
-        VStack(spacing: 16) {
-            // SelectListItem - Single
+        VStack(spacing: 0) {
+            // SelectListItem - Single with divider
             LemonadeUi.SelectListItem(
                 label: "Single Selection",
                 type: .single,
                 checked: true,
                 onItemClicked: {},
+                showDivider: true,
                 supportText: "Support text"
             )
 
-            // SelectListItem - Multiple
+            // SelectListItem - Multiple with divider
             LemonadeUi.SelectListItem(
                 label: "Multiple Selection",
                 type: .multiple,
                 checked: false,
                 onItemClicked: {},
+                showDivider: true,
                 supportText: "Support text"
             )
 
-            Divider()
+            LemonadeUi.HorizontalDivider()
+                .padding(.vertical, .space.spacing200)
 
-            // ResourceListItem
+            // ResourceListItem with divider
             LemonadeUi.ResourceListItem(
                 label: "Resource Label",
                 value: "$100.00",
-                supportText: "Metadata"
+                supportText: "Metadata",
+                showDivider: true
             ) {
                 LemonadeUi.SymbolContainer(
                     icon: .heart,
@@ -501,10 +556,11 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 )
             }
 
-            // ResourceListItem with addon
+            // ResourceListItem with addon and divider
             LemonadeUi.ResourceListItem(
                 label: "With Addon",
                 value: "$50.00",
+                showDivider: true,
                 addonSlot: {
                     LemonadeUi.Tag(label: "Approved", voice: .positive)
                 },
@@ -517,13 +573,15 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 }
             )
 
-            Divider()
+            LemonadeUi.HorizontalDivider()
+                .padding(.vertical, .space.spacing200)
 
-            // ActionListItem
+            // ActionListItem with divider
             LemonadeUi.ActionListItem(
                 label: "Action Item",
                 supportText: "Support text",
                 showNavigationIndicator: true,
+                showDivider: true,
                 onItemClicked: {},
                 leadingSlot: {
                     LemonadeUi.Icon(
@@ -534,17 +592,18 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 }
             )
 
-            // ActionListItem - Critical
+            // ActionListItem - Critical with divider
             LemonadeUi.ActionListItem(
                 label: "Delete Account",
                 voice: .critical,
+                showDivider: false,
                 onItemClicked: {},
                 leadingSlot: {
                     LemonadeUi.Icon(
                         icon: .trash,
                         contentDescription: nil,
                         size: .medium,
-                        tint: LemonadeTheme.colors.content.contentCritical
+                        tint: .content.contentCritical
                     )
                 }
             )

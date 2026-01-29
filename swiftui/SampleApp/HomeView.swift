@@ -67,7 +67,8 @@ struct HomeView: View {
                     DemoItem(title: "Tag", destination: AnyView(TagDisplayView())),
                     DemoItem(title: "Badge", destination: AnyView(BadgeDisplayView())),
                     DemoItem(title: "SymbolContainer", destination: AnyView(SymbolContainerDisplayView())),
-                    DemoItem(title: "Card", destination: AnyView(CardDisplayView()))
+                    DemoItem(title: "Card", destination: AnyView(CardDisplayView())),
+                    DemoItem(title: "Divider", destination: AnyView(DividerDisplayView()))
                 ]
             ),
             DemoSection(
