@@ -21,10 +21,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun NavigationBarSampleDisplay() {
-    val navigationBarState = rememberNavigationBarState(
-        startCollapsed = true,
-        lockGestureAnimation = true,
-    )
+    val navigationBarState = rememberNavigationBarState()
     val coroutineScope = rememberCoroutineScope()
 
     Column(
@@ -84,6 +81,7 @@ internal fun NavigationBarSampleDisplay() {
         }
     }
 }
+
 
 private const val SAMPLE_TEXT = """
 The navigation bar is a fundamental component in mobile applications that provides users with context about their current location within the app and offers navigation controls. This component demonstrates the collapsing behavior of the navigation bar as you scroll through the content.

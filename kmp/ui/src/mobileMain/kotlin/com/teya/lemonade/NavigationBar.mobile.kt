@@ -1,9 +1,13 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -24,12 +28,15 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -37,6 +44,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -57,7 +65,7 @@ import kotlin.math.roundToInt
  *
  * @param coroutineScope The [CoroutineScope] used to launch scroll-offset animations.
  * @param startCollapsed When `true`, the navigation bar starts in the collapsed state.
- * @param lockGestureAnimation When `true`, scroll gestures will not collapse or expand the
+ * @param startWithLockedGestureAnimation When `true`, scroll gestures will not collapse or expand the
  *        navigation bar; only programmatic calls to [collapse] and [expand] will work.
  * @see rememberNavigationBarState
  */
@@ -65,8 +73,11 @@ import kotlin.math.roundToInt
 public class NavigationBarState internal constructor(
     private val coroutineScope: CoroutineScope,
     private val startCollapsed: Boolean = false,
-    private val lockGestureAnimation: Boolean = false,
+    private val startWithLockedGestureAnimation: Boolean = false,
 ) {
+
+    private var lockGestureAnimation by mutableStateOf(startWithLockedGestureAnimation)
+
     private val scrollOffsetAnimatable by derivedStateOf {
         Animatable(
             initialValue = if (startCollapsed) {
@@ -132,6 +143,10 @@ public class NavigationBarState internal constructor(
                 )
             }
         }
+    }
+
+    public fun setAnimationGesturesLock(locked: Boolean) {
+        lockGestureAnimation = locked
     }
 
     /**
@@ -220,7 +235,7 @@ public class NavigationBarState internal constructor(
  *        Defaults to `false`.
  * @param coroutineScope The [CoroutineScope] used for scroll-offset animations. Defaults to
  *        [rememberCoroutineScope].
- * @param lockGestureAnimation When `true`, scroll gestures from nested scrollable content
+ * @param startWithLockedGestureAnimation When `true`, scroll gestures from nested scrollable content
  *        will not collapse or expand the navigation bar. The bar can still be collapsed or
  *        expanded programmatically via [NavigationBarState.collapse] and [NavigationBarState.expand].
  *        Defaults to `false`.
@@ -253,15 +268,109 @@ public class NavigationBarState internal constructor(
 public fun rememberNavigationBarState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     startCollapsed: Boolean = false,
-    lockGestureAnimation: Boolean = false,
+    startWithLockedGestureAnimation: Boolean = false,
 ): NavigationBarState {
-    return remember(startCollapsed, lockGestureAnimation) {
+    return remember(startCollapsed, startWithLockedGestureAnimation) {
         NavigationBarState(
             coroutineScope = coroutineScope,
             startCollapsed = startCollapsed,
-            lockGestureAnimation = lockGestureAnimation,
+            startWithLockedGestureAnimation = startWithLockedGestureAnimation,
         )
     }
+}
+
+@Composable
+@OptIn(ExperimentalLemonadeComponent::class)
+public fun LemonadeUi.SearchNavigationBar(
+    label: String,
+    variant: NavigationBarVariant,
+    searchInput: String,
+    onSearchChanged: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    state: NavigationBarState = rememberNavigationBarState(),
+    navigationAction: NavigationBarAction? = null,
+    onNavigationActionClicked: (() -> Unit)? = null,
+    trailingSlot: @Composable (RowScope.() -> Unit)? = null,
+    bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
+) {
+    val focusManager = LocalFocusManager.current
+    var isSearchFocused by remember {
+        mutableStateOf(false)
+    }
+    CoreNavigationBar(
+        state = state,
+        variant = variant,
+        fixedHeaderSlot = { headerModifier ->
+            AnimatedContent(
+                modifier = headerModifier
+                    .background(color = variant.backgroundColor)
+                    .zIndex(zIndex = 1f)
+                    .padding(
+                        horizontal = LocalSpaces.current.spacing200,
+                        vertical = LocalSpaces.current.spacing50,
+                    ),
+                targetState = isSearchFocused,
+                transitionSpec = { expandVertically() togetherWith shrinkVertically() },
+                content = { searchFocused ->
+                    if (!searchFocused) {
+                        CoreNavigationBarContent(
+                            leadingSlot = {
+                                if (navigationAction != null && onNavigationActionClicked != null) {
+                                    CoreNavigationActionContent(
+                                        navigationAction = navigationAction,
+                                        onNavigationActionClicked = onNavigationActionClicked,
+                                        modifier = Modifier.matchParentSize(),
+                                    )
+                                }
+                            },
+                            trailingSlot = trailingSlot,
+                            label = label,
+                            variant = variant,
+                        )
+                    }
+                }
+            )
+        },
+        collapsableSlot = { collapsableModifier ->
+            CoreSearchField(
+                input = searchInput,
+                onInputChanged = onSearchChanged,
+                leadingIcon = if (isSearchFocused) {
+                    LemonadeIcons.ArrowLeft
+                } else {
+                    LemonadeIcons.Search
+                },
+                onLeadingIconClicked = focusManager::clearFocus,
+                modifier = collapsableModifier
+                    .padding(horizontal = LocalSpaces.current.spacing400)
+                    .padding(
+                        top = LocalSpaces.current.spacing50,
+                        bottom = LocalSpaces.current.spacing200,
+                    )
+                    .onFocusChanged { focusState ->
+                        isSearchFocused = focusState.isFocused
+                        state.setAnimationGesturesLock(locked = focusState.isFocused)
+                        if (focusState.isFocused) {
+                            state.expand()
+                        }
+                    }
+            )
+        },
+        bottomSlot = bottomSlot?.let {
+            {
+                AnimatedContent(
+                    targetState = isSearchFocused,
+                    transitionSpec = { expandVertically() togetherWith shrinkVertically() },
+                    content = { searchFocused ->
+                        if (searchFocused) {
+                            bottomSlot()
+                        }
+                    }
+                )
+            }
+        },
+        modifier = modifier,
+    )
 }
 
 /**
@@ -332,47 +441,33 @@ public fun LemonadeUi.NavigationBar(
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
     CoreNavigationBar(
-        label = label,
-        collapsedLabel = collapsedLabel,
         state = state,
         variant = variant,
         modifier = modifier,
-        trailingSlot = trailingSlot,
         bottomSlot = bottomSlot,
-        leadingSlot = {
-            if (navigationAction != null && onNavigationActionClicked != null) {
-                val interactionSource = remember { MutableInteractionSource() }
-                val isPressed by interactionSource.collectIsPressedAsState()
-                val backgroundColor by animateColorAsState(
-                    targetValue = when {
-                        isPressed -> LocalColors.current.interaction.bgNeutralSubtlePressed
-                        else -> LocalColors.current.interaction.bgNeutralSubtlePressed.copy(
-                            alpha = LocalOpacities.current.base.opacity0,
+        fixedHeaderSlot = { headerModifier ->
+            CoreNavigationBarContent(
+                leadingSlot = {
+                    if (navigationAction != null && onNavigationActionClicked != null) {
+                        CoreNavigationActionContent(
+                            navigationAction = navigationAction,
+                            onNavigationActionClicked = onNavigationActionClicked,
+                            modifier = Modifier.matchParentSize(),
                         )
                     }
-                )
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .matchParentSize()
-                        .background(
-                            color = backgroundColor,
-                            shape = LocalShapes.current.radius300,
-                        )
-                        .clickable(
-                            role = Role.Button,
-                            onClick = onNavigationActionClicked,
-                            interactionSource = interactionSource,
-                            indication = null,
-                        )
-                ) {
-                    LemonadeUi.Icon(
-                        icon = navigationAction.icon,
-                        contentDescription = navigationAction.name,
-                        size = LemonadeAssetSize.Medium,
-                    )
-                }
-            }
+                },
+                trailingSlot = trailingSlot,
+                label = collapsedLabel ?: label,
+                labelAlpha = state.collapseProgress,
+                variant = variant,
+                modifier = headerModifier
+                    .background(color = variant.backgroundColor)
+                    .zIndex(zIndex = 1f)
+                    .padding(
+                        horizontal = LocalSpaces.current.spacing200,
+                        vertical = LocalSpaces.current.spacing50,
+                    ),
+            )
         },
         collapsableSlot = { expandedModifier ->
             Box(
@@ -396,36 +491,58 @@ public fun LemonadeUi.NavigationBar(
 }
 
 @Composable
+private fun CoreNavigationActionContent(
+    navigationAction: NavigationBarAction,
+    onNavigationActionClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val backgroundColor by animateColorAsState(
+        targetValue = when {
+            isPressed -> LocalColors.current.interaction.bgNeutralSubtlePressed
+            else -> LocalColors.current.interaction.bgNeutralSubtlePressed.copy(
+                alpha = LocalOpacities.current.base.opacity0,
+            )
+        }
+    )
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .background(
+                color = backgroundColor,
+                shape = LocalShapes.current.radius300,
+            )
+            .clickable(
+                role = Role.Button,
+                onClick = onNavigationActionClicked,
+                interactionSource = interactionSource,
+                indication = null,
+            )
+    ) {
+        LemonadeUi.Icon(
+            icon = navigationAction.icon,
+            contentDescription = navigationAction.name,
+            size = LemonadeAssetSize.Medium,
+        )
+    }
+}
+
+@Composable
 private fun CoreNavigationBar(
-    label: String,
-    collapsedLabel: String?,
     state: NavigationBarState,
     variant: NavigationBarVariant,
-    leadingSlot: @Composable (BoxScope.() -> Unit)?,
-    trailingSlot: @Composable (RowScope.() -> Unit)?,
+    fixedHeaderSlot: @Composable (modifier: Modifier) -> Unit,
     collapsableSlot: @Composable (modifier: Modifier) -> Unit,
     bottomSlot: @Composable (BoxScope.() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     NavigationBarLayout(
         state = state,
-        modifier = modifier.background(color = variant.backgroundColor),
-        fixedHeaderSlot = { headerModifier ->
-            CoreNavigationBarContent(
-                leadingSlot = leadingSlot,
-                trailingSlot = trailingSlot,
-                label = collapsedLabel ?: label,
-                labelAlpha = state.collapseProgress,
-                variant = variant,
-                modifier = headerModifier
-                    .background(color = variant.backgroundColor)
-                    .zIndex(zIndex = 1f)
-                    .padding(
-                        horizontal = LocalSpaces.current.spacing200,
-                        vertical = LocalSpaces.current.spacing50,
-                    ),
-            )
-        },
+        modifier = modifier
+            .clipToBounds()
+            .background(color = variant.backgroundColor),
+        fixedHeaderSlot = fixedHeaderSlot,
         collapsableSlot = collapsableSlot,
         bottomStickySlot = bottomSlot?.let { content ->
             { bottomSlotModifier ->
@@ -554,9 +671,9 @@ internal fun CoreNavigationBarContent(
     leadingSlot: @Composable (BoxScope.() -> Unit)?,
     trailingSlot: @Composable (RowScope.() -> Unit)?,
     label: String,
-    labelAlpha: Float,
     variant: NavigationBarVariant,
     modifier: Modifier = Modifier,
+    labelAlpha: Float = LocalOpacities.current.base.opacity100,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),

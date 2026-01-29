@@ -82,9 +82,11 @@ public fun LemonadeUi.SearchField(
 }
 
 @Composable
-private fun CoreSearchField(
+internal fun CoreSearchField(
     input: String,
     onInputChanged: (String) -> Unit,
+    leadingIcon: LemonadeIcons = LemonadeIcons.Search,
+    onLeadingIconClicked: (() -> Unit)? = null,
     placeholder: String? = null,
     onInputClear: () -> Unit = { onInputChanged("") },
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -117,6 +119,8 @@ private fun CoreSearchField(
                 input = input,
                 enabled = enabled,
                 onInputClear = onInputClear,
+                leadingIcon = leadingIcon,
+                onLeadingIconClicked = onLeadingIconClicked,
             )
         }
     )
@@ -128,6 +132,8 @@ private fun CoreSearchFieldDecorationBox(
     placeholder: String?,
     enabled: Boolean,
     onInputClear: () -> Unit,
+    leadingIcon: LemonadeIcons,
+    onLeadingIconClicked: (() -> Unit)?,
     interactionSource: MutableInteractionSource,
     innerTextField: @Composable () -> Unit,
     modifier: Modifier = Modifier,
@@ -186,9 +192,21 @@ private fun CoreSearchFieldDecorationBox(
             .padding(horizontal = LocalSpaces.current.spacing300),
     ) {
         LemonadeUi.Icon(
-            icon = LemonadeIcons.Search,
+            icon = leadingIcon,
             tint = LocalColors.current.content.contentPrimary,
             contentDescription = null,
+            modifier = Modifier
+                .then(
+                    other = if (onLeadingIconClicked != null) {
+                        Modifier.clickable(
+                            onClick = onLeadingIconClicked,
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                        )
+                    } else {
+                        Modifier
+                    },
+                )
         )
 
         Box(modifier = Modifier.weight(weight = 1f)) {
