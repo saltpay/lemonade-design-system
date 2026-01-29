@@ -8,7 +8,7 @@ public enum LemonadeCardPadding {
     case xSmall
     case small
     case medium
-
+    
     var spacing: CGFloat {
         switch self {
         case .none: return LemonadeTheme.spaces.spacing0
@@ -25,7 +25,7 @@ public enum LemonadeCardPadding {
 public enum LemonadeCardBackground {
     case `default`
     case subtle
-
+    
     var color: Color {
         switch self {
         case .default: return LemonadeTheme.colors.background.bgDefault
@@ -40,7 +40,7 @@ public enum LemonadeCardBackground {
 public struct CardHeaderConfig<TrailingContent: View> {
     let title: String
     let trailingSlot: (() -> TrailingContent)?
-
+    
     public init(title: String, trailingSlot: (() -> TrailingContent)? = nil) {
         self.title = title
         self.trailingSlot = trailingSlot
@@ -91,7 +91,7 @@ public extension LemonadeUi {
             content: content
         )
     }
-
+    
     /// A card container component without header.
     ///
     /// - Parameters:
@@ -121,7 +121,7 @@ private struct LemonadeCardView<Content: View, TrailingContent: View>: View {
     let background: LemonadeCardBackground
     let header: CardHeaderConfig<TrailingContent>?
     let content: () -> Content
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Header
@@ -134,7 +134,7 @@ private struct LemonadeCardView<Content: View, TrailingContent: View>: View {
                         maxLines: 1
                     )
                     .frame(maxWidth: .infinity, alignment: .leading)
-
+                    
                     if let trailingSlot = header.trailingSlot {
                         trailingSlot()
                     }
@@ -142,9 +142,9 @@ private struct LemonadeCardView<Content: View, TrailingContent: View>: View {
                 .padding(.horizontal, LemonadeTheme.spaces.spacing400)
                 .padding(.top, LemonadeTheme.spaces.spacing400)
             }
-
+            
             // Content
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 0) {
                 content()
             }
             .padding(contentPadding.spacing)
@@ -165,7 +165,7 @@ struct LemonadeCard_Previews: PreviewProvider {
             LemonadeUi.Card(contentPadding: .medium) {
                 LemonadeUi.Text("This is card content")
             }
-
+            
             // Card with header
             LemonadeUi.Card(
                 contentPadding: .medium,
@@ -173,7 +173,7 @@ struct LemonadeCard_Previews: PreviewProvider {
             ) {
                 LemonadeUi.Text("Content with header")
             }
-
+            
             // Card with header and trailing slot
             LemonadeUi.Card(
                 contentPadding: .medium,
@@ -186,7 +186,7 @@ struct LemonadeCard_Previews: PreviewProvider {
             ) {
                 LemonadeUi.Text("Content with header and trailing tag")
             }
-
+            
             // Subtle background
             LemonadeUi.Card(
                 contentPadding: .medium,
