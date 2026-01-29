@@ -55,7 +55,7 @@ internal fun DividerDisplay() {
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
                         color = LemonadeTheme.colors.content.contentSecondary
                     )
-                    LemonadeUi.HorizontalDivider(isDashed = true)
+                    LemonadeUi.HorizontalDivider(variant = DividerVariant.Dashed)
                 }
             }
         }
@@ -84,7 +84,7 @@ internal fun DividerDisplay() {
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
                         color = LemonadeTheme.colors.content.contentSecondary
                     )
-                    LemonadeUi.HorizontalDivider(label = "OR", isDashed = true)
+                    LemonadeUi.HorizontalDivider(label = "OR", variant = DividerVariant.Dashed)
                 }
             }
         }
@@ -118,7 +118,7 @@ internal fun DividerDisplay() {
                     )
                     LemonadeUi.VerticalDivider(
                         modifier = Modifier.height(48.dp),
-                        isDashed = true
+                        variant = DividerVariant.Dashed
                     )
                 }
             }

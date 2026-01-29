@@ -433,7 +433,6 @@ private fun SafeArea(
 
         if (showDivider) {
             LemonadeUi.HorizontalDivider(
-                color = LocalColors.current.border.borderNeutralLow,
                 modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing400)
             )
         }

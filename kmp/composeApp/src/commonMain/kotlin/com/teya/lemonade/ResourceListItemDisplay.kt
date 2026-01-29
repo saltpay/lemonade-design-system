@@ -1,6 +1,7 @@
 package com.teya.lemonade
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -24,7 +25,10 @@ internal fun ResourceListItemDisplay() {
             .padding(horizontal = LemonadeTheme.spaces.spacing400)
             .verticalScroll(state = rememberScrollState())
             .statusBarsPadding()
-            .navigationBarsPadding()
+            .navigationBarsPadding(),
+        verticalArrangement = Arrangement.spacedBy(
+            LemonadeTheme.spaces.spacing400
+        )
     ) {
         LemonadeUi.Card(
             header = CardHeaderConfig(title = "ResourceListItem")

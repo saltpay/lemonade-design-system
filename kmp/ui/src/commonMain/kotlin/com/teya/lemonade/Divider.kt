@@ -1,11 +1,11 @@
 package com.teya.lemonade
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,9 +13,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
+
+/**
+ * Variants available for dividers.
+ */
+public enum class DividerVariant {
+    /**
+     * Solid line divider.
+     */
+    Solid,
+
+    /**
+     * Dashed line divider.
+     */
+    Dashed,
+}
 
 /**
  * A horizontal divider to separate content. Optionally displays a label in the center.
@@ -27,74 +43,87 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
  *
  * // Divider with label
  * LemonadeUi.HorizontalDivider(label = "OR")
+ *
+ * // Dashed divider
+ * LemonadeUi.HorizontalDivider(variant = DividerVariant.Dashed)
  * ```
  *
  * @param modifier - [Modifier] to be applied to the divider.
  * @param label - Optional [String] label to display in the center of the divider.
- * @param color - [Color] of the divider. Defaults to borderNeutralLow.
- * @param isDashed - [Boolean] flag to define if the divider is dashed or not.
+ * @param variant - [DividerVariant] of the divider. Defaults to [DividerVariant.Solid].
  */
 @Composable
 public fun LemonadeUi.HorizontalDivider(
     modifier: Modifier = Modifier,
     label: String? = null,
-    color: Color = LocalColors.current.border.borderNeutralLow,
-    isDashed: Boolean = false,
+    variant: DividerVariant = DividerVariant.Solid,
 ) {
+    val thickness = LocalBorderWidths.current.base.border25
+    val dividerColor = when (variant) {
+        DividerVariant.Solid -> LocalColors.current.border.borderNeutralLow
+        DividerVariant.Dashed -> LocalColors.current.border.borderNeutralMedium
+    }
+
     if (label != null) {
         Row(
             modifier = modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(LocalSpaces.current.spacing300),
         ) {
-            CoreDivider(
+            CoreHorizontalDivider(
                 modifier = Modifier.weight(1f),
-                color = color,
-                isDashed = isDashed,
+                color = dividerColor,
+                variant = variant,
+                thickness = thickness,
             )
             LemonadeUi.Text(
+                modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing300),
                 text = label,
-                textStyle = LocalTypographies.current.bodyXSmallRegular,
+                textStyle = LocalTypographies.current.bodySmallRegular,
                 color = LocalColors.current.content.contentSecondary,
             )
-            CoreDivider(
+            CoreHorizontalDivider(
                 modifier = Modifier.weight(1f),
-                color = color,
-                isDashed = isDashed,
+                color = dividerColor,
+                variant = variant,
+                thickness = thickness,
             )
         }
     } else {
-        CoreDivider(
+        CoreHorizontalDivider(
             modifier = modifier.fillMaxWidth(),
-            color = color,
-            isDashed = isDashed,
+            color = dividerColor,
+            variant = variant,
+            thickness = thickness,
         )
     }
 }
 
 @Composable
-private fun CoreDivider(
+private fun CoreHorizontalDivider(
     modifier: Modifier = Modifier,
-    color: Color = LocalColors.current.border.borderNeutralHigh,
-    isDashed: Boolean = false,
+    color: Color,
+    variant: DividerVariant,
+    thickness: Dp,
 ) {
+    val dashWidth = LocalSizes.current.size100
+    val dashGap = LocalSpaces.current.spacing100
+
     Canvas(
-        modifier = modifier.height(1.dp)
+        modifier = modifier.height(thickness)
     ) {
-        val pathEffect = if (isDashed) {
-            PathEffect.dashPathEffect(
-                intervals = floatArrayOf(4.dp.toPx(), 4.dp.toPx()),
+        val pathEffect = when (variant) {
+            DividerVariant.Dashed -> PathEffect.dashPathEffect(
+                intervals = floatArrayOf(dashWidth.toPx(), dashGap.toPx()),
                 phase = 0f
             )
-        } else {
-            null
+            DividerVariant.Solid -> null
         }
 
         drawLine(
             color = color,
-            start = Offset(0f, 0f),
-            end = Offset(size.width, 0f),
-            strokeWidth = 1.dp.toPx(),
+            start = Offset(0f, size.height / 2),
+            end = Offset(size.width, size.height / 2),
+            strokeWidth = thickness.toPx(),
             pathEffect = pathEffect
         )
     }
@@ -109,49 +138,57 @@ private fun CoreDivider(
  * LemonadeUi.VerticalDivider()
  *
  * // Dashed vertical divider
- * LemonadeUi.VerticalDivider(isDashed = true)
+ * LemonadeUi.VerticalDivider(variant = DividerVariant.Dashed)
  * ```
  *
  * @param modifier - [Modifier] to be applied to the divider.
- * @param color - [Color] of the divider. Defaults to borderNeutralLow.
- * @param isDashed - [Boolean] flag to define if the divider is dashed or not.
+ * @param variant - [DividerVariant] of the divider. Defaults to [DividerVariant.Solid].
  */
 @Composable
 public fun LemonadeUi.VerticalDivider(
     modifier: Modifier = Modifier,
-    color: Color = LocalColors.current.border.borderNeutralLow,
-    isDashed: Boolean = false,
+    variant: DividerVariant = DividerVariant.Solid,
 ) {
+    val thickness = LocalBorderWidths.current.base.border25
+    val dividerColor = when (variant) {
+        DividerVariant.Solid -> LocalColors.current.border.borderNeutralLow
+        DividerVariant.Dashed -> LocalColors.current.border.borderNeutralMedium
+    }
+
     CoreVerticalDivider(
         modifier = modifier.fillMaxHeight(),
-        color = color,
-        isDashed = isDashed,
+        color = dividerColor,
+        variant = variant,
+        thickness = thickness,
     )
 }
 
 @Composable
 private fun CoreVerticalDivider(
     modifier: Modifier = Modifier,
-    color: Color = LocalColors.current.border.borderNeutralLow,
-    isDashed: Boolean = false,
+    color: Color,
+    variant: DividerVariant,
+    thickness: Dp,
 ) {
+    val dashWidth = LocalSizes.current.size100
+    val dashGap = LocalSpaces.current.spacing100
+
     Canvas(
-        modifier = modifier.width(1.dp)
+        modifier = modifier.width(thickness)
     ) {
-        val pathEffect = if (isDashed) {
-            PathEffect.dashPathEffect(
-                intervals = floatArrayOf(4.dp.toPx(), 4.dp.toPx()),
+        val pathEffect = when (variant) {
+            DividerVariant.Dashed -> PathEffect.dashPathEffect(
+                intervals = floatArrayOf(dashWidth.toPx(), dashGap.toPx()),
                 phase = 0f
             )
-        } else {
-            null
+            DividerVariant.Solid -> null
         }
 
         drawLine(
             color = color,
-            start = Offset(0f, 0f),
-            end = Offset(0f, size.height),
-            strokeWidth = 1.dp.toPx(),
+            start = Offset(size.width / 2, 0f),
+            end = Offset(size.width / 2, size.height),
+            strokeWidth = thickness.toPx(),
             pathEffect = pathEffect
         )
     }
@@ -161,7 +198,7 @@ private fun CoreVerticalDivider(
 
 private data class HorizontalDividerPreviewData(
     val label: String?,
-    val isDashed: Boolean,
+    val variant: DividerVariant,
 )
 
 private class HorizontalDividerPreviewProvider :
@@ -170,11 +207,11 @@ private class HorizontalDividerPreviewProvider :
     private fun buildAllVariants(): Sequence<HorizontalDividerPreviewData> {
         return buildList {
             listOf(null, "OR").forEach { label ->
-                listOf(true, false).forEach { isDashed ->
+                DividerVariant.entries.forEach { variant ->
                     add(
                         HorizontalDividerPreviewData(
                             label = label,
-                            isDashed = isDashed,
+                            variant = variant,
                         )
                     )
                 }
@@ -191,26 +228,20 @@ private fun HorizontalDividerPreview(
 ) {
     LemonadeUi.HorizontalDivider(
         label = previewData.label,
-        isDashed = previewData.isDashed,
+        variant = previewData.variant,
     )
 }
 
 private data class VerticalDividerPreviewData(
-    val isDashed: Boolean,
+    val variant: DividerVariant,
 )
 
 private class VerticalDividerPreviewProvider :
     PreviewParameterProvider<VerticalDividerPreviewData> {
     override val values: Sequence<VerticalDividerPreviewData> = buildAllVariants()
     private fun buildAllVariants(): Sequence<VerticalDividerPreviewData> {
-        return buildList {
-            listOf(true, false).forEach { isDashed ->
-                add(
-                    VerticalDividerPreviewData(
-                        isDashed = isDashed,
-                    )
-                )
-            }
+        return DividerVariant.entries.map { variant ->
+            VerticalDividerPreviewData(variant = variant)
         }.asSequence()
     }
 }
@@ -223,7 +254,7 @@ private fun VerticalDividerPreview(
 ) {
     LemonadeUi.VerticalDivider(
         modifier = Modifier.height(48.dp),
-        isDashed = previewData.isDashed,
+        variant = previewData.variant,
     )
 }
 
