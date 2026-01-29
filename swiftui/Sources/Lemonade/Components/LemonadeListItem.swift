@@ -485,9 +485,7 @@ private struct ListItemSafeArea<Content: View>: View {
                 .padding(LemonadeTheme.spaces.spacing100)
 
             if showDivider {
-                LemonadeUi.HorizontalDivider(
-                    color: LemonadeTheme.colors.border.borderNeutralLow
-                )
+                LemonadeUi.HorizontalDivider()
                 .padding(.horizontal, LemonadeTheme.spaces.spacing400)
             }
         }

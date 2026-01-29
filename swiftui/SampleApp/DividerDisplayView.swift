@@ -23,7 +23,7 @@ struct DividerDisplayView: View {
                                 textStyle: LemonadeTypography().bodySmallRegular,
                                 color: LemonadeTheme.colors.content.contentSecondary
                             )
-                            LemonadeUi.HorizontalDivider(isDashed: true)
+                            LemonadeUi.HorizontalDivider(variant: .dashed)
                         }
                     }
                 }
@@ -46,7 +46,7 @@ struct DividerDisplayView: View {
                                 textStyle: LemonadeTypography().bodySmallRegular,
                                 color: LemonadeTheme.colors.content.contentSecondary
                             )
-                            LemonadeUi.HorizontalDivider(label: "OR", isDashed: true)
+                            LemonadeUi.HorizontalDivider(label: "OR", variant: .dashed)
                         }
                     }
                 }
@@ -70,7 +70,7 @@ struct DividerDisplayView: View {
                                 textStyle: LemonadeTypography().bodySmallRegular,
                                 color: LemonadeTheme.colors.content.contentSecondary
                             )
-                            LemonadeUi.VerticalDivider(isDashed: true)
+                            LemonadeUi.VerticalDivider(variant: .dashed)
                                 .frame(height: 48)
                         }
                     }
