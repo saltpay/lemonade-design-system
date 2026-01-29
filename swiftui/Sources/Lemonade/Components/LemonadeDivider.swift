@@ -1,5 +1,16 @@
 import SwiftUI
 
+// MARK: - DividerVariant
+
+/// Variants available for dividers.
+public enum DividerVariant {
+    /// Solid line divider.
+    case solid
+
+    /// Dashed line divider.
+    case dashed
+}
+
 // MARK: - HorizontalDivider Component
 
 public extension LemonadeUi {
@@ -14,34 +25,55 @@ public extension LemonadeUi {
     /// LemonadeUi.HorizontalDivider(label: "OR")
     ///
     /// // Dashed divider
-    /// LemonadeUi.HorizontalDivider(isDashed: true)
+    /// LemonadeUi.HorizontalDivider(variant: .dashed)
     /// ```
     ///
     /// - Parameters:
     ///   - label: Optional String label to display in the center of the divider
-    ///   - color: Color of the divider. Defaults to borderNeutralLow
-    ///   - isDashed: Boolean flag to define if the divider is dashed or not
+    ///   - variant: Variant of the divider. Defaults to `.solid`
     /// - Returns: A styled horizontal divider view
     @ViewBuilder
     static func HorizontalDivider(
         label: String? = nil,
-        color: Color = .border.borderNeutralLow,
-        isDashed: Bool = false
+        variant: DividerVariant = .solid
     ) -> some View {
+        let thickness = LemonadeTheme.borderWidth.base.border25
+        let dividerColor: Color = {
+            switch variant {
+            case .solid:
+                return .border.borderNeutralLow
+            case .dashed:
+                return .border.borderNeutralMedium
+            }
+        }()
+
         if let label = label {
-            HStack(spacing: .space.spacing300) {
-                CoreHorizontalDivider(color: color, isDashed: isDashed)
+            HStack(spacing: 0) {
+                CoreHorizontalDivider(
+                    color: dividerColor,
+                    variant: variant,
+                    thickness: thickness
+                )
 
                 LemonadeUi.Text(
                     label,
-                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
+                    textStyle: LemonadeTypography.shared.bodySmallRegular,
                     color: .content.contentSecondary
                 )
+                .padding(.horizontal, .space.spacing300)
 
-                CoreHorizontalDivider(color: color, isDashed: isDashed)
+                CoreHorizontalDivider(
+                    color: dividerColor,
+                    variant: variant,
+                    thickness: thickness
+                )
             }
         } else {
-            CoreHorizontalDivider(color: color, isDashed: isDashed)
+            CoreHorizontalDivider(
+                color: dividerColor,
+                variant: variant,
+                thickness: thickness
+            )
         }
     }
 }
@@ -57,19 +89,31 @@ public extension LemonadeUi {
     /// LemonadeUi.VerticalDivider()
     ///
     /// // Dashed vertical divider
-    /// LemonadeUi.VerticalDivider(isDashed: true)
+    /// LemonadeUi.VerticalDivider(variant: .dashed)
     /// ```
     ///
     /// - Parameters:
-    ///   - color: Color of the divider. Defaults to borderNeutralLow
-    ///   - isDashed: Boolean flag to define if the divider is dashed or not
+    ///   - variant: Variant of the divider. Defaults to `.solid`
     /// - Returns: A styled vertical divider view
     @ViewBuilder
     static func VerticalDivider(
-        color: Color = .border.borderNeutralLow,
-        isDashed: Bool = false
+        variant: DividerVariant = .solid
     ) -> some View {
-        CoreVerticalDivider(color: color, isDashed: isDashed)
+        let thickness = LemonadeTheme.borderWidth.base.border25
+        let dividerColor: Color = {
+            switch variant {
+            case .solid:
+                return .border.borderNeutralLow
+            case .dashed:
+                return .border.borderNeutralMedium
+            }
+        }()
+
+        CoreVerticalDivider(
+            color: dividerColor,
+            variant: variant,
+            thickness: thickness
+        )
     }
 }
 
@@ -77,45 +121,53 @@ public extension LemonadeUi {
 
 private struct CoreHorizontalDivider: View {
     let color: Color
-    let isDashed: Bool
+    let variant: DividerVariant
+    let thickness: CGFloat
+
+    private var dashWidth: CGFloat { LemonadeTheme.sizes.size100 }
+    private var dashGap: CGFloat { LemonadeTheme.spaces.spacing100 }
 
     var body: some View {
         GeometryReader { geometry in
             Path { path in
-                path.move(to: CGPoint(x: 0, y: 0.5))
-                path.addLine(to: CGPoint(x: geometry.size.width, y: 0.5))
+                path.move(to: CGPoint(x: 0, y: thickness / 2))
+                path.addLine(to: CGPoint(x: geometry.size.width, y: thickness / 2))
             }
             .stroke(
                 color,
                 style: StrokeStyle(
-                    lineWidth: 1,
-                    dash: isDashed ? [4, 4] : []
+                    lineWidth: thickness,
+                    dash: variant == .dashed ? [dashWidth, dashGap] : []
                 )
             )
         }
-        .frame(height: 1)
+        .frame(height: thickness)
     }
 }
 
 private struct CoreVerticalDivider: View {
     let color: Color
-    let isDashed: Bool
+    let variant: DividerVariant
+    let thickness: CGFloat
+
+    private var dashWidth: CGFloat { LemonadeTheme.sizes.size100 }
+    private var dashGap: CGFloat { LemonadeTheme.spaces.spacing100 }
 
     var body: some View {
         GeometryReader { geometry in
             Path { path in
-                path.move(to: CGPoint(x: 0.5, y: 0))
-                path.addLine(to: CGPoint(x: 0.5, y: geometry.size.height))
+                path.move(to: CGPoint(x: thickness / 2, y: 0))
+                path.addLine(to: CGPoint(x: thickness / 2, y: geometry.size.height))
             }
             .stroke(
                 color,
                 style: StrokeStyle(
-                    lineWidth: 1,
-                    dash: isDashed ? [4, 4] : []
+                    lineWidth: thickness,
+                    dash: variant == .dashed ? [dashWidth, dashGap] : []
                 )
             )
         }
-        .frame(width: 1)
+        .frame(width: thickness)
     }
 }
 
@@ -143,14 +195,14 @@ struct LemonadeDivider_Previews: PreviewProvider {
             VStack(alignment: .leading) {
                 Text("Dashed Divider")
                     .font(.caption)
-                LemonadeUi.HorizontalDivider(isDashed: true)
+                LemonadeUi.HorizontalDivider(variant: .dashed)
             }
 
             // Dashed horizontal divider with label
             VStack(alignment: .leading) {
                 Text("Dashed Divider with Label")
                     .font(.caption)
-                LemonadeUi.HorizontalDivider(label: "OR", isDashed: true)
+                LemonadeUi.HorizontalDivider(label: "OR", variant: .dashed)
             }
 
             // Vertical dividers
@@ -165,7 +217,7 @@ struct LemonadeDivider_Previews: PreviewProvider {
                 VStack {
                     Text("Dashed")
                         .font(.caption)
-                    LemonadeUi.VerticalDivider(isDashed: true)
+                    LemonadeUi.VerticalDivider(variant: .dashed)
                         .frame(height: 48)
                 }
             }
