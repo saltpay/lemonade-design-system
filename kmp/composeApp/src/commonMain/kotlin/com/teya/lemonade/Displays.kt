@@ -16,6 +16,7 @@ internal enum class Display(
     Checkbox(label = "Checkbox"),
     RadioButton(label = "RadioButton"),
     SelectionListItem(label = "SelectionListItem"),
+    ActionListItem(label = "ActionListItem"),
     ResourceListItem(label = "ResourceListItem"),
     Chip(label = "Chip"),
     SegmentedControl(label = "SegmentedControl"),

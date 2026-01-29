@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,112 +36,73 @@ internal fun SelectionListItemDisplay() {
             .padding(all = LemonadeTheme.spaces.spacing400)
     ) {
         // SelectListItem - Single
-        SelectionListItemSection(title = "SelectListItem - Single") {
-            Column(
-                modifier = Modifier
-                    .background(
-                        LemonadeTheme.colors.background.bgDefault,
-                        shape = RoundedCornerShape(LemonadeTheme.radius.radius400)
-                    )
-            ) {
-                (0..2).forEach { index ->
-                    LemonadeUi.SelectListItem(
-                        label = "Option ${index + 1}",
-                        type = SelectListItemType.Single,
-                        checked = singleSelection == index,
-                        onItemClicked = { singleSelection = index },
-                        supportText = if (index == 0) "With support text" else null
-                    )
-                }
+
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "SelectListItem - Single")
+        ) {
+            (0..2).forEach { index ->
+                LemonadeUi.SelectListItem(
+                    label = "Option ${index + 1}",
+                    type = SelectListItemType.Single,
+                    checked = singleSelection == index,
+                    onItemClicked = { singleSelection = index },
+                    supportText = if (index == 0) "With support text" else null
+                )
             }
         }
+
 
         // SelectListItem - Multiple
-        SelectionListItemSection(title = "SelectListItem - Multiple") {
-            Column(
-                modifier = Modifier
-                    .background(
-                        LemonadeTheme.colors.background.bgDefault,
-                        shape = RoundedCornerShape(LemonadeTheme.radius.radius400)
-                    )
-            ) {
-                (0..2).forEach { index ->
-                    LemonadeUi.SelectListItem(
-                        label = "Item ${index + 1}",
-                        type = SelectListItemType.Multiple,
-                        checked = multipleSelections.contains(index),
-                        onItemClicked = {
-                            multipleSelections = if (multipleSelections.contains(index)) {
-                                multipleSelections - index
-                            } else {
-                                multipleSelections + index
-                            }
-                        }
-                    )
-                }
-            }
-        }
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "SelectListItem - Multiple")
+        ) {
 
-        // SelectListItem with Leading Slot
-        SelectionListItemSection(title = "SelectListItem with Leading") {
-            Column(
-                modifier = Modifier
-                    .background(
-                        LemonadeTheme.colors.background.bgDefault,
-                        shape = RoundedCornerShape(LemonadeTheme.radius.radius400)
-                    )
-            ) {
+            (0..2).forEach { index ->
                 LemonadeUi.SelectListItem(
-                    label = "With Icon",
-                    type = SelectListItemType.Single,
-                    checked = true,
-                    onItemClicked = {},
-                    supportText = "Leading icon example",
-                    leadingSlot = {
-                        LemonadeUi.Icon(
-                            icon = LemonadeIcons.Star,
-                            contentDescription = null,
-                            size = LemonadeAssetSize.Medium,
-                        )
+                    label = "Item ${index + 1}",
+                    type = SelectListItemType.Multiple,
+                    checked = multipleSelections.contains(index),
+                    onItemClicked = {
+                        multipleSelections = if (multipleSelections.contains(index)) {
+                            multipleSelections - index
+                        } else {
+                            multipleSelections + index
+                        }
                     }
                 )
             }
         }
-
-        // Disabled States
-        SelectionListItemSection(title = "Disabled States") {
-            Column(
-                modifier = Modifier
-                    .background(
-                        LemonadeTheme.colors.background.bgDefault,
-                        shape = RoundedCornerShape(LemonadeTheme.radius.radius400)
+// SelectListItem - Multiple
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "SelectListItem with Leading")
+        ) {
+            LemonadeUi.SelectListItem(
+                label = "With Icon",
+                type = SelectListItemType.Single,
+                checked = true,
+                onItemClicked = {},
+                supportText = "Leading icon example",
+                leadingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.Star,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
                     )
-            ) {
-                LemonadeUi.SelectListItem(
-                    label = "Disabled Option",
-                    type = SelectListItemType.Single,
-                    checked = false,
-                    onItemClicked = {},
-                    enabled = false
-                )
-            }
+                }
+            )
         }
-    }
-}
 
-@Composable
-private fun SelectionListItemSection(
-    title: String,
-    content: @Composable () -> Unit
-) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-    ) {
-        LemonadeUi.Text(
-            text = title,
-            textStyle = LemonadeTheme.typography.headingXSmall,
-            color = LemonadeTheme.colors.content.contentSecondary
-        )
-        content()
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "Disabled States")
+        ) {
+
+            LemonadeUi.SelectListItem(
+                label = "Disabled Option",
+                type = SelectListItemType.Single,
+                checked = false,
+                onItemClicked = {},
+                enabled = false
+            )
+        }
     }
 }
