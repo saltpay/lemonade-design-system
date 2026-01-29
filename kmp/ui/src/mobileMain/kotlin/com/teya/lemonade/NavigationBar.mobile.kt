@@ -205,11 +205,21 @@ public class NavigationBarState internal constructor(
 /**
  * Creates and remembers a [NavigationBarState] instance.
  *
+ * @param startCollapsed When `true`, the navigation bar starts in the collapsed state.
+ *        The collapsable content will be hidden and the inline title will be visible immediately.
+ *        Defaults to `false`.
+ * @param lockGestureAnimation When `true`, scroll gestures from nested scrollable content
+ *        will not collapse or expand the navigation bar. The bar can still be collapsed or
+ *        expanded programmatically via [NavigationBarState.collapse] and [NavigationBarState.expand].
+ *        Defaults to `false`.
  * @return A remembered [NavigationBarState] instance.
  *
  * ## Usage
  * ```kotlin
- * val navigationBarState = rememberNavigationBarState()
+ * val navigationBarState = rememberNavigationBarState(
+ *     startCollapsed = true,
+ *     lockGestureAnimation = true,
+ * )
  *
  * Column {
  *     LemonadeUi.NavigationBar(
