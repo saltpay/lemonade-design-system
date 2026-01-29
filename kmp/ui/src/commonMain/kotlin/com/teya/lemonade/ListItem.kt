@@ -361,7 +361,7 @@ private fun CoreListItem(
                 .defaultMinSize(minHeight = LocalSizes.current.size1200)
                 .padding(
                     horizontal = LocalSpaces.current.spacing300,
-                    vertical = LocalSpaces.current.spacing200,
+                    vertical = LocalSpaces.current.spacing300,
                 ),
         ) {
             if (leadingSlot != null) {
@@ -380,7 +380,6 @@ private fun CoreListItem(
             }
 
             Column(
-                verticalArrangement = Arrangement.spacedBy(LocalSpaces.current.spacing50),
                 modifier = Modifier
                     .weight(weight = 1f)
                     .then(
