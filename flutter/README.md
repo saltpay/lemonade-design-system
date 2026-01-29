@@ -46,7 +46,7 @@ The Lemonade Design System is distributed as a Git-based Flutter package. Add it
 dependencies:
   lemonade_design_system:
     git:
-      url: git@github.com:saltpay/teya-lemonade-ds.git
+      url: git@github.com:saltpay/lemonade-design-system.git
       ref: lemonade-flutter-v0.1.0  # Use the latest version tag
       path: flutter
 ```
@@ -358,8 +358,8 @@ For public components:
 ### Development Setup
 
 ```sh
-git clone git@github.com:saltpay/teya-lemonade-ds.git
-cd teya-lemonade-ds/flutter
+git clone git@github.com:saltpay/lemonade-design-system.git
+cd lemonade-design-system/flutter
 flutter pub get
 ```
 
