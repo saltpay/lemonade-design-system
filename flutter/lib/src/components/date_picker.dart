@@ -19,7 +19,8 @@ typedef DateRangeChangedCallback =
 ///
 /// A [LemonadeDatePicker] provides a scrollable month view that allows users
 /// to select a date. It features smooth page animations between months and
-/// supports restricting selection to dates from today onwards.
+/// supports restricting selection to a specific date range using [minDate]
+/// and [maxDate].
 ///
 /// The picker supports two modes:
 /// - **Single date mode** (default): Select a single date
@@ -42,6 +43,16 @@ typedef DateRangeChangedCallback =
 ///       selectedDate = newDate;
 ///     });
 ///   },
+/// )
+/// ```
+///
+/// ## Example - Future Dates Only
+/// ```dart
+/// LemonadeDatePicker(
+///   monthHeaderFormatter: (year, month) => '...',
+///   weekdayAbbreviations: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+///   minDate: DateTime.now(),
+///   onDateChanged: (date) => print(date),
 /// )
 /// ```
 ///
@@ -69,7 +80,8 @@ class LemonadeDatePicker extends StatefulWidget {
     super.key,
     this.initialDate,
     this.onDateChanged,
-    this.allowBeforeToday = true,
+    this.minDate,
+    this.maxDate,
     this.semanticIdentifier,
     this.semanticLabel,
     this.isDateRange = false,
@@ -81,8 +93,8 @@ class LemonadeDatePicker extends StatefulWidget {
   /// {@template LemonadeDatePicker.initialDate}
   /// The initially selected date.
   ///
-  /// If null, no date is pre-selected. If [allowBeforeToday] is false and
-  /// [initialDate] is before today, the picker will start at today's month.
+  /// If null, no date is pre-selected. If [minDate] is set and [initialDate]
+  /// is before it, the picker will start at [minDate]'s month.
   ///
   /// This is used in single date mode. For date range mode, use
   /// [initialStartDate] and [initialEndDate].
@@ -97,13 +109,21 @@ class LemonadeDatePicker extends StatefulWidget {
   /// {@endtemplate}
   final ValueChanged<DateTime>? onDateChanged;
 
-  /// {@template LemonadeDatePicker.allowBeforeToday}
-  /// Whether dates before today can be selected.
+  /// {@template LemonadeDatePicker.minDate}
+  /// The minimum selectable date.
   ///
-  /// When false, past dates are displayed with reduced opacity and cannot
-  /// be tapped. Defaults to true.
+  /// Dates before this date are displayed with reduced opacity and cannot
+  /// be tapped. If null, there is no minimum date restriction.
   /// {@endtemplate}
-  final bool allowBeforeToday;
+  final DateTime? minDate;
+
+  /// {@template LemonadeDatePicker.maxDate}
+  /// The maximum selectable date.
+  ///
+  /// Dates after this date are displayed with reduced opacity and cannot
+  /// be tapped. If null, there is no maximum date restriction.
+  /// {@endtemplate}
+  final DateTime? maxDate;
 
   /// {@template LemonadeDatePicker.monthHeaderFormatter}
   /// Formatter for the month header.
@@ -182,6 +202,8 @@ class _LemonadeDatePickerState extends State<LemonadeDatePicker> {
   late int _currentPageIndex;
 
   late final DateTime _today; // today at midnight
+  late final DateTime? _effectiveMinDate;
+  late final DateTime? _effectiveMaxDate;
 
   // Date range state
   DateTime? _rangeStartDate;
@@ -194,6 +216,9 @@ class _LemonadeDatePickerState extends State<LemonadeDatePicker> {
 
     final now = DateTime.now();
     _today = DateTime(now.year, now.month, now.day);
+
+    _effectiveMinDate = widget.minDate;
+    _effectiveMaxDate = widget.maxDate;
 
     DateTime effectiveInitial;
 
@@ -211,8 +236,14 @@ class _LemonadeDatePickerState extends State<LemonadeDatePicker> {
       _selectedDate = widget.initialDate;
     }
 
-    if (!widget.allowBeforeToday && effectiveInitial.isBefore(_today)) {
-      effectiveInitial = _today;
+    // Clamp initial date to min/max bounds
+    final minDate = _effectiveMinDate;
+    final maxDate = _effectiveMaxDate;
+    if (minDate != null && effectiveInitial.isBefore(minDate)) {
+      effectiveInitial = minDate;
+    }
+    if (maxDate != null && effectiveInitial.isAfter(maxDate)) {
+      effectiveInitial = maxDate;
     }
 
     _baseMonth = DateTime(effectiveInitial.year, effectiveInitial.month);
@@ -237,10 +268,10 @@ class _LemonadeDatePickerState extends State<LemonadeDatePicker> {
 
   bool _canGoToPreviousMonth() {
     if (_currentPageIndex <= 0) return false;
-    if (widget.allowBeforeToday) return true;
+    final minDate = _effectiveMinDate;
+    if (minDate == null) return true;
 
-    // For allowBeforeToday = false, we only allow going to a month that
-    // has at least one day >= today.
+    // We only allow going to a month that has at least one day >= minDate
     final prevMonth = _monthFromPage(_currentPageIndex - 1);
     final lastDayPrevMonth = DateTime(
       prevMonth.year,
@@ -248,7 +279,7 @@ class _LemonadeDatePickerState extends State<LemonadeDatePicker> {
       0,
     );
 
-    return !lastDayPrevMonth.isBefore(_today);
+    return !lastDayPrevMonth.isBefore(minDate);
   }
 
   void _goToPreviousMonth() {
@@ -259,8 +290,20 @@ class _LemonadeDatePickerState extends State<LemonadeDatePicker> {
     );
   }
 
+  bool _canGoToNextMonth() {
+    if (_currentPageIndex >= _monthsTotal - 1) return false;
+    final maxDate = _effectiveMaxDate;
+    if (maxDate == null) return true;
+
+    // We only allow going to a month that has at least one day <= maxDate
+    final nextMonth = _monthFromPage(_currentPageIndex + 1);
+    final firstDayNextMonth = DateTime(nextMonth.year, nextMonth.month);
+
+    return !firstDayNextMonth.isAfter(maxDate);
+  }
+
   void _goToNextMonth() {
-    if (_currentPageIndex >= _monthsTotal - 1) return;
+    if (!_canGoToNextMonth()) return;
     _pageController.nextPage(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
@@ -312,9 +355,8 @@ class _LemonadeDatePickerState extends State<LemonadeDatePicker> {
     final visibleMonth = _monthFromPage(_currentPageIndex);
     final headerLabel = _formatMonthHeader(visibleMonth);
 
-    final isLastPage = _currentPageIndex == _monthsTotal - 1;
     final canGoPrev = _canGoToPreviousMonth();
-    final canGoNext = !isLastPage;
+    final canGoNext = _canGoToNextMonth();
 
     return Semantics(
       identifier: widget.semanticIdentifier,
@@ -411,8 +453,8 @@ class _LemonadeDatePickerState extends State<LemonadeDatePicker> {
                     selectedDate: _selectedDate,
                     theme: theme,
                     baseTextStyle: baseTextStyle,
-                    today: _today,
-                    allowBeforeToday: widget.allowBeforeToday,
+                    minDate: _effectiveMinDate,
+                    maxDate: _effectiveMaxDate,
                     onDateSelected: _handleDateSelected,
                     isDateRange: widget.isDateRange,
                     rangeStartDate: _rangeStartDate,
@@ -435,8 +477,8 @@ class _MonthGrid extends StatelessWidget {
     required this.theme,
     required this.baseTextStyle,
     required this.onDateSelected,
-    required this.today,
-    required this.allowBeforeToday,
+    required this.minDate,
+    required this.maxDate,
     required this.isDateRange,
     required this.rangeStartDate,
     required this.rangeEndDate,
@@ -447,8 +489,8 @@ class _MonthGrid extends StatelessWidget {
   final LemonadeThemeData theme;
   final TextStyle baseTextStyle;
   final ValueChanged<DateTime> onDateSelected;
-  final DateTime today;
-  final bool allowBeforeToday;
+  final DateTime? minDate;
+  final DateTime? maxDate;
   final bool isDateRange;
   final DateTime? rangeStartDate;
   final DateTime? rangeEndDate;
@@ -532,7 +574,9 @@ class _MonthGrid extends StatelessWidget {
               !isDateRange &&
               selectedDate != null &&
               _sameDay(current, selectedDate!);
-          final isDisabled = !allowBeforeToday && current.isBefore(today);
+          final isBeforeMin = minDate != null && current.isBefore(minDate!);
+          final isAfterMax = maxDate != null && current.isAfter(maxDate!);
+          final isDisabled = isBeforeMin || isAfterMax;
 
           // Range states - only show range visuals when both dates selected
           final isRangeComplete =

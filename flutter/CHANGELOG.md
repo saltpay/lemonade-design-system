@@ -2,6 +2,12 @@
 
 * TODO: Add upcoming changes here.
 
+# 0.8.0
+
+* BREAKING CHANGE: Replace `allowBeforeToday` with `minDate` and `maxDate` in LemonadeDatePicker for more flexible date range restrictions.
+* FEAT: Add `minDate` property to LemonadeDatePicker to restrict selection to dates on or after a minimum date.
+* FEAT: Add `maxDate` property to LemonadeDatePicker to restrict selection to dates on or before a maximum date.
+
 # 0.7.2
 * FEAT: Added new properties to LemonadeDatePicker for date ranges.
 

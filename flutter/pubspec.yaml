@@ -1,6 +1,6 @@
 name: lemonade_design_system
 description: A Very Good Project created by Very Good CLI.
-version: 0.7.2
+version: 0.8.0
 publish_to: none
 
 environment:
