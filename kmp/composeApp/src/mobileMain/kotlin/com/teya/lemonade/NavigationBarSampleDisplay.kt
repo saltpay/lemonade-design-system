@@ -21,7 +21,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun NavigationBarSampleDisplay() {
-    val navigationBarState = rememberNavigationBarState()
+    val navigationBarState = rememberNavigationBarState(
+        startCollapsed = true,
+        lockGestureAnimation = true,
+    )
     val coroutineScope = rememberCoroutineScope()
 
     Column(

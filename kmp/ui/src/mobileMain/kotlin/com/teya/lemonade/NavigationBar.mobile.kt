@@ -58,15 +58,24 @@ import kotlin.math.roundToInt
  * @see rememberNavigationBarState
  */
 @Stable
-public class NavigationBarState internal constructor() {
-
-    private val scrollOffsetAnimatable = Animatable(initialValue = 0f)
+public class NavigationBarState internal constructor(
+    private val startCollapsed: Boolean = false,
+    private val lockGestureAnimation: Boolean = false,
+) {
+    private val scrollOffsetAnimatable by derivedStateOf {
+        Animatable(
+            initialValue = if (startCollapsed) {
+                maxScrollOffset
+            } else {
+                0f
+            },
+        )
+    }
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     internal val scrollOffset: Float
         get() = scrollOffsetAnimatable.value
-
     internal var maxScrollOffset: Float by mutableFloatStateOf(0f)
 
     public val collapseProgress: Float by derivedStateOf {
@@ -142,6 +151,9 @@ public class NavigationBarState internal constructor() {
             available: Offset,
             source: NestedScrollSource,
         ): Offset {
+            if (lockGestureAnimation) {
+                return Offset.Zero
+            }
             val delta = available.y
             if (delta < 0 && scrollOffset < maxScrollOffset) {
                 val newOffset = scrollOffset - delta
@@ -166,6 +178,9 @@ public class NavigationBarState internal constructor() {
             available: Offset,
             source: NestedScrollSource,
         ): Offset {
+            if (lockGestureAnimation) {
+                return Offset.Zero
+            }
             val delta = available.y
             if (delta > 0 && scrollOffset > 0f) {
                 val newOffset = scrollOffset - delta
@@ -213,8 +228,16 @@ public class NavigationBarState internal constructor() {
  */
 
 @Composable
-public fun rememberNavigationBarState(): NavigationBarState {
-    return remember { NavigationBarState() }
+public fun rememberNavigationBarState(
+    startCollapsed: Boolean = false,
+    lockGestureAnimation: Boolean = false,
+): NavigationBarState {
+    return remember(startCollapsed, lockGestureAnimation) {
+        NavigationBarState(
+            startCollapsed = startCollapsed,
+            lockGestureAnimation = lockGestureAnimation,
+        )
+    }
 }
 
 /**
