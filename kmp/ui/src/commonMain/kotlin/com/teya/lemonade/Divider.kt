@@ -20,6 +20,21 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 /**
+ * Variants available for dividers.
+ */
+public enum class DividerVariant {
+    /**
+     * Solid line divider.
+     */
+    Solid,
+
+    /**
+     * Dashed line divider.
+     */
+    Dashed,
+}
+
+/**
  * A horizontal divider to separate content. Optionally displays a label in the center.
  *
  * ## Usage
