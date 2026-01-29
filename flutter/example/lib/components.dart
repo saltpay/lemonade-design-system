@@ -231,7 +231,7 @@ class ExampleRow extends StatelessWidget {
       children: [
         Text(
           label,
-          style: theme.typography.bodyMediumRegular.apply(
+          style: theme.typography.bodyMediumSemibold.apply(
             color: theme.colors.content.contentSecondary,
           ),
         ),
