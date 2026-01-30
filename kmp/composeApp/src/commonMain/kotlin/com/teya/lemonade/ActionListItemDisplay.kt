@@ -37,7 +37,7 @@ internal fun ActionListItemDisplay() {
                 label = "Settings",
                 showNavigationIndicator = true,
                 onItemClicked = {},
-                divider = true,
+                showDivider = true,
                 leadingSlot = {
                     LemonadeUi.Icon(
                         icon = LemonadeIcons.Gear,
@@ -52,7 +52,7 @@ internal fun ActionListItemDisplay() {
                 supportText = "Manage your notifications",
                 showNavigationIndicator = true,
                 onItemClicked = {},
-                divider = true,
+                showDivider = true,
                 leadingSlot = {
                     LemonadeUi.Icon(
                         icon = LemonadeIcons.Bell,
@@ -66,7 +66,7 @@ internal fun ActionListItemDisplay() {
                 label = "Privacy",
                 showNavigationIndicator = true,
                 onItemClicked = {},
-                divider = true,
+                showDivider = true,
                 leadingSlot = {
                     LemonadeUi.Icon(
                         icon = LemonadeIcons.Padlock,
@@ -92,7 +92,7 @@ internal fun ActionListItemDisplay() {
                         size = LemonadeAssetSize.Medium,
                     )
                 },
-                divider = true,
+                showDivider = true,
                 trailingSlot = {
                     LemonadeUi.Badge(text = "3", size = LemonadeBadgeSize.Small)
                 }
@@ -109,7 +109,7 @@ internal fun ActionListItemDisplay() {
                         size = LemonadeAssetSize.Medium
                     )
                 },
-                divider = true,
+                showDivider = true,
                 trailingSlot = {
                     LemonadeUi.Tag(label = "New", voice = TagVoice.Positive)
                 }
@@ -123,7 +123,7 @@ internal fun ActionListItemDisplay() {
                 label = "Delete Account",
                 voice = LemonadeListItemVoice.Critical,
                 onItemClicked = {},
-                divider = true,
+                showDivider = true,
                 leadingSlot = {
                     LemonadeUi.Icon(
                         icon = LemonadeIcons.Trash,
@@ -139,7 +139,7 @@ internal fun ActionListItemDisplay() {
                 supportText = "You will need to sign in again",
                 voice = LemonadeListItemVoice.Critical,
                 onItemClicked = {},
-                divider = true,
+                showDivider = true,
                 leadingSlot = {
                     LemonadeUi.Icon(
                         icon = LemonadeIcons.LogOut,
@@ -158,7 +158,7 @@ internal fun ActionListItemDisplay() {
                 label = "Disabled Action",
                 enabled = false,
                 onItemClicked = {},
-                divider = true,
+                showDivider = true,
                 leadingSlot = {
                     LemonadeUi.Icon(
                         icon = LemonadeIcons.Gear,

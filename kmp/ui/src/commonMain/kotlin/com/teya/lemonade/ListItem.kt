@@ -49,7 +49,7 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
  *     checked = true,
  *     onItemClicked = { /* trigger an action */ }
  *     enabled = false,
- *     divider = true,
+ *     showDivider = true,
  *     leadingSlot = { /* slot composable for any item */ },
  *     trailingSlot = { /* slot composable for any item */ },
  * )
@@ -63,7 +63,7 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
  * @param enabled - Flag that defines if the component is enabled or not. If disabled, click interactions
  *  and visual states are disabled.
  * @param interactionSource - Selection list item [MutableInteractionSource] for interaction events.
- * @param divider - Flag to show a divider below the list item.
+ * @param showDivider - Flag to show a divider below the list item.
  * @param supportText - Text to be displayed below the [label] as a support text.
  * @param leadingSlot - A Slot to be placed in the leading position of the list item.
  * @param trailingSlot - A Slot to be placed in the trailing position of the list item.
@@ -77,7 +77,7 @@ public fun LemonadeUi.SelectListItem(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    divider: Boolean = false,
+    showDivider: Boolean = false,
     supportText: String? = null,
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
@@ -87,7 +87,7 @@ public fun LemonadeUi.SelectListItem(
         label = label,
         supportText = supportText,
         interactionSource = interactionSource,
-        divider = divider,
+        showDivider = showDivider,
         role = when (type) {
             SelectListItemType.Single -> Role.RadioButton
             SelectListItemType.Multiple -> Role.Checkbox
@@ -153,7 +153,7 @@ public fun LemonadeUi.SelectListItem(
  *     supportText = "Support Text"
  *     onItemClicked = { /* trigger an action */ }
  *     enabled = true,
- *     divider = true,
+ *     showDivider = true,
  *     leadingSlot = { /* slot composable for any item */ },
  *     addonSlot = { /* slot composable for any item */ },
  * )
@@ -168,7 +168,7 @@ public fun LemonadeUi.SelectListItem(
  * @param enabled - flag to define if the component is enabled or not. If disabled, click interactions
  *  and visual states are disabled.
  * @param supportText - [String] to be displayed as support text.
- * @param divider - flag to show a divider below the list item.
+ * @param showDivider - flag to show a divider below the list item.
  */
 @Composable
 public fun LemonadeUi.ResourceListItem(
@@ -181,7 +181,7 @@ public fun LemonadeUi.ResourceListItem(
     onItemClicked: (() -> Unit)? = null,
     enabled: Boolean = true,
     supportText: String? = null,
-    divider: Boolean,
+    showDivider: Boolean = false,
 ) {
     CoreListItem(
         label = label,
@@ -222,7 +222,7 @@ public fun LemonadeUi.ResourceListItem(
         role = null,
         enabled = enabled,
         modifier = modifier,
-        divider = divider,
+        showDivider = showDivider,
         interactionSource = interactionSource,
     )
 }
@@ -237,7 +237,7 @@ public fun LemonadeUi.ResourceListItem(
  *     supportText = "Support Text"
  *     onItemClicked = { /* trigger an action */ }
  *     enabled = false,
- *     divider = true,
+ *     showDivider = true,
  *     leadingSlot = { /* slot composable for any item */ },
  *     trailingSlot = { /* slot composable for any item */ },
  * )
@@ -255,7 +255,7 @@ public fun LemonadeUi.ResourceListItem(
  * @param onItemClicked - callback called when component is tapped.
  * @param role - [Role] interaction semantics.
  * @param interactionSource - [MutableInteractionSource] to be had within the component.
- * @param divider - [Boolean] flag to show a divider below the list item.
+ * @param showDivider - [Boolean] flag to show a divider below the list item.
  */
 @Composable
 public fun LemonadeUi.ActionListItem(
@@ -270,7 +270,7 @@ public fun LemonadeUi.ActionListItem(
     role: Role? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     showNavigationIndicator: Boolean = false,
-    divider: Boolean,
+    showDivider: Boolean = false,
 ) {
     CoreListItem(
         label = label,
@@ -306,7 +306,7 @@ public fun LemonadeUi.ActionListItem(
         role = role,
         enabled = enabled,
         modifier = modifier,
-        divider = divider,
+        showDivider = showDivider,
         interactionSource = interactionSource,
     )
 }
@@ -323,7 +323,7 @@ private fun CoreListItem(
     role: Role?,
     enabled: Boolean,
     modifier: Modifier = Modifier,
-    divider: Boolean,
+    showDivider: Boolean,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -338,11 +338,11 @@ private fun CoreListItem(
             )
         }
     )
-    SafeArea(showDivider = divider) {
+    SafeArea(modifier = modifier, showDivider = showDivider) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
-            modifier = modifier
+            modifier = Modifier
                 .clip(shape = LocalShapes.current.radius300)
                 .then(
                     other = if (onListItemClick != null) {
@@ -415,12 +415,13 @@ private fun CoreListItem(
 
 @Composable
 private fun SafeArea(
+    modifier: Modifier = Modifier,
     showDivider: Boolean,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.background(color = Color.Transparent)
+        modifier = modifier.background(color = Color.Transparent)
     ) {
         Column(
             modifier = Modifier
@@ -559,7 +560,7 @@ private fun ResourceListItemPreview(
 ) {
     LemonadeUi.ResourceListItem(
         label = "Label",
-        divider = true,
+        showDivider = true,
         supportText = "Metadata 1 * Metadata 2\nSupport text".takeIf { previewData.supportText },
         value = "Value",
         enabled = previewData.enabled,
@@ -624,7 +625,7 @@ private fun ActionListItemPreviewProvider(
 ) {
     LemonadeUi.ActionListItem(
         label = "Label",
-        divider = true,
+        showDivider = true,
         supportText = "Support text".takeIf { previewData.supportText },
         enabled = previewData.enabled,
         trailingSlot = if (previewData.trailingSlot) {

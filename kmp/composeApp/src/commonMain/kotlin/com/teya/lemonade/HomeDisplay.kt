@@ -23,7 +23,7 @@ internal fun HomeDisplay(
                         LemonadeUi.ActionListItem(
                             label = item.label,
                             onItemClicked = { onNavigate(item) },
-                            divider = display.items.lastIndex != index,
+                            showDivider = display.items.lastIndex != index,
                             trailingSlot = {
                                 LemonadeUi.Icon(
                                     icon = LemonadeIcons.ChevronRight,
