@@ -138,7 +138,7 @@ struct CardDisplayView: View {
                                         Text("Visa ending in 4242")
                                         Text("Expires 12/25")
                                             .font(.caption)
-                                            .foregroundColor(.secondary)
+                                            .foregroundStyle(.secondary)
                                     }
                                     Spacer()
                                     LemonadeUi.Tag(label: "Default", voice: .info)
@@ -152,7 +152,7 @@ struct CardDisplayView: View {
                                         Text("Mastercard ending in 1234")
                                         Text("Expires 06/24")
                                             .font(.caption)
-                                            .foregroundColor(.secondary)
+                                            .foregroundStyle(.secondary)
                                     }
                                     Spacer()
                                 }
@@ -171,7 +171,7 @@ struct CardDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
 
             content()
         }
@@ -179,7 +179,7 @@ struct CardDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         CardDisplayView()
     }
 }

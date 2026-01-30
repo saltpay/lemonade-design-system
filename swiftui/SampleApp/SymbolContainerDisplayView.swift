@@ -107,12 +107,12 @@ struct SymbolContainerDisplayView: View {
                     HStack(spacing: 16) {
                         LemonadeUi.SymbolContainer(voice: .neutral, size: .large) {
                             Image(systemName: "star.fill")
-                                .foregroundColor(.yellow)
+                                .foregroundStyle(.yellow)
                         }
 
                         LemonadeUi.SymbolContainer(voice: .info, size: .large) {
                             Image(systemName: "person.fill")
-                                .foregroundColor(LemonadeTheme.colors.content.contentInfo)
+                                .foregroundStyle(LemonadeTheme.colors.content.contentInfo)
                         }
                     }
                 }
@@ -128,7 +128,7 @@ struct SymbolContainerDisplayView: View {
                                     .font(.headline)
                                 Text("john@example.com")
                                     .font(.subheadline)
-                                    .foregroundColor(.secondary)
+                                    .foregroundStyle(.secondary)
                             }
                             Spacer()
                         }
@@ -168,7 +168,7 @@ struct SymbolContainerDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
 
             content()
         }
@@ -176,7 +176,7 @@ struct SymbolContainerDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         SymbolContainerDisplayView()
     }
 }

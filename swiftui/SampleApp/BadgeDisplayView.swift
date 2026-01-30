@@ -147,7 +147,7 @@ struct BadgeDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
 
             content()
         }
@@ -155,7 +155,7 @@ struct BadgeDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         BadgeDisplayView()
     }
 }

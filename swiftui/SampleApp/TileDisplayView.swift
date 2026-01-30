@@ -16,7 +16,7 @@ struct TileDisplayView: View {
                             )
                             LemonadeUi.Text(
                                 "Neutral",
-                                textStyle: LemonadeTypography().bodySmallRegular
+                                textStyle: LemonadeTypography.shared.bodySmallRegular
                             )
                         }
 
@@ -28,7 +28,7 @@ struct TileDisplayView: View {
                             )
                             LemonadeUi.Text(
                                 "Muted",
-                                textStyle: LemonadeTypography().bodySmallRegular
+                                textStyle: LemonadeTypography.shared.bodySmallRegular
                             )
                         }
                     }
@@ -44,7 +44,7 @@ struct TileDisplayView: View {
                         )
                         LemonadeUi.Text(
                             "Use on brand backgrounds",
-                            textStyle: LemonadeTypography().bodySmallRegular,
+                            textStyle: LemonadeTypography.shared.bodySmallRegular,
                             color: LemonadeTheme.colors.content.contentOnBrandHigh
                         )
                     }
@@ -216,7 +216,7 @@ struct TileDisplayView: View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing300) {
             LemonadeUi.Text(
                 title,
-                textStyle: LemonadeTypography().headingXSmall,
+                textStyle: LemonadeTypography.shared.headingXSmall,
                 color: LemonadeTheme.colors.content.contentSecondary
             )
 
@@ -226,7 +226,7 @@ struct TileDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         TileDisplayView()
     }
 }

@@ -31,11 +31,11 @@ struct FlagsDisplayView: View {
 
                         Text(flag.countryCode)
                             .font(.system(size: 11, weight: .semibold))
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
 
                         Text(flag.countryName)
                             .font(.system(size: 8))
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                             .lineLimit(2)
                             .multilineTextAlignment(.center)
                     }
@@ -53,7 +53,7 @@ struct FlagsDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         FlagsDisplayView()
     }
 }

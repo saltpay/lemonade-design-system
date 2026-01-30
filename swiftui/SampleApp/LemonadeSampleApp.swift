@@ -17,9 +17,8 @@ struct LemonadeSampleApp: App {
 
 struct ContentView: View {
     var body: some View {
-        NavigationView {
+        NavigationStack {
             HomeView()
         }
-        .navigationViewStyle(.stack)
     }
 }

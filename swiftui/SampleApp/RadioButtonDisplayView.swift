@@ -97,7 +97,7 @@ struct RadioButtonDisplayView: View {
                                 enabled: false
                             )
                             Text("Disabled unchecked")
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                         }
 
                         HStack(spacing: 24) {
@@ -107,7 +107,7 @@ struct RadioButtonDisplayView: View {
                                 enabled: false
                             )
                             Text("Disabled checked")
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                         }
 
                         LemonadeUi.RadioButton(
@@ -128,7 +128,7 @@ struct RadioButtonDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
 
             content()
         }
@@ -136,7 +136,7 @@ struct RadioButtonDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         RadioButtonDisplayView()
     }
 }

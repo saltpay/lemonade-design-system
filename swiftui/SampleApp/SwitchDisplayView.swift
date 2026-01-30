@@ -97,7 +97,7 @@ struct SwitchDisplayView: View {
                     VStack(alignment: .leading, spacing: 16) {
                         HStack {
                             Text("Disabled Off")
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                             Spacer()
                             LemonadeUi.Switch(
                                 checked: false,
@@ -108,7 +108,7 @@ struct SwitchDisplayView: View {
 
                         HStack {
                             Text("Disabled On")
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                             Spacer()
                             LemonadeUi.Switch(
                                 checked: true,
@@ -135,7 +135,7 @@ struct SwitchDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
 
             content()
         }
@@ -143,7 +143,7 @@ struct SwitchDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         SwitchDisplayView()
     }
 }

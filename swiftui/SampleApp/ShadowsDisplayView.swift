@@ -9,7 +9,7 @@ struct ShadowsDisplayView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(item.name)
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
 
                         RoundedRectangle(cornerRadius: 12)
                             .fill(.white)
@@ -39,7 +39,7 @@ private let shadowItems: [ShadowItem] = [
 ]
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ShadowsDisplayView()
     }
 }

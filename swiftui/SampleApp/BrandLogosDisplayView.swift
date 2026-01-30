@@ -29,7 +29,7 @@ struct BrandLogosDisplayView: View {
 
                         Text(logo.rawValue)
                             .font(.system(size: 10))
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                             .lineLimit(2)
                             .multilineTextAlignment(.center)
                     }
@@ -47,7 +47,7 @@ struct BrandLogosDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         BrandLogosDisplayView()
     }
 }

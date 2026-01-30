@@ -9,7 +9,7 @@ struct ColorsDisplayView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(group.title)
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                             .textCase(.uppercase)
 
                         HStack(spacing: 0) {
@@ -18,7 +18,7 @@ struct ColorsDisplayView: View {
                                     Text(colorItem.name)
                                         .font(.caption2)
                                         .fontWeight(.semibold)
-                                        .foregroundColor(textColor(for: colorItem.color))
+                                        .foregroundStyle(textColor(for: colorItem.color))
                                 }
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 60)
@@ -118,7 +118,7 @@ private let colorGroups: [ColorGroup] = [
 ]
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ColorsDisplayView()
     }
 }

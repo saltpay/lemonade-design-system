@@ -24,7 +24,7 @@ struct SegmentedControlDisplayView: View {
 
                         Text("Selected: Tab \(selectedTab1 + 1)")
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                 }
 
@@ -43,7 +43,7 @@ struct SegmentedControlDisplayView: View {
 
                         Text("Selected: \(["Favorites", "Bookmarks", "Settings"][selectedTab2])")
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                 }
 
@@ -61,7 +61,7 @@ struct SegmentedControlDisplayView: View {
 
                         Text("Status: \(selectedTab3 == 0 ? "On" : "Off")")
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                 }
 
@@ -89,7 +89,7 @@ struct SegmentedControlDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
 
             content()
         }
@@ -97,7 +97,7 @@ struct SegmentedControlDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         SegmentedControlDisplayView()
     }
 }

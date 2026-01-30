@@ -26,11 +26,11 @@ struct IconsDisplayView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 24, height: 24)
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
 
                         Text(icon.rawValue)
                             .font(.system(size: 8))
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                             .lineLimit(2)
                             .multilineTextAlignment(.center)
                     }
@@ -48,7 +48,7 @@ struct IconsDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         IconsDisplayView()
     }
 }

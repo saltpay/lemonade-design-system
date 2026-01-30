@@ -298,7 +298,7 @@ struct ListItemDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             LemonadeUi.Text(
                 title,
-                textStyle: LemonadeTypography().headingXSmall,
+                textStyle: LemonadeTypography.shared.headingXSmall,
                 color: LemonadeTheme.colors.content.contentSecondary
             )
 
@@ -308,7 +308,7 @@ struct ListItemDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ListItemDisplayView()
     }
 }
