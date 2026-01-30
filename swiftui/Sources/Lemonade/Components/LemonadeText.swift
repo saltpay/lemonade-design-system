@@ -138,6 +138,7 @@ private struct LemonadeTextView: View {
                 .truncationMode(overflow)
                 .lineSpacing(textStyle?.lineSpacing ?? 0)
                 .tracking(textStyle?.letterSpacing ?? 0)
+                .frame(minHeight: textStyle?.lineHeight)
         } else {
             SwiftUI.Text(displayText)
                 .font(resolvedFont)
@@ -146,8 +147,10 @@ private struct LemonadeTextView: View {
                 .lineLimit(maxLines)
                 .truncationMode(overflow)
                 .lineSpacing(textStyle?.lineSpacing ?? 0)
+                .frame(minHeight: textStyle?.lineHeight)
         }
     }
+    
 
     private var isOverlineStyle: Bool {
         guard let style = textStyle else { return false }
@@ -200,6 +203,8 @@ struct LemonadeText_Previews: PreviewProvider {
                 "Overline Text",
                 textStyle: LemonadeTypography.shared.bodyXSmallOverline
             )
+            
+            LemonadeUi.Text("This text allows multiple lines but is limited to 2 lines maximum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.", textStyle: LemonadeTypography.shared.bodyMediumRegular, maxLines: 2)
         }
         .padding()
         .previewLayout(.sizeThatFits)
