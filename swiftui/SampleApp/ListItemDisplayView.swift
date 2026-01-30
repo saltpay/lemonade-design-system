@@ -93,6 +93,7 @@ struct ListItemDisplayView: View {
                             label: "Account Balance",
                             value: "$1,234.56",
                             supportText: "Updated today",
+                            onItemClicked: {},
                             leadingSlot: {
                                 LemonadeUi.SymbolContainer(
                                     icon: .money,
@@ -100,12 +101,13 @@ struct ListItemDisplayView: View {
                                     voice: .info,
                                     size: .large
                                 )
-                            }
+                            },
                         )
 
                         LemonadeUi.ResourceListItem(
                             label: "Savings",
                             value: "$5,000.00",
+                            onItemClicked: {},
                             leadingSlot: {
                                 LemonadeUi.SymbolContainer(
                                     icon: .coins,
@@ -127,6 +129,7 @@ struct ListItemDisplayView: View {
                             label: "Last Transaction",
                             value: "-$50.00",
                             supportText: "Yesterday",
+                            onItemClicked: {},
                             addonSlot: {
                                 LemonadeUi.Tag(label: "Pending", voice: .warning)
                             },
