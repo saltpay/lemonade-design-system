@@ -180,13 +180,13 @@ private fun CardPreview(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(LemonadeTheme.sizes.size1600)
+                    .height(LocalSizes.current.size1600)
                     .background(LemonadePrimitiveColors.Alpha.Pink.alpha200)
             ) {
                 LemonadeUi.Text(
                     text = "Background: ${previewData.background} • Spacing: ${previewData.contentPadding}",
-                    textStyle = LemonadeTheme.typography.bodySmallMedium,
-                    color = LemonadeTheme.colors.content.contentSecondary
+                    textStyle = LocalTypographies.current.bodySmallMedium,
+                    color = LocalColors.current.content.contentSecondary
                 )
             }
         }
