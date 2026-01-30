@@ -1,4 +1,9 @@
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 // MARK: - Country Flag Size
 
@@ -58,29 +63,31 @@ internal struct LemonadeCountryFlagView: View {
     let size: LemonadeCountryFlagSize
 
     var body: some View {
+        flagImage
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: size.value, height: size.value)
+            .clipShape(Circle())
+            .overlay(
+                Circle()
+                    .stroke(
+                        LemonadeTheme.colors.border.borderNeutralMedium,
+                        lineWidth: LemonadeBorderWidthTokens().base.border25
+                    )
+            )
+    }
+
+    private var flagImage: Image {
+        #if canImport(UIKit)
         if let uiImage = UIImage(named: flag.rawValue, in: .lemonade, compatibleWith: nil) {
-            Image(uiImage: uiImage)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: size.value, height: size.value)
-                .clipShape(Circle())
-                .overlay(
-                    Circle()
-                        .stroke(
-                            LemonadeTheme.colors.border.borderNeutralMedium,
-                            lineWidth: LemonadeBorderWidthTokens().base.border25
-                        )
-                )
-        } else {
-            Circle()
-                .fill(LemonadeTheme.colors.background.bgNeutralSubtle)
-                .frame(width: size.value, height: size.value)
-                .overlay(
-                    Image(systemName: "flag.slash")
-                        .foregroundStyle(LemonadeTheme.colors.content.contentSecondary)
-                        .font(.system(size: size.value * 0.4))
-                )
+            return Image(uiImage: uiImage)
         }
+        #elseif canImport(AppKit)
+        if let nsImage = Bundle.lemonade.image(forResource: flag.rawValue) {
+            return Image(nsImage: nsImage)
+        }
+        #endif
+        return Image(systemName: "flag.slash")
     }
 }
 

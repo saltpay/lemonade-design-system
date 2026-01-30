@@ -28,8 +28,6 @@ public extension LemonadeUi {
     ///   - errorMessage: Error message displayed when error is true
     ///   - error: Whether the text field has an error
     ///   - enabled: Whether the text field is enabled
-    ///   - leadingContent: Content displayed on the left inside the text field
-    ///   - trailingContent: Content displayed on the right inside the text field
     /// - Returns: A styled TextField view
     @ViewBuilder
     static func TextField(
@@ -41,9 +39,64 @@ public extension LemonadeUi {
         placeholderText: String? = nil,
         errorMessage: String? = nil,
         error: Bool = false,
+        enabled: Bool = true
+    ) -> some View {
+        LemonadeTextFieldView<EmptyView, EmptyView>(
+            input: input,
+            onInputChanged: onInputChanged,
+            label: label,
+            optionalIndicator: optionalIndicator,
+            supportText: supportText,
+            placeholderText: placeholderText,
+            errorMessage: errorMessage,
+            error: error,
+            enabled: enabled,
+            leadingContent: nil,
+            trailingContent: nil
+        )
+    }
+
+    /// Text Field component with custom leading and trailing content.
+    ///
+    /// ## Usage
+    /// ```swift
+    /// LemonadeUi.TextField(
+    ///     input: $text,
+    ///     label: "Password",
+    ///     placeholderText: "Enter password"
+    /// ) {
+    ///     LemonadeUi.Icon(icon: .padlock, contentDescription: nil)
+    /// } trailingContent: {
+    ///     LemonadeUi.Icon(icon: .eyeClosed, contentDescription: nil)
+    /// }
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - input: The inputted text (Binding)
+    ///   - onInputChanged: Callback when the user inputs content
+    ///   - label: Label displayed above the text field
+    ///   - optionalIndicator: Optional text displayed on the right of the label
+    ///   - supportText: Support text displayed below the text field
+    ///   - placeholderText: Placeholder text when the field is empty
+    ///   - errorMessage: Error message displayed when error is true
+    ///   - error: Whether the text field has an error
+    ///   - enabled: Whether the text field is enabled
+    ///   - leadingContent: Content displayed on the left inside the text field
+    ///   - trailingContent: Content displayed on the right inside the text field
+    /// - Returns: A styled TextField view
+    @ViewBuilder
+    static func TextField<LeadingContent: View, TrailingContent: View>(
+        input: Binding<String>,
+        onInputChanged: ((String) -> Void)? = nil,
+        label: String? = nil,
+        optionalIndicator: String? = nil,
+        supportText: String? = nil,
+        placeholderText: String? = nil,
+        errorMessage: String? = nil,
+        error: Bool = false,
         enabled: Bool = true,
-        leadingContent: (() -> AnyView)? = nil,
-        trailingContent: (() -> AnyView)? = nil
+        @ViewBuilder leadingContent: @escaping () -> LeadingContent,
+        @ViewBuilder trailingContent: @escaping () -> TrailingContent
     ) -> some View {
         LemonadeTextFieldView(
             input: input,
@@ -94,14 +147,59 @@ public extension LemonadeUi {
     ///   - errorMessage: Error message displayed when error is true
     ///   - error: Whether the text field has an error
     ///   - enabled: Whether the text field is enabled
-    ///   - trailingContent: Content displayed on the right inside the text field
     /// - Returns: A styled TextFieldWithSelector view
     @ViewBuilder
     static func TextFieldWithSelector<LeadingContent: View>(
         input: Binding<String>,
         onInputChanged: ((String) -> Void)? = nil,
         leadingAction: @escaping () -> Void,
-        leadingContent: @escaping () -> LeadingContent,
+        @ViewBuilder leadingContent: @escaping () -> LeadingContent,
+        label: String? = nil,
+        optionalIndicator: String? = nil,
+        supportText: String? = nil,
+        placeholderText: String? = nil,
+        errorMessage: String? = nil,
+        error: Bool = false,
+        enabled: Bool = true
+    ) -> some View {
+        LemonadeTextFieldWithSelectorView<LeadingContent, EmptyView>(
+            input: input,
+            onInputChanged: onInputChanged,
+            leadingAction: leadingAction,
+            leadingContent: leadingContent,
+            label: label,
+            optionalIndicator: optionalIndicator,
+            supportText: supportText,
+            placeholderText: placeholderText,
+            errorMessage: errorMessage,
+            error: error,
+            enabled: enabled,
+            trailingContent: nil
+        )
+    }
+
+    /// A text input combined with a selectable element and trailing content.
+    ///
+    /// - Parameters:
+    ///   - input: The inputted text (Binding)
+    ///   - onInputChanged: Callback when the user inputs content
+    ///   - leadingAction: Action triggered when the leading content is clicked
+    ///   - leadingContent: Content displayed on the left as selector
+    ///   - label: Label displayed above the text field
+    ///   - optionalIndicator: Optional text displayed on the right of the label
+    ///   - supportText: Support text displayed below the text field
+    ///   - placeholderText: Placeholder text when the field is empty
+    ///   - errorMessage: Error message displayed when error is true
+    ///   - error: Whether the text field has an error
+    ///   - enabled: Whether the text field is enabled
+    ///   - trailingContent: Content displayed on the right inside the text field
+    /// - Returns: A styled TextFieldWithSelector view
+    @ViewBuilder
+    static func TextFieldWithSelector<LeadingContent: View, TrailingContent: View>(
+        input: Binding<String>,
+        onInputChanged: ((String) -> Void)? = nil,
+        leadingAction: @escaping () -> Void,
+        @ViewBuilder leadingContent: @escaping () -> LeadingContent,
         label: String? = nil,
         optionalIndicator: String? = nil,
         supportText: String? = nil,
@@ -109,7 +207,7 @@ public extension LemonadeUi {
         errorMessage: String? = nil,
         error: Bool = false,
         enabled: Bool = true,
-        trailingContent: (() -> AnyView)? = nil
+        @ViewBuilder trailingContent: @escaping () -> TrailingContent
     ) -> some View {
         LemonadeTextFieldWithSelectorView(
             input: input,
@@ -130,7 +228,7 @@ public extension LemonadeUi {
 
 // MARK: - Internal TextField View
 
-private struct LemonadeTextFieldView: View {
+private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View>: View {
     @Binding var input: String
     let onInputChanged: ((String) -> Void)?
     let label: String?
@@ -140,8 +238,8 @@ private struct LemonadeTextFieldView: View {
     let errorMessage: String?
     let error: Bool
     let enabled: Bool
-    let leadingContent: (() -> AnyView)?
-    let trailingContent: (() -> AnyView)?
+    let leadingContent: (() -> LeadingContent)?
+    let trailingContent: (() -> TrailingContent)?
 
     @FocusState private var isFocused: Bool
     @State private var isHovered = false
@@ -281,7 +379,7 @@ private struct LemonadeTextFieldView: View {
 
 // MARK: - Internal TextField With Selector View
 
-private struct LemonadeTextFieldWithSelectorView<LeadingContent: View>: View {
+private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingContent: View>: View {
     @Binding var input: String
     let onInputChanged: ((String) -> Void)?
     let leadingAction: () -> Void
@@ -293,7 +391,7 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View>: View {
     let errorMessage: String?
     let error: Bool
     let enabled: Bool
-    let trailingContent: (() -> AnyView)?
+    let trailingContent: (() -> TrailingContent)?
 
     @FocusState private var isFocused: Bool
     @State private var isHovered = false
@@ -487,28 +585,22 @@ struct LemonadeTextField_Previews: PreviewProvider {
                 LemonadeUi.TextField(
                     input: input,
                     label: "Password",
-                    placeholderText: "Enter password",
-                    leadingContent: {
-                        AnyView(
-                            LemonadeUi.Icon(
-                                icon: .padlock,
-                                contentDescription: nil,
-                                size: .medium,
-                                tint: LemonadeTheme.colors.content.contentSecondary
-                            )
-                        )
-                    },
-                    trailingContent: {
-                        AnyView(
-                            LemonadeUi.Icon(
-                                icon: .eyeClosed,
-                                contentDescription: nil,
-                                size: .medium,
-                                tint: LemonadeTheme.colors.content.contentSecondary
-                            )
-                        )
-                    }
-                )
+                    placeholderText: "Enter password"
+                ) {
+                    LemonadeUi.Icon(
+                        icon: .padlock,
+                        contentDescription: nil,
+                        size: .medium,
+                        tint: LemonadeTheme.colors.content.contentSecondary
+                    )
+                } trailingContent: {
+                    LemonadeUi.Icon(
+                        icon: .eyeClosed,
+                        contentDescription: nil,
+                        size: .medium,
+                        tint: LemonadeTheme.colors.content.contentSecondary
+                    )
+                }
             }
 
             // TextField with selector

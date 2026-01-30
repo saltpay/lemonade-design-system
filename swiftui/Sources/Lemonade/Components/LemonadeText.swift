@@ -129,7 +129,7 @@ private struct LemonadeTextView: View {
         let displayText = isOverlineStyle ? text.uppercased() : text
         let resolvedFont = resolveFont()
 
-        if #available(iOS 16.0, *) {
+        if #available(iOS 16.0, macOS 13.0, *) {
             SwiftUI.Text(displayText)
                 .font(resolvedFont)
                 .foregroundStyle(color)

@@ -1,4 +1,9 @@
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 // MARK: - Brand Logo Size
 
@@ -55,21 +60,23 @@ internal struct LemonadeBrandLogoView: View {
     let size: LemonadeBrandLogoSize
 
     var body: some View {
+        logoImage
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: size.value, height: size.value)
+    }
+
+    private var logoImage: Image {
+        #if canImport(UIKit)
         if let uiImage = UIImage(named: logo.rawValue, in: .lemonade, compatibleWith: nil) {
-            Image(uiImage: uiImage)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: size.value, height: size.value)
-        } else {
-            Rectangle()
-                .fill(LemonadeTheme.colors.background.bgNeutralSubtle)
-                .frame(width: size.value, height: size.value)
-                .overlay(
-                    Image(systemName: "creditcard")
-                        .foregroundStyle(LemonadeTheme.colors.content.contentSecondary)
-                        .font(.system(size: size.value * 0.5))
-                )
+            return Image(uiImage: uiImage)
         }
+        #elseif canImport(AppKit)
+        if let nsImage = Bundle.lemonade.image(forResource: logo.rawValue) {
+            return Image(nsImage: nsImage)
+        }
+        #endif
+        return Image(systemName: "creditcard")
     }
 }
 
