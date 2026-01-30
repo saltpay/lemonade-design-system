@@ -13,7 +13,7 @@ struct SpacingDisplayView: View {
 
                         Text("\(Int(item.value))pt")
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.content.contentSecondary)
                             .frame(width: 50)
 
                         Rectangle()

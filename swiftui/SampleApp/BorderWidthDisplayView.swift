@@ -15,7 +15,7 @@ struct BorderWidthDisplayView: View {
 
                         Text("\(Int(item.value))pt")
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.content.contentSecondary)
                             .frame(width: 50)
 
                         RoundedRectangle(cornerRadius: 8)

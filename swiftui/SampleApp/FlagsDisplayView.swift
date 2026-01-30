@@ -35,13 +35,13 @@ struct FlagsDisplayView: View {
 
                         Text(flag.countryName)
                             .font(.system(size: 8))
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.content.contentSecondary)
                             .lineLimit(2)
                             .multilineTextAlignment(.center)
                     }
                     .frame(maxWidth: .infinity)
                     .frame(height: 90)
-                    .background(Color(uiColor: .secondarySystemGroupedBackground))
+                    .background(.bg.bgSubtle)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
             }

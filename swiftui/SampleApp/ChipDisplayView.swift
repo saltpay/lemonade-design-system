@@ -75,7 +75,7 @@ struct ChipDisplayView: View {
 
                 Text("Selected: \(selectedChips.sorted().joined(separator: ", "))")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.content.contentSecondary)
             }
         }
     }
@@ -107,7 +107,7 @@ struct ChipDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.content.contentSecondary)
 
             content()
         }

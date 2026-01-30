@@ -43,7 +43,7 @@ private struct OpacityRow: View {
 
             Text("\(Int(item.value * 100))%")
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.content.contentSecondary)
                 .frame(width: 50)
 
             Rectangle()

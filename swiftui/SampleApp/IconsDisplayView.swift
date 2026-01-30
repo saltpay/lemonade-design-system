@@ -30,13 +30,13 @@ struct IconsDisplayView: View {
 
                         Text(icon.rawValue)
                             .font(.system(size: 8))
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.content.contentSecondary)
                             .lineLimit(2)
                             .multilineTextAlignment(.center)
                     }
                     .frame(maxWidth: .infinity)
                     .frame(height: 80)
-                    .background(Color(uiColor: .secondarySystemGroupedBackground))
+                    .background(.bg.bgSubtle)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
             }

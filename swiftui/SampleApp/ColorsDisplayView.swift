@@ -9,7 +9,7 @@ struct ColorsDisplayView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(group.title)
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.content.contentSecondary)
                             .textCase(.uppercase)
 
                         HStack(spacing: 0) {

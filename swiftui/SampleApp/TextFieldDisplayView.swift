@@ -63,7 +63,7 @@ struct TextFieldDisplayView: View {
                             icon: .search,
                             contentDescription: nil,
                             size: .medium,
-                            tint: LemonadeTheme.colors.content.contentSecondary
+                            tint: .content.contentSecondary
                         )
                     } trailingContent: {
                         EmptyView()
@@ -83,7 +83,7 @@ struct TextFieldDisplayView: View {
                             icon: .circleInfo,
                             contentDescription: nil,
                             size: .medium,
-                            tint: LemonadeTheme.colors.content.contentSecondary
+                            tint: .content.contentSecondary
                         )
                     }
                 }
@@ -132,7 +132,7 @@ struct TextFieldDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.content.contentSecondary)
 
             content()
         }

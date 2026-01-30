@@ -9,7 +9,7 @@ struct ShadowsDisplayView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(item.name)
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.content.contentSecondary)
 
                         RoundedRectangle(cornerRadius: 12)
                             .fill(.white)
@@ -20,7 +20,7 @@ struct ShadowsDisplayView: View {
             }
             .padding(32)
         }
-        .background(Color(uiColor: .systemGroupedBackground))
+        .background(.bg.bgSubtle)
         .navigationTitle("Shadows")
     }
 }

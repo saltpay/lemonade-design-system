@@ -21,7 +21,7 @@ struct ListItemDisplayView: View {
                             )
                         }
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -43,7 +43,7 @@ struct ListItemDisplayView: View {
                             )
                         }
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -65,7 +65,7 @@ struct ListItemDisplayView: View {
                             }
                         )
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -80,7 +80,7 @@ struct ListItemDisplayView: View {
                             enabled: false
                         )
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -116,7 +116,7 @@ struct ListItemDisplayView: View {
                             }
                         )
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -140,7 +140,7 @@ struct ListItemDisplayView: View {
                             }
                         )
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -189,7 +189,7 @@ struct ListItemDisplayView: View {
                             }
                         )
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -228,7 +228,7 @@ struct ListItemDisplayView: View {
                             }
                         )
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -244,7 +244,7 @@ struct ListItemDisplayView: View {
                                     icon: .trash,
                                     contentDescription: nil,
                                     size: .medium,
-                                    tint: LemonadeTheme.colors.content.contentCritical
+                                    tint: .content.contentCritical
                                 )
                             }
                         )
@@ -259,12 +259,12 @@ struct ListItemDisplayView: View {
                                     icon: .logOut,
                                     contentDescription: nil,
                                     size: .medium,
-                                    tint: LemonadeTheme.colors.content.contentCritical
+                                    tint: .content.contentCritical
                                 )
                             }
                         )
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -284,13 +284,13 @@ struct ListItemDisplayView: View {
                             }
                         )
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
             }
             .padding(LemonadeTheme.spaces.spacing400)
         }
-        .background(LemonadeTheme.colors.background.bgSubtle)
+        .background(.bg.bgSubtle)
         .navigationTitle("ListItem")
     }
 
@@ -299,7 +299,7 @@ struct ListItemDisplayView: View {
             LemonadeUi.Text(
                 title,
                 textStyle: LemonadeTypography.shared.headingXSmall,
-                color: LemonadeTheme.colors.content.contentSecondary
+                color: .content.contentSecondary
             )
 
             content()

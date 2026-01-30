@@ -112,7 +112,7 @@ struct SymbolContainerDisplayView: View {
 
                         LemonadeUi.SymbolContainer(voice: .info, size: .large) {
                             Image(systemName: "person.fill")
-                                .foregroundStyle(LemonadeTheme.colors.content.contentInfo)
+                                .foregroundStyle(.content.contentInfo)
                         }
                     }
                 }
@@ -128,13 +128,13 @@ struct SymbolContainerDisplayView: View {
                                     .font(.headline)
                                 Text("john@example.com")
                                     .font(.subheadline)
-                                    .foregroundStyle(.secondary)
+                                    .foregroundStyle(.content.contentSecondary)
                             }
                             Spacer()
                         }
                         .padding()
-                        .background(Color(uiColor: .secondarySystemGroupedBackground))
-                        .cornerRadius(12)
+                        .background(.bg.bgSubtle)
+                        .clipShape(.rect(cornerRadius: 12))
 
                         // Status indicators
                         HStack(spacing: 24) {
@@ -168,7 +168,7 @@ struct SymbolContainerDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.content.contentSecondary)
 
             content()
         }
