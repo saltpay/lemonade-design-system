@@ -13,7 +13,7 @@ struct SizesDisplayView: View {
 
                         Text("\(Int(item.value))pt")
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.content.contentSecondary)
                             .frame(width: 50)
 
                         Circle()
@@ -51,7 +51,7 @@ private let sizeItems: [SizeItem] = [
 ]
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         SizesDisplayView()
     }
 }

@@ -115,7 +115,7 @@ private extension LemonadeButtonSize {
                 minHeight: LemonadeTheme.sizes.size1000,
                 minWidth: LemonadeTheme.sizes.size1600,
                 cornerRadius: LemonadeTheme.radius.radius300,
-                textStyle: LemonadeTypography().bodySmallSemiBold
+                textStyle: LemonadeTypography.shared.bodySmallSemiBold
             )
         case .medium:
             return LemonadeButtonContentData(
@@ -124,7 +124,7 @@ private extension LemonadeButtonSize {
                 minHeight: LemonadeTheme.sizes.size1200,
                 minWidth: LemonadeTheme.sizes.size1600,
                 cornerRadius: LemonadeTheme.radius.radius300,
-                textStyle: LemonadeTypography().bodyMediumSemiBold
+                textStyle: LemonadeTypography.shared.bodyMediumSemiBold
             )
         case .large:
             return LemonadeButtonContentData(
@@ -133,7 +133,7 @@ private extension LemonadeButtonSize {
                 minHeight: LemonadeTheme.sizes.size1400,
                 minWidth: LemonadeTheme.sizes.size1600,
                 cornerRadius: LemonadeTheme.radius.radius400,
-                textStyle: LemonadeTypography().bodyMediumSemiBold
+                textStyle: LemonadeTypography.shared.bodyMediumSemiBold
             )
         }
     }

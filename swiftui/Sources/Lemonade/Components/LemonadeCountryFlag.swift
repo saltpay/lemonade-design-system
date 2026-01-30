@@ -58,29 +58,22 @@ internal struct LemonadeCountryFlagView: View {
     let size: LemonadeCountryFlagSize
 
     var body: some View {
-        if let uiImage = UIImage(named: flag.rawValue, in: .lemonade, compatibleWith: nil) {
-            Image(uiImage: uiImage)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: size.value, height: size.value)
-                .clipShape(Circle())
-                .overlay(
-                    Circle()
-                        .stroke(
-                            LemonadeTheme.colors.border.borderNeutralMedium,
-                            lineWidth: LemonadeBorderWidthTokens().base.border25
-                        )
-                )
-        } else {
-            Circle()
-                .fill(LemonadeTheme.colors.background.bgNeutralSubtle)
-                .frame(width: size.value, height: size.value)
-                .overlay(
-                    Image(systemName: "flag.slash")
-                        .foregroundColor(LemonadeTheme.colors.content.contentSecondary)
-                        .font(.system(size: size.value * 0.4))
-                )
-        }
+        flagImage
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: size.value, height: size.value)
+            .clipShape(Circle())
+            .overlay(
+                Circle()
+                    .stroke(
+                        LemonadeTheme.colors.border.borderNeutralMedium,
+                        lineWidth: LemonadeBorderWidthTokens().base.border25
+                    )
+            )
+    }
+
+    private var flagImage: Image {
+        Image(flag.rawValue, bundle: .lemonade)
     }
 }
 

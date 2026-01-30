@@ -94,7 +94,7 @@ private struct LemonadeBadgeView: View {
     var body: some View {
         SwiftUI.Text(text)
             .font(.custom("Figtree", size: size.fontSize).weight(.semibold))
-            .foregroundColor(LemonadeTheme.colors.content.contentOnBrandHigh)
+            .foregroundStyle(LemonadeTheme.colors.content.contentOnBrandHigh)
             .lineLimit(1)
             .padding(.horizontal, size.textHorizontalPadding)
             .padding(.vertical, size.textVerticalPadding)

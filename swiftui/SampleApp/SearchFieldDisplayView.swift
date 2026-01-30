@@ -42,7 +42,7 @@ struct SearchFieldDisplayView: View {
                         if !searchText3.isEmpty {
                             Text("Searching for: \(searchText3)")
                                 .font(.caption)
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.content.contentSecondary)
                         }
                     }
                 }
@@ -74,7 +74,7 @@ struct SearchFieldDisplayView: View {
                                             icon: .chevronRight,
                                             contentDescription: nil,
                                             size: .small,
-                                            tint: LemonadeTheme.colors.content.contentTertiary
+                                            tint: .content.contentTertiary
                                         )
                                     }
                                     .padding(.vertical, 8)
@@ -87,7 +87,7 @@ struct SearchFieldDisplayView: View {
 
                             if filtered.isEmpty {
                                 Text("No results found")
-                                    .foregroundColor(.secondary)
+                                    .foregroundStyle(.content.contentSecondary)
                                     .padding()
                             } else {
                                 ForEach(filtered, id: \.self) { item in
@@ -98,7 +98,7 @@ struct SearchFieldDisplayView: View {
                                             icon: .chevronRight,
                                             contentDescription: nil,
                                             size: .small,
-                                            tint: LemonadeTheme.colors.content.contentTertiary
+                                            tint: .content.contentTertiary
                                         )
                                     }
                                     .padding(.vertical, 8)
@@ -117,7 +117,7 @@ struct SearchFieldDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.content.contentSecondary)
 
             content()
         }
@@ -125,7 +125,7 @@ struct SearchFieldDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         SearchFieldDisplayView()
     }
 }

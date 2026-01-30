@@ -87,7 +87,7 @@ private struct LemonadeSearchFieldView: View {
 
                 SwiftUI.TextField("", text: $input)
                     .font(LemonadeTypography.shared.bodyMediumRegular.font)
-                    .foregroundColor(LemonadeTheme.colors.content.contentPrimary)
+                    .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
                     .focused($isFocused)
                     .disabled(!enabled)
                     .onChange(of: input) { newValue in

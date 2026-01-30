@@ -90,8 +90,8 @@ struct BadgeDisplayView: View {
                             LemonadeUi.Badge(text: "5", size: .small)
                         }
                         .padding()
-                        .background(Color(uiColor: .secondarySystemGroupedBackground))
-                        .cornerRadius(12)
+                        .background(.bg.bgSubtle)
+                        .clipShape(.rect(cornerRadius: 12))
 
                         // Tab-like item with badge
                         HStack(spacing: 24) {
@@ -147,7 +147,7 @@ struct BadgeDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.content.contentSecondary)
 
             content()
         }
@@ -155,7 +155,7 @@ struct BadgeDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         BadgeDisplayView()
     }
 }

@@ -43,7 +43,7 @@ private struct OpacityRow: View {
 
             Text("\(Int(item.value * 100))%")
                 .font(.caption)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.content.contentSecondary)
                 .frame(width: 50)
 
             Rectangle()
@@ -80,7 +80,7 @@ private let stateOpacityItems: [OpacityItem] = [
 ]
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         OpacityDisplayView()
     }
 }

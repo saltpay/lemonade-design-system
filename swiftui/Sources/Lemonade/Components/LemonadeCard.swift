@@ -129,7 +129,7 @@ private struct LemonadeCardView<Content: View, TrailingContent: View>: View {
                 HStack(spacing: LemonadeTheme.spaces.spacing200) {
                     LemonadeUi.Text(
                         header.title,
-                        textStyle: LemonadeTypography().headingXXSmall,
+                        textStyle: LemonadeTypography.shared.headingXXSmall,
                         overflow: .tail,
                         maxLines: 1
                     )

@@ -39,34 +39,34 @@ public extension LemonadeUi {
         LemonadeChipView(
             label: label,
             selected: selected,
-            leadingSlot: leadingIcon.map { icon in
-                AnyView(
-                    LemonadeUi.Icon(
-                        icon: icon,
-                        contentDescription: nil,
-                        size: .small,
-                        tint: selected
-                            ? LemonadeTheme.colors.content.contentBrandInverse
-                            : LemonadeTheme.colors.content.contentPrimary
-                    )
-                )
-            },
-            trailingSlot: trailingIcon.map { icon in
-                AnyView(
-                    LemonadeUi.Icon(
-                        icon: icon,
-                        contentDescription: nil,
-                        size: .small,
-                        tint: selected
-                            ? LemonadeTheme.colors.content.contentBrandInverse
-                            : LemonadeTheme.colors.content.contentPrimary
-                    )
-                )
-            },
             counter: counter,
             enabled: enabled,
             onChipClicked: onChipClicked,
-            onTrailingIconClick: onTrailingIconClick
+            onTrailingIconClick: onTrailingIconClick,
+            leadingContent: {
+                if let icon = leadingIcon {
+                    LemonadeUi.Icon(
+                        icon: icon,
+                        contentDescription: nil,
+                        size: .small,
+                        tint: selected
+                            ? LemonadeTheme.colors.content.contentBrandInverse
+                            : LemonadeTheme.colors.content.contentPrimary
+                    )
+                }
+            },
+            trailingContent: {
+                if let icon = trailingIcon {
+                    LemonadeUi.Icon(
+                        icon: icon,
+                        contentDescription: nil,
+                        size: .small,
+                        tint: selected
+                            ? LemonadeTheme.colors.content.contentBrandInverse
+                            : LemonadeTheme.colors.content.contentPrimary
+                    )
+                }
+            }
         )
     }
 
@@ -105,7 +105,11 @@ public extension LemonadeUi {
         LemonadeChipView(
             label: label,
             selected: selected,
-            leadingSlot: AnyView(
+            counter: counter,
+            enabled: enabled,
+            onChipClicked: onChipClicked,
+            onTrailingIconClick: onTrailingIconClick,
+            leadingContent: {
                 leadingImage
                     .resizable()
                     .scaledToFill()
@@ -118,9 +122,9 @@ public extension LemonadeUi {
                                 lineWidth: LemonadeTheme.borderWidth.base.border25
                             )
                     )
-            ),
-            trailingSlot: trailingIcon.map { icon in
-                AnyView(
+            },
+            trailingContent: {
+                if let icon = trailingIcon {
                     LemonadeUi.Icon(
                         icon: icon,
                         contentDescription: nil,
@@ -129,27 +133,70 @@ public extension LemonadeUi {
                             ? LemonadeTheme.colors.content.contentBrandInverse
                             : LemonadeTheme.colors.content.contentPrimary
                     )
-                )
-            },
+                }
+            }
+        )
+    }
+
+    /// A compact element with fully custom leading and trailing content.
+    ///
+    /// ## Usage
+    /// ```swift
+    /// LemonadeUi.Chip(
+    ///     label: "Custom",
+    ///     selected: false
+    /// ) {
+    ///     Circle().fill(.red).frame(width: 16, height: 16)
+    /// } trailingContent: {
+    ///     EmptyView()
+    /// }
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - label: The text to be displayed in the chip
+    ///   - selected: Set to true if the chip is in the selected state
+    ///   - counter: Optional Int number to be displayed in the chip
+    ///   - enabled: Controls the enabled state of the chip. Defaults to true
+    ///   - onChipClicked: Optional callback for when the chip is clicked
+    ///   - onTrailingIconClick: Optional callback when the trailing icon is clicked
+    ///   - leadingContent: Custom leading content
+    ///   - trailingContent: Custom trailing content
+    /// - Returns: A styled Chip view
+    @ViewBuilder
+    static func Chip<LeadingContent: View, TrailingContent: View>(
+        label: String,
+        selected: Bool,
+        counter: Int? = nil,
+        enabled: Bool = true,
+        onChipClicked: (() -> Void)? = nil,
+        onTrailingIconClick: (() -> Void)? = nil,
+        @ViewBuilder leadingContent: @escaping () -> LeadingContent,
+        @ViewBuilder trailingContent: @escaping () -> TrailingContent
+    ) -> some View {
+        LemonadeChipView(
+            label: label,
+            selected: selected,
             counter: counter,
             enabled: enabled,
             onChipClicked: onChipClicked,
-            onTrailingIconClick: onTrailingIconClick
+            onTrailingIconClick: onTrailingIconClick,
+            leadingContent: leadingContent,
+            trailingContent: trailingContent
         )
     }
 }
 
 // MARK: - Internal Chip View
 
-private struct LemonadeChipView: View {
+private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: View {
     let label: String
     let selected: Bool
-    let leadingSlot: AnyView?
-    let trailingSlot: AnyView?
     let counter: Int?
     let enabled: Bool
     let onChipClicked: (() -> Void)?
     let onTrailingIconClick: (() -> Void)?
+    @ViewBuilder let leadingContent: () -> LeadingContent
+    @ViewBuilder let trailingContent: () -> TrailingContent
 
     @State private var isPressed = false
 
@@ -182,15 +229,13 @@ private struct LemonadeChipView: View {
     var body: some View {
         HStack(spacing: 0) {
             // Leading slot
-            if let leadingSlot = leadingSlot {
-                leadingSlot
-                    .frame(width: actionsSize, height: actionsSize)
-            }
+            leadingContent()
+                .frame(width: actionsSize, height: actionsSize)
 
             // Label
             LemonadeUi.Text(
                 label,
-                textStyle: LemonadeTypography().bodySmallMedium,
+                textStyle: LemonadeTypography.shared.bodySmallMedium,
                 color: contentColor
             )
             .padding(.horizontal, LemonadeTheme.spaces.spacing100)
@@ -199,7 +244,7 @@ private struct LemonadeChipView: View {
             if let counter = counter {
                 SwiftUI.Text("\(counter)")
                     .font(.custom("Figtree", size: 10).weight(.semibold))
-                    .foregroundColor(LemonadeTheme.colors.content.contentOnBrandHigh)
+                    .foregroundStyle(LemonadeTheme.colors.content.contentOnBrandHigh)
                     .lineLimit(1)
                     .padding(.horizontal, LemonadeTheme.spaces.spacing100)
                     .frame(minWidth: 18, minHeight: 16)
@@ -209,20 +254,18 @@ private struct LemonadeChipView: View {
             }
 
             // Trailing slot
-            if let trailingSlot = trailingSlot {
-                if let onTrailingIconClick = onTrailingIconClick {
-                    SwiftUI.Button(action: onTrailingIconClick) {
-                        trailingSlot
-                            .frame(width: actionsSize, height: actionsSize)
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    .disabled(!enabled)
-                    .padding(.leading, LemonadeTheme.spaces.spacing50)
-                } else {
-                    trailingSlot
+            if let onTrailingIconClick = onTrailingIconClick {
+                SwiftUI.Button(action: onTrailingIconClick) {
+                    trailingContent()
                         .frame(width: actionsSize, height: actionsSize)
-                        .padding(.leading, LemonadeTheme.spaces.spacing50)
                 }
+                .buttonStyle(PlainButtonStyle())
+                .disabled(!enabled)
+                .padding(.leading, LemonadeTheme.spaces.spacing50)
+            } else {
+                trailingContent()
+                    .frame(width: actionsSize, height: actionsSize)
+                    .padding(.leading, LemonadeTheme.spaces.spacing50)
             }
         }
         .padding(.horizontal, LemonadeTheme.spaces.spacing200)

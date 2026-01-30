@@ -93,7 +93,7 @@ struct ButtonDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.content.contentSecondary)
 
             content()
         }
@@ -101,7 +101,7 @@ struct ButtonDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ButtonDisplayView()
     }
 }

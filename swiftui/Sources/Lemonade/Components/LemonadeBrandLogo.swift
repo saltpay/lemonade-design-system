@@ -55,21 +55,14 @@ internal struct LemonadeBrandLogoView: View {
     let size: LemonadeBrandLogoSize
 
     var body: some View {
-        if let uiImage = UIImage(named: logo.rawValue, in: .lemonade, compatibleWith: nil) {
-            Image(uiImage: uiImage)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: size.value, height: size.value)
-        } else {
-            Rectangle()
-                .fill(LemonadeTheme.colors.background.bgNeutralSubtle)
-                .frame(width: size.value, height: size.value)
-                .overlay(
-                    Image(systemName: "creditcard")
-                        .foregroundColor(LemonadeTheme.colors.content.contentSecondary)
-                        .font(.system(size: size.value * 0.5))
-                )
-        }
+        logoImage
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: size.value, height: size.value)
+    }
+
+    private var logoImage: Image {
+        Image(logo.rawValue, bundle: .lemonade)
     }
 }
 

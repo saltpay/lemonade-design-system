@@ -110,13 +110,13 @@ private struct LemonadeCheckboxWithLabel: View {
                 VStack(alignment: .leading, spacing: 0) {
                     LemonadeUi.Text(
                         label,
-                        textStyle: LemonadeTypography().bodyMediumMedium
+                        textStyle: LemonadeTypography.shared.bodyMediumMedium
                     )
 
                     if let supportText = supportText {
                         LemonadeUi.Text(
                             supportText,
-                            textStyle: LemonadeTypography().bodySmallRegular,
+                            textStyle: LemonadeTypography.shared.bodySmallRegular,
                             color: LemonadeTheme.colors.content.contentSecondary
                         )
                     }
@@ -138,7 +138,7 @@ private struct LemonadeCoreCheckbox: View {
 
     @State private var isHovered = false
 
-    private let checkboxSize: CGFloat = 22
+    private let checkboxSize: CGFloat = LemonadeTheme.sizes.size550
 
     private var backgroundColor: Color {
         switch (enabled, status, isHovered) {
@@ -179,7 +179,7 @@ private struct LemonadeCoreCheckbox: View {
                     .fill(backgroundColor)
                     .overlay(
                         RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius150)
-                            .stroke(borderColor, lineWidth: LemonadeTheme.borderWidth.base.border50)
+                            .strokeBorder(borderColor, lineWidth: LemonadeTheme.borderWidth.base.border50)
                     )
                     .frame(width: checkboxSize, height: checkboxSize)
 
@@ -196,6 +196,7 @@ private struct LemonadeCoreCheckbox: View {
             .animation(.easeInOut(duration: 0.15), value: status)
             .animation(.easeInOut(duration: 0.15), value: isHovered)
         }
+        .frame(height: LemonadeTheme.sizes.size600)
         .buttonStyle(PlainButtonStyle())
         .disabled(!enabled)
         .onHover { hovering in

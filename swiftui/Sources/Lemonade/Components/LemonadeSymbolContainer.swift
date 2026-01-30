@@ -79,11 +79,11 @@ public enum SymbolContainerSize {
 
     var textStyle: LemonadeTextStyle {
         switch self {
-        case .xSmall: return LemonadeTypography().bodyXSmallSemiBold
-        case .small: return LemonadeTypography().bodySmallSemiBold
-        case .medium: return LemonadeTypography().bodySmallSemiBold
-        case .large: return LemonadeTypography().bodyLargeSemiBold
-        case .xLarge: return LemonadeTypography().bodyXLargeSemiBold
+        case .xSmall: return LemonadeTypography.shared.bodyXSmallSemiBold
+        case .small: return LemonadeTypography.shared.bodySmallSemiBold
+        case .medium: return LemonadeTypography.shared.bodySmallSemiBold
+        case .large: return LemonadeTypography.shared.bodyLargeSemiBold
+        case .xLarge: return LemonadeTypography.shared.bodyXLargeSemiBold
         }
     }
 }

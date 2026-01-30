@@ -15,7 +15,7 @@ struct BorderWidthDisplayView: View {
 
                         Text("\(Int(item.value))pt")
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.content.contentSecondary)
                             .frame(width: 50)
 
                         RoundedRectangle(cornerRadius: 8)
@@ -46,7 +46,7 @@ private let borderWidthItems: [BorderWidthItem] = [
 ]
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         BorderWidthDisplayView()
     }
 }

@@ -71,7 +71,7 @@ struct TagDisplayView: View {
                         // Product card example
                         HStack(alignment: .top, spacing: 12) {
                             RoundedRectangle(cornerRadius: 8)
-                                .fill(Color.gray.opacity(0.2))
+                                .fill(.bg.bgNeutralSubtle)
                                 .frame(width: 60, height: 60)
 
                             VStack(alignment: .leading, spacing: 4) {
@@ -82,7 +82,7 @@ struct TagDisplayView: View {
                                 }
 
                                 Text("$99.99")
-                                    .foregroundColor(.secondary)
+                                    .foregroundStyle(.content.contentSecondary)
 
                                 HStack(spacing: 4) {
                                     LemonadeUi.Tag(label: "In Stock", voice: .info)
@@ -93,8 +93,8 @@ struct TagDisplayView: View {
                             Spacer()
                         }
                         .padding()
-                        .background(Color(uiColor: .secondarySystemGroupedBackground))
-                        .cornerRadius(12)
+                        .background(.bg.bgSubtle)
+                        .clipShape(.rect(cornerRadius: 12))
                     }
                 }
             }
@@ -107,7 +107,7 @@ struct TagDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.content.contentSecondary)
 
             content()
         }
@@ -115,7 +115,7 @@ struct TagDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         TagDisplayView()
     }
 }

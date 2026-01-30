@@ -26,17 +26,17 @@ struct IconsDisplayView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 24, height: 24)
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
 
                         Text(icon.rawValue)
                             .font(.system(size: 8))
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.content.contentSecondary)
                             .lineLimit(2)
                             .multilineTextAlignment(.center)
                     }
                     .frame(maxWidth: .infinity)
                     .frame(height: 80)
-                    .background(Color(uiColor: .secondarySystemGroupedBackground))
+                    .background(.bg.bgSubtle)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
             }
@@ -48,7 +48,7 @@ struct IconsDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         IconsDisplayView()
     }
 }

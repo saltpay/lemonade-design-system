@@ -21,8 +21,7 @@ let package = Package(
             path: "Sources/Lemonade",
             exclude: ["Info.plist"],
             resources: [
-                .process("Resources"),
-                .copy("Resources/Fonts")
+                .process("Resources")
             ]
         ),
     ]

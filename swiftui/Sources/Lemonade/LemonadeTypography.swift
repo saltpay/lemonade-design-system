@@ -1,5 +1,9 @@
 import SwiftUI
 
+#if canImport(UIKit)
+import UIKit
+#endif
+
 /// Represents a text style with typographic properties.
 public struct LemonadeTextStyle {
     /// The font size in points
@@ -10,6 +14,11 @@ public struct LemonadeTextStyle {
     public let fontWeight: Font.Weight
     /// The letter spacing in points, nil if default
     public let letterSpacing: CGFloat?
+
+    /// Fallback line height ratio for Figtree font (used on platforms without UIKit).
+    /// Calculated from font metrics: (ascender - descender + lineGap) / unitsPerEm
+    /// Figtree: (950 - (-250) + 0) / 1000 = 1.20
+    private static let fallbackLineHeightRatio: CGFloat = 1.20
 
     public init(
         fontSize: CGFloat,
@@ -23,26 +32,41 @@ public struct LemonadeTextStyle {
         self.letterSpacing = letterSpacing
     }
 
-    /// Returns a SwiftUI Font based on this text style
-    public var font: Font {
-        // Use specific font file names to avoid SwiftUI weight mapping issues
-        let fontName: String
+    /// The font name based on the weight
+    public var fontName: String {
         switch fontWeight {
         case .regular:
-            fontName = "Figtree-Regular"
+            return "Figtree-Regular"
         case .medium:
-            fontName = "Figtree-Medium"
+            return "Figtree-Medium"
         case .semibold, .bold:
-            fontName = "Figtree-SemiBold"
+            return "Figtree-SemiBold"
         default:
-            fontName = "Figtree-Regular"
+            return "Figtree-Regular"
         }
-        return .custom(fontName, size: fontSize)
     }
 
-    /// Returns the line spacing (lineHeight - fontSize)
+    /// Returns a SwiftUI Font based on this text style
+    public var font: Font {
+        .custom(fontName, size: fontSize, relativeTo: .body)
+    }
+
+    #if canImport(UIKit)
+    /// Returns a UIFont based on this text style
+    public var uiFont: UIFont {
+        UIFont(name: fontName, size: fontSize) ?? .systemFont(ofSize: fontSize)
+    }
+    #endif
+
+    /// Returns the line spacing needed to achieve the desired line height.
+    /// Uses UIFont.lineHeight for precise calculation on iOS, fallback ratio on other platforms.
     public var lineSpacing: CGFloat {
-        max(0, lineHeight - fontSize)
+        #if canImport(UIKit)
+        let naturalLineHeight = uiFont.lineHeight
+        #else
+        let naturalLineHeight = fontSize * Self.fallbackLineHeightRatio
+        #endif
+        return max(0, lineHeight - naturalLineHeight)
     }
 }
 

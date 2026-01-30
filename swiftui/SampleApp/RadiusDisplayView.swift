@@ -13,7 +13,7 @@ struct RadiusDisplayView: View {
 
                         Text("\(Int(item.value))pt")
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.content.contentSecondary)
                             .frame(width: 50)
 
                         RoundedRectangle(cornerRadius: item.value)
@@ -50,7 +50,7 @@ private let radiusItems: [RadiusItem] = [
 ]
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         RadiusDisplayView()
     }
 }

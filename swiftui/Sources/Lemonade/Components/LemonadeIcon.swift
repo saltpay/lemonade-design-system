@@ -76,7 +76,7 @@ private struct LemonadeIconView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: size.value, height: size.value)
-            .foregroundColor(tint)
+            .foregroundStyle(tint)
             .accessibilityLabel(contentDescription ?? "")
             .accessibilityHidden(contentDescription == nil)
     }

@@ -107,12 +107,12 @@ struct SymbolContainerDisplayView: View {
                     HStack(spacing: 16) {
                         LemonadeUi.SymbolContainer(voice: .neutral, size: .large) {
                             Image(systemName: "star.fill")
-                                .foregroundColor(.yellow)
+                                .foregroundStyle(.yellow)
                         }
 
                         LemonadeUi.SymbolContainer(voice: .info, size: .large) {
                             Image(systemName: "person.fill")
-                                .foregroundColor(LemonadeTheme.colors.content.contentInfo)
+                                .foregroundStyle(.content.contentInfo)
                         }
                     }
                 }
@@ -128,13 +128,13 @@ struct SymbolContainerDisplayView: View {
                                     .font(.headline)
                                 Text("john@example.com")
                                     .font(.subheadline)
-                                    .foregroundColor(.secondary)
+                                    .foregroundStyle(.content.contentSecondary)
                             }
                             Spacer()
                         }
                         .padding()
-                        .background(Color(uiColor: .secondarySystemGroupedBackground))
-                        .cornerRadius(12)
+                        .background(.bg.bgSubtle)
+                        .clipShape(.rect(cornerRadius: 12))
 
                         // Status indicators
                         HStack(spacing: 24) {
@@ -168,7 +168,7 @@ struct SymbolContainerDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.content.contentSecondary)
 
             content()
         }
@@ -176,7 +176,7 @@ struct SymbolContainerDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         SymbolContainerDisplayView()
     }
 }

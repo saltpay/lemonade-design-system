@@ -98,7 +98,7 @@ struct CheckboxDisplayView: View {
                                 enabled: false
                             )
                             Text("Disabled unchecked")
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.content.contentSecondary)
                         }
 
                         HStack(spacing: 24) {
@@ -108,7 +108,7 @@ struct CheckboxDisplayView: View {
                                 enabled: false
                             )
                             Text("Disabled checked")
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.content.contentSecondary)
                         }
 
                         LemonadeUi.Checkbox(
@@ -129,7 +129,7 @@ struct CheckboxDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.content.contentSecondary)
 
             content()
         }
@@ -137,7 +137,7 @@ struct CheckboxDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         CheckboxDisplayView()
     }
 }

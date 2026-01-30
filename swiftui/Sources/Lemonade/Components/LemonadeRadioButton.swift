@@ -97,13 +97,13 @@ private struct LemonadeRadioButtonWithLabel: View {
                 VStack(alignment: .leading, spacing: 0) {
                     LemonadeUi.Text(
                         label,
-                        textStyle: LemonadeTypography().bodyMediumMedium
+                        textStyle: LemonadeTypography.shared.bodyMediumMedium
                     )
 
                     if let supportText = supportText {
                         LemonadeUi.Text(
                             supportText,
-                            textStyle: LemonadeTypography().bodySmallRegular,
+                            textStyle: LemonadeTypography.shared.bodySmallRegular,
                             color: LemonadeTheme.colors.content.contentSecondary
                         )
                     }
@@ -125,8 +125,8 @@ private struct LemonadeCoreRadioButton: View {
 
     @State private var isHovered = false
 
-    private let componentSize: CGFloat = 20
-    private let checkedCircleSize: CGFloat = 10
+    private let componentSize: CGFloat = LemonadeTheme.sizes.size500
+    private let checkedCircleSize: CGFloat = LemonadeTheme.sizes.size250
 
     private var backgroundColor: Color {
         switch (enabled, checked, isHovered) {
@@ -173,12 +173,12 @@ private struct LemonadeCoreRadioButton: View {
                     .fill(backgroundColor)
                     .overlay(
                         Circle()
-                            .stroke(
+                            .strokeBorder(
                                 borderColor,
                                 lineWidth: (!enabled && checked) ? 0 : LemonadeTheme.borderWidth.base.border50
                             )
                     )
-                    .frame(width: componentSize, height: componentSize)
+                    .frame(maxWidth: componentSize, maxHeight: componentSize)
 
                 if checked {
                     Circle()
@@ -190,6 +190,7 @@ private struct LemonadeCoreRadioButton: View {
             .animation(.easeInOut(duration: 0.15), value: checked)
             .animation(.easeInOut(duration: 0.15), value: isHovered)
         }
+        .frame(width: LemonadeTheme.sizes.size550, height: LemonadeTheme.sizes.size600)
         .buttonStyle(PlainButtonStyle())
         .disabled(!enabled)
         .onHover { hovering in
