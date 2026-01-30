@@ -1,9 +1,4 @@
 import SwiftUI
-#if canImport(UIKit)
-import UIKit
-#elseif canImport(AppKit)
-import AppKit
-#endif
 
 // MARK: - Country Flag Size
 
@@ -78,16 +73,7 @@ internal struct LemonadeCountryFlagView: View {
     }
 
     private var flagImage: Image {
-        #if canImport(UIKit)
-        if let uiImage = UIImage(named: flag.rawValue, in: .lemonade, compatibleWith: nil) {
-            return Image(uiImage: uiImage)
-        }
-        #elseif canImport(AppKit)
-        if let nsImage = Bundle.lemonade.image(forResource: flag.rawValue) {
-            return Image(nsImage: nsImage)
-        }
-        #endif
-        return Image(systemName: "flag.slash")
+        Image(flag.rawValue, bundle: .lemonade)
     }
 }
 

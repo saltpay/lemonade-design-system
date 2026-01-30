@@ -1,9 +1,4 @@
 import SwiftUI
-#if canImport(UIKit)
-import UIKit
-#elseif canImport(AppKit)
-import AppKit
-#endif
 
 // MARK: - Brand Logo Size
 
@@ -67,16 +62,7 @@ internal struct LemonadeBrandLogoView: View {
     }
 
     private var logoImage: Image {
-        #if canImport(UIKit)
-        if let uiImage = UIImage(named: logo.rawValue, in: .lemonade, compatibleWith: nil) {
-            return Image(uiImage: uiImage)
-        }
-        #elseif canImport(AppKit)
-        if let nsImage = Bundle.lemonade.image(forResource: logo.rawValue) {
-            return Image(nsImage: nsImage)
-        }
-        #endif
-        return Image(systemName: "creditcard")
+        Image(logo.rawValue, bundle: .lemonade)
     }
 }
 
