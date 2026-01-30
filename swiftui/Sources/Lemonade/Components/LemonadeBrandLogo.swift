@@ -66,7 +66,7 @@ internal struct LemonadeBrandLogoView: View {
                 .frame(width: size.value, height: size.value)
                 .overlay(
                     Image(systemName: "creditcard")
-                        .foregroundColor(LemonadeTheme.colors.content.contentSecondary)
+                        .foregroundStyle(LemonadeTheme.colors.content.contentSecondary)
                         .font(.system(size: size.value * 0.5))
                 )
         }

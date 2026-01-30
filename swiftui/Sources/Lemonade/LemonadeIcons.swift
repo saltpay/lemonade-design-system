@@ -261,9 +261,15 @@ public enum LemonadeIconSize {
 
 public extension View {
     /// Applies Lemonade icon styling
+    @ViewBuilder
     func lemonadeIcon(size: LemonadeIconSize = .medium, color: Color? = nil) -> some View {
-        self
-            .frame(width: size.value, height: size.value)
-            .foregroundColor(color)
+        if let color = color {
+            self
+                .frame(width: size.value, height: size.value)
+                .foregroundStyle(color)
+        } else {
+            self
+                .frame(width: size.value, height: size.value)
+        }
     }
 }

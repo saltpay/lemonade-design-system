@@ -190,7 +190,7 @@ private struct LemonadeChipView: View {
             // Label
             LemonadeUi.Text(
                 label,
-                textStyle: LemonadeTypography().bodySmallMedium,
+                textStyle: LemonadeTypography.shared.bodySmallMedium,
                 color: contentColor
             )
             .padding(.horizontal, LemonadeTheme.spaces.spacing100)
@@ -199,7 +199,7 @@ private struct LemonadeChipView: View {
             if let counter = counter {
                 SwiftUI.Text("\(counter)")
                     .font(.custom("Figtree", size: 10).weight(.semibold))
-                    .foregroundColor(LemonadeTheme.colors.content.contentOnBrandHigh)
+                    .foregroundStyle(LemonadeTheme.colors.content.contentOnBrandHigh)
                     .lineLimit(1)
                     .padding(.horizontal, LemonadeTheme.spaces.spacing100)
                     .frame(minWidth: 18, minHeight: 16)

@@ -132,7 +132,7 @@ private struct LemonadeTileView<AddonContent: View>: View {
 
                 LemonadeUi.Text(
                     label,
-                    textStyle: LemonadeTypography().bodyMediumMedium,
+                    textStyle: LemonadeTypography.shared.bodyMediumMedium,
                     color: LemonadeTheme.colors.content.contentPrimary,
                     overflow: .tail,
                     maxLines: 1

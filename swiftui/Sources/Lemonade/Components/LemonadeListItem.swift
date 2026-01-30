@@ -224,7 +224,7 @@ public extension LemonadeUi {
                 VStack(alignment: .trailing, spacing: LemonadeTheme.spaces.spacing50) {
                     LemonadeUi.Text(
                         value,
-                        textStyle: LemonadeTypography().bodyMediumMedium
+                        textStyle: LemonadeTypography.shared.bodyMediumMedium
                     )
 
                     addonSlot()
@@ -420,14 +420,14 @@ private struct LemonadeCoreListItemView<LeadingContent: View, TrailingContent: V
             VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
                 LemonadeUi.Text(
                     label,
-                    textStyle: LemonadeTypography().bodyMediumMedium,
+                    textStyle: LemonadeTypography.shared.bodyMediumMedium,
                     color: voice.contentColor
                 )
 
                 if let supportText = supportText {
                     LemonadeUi.Text(
                         supportText,
-                        textStyle: LemonadeTypography().bodySmallRegular,
+                        textStyle: LemonadeTypography.shared.bodySmallRegular,
                         color: LemonadeTheme.colors.content.contentSecondary
                     )
                 }

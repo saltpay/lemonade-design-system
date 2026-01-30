@@ -222,7 +222,7 @@ private struct LemonadeTextFieldView: View {
 
                     SwiftUI.TextField("", text: $input)
                         .font(LemonadeTypography.shared.bodyMediumRegular.font)
-                        .foregroundColor(LemonadeTheme.colors.content.contentPrimary)
+                        .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
                         .focused($isFocused)
                         .disabled(!enabled)
                         .onChange(of: input) { newValue in
@@ -387,7 +387,7 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View>: View {
 
                         SwiftUI.TextField("", text: $input)
                             .font(LemonadeTypography.shared.bodyMediumRegular.font)
-                            .foregroundColor(LemonadeTheme.colors.content.contentPrimary)
+                            .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
                             .focused($isFocused)
                             .disabled(!enabled)
                             .onChange(of: input) { newValue in
@@ -520,7 +520,7 @@ struct LemonadeTextField_Previews: PreviewProvider {
                         HStack(spacing: LemonadeTheme.spaces.spacing200) {
                             LemonadeUi.Text(
                                 "+1",
-                                textStyle: LemonadeTypography().bodyMediumMedium
+                                textStyle: LemonadeTypography.shared.bodyMediumMedium
                             )
                             LemonadeUi.Icon(
                                 icon: .chevronDown,

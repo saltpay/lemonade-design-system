@@ -9,7 +9,7 @@ public extension LemonadeUi {
     /// ```swift
     /// LemonadeUi.Text(
     ///     text: "Hello, World!",
-    ///     textStyle: LemonadeTypography().bodyMediumRegular
+    ///     textStyle: LemonadeTypography.shared.bodyMediumRegular
     /// )
     /// ```
     ///
@@ -27,7 +27,7 @@ public extension LemonadeUi {
     static func Text(
         _ text: String,
         fontSize: CGFloat? = nil,
-        textStyle: LemonadeTextStyle = LemonadeTypography().bodyMediumRegular,
+        textStyle: LemonadeTextStyle = LemonadeTypography.shared.bodyMediumRegular,
         textAlign: TextAlignment = .leading,
         color: Color = LemonadeTheme.colors.content.contentPrimary,
         overflow: Text.TruncationMode = .tail,
@@ -89,7 +89,7 @@ private struct LemonadeTextView: View {
     init(
         text: String,
         fontSize: CGFloat? = nil,
-        textStyle: LemonadeTextStyle = LemonadeTypography().bodyMediumRegular,
+        textStyle: LemonadeTextStyle = LemonadeTypography.shared.bodyMediumRegular,
         textAlign: TextAlignment = .leading,
         color: Color = LemonadeTheme.colors.content.contentPrimary,
         overflow: Text.TruncationMode = .tail,
@@ -132,7 +132,7 @@ private struct LemonadeTextView: View {
         if #available(iOS 16.0, *) {
             SwiftUI.Text(displayText)
                 .font(resolvedFont)
-                .foregroundColor(color)
+                .foregroundStyle(color)
                 .multilineTextAlignment(textAlign)
                 .lineLimit(maxLines)
                 .truncationMode(overflow)
@@ -141,7 +141,7 @@ private struct LemonadeTextView: View {
         } else {
             SwiftUI.Text(displayText)
                 .font(resolvedFont)
-                .foregroundColor(color)
+                .foregroundStyle(color)
                 .multilineTextAlignment(textAlign)
                 .lineLimit(maxLines)
                 .truncationMode(overflow)
@@ -177,28 +177,28 @@ struct LemonadeText_Previews: PreviewProvider {
         VStack(alignment: .leading, spacing: 16) {
             LemonadeUi.Text(
                 "Display Large",
-                textStyle: LemonadeTypography().displayLarge
+                textStyle: LemonadeTypography.shared.displayLarge
             )
 
             LemonadeUi.Text(
                 "Heading Medium",
-                textStyle: LemonadeTypography().headingMedium
+                textStyle: LemonadeTypography.shared.headingMedium
             )
 
             LemonadeUi.Text(
                 "Body Medium Regular",
-                textStyle: LemonadeTypography().bodyMediumRegular
+                textStyle: LemonadeTypography.shared.bodyMediumRegular
             )
 
             LemonadeUi.Text(
                 "Body Small SemiBold",
-                textStyle: LemonadeTypography().bodySmallSemiBold,
+                textStyle: LemonadeTypography.shared.bodySmallSemiBold,
                 color: LemonadeTheme.colors.content.contentSecondary
             )
 
             LemonadeUi.Text(
                 "Overline Text",
-                textStyle: LemonadeTypography().bodyXSmallOverline
+                textStyle: LemonadeTypography.shared.bodyXSmallOverline
             )
         }
         .padding()

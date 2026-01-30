@@ -97,13 +97,13 @@ private struct LemonadeRadioButtonWithLabel: View {
                 VStack(alignment: .leading, spacing: 0) {
                     LemonadeUi.Text(
                         label,
-                        textStyle: LemonadeTypography().bodyMediumMedium
+                        textStyle: LemonadeTypography.shared.bodyMediumMedium
                     )
 
                     if let supportText = supportText {
                         LemonadeUi.Text(
                             supportText,
-                            textStyle: LemonadeTypography().bodySmallRegular,
+                            textStyle: LemonadeTypography.shared.bodySmallRegular,
                             color: LemonadeTheme.colors.content.contentSecondary
                         )
                     }
