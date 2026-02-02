@@ -8,6 +8,7 @@ import 'package:lemonade_example/examples/checkbox_example.dart';
 import 'package:lemonade_example/examples/chip_example.dart';
 import 'package:lemonade_example/examples/country_flag_example.dart';
 import 'package:lemonade_example/examples/date_picker_example.dart';
+import 'package:lemonade_example/examples/divider_example.dart';
 import 'package:lemonade_example/examples/icon_example.dart';
 import 'package:lemonade_example/examples/radio_button_example.dart';
 import 'package:lemonade_example/examples/resource_list_item_example.dart';
@@ -66,6 +67,10 @@ final router = GoRouter(
     GoRoute(
       path: '/date_picker',
       builder: (context, state) => const DatePickerExampleScreen(),
+    ),
+    GoRoute(
+      path: '/divider',
+      builder: (context, state) => const DividerExampleScreen(),
     ),
     GoRoute(
       path: '/icon',

@@ -31,17 +31,17 @@ struct FlagsDisplayView: View {
 
                         Text(flag.countryCode)
                             .font(.system(size: 11, weight: .semibold))
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
 
                         Text(flag.countryName)
                             .font(.system(size: 8))
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.content.contentSecondary)
                             .lineLimit(2)
                             .multilineTextAlignment(.center)
                     }
                     .frame(maxWidth: .infinity)
                     .frame(height: 90)
-                    .background(Color(uiColor: .secondarySystemGroupedBackground))
+                    .background(.bg.bgSubtle)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
             }
@@ -53,7 +53,7 @@ struct FlagsDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         FlagsDisplayView()
     }
 }

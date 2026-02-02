@@ -13,7 +13,7 @@ struct SpacingDisplayView: View {
 
                         Text("\(Int(item.value))pt")
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.content.contentSecondary)
                             .frame(width: 50)
 
                         Rectangle()
@@ -55,7 +55,7 @@ private let spacingItems: [SpacingItem] = [
 ]
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         SpacingDisplayView()
     }
 }
