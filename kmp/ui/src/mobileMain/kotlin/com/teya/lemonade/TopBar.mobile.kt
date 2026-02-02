@@ -43,26 +43,26 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.zIndex
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
-import com.teya.lemonade.core.NavigationBarAction
-import com.teya.lemonade.core.NavigationBarVariant
+import com.teya.lemonade.core.TopBarAction
+import com.teya.lemonade.core.TopBarVariant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 /**
- * State holder for [NavigationBar][LemonadeUi.NavigationBar] that manages the collapse/expand
+ * State holder for [TopBar][LemonadeUi.TopBar] that manages the collapse/expand
  * behavior based on scroll events from external scrollable content.
  *
- * Use [rememberNavigationBarState] to create and remember an instance.
+ * Use [rememberTopBarState] to create and remember an instance.
  *
  * @param coroutineScope The [CoroutineScope] used to launch scroll-offset animations.
- * @param startCollapsed When `true`, the navigation bar starts in the collapsed state.
+ * @param startCollapsed When `true`, the top bar starts in the collapsed state.
  * @param lockGestureAnimation When `true`, scroll gestures will not collapse or expand the
- *        navigation bar; only programmatic calls to [collapse] and [expand] will work.
- * @see rememberNavigationBarState
+ *        top bar; only programmatic calls to [collapse] and [expand] will work.
+ * @see rememberTopBarState
  */
 @Stable
-public class NavigationBarState internal constructor(
+public class TopBarState internal constructor(
     private val coroutineScope: CoroutineScope,
     private val startCollapsed: Boolean = false,
     private val lockGestureAnimation: Boolean = false,
@@ -97,7 +97,7 @@ public class NavigationBarState internal constructor(
     }
 
     /**
-     * Animates the navigation bar to the fully collapsed state.
+     * Animates the top bar to the fully collapsed state.
      * Does nothing if already fully collapsed.
      *
      * @param animationSpec The animation specification to use. Defaults to a 300ms tween.
@@ -116,7 +116,7 @@ public class NavigationBarState internal constructor(
     }
 
     /**
-     * Animates the navigation bar to the fully expanded state.
+     * Animates the top bar to the fully expanded state.
      * Does nothing if already fully expanded.
      *
      * @param animationSpec The animation specification to use. Defaults to a 300ms tween.
@@ -139,15 +139,15 @@ public class NavigationBarState internal constructor(
      * Apply this to your scrollable content using [Modifier.nestedScroll][androidx.compose.ui.input.nestedscroll.nestedScroll].
      *
      * The scroll behavior is:
-     * - **Collapse (scroll down)**: Navigation bar collapses first, then list scrolls
-     * - **Expand (scroll up)**: List scrolls to top first, then navigation bar expands
+     * - **Collapse (scroll down)**: Top bar collapses first, then list scrolls
+     * - **Expand (scroll up)**: List scrolls to top first, then top bar expands
      *
      * **Note:** When [lockGestureAnimation] is `true`, this connection becomes a no-op—all scroll
      * events pass through to the content unchanged.
      *
      * ## Usage
      * ```kotlin
-     * val state = rememberNavigationBarState()
+     * val state = rememberTopBarState()
      *
      * LazyColumn(
      *     modifier = Modifier.nestedScroll(state.nestedScrollConnection)
@@ -213,35 +213,35 @@ public class NavigationBarState internal constructor(
 }
 
 /**
- * Creates and remembers a [NavigationBarState] instance.
+ * Creates and remembers a [TopBarState] instance.
  *
- * @param startCollapsed When `true`, the navigation bar starts in the collapsed state.
+ * @param startCollapsed When `true`, the top bar starts in the collapsed state.
  *        The collapsable content will be hidden and the inline title will be visible immediately.
  *        Defaults to `false`.
  * @param coroutineScope The [CoroutineScope] used for scroll-offset animations. Defaults to
  *        [rememberCoroutineScope].
  * @param lockGestureAnimation When `true`, scroll gestures from nested scrollable content
- *        will not collapse or expand the navigation bar. The bar can still be collapsed or
- *        expanded programmatically via [NavigationBarState.collapse] and [NavigationBarState.expand].
+ *        will not collapse or expand the top bar. The bar can still be collapsed or
+ *        expanded programmatically via [TopBarState.collapse] and [TopBarState.expand].
  *        Defaults to `false`.
- * @return A remembered [NavigationBarState] instance.
+ * @return A remembered [TopBarState] instance.
  *
  * ## Usage
  * ```kotlin
- * val navigationBarState = rememberNavigationBarState(
+ * val topBarState = rememberTopBarState(
  *     startCollapsed = true,
  *     lockGestureAnimation = true,
  * )
  *
  * Column {
- *     LemonadeUi.NavigationBar(
+ *     LemonadeUi.TopBar(
  *         label = "Screen Title",
- *         state = navigationBarState,
- *         variant = NavigationBarVariant.Default,
+ *         state = topBarState,
+ *         variant = TopBarVariant.Default,
  *     )
  *
  *     LazyColumn(
- *         modifier = Modifier.nestedScroll(navigationBarState.nestedScrollConnection)
+ *         modifier = Modifier.nestedScroll(topBarState.nestedScrollConnection)
  *     ) {
  *         // Your content here
  *     }
@@ -250,13 +250,13 @@ public class NavigationBarState internal constructor(
  */
 
 @Composable
-public fun rememberNavigationBarState(
+public fun rememberTopBarState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     startCollapsed: Boolean = false,
     lockGestureAnimation: Boolean = false,
-): NavigationBarState {
+): TopBarState {
     return remember(startCollapsed, lockGestureAnimation) {
-        NavigationBarState(
+        TopBarState(
             coroutineScope = coroutineScope,
             startCollapsed = startCollapsed,
             lockGestureAnimation = lockGestureAnimation,
@@ -265,23 +265,23 @@ public fun rememberNavigationBarState(
 }
 
 /**
- * A collapsible navigation bar component that displays a large title which collapses
+ * A collapsible top bar component that displays a large title which collapses
  * into a smaller inline title as the user scrolls through content.
  *
- * The NavigationBar works with external scrollable content through [NestedScrollConnection].
- * Use [rememberNavigationBarState] to create the state and apply its [NavigationBarState.nestedScrollConnection]
- * [NavigationBarState.nestedScrollConnection] to your scrollable content via
+ * The TopBar works with external scrollable content through [NestedScrollConnection].
+ * Use [rememberTopBarState] to create the state and apply its [TopBarState.nestedScrollConnection]
+ * [TopBarState.nestedScrollConnection] to your scrollable content via
  * [Modifier.nestedScroll][androidx.compose.ui.input.nestedscroll.nestedScroll].
  *
  * ## Usage
  * ```kotlin
- * val navigationBarState = rememberNavigationBarState()
+ * val topBarState = rememberTopBarState()
  *
  * Column {
- *     LemonadeUi.NavigationBar(
+ *     LemonadeUi.TopBar(
  *         label = "Screen Title",
- *         state = navigationBarState,
- *         variant = NavigationBarVariant.Default,
+ *         state = topBarState,
+ *         variant = TopBarVariant.Default,
  *         leadingSlot = {
  *             LemonadeUi.IconButton(
  *                 icon = LemonadeIcons.ChevronLeft,
@@ -299,7 +299,7 @@ public fun rememberNavigationBarState(
  *     )
  *
  *     LazyColumn(
- *         modifier = Modifier.nestedScroll(navigationBarState.nestedScrollConnection)
+ *         modifier = Modifier.nestedScroll(topBarState.nestedScrollConnection)
  *     ) {
  *         items(100) { index ->
  *             Text("Item $index")
@@ -310,28 +310,28 @@ public fun rememberNavigationBarState(
  *
  * @param label The title text displayed in both expanded (large) and collapsed (small - if [collapsedLabel] is null) states.
  * @param collapsedLabel The title text displayed in collapsed (small) state. If not set it will display [label] instead.
- * @param state The [NavigationBarState] that manages collapse behavior. Create with [rememberNavigationBarState].
- * @param variant Visual variant of the navigation bar. See [NavigationBarVariant].
- * @param navigationAction Visual variant of the navigation bar's action. See [NavigationBarAction].
+ * @param state The [TopBarState] that manages collapse behavior. Create with [rememberTopBarState].
+ * @param variant Visual variant of the top bar. See [TopBarVariant].
+ * @param navigationAction Visual variant of the top bar's action. See [TopBarAction].
  * @param onNavigationActionClicked Callback triggered when the [navigationAction] visual representation is clicked.
- * @param modifier [Modifier] applied to the navigation bar container.
+ * @param modifier [Modifier] applied to the top bar container.
  * @param trailingSlot Optional composable displayed at the end of the fixed header (typically action buttons).
  * @param bottomSlot Optional composable displayed below the expanded title. This content remains
  *        visible and acts as a sticky area when fully collapsed.
  */
 @Composable
-public fun LemonadeUi.NavigationBar(
+public fun LemonadeUi.TopBar(
     label: String,
-    variant: NavigationBarVariant,
+    variant: TopBarVariant,
     modifier: Modifier = Modifier,
-    state: NavigationBarState = rememberNavigationBarState(),
+    state: TopBarState = rememberTopBarState(),
     collapsedLabel: String? = null,
-    navigationAction: NavigationBarAction? = null,
+    navigationAction: TopBarAction? = null,
     onNavigationActionClicked: (() -> Unit)? = null,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
-    CoreNavigationBar(
+    CoreTopBar(
         label = label,
         collapsedLabel = collapsedLabel,
         state = state,
@@ -396,22 +396,22 @@ public fun LemonadeUi.NavigationBar(
 }
 
 @Composable
-private fun CoreNavigationBar(
+private fun CoreTopBar(
     label: String,
     collapsedLabel: String?,
-    state: NavigationBarState,
-    variant: NavigationBarVariant,
+    state: TopBarState,
+    variant: TopBarVariant,
     leadingSlot: @Composable (BoxScope.() -> Unit)?,
     trailingSlot: @Composable (RowScope.() -> Unit)?,
     collapsableSlot: @Composable (modifier: Modifier) -> Unit,
     bottomSlot: @Composable (BoxScope.() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
-    NavigationBarLayout(
+    TopBarLayout(
         state = state,
         modifier = modifier.background(color = variant.backgroundColor),
         fixedHeaderSlot = { headerModifier ->
-            CoreNavigationBarContent(
+            CoreTopBarContent(
                 leadingSlot = leadingSlot,
                 trailingSlot = trailingSlot,
                 label = collapsedLabel ?: label,
@@ -453,8 +453,8 @@ private const val LAYOUT_ID_COLLAPSABLE_SLOT = "collapsable_slot"
 private const val LAYOUT_ID_BOTTOM_SLOT = "bottom_slot"
 
 @Composable
-internal fun NavigationBarLayout(
-    state: NavigationBarState,
+internal fun TopBarLayout(
+    state: TopBarState,
     fixedHeaderSlot: @Composable (modifier: Modifier) -> Unit,
     dividerSlot: @Composable (modifier: Modifier) -> Unit,
     collapsableSlot: @Composable (modifier: Modifier) -> Unit,
@@ -550,12 +550,12 @@ internal fun NavigationBarLayout(
 }
 
 @Composable
-internal fun CoreNavigationBarContent(
+internal fun CoreTopBarContent(
     leadingSlot: @Composable (BoxScope.() -> Unit)?,
     trailingSlot: @Composable (RowScope.() -> Unit)?,
     label: String,
     labelAlpha: Float,
-    variant: NavigationBarVariant,
+    variant: TopBarVariant,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -592,18 +592,18 @@ internal fun CoreNavigationBarContent(
     }
 }
 
-private val NavigationBarVariant.backgroundColor: Color
+private val TopBarVariant.backgroundColor: Color
     @Composable get() {
         return when (this) {
-            NavigationBarVariant.Default -> LocalColors.current.background.bgDefault
-            NavigationBarVariant.Subtle -> LocalColors.current.background.bgSubtle
+            TopBarVariant.Default -> LocalColors.current.background.bgDefault
+            TopBarVariant.Subtle -> LocalColors.current.background.bgSubtle
         }
     }
 
-private val NavigationBarAction.icon: LemonadeIcons
+private val TopBarAction.icon: LemonadeIcons
     @Composable get() {
         return when (this) {
-            NavigationBarAction.Back -> LemonadeIcons.ArrowLeft
-            NavigationBarAction.Close -> LemonadeIcons.Times
+            TopBarAction.Back -> LemonadeIcons.ArrowLeft
+            TopBarAction.Close -> LemonadeIcons.Times
         }
     }

@@ -2,8 +2,8 @@ package com.teya.lemonade.app
 
 import androidx.compose.runtime.Composable
 import com.teya.lemonade.Displays
-import com.teya.lemonade.NavigationBarDisplay
-import com.teya.lemonade.NavigationBarSampleDisplay
+import com.teya.lemonade.TopBarDisplay
+import com.teya.lemonade.TopBarSampleDisplay
 
 @Composable
 internal actual fun App() {
@@ -12,5 +12,5 @@ internal actual fun App() {
 
 internal actual val platformScreens: Map<Displays, @Composable ((onNavigate: (Displays) -> Unit) -> Unit)> =
     mapOf(
-        NavigationBarDisplay to { _ -> NavigationBarSampleDisplay() },
+        TopBarDisplay to { _ -> TopBarSampleDisplay() },
     )
