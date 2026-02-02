@@ -37,7 +37,7 @@ internal fun ResourceListItemDisplay() {
                 label = "Account Balance",
                 value = "$1,234.56",
                 supportText = "Updated today",
-                divider = true,
+                showDivider = true,
                 onItemClicked = {},
                 leadingSlot = {
                     LemonadeUi.SymbolContainer(
@@ -53,7 +53,7 @@ internal fun ResourceListItemDisplay() {
                 label = "Savings",
                 value = "$5,000.00",
                 onItemClicked = {},
-                divider = true,
+                showDivider = true,
                 leadingSlot = {
                     LemonadeUi.SymbolContainer(
                         icon = LemonadeIcons.Coins,
@@ -72,7 +72,7 @@ internal fun ResourceListItemDisplay() {
                 label = "Last Transaction",
                 value = "-$50.00",
                 onItemClicked = {},
-                divider = false,
+                showDivider = false,
                 supportText = "Yesterday",
                 addonSlot = {
                     LemonadeUi.Tag(label = "Pending", voice = TagVoice.Warning)

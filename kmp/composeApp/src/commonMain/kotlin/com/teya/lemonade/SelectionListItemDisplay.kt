@@ -47,7 +47,7 @@ internal fun SelectionListItemDisplay() {
                     checked = singleSelection == index,
                     onItemClicked = { singleSelection = index },
                     supportText = if (index == 0) "With support text" else null,
-                    divider = true
+                    showDivider = true
                 )
             }
         }
