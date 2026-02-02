@@ -21,8 +21,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.requiredSizeIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
@@ -55,6 +55,8 @@ import com.teya.lemonade.core.TopBarAction
 import com.teya.lemonade.core.TopBarVariant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 import kotlin.math.roundToInt
 
 /**
@@ -580,8 +582,12 @@ internal fun CoreTopBarContent(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.requiredHeightIn(max = LocalSizes.current.size1000),
             horizontalArrangement = Arrangement.End,
+            modifier = Modifier
+                .requiredSizeIn(
+                    maxHeight = LocalSizes.current.size1000,
+                    minWidth = LocalSizes.current.size1000
+                ),
         ) {
             trailingSlot?.invoke(this)
         }
@@ -773,3 +779,65 @@ private val TopBarAction.icon: LemonadeIcons
             TopBarAction.Close -> LemonadeIcons.Times
         }
     }
+
+private data class TopBarPreviewData(
+    val collapsed: Boolean,
+    val action: TopBarAction,
+    val variant: TopBarVariant,
+)
+
+private class TopBarPreviewProvider : PreviewParameterProvider<TopBarPreviewData> {
+    override val values: Sequence<TopBarPreviewData> = buildAllVariants()
+    private fun buildAllVariants(): Sequence<TopBarPreviewData> {
+        return buildList {
+            listOf(true, false).forEach { collapsed ->
+                TopBarAction.entries.forEach { action ->
+                    TopBarVariant.entries.forEach { variant ->
+                        add(
+                            element = TopBarPreviewData(
+                                collapsed = collapsed,
+                                action = action,
+                                variant = variant,
+                            ),
+                        )
+                    }
+                }
+            }
+        }.asSequence()
+    }
+}
+
+@LemonadePreview
+@Composable
+private fun TopBarPreview(
+    @PreviewParameter(TopBarPreviewProvider::class)
+    previewData: TopBarPreviewData,
+) {
+    LemonadeUi.TopBar(
+        label = "Label",
+        collapsedLabel = "Collapsed Label",
+        variant = previewData.variant,
+        navigationAction = previewData.action,
+        state = rememberTopBarState(
+            startCollapsed = previewData.collapsed,
+        ),
+    )
+}
+
+@LemonadePreview
+@Composable
+private fun SearchableTopBarPreview(
+    @PreviewParameter(TopBarPreviewProvider::class)
+    previewData: TopBarPreviewData,
+) {
+    LemonadeUi.TopBar(
+        label = "Label",
+        variant = previewData.variant,
+        navigationAction = previewData.action,
+        searchInput = "Search",
+        onSearchChanged = { /* Search Callback */ },
+        state = rememberTopBarState(
+            startCollapsed = previewData.collapsed,
+        )
+    )
+}
