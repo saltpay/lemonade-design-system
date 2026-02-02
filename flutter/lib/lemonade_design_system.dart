@@ -13,6 +13,7 @@ export 'src/components/checkbox.dart';
 export 'src/components/chip.dart';
 export 'src/components/country_flag.dart';
 export 'src/components/date_picker.dart';
+export 'src/components/divider.dart';
 export 'src/components/icon.dart';
 export 'src/components/radio_button.dart';
 export 'src/components/resource_list_item.dart';
