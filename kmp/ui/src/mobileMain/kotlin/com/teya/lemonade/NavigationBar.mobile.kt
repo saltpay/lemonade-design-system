@@ -449,7 +449,7 @@ private fun CoreNavigationBar(
 
 private const val LAYOUT_ID_FIXED_HEADER = "fixed_header"
 private const val LAYOUT_ID_DIVIDER = "divider"
-private const val LAYOUT_ID_EXPANDED_TITLE = "expanded_title"
+private const val LAYOUT_ID_COLLAPSABLE_SLOT = "collapsable_slot"
 private const val LAYOUT_ID_BOTTOM_SLOT = "bottom_slot"
 
 @Composable
@@ -474,7 +474,7 @@ internal fun NavigationBarLayout(
 
             collapsableSlot(
                 Modifier
-                    .layoutId(layoutId = LAYOUT_ID_EXPANDED_TITLE)
+                    .layoutId(layoutId = LAYOUT_ID_COLLAPSABLE_SLOT)
                     .graphicsLayer {
                         translationY = state.heightOffset
                         alpha = 1f - state.collapseProgress
@@ -493,7 +493,7 @@ internal fun NavigationBarLayout(
                 .measure(constraints = constraints)
 
             val collapsablePlaceable = measurables
-                .first { measurable -> measurable.layoutId == LAYOUT_ID_EXPANDED_TITLE }
+                .first { measurable -> measurable.layoutId == LAYOUT_ID_COLLAPSABLE_SLOT }
                 .measure(constraints = constraints)
 
             val bottomSlotPlaceable = measurables
@@ -506,13 +506,13 @@ internal fun NavigationBarLayout(
 
             state.maxScrollOffset = collapsablePlaceable.height.toFloat()
 
-            val visibleExpandedTitleHeight = (collapsablePlaceable.height + state.heightOffset)
+            val visibleCollapsablePlaceableHeight = (collapsablePlaceable.height + state.heightOffset)
                 .coerceAtLeast(minimumValue = 0f)
                 .roundToInt()
 
             val totalHeight = fixedHeaderPlaceable.height +
                     dividerPlaceable.height +
-                    visibleExpandedTitleHeight +
+                    visibleCollapsablePlaceableHeight +
                     (bottomSlotPlaceable?.height ?: 0)
 
             layout(
@@ -532,7 +532,7 @@ internal fun NavigationBarLayout(
                     x = 0,
                     y = yPosition,
                 )
-                yPosition += visibleExpandedTitleHeight
+                yPosition += visibleCollapsablePlaceableHeight
 
                 bottomSlotPlaceable?.placeRelative(
                     x = 0,
