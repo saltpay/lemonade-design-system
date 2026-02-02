@@ -9,6 +9,7 @@
     "VariableID:3133:2118",
     "VariableID:3133:2113",
     "VariableID:3133:2114",
+    "VariableID:3817:3782",
     "VariableID:3133:2115",
     "VariableID:3133:2116",
     "VariableID:3133:2117"
@@ -58,6 +59,29 @@
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.borderWidths.base.border25",
         "iOS": "context.lemonade.borderWidths.base.border25"
+      }
+    },
+    {
+      "id": "VariableID:3817:3782",
+      "name": "base/border-40",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3133:3": 1.5
+      },
+      "resolvedValuesByMode": {
+        "3133:3": {
+          "resolvedValue": 1.5,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "STROKE_FLOAT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.borderWidths.base.border40",
+        "iOS": "context.lemonade.borderWidths.base.border40"
       }
     },
     {

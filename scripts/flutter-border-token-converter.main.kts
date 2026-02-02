@@ -29,14 +29,14 @@ fun main() {
             file = borderTokensFile,
             resourceMap = { resolvedValueObject ->
                 val aliasName = resolvedValueObject.optString("aliasName")
-                
+
                 BorderToken(
                     value = resolvedValueObject.getDouble("resolvedValue"),
                     aliasName = aliasName,
                 )
             },
         )
-        
+
         val borderTokens = borderResources.map { resource ->
             val rawTokenName = resource.name
             BorderToken(
@@ -61,7 +61,7 @@ fun main() {
 
 private fun buildBorderClass(tokens: List<BorderToken>): String {
     val groupedTokens = tokens.groupBy { it.group }
-    
+
     return buildString {
         append(defaultAutoGenerationMessage("Border width values"))
         appendLine("import 'dart:ui';")
@@ -76,7 +76,7 @@ private fun buildBorderClass(tokens: List<BorderToken>): String {
         appendLine("class LemonadeBorder {")
         appendLine("  /// Creates a [LemonadeBorder] configuration.")
         appendLine("  const LemonadeBorder({")
-        
+
         groupedTokens.forEach { (groupName, _) ->
             val propertyName = groupName.replaceFirstChar { it.lowercase() }
             appendLine("    this.$propertyName = const Lemonade${groupName.capitalize()}Border(),")
@@ -152,7 +152,7 @@ private fun buildBorderClass(tokens: List<BorderToken>): String {
             appendLine("/// ${groupName.capitalize()} border width values for consistent border styling")
             appendLine("@immutable")
             appendLine("class Lemonade${groupName.capitalize()}Border {")
-            
+
             if (groupName.equals("State", ignoreCase = true)) {
                 appendLine("  /// Creates a [Lemonade${groupName.capitalize()}Border] configuration.")
                 appendLine("  const Lemonade${groupName.capitalize()}Border({")
@@ -165,7 +165,7 @@ private fun buildBorderClass(tokens: List<BorderToken>): String {
             } else {
                 appendLine("  /// Creates a [Lemonade${groupName.capitalize()}Border] configuration.")
                 append("  const Lemonade${groupName.capitalize()}Border({")
-                
+
                 groupTokens.forEach { token ->
                     appendLine()
                     append("    this.${token.name} = ${token.value},")
@@ -185,7 +185,7 @@ private fun buildBorderClass(tokens: List<BorderToken>): String {
             appendLine("    if (identical(a, b)) return a;")
             appendLine()
             appendLine("    return Lemonade${groupName.capitalize()}Border(")
-            
+
             if (groupName.equals("State", ignoreCase = true)) {
                 appendLine("      base: LemonadeBaseBorder.lerp(a.base, b.base, t),")
             } else {
@@ -214,7 +214,7 @@ private fun buildBorderClass(tokens: List<BorderToken>): String {
             appendLine("      identical(this, other) ||")
             appendLine("      other is Lemonade${groupName.capitalize()}Border &&")
             appendLine("          runtimeType == other.runtimeType &&")
-            
+
             if (groupName.equals("State", ignoreCase = true)) {
                 appendLine("          base == other.base;")
             } else {
@@ -244,7 +244,7 @@ private fun buildBorderClass(tokens: List<BorderToken>): String {
                 }
             }
             appendLine("}")
-            
+
             if (groupName != groupedTokens.keys.last()) {
                 appendLine()
             }
@@ -253,20 +253,19 @@ private fun buildBorderClass(tokens: List<BorderToken>): String {
 }
 
 private fun generateDescription(tokenName: String, value: Double): String {
-    val intValue = value.toInt()
-    return "Border width value of ${intValue}px from token `$tokenName`"
+    return "Border width value of ${value}px from token `$tokenName`"
 }
 
 private fun getAliasReference(aliasName: String?): String {
     if (aliasName == null) return "0.0"
-    
+
     val parts = aliasName.split("/")
     if (parts.size == 2) {
         val group = parts[0]
         val tokenName = parts[1].replace("-", "")
         return "base.$tokenName"
     }
-    
+
     return "0.0"
 }
 

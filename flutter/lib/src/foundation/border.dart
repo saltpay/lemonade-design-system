@@ -75,6 +75,7 @@ class LemonadeBaseBorder {
   const LemonadeBaseBorder({
     this.border0 = 0.0,
     this.border25 = 1.0,
+    this.border40 = 1.5,
     this.border50 = 2.0,
     this.border75 = 3.0,
     this.border100 = 4.0,
@@ -92,25 +93,29 @@ class LemonadeBaseBorder {
     return LemonadeBaseBorder(
       border0: lerpDouble(a.border0, b.border0, t)!,
       border25: lerpDouble(a.border25, b.border25, t)!,
+      border40: lerpDouble(a.border40, b.border40, t)!,
       border50: lerpDouble(a.border50, b.border50, t)!,
       border75: lerpDouble(a.border75, b.border75, t)!,
       border100: lerpDouble(a.border100, b.border100, t)!,
     );
   }
 
-  /// Border width value of 0px from token `border0`
+  /// Border width value of 0.0px from token `border0`
   final double border0;
 
-  /// Border width value of 1px from token `border25`
+  /// Border width value of 1.0px from token `border25`
   final double border25;
 
-  /// Border width value of 2px from token `border50`
+  /// Border width value of 1.5px from token `border40`
+  final double border40;
+
+  /// Border width value of 2.0px from token `border50`
   final double border50;
 
-  /// Border width value of 3px from token `border75`
+  /// Border width value of 3.0px from token `border75`
   final double border75;
 
-  /// Border width value of 4px from token `border100`
+  /// Border width value of 4.0px from token `border100`
   final double border100;
 
   @override
@@ -120,6 +125,7 @@ class LemonadeBaseBorder {
           runtimeType == other.runtimeType &&
           border0 == other.border0 &&
           border25 == other.border25 &&
+          border40 == other.border40 &&
           border50 == other.border50 &&
           border75 == other.border75 &&
           border100 == other.border100;
@@ -128,6 +134,7 @@ class LemonadeBaseBorder {
   int get hashCode => Object.hash(
     border0,
     border25,
+    border40,
     border50,
     border75,
     border100,
@@ -159,10 +166,10 @@ class LemonadeStateBorder {
     );
   }
 
-  /// Border width value of 2px from token `focusRing` (references base/border-50)
+  /// Border width value of 2.0px from token `focusRing` (references base/border-50)
   double get focusRing => base.border50;
 
-  /// Border width value of 2px from token `borderSelected` (references base/border-50)
+  /// Border width value of 2.0px from token `borderSelected` (references base/border-50)
   double get borderSelected => base.border50;
 
   @override

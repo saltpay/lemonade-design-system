@@ -27,6 +27,7 @@ public interface LemonadeBorderWidth {
     public interface Base {
         public val border0: Dp
         public val border25: Dp
+        public val border40: Dp
         public val border50: Dp
         public val border75: Dp
         public val border100: Dp
@@ -39,14 +40,15 @@ public interface LemonadeBorderWidth {
 
 internal class InternalLemonadeBorderWidth: LemonadeBorderWidth {
     override val base = object: LemonadeBorderWidth.Base {
-        override val border0: Dp = 0.dp
-        override val border25: Dp = 1.dp
-        override val border50: Dp = 2.dp
-        override val border75: Dp = 3.dp
-        override val border100: Dp = 4.dp
+        override val border0: Dp = 0.0.dp
+        override val border25: Dp = 1.0.dp
+        override val border40: Dp = 1.5.dp
+        override val border50: Dp = 2.0.dp
+        override val border75: Dp = 3.0.dp
+        override val border100: Dp = 4.0.dp
     }
     override val state = object: LemonadeBorderWidth.State {
-        override val focusRing: Dp = 2.dp
-        override val borderSelected: Dp = 2.dp
+        override val focusRing: Dp = 2.0.dp
+        override val borderSelected: Dp = 2.0.dp
     }
 }
