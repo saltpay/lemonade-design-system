@@ -388,7 +388,7 @@ private fun CoreTopBarActionContent(
     )
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
+        modifier = modifier
             .background(
                 color = backgroundColor,
                 shape = LocalShapes.current.radius300,
