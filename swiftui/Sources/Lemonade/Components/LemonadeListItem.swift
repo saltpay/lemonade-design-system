@@ -538,7 +538,7 @@ struct LemonadeListItem_Previews: PreviewProvider {
             )
 
             LemonadeUi.HorizontalDivider()
-                .padding(.vertical, .space.spacing200)
+                .padding(.vertical, LemonadeTheme.spaces.spacing200)
 
             // ResourceListItem with divider
             LemonadeUi.ResourceListItem(
@@ -572,7 +572,7 @@ struct LemonadeListItem_Previews: PreviewProvider {
             )
 
             LemonadeUi.HorizontalDivider()
-                .padding(.vertical, .space.spacing200)
+                .padding(.vertical, LemonadeTheme.spaces.spacing200)
 
             // ActionListItem with divider
             LemonadeUi.ActionListItem(
@@ -601,7 +601,7 @@ struct LemonadeListItem_Previews: PreviewProvider {
                         icon: .trash,
                         contentDescription: nil,
                         size: .medium,
-                        tint: .content.contentCritical
+                        tint: LemonadeTheme.colors.content.contentCritical
                     )
                 }
             )

@@ -200,7 +200,7 @@ struct DividerDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         DividerDisplayView()
     }
 }

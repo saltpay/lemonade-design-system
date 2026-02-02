@@ -38,14 +38,9 @@ public extension LemonadeUi {
         variant: DividerVariant = .solid
     ) -> some View {
         let thickness = LemonadeTheme.borderWidth.base.border25
-        let dividerColor: Color = {
-            switch variant {
-            case .solid:
-                return .border.borderNeutralLow
-            case .dashed:
-                return .border.borderNeutralMedium
-            }
-        }()
+        let dividerColor = variant == .solid
+            ? LemonadeTheme.colors.border.borderNeutralLow
+            : LemonadeTheme.colors.border.borderNeutralMedium
 
         if let label = label {
             HStack(spacing: 0) {
@@ -58,9 +53,9 @@ public extension LemonadeUi {
                 LemonadeUi.Text(
                     label,
                     textStyle: LemonadeTypography.shared.bodySmallRegular,
-                    color: .content.contentSecondary
+                    color: LemonadeTheme.colors.content.contentSecondary
                 )
-                .padding(.horizontal, .space.spacing300)
+                .padding(.horizontal, LemonadeTheme.spaces.spacing300)
 
                 CoreHorizontalDivider(
                     color: dividerColor,
@@ -100,14 +95,9 @@ public extension LemonadeUi {
         variant: DividerVariant = .solid
     ) -> some View {
         let thickness = LemonadeTheme.borderWidth.base.border25
-        let dividerColor: Color = {
-            switch variant {
-            case .solid:
-                return .border.borderNeutralLow
-            case .dashed:
-                return .border.borderNeutralMedium
-            }
-        }()
+        let dividerColor = variant == .solid
+            ? LemonadeTheme.colors.border.borderNeutralLow
+            : LemonadeTheme.colors.border.borderNeutralMedium
 
         CoreVerticalDivider(
             color: dividerColor,
