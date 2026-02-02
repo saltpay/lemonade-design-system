@@ -22,8 +22,8 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun TopBarSampleDisplay() {
     val topBarState = rememberTopBarState(
-        startCollapsed = true,
-        lockGestureAnimation = true,
+        startCollapsed = false,
+        lockGestureAnimation = false,
     )
     val coroutineScope = rememberCoroutineScope()
 

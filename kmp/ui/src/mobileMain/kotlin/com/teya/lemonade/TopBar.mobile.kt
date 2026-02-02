@@ -3,6 +3,9 @@ package com.teya.lemonade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,6 +19,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.requiredSize
@@ -40,6 +44,7 @@ import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
@@ -420,10 +425,6 @@ private fun CoreTopBar(
                 modifier = headerModifier
                     .background(color = variant.backgroundColor)
                     .zIndex(zIndex = 1f)
-                    .padding(
-                        horizontal = LocalSpaces.current.spacing200,
-                        vertical = LocalSpaces.current.spacing50,
-                    ),
             )
         },
         collapsableSlot = collapsableSlot,
@@ -436,9 +437,18 @@ private fun CoreTopBar(
             }
         },
         dividerSlot = { dividerModifier ->
+            val dividerAlpha by animateFloatAsState(
+                targetValue = if (state.collapseProgress == 1f) 1f else 0f,
+                animationSpec = tween(
+                    durationMillis = 200,
+                    easing = FastOutSlowInEasing
+                ),
+                label = "DividerOpacity"
+            )
+
             Spacer(
                 modifier = dividerModifier
-                    .alpha(alpha = state.collapseProgress)
+                    .alpha(alpha = dividerAlpha)
                     .fillMaxWidth()
                     .background(color = LocalColors.current.border.borderNeutralMedium)
                     .height(height = LocalBorderWidths.current.base.border25),
@@ -558,39 +568,63 @@ internal fun CoreTopBarContent(
     variant: TopBarVariant,
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier,
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.requiredSize(size = LocalSizes.current.size1000),
-            content = {
-                leadingSlot?.invoke(this)
-            },
-        )
+    val labelVisible = labelAlpha == 1f
+    val labelOffsetY by animateDpAsState(
+        targetValue = if (labelVisible) 0.dp else 8.dp,
+        animationSpec = tween(
+            durationMillis = 200,
+            easing = FastOutSlowInEasing
+        ),
+        label = "LabelYOffset"
+    )
 
-        LemonadeUi.Text(
-            text = label,
-            textStyle = LocalTypographies.current.headingXXSmall,
-            overflow = TextOverflow.Ellipsis,
-            textAlign = TextAlign.Center,
-            maxLines = 1,
-            modifier = Modifier
-                .weight(weight = 1f)
-                .alpha(alpha = labelAlpha),
-        )
-
+    val labelAlpha by animateFloatAsState(
+        targetValue = if (labelVisible) 1f else 0f,
+        animationSpec = tween(
+            durationMillis = 200,
+            easing = FastOutSlowInEasing
+        ),
+        label = "LabelOpacity"
+    )
         Row(
+            horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.requiredHeightIn(max = LocalSizes.current.size1000),
-            horizontalArrangement = Arrangement.End,
+            modifier = modifier
+                .height(LocalSizes.current.size1100)
+                .padding(
+                    horizontal = LocalSpaces.current.spacing100,
+                )
+            ,
         ) {
-            trailingSlot?.invoke(this)
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.requiredSize(size = LocalSizes.current.size1000),
+                content = {
+                    leadingSlot?.invoke(this)
+                },
+            )
+
+            LemonadeUi.Text(
+                text = label,
+                textStyle = LocalTypographies.current.headingXXSmall,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                modifier = Modifier
+                    .weight(weight = 1f)
+                    .offset(y = labelOffsetY)
+                    .alpha(alpha = labelAlpha),
+            )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.requiredHeightIn(max = LocalSizes.current.size1000),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                trailingSlot?.invoke(this)
+            }
         }
     }
-}
 
 private val TopBarVariant.backgroundColor: Color
     @Composable get() {
