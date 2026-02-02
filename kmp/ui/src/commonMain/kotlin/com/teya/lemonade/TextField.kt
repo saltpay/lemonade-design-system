@@ -693,9 +693,9 @@ private fun TextInputWithSelectorPreview(
             leadingAction = { /**/ },
             leadingContent = {
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
+                    horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(all = LemonadeTheme.spaces.spacing400),
+                    modifier = Modifier.padding(all = LocalSpaces.current.spacing400),
                 ) {
                     LemonadeUi.CountryFlag(flag = LemonadeCountryFlags.BRBrazil)
                     LemonadeUi.Text(text = "Brazil")

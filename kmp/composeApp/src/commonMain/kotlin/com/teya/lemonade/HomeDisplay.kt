@@ -1,10 +1,6 @@
 package com.teya.lemonade
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeAssetSize
@@ -18,49 +14,25 @@ internal fun HomeDisplay(
         title = "Lemonade Design System",
     ) {
         item {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
-            ) {
-                DisplayRegistry.homeItems.forEach { display ->
-                    Column(
-                        modifier = Modifier
-                            .background(
-                                LemonadeTheme.colors.background.bgDefault,
-                                shape = RoundedCornerShape(LemonadeTheme.radius.radius400)
-                            )
-                    ) {
-                        LemonadeUi.Text(
-                            text = display.title,
-                            modifier = Modifier.padding(
-                                top = LemonadeTheme.spaces.spacing400,
-                                start = LemonadeTheme.spaces.spacing400,
-                                end = LemonadeTheme.spaces.spacing400,
-                                bottom = LemonadeTheme.spaces.spacing100
-                            ),
-                            textStyle = LemonadeTheme.typography.headingXSmall
-                        )
-
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100),
-                            modifier = Modifier
-                                .padding(all = LemonadeTheme.spaces.spacing100)
-                        ) {
-
-                            display.items.forEach { item ->
-                                LemonadeUi.ActionListItem(
-                                    label = item.label,
-                                    onItemClicked = { onNavigate(item) },
-                                    trailingSlot = {
-                                        LemonadeUi.Icon(
-                                            icon = LemonadeIcons.ChevronRight,
-                                            size = LemonadeAssetSize.Medium,
-                                            contentDescription = "Navigation indicator",
-                                            tint = LemonadeTheme.colors.content.contentTertiary
-                                        )
-                                    }
+            DisplayRegistry.homeItems.forEach { display ->
+                LemonadeUi.Card(
+                    header = CardHeaderConfig(display.title),
+                    modifier = Modifier.padding(top = LemonadeTheme.spaces.spacing400)
+                ) {
+                    display.items.forEachIndexed { index, item ->
+                        LemonadeUi.ActionListItem(
+                            label = item.label,
+                            onItemClicked = { onNavigate(item) },
+                            showDivider = display.items.lastIndex != index,
+                            trailingSlot = {
+                                LemonadeUi.Icon(
+                                    icon = LemonadeIcons.ChevronRight,
+                                    size = LemonadeAssetSize.Medium,
+                                    contentDescription = "Navigation indicator",
+                                    tint = LemonadeTheme.colors.content.contentTertiary
                                 )
                             }
-                        }
+                        )
                     }
                 }
             }
@@ -120,7 +92,8 @@ internal object DisplayRegistry {
                 Display.Badge,
                 Display.SymbolContainer,
                 Display.Card,
-                Display.Spinner
+                Display.Spinner,
+                Display.Divider,
             )
         ),
         DisplayData(
@@ -130,6 +103,7 @@ internal object DisplayRegistry {
                 Display.SelectionListItem,
                 Display.ResourceListItem,
                 Display.SegmentedControl,
+                Display.ActionListItem,
             )
         ),
         DisplayData(
