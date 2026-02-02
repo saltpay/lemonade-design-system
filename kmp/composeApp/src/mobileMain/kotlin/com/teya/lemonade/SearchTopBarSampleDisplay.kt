@@ -67,7 +67,7 @@ internal fun SearchTopBarSampleDisplay() {
             .statusBarsPadding()
             .navigationBarsPadding(),
     ) {
-        LemonadeUi.SearchTopBar(
+        LemonadeUi.TopBar(
             label = "Top Bar",
             state = topBarState,
             variant = TopBarVariant.Subtle,
