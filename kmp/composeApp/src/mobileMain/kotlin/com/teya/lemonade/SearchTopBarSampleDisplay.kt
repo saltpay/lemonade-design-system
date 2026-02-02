@@ -20,8 +20,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.teya.lemonade.core.LemonadeIconButtonSize
 import com.teya.lemonade.core.LemonadeIconButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
-import com.teya.lemonade.core.NavigationBarAction
-import com.teya.lemonade.core.NavigationBarVariant
+import com.teya.lemonade.core.TopBarAction
+import com.teya.lemonade.core.TopBarVariant
 import kotlinx.coroutines.launch
 
 private val sampleItems = listOf(
@@ -48,9 +48,9 @@ private val sampleItems = listOf(
 )
 
 @Composable
-internal fun SearchNavigationBarSampleDisplay() {
+internal fun SearchTopBarSampleDisplay() {
     var searchInput by remember { mutableStateOf("") }
-    val navigationBarState = rememberNavigationBarState()
+    val topBarState = rememberTopBarState()
     val coroutineScope = rememberCoroutineScope()
     val filteredItems = remember(searchInput) {
         if (searchInput.isBlank()) {
@@ -67,13 +67,13 @@ internal fun SearchNavigationBarSampleDisplay() {
             .statusBarsPadding()
             .navigationBarsPadding(),
     ) {
-        LemonadeUi.SearchNavigationBar(
-            label = "Navigation Bar",
-            state = navigationBarState,
-            variant = NavigationBarVariant.Subtle,
+        LemonadeUi.SearchTopBar(
+            label = "Top Bar",
+            state = topBarState,
+            variant = TopBarVariant.Subtle,
             searchInput = searchInput,
             onSearchChanged = { searchInput = it },
-            navigationAction = NavigationBarAction.Close,
+            navigationAction = TopBarAction.Close,
             onNavigationActionClicked = { /* Action Clicked */ },
             trailingSlot = {
                 LemonadeUi.IconButton(
@@ -83,7 +83,7 @@ internal fun SearchNavigationBarSampleDisplay() {
                     size = LemonadeIconButtonSize.Medium,
                     onClick = {
                         coroutineScope.launch {
-                            navigationBarState.expand()
+                            topBarState.expand()
                         }
                     },
                 )
@@ -94,7 +94,7 @@ internal fun SearchNavigationBarSampleDisplay() {
                     size = LemonadeIconButtonSize.Medium,
                     onClick = {
                         coroutineScope.launch {
-                            navigationBarState.collapse()
+                            topBarState.collapse()
                         }
                     },
                 )
@@ -105,7 +105,7 @@ internal fun SearchNavigationBarSampleDisplay() {
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .nestedScroll(navigationBarState.nestedScrollConnection)
+                .nestedScroll(topBarState.nestedScrollConnection)
                 .background(LemonadeTheme.colors.background.bgSubtle),
         ) {
             if (filteredItems.isEmpty()) {

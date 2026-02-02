@@ -3,16 +3,16 @@ package com.teya.lemonade
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data object NavigationBarDisplay : Displays {
-    override val label: String = "NavigationBar"
+internal data object TopBarDisplay : Displays {
+    override val label: String = "TopBar"
 }
 
 @Serializable
-internal data object SearchNavigationBarDisplay : Displays {
-    override val label: String = "SearchNavigationBar"
+internal data object SearchTopBarDisplay : Displays {
+    override val label: String = "SearchTopBar"
 }
 
 internal actual val platformSpecificEntries: List<Displays> = listOf(
-    NavigationBarDisplay,
-    SearchNavigationBarDisplay,
+    TopBarDisplay,
+    SearchTopBarDisplay,
 )
