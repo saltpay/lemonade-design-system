@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 /// Lemonade Design System Icons.
 /// Icons are loaded from the asset catalog bundled with this module.
@@ -237,10 +236,8 @@ public enum LemonadeIcon: String, CaseIterable {
 
     /// Returns the Image for this icon from the Lemonade bundle's asset catalog
     public var image: Image {
-        if let uiImage = UIImage(named: rawValue, in: .lemonade, compatibleWith: nil) {
-            return Image(uiImage: uiImage).renderingMode(.template)
-        }
-        return Image(systemName: "questionmark.square")
+        Image(rawValue, bundle: .lemonade)
+            .renderingMode(.template)
     }
 }
 
@@ -261,9 +258,15 @@ public enum LemonadeIconSize {
 
 public extension View {
     /// Applies Lemonade icon styling
+    @ViewBuilder
     func lemonadeIcon(size: LemonadeIconSize = .medium, color: Color? = nil) -> some View {
-        self
-            .frame(width: size.value, height: size.value)
-            .foregroundColor(color)
+        if let color = color {
+            self
+                .frame(width: size.value, height: size.value)
+                .foregroundStyle(color)
+        } else {
+            self
+                .frame(width: size.value, height: size.value)
+        }
     }
 }

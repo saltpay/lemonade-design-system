@@ -21,7 +21,7 @@ struct ListItemDisplayView: View {
                             )
                         }
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -43,7 +43,7 @@ struct ListItemDisplayView: View {
                             )
                         }
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -65,7 +65,7 @@ struct ListItemDisplayView: View {
                             }
                         )
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -80,7 +80,7 @@ struct ListItemDisplayView: View {
                             enabled: false
                         )
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -93,6 +93,7 @@ struct ListItemDisplayView: View {
                             label: "Account Balance",
                             value: "$1,234.56",
                             supportText: "Updated today",
+                            onItemClicked: {},
                             leadingSlot: {
                                 LemonadeUi.SymbolContainer(
                                     icon: .money,
@@ -100,12 +101,13 @@ struct ListItemDisplayView: View {
                                     voice: .info,
                                     size: .large
                                 )
-                            }
+                            },
                         )
 
                         LemonadeUi.ResourceListItem(
                             label: "Savings",
                             value: "$5,000.00",
+                            onItemClicked: {},
                             leadingSlot: {
                                 LemonadeUi.SymbolContainer(
                                     icon: .coins,
@@ -116,7 +118,7 @@ struct ListItemDisplayView: View {
                             }
                         )
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -127,6 +129,7 @@ struct ListItemDisplayView: View {
                             label: "Last Transaction",
                             value: "-$50.00",
                             supportText: "Yesterday",
+                            onItemClicked: {},
                             addonSlot: {
                                 LemonadeUi.Tag(label: "Pending", voice: .warning)
                             },
@@ -140,7 +143,7 @@ struct ListItemDisplayView: View {
                             }
                         )
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -189,7 +192,7 @@ struct ListItemDisplayView: View {
                             }
                         )
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -228,7 +231,7 @@ struct ListItemDisplayView: View {
                             }
                         )
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -244,7 +247,7 @@ struct ListItemDisplayView: View {
                                     icon: .trash,
                                     contentDescription: nil,
                                     size: .medium,
-                                    tint: LemonadeTheme.colors.content.contentCritical
+                                    tint: .content.contentCritical
                                 )
                             }
                         )
@@ -259,12 +262,12 @@ struct ListItemDisplayView: View {
                                     icon: .logOut,
                                     contentDescription: nil,
                                     size: .medium,
-                                    tint: LemonadeTheme.colors.content.contentCritical
+                                    tint: .content.contentCritical
                                 )
                             }
                         )
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
 
@@ -284,13 +287,13 @@ struct ListItemDisplayView: View {
                             }
                         )
                     }
-                    .background(LemonadeTheme.colors.background.bgDefault)
+                    .background(.bg.bgDefault)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
                 }
             }
             .padding(LemonadeTheme.spaces.spacing400)
         }
-        .background(LemonadeTheme.colors.background.bgSubtle)
+        .background(.bg.bgSubtle)
         .navigationTitle("ListItem")
     }
 
@@ -298,8 +301,8 @@ struct ListItemDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             LemonadeUi.Text(
                 title,
-                textStyle: LemonadeTypography().headingXSmall,
-                color: LemonadeTheme.colors.content.contentSecondary
+                textStyle: LemonadeTypography.shared.headingXSmall,
+                color: .content.contentSecondary
             )
 
             content()
@@ -308,7 +311,7 @@ struct ListItemDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ListItemDisplayView()
     }
 }
