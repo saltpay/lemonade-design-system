@@ -75,6 +75,10 @@ class MainScreen extends StatelessWidget {
               onPressed: () => context.push('/date_picker'),
             ),
             ExampleListTile(
+              title: 'Divider',
+              onPressed: () => context.push('/divider'),
+            ),
+            ExampleListTile(
               title: 'Icon',
               onPressed: () => context.push('/icon'),
             ),
