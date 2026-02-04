@@ -10,14 +10,6 @@ struct ToastDisplayView: View {
 
     var body: some View {
         List {
-            Section("Haptic") {
-                if #available(iOS 17.0, *) {
-                    Button("Tap Count: \(counter)") {
-                        counter += 1
-                    }
-                    .sensoryFeedback(.error, trigger: counter)
-                }
-            }
             Section("Toast Voices") {
                 Button("Show Success Toast") {
                     toastManager.show(

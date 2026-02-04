@@ -15,7 +15,7 @@ private enum ToastAnimationConfig {
 
     /// Smooth animation for fading effects
     static var smooth: Animation {
-        .easeOut(duration: duration)
+        .easeInOut(duration: duration)
     }
 
     /// Interactive spring for drag gestures
@@ -23,8 +23,8 @@ private enum ToastAnimationConfig {
         .spring(response: 0.3, dampingFraction: 0.7)
     }
 
-    /// Exit slide offset (off-screen distance)
-    static let slideOffset: CGFloat = 200
+    /// Fallback slide offset if toast height not yet measured
+    static let fallbackSlideOffset: CGFloat = 200
 
     /// Fade exit scale
     static let fadeScale: CGFloat = 0.88
@@ -33,7 +33,7 @@ private enum ToastAnimationConfig {
     static let fadeBlur: CGFloat = 10
 
     /// Drag threshold to trigger dismiss
-    static let dragDismissThreshold: CGFloat = 50
+    static let dragDismissThreshold: CGFloat = 25
 
     /// Convert seconds to nanoseconds for Task.sleep
     static func nanoseconds(from seconds: TimeInterval) -> UInt64 {
@@ -261,10 +261,12 @@ private enum ToastAnimationPhase: Equatable {
     case exitingFade
 
     /// The Y offset for this phase
-    var offset: CGFloat {
+    /// - Parameter toastHeight: The measured height of the toast (used for slide distance)
+    func offset(for toastHeight: CGFloat) -> CGFloat {
+        let slideDistance = toastHeight > 0 ? toastHeight : ToastAnimationConfig.fallbackSlideOffset
         switch self {
         case .hidden, .entering, .exitingSlide:
-            return ToastAnimationConfig.slideOffset
+            return slideDistance
         case .visible, .exitingFade:
             return 0
         }
@@ -327,6 +329,10 @@ private struct LemonadeToastContainerView<Content: View>: View {
     @State private var dragOffset: CGFloat = 0
     /// Trigger counter for sensory feedback (iOS 17+)
     @State private var feedbackTrigger: Int = 0
+    /// Captured keyboard height at toast entry (prevents animation conflicts)
+    @State private var capturedKeyboardHeight: CGFloat = 0
+    /// Measured toast height for accurate slide animation
+    @State private var toastHeight: CGFloat = 0
 
     let content: Content
 
@@ -368,6 +374,9 @@ private struct LemonadeToastContainerView<Content: View>: View {
     }
 
     private func enterNewToast() {
+        // Capture keyboard height immediately (prevents animation conflicts)
+        capturedKeyboardHeight = keyboardObserver.keyboardHeight
+
         // Set up the new toast in entering state
         displayedToast = toastManager.currentToast
         animationPhase = .entering
@@ -405,20 +414,23 @@ private struct LemonadeToastContainerView<Content: View>: View {
         if let toast = displayedToast, animationPhase.isPresented {
             ToastItemView(
                 toast: toast,
-                keyboardHeight: keyboardObserver.keyboardHeight,
+                keyboardHeight: capturedKeyboardHeight,
                 onDismiss: { toastManager.dismiss() },
                 onDragChanged: handleDragChanged,
-                onDragEnded: handleDragEnded
+                onDragEnded: handleDragEnded,
+                onHeightChanged: { height in
+                    toastHeight = height
+                }
             )
-            // Apply transforms for GPU-accelerated animation (performance best practice)
+            // GPU-accelerated transforms for animation
             .scaleEffect(animationPhase.scale, anchor: .bottom)
-            .offset(y: animationPhase.offset + dragOffset)
-            // Use animatable blur for smooth interpolation
+            // Animation offset (based on measured height) + drag offset
+            .offset(y: animationPhase.offset(for: toastHeight) + dragOffset)
             .animatableBlur(radius: animationPhase.blur)
             .opacity(animationPhase.opacity)
-            // Animate all properties when phase changes
+            // Animate phase changes
             .animation(ToastAnimationConfig.spring, value: animationPhase)
-            // Separate animation for drag offset (snappier response)
+            // Separate animation for drag (snappier)
             .animation(ToastAnimationConfig.interactiveSpring, value: dragOffset)
         }
     }
@@ -443,39 +455,50 @@ private struct LemonadeToastContainerView<Content: View>: View {
 // MARK: - Toast Item View
 
 /// Individual toast view with gesture handling.
-/// Separated from animation logic for cleaner architecture.
+/// Only the toast itself is interactive - the rest passes through touches.
 private struct ToastItemView: View {
     let toast: LemonadeToastItem
     let keyboardHeight: CGFloat
     let onDismiss: () -> Void
     let onDragChanged: (CGFloat) -> Void
     let onDragEnded: (CGFloat) -> Void
+    let onHeightChanged: (CGFloat) -> Void
 
     var body: some View {
-        GeometryReader { _ in
-            VStack {
-                Spacer()
-                LemonadeUi.Toast(
-                    label: toast.label,
-                    voice: toast.voice,
-                    icon: toast.icon
-                )
-                .frame(maxWidth: .infinity)
-                .padding(
-                    EdgeInsets(
-                        top: .space.spacing2000,
-                        leading: .space.spacing200,
-                        bottom: keyboardHeight,
-                        trailing: .space.spacing200
-                    )
-                )
-                .contentShape(Rectangle())
-            }
-            .frame(maxWidth: .infinity)
-            .gesture(dismissGesture)
+        VStack {
+            Spacer()
+                .allowsHitTesting(false) // Allow touches to pass through
+
+            toastContent
         }
-        .ignoresSafeArea(.keyboard)
+        .frame(maxWidth: .infinity, alignment: .bottom)
+        .allowsHitTesting(true)
         .id(toast.id)
+    }
+
+    private var toastContent: some View {
+        LemonadeUi.Toast(
+            label: toast.label,
+            voice: toast.voice,
+            icon: toast.icon
+        )
+        .frame(maxWidth: .infinity)
+        .padding(.top, .space.spacing1800) // Extra space for dismiss gesture
+        .padding(.horizontal, .space.spacing200)
+        .padding(.bottom, .space.spacing400)
+        .background(
+            GeometryReader { geometry in
+                Color.clear
+                    .onAppear {
+                        onHeightChanged(geometry.size.height)
+                    }
+                    .onChange(of: geometry.size.height) { newHeight in
+                        onHeightChanged(newHeight)
+                    }
+            }
+        )
+        .contentShape(Rectangle())
+        .gesture(dismissGesture)
     }
 
     private var dismissGesture: some Gesture {
@@ -528,9 +551,7 @@ private final class KeyboardObserver: ObservableObject {
             }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] height in
-                withAnimation(.easeInOut(duration: 0.25)) {
-                    self?.keyboardHeight = height
-                }
+                self?.keyboardHeight = height
             }
             .store(in: &cancellables)
 
@@ -538,9 +559,7 @@ private final class KeyboardObserver: ObservableObject {
             .publisher(for: UIResponder.keyboardWillHideNotification)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                withAnimation(.easeInOut(duration: 0.25)) {
-                    self?.keyboardHeight = 0
-                }
+                self?.keyboardHeight = 0
             }
             .store(in: &cancellables)
         #endif
