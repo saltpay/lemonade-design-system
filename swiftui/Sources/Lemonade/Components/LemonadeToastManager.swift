@@ -213,7 +213,7 @@ public final class LemonadeToastManager: ObservableObject {
     private func scheduleTransition() {
         dismissTask?.cancel()
         dismissTask = Task { @MainActor in
-            try? await Task.sleep(nanoseconds: 100_000_000) // 100ms
+            try? await Task.sleep(nanoseconds: ToastAnimationConfig.nanoseconds(from: 0.1)) // 100ms
             guard !Task.isCancelled else { return }
             dismiss()
         }
