@@ -34,5 +34,6 @@ struct ContentView: View {
         NavigationStack {
             HomeView()
         }
+        .lemonadeToastContainer()
     }
 }
