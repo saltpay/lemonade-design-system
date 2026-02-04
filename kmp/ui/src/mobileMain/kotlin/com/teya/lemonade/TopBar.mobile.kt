@@ -65,6 +65,228 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 import kotlin.math.roundToInt
 
 /**
+ * State holder for [TopBar][LemonadeUi.TopBar] that manages the collapse/expand
+ * behavior based on scroll events from external scrollable content.
+ *
+ * Use [rememberTopBarState] to create and remember an instance.
+ *
+ * @param coroutineScope The [CoroutineScope] used to launch scroll-offset animations.
+ * @param startCollapsed When `true`, the top bar starts in the collapsed state.
+ * @param lockGestureAnimation When `true`, scroll gestures will not collapse or expand the
+ *        top bar; only programmatic calls to [collapse] and [expand] will work.
+ * @see rememberTopBarState
+ */
+@Stable
+public class TopBarState internal constructor(
+    private val coroutineScope: CoroutineScope,
+    private val startCollapsed: Boolean = false,
+    lockGestureAnimation: Boolean = false,
+) {
+
+    private var lockGestureAnimation by mutableStateOf(lockGestureAnimation)
+
+    private val scrollOffsetAnimatable by derivedStateOf {
+        Animatable(
+            initialValue = if (startCollapsed) {
+                maxScrollOffset
+            } else {
+                0f
+            },
+        )
+    }
+
+    internal val scrollOffset: Float
+        get() = scrollOffsetAnimatable.value
+    internal var maxScrollOffset: Float by mutableFloatStateOf(0f)
+
+    public val collapseProgress: Float by derivedStateOf {
+        if (maxScrollOffset > 0f) {
+            (scrollOffset / maxScrollOffset).coerceIn(
+                minimumValue = 0f,
+                maximumValue = 1f,
+            )
+        } else {
+            0f
+        }
+    }
+
+    internal val heightOffset: Float by derivedStateOf {
+        -scrollOffset
+    }
+
+    /**
+     * Animates the top bar to the fully collapsed state.
+     * Does nothing if already fully collapsed.
+     *
+     * @param animationSpec The animation specification to use. Defaults to a 300ms tween.
+     */
+    public fun collapse(
+        animationSpec: AnimationSpec<Float> = tween(durationMillis = 300),
+    ) {
+        if (scrollOffset < maxScrollOffset) {
+            coroutineScope.launch {
+                scrollOffsetAnimatable.animateTo(
+                    targetValue = maxScrollOffset,
+                    animationSpec = animationSpec,
+                )
+            }
+        }
+    }
+
+    /**
+     * Animates the top bar to the fully expanded state.
+     * Does nothing if already fully expanded.
+     *
+     * @param animationSpec The animation specification to use. Defaults to a 300ms tween.
+     */
+    public fun expand(
+        animationSpec: AnimationSpec<Float> = tween(durationMillis = 300),
+    ) {
+        if (scrollOffset > 0f) {
+            coroutineScope.launch {
+                scrollOffsetAnimatable.animateTo(
+                    targetValue = 0f,
+                    animationSpec = animationSpec,
+                )
+            }
+        }
+    }
+
+    public fun setAnimationGesturesLock(locked: Boolean) {
+        lockGestureAnimation = locked
+    }
+
+    /**
+     * [NestedScrollConnection] that captures scroll events from child scrollable content.
+     * Apply this to your scrollable content using [Modifier.nestedScroll][androidx.compose.ui.input.nestedscroll.nestedScroll].
+     *
+     * The scroll behavior is:
+     * - **Collapse (scroll down)**: Top bar collapses first, then list scrolls
+     * - **Expand (scroll up)**: List scrolls to top first, then top bar expands
+     *
+     * **Note:** When [lockGestureAnimation] is `true`, this connection becomes a no-op—all scroll
+     * events pass through to the content unchanged.
+     *
+     * ## Usage
+     * ```kotlin
+     * val state = rememberTopBarState()
+     *
+     * LazyColumn(
+     *     modifier = Modifier.nestedScroll(state.nestedScrollConnection)
+     * ) {
+     *     // content
+     * }
+     * ```
+     */
+    public val nestedScrollConnection: NestedScrollConnection = object : NestedScrollConnection {
+        override fun onPreScroll(
+            available: Offset,
+            source: NestedScrollSource,
+        ): Offset {
+            if (lockGestureAnimation) {
+                return Offset.Zero
+            }
+            val delta = available.y
+            if (delta < 0 && scrollOffset < maxScrollOffset) {
+                val newOffset = scrollOffset - delta
+                val previousOffset = scrollOffset
+                val targetOffset = newOffset.coerceIn(
+                    minimumValue = 0f,
+                    maximumValue = maxScrollOffset,
+                )
+                coroutineScope.launch {
+                    scrollOffsetAnimatable.snapTo(targetValue = targetOffset)
+                }
+                return Offset(
+                    x = 0f,
+                    y = previousOffset - targetOffset,
+                )
+            }
+            return Offset.Zero
+        }
+
+        override fun onPostScroll(
+            consumed: Offset,
+            available: Offset,
+            source: NestedScrollSource,
+        ): Offset {
+            if (lockGestureAnimation) {
+                return Offset.Zero
+            }
+            val delta = available.y
+            if (delta > 0 && scrollOffset > 0f) {
+                val newOffset = scrollOffset - delta
+                val previousOffset = scrollOffset
+                val targetOffset = newOffset.coerceIn(
+                    minimumValue = 0f,
+                    maximumValue = maxScrollOffset,
+                )
+                coroutineScope.launch {
+                    scrollOffsetAnimatable.snapTo(targetValue = targetOffset)
+                }
+                return Offset(
+                    x = 0f,
+                    y = previousOffset - targetOffset,
+                )
+            }
+            return Offset.Zero
+        }
+    }
+}
+
+/**
+ * Creates and remembers a [TopBarState] instance.
+ *
+ * @param startCollapsed When `true`, the top bar starts in the collapsed state.
+ *        The collapsable content will be hidden and the inline title will be visible immediately.
+ *        Defaults to `false`.
+ * @param coroutineScope The [CoroutineScope] used for scroll-offset animations. Defaults to
+ *        [rememberCoroutineScope].
+ * @param lockGestureAnimation When `true`, scroll gestures from nested scrollable content
+ *        will not collapse or expand the top bar. The bar can still be collapsed or
+ *        expanded programmatically via [TopBarState.collapse] and [TopBarState.expand].
+ *        Defaults to `false`.
+ * @return A remembered [TopBarState] instance.
+ *
+ * ## Usage
+ * ```kotlin
+ * val topBarState = rememberTopBarState(
+ *     startCollapsed = true,
+ *     lockGestureAnimation = true,
+ * )
+ *
+ * Column {
+ *     LemonadeUi.TopBar(
+ *         label = "Screen Title",
+ *         state = topBarState,
+ *         variant = TopBarVariant.Default,
+ *     )
+ *
+ *     LazyColumn(
+ *         modifier = Modifier.nestedScroll(topBarState.nestedScrollConnection)
+ *     ) {
+ *         // Your content here
+ *     }
+ * }
+ * ```
+ */
+
+@Composable
+public fun rememberTopBarState(
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    startCollapsed: Boolean = false,
+    lockGestureAnimation: Boolean = false,
+): TopBarState {
+    return remember(startCollapsed, lockGestureAnimation) {
+        TopBarState(
+            coroutineScope = coroutineScope,
+            startCollapsed = startCollapsed,
+            lockGestureAnimation = lockGestureAnimation,
+        )
+    }
+}
+
+/**
  * A collapsible top bar component that displays a large title which collapses
  * into a smaller inline title as the user scrolls through content.
  *
@@ -179,58 +401,6 @@ public fun LemonadeUi.TopBar(
             }
         },
     )
-}
-
-/**
- * Creates and remembers a [TopBarState] instance.
- *
- * @param startCollapsed When `true`, the top bar starts in the collapsed state.
- *        The collapsable content will be hidden and the inline title will be visible immediately.
- *        Defaults to `false`.
- * @param coroutineScope The [CoroutineScope] used for scroll-offset animations. Defaults to
- *        [rememberCoroutineScope].
- * @param startWithLockedGestureAnimation When `true`, scroll gestures from nested scrollable content
- *        will not collapse or expand the top bar. The bar can still be collapsed or
- *        expanded programmatically via [TopBarState.collapse] and [TopBarState.expand].
- *        Defaults to `false`.
- * @return A remembered [TopBarState] instance.
- *
- * ## Usage
- * ```kotlin
- * val topBarState = rememberTopBarState(
- *     startCollapsed = true,
- *     startWithLockedGestureAnimation = true,
- * )
- *
- * Column {
- *     LemonadeUi.TopBar(
- *         label = "Screen Title",
- *         state = topBarState,
- *         variant = TopBarVariant.Default,
- *     )
- *
- *     LazyColumn(
- *         modifier = Modifier.nestedScroll(topBarState.nestedScrollConnection)
- *     ) {
- *         // Your content here
- *     }
- * }
- * ```
- */
-
-@Composable
-public fun rememberTopBarState(
-    coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    startCollapsed: Boolean = false,
-    startWithLockedGestureAnimation: Boolean = false,
-): TopBarState {
-    return remember(startCollapsed, startWithLockedGestureAnimation) {
-        TopBarState(
-            coroutineScope = coroutineScope,
-            startCollapsed = startCollapsed,
-            startWithLockedGestureAnimation = startWithLockedGestureAnimation,
-        )
-    }
 }
 
 /**
@@ -624,176 +794,6 @@ internal fun CoreTopBarContent(
             horizontalArrangement = Arrangement.End,
         ) {
             trailingSlot?.invoke(this)
-        }
-    }
-}
-
-/**
- * State holder for [TopBar][LemonadeUi.TopBar] that manages the collapse/expand
- * behavior based on scroll events from external scrollable content.
- *
- * Use [rememberTopBarState] to create and remember an instance.
- *
- * @param coroutineScope The [CoroutineScope] used to launch scroll-offset animations.
- * @param startCollapsed When `true`, the top bar starts in the collapsed state.
- * @param startWithLockedGestureAnimation When `true`, scroll gestures will not collapse or expand the
- *        top bar; only programmatic calls to [collapse] and [expand] will work.
- * @see rememberTopBarState
- */
-@Stable
-public class TopBarState internal constructor(
-    private val coroutineScope: CoroutineScope,
-    private val startCollapsed: Boolean = false,
-    private val startWithLockedGestureAnimation: Boolean = false,
-) {
-
-    private var lockGestureAnimation by mutableStateOf(startWithLockedGestureAnimation)
-
-    private val scrollOffsetAnimatable by derivedStateOf {
-        Animatable(
-            initialValue = if (startCollapsed) {
-                maxScrollOffset
-            } else {
-                0f
-            },
-        )
-    }
-
-    internal val scrollOffset: Float
-        get() = scrollOffsetAnimatable.value
-    internal var maxScrollOffset: Float by mutableFloatStateOf(0f)
-
-    public val collapseProgress: Float by derivedStateOf {
-        if (maxScrollOffset > 0f) {
-            (scrollOffset / maxScrollOffset).coerceIn(
-                minimumValue = 0f,
-                maximumValue = 1f,
-            )
-        } else {
-            0f
-        }
-    }
-
-    internal val heightOffset: Float by derivedStateOf {
-        -scrollOffset
-    }
-
-    /**
-     * Animates the top bar to the fully collapsed state.
-     * Does nothing if already fully collapsed.
-     *
-     * @param animationSpec The animation specification to use. Defaults to a 300ms tween.
-     */
-    public fun collapse(
-        animationSpec: AnimationSpec<Float> = tween(durationMillis = 300),
-    ) {
-        if (scrollOffset < maxScrollOffset) {
-            coroutineScope.launch {
-                scrollOffsetAnimatable.animateTo(
-                    targetValue = maxScrollOffset,
-                    animationSpec = animationSpec,
-                )
-            }
-        }
-    }
-
-    /**
-     * Animates the top bar to the fully expanded state.
-     * Does nothing if already fully expanded.
-     *
-     * @param animationSpec The animation specification to use. Defaults to a 300ms tween.
-     */
-    public fun expand(
-        animationSpec: AnimationSpec<Float> = tween(durationMillis = 300),
-    ) {
-        if (scrollOffset > 0f) {
-            coroutineScope.launch {
-                scrollOffsetAnimatable.animateTo(
-                    targetValue = 0f,
-                    animationSpec = animationSpec,
-                )
-            }
-        }
-    }
-
-    public fun setAnimationGesturesLock(locked: Boolean) {
-        lockGestureAnimation = locked
-    }
-
-    /**
-     * [NestedScrollConnection] that captures scroll events from child scrollable content.
-     * Apply this to your scrollable content using [Modifier.nestedScroll][androidx.compose.ui.input.nestedscroll.nestedScroll].
-     *
-     * The scroll behavior is:
-     * - **Collapse (scroll down)**: Top bar collapses first, then list scrolls
-     * - **Expand (scroll up)**: List scrolls to top first, then top bar expands
-     *
-     * **Note:** When [lockGestureAnimation] is `true`, this connection becomes a no-op—all scroll
-     * events pass through to the content unchanged.
-     *
-     * ## Usage
-     * ```kotlin
-     * val state = rememberTopBarState()
-     *
-     * LazyColumn(
-     *     modifier = Modifier.nestedScroll(state.nestedScrollConnection)
-     * ) {
-     *     // content
-     * }
-     * ```
-     */
-    public val nestedScrollConnection: NestedScrollConnection = object : NestedScrollConnection {
-        override fun onPreScroll(
-            available: Offset,
-            source: NestedScrollSource,
-        ): Offset {
-            if (lockGestureAnimation) {
-                return Offset.Zero
-            }
-            val delta = available.y
-            if (delta < 0 && scrollOffset < maxScrollOffset) {
-                val newOffset = scrollOffset - delta
-                val previousOffset = scrollOffset
-                val targetOffset = newOffset.coerceIn(
-                    minimumValue = 0f,
-                    maximumValue = maxScrollOffset,
-                )
-                coroutineScope.launch {
-                    scrollOffsetAnimatable.snapTo(targetValue = targetOffset)
-                }
-                return Offset(
-                    x = 0f,
-                    y = previousOffset - targetOffset,
-                )
-            }
-            return Offset.Zero
-        }
-
-        override fun onPostScroll(
-            consumed: Offset,
-            available: Offset,
-            source: NestedScrollSource,
-        ): Offset {
-            if (lockGestureAnimation) {
-                return Offset.Zero
-            }
-            val delta = available.y
-            if (delta > 0 && scrollOffset > 0f) {
-                val newOffset = scrollOffset - delta
-                val previousOffset = scrollOffset
-                val targetOffset = newOffset.coerceIn(
-                    minimumValue = 0f,
-                    maximumValue = maxScrollOffset,
-                )
-                coroutineScope.launch {
-                    scrollOffsetAnimatable.snapTo(targetValue = targetOffset)
-                }
-                return Offset(
-                    x = 0f,
-                    y = previousOffset - targetOffset,
-                )
-            }
-            return Offset.Zero
         }
     }
 }

@@ -21,7 +21,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun TopBarSampleDisplay() {
-    val topBarState = rememberTopBarState()
+    val topBarState = rememberTopBarState(
+        startCollapsed = false,
+        lockGestureAnimation = false,
+    )
     val coroutineScope = rememberCoroutineScope()
 
     Column(
@@ -81,7 +84,6 @@ internal fun TopBarSampleDisplay() {
         }
     }
 }
-
 
 private const val SAMPLE_TEXT = """
 The top bar is a fundamental component in mobile applications that provides users with context about their current location within the app and offers navigation controls. This component demonstrates the collapsing behavior of the top bar as you scroll through the content.
