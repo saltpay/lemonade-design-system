@@ -4,9 +4,6 @@ import Lemonade
 struct ToastDisplayView: View {
     @EnvironmentObject private var toastManager: LemonadeToastManager
     @State private var textFieldValue: String = ""
-    
-    @State private var counter = 0
-
 
     var body: some View {
         List {
