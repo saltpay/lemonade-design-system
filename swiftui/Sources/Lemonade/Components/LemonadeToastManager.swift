@@ -129,13 +129,6 @@ public final class LemonadeToastManager: ObservableObject {
     /// The currently displayed toast, if any.
     @Published public private(set) var currentToast: LemonadeToastItem?
 
-    /// Whether there's a pending toast (used for exit animation).
-    @Published public private(set) var hasPendingToast: Bool = false
-
-    /// Whether the current toast should fade out when exiting.
-    /// True when being replaced by another toast, false for natural exit.
-    @Published public private(set) var shouldFadeOut: Bool = false
-
     /// Queue of pending toasts.
     private var pendingToasts: [LemonadeToastItem] = []
 
@@ -170,8 +163,6 @@ public final class LemonadeToastManager: ObservableObject {
         if currentToast != nil {
             // Queue the new toast and dismiss current after delay
             pendingToasts.append(toast)
-            hasPendingToast = true
-            shouldFadeOut = true  // Current toast will fade out when replaced
             scheduleTransition()
         } else {
             displayToast(toast)
@@ -185,19 +176,15 @@ public final class LemonadeToastManager: ObservableObject {
         dismissTask = nil
 
         let hadPending = !pendingToasts.isEmpty
-        hasPendingToast = hadPending
 
         if hadPending {
             // Show next toast immediately (overlapping animations)
             showNextToastIfAvailable()
         } else {
-            // No pending toast - natural exit with slide
-            shouldFadeOut = false
             currentToast = nil
 
             Task { @MainActor in
                 try? await Task.sleep(nanoseconds: ToastAnimationConfig.nanoseconds(from: ToastAnimationConfig.duration))
-                hasPendingToast = false
             }
         }
     }
@@ -235,11 +222,9 @@ public final class LemonadeToastManager: ObservableObject {
     /// Shows the next pending toast if available.
     private func showNextToastIfAvailable() {
         guard !pendingToasts.isEmpty else {
-            hasPendingToast = false
             return
         }
         let nextToast = pendingToasts.removeFirst()
-        hasPendingToast = false
         displayToast(nextToast)
     }
 }
@@ -329,8 +314,6 @@ private struct LemonadeToastContainerView<Content: View>: View {
     @State private var dragOffset: CGFloat = 0
     /// Trigger counter for sensory feedback (iOS 17+)
     @State private var feedbackTrigger: Int = 0
-    /// Captured keyboard height at toast entry (prevents animation conflicts)
-    @State private var capturedKeyboardHeight: CGFloat = 0
     /// Measured toast height for accurate slide animation
     @State private var toastHeight: CGFloat = 0
 
@@ -374,9 +357,6 @@ private struct LemonadeToastContainerView<Content: View>: View {
     }
 
     private func enterNewToast() {
-        // Capture keyboard height immediately (prevents animation conflicts)
-        capturedKeyboardHeight = keyboardObserver.keyboardHeight
-
         // Set up the new toast in entering state
         displayedToast = toastManager.currentToast
         animationPhase = .entering
@@ -414,7 +394,6 @@ private struct LemonadeToastContainerView<Content: View>: View {
         if let toast = displayedToast, animationPhase.isPresented {
             ToastItemView(
                 toast: toast,
-                keyboardHeight: capturedKeyboardHeight,
                 onDismiss: { toastManager.dismiss() },
                 onDragChanged: handleDragChanged,
                 onDragEnded: handleDragEnded,
@@ -458,7 +437,6 @@ private struct LemonadeToastContainerView<Content: View>: View {
 /// Only the toast itself is interactive - the rest passes through touches.
 private struct ToastItemView: View {
     let toast: LemonadeToastItem
-    let keyboardHeight: CGFloat
     let onDismiss: () -> Void
     let onDragChanged: (CGFloat) -> Void
     let onDragEnded: (CGFloat) -> Void
