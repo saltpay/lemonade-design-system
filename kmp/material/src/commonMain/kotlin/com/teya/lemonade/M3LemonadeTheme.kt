@@ -1,10 +1,12 @@
 package com.teya.lemonade
 
+import androidx.compose.foundation.Indication
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import com.teya.lemonade.core.LemonadeTypography
 
@@ -18,6 +20,7 @@ public fun M3LemonadeTheme(
     spaces: LemonadeSpaceValues = LemonadeTheme.spaces,
     borderWidths: LemonadeBorderWidth = LemonadeTheme.borderWidths,
     sizes: LemonadeSizeValues = LemonadeTheme.sizes,
+    effects: LemonadeEffects = LemonadeTheme.effects,
     content: @Composable () -> Unit
 ) {
     LemonadeTheme(
@@ -29,6 +32,7 @@ public fun M3LemonadeTheme(
         spaces = spaces,
         borderWidths = borderWidths,
         sizes = sizes,
+        effects = m3LemonadeEffects(effects = effects),
     ) {
         MaterialTheme(
             colorScheme = m3LemonadeColorScheme(),
@@ -126,4 +130,10 @@ private fun m3LemonadeColorScheme(): ColorScheme {
         onTertiaryFixed = colors.content.contentInfoOnColor,
         onTertiaryFixedVariant = colors.content.contentInfo,
     )
+}
+
+private fun m3LemonadeEffects(effects: LemonadeEffects): LemonadeEffects {
+    return object : LemonadeEffects by effects {
+        override val interactionIndication: Indication = ripple()
+    }
 }
