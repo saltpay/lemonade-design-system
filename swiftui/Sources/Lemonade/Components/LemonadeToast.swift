@@ -23,31 +23,8 @@ public enum LemonadeToastVoice {
     func iconColor(colors: LemonadeSemanticColors) -> Color {
         switch self {
         case .success: return colors.content.contentPositiveOnColor
-        case .error: return colors.content.contentCritical
+        case .error: return colors.content.contentCriticalOnColor
         case .neutral: return colors.content.contentNeutralOnColor
-        }
-    }
-}
-
-// MARK: - Toast Duration
-
-/// Predefined duration values for toast notifications.
-public enum LemonadeToastDuration {
-    /// Short duration: 3 seconds
-    case short
-    /// Medium duration: 6 seconds
-    case medium
-    /// Long duration: 9 seconds
-    case long
-    /// Custom duration
-    case custom(TimeInterval)
-
-    public var timeInterval: TimeInterval {
-        switch self {
-        case .short: return 3
-        case .medium: return 6
-        case .long: return 9
-        case .custom(let duration): return duration
         }
     }
 }
