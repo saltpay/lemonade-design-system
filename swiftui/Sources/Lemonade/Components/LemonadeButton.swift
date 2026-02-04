@@ -48,6 +48,7 @@ public extension LemonadeUi {
     ///   - variant: LemonadeButtonVariant to style the Button accordingly
     ///   - size: LemonadeButtonSize to size the Button accordingly
     ///   - enabled: Boolean flag to enable or disable the Button
+    ///   - loading: Boolean flag to show a loading spinner and disable interaction. Unlike `enabled`, loading keeps full opacity.
     /// - Returns: A styled Button view
     @ViewBuilder
     static func Button(
@@ -57,7 +58,8 @@ public extension LemonadeUi {
         trailingIcon: LemonadeIcon? = nil,
         variant: LemonadeButtonVariant = .primary,
         size: LemonadeButtonSize = .large,
-        enabled: Bool = true
+        enabled: Bool = true,
+        loading: Bool = false
     ) -> some View {
         LemonadeButtonView(
             label: label,
@@ -66,7 +68,8 @@ public extension LemonadeUi {
             trailingIcon: trailingIcon,
             variant: variant,
             size: size,
-            enabled: enabled
+            enabled: enabled,
+            loading: loading
         )
     }
 }
@@ -192,6 +195,7 @@ private struct LemonadeButtonView: View {
     let variant: LemonadeButtonVariant
     let size: LemonadeButtonSize
     let enabled: Bool
+    let loading: Bool
 
     @State private var isPressed = false
 
@@ -204,29 +208,34 @@ private struct LemonadeButtonView: View {
             HStack(spacing: 0) {
                 Spacer(minLength: 0)
 
-                if let leadingIcon = leadingIcon {
-                    LemonadeUi.Icon(
-                        icon: leadingIcon,
-                        contentDescription: nil,
-                        size: .medium,
-                        tint: variant.variantData.contentColor
-                    )
-                }
+                if loading {
+                    ProgressView()
+                        .tint(variant.variantData.contentColor)
+                } else {
+                    if let leadingIcon = leadingIcon {
+                        LemonadeUi.Icon(
+                            icon: leadingIcon,
+                            contentDescription: nil,
+                            size: .medium,
+                            tint: variant.variantData.contentColor
+                        )
+                    }
 
-                LemonadeUi.Text(
-                    label,
-                    textStyle: size.contentData.textStyle,
-                    color: variant.variantData.contentColor
-                )
-                .padding(.horizontal, LemonadeTheme.spaces.spacing200)
-
-                if let trailingIcon = trailingIcon {
-                    LemonadeUi.Icon(
-                        icon: trailingIcon,
-                        contentDescription: nil,
-                        size: .medium,
-                        tint: variant.variantData.contentColor
+                    LemonadeUi.Text(
+                        label,
+                        textStyle: size.contentData.textStyle,
+                        color: variant.variantData.contentColor
                     )
+                    .padding(.horizontal, LemonadeTheme.spaces.spacing200)
+
+                    if let trailingIcon = trailingIcon {
+                        LemonadeUi.Icon(
+                            icon: trailingIcon,
+                            contentDescription: nil,
+                            size: .medium,
+                            tint: variant.variantData.contentColor
+                        )
+                    }
                 }
 
                 Spacer(minLength: 0)
@@ -254,8 +263,8 @@ private struct LemonadeButtonView: View {
             .clipShape(RoundedRectangle(cornerRadius: size.contentData.cornerRadius))
         }
         .buttonStyle(LemonadeButtonStyle(isPressed: $isPressed))
-        .disabled(!enabled)
-        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+        .disabled(!enabled || loading)
+        .opacity((enabled || loading) ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
     }
 }
 
