@@ -11,7 +11,7 @@ import com.teya.lemonade.CheckboxDisplay
 import com.teya.lemonade.ChipDisplay
 import com.teya.lemonade.ColorsDisplay
 import com.teya.lemonade.CountryFlagDisplay
-import com.teya.lemonade.Display
+import com.teya.lemonade.Displays
 import com.teya.lemonade.DividerDisplay
 import com.teya.lemonade.HomeDisplay
 import com.teya.lemonade.IconButtonDisplay
@@ -37,36 +37,38 @@ import com.teya.lemonade.TileDisplay
 @Composable
 internal expect fun App()
 
-internal val screens: Map<Display, @Composable (onNavigate: (Display) -> Unit) -> Unit> = mapOf(
-    Display.Home to { onNavigate -> HomeDisplay(onNavigate = onNavigate) },
-    Display.Colors to { _ -> ColorsDisplay() },
-    Display.Icons to { _ -> IconsDisplay() },
-    Display.CountryFlag to { _ -> CountryFlagDisplay() },
-    Display.BrandLogo to { _ -> BrandLogoDisplay() },
-    Display.Badge to { _ -> BadgeDisplay() },
-    Display.Switch to { _ -> SwitchDisplay() },
-    Display.Checkbox to { _ -> CheckboxDisplay() },
-    Display.RadioButton to { _ -> RadioButtonDisplay() },
-    Display.SelectionListItem to { _ -> SelectionListItemDisplay() },
-    Display.ActionListItem to { _ -> ActionListItemDisplay() },
-    Display.ResourceListItem to { _ -> ResourceListItemDisplay() },
-    Display.Chip to { _ -> ChipDisplay() },
-    Display.SegmentedControl to { _ -> SegmentedControlDisplay() },
-    Display.Text to { _ -> TextDisplay() },
-    Display.SymbolContainer to { _ -> SymbolContainerDisplay() },
-    Display.Tag to { _ -> TagDisplay() },
-    Display.TextField to { _ -> TextFieldDisplay() },
-    Display.SearchField to { _ -> SearchFieldDisplay() },
-    Display.Card to { _ -> CardDisplay() },
-    Display.Button to { _ -> ButtonDisplay() },
-    Display.IconButton to { _ -> IconButtonDisplay() },
-    Display.Shadows to { _ -> ShadowDisplay() },
-    Display.Tile to { _ -> TileDisplay() },
-    Display.Spacing to { _ -> SpacingDisplay() },
-    Display.Radius to { _ -> RadiusDisplay() },
-    Display.Sizes to { _ -> SizesDisplay() },
-    Display.Opacity to { _ -> OpacityDisplay() },
-    Display.BorderWidth to { _ -> BorderWidthDisplay() },
-    Display.Spinner to { _ -> SpinnerDisplay() },
-    Display.Divider to { _ -> DividerDisplay() },
+internal expect val platformScreens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit) -> Unit>
+
+internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit) -> Unit> = platformScreens + mapOf(
+    Displays.Home to { onNavigate -> HomeDisplay(onNavigate = onNavigate) },
+    Displays.Colors to { _ -> ColorsDisplay() },
+    Displays.Icons to { _ -> IconsDisplay() },
+    Displays.CountryFlag to { _ -> CountryFlagDisplay() },
+    Displays.BrandLogo to { _ -> BrandLogoDisplay() },
+    Displays.Badge to { _ -> BadgeDisplay() },
+    Displays.Switch to { _ -> SwitchDisplay() },
+    Displays.Checkbox to { _ -> CheckboxDisplay() },
+    Displays.RadioButton to { _ -> RadioButtonDisplay() },
+    Displays.SelectionListItem to { _ -> SelectionListItemDisplay() },
+    Displays.ActionListItem to { _ -> ActionListItemDisplay() },
+    Displays.ResourceListItem to { _ -> ResourceListItemDisplay() },
+    Displays.Chip to { _ -> ChipDisplay() },
+    Displays.SegmentedControl to { _ -> SegmentedControlDisplay() },
+    Displays.Text to { _ -> TextDisplay() },
+    Displays.SymbolContainer to { _ -> SymbolContainerDisplay() },
+    Displays.Tag to { _ -> TagDisplay() },
+    Displays.TextField to { _ -> TextFieldDisplay() },
+    Displays.SearchField to { _ -> SearchFieldDisplay() },
+    Displays.Card to { _ -> CardDisplay() },
+    Displays.Button to { _ -> ButtonDisplay() },
+    Displays.IconButton to { _ -> IconButtonDisplay() },
+    Displays.Shadows to { _ -> ShadowDisplay() },
+    Displays.Tile to { _ -> TileDisplay() },
+    Displays.Spacing to { _ -> SpacingDisplay() },
+    Displays.Radius to { _ -> RadiusDisplay() },
+    Displays.Sizes to { _ -> SizesDisplay() },
+    Displays.Opacity to { _ -> OpacityDisplay() },
+    Displays.BorderWidth to { _ -> BorderWidthDisplay() },
+    Displays.Spinner to { _ -> SpinnerDisplay() },
+    Displays.Divider to { _ -> DividerDisplay() },
 )

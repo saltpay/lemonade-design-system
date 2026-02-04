@@ -8,7 +8,7 @@ import com.teya.lemonade.core.LemonadeIcons
 
 @Composable
 internal fun HomeDisplay(
-    onNavigate: (Display) -> Unit
+    onNavigate: (Displays) -> Unit
 ) {
     SampleScreenDisplayLazyColumn(
         title = "Lemonade Design System",
@@ -41,81 +41,85 @@ internal fun HomeDisplay(
 }
 
 internal object DisplayRegistry {
-    val homeItems: List<DisplayData> = listOf(
+    val homeItems: List<DisplayData> = listOfNotNull(
         DisplayData(
             title = "Foundations",
             items = listOf(
-                Display.Colors,
-                Display.Spacing,
-                Display.Radius,
-                Display.Shadows,
-                Display.Sizes,
-                Display.Opacity,
-                Display.BorderWidth,
+                Displays.Colors,
+                Displays.Spacing,
+                Displays.Radius,
+                Displays.Shadows,
+                Displays.Sizes,
+                Displays.Opacity,
+                Displays.BorderWidth,
             )
         ),
         DisplayData(
             title = "Assets",
             items = listOf(
-                Display.Icons,
-                Display.CountryFlag,
-                Display.BrandLogo,
+                Displays.Icons,
+                Displays.CountryFlag,
+                Displays.BrandLogo,
             )
         ),
         DisplayData(
             title = "Typography",
             items = listOf(
-                Display.Text,
+                Displays.Text,
             )
         ),
         DisplayData(
             title = "Form Controls",
             items = listOf(
-                Display.Button,
-                Display.IconButton,
-                Display.Checkbox,
-                Display.RadioButton,
-                Display.Switch,
+                Displays.Button,
+                Displays.IconButton,
+                Displays.Checkbox,
+                Displays.RadioButton,
+                Displays.Switch,
             )
         ),
         DisplayData(
             title = "Input Fields",
             items = listOf(
-                Display.TextField,
-                Display.SearchField,
+                Displays.TextField,
+                Displays.SearchField,
             )
         ),
         DisplayData(
             title = "Display Components",
             items = listOf(
-                Display.Tag,
-                Display.Badge,
-                Display.SymbolContainer,
-                Display.Card,
-                Display.Spinner,
-                Display.Divider,
+                Displays.Tag,
+                Displays.Badge,
+                Displays.SymbolContainer,
+                Displays.Card,
+                Displays.Spinner,
+                Displays.Divider,
             )
         ),
         DisplayData(
             title = "Selection & Lists",
             items = listOf(
-                Display.Chip,
-                Display.SelectionListItem,
-                Display.ResourceListItem,
-                Display.SegmentedControl,
-                Display.ActionListItem,
+                Displays.Chip,
+                Displays.SelectionListItem,
+                Displays.ResourceListItem,
+                Displays.SegmentedControl,
+                Displays.ActionListItem,
             )
         ),
         DisplayData(
             title = "Navigation",
             items = listOf(
-                Display.Tile,
+                Displays.Tile,
             )
         ),
+        DisplayData(
+            title = "Platform Specific",
+            items = platformSpecificEntries,
+        ).takeIf { platformSpecificEntries.isNotEmpty() },
     )
 
     data class DisplayData(
         val title: String,
-        val items: List<Display>
+        val items: List<Displays>
     )
 }

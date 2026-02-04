@@ -18,7 +18,7 @@ public class MainActivity : ComponentActivity() {
 
         setContent {
             val backStack = remember {
-                mutableStateListOf(Display.Home)
+                mutableStateListOf<Displays>(Displays.Home)
             }
             NavDisplay(
                 backStack = backStack,

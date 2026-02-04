@@ -1,5 +1,6 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.EaseInOut
@@ -7,6 +8,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -82,9 +84,11 @@ public fun LemonadeUi.SearchField(
 }
 
 @Composable
-private fun CoreSearchField(
+internal fun CoreSearchField(
     input: String,
     onInputChanged: (String) -> Unit,
+    leadingIcon: LemonadeIcons = LemonadeIcons.Search,
+    onLeadingIconClicked: (() -> Unit)? = null,
     placeholder: String? = null,
     onInputClear: () -> Unit = { onInputChanged("") },
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -117,6 +121,8 @@ private fun CoreSearchField(
                 input = input,
                 enabled = enabled,
                 onInputClear = onInputClear,
+                leadingIcon = leadingIcon,
+                onLeadingIconClicked = onLeadingIconClicked,
             )
         }
     )
@@ -128,6 +134,8 @@ private fun CoreSearchFieldDecorationBox(
     placeholder: String?,
     enabled: Boolean,
     onInputClear: () -> Unit,
+    leadingIcon: LemonadeIcons,
+    onLeadingIconClicked: (() -> Unit)?,
     interactionSource: MutableInteractionSource,
     innerTextField: @Composable () -> Unit,
     modifier: Modifier = Modifier,
@@ -185,11 +193,35 @@ private fun CoreSearchFieldDecorationBox(
             )
             .padding(horizontal = LocalSpaces.current.spacing300),
     ) {
-        LemonadeUi.Icon(
-            icon = LemonadeIcons.Search,
-            tint = LocalColors.current.content.contentPrimary,
-            contentDescription = null,
-        )
+        AnimatedContent(
+            targetState = leadingIcon,
+            transitionSpec = {
+                fadeIn(
+                    animationSpec = tween(150),
+                ) togetherWith fadeOut(
+                    animationSpec = tween(150),
+                )
+            },
+        ) { icon ->
+            LemonadeUi.Icon(
+                icon = icon,
+                tint = LocalColors.current.content.contentPrimary,
+                contentDescription = null,
+                modifier = Modifier
+                    .then(
+                        other = if (onLeadingIconClicked != null) {
+                            Modifier.clickable(
+                                onClick = onLeadingIconClicked,
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                            )
+                        } else {
+                            Modifier
+                        },
+                    )
+            )
+        }
+
 
         Box(modifier = Modifier.weight(weight = 1f)) {
             innerTextField()
@@ -205,7 +237,7 @@ private fun CoreSearchFieldDecorationBox(
 
         val clearButtonAnimationSpec = tween<Float>(
             durationMillis = 150,
-            easing = EaseInOut
+            easing = EaseInOut,
         )
         AnimatedVisibility(
             visible = input.isNotEmpty() && enabled,
