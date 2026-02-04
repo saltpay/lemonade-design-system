@@ -444,8 +444,9 @@ internal fun BoxScope.DefaultTextFieldWithSelector(
                     enabled = enabled,
                     interactionSource = interactionSource,
                     onClick = leadingAction,
-                    indication = null,
-                ).defaultMinSize(
+                    indication = LocalEffects.current.interactionIndication,
+                )
+                .defaultMinSize(
                     minHeight = size.data.minHeight
                         ?: Dp.Unspecified,
                 ),

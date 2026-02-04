@@ -106,7 +106,7 @@ private fun CoreIconButton(
                 onClick = onClick,
                 role = Role.Button,
                 interactionSource = interactionSource,
-                indication = null,
+                indication = LocalEffects.current.interactionIndication,
                 enabled = enabled,
             ).background(
                 color = animatedBackgroundColor,
