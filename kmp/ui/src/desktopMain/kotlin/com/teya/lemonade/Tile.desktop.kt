@@ -135,24 +135,22 @@ private fun CoreTile(
                 }
             )
             .then(
-                other = variant.data.shadow
-                    ?.let { lemonadeShadow ->
-                        Modifier.lemonadeShadow(
-                            shadow = lemonadeShadow,
-                            shape = tileShape,
-                        )
-                    }
+                other = variant.data.shadow?.let { lemonadeShadow ->
+                    Modifier.lemonadeShadow(
+                        shadow = lemonadeShadow,
+                        shape = tileShape,
+                    )
+                }
                     ?: Modifier,
             )
             .then(
-                other = variant.data.borderColor
-                    ?.let { borderColor ->
-                        Modifier.border(
-                            color = borderColor,
-                            shape = tileShape,
-                            width = LocalBorderWidths.current.base.border25,
-                        )
-                    }
+                other = variant.data.borderColor?.let { borderColor ->
+                    Modifier.border(
+                        color = borderColor,
+                        shape = tileShape,
+                        width = LocalBorderWidths.current.base.border25,
+                    )
+                }
                     ?: Modifier,
             )
             .clip(shape = tileShape)

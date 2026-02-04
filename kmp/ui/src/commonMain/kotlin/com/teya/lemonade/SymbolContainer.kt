@@ -172,25 +172,29 @@ private val LocalSymbolContainerPlatformDimensions =
 
 
 private val SymbolContainerVoice.tintColor: Color
-    @Composable get() = when (this) {
-        SymbolContainerVoice.Neutral -> LocalColors.current.content.contentPrimary
-        SymbolContainerVoice.Critical -> LocalColors.current.content.contentCritical
-        SymbolContainerVoice.Warning -> LocalColors.current.content.contentCaution
-        SymbolContainerVoice.Info -> LocalColors.current.content.contentInfo
-        SymbolContainerVoice.Positive -> LocalColors.current.content.contentPositive
-        SymbolContainerVoice.Brand -> LocalColors.current.content.contentOnBrandHigh
-        SymbolContainerVoice.BrandSubtle -> LocalColors.current.content.contentOnBrandHigh
+    @Composable get() {
+        return when (this) {
+            SymbolContainerVoice.Neutral -> LocalColors.current.content.contentPrimary
+            SymbolContainerVoice.Critical -> LocalColors.current.content.contentCritical
+            SymbolContainerVoice.Warning -> LocalColors.current.content.contentCaution
+            SymbolContainerVoice.Info -> LocalColors.current.content.contentInfo
+            SymbolContainerVoice.Positive -> LocalColors.current.content.contentPositive
+            SymbolContainerVoice.Brand -> LocalColors.current.content.contentOnBrandHigh
+            SymbolContainerVoice.BrandSubtle -> LocalColors.current.content.contentOnBrandHigh
+        }
     }
 
 private val SymbolContainerVoice.containerColor: Color
-    @Composable get() = when (this) {
-        SymbolContainerVoice.Neutral -> LocalColors.current.background.bgNeutralSubtle
-        SymbolContainerVoice.Critical -> LocalColors.current.background.bgCriticalSubtle
-        SymbolContainerVoice.Warning -> LocalColors.current.background.bgCautionSubtle
-        SymbolContainerVoice.Info -> LocalColors.current.background.bgInfoSubtle
-        SymbolContainerVoice.Positive -> LocalColors.current.background.bgPositiveSubtle
-        SymbolContainerVoice.Brand -> LocalColors.current.background.bgBrand
-        SymbolContainerVoice.BrandSubtle -> LocalColors.current.background.bgBrandSubtle
+    @Composable get() {
+        return when (this) {
+            SymbolContainerVoice.Neutral -> LocalColors.current.background.bgNeutralSubtle
+            SymbolContainerVoice.Critical -> LocalColors.current.background.bgCriticalSubtle
+            SymbolContainerVoice.Warning -> LocalColors.current.background.bgCautionSubtle
+            SymbolContainerVoice.Info -> LocalColors.current.background.bgInfoSubtle
+            SymbolContainerVoice.Positive -> LocalColors.current.background.bgPositiveSubtle
+            SymbolContainerVoice.Brand -> LocalColors.current.background.bgBrand
+            SymbolContainerVoice.BrandSubtle -> LocalColors.current.background.bgBrandSubtle
+        }
     }
 
 private data class SymbolContainerPlatformDimensions(

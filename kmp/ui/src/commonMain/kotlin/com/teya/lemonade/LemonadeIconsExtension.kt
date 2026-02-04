@@ -7,7 +7,8 @@ import org.jetbrains.compose.resources.DrawableResource
  * Auto-generated extension for LemonadeIcons enum providing drawable resources.
  */
 public val LemonadeIcons.drawableResource: DrawableResource
-    get() = when (this) {
+    get() {
+        return when (this) {
         LemonadeIcons.Airplane -> LemonadeRes.drawable.gen_airplane
         LemonadeIcons.ArrowCornerDownLeft -> LemonadeRes.drawable.gen_arrow_corner_down_left
         LemonadeIcons.ArrowCornerDownLeftSlash -> LemonadeRes.drawable.gen_arrow_corner_down_left_slash
@@ -219,4 +220,5 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.UserSuccess -> LemonadeRes.drawable.gen_user_success
         LemonadeIcons.Users -> LemonadeRes.drawable.gen_users
         LemonadeIcons.Wifi -> LemonadeRes.drawable.gen_wifi
+        }
     }

@@ -40,42 +40,58 @@ public object LemonadeTheme {
     public val colors: LemonadeSemanticColors
         @ReadOnlyComposable
         @Composable
-        get() = LocalColors.current
+        get() {
+            return LocalColors.current
+        }
 
     public val typography: LemonadeTypography
         @Composable
         @ReadOnlyComposable
-        get() = LocalTypographies.current
+        get() {
+            return LocalTypographies.current
+        }
 
     public val radius: LemonadeRadiusValues
         @Composable
         @ReadOnlyComposable
-        get() = LocalRadius.current
+        get() {
+            return LocalRadius.current
+        }
 
     public val shapes: LemonadeShapes
         @Composable
         @ReadOnlyComposable
-        get() = LocalShapes.current
+        get() {
+            return LocalShapes.current
+        }
 
     public val opacities: LemonadeOpacity
         @Composable
         @ReadOnlyComposable
-        get() = LocalOpacities.current
+        get() {
+            return LocalOpacities.current
+        }
 
     public val spaces: LemonadeSpaceValues
         @Composable
         @ReadOnlyComposable
-        get() = LocalSpaces.current
+        get() {
+            return LocalSpaces.current
+        }
 
     public val borderWidths: LemonadeBorderWidth
         @Composable
         @ReadOnlyComposable
-        get() = LocalBorderWidths.current
+        get() {
+            return LocalBorderWidths.current
+        }
 
     public val sizes: LemonadeSizeValues
         @Composable
         @ReadOnlyComposable
-        get() = LocalSizes.current
+        get() {
+            return LocalSizes.current
+        }
 }
 
 internal val LocalColors: ProvidableCompositionLocal<LemonadeSemanticColors> =

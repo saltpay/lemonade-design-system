@@ -49,22 +49,40 @@ private interface ScrollStateAdapter {
 private class ListStateAdapter(
     private val state: LazyListState
 ) : ScrollStateAdapter {
-    override val firstVisibleItemIndex get() = state.firstVisibleItemIndex
-    override val firstVisibleItemScrollOffset get() = state.firstVisibleItemScrollOffset
+    override val firstVisibleItemIndex: Int
+        get() {
+            return state.firstVisibleItemIndex
+        }
+    override val firstVisibleItemScrollOffset: Int
+        get() {
+            return state.firstVisibleItemScrollOffset
+        }
 }
 
 private class GridStateAdapter(
     private val state: LazyGridState
 ) : ScrollStateAdapter {
-    override val firstVisibleItemIndex get() = state.firstVisibleItemIndex
-    override val firstVisibleItemScrollOffset get() = state.firstVisibleItemScrollOffset
+    override val firstVisibleItemIndex: Int
+        get() {
+            return state.firstVisibleItemIndex
+        }
+    override val firstVisibleItemScrollOffset: Int
+        get() {
+            return state.firstVisibleItemScrollOffset
+        }
 }
 
 private class ColumnStateAdapter(
     private val state: ScrollState
 ) : ScrollStateAdapter {
-    override val firstVisibleItemIndex: Int get() = 0
-    override val firstVisibleItemScrollOffset: Int get() = state.value
+    override val firstVisibleItemIndex: Int
+        get() {
+            return 0
+        }
+    override val firstVisibleItemScrollOffset: Int
+        get() {
+            return state.value
+        }
 }
 
 @Composable

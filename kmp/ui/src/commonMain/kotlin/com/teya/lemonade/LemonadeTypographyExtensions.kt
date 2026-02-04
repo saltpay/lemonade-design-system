@@ -20,30 +20,36 @@ import org.jetbrains.compose.resources.Font
  * See [Figtree font](https://fonts.google.com/specimen/Figtree)
  */
 public val lemonadeFontFamily: FontFamily
-    @Composable get() = FontFamily(
-        Font(LemonadeRes.font.Figtree_Regular, FontWeight.Normal),
-        Font(LemonadeRes.font.Figtree_Medium, FontWeight.Medium),
-        Font(LemonadeRes.font.Figtree_SemiBold, FontWeight.SemiBold)
-    )
+    @Composable get() {
+        return FontFamily(
+            Font(LemonadeRes.font.Figtree_Regular, FontWeight.Normal),
+            Font(LemonadeRes.font.Figtree_Medium, FontWeight.Medium),
+            Font(LemonadeRes.font.Figtree_SemiBold, FontWeight.SemiBold)
+        )
+    }
 
 /**
  * Converts a [LemonadeTextStyle] to a Compose [TextStyle].
  */
 public val LemonadeTextStyle.textStyle: TextStyle
-    @Composable get() = TextStyle(
-        fontFamily = lemonadeFontFamily,
-        fontWeight = when (fontWeight) {
-            400 -> FontWeight.Normal
-            500 -> FontWeight.Medium
-            600 -> FontWeight.SemiBold
-            700 -> FontWeight.Bold
-            else -> FontWeight.Normal
-        },
-        fontSize = fontSize.sp,
-        lineHeight = lineHeight.sp,
-        letterSpacing = letterSpacing?.sp ?: 0.sp,
-        fontFeatureSettings = "psum"
-    )
+    @Composable get() {
+        val spacing = letterSpacing
+            ?: 0f
+        return TextStyle(
+            fontFamily = lemonadeFontFamily,
+            fontWeight = when (fontWeight) {
+                400 -> FontWeight.Normal
+                500 -> FontWeight.Medium
+                600 -> FontWeight.SemiBold
+                700 -> FontWeight.Bold
+                else -> FontWeight.Normal
+            },
+            fontSize = fontSize.sp,
+            lineHeight = lineHeight.sp,
+            letterSpacing = spacing.sp,
+            fontFeatureSettings = "psum"
+        )
+    }
 
 /**
  * Default implementation of [LemonadeTypography] following the Lemonade Design System specifications.

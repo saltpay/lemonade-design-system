@@ -118,17 +118,21 @@ private fun CardHeader(
 }
 
 private val LemonadeCardPadding.spacing: Dp
-    @Composable get() = when (this) {
-        LemonadeCardPadding.None -> LocalSpaces.current.spacing0
-        LemonadeCardPadding.XSmall -> LocalSpaces.current.spacing100
-        LemonadeCardPadding.Small -> LocalSpaces.current.spacing200
-        LemonadeCardPadding.Medium -> LocalSpaces.current.spacing400
+    @Composable get() {
+        return when (this) {
+            LemonadeCardPadding.None -> LocalSpaces.current.spacing0
+            LemonadeCardPadding.XSmall -> LocalSpaces.current.spacing100
+            LemonadeCardPadding.Small -> LocalSpaces.current.spacing200
+            LemonadeCardPadding.Medium -> LocalSpaces.current.spacing400
+        }
     }
 
 private val LemonadeCardBackground.background: Color
-    @Composable get() = when (this) {
-        LemonadeCardBackground.Default -> LocalColors.current.background.bgDefault
-        LemonadeCardBackground.Subtle -> LocalColors.current.background.bgSubtle
+    @Composable get() {
+        return when (this) {
+            LemonadeCardBackground.Default -> LocalColors.current.background.bgDefault
+            LemonadeCardBackground.Subtle -> LocalColors.current.background.bgSubtle
+        }
     }
 
 private data class CardPreviewData(

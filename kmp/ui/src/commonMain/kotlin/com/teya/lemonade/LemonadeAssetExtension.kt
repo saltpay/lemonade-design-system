@@ -7,8 +7,10 @@ import com.teya.lemonade.core.LemonadeIcons
 import org.jetbrains.compose.resources.DrawableResource
 
 public val LemonadeAsset.drawableResource: DrawableResource
-    get() = when(this){
-        is LemonadeIcons -> this.drawableResource
-        is LemonadeBrandLogos -> this.drawableResource
-        is LemonadeCountryFlags -> this.drawableResource
+    get() {
+        return when (this) {
+            is LemonadeIcons -> this.drawableResource
+            is LemonadeBrandLogos -> this.drawableResource
+            is LemonadeCountryFlags -> this.drawableResource
+        }
     }

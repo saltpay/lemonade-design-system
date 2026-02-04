@@ -366,8 +366,9 @@ private fun CoreTextFieldDecorator(
             content = textBoxContent,
             modifier = Modifier
                 .then(
-                    other = size.data.minHeight
-                        ?.let { minHeight -> Modifier.requiredHeight(height = minHeight) }
+                    other = size.data.minHeight?.let { minHeight ->
+                        Modifier.requiredHeight(height = minHeight)
+                    }
                         ?: Modifier,
                 )
                 .shadowBorder(
@@ -448,7 +449,8 @@ internal fun BoxScope.DefaultTextFieldWithSelector(
                     indication = null,
                 )
                 .defaultMinSize(
-                    minHeight = size.data.minHeight ?: Dp.Unspecified,
+                    minHeight = size.data.minHeight
+                        ?: Dp.Unspecified,
                 ),
         )
 
@@ -457,7 +459,8 @@ internal fun BoxScope.DefaultTextFieldWithSelector(
                 .background(color = LocalColors.current.border.borderNeutralMedium)
                 .width(width = LocalBorderWidths.current.base.border25)
                 .defaultMinSize(
-                    minHeight = size.data.minHeight ?: Dp.Unspecified,
+                    minHeight = size.data.minHeight
+                        ?: Dp.Unspecified,
                 ),
         )
 
@@ -541,43 +544,45 @@ internal fun BoxScope.DefaultTextBox(
  * This is only used for desktop environment. On mobile, it defaults to the null variant.
  */
 private val TextFieldSize?.data: TextFieldData
-    @Composable get() = when (this) {
-        TextFieldSize.Small -> TextFieldData(
-            containerShape = LocalShapes.current.radius200,
-            horizontalPadding = LocalSpaces.current.spacing200,
-            verticalPadding = LocalSpaces.current.spacing100,
-            itemsSpacing = LocalSpaces.current.spacing200,
-            contentStyle = LocalTypographies.current.bodySmallRegular,
-            minHeight = null,
-        )
+    @Composable get() {
+        return when (this) {
+            TextFieldSize.Small -> TextFieldData(
+                containerShape = LocalShapes.current.radius200,
+                horizontalPadding = LocalSpaces.current.spacing200,
+                verticalPadding = LocalSpaces.current.spacing100,
+                itemsSpacing = LocalSpaces.current.spacing200,
+                contentStyle = LocalTypographies.current.bodySmallRegular,
+                minHeight = null,
+            )
 
-        TextFieldSize.Medium -> TextFieldData(
-            containerShape = LocalShapes.current.radius200,
-            horizontalPadding = LocalSpaces.current.spacing300,
-            verticalPadding = LocalSpaces.current.spacing200,
-            itemsSpacing = LocalSpaces.current.spacing300,
-            contentStyle = LocalTypographies.current.bodySmallRegular,
-            minHeight = null,
-        )
+            TextFieldSize.Medium -> TextFieldData(
+                containerShape = LocalShapes.current.radius200,
+                horizontalPadding = LocalSpaces.current.spacing300,
+                verticalPadding = LocalSpaces.current.spacing200,
+                itemsSpacing = LocalSpaces.current.spacing300,
+                contentStyle = LocalTypographies.current.bodySmallRegular,
+                minHeight = null,
+            )
 
-        TextFieldSize.Large -> TextFieldData(
-            containerShape = LocalShapes.current.radius300,
-            horizontalPadding = LocalSpaces.current.spacing300,
-            verticalPadding = LocalSpaces.current.spacing300,
-            itemsSpacing = LocalSpaces.current.spacing300,
-            contentStyle = LocalTypographies.current.bodyMediumRegular,
-            minHeight = null,
-        )
-
-        null -> {
-            TextFieldData(
+            TextFieldSize.Large -> TextFieldData(
                 containerShape = LocalShapes.current.radius300,
                 horizontalPadding = LocalSpaces.current.spacing300,
                 verticalPadding = LocalSpaces.current.spacing300,
                 itemsSpacing = LocalSpaces.current.spacing300,
                 contentStyle = LocalTypographies.current.bodyMediumRegular,
-                minHeight = LocalSizes.current.size1400,
+                minHeight = null,
             )
+
+            null -> {
+                TextFieldData(
+                    containerShape = LocalShapes.current.radius300,
+                    horizontalPadding = LocalSpaces.current.spacing300,
+                    verticalPadding = LocalSpaces.current.spacing300,
+                    itemsSpacing = LocalSpaces.current.spacing300,
+                    contentStyle = LocalTypographies.current.bodyMediumRegular,
+                    minHeight = LocalSizes.current.size1400,
+                )
+            }
         }
     }
 
