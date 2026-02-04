@@ -119,11 +119,7 @@ void main() {
       );
 
       // Find and tap right chevron
-      final rightChevron = find.byWidgetPredicate(
-        (widget) =>
-            widget is LemonadeIcon && widget.icon == LemonadeIcons.chevronRight,
-      );
-      await tester.tap(rightChevron);
+      await tester.tap(find.bySemanticsIdentifier('next_month'));
       await tester.pumpAndSettle();
 
       expect(find.text(expectedHeader), findsOneWidget);
@@ -148,12 +144,7 @@ void main() {
         ),
       );
 
-      // Find and tap left chevron
-      final leftChevron = find.byWidgetPredicate(
-        (widget) =>
-            widget is LemonadeIcon && widget.icon == LemonadeIcons.chevronLeft,
-      );
-      await tester.tap(leftChevron);
+      await tester.tap(find.bySemanticsIdentifier('previous_month'));
       await tester.pumpAndSettle();
 
       expect(find.text(expectedHeader), findsOneWidget);
@@ -305,12 +296,7 @@ void main() {
           expect(find.text(headerBefore), findsOneWidget);
 
           // Try to navigate to next month
-          final rightChevron = find.byWidgetPredicate(
-            (widget) =>
-                widget is LemonadeIcon &&
-                widget.icon == LemonadeIcons.chevronRight,
-          );
-          await tester.tap(rightChevron);
+          await tester.tap(find.bySemanticsIdentifier('next_month'));
           await tester.pumpAndSettle();
 
           // Header should remain unchanged (navigation disabled)
@@ -368,19 +354,11 @@ void main() {
       );
 
       expect(
-        find.byWidgetPredicate(
-          (widget) =>
-              widget is LemonadeIcon &&
-              widget.icon == LemonadeIcons.chevronLeft,
-        ),
+        find.bySemanticsIdentifier('previous_month'),
         findsOneWidget,
       );
       expect(
-        find.byWidgetPredicate(
-          (widget) =>
-              widget is LemonadeIcon &&
-              widget.icon == LemonadeIcons.chevronRight,
-        ),
+        find.bySemanticsIdentifier('next_month'),
         findsOneWidget,
       );
     });
