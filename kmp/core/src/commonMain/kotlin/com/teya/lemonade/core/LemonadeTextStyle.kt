@@ -19,47 +19,49 @@ public data class LemonadeTextStyle(
 )
 
 /**
- * Interface defining all available text styles in the Lemonade Design System.
+ * Enum defining all available text styles in the Lemonade Design System.
+ * Each case carries its default [LemonadeTextStyle]. Exported via SKIE as a
+ * `@frozen` Swift enum for easy iOS mapping.
  */
-public abstract class LemonadeTypography {
+public enum class LemonadeTypography(public val style: LemonadeTextStyle) {
     // Display styles
-    public abstract val displayXSmall: LemonadeTextStyle
-    public abstract val displaySmall: LemonadeTextStyle
-    public abstract val displayMedium: LemonadeTextStyle
-    public abstract val displayLarge: LemonadeTextStyle
+    DisplayXSmall(LemonadeTextStyle(fontSize = 24f, lineHeight = 32f, fontWeight = 600)),
+    DisplaySmall(LemonadeTextStyle(fontSize = 28f, lineHeight = 36f, fontWeight = 600)),
+    DisplayMedium(LemonadeTextStyle(fontSize = 36f, lineHeight = 44f, fontWeight = 600)),
+    DisplayLarge(LemonadeTextStyle(fontSize = 48f, lineHeight = 56f, fontWeight = 600)),
 
     // Heading styles
-    public abstract val headingXLarge: LemonadeTextStyle
-    public abstract val headingLarge: LemonadeTextStyle
-    public abstract val headingMedium: LemonadeTextStyle
-    public abstract val headingSmall: LemonadeTextStyle
-    public abstract val headingXSmall: LemonadeTextStyle
-    public abstract val headingXXSmall: LemonadeTextStyle
+    HeadingXLarge(LemonadeTextStyle(fontSize = 40f, lineHeight = 48f, fontWeight = 600)),
+    HeadingLarge(LemonadeTextStyle(fontSize = 32f, lineHeight = 40f, fontWeight = 600)),
+    HeadingMedium(LemonadeTextStyle(fontSize = 28f, lineHeight = 36f, fontWeight = 600)),
+    HeadingSmall(LemonadeTextStyle(fontSize = 24f, lineHeight = 32f, fontWeight = 600)),
+    HeadingXSmall(LemonadeTextStyle(fontSize = 18f, lineHeight = 26f, fontWeight = 600)),
+    HeadingXXSmall(LemonadeTextStyle(fontSize = 16f, lineHeight = 24f, fontWeight = 600)),
 
     // Body XLarge styles
-    public abstract val bodyXLargeRegular: LemonadeTextStyle
-    public abstract val bodyXLargeMedium: LemonadeTextStyle
-    public abstract val bodyXLargeSemiBold: LemonadeTextStyle
+    BodyXLargeRegular(LemonadeTextStyle(fontSize = 20f, lineHeight = 28f, fontWeight = 400)),
+    BodyXLargeMedium(LemonadeTextStyle(fontSize = 20f, lineHeight = 28f, fontWeight = 500)),
+    BodyXLargeSemiBold(LemonadeTextStyle(fontSize = 20f, lineHeight = 28f, fontWeight = 600)),
 
     // Body Large styles
-    public abstract val bodyLargeRegular: LemonadeTextStyle
-    public abstract val bodyLargeMedium: LemonadeTextStyle
-    public abstract val bodyLargeSemiBold: LemonadeTextStyle
+    BodyLargeRegular(LemonadeTextStyle(fontSize = 18f, lineHeight = 28f, fontWeight = 400)),
+    BodyLargeMedium(LemonadeTextStyle(fontSize = 18f, lineHeight = 28f, fontWeight = 500)),
+    BodyLargeSemiBold(LemonadeTextStyle(fontSize = 18f, lineHeight = 28f, fontWeight = 600)),
 
     // Body Medium styles
-    public abstract val bodyMediumRegular: LemonadeTextStyle
-    public abstract val bodyMediumMedium: LemonadeTextStyle
-    public abstract val bodyMediumSemiBold: LemonadeTextStyle
-    public abstract val bodyMediumBold: LemonadeTextStyle
+    BodyMediumRegular(LemonadeTextStyle(fontSize = 16f, lineHeight = 24f, fontWeight = 400)),
+    BodyMediumMedium(LemonadeTextStyle(fontSize = 16f, lineHeight = 24f, fontWeight = 500)),
+    BodyMediumSemiBold(LemonadeTextStyle(fontSize = 16f, lineHeight = 24f, fontWeight = 600)),
+    BodyMediumBold(LemonadeTextStyle(fontSize = 16f, lineHeight = 24f, fontWeight = 700)),
 
     // Body Small styles
-    public abstract val bodySmallRegular: LemonadeTextStyle
-    public abstract val bodySmallMedium: LemonadeTextStyle
-    public abstract val bodySmallSemiBold: LemonadeTextStyle
+    BodySmallRegular(LemonadeTextStyle(fontSize = 14f, lineHeight = 20f, fontWeight = 400)),
+    BodySmallMedium(LemonadeTextStyle(fontSize = 14f, lineHeight = 20f, fontWeight = 500)),
+    BodySmallSemiBold(LemonadeTextStyle(fontSize = 14f, lineHeight = 20f, fontWeight = 600)),
 
     // Body XSmall styles
-    public abstract val bodyXSmallRegular: LemonadeTextStyle
-    public abstract val bodyXSmallMedium: LemonadeTextStyle
-    public abstract val bodyXSmallSemiBold: LemonadeTextStyle
-    public abstract val bodyXSmallOverline: LemonadeTextStyle
+    BodyXSmallRegular(LemonadeTextStyle(fontSize = 12f, lineHeight = 16f, fontWeight = 400)),
+    BodyXSmallMedium(LemonadeTextStyle(fontSize = 12f, lineHeight = 16f, fontWeight = 500)),
+    BodyXSmallSemiBold(LemonadeTextStyle(fontSize = 12f, lineHeight = 16f, fontWeight = 600)),
+    BodyXSmallOverline(LemonadeTextStyle(fontSize = 12f, lineHeight = 16f, fontWeight = 600, letterSpacing = 1.5f)),
 }
