@@ -243,7 +243,7 @@ internal fun CoreChip(
                     enabled = onChipClicked != null && enabled,
                     onClick = { onChipClicked?.invoke() },
                     interactionSource = interactionSource,
-                    indication = null,
+                    indication = LocalEffects.current.interactionIndication,
                 )
                 .border(
                     color = animatedBorderColor,
@@ -313,7 +313,7 @@ internal fun CoreChip(
                                     onClick = onTrailingIconClick,
                                     role = Role.Button,
                                     interactionSource = interactionSource,
-                                    indication = null,
+                                    indication = LocalEffects.current.interactionIndication,
                                 )
                             } else {
                                 Modifier
