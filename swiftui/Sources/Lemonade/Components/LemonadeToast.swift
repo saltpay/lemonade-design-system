@@ -96,6 +96,14 @@ private struct LemonadeToastView: View {
         }
     }
 
+    private var voiceAccessibilityText: String {
+        switch voice {
+        case .success: return "Success"
+        case .error: return "Error"
+        case .neutral: return "Notice"
+        }
+    }
+
     var body: some View {
         HStack(spacing: LemonadeTheme.spaces.spacing300) {
             LemonadeUi.Icon(
@@ -123,7 +131,7 @@ private struct LemonadeToastView: View {
         .clipShape(RoundedRectangle(cornerRadius: .radius.radiusFull))
         .lemonadeShadow(.large)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(label)
+        .accessibilityLabel("\(voiceAccessibilityText): \(label)")
     }
 }
 
