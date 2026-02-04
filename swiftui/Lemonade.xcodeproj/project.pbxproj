@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -174,7 +174,7 @@
 		A0FEF54CB4A25D2FD3E87F9E /* TileDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileDisplayView.swift; sourceTree = "<group>"; };
 		A123D1086D640EF9115AA9CA /* SwitchDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchDisplayView.swift; sourceTree = "<group>"; };
 		A713F34FA979D72691318D0A /* LemonadeSemanticColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeSemanticColors.swift; sourceTree = "<group>"; };
-		AB330F9076927BFAE5AD597C /* LemonadeSampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LemonadeSampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB330F9076927BFAE5AD597C /* LemonadeSampleApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LemonadeSampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B78C8CB708AD129000C9E182 /* RadioButtonDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtonDisplayView.swift; sourceTree = "<group>"; };
 		BC1929CB832015A1E26B6E56 /* ToastDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastDisplayView.swift; sourceTree = "<group>"; };
 		C5DB101C9FE700156B3D7699 /* LemonadeSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeSizes.swift; sourceTree = "<group>"; };
@@ -420,6 +420,7 @@
 			);
 			mainGroup = C663508EAA12A059CA48B9C8;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -612,7 +613,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8GLG8K6ZRD;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_GENERATION_MODE = GeneratedFile;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -719,7 +719,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8GLG8K6ZRD;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_GENERATION_MODE = GeneratedFile;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
