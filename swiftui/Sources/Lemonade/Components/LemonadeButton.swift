@@ -264,7 +264,7 @@ private struct LemonadeButtonView: View {
         }
         .buttonStyle(LemonadeButtonStyle(isPressed: $isPressed))
         .disabled(!enabled || loading)
-        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+        .opacity((enabled || loading) ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
     }
 }
 
