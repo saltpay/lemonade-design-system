@@ -19,6 +19,7 @@ internal interface Displays {
             Checkbox,
             RadioButton,
             SelectionListItem,
+            ActionListItem,
             ResourceListItem,
             Chip,
             SegmentedControl,
@@ -38,6 +39,7 @@ internal interface Displays {
             Opacity,
             BorderWidth,
             Spinner,
+            Divider,
         )
     }
 
@@ -89,6 +91,11 @@ internal interface Displays {
     @Serializable
     data object SelectionListItem : Displays {
         override val label: String = "SelectionListItem"
+    }
+
+    @Serializable
+    data object ActionListItem : Displays {
+        override val label: String = "ActionListItem"
     }
 
     @Serializable
@@ -184,5 +191,10 @@ internal interface Displays {
     @Serializable
     data object Spinner : Displays {
         override val label: String = "Spinner"
+    }
+
+    @Serializable
+    data object Divider : Displays {
+        override val label: String = "Divider"
     }
 }

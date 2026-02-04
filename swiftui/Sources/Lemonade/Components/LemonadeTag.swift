@@ -86,7 +86,7 @@ private struct LemonadeTagView: View {
 
             LemonadeUi.Text(
                 label,
-                textStyle: LemonadeTypography().bodyXSmallSemiBold,
+                textStyle: LemonadeTypography.shared.bodyXSmallSemiBold,
                 color: voice.tintColor,
                 overflow: .tail,
                 maxLines: 1

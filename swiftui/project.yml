@@ -40,6 +40,8 @@ targets:
   LemonadeSampleApp:
     type: application
     platform: iOS
+    deploymentTarget:
+      iOS: "16.0"
     sources:
       - path: SampleApp
         type: group
@@ -47,6 +49,7 @@ targets:
       - target: Lemonade
     settings:
       base:
+        IPHONEOS_DEPLOYMENT_TARGET: "16.0"
         PRODUCT_BUNDLE_IDENTIFIER: com.teya.lemonade.sampleapp
         INFOPLIST_GENERATION_MODE: GeneratedFile
         PRODUCT_NAME: LemonadeSampleApp

@@ -57,18 +57,17 @@ struct TextFieldDisplayView: View {
                     LemonadeUi.TextField(
                         input: $leadingText,
                         label: "Search",
-                        placeholderText: "Search...",
-                        leadingContent: {
-                            AnyView(
-                                LemonadeUi.Icon(
-                                    icon: .search,
-                                    contentDescription: nil,
-                                    size: .medium,
-                                    tint: LemonadeTheme.colors.content.contentSecondary
-                                )
-                            )
-                        }
-                    )
+                        placeholderText: "Search..."
+                    ) {
+                        LemonadeUi.Icon(
+                            icon: .search,
+                            contentDescription: nil,
+                            size: .medium,
+                            tint: .content.contentSecondary
+                        )
+                    } trailingContent: {
+                        EmptyView()
+                    }
                 }
 
                 // With Trailing Content
@@ -76,18 +75,17 @@ struct TextFieldDisplayView: View {
                     LemonadeUi.TextField(
                         input: $trailingText,
                         label: "Amount",
-                        placeholderText: "0.00",
-                        trailingContent: {
-                            AnyView(
-                                LemonadeUi.Icon(
-                                    icon: .circleInfo,
-                                    contentDescription: nil,
-                                    size: .medium,
-                                    tint: LemonadeTheme.colors.content.contentSecondary
-                                )
-                            )
-                        }
-                    )
+                        placeholderText: "0.00"
+                    ) {
+                        EmptyView()
+                    } trailingContent: {
+                        LemonadeUi.Icon(
+                            icon: .circleInfo,
+                            contentDescription: nil,
+                            size: .medium,
+                            tint: .content.contentSecondary
+                        )
+                    }
                 }
 
                 // With Selector
@@ -101,7 +99,7 @@ struct TextFieldDisplayView: View {
                             HStack(spacing: LemonadeTheme.spaces.spacing100) {
                                 LemonadeUi.Text(
                                     selectedPrefix,
-                                    textStyle: LemonadeTypography().bodyMediumMedium
+                                    textStyle: LemonadeTypography.shared.bodyMediumMedium
                                 )
                                 LemonadeUi.Icon(
                                     icon: .chevronDown,
@@ -134,7 +132,7 @@ struct TextFieldDisplayView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.content.contentSecondary)
 
             content()
         }
@@ -142,7 +140,7 @@ struct TextFieldDisplayView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         TextFieldDisplayView()
     }
 }

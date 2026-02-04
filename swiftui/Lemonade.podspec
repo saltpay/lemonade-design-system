@@ -7,7 +7,7 @@ Pod::Spec.new do |spec|
     colors, typography, and spacing for iOS applications built with SwiftUI.
   DESC
 
-  spec.homepage     = "https://github.com/teya-com/teya-lemonade-ds"
+  spec.homepage     = "https://github.com/teya-com/lemonade-design-system"
   spec.license      = { :type => "MIT", :file => "LICENSE" }
   spec.author       = { "Teya" => "engineering@teya.com" }
 
@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
 
   # Binary distribution via JFrog (using Maven repository structure)
   spec.source = {
-    :http => "https://saltpay.jfrog.io/artifactory/main-maven-local/com/teya/teya-lemonade-ds/lemonade-swiftui/#{spec.version}/Lemonade.xcframework.zip",
+    :http => "https://saltpay.jfrog.io/artifactory/main-maven-local/com/teya/lemonade-design-system/lemonade-swiftui/#{spec.version}/Lemonade.xcframework.zip",
     :type => "zip"
   }
 

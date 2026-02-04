@@ -1,6 +1,7 @@
 package com.teya.lemonade.app
 
 import androidx.compose.runtime.Composable
+import com.teya.lemonade.ActionListItemDisplay
 import com.teya.lemonade.BadgeDisplay
 import com.teya.lemonade.BorderWidthDisplay
 import com.teya.lemonade.BrandLogoDisplay
@@ -11,6 +12,7 @@ import com.teya.lemonade.ChipDisplay
 import com.teya.lemonade.ColorsDisplay
 import com.teya.lemonade.CountryFlagDisplay
 import com.teya.lemonade.Displays
+import com.teya.lemonade.DividerDisplay
 import com.teya.lemonade.HomeDisplay
 import com.teya.lemonade.IconButtonDisplay
 import com.teya.lemonade.IconsDisplay
@@ -48,6 +50,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.Checkbox to { _ -> CheckboxDisplay() },
     Displays.RadioButton to { _ -> RadioButtonDisplay() },
     Displays.SelectionListItem to { _ -> SelectionListItemDisplay() },
+    Displays.ActionListItem to { _ -> ActionListItemDisplay() },
     Displays.ResourceListItem to { _ -> ResourceListItemDisplay() },
     Displays.Chip to { _ -> ChipDisplay() },
     Displays.SegmentedControl to { _ -> SegmentedControlDisplay() },
@@ -67,4 +70,5 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.Opacity to { _ -> OpacityDisplay() },
     Displays.BorderWidth to { _ -> BorderWidthDisplay() },
     Displays.Spinner to { _ -> SpinnerDisplay() },
+    Displays.Divider to { _ -> DividerDisplay() },
 )

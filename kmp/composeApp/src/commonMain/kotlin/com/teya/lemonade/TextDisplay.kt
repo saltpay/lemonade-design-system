@@ -1,12 +1,8 @@
 package com.teya.lemonade
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -15,7 +11,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 
 @Composable
 internal fun TextDisplay() {
@@ -99,7 +94,7 @@ internal fun TextDisplay() {
                     textStyle = LemonadeTheme.typography.bodyXLargeSemiBold
                 )
 
-                SimpleDivider()
+                LemonadeUi.HorizontalDivider()
 
                 // Large
                 LemonadeUi.Text(
@@ -115,7 +110,7 @@ internal fun TextDisplay() {
                     textStyle = LemonadeTheme.typography.bodyLargeSemiBold
                 )
 
-                SimpleDivider()
+                LemonadeUi.HorizontalDivider()
 
                 // Medium
                 LemonadeUi.Text(
@@ -131,7 +126,7 @@ internal fun TextDisplay() {
                     textStyle = LemonadeTheme.typography.bodyMediumSemiBold
                 )
 
-                SimpleDivider()
+                LemonadeUi.HorizontalDivider()
 
                 // Small
                 LemonadeUi.Text(
@@ -147,7 +142,7 @@ internal fun TextDisplay() {
                     textStyle = LemonadeTheme.typography.bodySmallSemiBold
                 )
 
-                SimpleDivider()
+                LemonadeUi.HorizontalDivider()
 
                 // XSmall
                 LemonadeUi.Text(
@@ -241,14 +236,4 @@ private fun TextSection(
         )
         content()
     }
-}
-
-@Composable
-private fun SimpleDivider() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(LemonadeTheme.colors.border.borderNeutralLow)
-    )
 }

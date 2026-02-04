@@ -19,7 +19,7 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "Lemonade",
-            url: "https://saltpay.jfrog.io/artifactory/main-maven-local/com/teya/teya-lemonade-ds/lemonade-swiftui/__VERSION__/Lemonade.xcframework.zip",
+            url: "https://github.com/saltpay/lemonade-design-system/releases/download/lemonade-swiftui-__VERSION__/Lemonade.xcframework.zip",
             checksum: "__CHECKSUM__"
         ),
     ]
