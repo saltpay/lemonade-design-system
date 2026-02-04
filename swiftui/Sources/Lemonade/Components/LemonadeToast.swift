@@ -27,6 +27,18 @@ public enum LemonadeToastVoice {
         case .neutral: return colors.content.contentNeutralOnColor
         }
     }
+
+    /// The sensory feedback type for this voice.
+    /// Available on iOS 17+ and macOS 14+.
+    @available(iOS 17.0, macOS 14.0, *)
+    var sensoryFeedback: SensoryFeedback {
+        switch self {
+        case .success, .neutral:
+            return .success
+        case .error:
+            return .error
+        }
+    }
 }
 
 // MARK: - Toast Component

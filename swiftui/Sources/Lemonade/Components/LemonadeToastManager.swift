@@ -1,8 +1,45 @@
 import SwiftUI
 import Combine
 
-/// Animation duration for toast transitions.
-private let toastAnimationDuration: TimeInterval = 0.4
+// MARK: - Toast Animation Constants
+
+/// Animation configuration for toast transitions.
+private enum ToastAnimationConfig {
+    /// Duration for entry/exit animations
+    static let duration: TimeInterval = 0.35
+
+    /// Spring animation for natural feel
+    static var spring: Animation {
+        .spring(response: duration, dampingFraction: 0.8)
+    }
+
+    /// Smooth animation for fading effects
+    static var smooth: Animation {
+        .easeOut(duration: duration)
+    }
+
+    /// Interactive spring for drag gestures
+    static var interactiveSpring: Animation {
+        .spring(response: 0.3, dampingFraction: 0.7)
+    }
+
+    /// Exit slide offset (off-screen distance)
+    static let slideOffset: CGFloat = 200
+
+    /// Fade exit scale
+    static let fadeScale: CGFloat = 0.88
+
+    /// Fade exit blur radius
+    static let fadeBlur: CGFloat = 10
+
+    /// Drag threshold to trigger dismiss
+    static let dragDismissThreshold: CGFloat = 50
+
+    /// Convert seconds to nanoseconds for Task.sleep
+    static func nanoseconds(from seconds: TimeInterval) -> UInt64 {
+        UInt64(seconds * 1_000_000_000)
+    }
+}
 
 // MARK: - Toast Duration
 
@@ -37,7 +74,7 @@ public struct LemonadeToastItem: Identifiable, Equatable {
     public let icon: LemonadeIcon?
     public let duration: LemonadeToastDuration
     public let isDismissible: Bool
-    
+
     public init(
         id: UUID = UUID(),
         label: String,
@@ -53,7 +90,7 @@ public struct LemonadeToastItem: Identifiable, Equatable {
         self.duration = duration
         self.isDismissible = isDismissible
     }
-    
+
     public static func == (lhs: LemonadeToastItem, rhs: LemonadeToastItem) -> Bool {
         lhs.id == rhs.id
     }
@@ -105,11 +142,8 @@ public final class LemonadeToastManager: ObservableObject {
     /// Timer for auto-dismissal.
     private var dismissTask: Task<Void, Never>?
 
-    /// Delay to display a new Toast if there is a Toast visible
-    private let newToastDelay: UInt64 = 100_000_000
-
     public init() {}
-    
+
     /// Shows a toast notification.
     ///
     /// - Parameters:
@@ -132,7 +166,7 @@ public final class LemonadeToastManager: ObservableObject {
             duration: duration,
             isDismissible: dismissible
         )
-        
+
         if currentToast != nil {
             // Queue the new toast and dismiss current after delay
             pendingToasts.append(toast)
@@ -143,7 +177,8 @@ public final class LemonadeToastManager: ObservableObject {
             displayToast(toast)
         }
     }
-    
+
+
     /// Dismisses the current toast.
     public func dismiss() {
         dismissTask?.cancel()
@@ -158,27 +193,22 @@ public final class LemonadeToastManager: ObservableObject {
         } else {
             // No pending toast - natural exit with slide
             shouldFadeOut = false
-            withAnimation(.easeInOut(duration: toastAnimationDuration)) {
-                currentToast = nil
-            }
+            currentToast = nil
 
             Task { @MainActor in
-                try? await Task.sleep(nanoseconds: UInt64(toastAnimationDuration * 1_000_000_000))
+                try? await Task.sleep(nanoseconds: ToastAnimationConfig.nanoseconds(from: ToastAnimationConfig.duration))
                 hasPendingToast = false
             }
         }
     }
-    
+
     /// Displays a toast immediately.
     private func displayToast(_ toast: LemonadeToastItem) {
         dismissTask?.cancel()
-
-        withAnimation(.easeInOut(duration: toastAnimationDuration)) {
-            currentToast = toast
-        }
+        currentToast = toast
 
         // Wait for entry animation to complete, then start visibility timer
-        let totalDelay = toastAnimationDuration + toast.duration.timeInterval
+        let totalDelay = ToastAnimationConfig.duration + toast.duration.timeInterval
         scheduleAutoDismiss(after: totalDelay)
     }
 
@@ -186,22 +216,22 @@ public final class LemonadeToastManager: ObservableObject {
     /// - Parameter delay: Total delay including entry animation time.
     private func scheduleAutoDismiss(after delay: TimeInterval) {
         dismissTask = Task { @MainActor in
-            try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
+            try? await Task.sleep(nanoseconds: ToastAnimationConfig.nanoseconds(from: delay))
             guard !Task.isCancelled else { return }
             dismiss()
         }
     }
-    
+
     /// Schedules transition to pending toast.
     private func scheduleTransition() {
         dismissTask?.cancel()
         dismissTask = Task { @MainActor in
-            try? await Task.sleep(nanoseconds: newToastDelay)
+            try? await Task.sleep(nanoseconds: 100_000_000) // 100ms
             guard !Task.isCancelled else { return }
             dismiss()
         }
     }
-    
+
     /// Shows the next pending toast if available.
     private func showNextToastIfAvailable() {
         guard !pendingToasts.isEmpty else {
@@ -214,26 +244,89 @@ public final class LemonadeToastManager: ObservableObject {
     }
 }
 
-// MARK: - Toast Animation State
+// MARK: - Toast Animation Phase
 
 /// Represents the animation state of a toast.
-private enum ToastAnimationPhase {
-    case entering
-    case visible
-    case exitingWithSlide
-    case exitingWithFade
+/// Using an enum ensures clear state transitions and predictable animations.
+private enum ToastAnimationPhase: Equatable {
+    /// Toast is off-screen, waiting to enter
     case hidden
+    /// Toast is animating in from the bottom
+    case entering
+    /// Toast is fully visible on screen
+    case visible
+    /// Toast is sliding out to the bottom (natural dismissal)
+    case exitingSlide
+    /// Toast is fading out with scale/blur (being replaced)
+    case exitingFade
+
+    /// The Y offset for this phase
+    var offset: CGFloat {
+        switch self {
+        case .hidden, .entering, .exitingSlide:
+            return ToastAnimationConfig.slideOffset
+        case .visible, .exitingFade:
+            return 0
+        }
+    }
+
+    /// The scale for this phase
+    var scale: CGFloat {
+        switch self {
+        case .exitingFade:
+            return ToastAnimationConfig.fadeScale
+        default:
+            return 1.0
+        }
+    }
+
+    /// The opacity for this phase
+    var opacity: Double {
+        switch self {
+        case .exitingFade:
+            return 0
+        default:
+            return 1.0
+        }
+    }
+
+    /// The blur radius for this phase
+    var blur: CGFloat {
+        switch self {
+        case .exitingFade:
+            return ToastAnimationConfig.fadeBlur
+        default:
+            return 0
+        }
+    }
+
+    /// Whether the toast should be visible in the view hierarchy
+    var isPresented: Bool {
+        switch self {
+        case .hidden:
+            return false
+        default:
+            return true
+        }
+    }
 }
 
 // MARK: - Toast Container View
 
 /// Internal view that displays the toast overlay.
+/// Uses explicit animation state management for predictable transitions.
 private struct LemonadeToastContainerView<Content: View>: View {
     @StateObject private var toastManager = LemonadeToastManager()
     @StateObject private var keyboardObserver = KeyboardObserver()
-    @State private var dragOffset: CGFloat = 0
+
+    /// The toast currently being displayed (may differ from manager during transitions)
     @State private var displayedToast: LemonadeToastItem?
+    /// Current animation phase
     @State private var animationPhase: ToastAnimationPhase = .hidden
+    /// Drag offset for swipe-to-dismiss gesture
+    @State private var dragOffset: CGFloat = 0
+    /// Trigger counter for sensory feedback (iOS 17+)
+    @State private var feedbackTrigger: Int = 0
 
     let content: Content
 
@@ -246,123 +339,118 @@ private struct LemonadeToastContainerView<Content: View>: View {
             .onChange(of: toastManager.currentToast?.id) { newToastId in
                 handleToastChange(newToastId: newToastId)
             }
+            .modifier(ToastSensoryFeedbackModifier(
+                trigger: feedbackTrigger,
+                voice: displayedToast?.voice
+            ))
     }
+
+    // MARK: - Toast Change Handling
 
     private func handleToastChange(newToastId: UUID?) {
         if newToastId != nil {
-            // A new toast is being shown
+            // New toast requested
             if displayedToast != nil {
-                // There's a current toast - exit with fade, then show new
+                // Replace current toast: fade out, then show new
                 exitCurrentToast(withFade: true) {
-                    showNewToast()
+                    enterNewToast()
                 }
             } else {
-                // No current toast - just show the new one
-                showNewToast()
+                // No current toast: show immediately
+                enterNewToast()
             }
         } else {
-            // Toast is being dismissed (no replacement)
+            // Dismissal requested (no replacement)
             if displayedToast != nil {
                 exitCurrentToast(withFade: false, completion: nil)
             }
         }
     }
 
-    private func showNewToast() {
+    private func enterNewToast() {
+        // Set up the new toast in entering state
         displayedToast = toastManager.currentToast
         animationPhase = .entering
 
-        withAnimation(.easeOut(duration: toastAnimationDuration)) {
+        // Trigger sensory feedback (iOS 17+)
+        feedbackTrigger += 1
+
+        // Animate to visible - use spring for natural feel
+        withAnimation(ToastAnimationConfig.spring) {
             animationPhase = .visible
         }
     }
 
     private func exitCurrentToast(withFade: Bool, completion: (() -> Void)?) {
-        let exitPhase: ToastAnimationPhase = withFade ? .exitingWithFade : .exitingWithSlide
+        let exitPhase: ToastAnimationPhase = withFade ? .exitingFade : .exitingSlide
+        let animation: Animation = withFade ? ToastAnimationConfig.smooth : ToastAnimationConfig.spring
 
-        withAnimation(.easeIn(duration: toastAnimationDuration)) {
+        withAnimation(animation) {
             animationPhase = exitPhase
         }
 
-        // After animation completes, clean up and run completion
+        // Clean up after animation completes
         Task { @MainActor in
-            try? await Task.sleep(nanoseconds: UInt64(toastAnimationDuration * 1_000_000_000))
+            try? await Task.sleep(nanoseconds: ToastAnimationConfig.nanoseconds(from: ToastAnimationConfig.duration))
             displayedToast = nil
             animationPhase = .hidden
             completion?()
         }
     }
 
+    // MARK: - Toast Overlay
+
     @ViewBuilder
     private var toastOverlay: some View {
-        if let toast = displayedToast {
+        if let toast = displayedToast, animationPhase.isPresented {
             ToastItemView(
                 toast: toast,
-                dragOffset: $dragOffset,
                 keyboardHeight: keyboardObserver.keyboardHeight,
-                hasPendingToast: toastManager.hasPendingToast,
-                onDismiss: { toastManager.dismiss() }
+                onDismiss: { toastManager.dismiss() },
+                onDragChanged: handleDragChanged,
+                onDragEnded: handleDragEnded
             )
-            .scaleEffect(scaleForPhase, anchor: .bottom)
-            .opacity(opacityForPhase)
-            .blur(radius: blurForPhase)
-            .offset(y: offsetForPhase)
+            // Apply transforms for GPU-accelerated animation (performance best practice)
+            .scaleEffect(animationPhase.scale, anchor: .bottom)
+            .offset(y: animationPhase.offset + dragOffset)
+            // Use animatable blur for smooth interpolation
+            .animatableBlur(radius: animationPhase.blur)
+            .opacity(animationPhase.opacity)
+            // Animate all properties when phase changes
+            .animation(ToastAnimationConfig.spring, value: animationPhase)
+            // Separate animation for drag offset (snappier response)
+            .animation(ToastAnimationConfig.interactiveSpring, value: dragOffset)
         }
     }
 
-    private var scaleForPhase: CGFloat {
-        switch animationPhase {
-        case .exitingWithFade:
-            return 0.88
-        default:
-            return 1.0
-        }
+    // MARK: - Drag Gesture Handling
+
+    private func handleDragChanged(_ translation: CGFloat) {
+        // Only allow downward drag (positive translation)
+        dragOffset = max(0, translation)
     }
 
-    private var opacityForPhase: Double {
-        switch animationPhase {
-        case .entering, .exitingWithSlide:
-            return 1.0
-        case .visible:
-            return 1.0
-        case .exitingWithFade, .hidden:
-            return animationPhase == .hidden ? 1.0 : 0.0
+    private func handleDragEnded(_ translation: CGFloat) {
+        if translation > ToastAnimationConfig.dragDismissThreshold {
+            // Dismiss the toast
+            toastManager.dismiss()
         }
-    }
-
-    private var blurForPhase: CGFloat {
-        switch animationPhase {
-        case .exitingWithFade:
-            return 10.0
-        default:
-            return 0.0
-        }
-    }
-
-    private var offsetForPhase: CGFloat {
-        switch animationPhase {
-        case .entering:
-            return 200  // Start off-screen
-        case .visible, .exitingWithFade:
-            return 0
-        case .exitingWithSlide:
-            return 200  // Slide off-screen
-        case .hidden:
-            return 200
-        }
+        // Reset drag offset with spring animation
+        dragOffset = 0
     }
 }
 
 // MARK: - Toast Item View
 
 /// Individual toast view with gesture handling.
+/// Separated from animation logic for cleaner architecture.
 private struct ToastItemView: View {
     let toast: LemonadeToastItem
-    @Binding var dragOffset: CGFloat
     let keyboardHeight: CGFloat
-    let hasPendingToast: Bool
     let onDismiss: () -> Void
-    
+    let onDragChanged: (CGFloat) -> Void
+    let onDragEnded: (CGFloat) -> Void
+
     var body: some View {
         GeometryReader { _ in
             VStack {
@@ -384,36 +472,42 @@ private struct ToastItemView: View {
                 .contentShape(Rectangle())
             }
             .frame(maxWidth: .infinity)
-            .offset(y: dragOffset)
-
             .gesture(dismissGesture)
         }
         .ignoresSafeArea(.keyboard)
-        .onAppear {
-            dragOffset = 0
-        }
         .id(toast.id)
     }
-    
+
     private var dismissGesture: some Gesture {
         DragGesture()
             .onChanged { value in
                 guard toast.isDismissible else { return }
-                // Only allow downward drag
-                if value.translation.height > 0 {
-                    dragOffset = value.translation.height
-                }
+                onDragChanged(value.translation.height)
             }
             .onEnded { value in
                 guard toast.isDismissible else { return }
-                // Dismiss if dragged down enough
-                if value.translation.height > 25 {
-                    onDismiss()
-                }
-                withAnimation(.easeInOut(duration: toastAnimationDuration)) {
-                    
-                }
+                onDragEnded(value.translation.height)
             }
+    }
+}
+
+// MARK: - Sensory Feedback Modifier
+
+/// A modifier that provides sensory feedback when a toast appears.
+/// Uses iOS 17+ SensoryFeedback API with graceful fallback for older versions.
+private struct ToastSensoryFeedbackModifier: ViewModifier {
+    let trigger: Int
+    let voice: LemonadeToastVoice?
+
+    func body(content: Content) -> some View {
+        if #available(iOS 17.0, macOS 14.0, *) {
+            content
+                .sensoryFeedback(trigger: trigger) { _, _ in
+                    voice?.sensoryFeedback
+                }
+        } else {
+            content
+        }
     }
 }
 
@@ -422,9 +516,9 @@ private struct ToastItemView: View {
 /// Observes keyboard visibility and height changes.
 private final class KeyboardObserver: ObservableObject {
     @Published var keyboardHeight: CGFloat = 0
-    
+
     private var cancellables = Set<AnyCancellable>()
-    
+
     init() {
         #if os(iOS)
         NotificationCenter.default
@@ -439,7 +533,7 @@ private final class KeyboardObserver: ObservableObject {
                 }
             }
             .store(in: &cancellables)
-        
+
         NotificationCenter.default
             .publisher(for: UIResponder.keyboardWillHideNotification)
             .receive(on: DispatchQueue.main)
