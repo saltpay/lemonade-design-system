@@ -252,10 +252,12 @@ private fun CoreCheckbox(
 
 
 private val CheckboxStatus.icon: LemonadeIcons?
-    get() = when (this) {
-        CheckboxStatus.Checked -> LemonadeIcons.CheckSmall
-        CheckboxStatus.Unchecked -> null
-        CheckboxStatus.Indeterminate -> LemonadeIcons.Minus
+    get() {
+        return when (this) {
+            CheckboxStatus.Checked -> LemonadeIcons.CheckSmall
+            CheckboxStatus.Unchecked -> null
+            CheckboxStatus.Indeterminate -> LemonadeIcons.Minus
+        }
     }
 
 @Stable

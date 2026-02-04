@@ -87,12 +87,14 @@ private fun CoreBadge(
 
 // todo can we replace with themed colors? ask designer
 private val gradientOverlay: Brush
-    get() = Brush.linearGradient(
-        colors = listOf(
-            Color(0xFFD6F25A),
-            Color(0xD6F25A00).copy(alpha = 0.0f),
-        ),
-    )
+    get() {
+        return Brush.linearGradient(
+            colors = listOf(
+                Color(0xFFD6F25A),
+                Color(0xD6F25A00).copy(alpha = 0.0f),
+            ),
+        )
+    }
 
 private data class BadgeProps(
     val height: Dp,
@@ -103,28 +105,30 @@ private data class BadgeProps(
 )
 
 private val LemonadeBadgeSize.badgeProps: BadgeProps
-    @Composable get() = when (this) {
-        LemonadeBadgeSize.XSmall -> BadgeProps(
-            height = 16.dp,
-            horizontalPadding = LocalSpaces.current.spacing50,
-            textVerticalPadding = 1.dp,
-            textHorizontalPadding = LocalSpaces.current.spacing50,
-            textStyle = LocalTypographies.current.bodyXSmallSemiBold.textStyle.copy(
-                fontSize = 10.sp,
-                lineHeight = 14.sp,
-                color = LocalColors.current.content.contentOnBrandHigh
+    @Composable get() {
+        return when (this) {
+            LemonadeBadgeSize.XSmall -> BadgeProps(
+                height = 16.dp,
+                horizontalPadding = LocalSpaces.current.spacing50,
+                textVerticalPadding = 1.dp,
+                textHorizontalPadding = LocalSpaces.current.spacing50,
+                textStyle = LocalTypographies.current.bodyXSmallSemiBold.textStyle.copy(
+                    fontSize = 10.sp,
+                    lineHeight = 14.sp,
+                    color = LocalColors.current.content.contentOnBrandHigh
+                )
             )
-        )
 
-        LemonadeBadgeSize.Small -> BadgeProps(
-            height = 20.dp,
-            horizontalPadding = LocalSpaces.current.spacing100,
-            textVerticalPadding = 2.dp,
-            textHorizontalPadding = LocalSpaces.current.spacing50,
-            textStyle = LocalTypographies.current.bodyXSmallSemiBold.textStyle.copy(
-                color = LocalColors.current.content.contentOnBrandHigh
+            LemonadeBadgeSize.Small -> BadgeProps(
+                height = 20.dp,
+                horizontalPadding = LocalSpaces.current.spacing100,
+                textVerticalPadding = 2.dp,
+                textHorizontalPadding = LocalSpaces.current.spacing50,
+                textStyle = LocalTypographies.current.bodyXSmallSemiBold.textStyle.copy(
+                    color = LocalColors.current.content.contentOnBrandHigh
+                )
             )
-        )
+        }
     }
 
 @Composable

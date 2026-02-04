@@ -7,23 +7,24 @@ import org.gradle.kotlin.dsl.configure
 
 class LemonadePublishPlugin : Plugin<Project> {
 
-    override fun apply(target: Project) = with(target) {
-        pluginManager.apply(MavenPublishBasePlugin::class.java)
+    override fun apply(target: Project) {
+        with(target) {
+            pluginManager.apply(MavenPublishBasePlugin::class.java)
 
-        extensions.configure<MavenPublishBaseExtension> {
-            @Suppress("UnstableApiUsage")
-            configureBasedOnAppliedPlugins(sourcesJar = true, javadocJar = true)
-        }
-
-        val extension = extensions
-            .create("lemonadePublishing", LemonadePublishingPluginExtension::class.java)
-
-        afterEvaluate {
-            val artifactId = extension.artifactId.orNull ?: run {
-                error("You must set the 'artifactId' property in the 'lemonadePublishing' extension.")
+            extensions.configure<MavenPublishBaseExtension> {
+                @Suppress("UnstableApiUsage")
+                configureBasedOnAppliedPlugins(sourcesJar = true, javadocJar = true)
             }
 
-            configurePublication(artifactId)
+            val extension = extensions
+                .create("lemonadePublishing", LemonadePublishingPluginExtension::class.java)
+
+            afterEvaluate {
+                val artifactId = extension.artifactId.orNull
+                    ?: error("You must set the 'artifactId' property in the 'lemonadePublishing' extension.")
+
+                configurePublication(artifactId)
+            }
         }
     }
 

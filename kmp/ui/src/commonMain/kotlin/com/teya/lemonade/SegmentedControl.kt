@@ -55,7 +55,7 @@ public fun LemonadeUi.SegmentedControl(
     modifier: Modifier = Modifier,
 ) {
     CoreSegmentedControl(
-        selectedTab = { it == selectedTab },
+        selectedTab = { tabIndex -> tabIndex == selectedTab },
         onTabSelected = onTabSelected,
         modifier = modifier,
         tabCount = { properties.size },

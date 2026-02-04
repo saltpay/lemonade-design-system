@@ -126,80 +126,84 @@ private data class LemonadeButtonContentData(
 )
 
 private val LemonadeButtonSize.contentData: LemonadeButtonContentData
-    @Composable get() = when (this) {
-        LemonadeButtonSize.Small -> LemonadeButtonContentData(
-            verticalPadding = LocalSpaces.current.spacing200,
-            horizontalPadding = LocalSpaces.current.spacing300,
-            minHeight = LocalSizes.current.size1000,
-            minWidth = LocalSizes.current.size1600,
-            shape = LocalShapes.current.radius300,
-            textStyle = LocalTypographies.current.bodySmallSemiBold
-        )
+    @Composable get() {
+        return when (this) {
+            LemonadeButtonSize.Small -> LemonadeButtonContentData(
+                verticalPadding = LocalSpaces.current.spacing200,
+                horizontalPadding = LocalSpaces.current.spacing300,
+                minHeight = LocalSizes.current.size1000,
+                minWidth = LocalSizes.current.size1600,
+                shape = LocalShapes.current.radius300,
+                textStyle = LocalTypographies.current.bodySmallSemiBold
+            )
 
-        LemonadeButtonSize.Medium -> LemonadeButtonContentData(
-            verticalPadding = LocalSpaces.current.spacing300,
-            horizontalPadding = LocalSpaces.current.spacing400,
-            minHeight = LocalSizes.current.size1200,
-            minWidth = LocalSizes.current.size1600,
-            shape = LocalShapes.current.radius300,
-            textStyle = LocalTypographies.current.bodyMediumSemiBold
-        )
+            LemonadeButtonSize.Medium -> LemonadeButtonContentData(
+                verticalPadding = LocalSpaces.current.spacing300,
+                horizontalPadding = LocalSpaces.current.spacing400,
+                minHeight = LocalSizes.current.size1200,
+                minWidth = LocalSizes.current.size1600,
+                shape = LocalShapes.current.radius300,
+                textStyle = LocalTypographies.current.bodyMediumSemiBold
+            )
 
-        LemonadeButtonSize.Large -> LemonadeButtonContentData(
-            verticalPadding = LocalSpaces.current.spacing300,
-            horizontalPadding = LocalSpaces.current.spacing400,
-            minHeight = LocalSizes.current.size1400,
-            minWidth = LocalSizes.current.size1600,
-            shape = LocalShapes.current.radius400,
-            textStyle = LocalTypographies.current.bodyMediumSemiBold
-        )
+            LemonadeButtonSize.Large -> LemonadeButtonContentData(
+                verticalPadding = LocalSpaces.current.spacing300,
+                horizontalPadding = LocalSpaces.current.spacing400,
+                minHeight = LocalSizes.current.size1400,
+                minWidth = LocalSizes.current.size1600,
+                shape = LocalShapes.current.radius400,
+                textStyle = LocalTypographies.current.bodyMediumSemiBold
+            )
+        }
     }
 
 
 private val LemonadeButtonVariant.variantData: LemonadeButtonColors
-    @Composable get() = when (this) {
-        LemonadeButtonVariant.Primary -> LemonadeButtonColors(
-            contentColor = LocalColors.current.content.contentOnBrandHigh,
-            solidBackgroundColor = LocalColors.current.background.bgBrand,
-            pressedBackgroundColor = LocalColors.current.interaction.bgBrandInteractive,
-        )
-
-        LemonadeButtonVariant.Secondary -> LemonadeButtonColors(
-            contentColor = LocalColors.current.content.contentPrimaryInverse,
-            solidBackgroundColor = LocalColors.current.background.bgSubtleInverse,
-            pressedBackgroundColor = LocalColors.current.interaction.bgNeutralPressed,
-        )
-
-        LemonadeButtonVariant.Neutral -> LemonadeButtonColors(
-            contentColor = LocalColors.current.content.contentPrimary,
-            solidBackgroundColor = LocalColors.current.background.bgElevated,
-            pressedBackgroundColor = LocalColors.current.interaction.bgElevatedPressed,
-        )
-
-        LemonadeButtonVariant.CriticalSubtle -> LemonadeButtonColors(
-            contentColor = LocalColors.current.content.contentCritical,
-            solidBackgroundColor = LocalColors.current.background.bgCriticalSubtle,
-            pressedBackgroundColor = LocalColors.current.interaction.bgCriticalSubtleInteractive,
-        )
-
-        LemonadeButtonVariant.CriticalSolid -> LemonadeButtonColors(
-            contentColor = LocalColors.current.content.contentAlwaysLight,
-            solidBackgroundColor = LocalColors.current.background.bgCritical,
-            pressedBackgroundColor = LocalColors.current.interaction.bgCriticalInteractive,
-        )
-
-        LemonadeButtonVariant.Special -> LemonadeButtonColors(
-            contentColor = LocalColors.current.content.contentOnBrandHigh,
-            solidBackgroundColor = LocalColors.current.background.bgBrand,
-            pressedBackgroundColor = LocalColors.current.interaction.bgBrandInteractive,
-            // TODO: update the gradient colours
-            brushBackgroundColor = Brush.horizontalGradient(
-                colors = listOf(
-                    LocalColors.current.background.bgBrandElevated,
-                    LocalColors.current.background.bgBrandElevated.copy(alpha = 0f),
-                ),
+    @Composable get() {
+        return when (this) {
+            LemonadeButtonVariant.Primary -> LemonadeButtonColors(
+                contentColor = LocalColors.current.content.contentOnBrandHigh,
+                solidBackgroundColor = LocalColors.current.background.bgBrand,
+                pressedBackgroundColor = LocalColors.current.interaction.bgBrandInteractive,
             )
-        )
+
+            LemonadeButtonVariant.Secondary -> LemonadeButtonColors(
+                contentColor = LocalColors.current.content.contentPrimaryInverse,
+                solidBackgroundColor = LocalColors.current.background.bgSubtleInverse,
+                pressedBackgroundColor = LocalColors.current.interaction.bgNeutralPressed,
+            )
+
+            LemonadeButtonVariant.Neutral -> LemonadeButtonColors(
+                contentColor = LocalColors.current.content.contentPrimary,
+                solidBackgroundColor = LocalColors.current.background.bgElevated,
+                pressedBackgroundColor = LocalColors.current.interaction.bgElevatedPressed,
+            )
+
+            LemonadeButtonVariant.CriticalSubtle -> LemonadeButtonColors(
+                contentColor = LocalColors.current.content.contentCritical,
+                solidBackgroundColor = LocalColors.current.background.bgCriticalSubtle,
+                pressedBackgroundColor = LocalColors.current.interaction.bgCriticalSubtleInteractive,
+            )
+
+            LemonadeButtonVariant.CriticalSolid -> LemonadeButtonColors(
+                contentColor = LocalColors.current.content.contentAlwaysLight,
+                solidBackgroundColor = LocalColors.current.background.bgCritical,
+                pressedBackgroundColor = LocalColors.current.interaction.bgCriticalInteractive,
+            )
+
+            LemonadeButtonVariant.Special -> LemonadeButtonColors(
+                contentColor = LocalColors.current.content.contentOnBrandHigh,
+                solidBackgroundColor = LocalColors.current.background.bgBrand,
+                pressedBackgroundColor = LocalColors.current.interaction.bgBrandInteractive,
+                // TODO: update the gradient colours
+                brushBackgroundColor = Brush.horizontalGradient(
+                    colors = listOf(
+                        LocalColors.current.background.bgBrandElevated,
+                        LocalColors.current.background.bgBrandElevated.copy(alpha = 0f),
+                    ),
+                )
+            )
+        }
     }
 
 @Composable
@@ -249,8 +253,9 @@ private fun CoreButton(
             )
             .background(color = animatedBackgroundColor)
             .then(
-                other = variant.variantData.brushBackgroundColor
-                    ?.let { brush -> Modifier.background(brush = brush) }
+                other = variant.variantData.brushBackgroundColor?.let { brush ->
+                    Modifier.background(brush = brush)
+                }
                     ?: Modifier,
             )
             .padding(

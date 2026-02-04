@@ -27,8 +27,9 @@ public class MainActivity : ComponentActivity() {
                 },
                 entryProvider = { displayKey ->
                     NavEntry(key = displayKey) {
-                        (screens[displayKey] ?: { _ -> BasicText("Invalid key") })
-                            .invoke { backStack.add(it) }
+                        val screen = screens[displayKey]
+                            ?: { _ -> BasicText("Invalid key") }
+                        screen.invoke { backStack.add(it) }
                     }
                 },
             )

@@ -91,21 +91,25 @@ private fun CoreTag(
 }
 
 private val TagVoice.tintColor: Color
-    @Composable get() = when (this) {
-        TagVoice.Neutral -> LocalColors.current.content.contentPrimary
-        TagVoice.Critical -> LocalColors.current.content.contentCritical
-        TagVoice.Warning -> LocalColors.current.content.contentCaution
-        TagVoice.Info -> LocalColors.current.content.contentInfo
-        TagVoice.Positive -> LocalColors.current.content.contentPositive
+    @Composable get() {
+        return when (this) {
+            TagVoice.Neutral -> LocalColors.current.content.contentPrimary
+            TagVoice.Critical -> LocalColors.current.content.contentCritical
+            TagVoice.Warning -> LocalColors.current.content.contentCaution
+            TagVoice.Info -> LocalColors.current.content.contentInfo
+            TagVoice.Positive -> LocalColors.current.content.contentPositive
+        }
     }
 
 private val TagVoice.containerColor: Color
-    @Composable get() = when (this) {
-        TagVoice.Neutral -> LocalColors.current.background.bgNeutralSubtle
-        TagVoice.Critical -> LocalColors.current.background.bgCriticalSubtle
-        TagVoice.Warning -> LocalColors.current.background.bgCautionSubtle
-        TagVoice.Info -> LocalColors.current.background.bgInfoSubtle
-        TagVoice.Positive -> LocalColors.current.background.bgPositiveSubtle
+    @Composable get() {
+        return when (this) {
+            TagVoice.Neutral -> LocalColors.current.background.bgNeutralSubtle
+            TagVoice.Critical -> LocalColors.current.background.bgCriticalSubtle
+            TagVoice.Warning -> LocalColors.current.background.bgCautionSubtle
+            TagVoice.Info -> LocalColors.current.background.bgInfoSubtle
+            TagVoice.Positive -> LocalColors.current.background.bgPositiveSubtle
+        }
     }
 
 private data class TagPreviewData(
