@@ -138,8 +138,9 @@ internal fun CoreSegmentedControl(
                         onClick = { onTabSelected(tabIndex) },
                         role = Role.Tab,
                         interactionSource = tabInteractionSource,
-                        indication = null,
-                    ).background(color = animatedBackgroundColor)
+                        indication = LocalEffects.current.interactionIndication,
+                    )
+                    .background(color = animatedBackgroundColor)
                     .defaultMinSize(
                         minHeight = LocalSizes.current.size800,
                         minWidth = LocalSizes.current.size1600,
