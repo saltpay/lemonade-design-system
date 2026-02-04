@@ -1,15 +1,12 @@
-name: Publish SwiftUI to JFrog
+name: Publish SwiftUI Release
 
 on:
   push:
     tags:
-      - 'lemonade-swiftui-*'  # Triggers on tags like lemonade-swiftui-1.0.0
+      - 'lemonade-swiftui-*'
 
-env:
-  JFROG_USER: ${{ secrets.JFROG_USER }}
-  JFROG_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
-  # Using main-maven-local with Maven path structure (same as KMP)
-  JFROG_BASE_URL: "https://saltpay.jfrog.io/artifactory/main-maven-local/com/teya/lemonade-design-system/lemonade-swiftui"
+permissions:
+  contents: write
 
 jobs:
   publish:
@@ -27,7 +24,6 @@ jobs:
 
       - name: Set version from tag
         run: |
-          # Extract version from tag (remove 'lemonade-swiftui-' prefix)
           VERSION="${GITHUB_REF#refs/tags/lemonade-swiftui-}"
           echo "LEMONADE_VERSION=$VERSION" >> $GITHUB_ENV
           echo "Publishing version: $VERSION"
@@ -85,56 +81,32 @@ jobs:
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Upload XCFramework to JFrog
-        working-directory: ./swiftui
-        run: |
-          echo "Uploading Lemonade.xcframework.zip to JFrog..."
-          curl -f -u "$JFROG_USER:$JFROG_PASSWORD" \
-            -T "build/Lemonade.xcframework.zip" \
-            "${{ env.JFROG_BASE_URL }}/${{ env.LEMONADE_VERSION }}/Lemonade.xcframework.zip"
-          echo "XCFramework upload complete!"
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: lemonade-swiftui-${{ env.LEMONADE_VERSION }}
+          name: Lemonade SwiftUI ${{ env.LEMONADE_VERSION }}
+          body: |
+            ## Lemonade SwiftUI ${{ env.LEMONADE_VERSION }}
 
-      - name: Generate and upload Podspec
-        working-directory: ./swiftui
-        run: |
-          # Generate podspec with correct version
-          sed "s/spec.version      = \"1.0.0\"/spec.version      = \"${{ env.LEMONADE_VERSION }}\"/" \
-            Lemonade.podspec > build/Lemonade.podspec
+            ### What's Changed
+            ${{ steps.previous-tag.outputs.has-previous == 'true' && steps.changelog.outputs.changes || '• First release - no previous tag to compare' }}
 
-          echo "Uploading Lemonade.podspec to JFrog..."
-          curl -f -u "$JFROG_USER:$JFROG_PASSWORD" \
-            -T "build/Lemonade.podspec" \
-            "${{ env.JFROG_BASE_URL }}/${{ env.LEMONADE_VERSION }}/Lemonade.podspec"
-          echo "Podspec upload complete!"
+            ### Installation (SPM - Binary Target)
 
-      - name: Generate and upload SPM Package.swift
-        working-directory: ./swiftui
-        run: |
-          # Generate Package.swift for SPM binary distribution
-          sed -e "s|__VERSION__|${{ env.LEMONADE_VERSION }}|g" \
-              -e "s|__CHECKSUM__|${{ env.CHECKSUM }}|g" \
-            scripts/Package.swift.template > build/Package.swift
+            Add to your `Package.swift`:
+            ```swift
+            .binaryTarget(
+                name: "Lemonade",
+                url: "https://github.com/${{ github.repository }}/releases/download/lemonade-swiftui-${{ env.LEMONADE_VERSION }}/Lemonade.xcframework.zip",
+                checksum: "${{ env.CHECKSUM }}"
+            )
+            ```
 
-          echo "Generated Package.swift:"
-          cat build/Package.swift
-
-          echo "Uploading Package.swift to JFrog..."
-          curl -f -u "$JFROG_USER:$JFROG_PASSWORD" \
-            -T "build/Package.swift" \
-            "${{ env.JFROG_BASE_URL }}/${{ env.LEMONADE_VERSION }}/Package.swift"
-          echo "Package.swift upload complete!"
-
-      - name: Upload latest version marker
-        run: |
-          # Create a file with the latest version for easy reference
-          echo "${{ env.LEMONADE_VERSION }}" > latest_version.txt
-          # Delete existing file first (JFrog doesn't allow overwriting)
-          curl -u "$JFROG_USER:$JFROG_PASSWORD" -X DELETE \
-            "${{ env.JFROG_BASE_URL }}/latest_version.txt" || true
-          # Upload new version marker
-          curl -f -u "$JFROG_USER:$JFROG_PASSWORD" \
-            -T "latest_version.txt" \
-            "${{ env.JFROG_BASE_URL }}/latest_version.txt"
+            ### Checksum
+            **SHA256:** `${{ env.CHECKSUM }}`
+          files: |
+            swiftui/build/Lemonade.xcframework.zip
 
       - name: Send Slack notification
         if: ${{ !cancelled() && !failure() }}
@@ -153,14 +125,13 @@ jobs:
             *What's Changed*
             ${{ steps.previous-tag.outputs.has-previous == 'true' && steps.changelog.outputs.changes || '• First release - no previous tag to compare' }}
 
-            *Installation (CocoaPods)*
-            ```ruby
-            pod 'Lemonade', :http => 'https://saltpay.jfrog.io/artifactory/main-maven-local/com/teya/lemonade-design-system/lemonade-swiftui/${{ env.LEMONADE_VERSION }}/Lemonade.xcframework.zip'
-            ```
-
             *Installation (SPM)*
-            ```
-            URL: https://saltpay.jfrog.io/artifactory/main-maven-local/com/teya/lemonade-design-system/lemonade-swiftui/${{ env.LEMONADE_VERSION }}/Package.swift
+            ```swift
+            .binaryTarget(
+                name: "Lemonade",
+                url: "https://github.com/${{ github.repository }}/releases/download/lemonade-swiftui-${{ env.LEMONADE_VERSION }}/Lemonade.xcframework.zip",
+                checksum: "${{ env.CHECKSUM }}"
+            )
             ```
 
             <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|:link: View Build Details>

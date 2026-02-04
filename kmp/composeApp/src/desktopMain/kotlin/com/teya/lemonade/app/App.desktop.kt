@@ -9,12 +9,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.teya.lemonade.Display
+import com.teya.lemonade.Displays
 
 @Composable
 internal actual fun App() {
-    var currentScreenStack: Set<Display> by remember {
-        mutableStateOf(setOf(Display.Home))
+    var currentScreenStack: Set<Displays> by remember {
+        mutableStateOf(setOf(Displays.Home))
     }
 
     Row {
@@ -23,8 +23,8 @@ internal actual fun App() {
                 .fillMaxHeight()
                 .weight(weight = 1f),
         ) {
-            screens[Display.Home]?.invoke { focusScreen ->
-                currentScreenStack = setOf(Display.Home, focusScreen)
+            screens[Displays.Home]?.invoke { focusScreen ->
+                currentScreenStack = setOf(Displays.Home, focusScreen)
             }
         }
 
@@ -36,9 +36,12 @@ internal actual fun App() {
             currentScreenStack.elementAtOrNull(1)
                 ?.let { focusScreen ->
                     screens[focusScreen]?.invoke { replaceScreen ->
-                        currentScreenStack = setOf(Display.Home, replaceScreen)
+                        currentScreenStack = setOf(Displays.Home, replaceScreen)
                     }
                 }
         }
     }
 }
+
+internal actual val platformScreens: Map<Displays, @Composable ((onNavigate: (Displays) -> Unit) -> Unit)> =
+    emptyMap()
