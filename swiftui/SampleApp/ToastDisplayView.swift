@@ -28,6 +28,13 @@ struct ToastDisplayView: View {
                         voice: .neutral
                     )
                 }
+                
+                Button("Show Long Content Toast") {
+                    toastManager.show(
+                        label: "Really long label that should wrap onto multiple lines to demonstrate text wrapping in the toast component",
+                        voice: .neutral
+                    )
+                }
             }
 
             Section("Custom Icon (Neutral Only)") {

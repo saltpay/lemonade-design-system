@@ -1,56 +1,8 @@
 import SwiftUI
 import Combine
 
-// Extensions
 /// Animation duration for toast transitions.
-private let toastAnimationDuration: TimeInterval = 0.6
-
-struct Blur: AnimatableModifier {
-    init(radius: Double = 0) { animatableData = radius }
-    var animatableData: Double
-
-    func body(content: Content) -> some View {
-        content.blur(radius: animatableData)
-    }
-}
-
-extension AnyTransition {
-    static var blur: AnyTransition {
-        AnyTransition.modifier(active: Blur(radius: 10.0), identity: .init())
-    }
-}
-
-struct TappablePadding: ViewModifier {
-    let insets: EdgeInsets
-    let onTap: () -> Void
-
-    func body(content: Content) -> some View {
-        content
-            .padding(insets)              // grow layout & hit area
-            .contentShape(Rectangle())    // use grown rect for hit tests
-            .onTapGesture { onTap() }
-            .padding(insets.inverted)     // shrink visual layout back
-    }
-}
-
-extension View {
-    func tappablePadding(
-        _ insets: EdgeInsets,
-        onTap: @escaping () -> Void
-    ) -> some View {
-        modifier(TappablePadding(insets: insets, onTap: onTap))
-    }
-}
-
-extension EdgeInsets {
-    var inverted: EdgeInsets {
-        .init(top: -top,
-              leading: -leading,
-              bottom: -bottom,
-              trailing: -trailing)
-    }
-}
-
+private let toastAnimationDuration: TimeInterval = 0.4
 
 // MARK: - Toast Duration
 
@@ -139,19 +91,23 @@ public struct LemonadeToastItem: Identifiable, Equatable {
 public final class LemonadeToastManager: ObservableObject {
     /// The currently displayed toast, if any.
     @Published public private(set) var currentToast: LemonadeToastItem?
-    
+
     /// Whether there's a pending toast (used for exit animation).
     @Published public private(set) var hasPendingToast: Bool = false
-    
+
+    /// Whether the current toast should fade out when exiting.
+    /// True when being replaced by another toast, false for natural exit.
+    @Published public private(set) var shouldFadeOut: Bool = false
+
     /// Queue of pending toasts.
     private var pendingToasts: [LemonadeToastItem] = []
-    
+
     /// Timer for auto-dismissal.
     private var dismissTask: Task<Void, Never>?
-    
+
     /// Delay to display a new Toast if there is a Toast visible
     private let newToastDelay: UInt64 = 100_000_000
-    
+
     public init() {}
     
     /// Shows a toast notification.
@@ -181,6 +137,7 @@ public final class LemonadeToastManager: ObservableObject {
             // Queue the new toast and dismiss current after delay
             pendingToasts.append(toast)
             hasPendingToast = true
+            shouldFadeOut = true  // Current toast will fade out when replaced
             scheduleTransition()
         } else {
             displayToast(toast)
@@ -199,7 +156,8 @@ public final class LemonadeToastManager: ObservableObject {
             // Show next toast immediately (overlapping animations)
             showNextToastIfAvailable()
         } else {
-            // No pending toast - just animate out
+            // No pending toast - natural exit with slide
+            shouldFadeOut = false
             withAnimation(.easeInOut(duration: toastAnimationDuration)) {
                 currentToast = nil
             }
@@ -256,6 +214,17 @@ public final class LemonadeToastManager: ObservableObject {
     }
 }
 
+// MARK: - Toast Animation State
+
+/// Represents the animation state of a toast.
+private enum ToastAnimationPhase {
+    case entering
+    case visible
+    case exitingWithSlide
+    case exitingWithFade
+    case hidden
+}
+
 // MARK: - Toast Container View
 
 /// Internal view that displays the toast overlay.
@@ -263,7 +232,8 @@ private struct LemonadeToastContainerView<Content: View>: View {
     @StateObject private var toastManager = LemonadeToastManager()
     @StateObject private var keyboardObserver = KeyboardObserver()
     @State private var dragOffset: CGFloat = 0
-    @State private var exitWithFade: Bool = false
+    @State private var displayedToast: LemonadeToastItem?
+    @State private var animationPhase: ToastAnimationPhase = .hidden
 
     let content: Content
 
@@ -273,23 +243,59 @@ private struct LemonadeToastContainerView<Content: View>: View {
             .overlay(alignment: .bottom) {
                 toastOverlay
             }
-            .onChange(of: toastManager.hasPendingToast) { newValue in
-                // Capture the exit transition type before the animation starts
-                if newValue {
-                    exitWithFade = true
-                }
+            .onChange(of: toastManager.currentToast?.id) { newToastId in
+                handleToastChange(newToastId: newToastId)
             }
-            .onChange(of: toastManager.currentToast?.id) { newValue in
-                // Reset exit transition when a new toast appears
-                if newValue != nil {
-                    exitWithFade = false
+    }
+
+    private func handleToastChange(newToastId: UUID?) {
+        if newToastId != nil {
+            // A new toast is being shown
+            if displayedToast != nil {
+                // There's a current toast - exit with fade, then show new
+                exitCurrentToast(withFade: true) {
+                    showNewToast()
                 }
+            } else {
+                // No current toast - just show the new one
+                showNewToast()
             }
+        } else {
+            // Toast is being dismissed (no replacement)
+            if displayedToast != nil {
+                exitCurrentToast(withFade: false, completion: nil)
+            }
+        }
+    }
+
+    private func showNewToast() {
+        displayedToast = toastManager.currentToast
+        animationPhase = .entering
+
+        withAnimation(.easeOut(duration: toastAnimationDuration)) {
+            animationPhase = .visible
+        }
+    }
+
+    private func exitCurrentToast(withFade: Bool, completion: (() -> Void)?) {
+        let exitPhase: ToastAnimationPhase = withFade ? .exitingWithFade : .exitingWithSlide
+
+        withAnimation(.easeIn(duration: toastAnimationDuration)) {
+            animationPhase = exitPhase
+        }
+
+        // After animation completes, clean up and run completion
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: UInt64(toastAnimationDuration * 1_000_000_000))
+            displayedToast = nil
+            animationPhase = .hidden
+            completion?()
+        }
     }
 
     @ViewBuilder
     private var toastOverlay: some View {
-        if let toast = toastManager.currentToast {
+        if let toast = displayedToast {
             ToastItemView(
                 toast: toast,
                 dragOffset: $dragOffset,
@@ -297,16 +303,52 @@ private struct LemonadeToastContainerView<Content: View>: View {
                 hasPendingToast: toastManager.hasPendingToast,
                 onDismiss: { toastManager.dismiss() }
             )
-            .transition(
-                .asymmetric(
-                    insertion: .move(edge: .bottom),
-                    removal: exitWithFade
-                    ? AnyTransition.scale(scale: 0.88, anchor: .bottom)
-                        .combined(with: .blur)
-                        .combined(with: .opacity)
-                        : AnyTransition.move(edge: .bottom)
-                )
-            )
+            .scaleEffect(scaleForPhase, anchor: .bottom)
+            .opacity(opacityForPhase)
+            .blur(radius: blurForPhase)
+            .offset(y: offsetForPhase)
+        }
+    }
+
+    private var scaleForPhase: CGFloat {
+        switch animationPhase {
+        case .exitingWithFade:
+            return 0.88
+        default:
+            return 1.0
+        }
+    }
+
+    private var opacityForPhase: Double {
+        switch animationPhase {
+        case .entering, .exitingWithSlide:
+            return 1.0
+        case .visible:
+            return 1.0
+        case .exitingWithFade, .hidden:
+            return animationPhase == .hidden ? 1.0 : 0.0
+        }
+    }
+
+    private var blurForPhase: CGFloat {
+        switch animationPhase {
+        case .exitingWithFade:
+            return 10.0
+        default:
+            return 0.0
+        }
+    }
+
+    private var offsetForPhase: CGFloat {
+        switch animationPhase {
+        case .entering:
+            return 200  // Start off-screen
+        case .visible, .exitingWithFade:
+            return 0
+        case .exitingWithSlide:
+            return 200  // Slide off-screen
+        case .hidden:
+            return 200
         }
     }
 }

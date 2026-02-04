@@ -23,7 +23,7 @@ public enum LemonadeToastVoice {
     func iconColor(colors: LemonadeSemanticColors) -> Color {
         switch self {
         case .success: return colors.content.contentPositiveOnColor
-        case .error: return colors.content.contentCriticalOnColor
+        case .error: return colors.content.contentCritical
         case .neutral: return colors.content.contentNeutralOnColor
         }
     }
