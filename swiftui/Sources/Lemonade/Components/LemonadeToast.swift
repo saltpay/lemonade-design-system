@@ -33,10 +33,12 @@ public enum LemonadeToastVoice {
     @available(iOS 17.0, macOS 14.0, *)
     var sensoryFeedback: SensoryFeedback {
         switch self {
-        case .success, .neutral:
+        case .success:
             return .success
         case .error:
             return .error
+        case .neutral:
+            return .impact
         }
     }
 }
