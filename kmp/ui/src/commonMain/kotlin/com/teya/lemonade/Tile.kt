@@ -128,24 +128,22 @@ private fun CoreTile(
                         }
                     )
                     .then(
-                        other = variant.data.shadow
-                            ?.let { lemonadeShadow ->
-                                Modifier.lemonadeShadow(
-                                    shadow = lemonadeShadow,
-                                    shape = tileShape,
-                                )
-                            }
+                        other = variant.data.shadow?.let { lemonadeShadow ->
+                            Modifier.lemonadeShadow(
+                                shadow = lemonadeShadow,
+                                shape = tileShape,
+                            )
+                        }
                             ?: Modifier,
                     )
                     .then(
-                        other = variant.data.borderColor
-                            ?.let { borderColor ->
-                                Modifier.border(
-                                    color = borderColor,
-                                    shape = tileShape,
-                                    width = LocalBorderWidths.current.base.border25,
-                                )
-                            }
+                        other = variant.data.borderColor?.let { borderColor ->
+                            Modifier.border(
+                                color = borderColor,
+                                shape = tileShape,
+                                width = LocalBorderWidths.current.base.border25,
+                            )
+                        }
                             ?: Modifier,
                     )
                     .clip(shape = tileShape)
@@ -182,27 +180,29 @@ internal data class TileData(
 )
 
 internal val LemonadeTileVariant.data: TileData
-    @Composable get() = when (this) {
-        LemonadeTileVariant.Neutral -> TileData(
-            backgroundColor = LocalColors.current.background.bgElevated,
-            backgroundPressedColor = LocalColors.current.interaction.bgElevatedPressed,
-            borderColor = LocalColors.current.border.borderNeutralMedium,
-            shadow = null,
-        )
+    @Composable get() {
+        return when (this) {
+            LemonadeTileVariant.Neutral -> TileData(
+                backgroundColor = LocalColors.current.background.bgElevated,
+                backgroundPressedColor = LocalColors.current.interaction.bgElevatedPressed,
+                borderColor = LocalColors.current.border.borderNeutralMedium,
+                shadow = null,
+            )
 
-        LemonadeTileVariant.Muted -> TileData(
-            backgroundColor = LocalColors.current.background.bgDefault,
-            backgroundPressedColor = LocalColors.current.interaction.bgDefaultPressed,
-            borderColor = LocalColors.current.border.borderNeutralMedium,
-            shadow = LemonadeShadow.Xsmall,
-        )
+            LemonadeTileVariant.Muted -> TileData(
+                backgroundColor = LocalColors.current.background.bgDefault,
+                backgroundPressedColor = LocalColors.current.interaction.bgDefaultPressed,
+                borderColor = LocalColors.current.border.borderNeutralMedium,
+                shadow = LemonadeShadow.Xsmall,
+            )
 
-        LemonadeTileVariant.OnColor -> TileData(
-            backgroundColor = LocalColors.current.background.bgBrandElevated,
-            backgroundPressedColor = LocalColors.current.interaction.bgBrandElevatedPressed,
-            borderColor = LocalColors.current.border.borderNeutralMediumInverse,
-            shadow = null,
-        )
+            LemonadeTileVariant.OnColor -> TileData(
+                backgroundColor = LocalColors.current.background.bgBrandElevated,
+                backgroundPressedColor = LocalColors.current.interaction.bgBrandElevatedPressed,
+                borderColor = LocalColors.current.border.borderNeutralMediumInverse,
+                shadow = null,
+            )
+        }
     }
 
 private data class TilePreviewData(

@@ -58,14 +58,16 @@ private fun CoreBrandLogo(
 }
 
 private val LemonadeAssetSize.dp: Dp
-    @Composable get() = when (this) {
-        LemonadeAssetSize.XSmall -> LocalSizes.current.size300
-        LemonadeAssetSize.Small -> LocalSizes.current.size400
-        LemonadeAssetSize.Medium -> LocalSizes.current.size500
-        LemonadeAssetSize.Large -> LocalSizes.current.size600
-        LemonadeAssetSize.XLarge -> LocalSizes.current.size800
-        LemonadeAssetSize.XXLarge -> LocalSizes.current.size1000
-        LemonadeAssetSize.XXXLarge -> LocalSizes.current.size1200
+    @Composable get() {
+        return when (this) {
+            LemonadeAssetSize.XSmall -> LocalSizes.current.size300
+            LemonadeAssetSize.Small -> LocalSizes.current.size400
+            LemonadeAssetSize.Medium -> LocalSizes.current.size500
+            LemonadeAssetSize.Large -> LocalSizes.current.size600
+            LemonadeAssetSize.XLarge -> LocalSizes.current.size800
+            LemonadeAssetSize.XXLarge -> LocalSizes.current.size1000
+            LemonadeAssetSize.XXXLarge -> LocalSizes.current.size1200
+        }
     }
 
 private data class BrandLogoPreviewData(

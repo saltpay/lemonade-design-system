@@ -1,8 +1,19 @@
 package com.teya.lemonade.app
 
 import androidx.compose.runtime.Composable
+import com.teya.lemonade.Displays
+import com.teya.lemonade.TopBarDisplay
+import com.teya.lemonade.TopBarSampleDisplay
+import com.teya.lemonade.SearchTopBarDisplay
+import com.teya.lemonade.SearchTopBarSampleDisplay
 
 @Composable
 internal actual fun App() {
     // TODO - make the mobile backstack and shenanigans
 }
+
+internal actual val platformScreens: Map<Displays, @Composable ((onNavigate: (Displays) -> Unit) -> Unit)> =
+    mapOf(
+        TopBarDisplay to { _ -> TopBarSampleDisplay() },
+        SearchTopBarDisplay to { _ -> SearchTopBarSampleDisplay() },
+    )

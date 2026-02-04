@@ -7,7 +7,8 @@ import org.jetbrains.compose.resources.DrawableResource
  * Auto-generated extension for LemonadeCountryFlags enum providing drawable resources.
  */
 public val LemonadeCountryFlags.drawableResource: DrawableResource
-    get() = when (this) {
+    get() {
+        return when (this) {
         LemonadeCountryFlags.ACAscensionIsland -> LemonadeRes.drawable.gen_AC_ascension_island
         LemonadeCountryFlags.ADAndorra -> LemonadeRes.drawable.gen_AD_andorra
         LemonadeCountryFlags.AEUnitedArabEmirates -> LemonadeRes.drawable.gen_AE_united_arab_emirates
@@ -273,4 +274,5 @@ public val LemonadeCountryFlags.drawableResource: DrawableResource
         LemonadeCountryFlags.ZASouthAfrica -> LemonadeRes.drawable.gen_ZA_south_africa
         LemonadeCountryFlags.ZMZambia -> LemonadeRes.drawable.gen_ZM_zambia
         LemonadeCountryFlags.ZWZimbabwe -> LemonadeRes.drawable.gen_ZW_zimbabwe
+        }
     }

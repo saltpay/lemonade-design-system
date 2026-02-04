@@ -441,15 +441,19 @@ private fun SafeArea(
 
 
 private val LemonadeListItemVoice.interactionBackground: Color
-    @Composable get() = when (this) {
-        LemonadeListItemVoice.Neutral -> LocalColors.current.interaction.bgSubtleInteractive
-        LemonadeListItemVoice.Critical -> LocalColors.current.interaction.bgCriticalSubtleInteractive
+    @Composable get() {
+        return when (this) {
+            LemonadeListItemVoice.Neutral -> LocalColors.current.interaction.bgSubtleInteractive
+            LemonadeListItemVoice.Critical -> LocalColors.current.interaction.bgCriticalSubtleInteractive
+        }
     }
 
 private val LemonadeListItemVoice.contentColor: Color
-    @Composable get() = when (this) {
-        LemonadeListItemVoice.Neutral -> LocalColors.current.content.contentPrimary
-        LemonadeListItemVoice.Critical -> LocalColors.current.content.contentCritical
+    @Composable get() {
+        return when (this) {
+            LemonadeListItemVoice.Neutral -> LocalColors.current.content.contentPrimary
+            LemonadeListItemVoice.Critical -> LocalColors.current.content.contentCritical
+        }
     }
 
 private data class SelectionListItemPreviewData(
