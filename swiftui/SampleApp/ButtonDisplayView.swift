@@ -20,6 +20,8 @@ struct ButtonDisplayView: View {
                         }
 
                         LemonadeUi.Button(label: "Disabled", onClick: {}, variant: .primary, size: .medium, enabled: false)
+
+                        LemonadeUi.Button(label: "Loading", onClick: {}, variant: .primary, size: .medium, loading: true)
                     }
                 }
 
@@ -38,6 +40,8 @@ struct ButtonDisplayView: View {
                         }
 
                         LemonadeUi.Button(label: "Disabled", onClick: {}, variant: .secondary, size: .medium, enabled: false)
+
+                        LemonadeUi.Button(label: "Loading", onClick: {}, variant: .secondary, size: .medium, loading: true)
                     }
                 }
 
@@ -51,6 +55,8 @@ struct ButtonDisplayView: View {
                         }
 
                         LemonadeUi.Button(label: "Disabled", onClick: {}, variant: .neutral, size: .medium, enabled: false)
+
+                        LemonadeUi.Button(label: "Loading", onClick: {}, variant: .neutral, size: .medium, loading: true)
                     }
                 }
 
@@ -68,6 +74,8 @@ struct ButtonDisplayView: View {
                         }
 
                         LemonadeUi.Button(label: "Disabled", onClick: {}, variant: .critical, size: .medium, enabled: false)
+
+                        LemonadeUi.Button(label: "Loading", onClick: {}, variant: .critical, size: .medium, loading: true)
                     }
                 }
 
@@ -81,6 +89,8 @@ struct ButtonDisplayView: View {
                         }
 
                         LemonadeUi.Button(label: "Disabled", onClick: {}, variant: .special, size: .medium, enabled: false)
+
+                        LemonadeUi.Button(label: "Loading", onClick: {}, variant: .special, size: .medium, loading: true)
                     }
                 }
             }
