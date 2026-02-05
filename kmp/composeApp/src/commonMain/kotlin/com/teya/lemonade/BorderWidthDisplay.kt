@@ -3,6 +3,7 @@ package com.teya.lemonade
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -10,8 +11,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,17 +23,19 @@ private data class BorderWidthItem(
     val value: Dp
 )
 
-private val borderWidthItems = listOf(
-    BorderWidthItem("border0", 0.dp),
-    BorderWidthItem("border25", 1.dp),
-    BorderWidthItem("border50", 2.dp),
-    BorderWidthItem("border75", 3.dp),
-    BorderWidthItem("border100", 4.dp),
-)
+private val borderWidthItems: List<BorderWidthItem>
+    @Composable get() = listOf(
+        BorderWidthItem("border0", LemonadeTheme.borderWidths.base.border0),
+        BorderWidthItem("border25", LemonadeTheme.borderWidths.base.border25),
+        BorderWidthItem("border40", LemonadeTheme.borderWidths.base.border40),
+        BorderWidthItem("border50", LemonadeTheme.borderWidths.base.border50),
+        BorderWidthItem("border75", LemonadeTheme.borderWidths.base.border75),
+        BorderWidthItem("border100", LemonadeTheme.borderWidths.base.border100),
+    )
 
 @Composable
 internal fun BorderWidthDisplay() {
-    LazyColumn(
+    Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
         modifier = Modifier
             .fillMaxSize()
@@ -42,27 +43,25 @@ internal fun BorderWidthDisplay() {
             .navigationBarsPadding()
             .padding(LemonadeTheme.spaces.spacing300),
     ) {
-        item {
-            LemonadeUi.Text(
-                text = "Border Width Tokens",
-                textStyle = LemonadeTheme.typography.headingMedium,
-                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing200)
-            )
-        }
+        LemonadeUi.Text(
+            text = "Border Width Tokens",
+            textStyle = LemonadeTheme.typography.headingMedium,
+            modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing200)
+        )
 
-        items(borderWidthItems) { item ->
+        borderWidthItems.map { border ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
             ) {
                 LemonadeUi.Text(
-                    text = item.name,
+                    text = border.name,
                     textStyle = LemonadeTheme.typography.bodySmallMedium,
                     modifier = Modifier.width(120.dp)
                 )
 
                 LemonadeUi.Text(
-                    text = "${item.value.value.toInt()}dp",
+                    text = "${border.value.value}dp",
                     textStyle = LemonadeTheme.typography.bodySmallRegular,
                     color = LemonadeTheme.colors.content.contentSecondary,
                     modifier = Modifier.width(50.dp)
@@ -73,10 +72,10 @@ internal fun BorderWidthDisplay() {
                         .width(80.dp)
                         .height(60.dp)
                         .then(
-                            if (item.value > 0.dp) {
+                            if (border.value > 0.dp) {
                                 Modifier.border(
-                                    width = item.value,
-                                    color = LemonadePrimitiveColors.Solid.Blue.blue500,
+                                    width = border.value,
+                                    color = LemonadeTheme.colors.background.bgInfo,
                                     shape = RoundedCornerShape(8.dp)
                                 )
                             } else {

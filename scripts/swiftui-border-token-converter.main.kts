@@ -5,7 +5,7 @@
 import java.io.File
 
 data class BorderWidthResource(
-    val borderWidthValue: Int,
+    val borderWidthValue: Float,
 )
 
 fun main() {
@@ -24,7 +24,7 @@ fun main() {
             file = borderWidthTokensFile,
             resourceMap = { jsonObject ->
                 BorderWidthResource(
-                    borderWidthValue = jsonObject.getInt("resolvedValue"),
+                    borderWidthValue = jsonObject.getDouble("resolvedValue").toFloat(),
                 )
             },
         ).sortedBy { it.value.borderWidthValue }
