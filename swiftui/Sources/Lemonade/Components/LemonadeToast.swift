@@ -12,7 +12,7 @@ public enum LemonadeToastVoice {
     /// Neutral toast with a customizable icon.
     case neutral
 
-    var icon: LemonadeIcon {
+    internal var icon: LemonadeIcon {
         switch self {
         case .success: return .circleCheck
         case .error: return .circleX
@@ -20,7 +20,7 @@ public enum LemonadeToastVoice {
         }
     }
 
-    func iconColor(colors: LemonadeSemanticColors) -> Color {
+    internal func iconColor(colors: LemonadeSemanticColors) -> Color {
         switch self {
         case .success: return colors.content.contentPositiveOnColor
         case .error: return colors.content.contentCritical
@@ -29,8 +29,7 @@ public enum LemonadeToastVoice {
     }
 
     /// The sensory feedback type for this voice.
-    /// Available on iOS 17+ and macOS 14+.
-    @available(iOS 17.0, macOS 14.0, *)
+    @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
     var sensoryFeedback: SensoryFeedback {
         switch self {
         case .success:

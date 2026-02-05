@@ -182,10 +182,6 @@ public final class LemonadeToastManager: ObservableObject {
             showNextToastIfAvailable()
         } else {
             currentToast = nil
-
-            Task { @MainActor in
-                try? await Task.sleep(nanoseconds: ToastAnimationConfig.nanoseconds(from: ToastAnimationConfig.duration))
-            }
         }
     }
 
@@ -304,7 +300,6 @@ private enum ToastAnimationPhase: Equatable {
 /// Uses explicit animation state management for predictable transitions.
 private struct LemonadeToastContainerView<Content: View>: View {
     @StateObject private var toastManager = LemonadeToastManager()
-    @StateObject private var keyboardObserver = KeyboardObserver()
 
     /// The toast currently being displayed (may differ from manager during transitions)
     @State private var displayedToast: LemonadeToastItem?
@@ -501,7 +496,7 @@ private struct ToastSensoryFeedbackModifier: ViewModifier {
     let voice: LemonadeToastVoice?
 
     func body(content: Content) -> some View {
-        if #available(iOS 17.0, macOS 14.0, *) {
+        if #available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *) {
             content
                 .sensoryFeedback(trigger: trigger) { _, _ in
                     voice?.sensoryFeedback
@@ -509,38 +504,6 @@ private struct ToastSensoryFeedbackModifier: ViewModifier {
         } else {
             content
         }
-    }
-}
-
-// MARK: - Keyboard Observer
-
-/// Observes keyboard visibility and height changes.
-private final class KeyboardObserver: ObservableObject {
-    @Published var keyboardHeight: CGFloat = 0
-
-    private var cancellables = Set<AnyCancellable>()
-
-    init() {
-        #if os(iOS)
-        NotificationCenter.default
-            .publisher(for: UIResponder.keyboardWillShowNotification)
-            .compactMap { notification -> CGFloat? in
-                (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect)?.height
-            }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] height in
-                self?.keyboardHeight = height
-            }
-            .store(in: &cancellables)
-
-        NotificationCenter.default
-            .publisher(for: UIResponder.keyboardWillHideNotification)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.keyboardHeight = 0
-            }
-            .store(in: &cancellables)
-        #endif
     }
 }
 
