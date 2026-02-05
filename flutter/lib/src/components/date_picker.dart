@@ -376,16 +376,20 @@ class _LemonadeDatePickerState extends State<LemonadeDatePicker> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  GestureDetector(
-                    onTap: canGoPrev ? _goToPreviousMonth : null,
-                    behavior: HitTestBehavior.opaque,
-                    child: Padding(
-                      padding: EdgeInsets.all(spaces.spacing200),
-                      child: LemonadeIcon(
-                        icon: LemonadeIcons.chevronLeft,
-                        color: canGoPrev
-                            ? theme.colors.content.contentPrimary
-                            : theme.colors.content.contentTertiary,
+                  Semantics(
+                    button: true,
+                    identifier: 'previous_month',
+                    child: GestureDetector(
+                      onTap: canGoPrev ? _goToPreviousMonth : null,
+                      behavior: HitTestBehavior.opaque,
+                      child: Padding(
+                        padding: EdgeInsets.all(spaces.spacing200),
+                        child: LemonadeIcon(
+                          icon: LemonadeIcons.chevronLeft,
+                          color: canGoPrev
+                              ? theme.colors.content.contentPrimary
+                              : theme.colors.content.contentTertiary,
+                        ),
                       ),
                     ),
                   ),
@@ -395,16 +399,20 @@ class _LemonadeDatePickerState extends State<LemonadeDatePicker> {
                       color: theme.colors.content.contentPrimary,
                     ),
                   ),
-                  GestureDetector(
-                    onTap: canGoNext ? _goToNextMonth : null,
-                    behavior: HitTestBehavior.opaque,
-                    child: Padding(
-                      padding: EdgeInsets.all(spaces.spacing200),
-                      child: LemonadeIcon(
-                        icon: LemonadeIcons.chevronRight,
-                        color: canGoNext
-                            ? theme.colors.content.contentPrimary
-                            : theme.colors.content.contentTertiary,
+                  Semantics(
+                    button: true,
+                    identifier: 'next_month',
+                    child: GestureDetector(
+                      onTap: canGoNext ? _goToNextMonth : null,
+                      behavior: HitTestBehavior.opaque,
+                      child: Padding(
+                        padding: EdgeInsets.all(spaces.spacing200),
+                        child: LemonadeIcon(
+                          icon: LemonadeIcons.chevronRight,
+                          color: canGoNext
+                              ? theme.colors.content.contentPrimary
+                              : theme.colors.content.contentTertiary,
+                        ),
                       ),
                     ),
                   ),
