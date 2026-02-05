@@ -12,11 +12,11 @@ public enum LemonadeToastVoice {
     /// Neutral toast with a customizable icon.
     case neutral
 
-    internal var icon: LemonadeIcon {
+    internal var icon: LemonadeIcon? {
         switch self {
         case .success: return .circleCheck
         case .error: return .circleX
-        case .neutral: return .circleAlert
+        case .neutral: return nil
         }
     }
 
@@ -88,10 +88,10 @@ private struct LemonadeToastView: View {
     let voice: LemonadeToastVoice
     let customIcon: LemonadeIcon?
 
-    private var displayIcon: LemonadeIcon {
+    private var displayIcon: LemonadeIcon? {
         switch voice {
         case .neutral:
-            return customIcon ?? voice.icon
+            return customIcon
         case .success, .error:
             return voice.icon
         }
@@ -106,29 +106,31 @@ private struct LemonadeToastView: View {
     }
 
     var body: some View {
-        HStack(spacing: LemonadeTheme.spaces.spacing300) {
-            LemonadeUi.Icon(
-                icon: displayIcon,
-                contentDescription: nil,
-                size: .medium,
-                tint: voice.iconColor(colors: LemonadeTheme.colors)
-            )
+        HStack(spacing: .space.spacing300) {
+            if let icon = displayIcon {
+                LemonadeUi.Icon(
+                    icon: icon,
+                    contentDescription: nil,
+                    size: .medium,
+                    tint: voice.iconColor(colors: LemonadeTheme.colors)
+                )
+            }
 
             Text(label)
                 .font(LemonadeTypography.shared.bodySmallMedium.font)
-                .foregroundStyle(LemonadeTheme.colors.content.contentAlwaysLight)
+                .foregroundStyle(.content.contentAlwaysLight)
                 .lineLimit(nil)
         }
         .padding(
             EdgeInsets(
-                top: LemonadeTheme.spaces.spacing300,
-                leading: LemonadeTheme.spaces.spacing400,
-                bottom: LemonadeTheme.spaces.spacing300,
-                trailing: LemonadeTheme.spaces.spacing500
+                top: .space.spacing300,
+                leading: .space.spacing400,
+                bottom: .space.spacing300,
+                trailing: .space.spacing500
             )
         )
-        .frame(minHeight: LemonadeTheme.sizes.size1100)
-        .background(LemonadeTheme.colors.background.bgAlwaysDark)
+        .frame(minHeight: .size.size1100)
+        .background(.bg.bgAlwaysDark)
         .clipShape(RoundedRectangle(cornerRadius: .radius.radiusFull))
         .lemonadeShadow(.large)
         .accessibilityElement(children: .combine)
@@ -141,11 +143,12 @@ private struct LemonadeToastView: View {
 #if DEBUG
 struct LemonadeToast_Previews: PreviewProvider {
     static var previews: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: .space.spacing600) {
             LemonadeUi.Toast(label: "Changes saved successfully", voice: .success)
             LemonadeUi.Toast(label: "Something went wrong", voice: .error)
-            LemonadeUi.Toast(label: "Your session will expire soon", voice: .neutral)
+            LemonadeUi.Toast(label: "Your session will expire soon", voice: .neutral, icon: .circleAlert)
             LemonadeUi.Toast(label: "Added to favorites", voice: .neutral, icon: .heart)
+            LemonadeUi.Toast(label: "Toast without an icon", voice: .neutral)
             LemonadeUi.Toast(label: "Really long label that should wrap onto multiple lines to demonstrate text wrapping in the toast component", voice: .neutral, icon: .heart)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
