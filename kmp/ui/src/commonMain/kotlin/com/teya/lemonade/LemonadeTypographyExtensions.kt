@@ -52,74 +52,54 @@ public val LemonadeTextStyle.textStyle: TextStyle
     }
 
 /**
- * Default implementation of [LemonadeTypography] following the Lemonade Design System specifications.
+ * Convenience extension to convert a [LemonadeTypography] enum value directly to a Compose [TextStyle].
  */
-internal object DefaultLemonadeTypography : LemonadeTypography() {
+public val LemonadeTypography.textStyle: TextStyle
+    @Composable get() = style.textStyle
+
+/**
+ * Provides typography styles for the Lemonade theme.
+ * Subclass to override specific styles while keeping defaults from [LemonadeTypography] enum.
+ */
+public open class LemonadeTypographyProvider {
     // Display styles
-    override val displayXSmall: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 24f, lineHeight = 32f, fontWeight = 600)
-    override val displaySmall: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 28f, lineHeight = 36f, fontWeight = 600)
-    override val displayMedium: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 36f, lineHeight = 44f, fontWeight = 600)
-    override val displayLarge: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 48f, lineHeight = 56f, fontWeight = 600)
+    public open val displayXSmall: LemonadeTextStyle get() = LemonadeTypography.DisplayXSmall.style
+    public open val displaySmall: LemonadeTextStyle get() = LemonadeTypography.DisplaySmall.style
+    public open val displayMedium: LemonadeTextStyle get() = LemonadeTypography.DisplayMedium.style
+    public open val displayLarge: LemonadeTextStyle get() = LemonadeTypography.DisplayLarge.style
 
     // Heading styles
-    override val headingXLarge: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 40f, lineHeight = 48f, fontWeight = 600)
-    override val headingLarge: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 32f, lineHeight = 40f, fontWeight = 600)
-    override val headingMedium: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 28f, lineHeight = 36f, fontWeight = 600)
-    override val headingSmall: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 24f, lineHeight = 32f, fontWeight = 600)
-    override val headingXSmall: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 18f, lineHeight = 26f, fontWeight = 600)
-    override val headingXXSmall: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 16f, lineHeight = 24f, fontWeight = 600)
+    public open val headingXLarge: LemonadeTextStyle get() = LemonadeTypography.HeadingXLarge.style
+    public open val headingLarge: LemonadeTextStyle get() = LemonadeTypography.HeadingLarge.style
+    public open val headingMedium: LemonadeTextStyle get() = LemonadeTypography.HeadingMedium.style
+    public open val headingSmall: LemonadeTextStyle get() = LemonadeTypography.HeadingSmall.style
+    public open val headingXSmall: LemonadeTextStyle get() = LemonadeTypography.HeadingXSmall.style
+    public open val headingXXSmall: LemonadeTextStyle get() = LemonadeTypography.HeadingXXSmall.style
 
     // Body XLarge styles
-    override val bodyXLargeRegular: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 20f, lineHeight = 28f, fontWeight = 400)
-    override val bodyXLargeMedium: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 20f, lineHeight = 28f, fontWeight = 500)
-    override val bodyXLargeSemiBold: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 20f, lineHeight = 28f, fontWeight = 600)
+    public open val bodyXLargeRegular: LemonadeTextStyle get() = LemonadeTypography.BodyXLargeRegular.style
+    public open val bodyXLargeMedium: LemonadeTextStyle get() = LemonadeTypography.BodyXLargeMedium.style
+    public open val bodyXLargeSemiBold: LemonadeTextStyle get() = LemonadeTypography.BodyXLargeSemiBold.style
 
     // Body Large styles
-    override val bodyLargeRegular: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 18f, lineHeight = 28f, fontWeight = 400)
-    override val bodyLargeMedium: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 18f, lineHeight = 28f, fontWeight = 500)
-    override val bodyLargeSemiBold: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 18f, lineHeight = 28f, fontWeight = 600)
+    public open val bodyLargeRegular: LemonadeTextStyle get() = LemonadeTypography.BodyLargeRegular.style
+    public open val bodyLargeMedium: LemonadeTextStyle get() = LemonadeTypography.BodyLargeMedium.style
+    public open val bodyLargeSemiBold: LemonadeTextStyle get() = LemonadeTypography.BodyLargeSemiBold.style
 
     // Body Medium styles
-    override val bodyMediumRegular: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 16f, lineHeight = 24f, fontWeight = 400)
-    override val bodyMediumMedium: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 16f, lineHeight = 24f, fontWeight = 500)
-    override val bodyMediumSemiBold: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 16f, lineHeight = 24f, fontWeight = 600)
-    override val bodyMediumBold: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 16f, lineHeight = 24f, fontWeight = 600)
+    public open val bodyMediumRegular: LemonadeTextStyle get() = LemonadeTypography.BodyMediumRegular.style
+    public open val bodyMediumMedium: LemonadeTextStyle get() = LemonadeTypography.BodyMediumMedium.style
+    public open val bodyMediumSemiBold: LemonadeTextStyle get() = LemonadeTypography.BodyMediumSemiBold.style
+    public open val bodyMediumBold: LemonadeTextStyle get() = LemonadeTypography.BodyMediumBold.style
 
     // Body Small styles
-    override val bodySmallRegular: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 14f, lineHeight = 20f, fontWeight = 400)
-    override val bodySmallMedium: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 14f, lineHeight = 20f, fontWeight = 500)
-    override val bodySmallSemiBold: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 14f, lineHeight = 20f, fontWeight = 600)
+    public open val bodySmallRegular: LemonadeTextStyle get() = LemonadeTypography.BodySmallRegular.style
+    public open val bodySmallMedium: LemonadeTextStyle get() = LemonadeTypography.BodySmallMedium.style
+    public open val bodySmallSemiBold: LemonadeTextStyle get() = LemonadeTypography.BodySmallSemiBold.style
 
     // Body XSmall styles
-    override val bodyXSmallRegular: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 12f, lineHeight = 16f, fontWeight = 400)
-    override val bodyXSmallMedium: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 12f, lineHeight = 16f, fontWeight = 500)
-    override val bodyXSmallSemiBold: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 12f, lineHeight = 16f, fontWeight = 600)
-    override val bodyXSmallOverline: LemonadeTextStyle =
-        LemonadeTextStyle(fontSize = 12f, lineHeight = 16f, fontWeight = 600, letterSpacing = 1.5f)
+    public open val bodyXSmallRegular: LemonadeTextStyle get() = LemonadeTypography.BodyXSmallRegular.style
+    public open val bodyXSmallMedium: LemonadeTextStyle get() = LemonadeTypography.BodyXSmallMedium.style
+    public open val bodyXSmallSemiBold: LemonadeTextStyle get() = LemonadeTypography.BodyXSmallSemiBold.style
+    public open val bodyXSmallOverline: LemonadeTextStyle get() = LemonadeTypography.BodyXSmallOverline.style
 }

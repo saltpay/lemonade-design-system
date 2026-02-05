@@ -12,7 +12,7 @@ import com.teya.lemonade.core.LemonadeTypography
 @Composable
 public fun LemonadeTheme(
     colors: LemonadeSemanticColors = LemonadeTheme.colors,
-    typography: LemonadeTypography = LemonadeTheme.typography,
+    typography: LemonadeTypographyProvider = LemonadeTheme.typography,
     radius: LemonadeRadiusValues = LemonadeTheme.radius,
     shapes: LemonadeShapes = LemonadeTheme.shapes,
     opacities: LemonadeOpacity = LemonadeTheme.opacities,
@@ -44,7 +44,7 @@ public object LemonadeTheme {
             return LocalColors.current
         }
 
-    public val typography: LemonadeTypography
+    public val typography: LemonadeTypographyProvider
         @Composable
         @ReadOnlyComposable
         get() {
@@ -99,9 +99,9 @@ internal val LocalColors: ProvidableCompositionLocal<LemonadeSemanticColors> =
         LemonadeLightTheme
     }
 
-internal val LocalTypographies: ProvidableCompositionLocal<LemonadeTypography> =
+internal val LocalTypographies: ProvidableCompositionLocal<LemonadeTypographyProvider> =
     staticCompositionLocalOf {
-        DefaultLemonadeTypography
+        LemonadeTypographyProvider()
     }
 
 internal val LocalContentColors: ProvidableCompositionLocal<Color> = staticCompositionLocalOf {
@@ -110,7 +110,7 @@ internal val LocalContentColors: ProvidableCompositionLocal<Color> = staticCompo
 
 internal val LocalTextStyles: ProvidableCompositionLocal<LemonadeTextStyle> =
     staticCompositionLocalOf {
-        DefaultLemonadeTypography.bodyMediumRegular
+        LemonadeTypography.BodyMediumRegular.style
     }
 
 internal val LocalRadius: ProvidableCompositionLocal<LemonadeRadiusValues> =
