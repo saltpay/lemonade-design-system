@@ -213,7 +213,7 @@ private fun CoreSearchFieldDecorationBox(
                             Modifier.clickable(
                                 onClick = onLeadingIconClicked,
                                 interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
+                                indication = LocalEffects.current.interactionIndication,
                             )
                         } else {
                             Modifier
@@ -252,7 +252,7 @@ private fun CoreSearchFieldDecorationBox(
                     .clickable(
                         onClick = onInputClear,
                         interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
+                        indication = LocalEffects.current.interactionIndication,
                     )
             )
         }
