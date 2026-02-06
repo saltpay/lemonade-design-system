@@ -25,8 +25,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.requiredSizeIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
@@ -52,7 +52,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
@@ -609,7 +608,11 @@ private fun CoreTopBar(
         },
         dividerSlot = { dividerModifier ->
             val dividerAlpha by animateFloatAsState(
-                targetValue = if (state.collapseProgress == 1f) 1f else 0f,
+                targetValue = if (state.collapseProgress == 1f) {
+                    LocalOpacities.current.base.opacity100
+                } else {
+                    LocalOpacities.current.base.opacity0
+                },
                 animationSpec = tween(
                     durationMillis = 200,
                     easing = FastOutSlowInEasing
@@ -740,23 +743,28 @@ internal fun CoreTopBarContent(
     modifier: Modifier = Modifier,
     labelAlpha: Float = LocalOpacities.current.base.opacity100,
 ) {
-    val labelVisible = labelAlpha == 1f
     val animatedLabelOffsetY by animateDpAsState(
-        targetValue = if (labelVisible) 0.dp else 8.dp,
+        targetValue = if (labelAlpha == LocalOpacities.current.base.opacity100) {
+            LocalSpaces.current.spacing0
+        } else {
+            LocalSpaces.current.spacing200
+        },
         animationSpec = tween(
             durationMillis = 200,
             easing = FastOutSlowInEasing
         ),
-        label = "LabelYOffset"
     )
 
     val animatedLabelAlpha by animateFloatAsState(
-        targetValue = if (labelVisible) 1f else 0f,
+        targetValue = if (labelAlpha == LocalOpacities.current.base.opacity100) {
+            LocalOpacities.current.base.opacity100
+        } else {
+            LocalOpacities.current.base.opacity0
+        },
         animationSpec = tween(
             durationMillis = 200,
             easing = FastOutSlowInEasing
         ),
-        label = "LabelOpacity"
     )
 
     Row(
@@ -764,9 +772,7 @@ internal fun CoreTopBarContent(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .height(LocalSizes.current.size1100)
-            .padding(
-                horizontal = LocalSpaces.current.spacing100,
-            ),
+            .padding(horizontal = LocalSpaces.current.spacing100),
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -790,11 +796,13 @@ internal fun CoreTopBarContent(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.requiredHeightIn(max = LocalSizes.current.size1000),
             horizontalArrangement = Arrangement.End,
-        ) {
-            trailingSlot?.invoke(this)
-        }
+            content = { trailingSlot?.invoke(this) },
+            modifier = Modifier.requiredSizeIn(
+                maxHeight = LocalSizes.current.size1000,
+                minWidth = LocalSizes.current.size1000,
+            ),
+        )
     }
 }
 
