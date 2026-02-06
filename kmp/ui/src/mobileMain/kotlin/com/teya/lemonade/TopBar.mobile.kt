@@ -55,6 +55,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.zIndex
 import com.teya.lemonade.core.LemonadeAssetSize
+import com.teya.lemonade.core.LemonadeIconButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TopBarAction
 import kotlinx.coroutines.CoroutineScope
@@ -811,7 +812,8 @@ private val TopBarAction.icon: LemonadeIcons
 
 private data class TopBarPreviewData(
     val collapsed: Boolean,
-    val action: TopBarAction,
+    val action: TopBarAction?,
+    val trailingIconCount: Int,
 )
 
 private class TopBarPreviewProvider : PreviewParameterProvider<TopBarPreviewData> {
@@ -819,13 +821,16 @@ private class TopBarPreviewProvider : PreviewParameterProvider<TopBarPreviewData
     private fun buildAllVariants(): Sequence<TopBarPreviewData> {
         return buildList {
             listOf(true, false).forEach { collapsed ->
-                TopBarAction.entries.forEach { action ->
-                    add(
-                        element = TopBarPreviewData(
-                            collapsed = collapsed,
-                            action = action,
-                        ),
-                    )
+                (TopBarAction.entries + listOf(null)).forEach { action ->
+                    listOf(0, 1, 2).forEach { trailingIconCount ->
+                        add(
+                            element = TopBarPreviewData(
+                                collapsed = collapsed,
+                                action = action,
+                                trailingIconCount = trailingIconCount,
+                            ),
+                        )
+                    }
                 }
             }
         }.asSequence()
@@ -845,6 +850,7 @@ private fun TopBarPreview(
         state = rememberTopBarState(
             startCollapsed = previewData.collapsed,
         ),
+        trailingSlot = previewData.trailingIconCount.toPreviewTrailingSlot(),
     )
 }
 
@@ -862,5 +868,23 @@ private fun SearchableTopBarPreview(
         state = rememberTopBarState(
             startCollapsed = previewData.collapsed,
         ),
+        trailingSlot = previewData.trailingIconCount.toPreviewTrailingSlot(),
     )
+}
+
+private fun Int.toPreviewTrailingSlot(): @Composable (RowScope.() -> Unit)? {
+    if (this == 0) {
+        return null
+    }
+    val icons = listOf(LemonadeIcons.Bell, LemonadeIcons.EllipsisVertical)
+    return {
+        icons.take(this@toPreviewTrailingSlot).forEach { icon ->
+            LemonadeUi.IconButton(
+                icon = icon,
+                contentDescription = null,
+                onClick = {},
+                variant = LemonadeIconButtonVariant.Ghost,
+            )
+        }
+    }
 }
