@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -16,7 +15,6 @@ import com.teya.lemonade.core.LemonadeIconButtonSize
 import com.teya.lemonade.core.LemonadeIconButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TopBarAction
-import com.teya.lemonade.core.TopBarVariant
 import kotlinx.coroutines.launch
 
 @Composable
@@ -31,14 +29,12 @@ internal fun TopBarSampleDisplay() {
         modifier = Modifier
             .fillMaxSize()
             .background(LemonadeTheme.colors.background.bgSubtle)
-            .statusBarsPadding()
             .navigationBarsPadding(),
     ) {
         LemonadeUi.TopBar(
             label = "Top Bar",
             collapsedLabel = "Collapsed Top Bar",
             state = topBarState,
-            variant = TopBarVariant.Subtle,
             navigationAction = TopBarAction.Close,
             onNavigationActionClicked = { /* Action Clicked */ },
             trailingSlot = {

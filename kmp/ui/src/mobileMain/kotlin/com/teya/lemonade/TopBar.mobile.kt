@@ -25,8 +25,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.requiredSizeIn
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
@@ -52,12 +53,11 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.teya.lemonade.core.LemonadeAssetSize
+import com.teya.lemonade.core.LemonadeIconButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TopBarAction
-import com.teya.lemonade.core.TopBarVariant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
@@ -259,7 +259,6 @@ public class TopBarState internal constructor(
  *     LemonadeUi.TopBar(
  *         label = "Screen Title",
  *         state = topBarState,
- *         variant = TopBarVariant.Default,
  *     )
  *
  *     LazyColumn(
@@ -303,7 +302,6 @@ public fun rememberTopBarState(
  *     LemonadeUi.TopBar(
  *         label = "Screen Title",
  *         state = topBarState,
- *         variant = TopBarVariant.Default,
  *         leadingSlot = {
  *             LemonadeUi.IconButton(
  *                 icon = LemonadeIcons.ChevronLeft,
@@ -333,7 +331,7 @@ public fun rememberTopBarState(
  * @param label The title text displayed in both expanded (large) and collapsed (small - if [collapsedLabel] is null) states.
  * @param collapsedLabel The title text displayed in collapsed (small) state. If not set it will display [label] instead.
  * @param state The [TopBarState] that manages collapse behavior. Create with [rememberTopBarState].
- * @param variant Visual variant of the top bar. See [TopBarVariant].
+ * @param backgroundColor The background color of the top bar.
  * @param navigationAction Visual variant of the top bar's action. See [TopBarAction].
  * @param onNavigationActionClicked Callback triggered when the [navigationAction] visual representation is clicked.
  * @param modifier [Modifier] applied to the top bar container.
@@ -344,9 +342,9 @@ public fun rememberTopBarState(
 @Composable
 public fun LemonadeUi.TopBar(
     label: String,
-    variant: TopBarVariant,
     modifier: Modifier = Modifier,
     state: TopBarState = rememberTopBarState(),
+    backgroundColor: Color = LocalColors.current.background.bgDefault,
     collapsedLabel: String? = null,
     navigationAction: TopBarAction? = null,
     onNavigationActionClicked: (() -> Unit)? = null,
@@ -355,7 +353,7 @@ public fun LemonadeUi.TopBar(
 ) {
     CoreTopBar(
         state = state,
-        variant = variant,
+        backgroundColor = backgroundColor,
         modifier = modifier,
         bottomSlot = bottomSlot,
         fixedHeaderSlot = { headerModifier ->
@@ -372,9 +370,8 @@ public fun LemonadeUi.TopBar(
                 trailingSlot = trailingSlot,
                 label = collapsedLabel ?: label,
                 labelAlpha = state.collapseProgress,
-                variant = variant,
                 modifier = headerModifier
-                    .background(color = variant.backgroundColor)
+                    .background(color = backgroundColor)
                     .zIndex(zIndex = 1f)
                     .padding(
                         horizontal = LocalSpaces.current.spacing200,
@@ -424,7 +421,6 @@ public fun LemonadeUi.TopBar(
  *     LemonadeUi.SearchTopBar(
  *         label = "Search",
  *         state = topBarState,
- *         variant = TopBarVariant.Default,
  *         searchInput = query,
  *         onSearchChanged = { query = it },
  *         navigationAction = TopBarAction.Back,
@@ -440,11 +436,11 @@ public fun LemonadeUi.TopBar(
  * ```
  *
  * @param label The title text displayed in the fixed header.
- * @param variant Visual variant of the top bar. See [TopBarVariant].
  * @param searchInput The current search query text.
  * @param onSearchChanged Callback invoked when the search query changes.
  * @param modifier [Modifier] applied to the top bar container.
  * @param state The [TopBarState] that manages collapse behavior. Create with [rememberTopBarState].
+ * @param backgroundColor The background color of the top bar.
  * @param navigationAction Optional action icon displayed in the header. See [TopBarAction].
  * @param onNavigationActionClicked Callback triggered when [navigationAction] is clicked.
  * @param trailingSlot Optional composable displayed at the end of the fixed header.
@@ -455,11 +451,11 @@ public fun LemonadeUi.TopBar(
 @OptIn(ExperimentalLemonadeComponent::class)
 public fun LemonadeUi.TopBar(
     label: String,
-    variant: TopBarVariant,
     searchInput: String,
     onSearchChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
     state: TopBarState = rememberTopBarState(),
+    backgroundColor: Color = LocalColors.current.background.bgDefault,
     navigationAction: TopBarAction? = null,
     onNavigationActionClicked: (() -> Unit)? = null,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
@@ -471,11 +467,11 @@ public fun LemonadeUi.TopBar(
     }
     CoreTopBar(
         state = state,
-        variant = variant,
+        backgroundColor = backgroundColor,
         fixedHeaderSlot = { headerModifier ->
             AnimatedContent(
                 modifier = headerModifier
-                    .background(color = variant.backgroundColor)
+                    .background(color = backgroundColor)
                     .zIndex(zIndex = 1f)
                     .padding(
                         horizontal = LocalSpaces.current.spacing200,
@@ -497,7 +493,6 @@ public fun LemonadeUi.TopBar(
                             },
                             trailingSlot = trailingSlot,
                             label = label,
-                            variant = variant,
                         )
                     }
                 }
@@ -586,7 +581,7 @@ private fun CoreTopBarActionContent(
 @Composable
 private fun CoreTopBar(
     state: TopBarState,
-    variant: TopBarVariant,
+    backgroundColor: Color,
     fixedHeaderSlot: @Composable (modifier: Modifier) -> Unit,
     collapsableSlot: @Composable (modifier: Modifier) -> Unit,
     bottomSlot: @Composable (BoxScope.() -> Unit)?,
@@ -596,7 +591,8 @@ private fun CoreTopBar(
         state = state,
         modifier = modifier
             .clipToBounds()
-            .background(color = variant.backgroundColor),
+            .background(color = backgroundColor)
+            .statusBarsPadding(),
         fixedHeaderSlot = fixedHeaderSlot,
         collapsableSlot = collapsableSlot,
         bottomStickySlot = bottomSlot?.let { content ->
@@ -609,7 +605,11 @@ private fun CoreTopBar(
         },
         dividerSlot = { dividerModifier ->
             val dividerAlpha by animateFloatAsState(
-                targetValue = if (state.collapseProgress == 1f) 1f else 0f,
+                targetValue = if (state.collapseProgress == 1f) {
+                    LocalOpacities.current.base.opacity100
+                } else {
+                    LocalOpacities.current.base.opacity0
+                },
                 animationSpec = tween(
                     durationMillis = 200,
                     easing = FastOutSlowInEasing
@@ -632,6 +632,9 @@ private const val LAYOUT_ID_FIXED_HEADER = "fixed_header"
 private const val LAYOUT_ID_DIVIDER = "divider"
 private const val LAYOUT_ID_COLLAPSABLE_SLOT = "collapsable_slot"
 private const val LAYOUT_ID_BOTTOM_SLOT = "bottom_slot"
+private const val LAYOUT_ID_LEADING = "leading"
+private const val LAYOUT_ID_LABEL = "label"
+private const val LAYOUT_ID_TRAILING = "trailing"
 
 @Composable
 internal fun TopBarLayout(
@@ -736,75 +739,124 @@ internal fun CoreTopBarContent(
     leadingSlot: @Composable (BoxScope.() -> Unit)?,
     trailingSlot: @Composable (RowScope.() -> Unit)?,
     label: String,
-    variant: TopBarVariant,
     modifier: Modifier = Modifier,
     labelAlpha: Float = LocalOpacities.current.base.opacity100,
 ) {
-    val labelVisible = labelAlpha == 1f
     val animatedLabelOffsetY by animateDpAsState(
-        targetValue = if (labelVisible) 0.dp else 8.dp,
+        targetValue = if (labelAlpha == LocalOpacities.current.base.opacity100) {
+            LocalSpaces.current.spacing0
+        } else {
+            LocalSpaces.current.spacing200
+        },
         animationSpec = tween(
             durationMillis = 200,
             easing = FastOutSlowInEasing
         ),
-        label = "LabelYOffset"
     )
 
     val animatedLabelAlpha by animateFloatAsState(
-        targetValue = if (labelVisible) 1f else 0f,
+        targetValue = if (labelAlpha == LocalOpacities.current.base.opacity100) {
+            LocalOpacities.current.base.opacity100
+        } else {
+            LocalOpacities.current.base.opacity0
+        },
         animationSpec = tween(
             durationMillis = 200,
             easing = FastOutSlowInEasing
         ),
-        label = "LabelOpacity"
     )
 
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
-        verticalAlignment = Alignment.CenterVertically,
+    Layout(
         modifier = modifier
-            .height(LocalSizes.current.size1100)
-            .padding(
-                horizontal = LocalSpaces.current.spacing100,
-            ),
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.requiredSize(size = LocalSizes.current.size1000),
-            content = {
-                leadingSlot?.invoke(this)
-            },
-        )
+            .height(height = LocalSizes.current.size1100)
+            .padding(horizontal = LocalSpaces.current.spacing100),
+        content = {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .layoutId(layoutId = LAYOUT_ID_LEADING)
+                    .requiredSize(size = LocalSizes.current.size1000),
+                content = {
+                    leadingSlot?.invoke(this)
+                },
+            )
 
-        LemonadeUi.Text(
-            text = label,
-            textStyle = LocalTypographies.current.headingXXSmall,
-            overflow = TextOverflow.Ellipsis,
-            textAlign = TextAlign.Center,
-            maxLines = 1,
-            modifier = Modifier
-                .weight(weight = 1f)
-                .offset(y = animatedLabelOffsetY)
-                .alpha(alpha = animatedLabelAlpha),
-        )
+            LemonadeUi.Text(
+                text = label,
+                textStyle = LocalTypographies.current.headingXXSmall,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                modifier = Modifier
+                    .layoutId(layoutId = LAYOUT_ID_LABEL)
+                    .offset(y = animatedLabelOffsetY)
+                    .alpha(alpha = animatedLabelAlpha),
+            )
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.requiredHeightIn(max = LocalSizes.current.size1000),
-            horizontalArrangement = Arrangement.End,
-        ) {
-            trailingSlot?.invoke(this)
-        }
-    }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+                content = { trailingSlot?.invoke(this) },
+                modifier = Modifier
+                    .layoutId(layoutId = LAYOUT_ID_TRAILING)
+                    .requiredSizeIn(
+                        maxHeight = LocalSizes.current.size1000,
+                        minWidth = LocalSizes.current.size1000,
+                    ),
+            )
+        },
+        measurePolicy = { measurables, constraints ->
+            val childConstraints = constraints.copy(
+                minWidth = 0,
+                minHeight = 0,
+            )
+
+            val leadingPlaceable = measurables
+                .first { measurable -> measurable.layoutId == LAYOUT_ID_LEADING }
+                .measure(constraints = childConstraints)
+
+            val trailingPlaceable = measurables
+                .first { measurable -> measurable.layoutId == LAYOUT_ID_TRAILING }
+                .measure(constraints = childConstraints)
+
+            val labelMaxWidth =
+                (constraints.maxWidth - leadingPlaceable.width - trailingPlaceable.width)
+                    .coerceAtLeast(minimumValue = 0)
+
+            val labelPlaceable = measurables
+                .first { measurable -> measurable.layoutId == LAYOUT_ID_LABEL }
+                .measure(
+                    constraints = childConstraints.copy(
+                        maxWidth = labelMaxWidth,
+                    ),
+                )
+
+            val fullWidth = constraints.maxWidth
+            val fullHeight = constraints.maxHeight
+
+            layout(width = fullWidth, height = fullHeight) {
+                leadingPlaceable.placeRelative(
+                    x = 0,
+                    y = (fullHeight - leadingPlaceable.height) / 2,
+                )
+
+                trailingPlaceable.placeRelative(
+                    x = fullWidth - trailingPlaceable.width,
+                    y = (fullHeight - trailingPlaceable.height) / 2,
+                )
+
+                val labelX = ((fullWidth - labelPlaceable.width) / 2)
+                    .coerceAtLeast(minimumValue = leadingPlaceable.width)
+                    .coerceAtMost(maximumValue = fullWidth - trailingPlaceable.width - labelPlaceable.width)
+
+                labelPlaceable.placeRelative(
+                    x = labelX,
+                    y = (fullHeight - labelPlaceable.height) / 2,
+                )
+            }
+        },
+    )
 }
-
-private val TopBarVariant.backgroundColor: Color
-    @Composable get() {
-        return when (this) {
-            TopBarVariant.Default -> LocalColors.current.background.bgDefault
-            TopBarVariant.Subtle -> LocalColors.current.background.bgSubtle
-        }
-    }
 
 private val TopBarAction.icon: LemonadeIcons
     @Composable get() {
@@ -816,8 +868,9 @@ private val TopBarAction.icon: LemonadeIcons
 
 private data class TopBarPreviewData(
     val collapsed: Boolean,
-    val action: TopBarAction,
-    val variant: TopBarVariant,
+    val action: TopBarAction?,
+    val trailingIconCount: Int,
+    val longLabel: Boolean = false,
 )
 
 private class TopBarPreviewProvider : PreviewParameterProvider<TopBarPreviewData> {
@@ -825,15 +878,18 @@ private class TopBarPreviewProvider : PreviewParameterProvider<TopBarPreviewData
     private fun buildAllVariants(): Sequence<TopBarPreviewData> {
         return buildList {
             listOf(true, false).forEach { collapsed ->
-                TopBarAction.entries.forEach { action ->
-                    TopBarVariant.entries.forEach { variant ->
-                        add(
-                            element = TopBarPreviewData(
-                                collapsed = collapsed,
-                                action = action,
-                                variant = variant,
-                            ),
-                        )
+                (TopBarAction.entries + listOf(null)).forEach { action ->
+                    listOf(0, 1, 2).forEach { trailingIconCount ->
+                        listOf(false, true).forEach { longLabel ->
+                            add(
+                                element = TopBarPreviewData(
+                                    collapsed = collapsed,
+                                    action = action,
+                                    trailingIconCount = trailingIconCount,
+                                    longLabel = longLabel,
+                                ),
+                            )
+                        }
                     }
                 }
             }
@@ -847,14 +903,19 @@ private fun TopBarPreview(
     @PreviewParameter(TopBarPreviewProvider::class)
     previewData: TopBarPreviewData,
 ) {
+    val label = if (previewData.longLabel) {
+        "A very long title that should truncate"
+    } else {
+        "Label"
+    }
     LemonadeUi.TopBar(
-        label = "Label",
-        collapsedLabel = "Collapsed Label",
-        variant = previewData.variant,
+        label = label,
+        collapsedLabel = label,
         navigationAction = previewData.action,
         state = rememberTopBarState(
             startCollapsed = previewData.collapsed,
         ),
+        trailingSlot = previewData.trailingIconCount.toPreviewTrailingSlot(),
     )
 }
 
@@ -864,14 +925,36 @@ private fun SearchableTopBarPreview(
     @PreviewParameter(TopBarPreviewProvider::class)
     previewData: TopBarPreviewData,
 ) {
+    val label = if (previewData.longLabel) {
+        "A very long title that should truncate"
+    } else {
+        "Label"
+    }
     LemonadeUi.TopBar(
-        label = "Label",
-        variant = previewData.variant,
+        label = label,
         navigationAction = previewData.action,
         searchInput = "Search",
         onSearchChanged = { /* Search Callback */ },
         state = rememberTopBarState(
             startCollapsed = previewData.collapsed,
-        )
+        ),
+        trailingSlot = previewData.trailingIconCount.toPreviewTrailingSlot(),
     )
+}
+
+private fun Int.toPreviewTrailingSlot(): @Composable (RowScope.() -> Unit)? {
+    if (this == 0) {
+        return null
+    }
+    val icons = listOf(LemonadeIcons.Bell, LemonadeIcons.EllipsisVertical)
+    return {
+        icons.take(this@toPreviewTrailingSlot).forEach { icon ->
+            LemonadeUi.IconButton(
+                icon = icon,
+                contentDescription = null,
+                onClick = {},
+                variant = LemonadeIconButtonVariant.Ghost,
+            )
+        }
+    }
 }

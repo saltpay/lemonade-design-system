@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -21,7 +20,6 @@ import com.teya.lemonade.core.LemonadeIconButtonSize
 import com.teya.lemonade.core.LemonadeIconButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TopBarAction
-import com.teya.lemonade.core.TopBarVariant
 import kotlinx.coroutines.launch
 
 private val sampleItems = listOf(
@@ -64,13 +62,11 @@ internal fun SearchTopBarSampleDisplay() {
         modifier = Modifier
             .fillMaxSize()
             .background(LemonadeTheme.colors.background.bgSubtle)
-            .statusBarsPadding()
             .navigationBarsPadding(),
     ) {
         LemonadeUi.TopBar(
             label = "Top Bar",
             state = topBarState,
-            variant = TopBarVariant.Subtle,
             searchInput = searchInput,
             onSearchChanged = { searchInput = it },
             navigationAction = TopBarAction.Close,
