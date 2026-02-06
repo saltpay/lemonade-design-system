@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.requiredSizeIn
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
@@ -589,7 +590,8 @@ private fun CoreTopBar(
         state = state,
         modifier = modifier
             .clipToBounds()
-            .background(color = backgroundColor),
+            .background(color = backgroundColor)
+            .statusBarsPadding(),
         fixedHeaderSlot = fixedHeaderSlot,
         collapsableSlot = collapsableSlot,
         bottomStickySlot = bottomSlot?.let { content ->
