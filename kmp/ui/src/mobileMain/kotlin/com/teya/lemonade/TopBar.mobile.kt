@@ -56,7 +56,6 @@ import androidx.compose.ui.zIndex
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TopBarAction
-import com.teya.lemonade.core.TopBarVariant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
@@ -258,7 +257,6 @@ public class TopBarState internal constructor(
  *     LemonadeUi.TopBar(
  *         label = "Screen Title",
  *         state = topBarState,
- *         variant = TopBarVariant.Default,
  *     )
  *
  *     LazyColumn(
@@ -302,7 +300,6 @@ public fun rememberTopBarState(
  *     LemonadeUi.TopBar(
  *         label = "Screen Title",
  *         state = topBarState,
- *         variant = TopBarVariant.Default,
  *         leadingSlot = {
  *             LemonadeUi.IconButton(
  *                 icon = LemonadeIcons.ChevronLeft,
@@ -332,7 +329,7 @@ public fun rememberTopBarState(
  * @param label The title text displayed in both expanded (large) and collapsed (small - if [collapsedLabel] is null) states.
  * @param collapsedLabel The title text displayed in collapsed (small) state. If not set it will display [label] instead.
  * @param state The [TopBarState] that manages collapse behavior. Create with [rememberTopBarState].
- * @param variant Visual variant of the top bar. See [TopBarVariant].
+ * @param backgroundColor The background color of the top bar.
  * @param navigationAction Visual variant of the top bar's action. See [TopBarAction].
  * @param onNavigationActionClicked Callback triggered when the [navigationAction] visual representation is clicked.
  * @param modifier [Modifier] applied to the top bar container.
@@ -343,9 +340,9 @@ public fun rememberTopBarState(
 @Composable
 public fun LemonadeUi.TopBar(
     label: String,
-    variant: TopBarVariant,
     modifier: Modifier = Modifier,
     state: TopBarState = rememberTopBarState(),
+    backgroundColor: Color = LocalColors.current.background.bgDefault,
     collapsedLabel: String? = null,
     navigationAction: TopBarAction? = null,
     onNavigationActionClicked: (() -> Unit)? = null,
@@ -354,7 +351,7 @@ public fun LemonadeUi.TopBar(
 ) {
     CoreTopBar(
         state = state,
-        variant = variant,
+        backgroundColor = backgroundColor,
         modifier = modifier,
         bottomSlot = bottomSlot,
         fixedHeaderSlot = { headerModifier ->
@@ -371,9 +368,8 @@ public fun LemonadeUi.TopBar(
                 trailingSlot = trailingSlot,
                 label = collapsedLabel ?: label,
                 labelAlpha = state.collapseProgress,
-                variant = variant,
                 modifier = headerModifier
-                    .background(color = variant.backgroundColor)
+                    .background(color = backgroundColor)
                     .zIndex(zIndex = 1f)
                     .padding(
                         horizontal = LocalSpaces.current.spacing200,
@@ -423,7 +419,6 @@ public fun LemonadeUi.TopBar(
  *     LemonadeUi.SearchTopBar(
  *         label = "Search",
  *         state = topBarState,
- *         variant = TopBarVariant.Default,
  *         searchInput = query,
  *         onSearchChanged = { query = it },
  *         navigationAction = TopBarAction.Back,
@@ -439,11 +434,11 @@ public fun LemonadeUi.TopBar(
  * ```
  *
  * @param label The title text displayed in the fixed header.
- * @param variant Visual variant of the top bar. See [TopBarVariant].
  * @param searchInput The current search query text.
  * @param onSearchChanged Callback invoked when the search query changes.
  * @param modifier [Modifier] applied to the top bar container.
  * @param state The [TopBarState] that manages collapse behavior. Create with [rememberTopBarState].
+ * @param backgroundColor The background color of the top bar.
  * @param navigationAction Optional action icon displayed in the header. See [TopBarAction].
  * @param onNavigationActionClicked Callback triggered when [navigationAction] is clicked.
  * @param trailingSlot Optional composable displayed at the end of the fixed header.
@@ -454,11 +449,11 @@ public fun LemonadeUi.TopBar(
 @OptIn(ExperimentalLemonadeComponent::class)
 public fun LemonadeUi.TopBar(
     label: String,
-    variant: TopBarVariant,
     searchInput: String,
     onSearchChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
     state: TopBarState = rememberTopBarState(),
+    backgroundColor: Color = LocalColors.current.background.bgDefault,
     navigationAction: TopBarAction? = null,
     onNavigationActionClicked: (() -> Unit)? = null,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
@@ -470,11 +465,11 @@ public fun LemonadeUi.TopBar(
     }
     CoreTopBar(
         state = state,
-        variant = variant,
+        backgroundColor = backgroundColor,
         fixedHeaderSlot = { headerModifier ->
             AnimatedContent(
                 modifier = headerModifier
-                    .background(color = variant.backgroundColor)
+                    .background(color = backgroundColor)
                     .zIndex(zIndex = 1f)
                     .padding(
                         horizontal = LocalSpaces.current.spacing200,
@@ -496,7 +491,6 @@ public fun LemonadeUi.TopBar(
                             },
                             trailingSlot = trailingSlot,
                             label = label,
-                            variant = variant,
                         )
                     }
                 }
@@ -585,7 +579,7 @@ private fun CoreTopBarActionContent(
 @Composable
 private fun CoreTopBar(
     state: TopBarState,
-    variant: TopBarVariant,
+    backgroundColor: Color,
     fixedHeaderSlot: @Composable (modifier: Modifier) -> Unit,
     collapsableSlot: @Composable (modifier: Modifier) -> Unit,
     bottomSlot: @Composable (BoxScope.() -> Unit)?,
@@ -595,7 +589,7 @@ private fun CoreTopBar(
         state = state,
         modifier = modifier
             .clipToBounds()
-            .background(color = variant.backgroundColor),
+            .background(color = backgroundColor),
         fixedHeaderSlot = fixedHeaderSlot,
         collapsableSlot = collapsableSlot,
         bottomStickySlot = bottomSlot?.let { content ->
@@ -739,7 +733,6 @@ internal fun CoreTopBarContent(
     leadingSlot: @Composable (BoxScope.() -> Unit)?,
     trailingSlot: @Composable (RowScope.() -> Unit)?,
     label: String,
-    variant: TopBarVariant,
     modifier: Modifier = Modifier,
     labelAlpha: Float = LocalOpacities.current.base.opacity100,
 ) {
@@ -806,14 +799,6 @@ internal fun CoreTopBarContent(
     }
 }
 
-private val TopBarVariant.backgroundColor: Color
-    @Composable get() {
-        return when (this) {
-            TopBarVariant.Default -> LocalColors.current.background.bgDefault
-            TopBarVariant.Subtle -> LocalColors.current.background.bgSubtle
-        }
-    }
-
 private val TopBarAction.icon: LemonadeIcons
     @Composable get() {
         return when (this) {
@@ -825,7 +810,6 @@ private val TopBarAction.icon: LemonadeIcons
 private data class TopBarPreviewData(
     val collapsed: Boolean,
     val action: TopBarAction,
-    val variant: TopBarVariant,
 )
 
 private class TopBarPreviewProvider : PreviewParameterProvider<TopBarPreviewData> {
@@ -834,15 +818,12 @@ private class TopBarPreviewProvider : PreviewParameterProvider<TopBarPreviewData
         return buildList {
             listOf(true, false).forEach { collapsed ->
                 TopBarAction.entries.forEach { action ->
-                    TopBarVariant.entries.forEach { variant ->
-                        add(
-                            element = TopBarPreviewData(
-                                collapsed = collapsed,
-                                action = action,
-                                variant = variant,
-                            ),
-                        )
-                    }
+                    add(
+                        element = TopBarPreviewData(
+                            collapsed = collapsed,
+                            action = action,
+                        ),
+                    )
                 }
             }
         }.asSequence()
@@ -858,7 +839,6 @@ private fun TopBarPreview(
     LemonadeUi.TopBar(
         label = "Label",
         collapsedLabel = "Collapsed Label",
-        variant = previewData.variant,
         navigationAction = previewData.action,
         state = rememberTopBarState(
             startCollapsed = previewData.collapsed,
@@ -874,12 +854,11 @@ private fun SearchableTopBarPreview(
 ) {
     LemonadeUi.TopBar(
         label = "Label",
-        variant = previewData.variant,
         navigationAction = previewData.action,
         searchInput = "Search",
         onSearchChanged = { /* Search Callback */ },
         state = rememberTopBarState(
             startCollapsed = previewData.collapsed,
-        )
+        ),
     )
 }
