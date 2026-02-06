@@ -35,6 +35,7 @@ class LemonadeResourceListItem extends StatefulWidget {
     this.enabled = true,
     this.leadingSlot,
     this.addonSlot,
+    this.showDivider,
     this.semanticIdentifier,
     this.semanticLabel,
   });
@@ -76,6 +77,11 @@ class LemonadeResourceListItem extends StatefulWidget {
   /// Defaults to false.
   /// {@endtemplate}
   final String value;
+
+  /// {@template LemonadeCoreListItem.showDivider}
+  /// Whether to show a divider line below the item.
+  /// {@endtemplate}
+  final bool? showDivider;
 
   /// {@template LemonadeResourceListItem.onPressed}
   /// Called when the item is tapped.
@@ -137,6 +143,7 @@ class _LemonadeResourceListItemState extends State<LemonadeResourceListItem> {
       enabled: widget.enabled,
       leadingSlot: widget.leadingSlot,
       trailingSlot: finalTrailingSlot,
+      showDivider: widget.showDivider,
       onPressed: widget.onPressed,
       semanticIdentifier: widget.semanticIdentifier,
       semanticLabel: widget.semanticLabel,
