@@ -21,7 +21,6 @@ import com.teya.lemonade.core.LemonadeIconButtonSize
 import com.teya.lemonade.core.LemonadeIconButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TopBarAction
-import com.teya.lemonade.core.TopBarVariant
 import kotlinx.coroutines.launch
 
 private val sampleItems = listOf(
@@ -70,7 +69,6 @@ internal fun SearchTopBarSampleDisplay() {
         LemonadeUi.TopBar(
             label = "Top Bar",
             state = topBarState,
-            variant = TopBarVariant.Subtle,
             searchInput = searchInput,
             onSearchChanged = { searchInput = it },
             navigationAction = TopBarAction.Close,

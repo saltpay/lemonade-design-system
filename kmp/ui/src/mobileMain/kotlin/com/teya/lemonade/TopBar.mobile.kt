@@ -632,6 +632,9 @@ private const val LAYOUT_ID_FIXED_HEADER = "fixed_header"
 private const val LAYOUT_ID_DIVIDER = "divider"
 private const val LAYOUT_ID_COLLAPSABLE_SLOT = "collapsable_slot"
 private const val LAYOUT_ID_BOTTOM_SLOT = "bottom_slot"
+private const val LAYOUT_ID_LEADING = "leading"
+private const val LAYOUT_ID_LABEL = "label"
+private const val LAYOUT_ID_TRAILING = "trailing"
 
 @Composable
 internal fun TopBarLayout(
@@ -763,43 +766,96 @@ internal fun CoreTopBarContent(
         ),
     )
 
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
-        verticalAlignment = Alignment.CenterVertically,
+    Layout(
         modifier = modifier
-            .height(LocalSizes.current.size1100)
+            .height(height = LocalSizes.current.size1100)
             .padding(horizontal = LocalSpaces.current.spacing100),
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.requiredSize(size = LocalSizes.current.size1000),
-            content = {
-                leadingSlot?.invoke(this)
-            },
-        )
+        content = {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .layoutId(layoutId = LAYOUT_ID_LEADING)
+                    .requiredSize(size = LocalSizes.current.size1000),
+                content = {
+                    leadingSlot?.invoke(this)
+                },
+            )
 
-        LemonadeUi.Text(
-            text = label,
-            textStyle = LocalTypographies.current.headingXXSmall,
-            overflow = TextOverflow.Ellipsis,
-            textAlign = TextAlign.Center,
-            maxLines = 1,
-            modifier = Modifier
-                .weight(weight = 1f)
-                .offset(y = animatedLabelOffsetY)
-                .alpha(alpha = animatedLabelAlpha),
-        )
+            LemonadeUi.Text(
+                text = label,
+                textStyle = LocalTypographies.current.headingXXSmall,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                modifier = Modifier
+                    .layoutId(layoutId = LAYOUT_ID_LABEL)
+                    .offset(y = animatedLabelOffsetY)
+                    .alpha(alpha = animatedLabelAlpha),
+            )
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End,
-            content = { trailingSlot?.invoke(this) },
-            modifier = Modifier.requiredSizeIn(
-                maxHeight = LocalSizes.current.size1000,
-                minWidth = LocalSizes.current.size1000,
-            ),
-        )
-    }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+                content = { trailingSlot?.invoke(this) },
+                modifier = Modifier
+                    .layoutId(layoutId = LAYOUT_ID_TRAILING)
+                    .requiredSizeIn(
+                        maxHeight = LocalSizes.current.size1000,
+                        minWidth = LocalSizes.current.size1000,
+                    ),
+            )
+        },
+        measurePolicy = { measurables, constraints ->
+            val childConstraints = constraints.copy(
+                minWidth = 0,
+                minHeight = 0,
+            )
+
+            val leadingPlaceable = measurables
+                .first { measurable -> measurable.layoutId == LAYOUT_ID_LEADING }
+                .measure(constraints = childConstraints)
+
+            val trailingPlaceable = measurables
+                .first { measurable -> measurable.layoutId == LAYOUT_ID_TRAILING }
+                .measure(constraints = childConstraints)
+
+            val labelMaxWidth =
+                (constraints.maxWidth - leadingPlaceable.width - trailingPlaceable.width)
+                    .coerceAtLeast(minimumValue = 0)
+
+            val labelPlaceable = measurables
+                .first { measurable -> measurable.layoutId == LAYOUT_ID_LABEL }
+                .measure(
+                    constraints = childConstraints.copy(
+                        maxWidth = labelMaxWidth,
+                    ),
+                )
+
+            val fullWidth = constraints.maxWidth
+            val fullHeight = constraints.maxHeight
+
+            layout(width = fullWidth, height = fullHeight) {
+                leadingPlaceable.placeRelative(
+                    x = 0,
+                    y = (fullHeight - leadingPlaceable.height) / 2,
+                )
+
+                trailingPlaceable.placeRelative(
+                    x = fullWidth - trailingPlaceable.width,
+                    y = (fullHeight - trailingPlaceable.height) / 2,
+                )
+
+                val labelX = ((fullWidth - labelPlaceable.width) / 2)
+                    .coerceAtLeast(minimumValue = leadingPlaceable.width)
+                    .coerceAtMost(maximumValue = fullWidth - trailingPlaceable.width - labelPlaceable.width)
+
+                labelPlaceable.placeRelative(
+                    x = labelX,
+                    y = (fullHeight - labelPlaceable.height) / 2,
+                )
+            }
+        },
+    )
 }
 
 private val TopBarAction.icon: LemonadeIcons
@@ -814,6 +870,7 @@ private data class TopBarPreviewData(
     val collapsed: Boolean,
     val action: TopBarAction?,
     val trailingIconCount: Int,
+    val longLabel: Boolean = false,
 )
 
 private class TopBarPreviewProvider : PreviewParameterProvider<TopBarPreviewData> {
@@ -823,13 +880,16 @@ private class TopBarPreviewProvider : PreviewParameterProvider<TopBarPreviewData
             listOf(true, false).forEach { collapsed ->
                 (TopBarAction.entries + listOf(null)).forEach { action ->
                     listOf(0, 1, 2).forEach { trailingIconCount ->
-                        add(
-                            element = TopBarPreviewData(
-                                collapsed = collapsed,
-                                action = action,
-                                trailingIconCount = trailingIconCount,
-                            ),
-                        )
+                        listOf(false, true).forEach { longLabel ->
+                            add(
+                                element = TopBarPreviewData(
+                                    collapsed = collapsed,
+                                    action = action,
+                                    trailingIconCount = trailingIconCount,
+                                    longLabel = longLabel,
+                                ),
+                            )
+                        }
                     }
                 }
             }
@@ -843,9 +903,14 @@ private fun TopBarPreview(
     @PreviewParameter(TopBarPreviewProvider::class)
     previewData: TopBarPreviewData,
 ) {
+    val label = if (previewData.longLabel) {
+        "A very long title that should truncate"
+    } else {
+        "Label"
+    }
     LemonadeUi.TopBar(
-        label = "Label",
-        collapsedLabel = "Collapsed Label",
+        label = label,
+        collapsedLabel = label,
         navigationAction = previewData.action,
         state = rememberTopBarState(
             startCollapsed = previewData.collapsed,
@@ -860,8 +925,13 @@ private fun SearchableTopBarPreview(
     @PreviewParameter(TopBarPreviewProvider::class)
     previewData: TopBarPreviewData,
 ) {
+    val label = if (previewData.longLabel) {
+        "A very long title that should truncate"
+    } else {
+        "Label"
+    }
     LemonadeUi.TopBar(
-        label = "Label",
+        label = label,
         navigationAction = previewData.action,
         searchInput = "Search",
         onSearchChanged = { /* Search Callback */ },

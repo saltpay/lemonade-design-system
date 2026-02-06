@@ -16,7 +16,6 @@ import com.teya.lemonade.core.LemonadeIconButtonSize
 import com.teya.lemonade.core.LemonadeIconButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TopBarAction
-import com.teya.lemonade.core.TopBarVariant
 import kotlinx.coroutines.launch
 
 @Composable
@@ -38,7 +37,6 @@ internal fun TopBarSampleDisplay() {
             label = "Top Bar",
             collapsedLabel = "Collapsed Top Bar",
             state = topBarState,
-            variant = TopBarVariant.Subtle,
             navigationAction = TopBarAction.Close,
             onNavigationActionClicked = { /* Action Clicked */ },
             trailingSlot = {
