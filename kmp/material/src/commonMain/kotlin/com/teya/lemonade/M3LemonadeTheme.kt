@@ -3,12 +3,14 @@ package com.teya.lemonade
 import androidx.compose.foundation.Indication
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 public fun M3LemonadeTheme(
     colors: LemonadeSemanticColors = LemonadeTheme.colors,
@@ -33,7 +35,7 @@ public fun M3LemonadeTheme(
         sizes = sizes,
         effects = m3LemonadeEffects(effects = effects),
     ) {
-        MaterialTheme(
+        MaterialExpressiveTheme(
             colorScheme = m3LemonadeColorScheme(),
             shapes = m3LemonadeShapes(),
             typography = m3LemonadeTypography(),

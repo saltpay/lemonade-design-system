@@ -7,10 +7,10 @@ android-targetSdk = "36"
 androidx-activity = "1.10.1"
 androidx-lifecycle = "2.9.2"
 composeHotReload = "1.0.0"
-composeMultiplatform = "1.9.3"
+composeMultiplatform = "1.10.1"
 kotlin = "2.2.21"
 kotlinx-serialization = "1.9.0"
-material3 = "1.9.0"
+material3 = "1.11.0-alpha02"
 nav3 = "1.0.0"
 mavenPublish = "0.35.0"
 detekt = "1.23.8"
@@ -18,8 +18,8 @@ ktlint = "14.0.1"
 compose-rules = "0.5.6"
 
 [libraries]
-gradle-vanniktech-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "mavenPublish"}
-gradle-kmp = { module = "org.jetbrains.kotlin.multiplatform:org.jetbrains.kotlin.multiplatform.gradle.plugin", version.ref = "kotlin"}
+gradle-vanniktech-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "mavenPublish" }
+gradle-kmp = { module = "org.jetbrains.kotlin.multiplatform:org.jetbrains.kotlin.multiplatform.gradle.plugin", version.ref = "kotlin" }
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 detekt-gradlePlugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
