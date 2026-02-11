@@ -8,12 +8,11 @@ import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
-import com.teya.lemonade.core.LemonadeTypography
 
 @Composable
 public fun M3LemonadeTheme(
     colors: LemonadeSemanticColors = LemonadeTheme.colors,
-    typography: LemonadeTypography = LemonadeTheme.typography,
+    typography: LemonadeTypographyProvider = LemonadeTheme.typography,
     radius: LemonadeRadiusValues = LemonadeTheme.radius,
     shapes: LemonadeShapes = LemonadeTheme.shapes,
     opacities: LemonadeOpacity = LemonadeTheme.opacities,
