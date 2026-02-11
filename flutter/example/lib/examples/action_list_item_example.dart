@@ -29,7 +29,6 @@ class _ActionListItemExampleScreenState
                 title: 'Basic Navigation',
                 children: [
                   LemonadeCard(
-                    padding: LemonadeCardPadding.xSmall,
                     child: Column(
                       children: [
                         LemonadeActionListItem(
@@ -57,25 +56,27 @@ class _ActionListItemExampleScreenState
                 title: 'With Description',
                 children: [
                   LemonadeCard(
-                    padding: LemonadeCardPadding.xSmall,
                     child: Column(
                       children: [
                         LemonadeActionListItem(
                           label: 'Profile',
                           description: 'View and edit your profile information',
                           withNavigation: true,
+                          showDivider: true,
                           onPressed: () => {},
                         ),
                         LemonadeActionListItem(
                           label: 'Preferences',
                           description: 'Customize your app experience',
                           withNavigation: true,
+                          showDivider: true,
                           onPressed: () => {},
                         ),
                         LemonadeActionListItem(
                           label: 'Notifications',
                           description: 'Manage notification settings',
                           withNavigation: true,
+                          showDivider: true,
                           onPressed: () => {},
                         ),
                       ],
@@ -88,13 +89,13 @@ class _ActionListItemExampleScreenState
                 title: 'With Leading Icons',
                 children: [
                   LemonadeCard(
-                    padding: LemonadeCardPadding.xSmall,
                     child: Column(
                       children: [
                         LemonadeActionListItem(
                           label: 'Account Settings',
                           description: 'Manage your account',
                           withNavigation: true,
+                          showDivider: true,
                           onPressed: () => {},
                           leadingSlot: (_) => LemonadeIcon(
                             icon: LemonadeIcons.user,
@@ -105,6 +106,7 @@ class _ActionListItemExampleScreenState
                           label: 'Security',
                           description: 'Password and login options',
                           withNavigation: true,
+                          showDivider: true,
                           onPressed: () => {},
                           leadingSlot: (_) => LemonadeIcon(
                             icon: LemonadeIcons.padlock,
@@ -131,13 +133,13 @@ class _ActionListItemExampleScreenState
                 title: 'With Trailing Content',
                 children: [
                   LemonadeCard(
-                    padding: LemonadeCardPadding.xSmall,
                     child: Column(
                       children: [
                         LemonadeActionListItem(
                           label: 'Verified',
                           description: 'Your account is verified',
                           withNavigation: true,
+                          showDivider: true,
                           onPressed: () => {},
                           trailingSlot: (_) => const LemonadeTag(
                             label: 'New',
@@ -148,6 +150,7 @@ class _ActionListItemExampleScreenState
                           label: 'Unread Notifications',
                           description: 'You have 3 new messages',
                           withNavigation: true,
+                          showDivider: true,
                           onPressed: () => {},
                           trailingSlot: (_) => const LemonadeTag(
                             label: 'Danger',
@@ -158,6 +161,7 @@ class _ActionListItemExampleScreenState
                           label: 'Premium Member',
                           description: 'Enjoy exclusive benefits',
                           withNavigation: true,
+                          showDivider: true,
                           onPressed: () => debugPrint('Click'),
                           leadingSlot: (_) => const LemonadeIcon(
                             icon: LemonadeIcons.star,
@@ -177,7 +181,6 @@ class _ActionListItemExampleScreenState
                 title: 'Without Navigation',
                 children: [
                   LemonadeCard(
-                    padding: LemonadeCardPadding.xSmall,
                     child: Column(
                       children: [
                         const LemonadeActionListItem(
@@ -204,7 +207,6 @@ class _ActionListItemExampleScreenState
                 title: 'Disabled State',
                 children: [
                   LemonadeCard(
-                    padding: LemonadeCardPadding.xSmall,
                     child: Column(
                       children: [
                         const LemonadeActionListItem(
