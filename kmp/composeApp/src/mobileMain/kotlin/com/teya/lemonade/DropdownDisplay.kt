@@ -53,19 +53,19 @@ internal fun DropDownSampleDisplay() {
                     size = LemonadeButtonSize.Medium,
                 )
 
-                LemonadeUi.DropDown(
+                LemonadeUi.Dropdown(
                     expanded = basicExpanded,
                     onDismissRequest = { basicExpanded = false },
                 ) {
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Option 1",
                         onClick = { basicExpanded = false },
                     )
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Option 2",
                         onClick = { basicExpanded = false },
                     )
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Option 3",
                         onClick = { basicExpanded = false },
                     )
@@ -84,40 +84,40 @@ internal fun DropDownSampleDisplay() {
                     size = LemonadeButtonSize.Medium,
                 )
 
-                LemonadeUi.DropDown(
+                LemonadeUi.Dropdown(
                     expanded = leadingIconsExpanded,
                     onDismissRequest = { leadingIconsExpanded = false },
                 ) {
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Settings",
                         onClick = { leadingIconsExpanded = false },
                         leadingIcon = {
                             LemonadeUi.Icon(
                                 icon = LemonadeIcons.Gear,
                                 contentDescription = null,
-                                size = LemonadeAssetSize.Small,
+                                size = LemonadeAssetSize.Medium,
                             )
                         },
                     )
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Profile",
                         onClick = { leadingIconsExpanded = false },
                         leadingIcon = {
                             LemonadeUi.Icon(
                                 icon = LemonadeIcons.User,
                                 contentDescription = null,
-                                size = LemonadeAssetSize.Small,
+                                size = LemonadeAssetSize.Medium,
                             )
                         },
                     )
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Notifications",
                         onClick = { leadingIconsExpanded = false },
                         leadingIcon = {
                             LemonadeUi.Icon(
                                 icon = LemonadeIcons.Bell,
                                 contentDescription = null,
-                                size = LemonadeAssetSize.Small,
+                                size = LemonadeAssetSize.Medium,
                             )
                         },
                     )
@@ -136,11 +136,11 @@ internal fun DropDownSampleDisplay() {
                     size = LemonadeButtonSize.Medium,
                 )
 
-                LemonadeUi.DropDown(
+                LemonadeUi.Dropdown(
                     expanded = trailingIconsExpanded,
                     onDismissRequest = { trailingIconsExpanded = false },
                 ) {
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Edit",
                         onClick = { trailingIconsExpanded = false },
                         trailingIcon = {
@@ -151,7 +151,7 @@ internal fun DropDownSampleDisplay() {
                             )
                         },
                     )
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Share",
                         onClick = { trailingIconsExpanded = false },
                         trailingIcon = {
@@ -162,7 +162,7 @@ internal fun DropDownSampleDisplay() {
                             )
                         },
                     )
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Delete",
                         onClick = { trailingIconsExpanded = false },
                         trailingIcon = {
@@ -188,20 +188,20 @@ internal fun DropDownSampleDisplay() {
                     size = LemonadeButtonSize.Medium,
                 )
 
-                LemonadeUi.DropDown(
+                LemonadeUi.Dropdown(
                     expanded = disabledItemsExpanded,
                     onDismissRequest = { disabledItemsExpanded = false },
                 ) {
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Available Option",
                         onClick = { disabledItemsExpanded = false },
                     )
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Disabled Option",
                         onClick = {},
                         enabled = false,
                     )
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Another Available",
                         onClick = { disabledItemsExpanded = false },
                     )
@@ -225,12 +225,12 @@ internal fun DropDownSampleDisplay() {
                     size = LemonadeButtonSize.Medium,
                 )
 
-                LemonadeUi.DropDown(
+                LemonadeUi.Dropdown(
                     expanded = nonDismissableExpanded,
                     onDismissRequest = { nonDismissableExpanded = false },
                     dismissable = false,
                 ) {
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Close Menu",
                         onClick = { nonDismissableExpanded = false },
                         leadingIcon = {
@@ -241,7 +241,7 @@ internal fun DropDownSampleDisplay() {
                             )
                         },
                     )
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Another Option",
                         onClick = { nonDismissableExpanded = false },
                     )
@@ -276,32 +276,32 @@ internal fun DropDownSampleDisplay() {
                     trailingIcon = LemonadeIcons.ChevronDown,
                 )
 
-                LemonadeUi.DropDown(
+                LemonadeUi.Dropdown(
                     expanded = interactiveExpanded,
                     onDismissRequest = { interactiveExpanded = false },
                 ) {
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Small",
                         onClick = {
                             selectedItem = "Small"
                             interactiveExpanded = false
                         },
                     )
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Medium",
                         onClick = {
                             selectedItem = "Medium"
                             interactiveExpanded = false
                         },
                     )
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Large",
                         onClick = {
                             selectedItem = "Large"
                             interactiveExpanded = false
                         },
                     )
-                    LemonadeUi.DropDownItem(
+                    LemonadeUi.DropdownItem(
                         text = "Extra Large",
                         onClick = {
                             selectedItem = "Extra Large"
