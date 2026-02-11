@@ -11,6 +11,7 @@ private val scripts = listOf(
     "kotlin scripts/kmp-dimension-token-converter.main.kts",
     "kotlin scripts/kmp-svg-converter.main.kts -pack-dir icons/ -pack-name LemonadeIcons",
     "kotlin scripts/kmp-svg-converter.main.kts -pack-dir flags/ -pack-name LemonadeCountryFlags",
+    "kotlin scripts/kmp-country-flags-alpha2-generator.main.kts",
     "kotlin scripts/kmp-svg-converter.main.kts -pack-dir brandLogos/ -pack-name LemonadeBrandLogos",
 )
 
