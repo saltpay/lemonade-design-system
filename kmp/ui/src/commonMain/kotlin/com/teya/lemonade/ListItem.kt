@@ -91,6 +91,7 @@ public fun LemonadeUi.SelectListItem(
         role = when (type) {
             SelectListItemType.Single -> Role.RadioButton
             SelectListItemType.Multiple -> Role.Checkbox
+            SelectListItemType.Toggle -> Role.Switch
         },
         onListItemClick = {
             when (type) {
@@ -100,7 +101,8 @@ public fun LemonadeUi.SelectListItem(
                     }
                 }
 
-                SelectListItemType.Multiple -> {
+                SelectListItemType.Multiple,
+                SelectListItemType.Toggle -> {
                     onItemClicked()
                 }
             }
@@ -134,6 +136,14 @@ public fun LemonadeUi.SelectListItem(
                             } else {
                                 CheckboxStatus.Unchecked
                             },
+                        )
+                    }
+
+                    SelectListItemType.Toggle -> {
+                        LemonadeUi.Switch(
+                            enabled = enabled,
+                            checked = checked,
+                            onCheckedChange = { onItemClicked() },
                         )
                     }
                 }
