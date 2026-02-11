@@ -24,6 +24,7 @@ import com.teya.lemonade.core.SelectListItemType
 internal fun SelectionListItemDisplay() {
     var singleSelection by remember { mutableIntStateOf(0) }
     var multipleSelections by remember { mutableStateOf(setOf(0)) }
+    var toggleSelections by remember { mutableStateOf(setOf(0)) }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
@@ -73,7 +74,28 @@ internal fun SelectionListItemDisplay() {
                 )
             }
         }
-// SelectListItem - Multiple
+
+        // SelectListItem - Toggle
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "SelectListItem - Toggle")
+        ) {
+            (0..2).forEach { index ->
+                LemonadeUi.SelectListItem(
+                    label = "Toggle ${index + 1}",
+                    type = SelectListItemType.Toggle,
+                    checked = toggleSelections.contains(index),
+                    onItemClicked = {
+                        toggleSelections = if (toggleSelections.contains(index)) {
+                            toggleSelections - index
+                        } else {
+                            toggleSelections + index
+                        }
+                    }
+                )
+            }
+        }
+
+        // SelectListItem with Leading
         LemonadeUi.Card(
             header = CardHeaderConfig(title = "SelectListItem with Leading")
         ) {
@@ -101,6 +123,14 @@ internal fun SelectionListItemDisplay() {
                 label = "Disabled Option",
                 type = SelectListItemType.Single,
                 checked = false,
+                onItemClicked = {},
+                enabled = false
+            )
+
+            LemonadeUi.SelectListItem(
+                label = "Disabled Toggle",
+                type = SelectListItemType.Toggle,
+                checked = true,
                 onItemClicked = {},
                 enabled = false
             )

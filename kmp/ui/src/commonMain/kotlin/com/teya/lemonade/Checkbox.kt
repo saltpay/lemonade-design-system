@@ -59,6 +59,8 @@ import com.teya.lemonade.core.LemonadeTextStyle
  * @param onCheckboxClicked A lambda that is invoked when the user clicks the checkbox.
  * @param label The primary text label displayed next to the checkbox.
  * @param modifier The [Modifier] to be applied to the entire component.
+ * @param interactionSource Optional [MutableInteractionSource] used to observe interaction states
+ *  like hover and press to drive visual feedback.
  * @param supportText Optional secondary text displayed below the label. If null, it is not shown.
  * @param enabled A boolean that controls the enabled state of the checkbox.
  */
@@ -130,15 +132,18 @@ public fun LemonadeUi.Checkbox(
  * ```
  *
  * @param status The current [CheckboxStatus] of the checkbox.
- * @param modifier The [Modifier] to be applied to the checkbox.
  * @param onCheckboxClicked A lambda that is invoked when the user clicks the checkbox.
+ * @param modifier The [Modifier] to be applied to the checkbox.
+ * @param interactionSource Optional [MutableInteractionSource] used to observe interaction states
+ *  like hover and press to drive visual feedback.
  * @param enabled A boolean that controls the enabled state of the checkbox.
  */
 @Composable
 public fun LemonadeUi.Checkbox(
     status: CheckboxStatus,
-    modifier: Modifier = Modifier,
     onCheckboxClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     enabled: Boolean = true,
 ) {
     CoreCheckbox(

@@ -136,6 +136,8 @@ public fun LemonadeUi.RadioButton(
  * @param checked The selected state of the radio button. `true` if this option is selected, `false` otherwise.
  * @param onRadioButtonClicked A lambda that is invoked when the user clicks the radio button.
  * @param modifier The [Modifier] to be applied to the radio button.
+ * @param interactionSource Optional [MutableInteractionSource] used to observe interaction states
+ *  like hover and press to drive visual feedback.
  * @param enabled A boolean that controls the enabled state of the radio button.
  */
 @Composable
@@ -143,12 +145,14 @@ public fun LemonadeUi.RadioButton(
     checked: Boolean,
     onRadioButtonClicked: () -> Unit,
     modifier: Modifier = Modifier,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     enabled: Boolean = true,
 ) {
     CoreRadioButton(
         checked = checked,
         onRadioButtonClicked = onRadioButtonClicked,
         enabled = enabled,
+        interactionSource = interactionSource,
         modifier = modifier,
     )
 }
