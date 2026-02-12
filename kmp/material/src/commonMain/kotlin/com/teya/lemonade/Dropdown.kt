@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
+import androidx.compose.material3.Text as M3Text
 
 @Composable
 public fun LemonadeUi.Dropdown(
@@ -83,10 +84,7 @@ public fun LemonadeUi.DropdownItem(
         colors = colors,
         interactionSource = interactionSource,
         text = {
-            Text(
-                text = text,
-                textStyle = LemonadeTheme.typography.bodyMediumRegular,
-            )
+            M3Text(text = text)
         },
     )
 }

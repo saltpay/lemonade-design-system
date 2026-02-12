@@ -5,6 +5,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialExpressiveTheme
+import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
 import androidx.compose.material3.ripple
@@ -39,6 +40,7 @@ public fun M3LemonadeTheme(
             colorScheme = m3LemonadeColorScheme(),
             shapes = m3LemonadeShapes(),
             typography = m3LemonadeTypography(),
+            motionScheme = MotionScheme.expressive(),
             content = content,
         )
     }
@@ -66,6 +68,7 @@ private fun m3LemonadeTypography(): Typography {
     )
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun m3LemonadeShapes(): Shapes {
     val radius = LemonadeTheme.radius
@@ -74,7 +77,8 @@ private fun m3LemonadeShapes(): Shapes {
         small = RoundedCornerShape(radius.radius200),
         medium = RoundedCornerShape(radius.radius300),
         large = RoundedCornerShape(radius.radius400),
-        extraLarge = RoundedCornerShape(radius.radius600),
+        extraLarge = RoundedCornerShape(radius.radius500),
+        extraLargeIncreased = RoundedCornerShape(radius.radius600),
     )
 }
 
@@ -82,7 +86,7 @@ private fun m3LemonadeShapes(): Shapes {
 private fun m3LemonadeColorScheme(): ColorScheme {
     val colors = LemonadeTheme.colors
     return ColorScheme(
-        primary = colors.background.bgBrand,
+        primary = colors.content.contentBrand,
         onPrimary = colors.content.contentOnBrandHigh,
         primaryContainer = colors.background.bgBrandSubtle,
         onPrimaryContainer = colors.content.contentBrand,
@@ -114,8 +118,8 @@ private fun m3LemonadeColorScheme(): ColorScheme {
         surfaceBright = colors.background.bgElevatedHigh,
         surfaceDim = colors.background.bgSubtle,
         surfaceContainer = colors.background.bgElevated,
-        surfaceContainerHigh = colors.background.bgElevatedHigh,
-        surfaceContainerHighest = colors.background.bgElevatedHigh,
+        surfaceContainerHigh = colors.background.bgDefault,
+        surfaceContainerHighest = colors.background.bgSubtle,
         surfaceContainerLow = colors.background.bgSubtle,
         surfaceContainerLowest = colors.background.bgDefault,
         primaryFixed = colors.background.bgBrand,
