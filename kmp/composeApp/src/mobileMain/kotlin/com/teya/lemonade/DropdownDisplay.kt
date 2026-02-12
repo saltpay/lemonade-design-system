@@ -24,7 +24,7 @@ import com.teya.lemonade.core.LemonadeButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
 
 @Composable
-internal fun DropDownSampleDisplay() {
+internal fun DropdownSampleDisplay() {
     var basicExpanded by remember { mutableStateOf(false) }
     var leadingIconsExpanded by remember { mutableStateOf(false) }
     var trailingIconsExpanded by remember { mutableStateOf(false) }
@@ -32,8 +32,6 @@ internal fun DropDownSampleDisplay() {
     var nonDismissableExpanded by remember { mutableStateOf(false) }
     var interactiveExpanded by remember { mutableStateOf(false) }
     var selectedItem by remember { mutableStateOf("Select an option") }
-
-    val openAlertDialog = remember { mutableStateOf(false) }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
@@ -44,37 +42,6 @@ internal fun DropDownSampleDisplay() {
             .navigationBarsPadding()
             .padding(LemonadeTheme.spaces.spacing400),
     ) {
-
-        // Basic
-        DropdownSection(title = "Dialog") {
-            Box {
-                @OptIn(ExperimentalLemonadeComponent::class)
-                LemonadeUi.Button(
-                    label = "Open Dialog",
-                    onClick = { openAlertDialog.value = !openAlertDialog.value },
-                    variant = LemonadeButtonVariant.Secondary,
-                    size = LemonadeButtonSize.Medium,
-                )
-
-                when {
-                    openAlertDialog.value -> {
-                        LemonadeUi.AlertDialog(
-                            icon = LemonadeIcons.CircleAlert,
-                            title = "Alert dialog example",
-                            text = "This is an example of an alert dialog with buttons",
-                            dismissLabel = "Dismiss",
-                            onDismissRequest = { openAlertDialog.value = false },
-                            onConfirmation = {
-                                openAlertDialog.value = false
-                                println("Confirmation registered") // Add logic here to handle confirmation.
-                            },
-                            confirmationLabel = "Confirmation",
-                        )
-                    }
-                }
-            }
-        }
-
         // Basic
         DropdownSection(title = "Basic") {
             Box {
