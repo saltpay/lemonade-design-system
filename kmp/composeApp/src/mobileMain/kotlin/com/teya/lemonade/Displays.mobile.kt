@@ -13,12 +13,18 @@ internal data object SearchTopBarDisplay : Displays {
 }
 
 @Serializable
-internal data object DropDownDisplay : Displays {
-    override val label: String = "DropDown"
+internal data object DropdownDisplay : Displays {
+    override val label: String = "Dropdown"
+}
+
+@Serializable
+internal data object DialogDisplay : Displays {
+    override val label: String = "Dialog"
 }
 
 internal actual val platformSpecificEntries: List<Displays> = listOf(
     TopBarDisplay,
     SearchTopBarDisplay,
-    DropDownDisplay,
+    DropdownDisplay,
+    DialogDisplay
 )
