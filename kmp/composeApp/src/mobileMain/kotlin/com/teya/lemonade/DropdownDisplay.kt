@@ -33,6 +33,8 @@ internal fun DropDownSampleDisplay() {
     var interactiveExpanded by remember { mutableStateOf(false) }
     var selectedItem by remember { mutableStateOf("Select an option") }
 
+    val openAlertDialog = remember { mutableStateOf(false) }
+
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
         modifier = Modifier
@@ -42,8 +44,39 @@ internal fun DropDownSampleDisplay() {
             .navigationBarsPadding()
             .padding(LemonadeTheme.spaces.spacing400),
     ) {
+
         // Basic
-        DropDownSection(title = "Basic") {
+        DropdownSection(title = "Dialog") {
+            Box {
+                @OptIn(ExperimentalLemonadeComponent::class)
+                LemonadeUi.Button(
+                    label = "Open Dialog",
+                    onClick = { openAlertDialog.value = !openAlertDialog.value },
+                    variant = LemonadeButtonVariant.Secondary,
+                    size = LemonadeButtonSize.Medium,
+                )
+
+                when {
+                    openAlertDialog.value -> {
+                        LemonadeUi.AlertDialog(
+                            icon = LemonadeIcons.CircleAlert,
+                            title = "Alert dialog example",
+                            text = "This is an example of an alert dialog with buttons",
+                            dismissLabel = "Dismiss",
+                            onDismissRequest = { openAlertDialog.value = false },
+                            onConfirmation = {
+                                openAlertDialog.value = false
+                                println("Confirmation registered") // Add logic here to handle confirmation.
+                            },
+                            confirmationLabel = "Confirmation",
+                        )
+                    }
+                }
+            }
+        }
+
+        // Basic
+        DropdownSection(title = "Basic") {
             Box {
                 @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.Button(
@@ -74,7 +107,7 @@ internal fun DropDownSampleDisplay() {
         }
 
         // With Leading Icons
-        DropDownSection(title = "With Leading Icons") {
+        DropdownSection(title = "With Leading Icons") {
             Box {
                 @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.Button(
@@ -126,7 +159,7 @@ internal fun DropDownSampleDisplay() {
         }
 
         // With Trailing Icons
-        DropDownSection(title = "With Trailing Icons") {
+        DropdownSection(title = "With Trailing Icons") {
             Box {
                 @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.Button(
@@ -178,7 +211,7 @@ internal fun DropDownSampleDisplay() {
         }
 
         // With Disabled Items
-        DropDownSection(title = "With Disabled Items") {
+        DropdownSection(title = "With Disabled Items") {
             Box {
                 @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.Button(
@@ -210,7 +243,7 @@ internal fun DropDownSampleDisplay() {
         }
 
         // Non-Dismissable
-        DropDownSection(title = "Non-Dismissable") {
+        DropdownSection(title = "Non-Dismissable") {
             LemonadeUi.Text(
                 text = "This dropdown won't close when tapping outside",
                 textStyle = LemonadeTheme.typography.bodySmallRegular,
@@ -250,7 +283,7 @@ internal fun DropDownSampleDisplay() {
         }
 
         // Interactive
-        DropDownSection(title = "Interactive Selection") {
+        DropdownSection(title = "Interactive Selection") {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -315,7 +348,7 @@ internal fun DropDownSampleDisplay() {
 }
 
 @Composable
-private fun DropDownSection(
+private fun DropdownSection(
     title: String,
     content: @Composable () -> Unit,
 ) {
@@ -327,6 +360,7 @@ private fun DropDownSection(
             textStyle = LemonadeTheme.typography.headingXSmall,
             color = LemonadeTheme.colors.content.contentSecondary,
         )
+
         content()
     }
 }
