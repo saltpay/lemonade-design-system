@@ -1,6 +1,5 @@
 @file:OptIn(ExperimentalKotlinGradlePluginApi::class)
 
-import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
@@ -14,7 +13,7 @@ plugins {
 }
 
 lemonadePublishing {
-    artifactId = "lemonade-ui"
+    artifactId = "lemonade-material"
 }
 
 kotlin {
@@ -41,29 +40,23 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-              implementation(compose.runtime)
-              implementation(compose.foundation)
-              implementation(compose.ui)
-              implementation(compose.components.resources)
-              implementation(compose.components.uiToolingPreview)
-              api(projects.core)
-          }
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.ui)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            api(projects.ui)
+            implementation(libs.compose.material3)
+        }
 
         androidMain.dependencies {
             implementation(compose.preview)
-        }
-        val desktopMain by getting
-        desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
-        }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
         }
     }
 }
 
 android {
-    namespace = "com.teya.lemonade.ui"
+    namespace = "com.teya.lemonade.material"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
@@ -79,11 +72,4 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
-}
-
-compose.resources {
-    generateResClass = ResourcesExtension.ResourceClassGeneration.Always
-    publicResClass = true
-    nameOfResClass = "LemonadeRes"
-    packageOfResClass = "com.teya.lemonade"
 }

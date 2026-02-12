@@ -17,22 +17,24 @@ public class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val backStack = remember {
-                mutableStateListOf<Displays>(Displays.Home)
+            M3LemonadeTheme {
+                val backStack = remember {
+                    mutableStateListOf<Displays>(Displays.Home)
+                }
+                NavDisplay(
+                    backStack = backStack,
+                    onBack = {
+                        backStack.removeLastOrNull()
+                    },
+                    entryProvider = { displayKey ->
+                        NavEntry(key = displayKey) {
+                            val screen = screens[displayKey]
+                                ?: { _ -> BasicText("Invalid key") }
+                            screen.invoke { backStack.add(it) }
+                        }
+                    },
+                )
             }
-            NavDisplay(
-                backStack = backStack,
-                onBack = {
-                    backStack.removeLastOrNull()
-                },
-                entryProvider = { displayKey ->
-                    NavEntry(key = displayKey) {
-                        val screen = screens[displayKey]
-                            ?: { _ -> BasicText("Invalid key") }
-                        screen.invoke { backStack.add(it) }
-                    }
-                },
-            )
         }
     }
 }

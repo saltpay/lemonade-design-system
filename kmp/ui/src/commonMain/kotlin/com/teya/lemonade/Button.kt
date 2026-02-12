@@ -249,7 +249,7 @@ private fun CoreButton(
                 onClick = onClick,
                 interactionSource = interactionSource,
                 role = Role.Button,
-                indication = null,
+                indication = LocalEffects.current.interactionIndication,
             )
             .background(color = animatedBackgroundColor)
             .then(
