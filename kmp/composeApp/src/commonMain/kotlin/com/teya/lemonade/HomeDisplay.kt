@@ -89,6 +89,7 @@ internal object DisplayRegistry {
             title = "Display Components",
             items = listOf(
                 Displays.Tag,
+                Displays.NoticeRow,
                 Displays.Badge,
                 Displays.SymbolContainer,
                 Displays.Card,
