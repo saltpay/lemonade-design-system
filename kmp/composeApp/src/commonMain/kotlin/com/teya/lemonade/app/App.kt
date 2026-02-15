@@ -29,6 +29,7 @@ import com.teya.lemonade.SpacingDisplay
 import com.teya.lemonade.SpinnerDisplay
 import com.teya.lemonade.SwitchDisplay
 import com.teya.lemonade.SymbolContainerDisplay
+import com.teya.lemonade.TabsDisplay
 import com.teya.lemonade.TagDisplay
 import com.teya.lemonade.TextDisplay
 import com.teya.lemonade.TextFieldDisplay
@@ -71,4 +72,5 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.BorderWidth to { _ -> BorderWidthDisplay() },
     Displays.Spinner to { _ -> SpinnerDisplay() },
     Displays.Divider to { _ -> DividerDisplay() },
+    Displays.Tabs to { _ -> TabsDisplay() },
 )
