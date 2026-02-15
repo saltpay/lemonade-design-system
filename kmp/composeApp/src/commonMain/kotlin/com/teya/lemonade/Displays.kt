@@ -26,6 +26,7 @@ internal interface Displays {
             SymbolContainer,
             Text,
             Tag,
+            NoticeRow,
             TextField,
             SearchField,
             Card,
@@ -196,5 +197,10 @@ internal interface Displays {
     @Serializable
     data object Divider : Displays {
         override val label: String = "Divider"
+    }
+
+    @Serializable
+    data object NoticeRow : Displays {
+        override val label: String = "NoticeRow"
     }
 }
