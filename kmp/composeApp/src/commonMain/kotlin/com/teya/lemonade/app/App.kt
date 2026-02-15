@@ -25,6 +25,7 @@ import com.teya.lemonade.SearchFieldDisplay
 import com.teya.lemonade.SegmentedControlDisplay
 import com.teya.lemonade.SelectionListItemDisplay
 import com.teya.lemonade.ShadowDisplay
+import com.teya.lemonade.SkeletonDisplay
 import com.teya.lemonade.SizesDisplay
 import com.teya.lemonade.SpacingDisplay
 import com.teya.lemonade.SpinnerDisplay
@@ -65,6 +66,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.IconButton to { _ -> IconButtonDisplay() },
     Displays.Link to { _ -> LinkDisplay() },
     Displays.Shadows to { _ -> ShadowDisplay() },
+    Displays.Skeleton to { _ -> SkeletonDisplay() },
     Displays.Tile to { _ -> TileDisplay() },
     Displays.Spacing to { _ -> SpacingDisplay() },
     Displays.Radius to { _ -> RadiusDisplay() },
