@@ -40,6 +40,7 @@ internal interface Displays {
             BorderWidth,
             Spinner,
             Divider,
+            Popover,
         )
     }
 
@@ -196,5 +197,10 @@ internal interface Displays {
     @Serializable
     data object Divider : Displays {
         override val label: String = "Divider"
+    }
+
+    @Serializable
+    data object Popover : Displays {
+        override val label: String = "Popover"
     }
 }
