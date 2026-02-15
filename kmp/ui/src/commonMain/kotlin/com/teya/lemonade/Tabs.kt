@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 
 /**
  * A horizontal scrollable row of tab items where one is selected at a time.
@@ -63,6 +62,12 @@ internal fun CoreTabs(
     require(
         value = tabs.isNotEmpty(),
         lazyMessage = { "Tabs list should not be empty." },
+    )
+    require(
+        value = selectedIndex in tabs.indices,
+        lazyMessage = {
+            "Selected index ($selectedIndex) is out of bounds for tabs list of size ${tabs.size}."
+        },
     )
 
     val scrollState = rememberScrollState()
@@ -134,7 +139,7 @@ private fun TabItem(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 2.dp)
+                    .height(height = LocalBorderWidths.current.base.border50)
                     .background(color = LocalColors.current.content.contentBrand),
             )
         }
