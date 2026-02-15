@@ -109,7 +109,7 @@ private val ToastVoice.containerColor: Color
     }
 
 private val ToastVoice.defaultIcon: LemonadeIcons?
-    @Composable get() {
+    get() {
         return when (this) {
             ToastVoice.Neutral -> null
             ToastVoice.Info -> LemonadeIcons.CircleInfo
