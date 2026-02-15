@@ -68,7 +68,7 @@ public fun LemonadeUi.AlertDialog(
                     shape = LocalShapes.current.radius400,
                 )
                 .background(
-                    color = LocalColors.current.background.bgElevated,
+                    color = LocalColors.current.background.bgDefault,
                 )
                 .border(
                     width = LocalBorderWidths.current.base.border25,
