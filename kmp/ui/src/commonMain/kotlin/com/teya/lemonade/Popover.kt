@@ -164,8 +164,8 @@ private fun CorePopover(
                             textStyle = LocalTypographies.current.bodySmallSemiBold,
                             color = LocalColors.current.content.contentSecondaryInverse,
                             modifier = Modifier
-                                .clickable { onSecondaryAction?.invoke() }
                                 .clip(LocalShapes.current.radius200)
+                                .clickable { onSecondaryAction?.invoke() }
                                 .background(LocalColors.current.background.bgDefaultInverse)
                                 .padding(
                                     horizontal = LocalSpaces.current.spacing300,
@@ -180,8 +180,8 @@ private fun CorePopover(
                             textStyle = LocalTypographies.current.bodySmallSemiBold,
                             color = LocalColors.current.content.contentPrimaryInverse,
                             modifier = Modifier
-                                .clickable { onPrimaryAction?.invoke() }
                                 .clip(LocalShapes.current.radius200)
+                                .clickable { onPrimaryAction?.invoke() }
                                 .background(LocalColors.current.content.contentSecondaryInverse)
                                 .padding(
                                     horizontal = LocalSpaces.current.spacing300,
