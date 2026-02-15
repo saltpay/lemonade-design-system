@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 
@@ -57,10 +58,12 @@ public fun LemonadeUi.ActionRowItem(
         horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),
         modifier = modifier
             .fillMaxWidth()
+            .clip(shape = LocalShapes.current.radius300)
             .background(color = LocalColors.current.background.bgDefault)
             .border(
                 width = LocalBorderWidths.current.base.border25,
                 color = LocalColors.current.border.borderNeutralLow,
+                shape = LocalShapes.current.radius300,
             )
             .clickable(
                 enabled = enabled,
