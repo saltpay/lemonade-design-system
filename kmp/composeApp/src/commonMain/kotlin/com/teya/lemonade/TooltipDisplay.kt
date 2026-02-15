@@ -10,6 +10,10 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonVariant
@@ -46,12 +50,12 @@ internal fun TooltipDisplay() {
         }
 
         // Interactive
-        TooltipSection(title = "Interactive (Long Press)") {
+        TooltipSection(title = "Interactive (Tap to Toggle)") {
             Column(
                 verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 LemonadeUi.Text(
-                    text = "Long press any element below to see its tooltip",
+                    text = "Tap buttons below to toggle their tooltips",
                     textStyle = LemonadeTheme.typography.bodySmallRegular,
                     color = LemonadeTheme.colors.content.contentSecondary,
                 )
@@ -59,35 +63,41 @@ internal fun TooltipDisplay() {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 ) {
+                    var showPrimary by remember { mutableStateOf(value = false) }
                     LemonadeUi.TooltipBox(
                         tooltipText = "Primary action button",
+                        isVisible = showPrimary,
                     ) {
                         LemonadeUi.Button(
                             label = "Press me",
-                            onClick = {},
+                            onClick = { showPrimary = !showPrimary },
                             variant = LemonadeButtonVariant.Primary,
                             size = LemonadeButtonSize.Medium,
                         )
                     }
 
+                    var showSecondary by remember { mutableStateOf(value = false) }
                     LemonadeUi.TooltipBox(
                         tooltipText = "Secondary action",
+                        isVisible = showSecondary,
                     ) {
                         LemonadeUi.Button(
                             label = "Or me",
-                            onClick = {},
+                            onClick = { showSecondary = !showSecondary },
                             variant = LemonadeButtonVariant.Secondary,
                             size = LemonadeButtonSize.Medium,
                         )
                     }
                 }
 
+                var showNeutral by remember { mutableStateOf(value = false) }
                 LemonadeUi.TooltipBox(
-                    tooltipText = "This tooltip appears on long press",
+                    tooltipText = "This tooltip appears on tap",
+                    isVisible = showNeutral,
                 ) {
                     LemonadeUi.Button(
-                        label = "Long press for tooltip",
-                        onClick = {},
+                        label = "Tap for tooltip",
+                        onClick = { showNeutral = !showNeutral },
                         variant = LemonadeButtonVariant.Neutral,
                         size = LemonadeButtonSize.Medium,
                     )

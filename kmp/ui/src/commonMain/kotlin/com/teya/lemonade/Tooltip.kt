@@ -1,21 +1,13 @@
 package com.teya.lemonade
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import kotlinx.coroutines.delay
 
 /**
  * Tooltip component that displays explanatory text in a small popup.
@@ -69,43 +61,51 @@ public fun LemonadeUi.Tooltip(
  * - `modifier`: Optional [Modifier] for additional styling and layout adjustments.
  * - `content`: The composable content that will trigger the tooltip on long press.
  */
-@OptIn(ExperimentalFoundationApi::class)
+/**
+ * TooltipBox component that wraps content and shows a tooltip when visible.
+ *
+ * This component provides an interactive way to display tooltips. The tooltip
+ * appears above the content when [isVisible] is true and can be controlled
+ * externally by the caller.
+ *
+ * ## Usage
+ * ```kotlin
+ * var showTooltip by remember { mutableStateOf(false) }
+ * LemonadeUi.TooltipBox(
+ *     tooltipText = "Additional information",
+ *     isVisible = showTooltip,
+ * ) {
+ *     LemonadeUi.Button(
+ *         label = "Tap to toggle",
+ *         onClick = { showTooltip = !showTooltip },
+ *     )
+ * }
+ * ```
+ *
+ * @param tooltipText - [String] text to display in the tooltip.
+ * @param isVisible - [Boolean] controls whether the tooltip is shown.
+ * @param modifier - [Modifier] for additional styling.
+ * @param content - composable content that the tooltip is anchored to.
+ */
 @Composable
 public fun LemonadeUi.TooltipBox(
     tooltipText: String,
+    isVisible: Boolean,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    var showTooltip by remember { mutableStateOf(false) }
-
-    LaunchedEffect(showTooltip) {
-        if (showTooltip) {
-            delay(2000)
-            showTooltip = false
-        }
-    }
-
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        if (showTooltip) {
+        if (isVisible) {
             LemonadeUi.Tooltip(
                 text = tooltipText,
                 modifier = Modifier.padding(bottom = LocalSpaces.current.spacing200),
             )
         }
 
-        Box(
-            modifier = Modifier.combinedClickable(
-                onClick = {},
-                onLongClick = {
-                    showTooltip = true
-                },
-            ),
-        ) {
-            content()
-        }
+        content()
     }
 }
 
