@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 
+@Suppress("LongMethod")
 @Composable
 internal fun SearchFieldDisplay() {
     val focusManager = LocalFocusManager.current
@@ -44,7 +45,7 @@ internal fun SearchFieldDisplay() {
                 detectTapGestures(onTap = {
                     focusManager.clearFocus()
                 })
-            }
+            },
     ) {
         // Basic
         SearchFieldSection(title = "Basic") {
@@ -52,7 +53,7 @@ internal fun SearchFieldDisplay() {
             LemonadeUi.SearchField(
                 input = searchText1,
                 onInputChanged = { searchText1 = it },
-                placeholder = "Search..."
+                placeholder = "Search...",
             )
         }
 
@@ -62,14 +63,14 @@ internal fun SearchFieldDisplay() {
             LemonadeUi.SearchField(
                 input = searchText2,
                 onInputChanged = { searchText2 = it },
-                placeholder = "Search..."
+                placeholder = "Search...",
             )
         }
 
         // With Callbacks
         SearchFieldSection(title = "With Callbacks") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
             ) {
                 @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.SearchField(
@@ -81,14 +82,14 @@ internal fun SearchFieldDisplay() {
                     placeholder = "Type to search...",
                     onInputClear = {
                         println("Search cleared")
-                    }
+                    },
                 )
 
                 if (searchText3.isNotEmpty()) {
                     LemonadeUi.Text(
                         text = "Searching for: $searchText3",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
-                        color = LemonadeTheme.colors.content.contentSecondary
+                        color = LemonadeTheme.colors.content.contentSecondary,
                     )
                 }
             }
@@ -101,20 +102,20 @@ internal fun SearchFieldDisplay() {
                 input = "",
                 onInputChanged = {},
                 placeholder = "Search disabled...",
-                enabled = false
+                enabled = false,
             )
         }
 
         // Usage Example
         SearchFieldSection(title = "Usage Example") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.SearchField(
                     input = searchText1,
                     onInputChanged = { searchText1 = it },
-                    placeholder = "Search products..."
+                    placeholder = "Search products...",
                 )
 
                 val displayList = if (searchText1.isEmpty()) {
@@ -128,7 +129,7 @@ internal fun SearchFieldDisplay() {
                         text = "No results found",
                         textStyle = LemonadeTheme.typography.bodyMediumRegular,
                         color = LemonadeTheme.colors.content.contentSecondary,
-                        modifier = Modifier.padding(LemonadeTheme.spaces.spacing400)
+                        modifier = Modifier.padding(LemonadeTheme.spaces.spacing400),
                     )
                 } else {
                     Column {
@@ -138,17 +139,17 @@ internal fun SearchFieldDisplay() {
                                     .fillMaxWidth()
                                     .padding(vertical = LemonadeTheme.spaces.spacing200),
                                 horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 LemonadeUi.Text(
                                     text = item,
-                                    textStyle = LemonadeTheme.typography.bodyMediumRegular
+                                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
                                 )
                                 LemonadeUi.Icon(
                                     icon = LemonadeIcons.ChevronRight,
                                     contentDescription = null,
                                     size = LemonadeAssetSize.Small,
-                                    tint = LemonadeTheme.colors.content.contentTertiary
+                                    tint = LemonadeTheme.colors.content.contentTertiary,
                                 )
                             }
                         }
@@ -162,7 +163,7 @@ internal fun SearchFieldDisplay() {
 @Composable
 private fun SearchFieldSection(
     title: String,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
@@ -170,7 +171,7 @@ private fun SearchFieldSection(
         LemonadeUi.Text(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
-            color = LemonadeTheme.colors.content.contentSecondary
+            color = LemonadeTheme.colors.content.contentSecondary,
         )
         content()
     }

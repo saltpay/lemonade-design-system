@@ -16,8 +16,8 @@ public fun Modifier.shadowBorder(
     width: Dp,
     color: Color,
     shape: Shape,
-): Modifier {
-    return composed {
+): Modifier =
+    composed {
         dropShadow(
             shape = shape,
             shadow = Shadow(
@@ -31,4 +31,3 @@ public fun Modifier.shadowBorder(
             ),
         )
     }
-}

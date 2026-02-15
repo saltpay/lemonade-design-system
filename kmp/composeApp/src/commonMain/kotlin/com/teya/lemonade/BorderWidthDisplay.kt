@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 
 private data class BorderWidthItem(
     val name: String,
-    val value: Dp
+    val value: Dp,
 )
 
 private val borderWidthItems: List<BorderWidthItem>
@@ -46,7 +46,7 @@ internal fun BorderWidthDisplay() {
         LemonadeUi.Text(
             text = "Border Width Tokens",
             textStyle = LemonadeTheme.typography.headingMedium,
-            modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing200)
+            modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing200),
         )
 
         borderWidthItems.map { border ->
@@ -57,14 +57,14 @@ internal fun BorderWidthDisplay() {
                 LemonadeUi.Text(
                     text = border.name,
                     textStyle = LemonadeTheme.typography.bodySmallMedium,
-                    modifier = Modifier.width(120.dp)
+                    modifier = Modifier.width(120.dp),
                 )
 
                 LemonadeUi.Text(
                     text = "${border.value.value}dp",
                     textStyle = LemonadeTheme.typography.bodySmallRegular,
                     color = LemonadeTheme.colors.content.contentSecondary,
-                    modifier = Modifier.width(50.dp)
+                    modifier = Modifier.width(50.dp),
                 )
 
                 Box(
@@ -76,12 +76,12 @@ internal fun BorderWidthDisplay() {
                                 Modifier.border(
                                     width = border.value,
                                     color = LemonadeTheme.colors.background.bgInfo,
-                                    shape = RoundedCornerShape(8.dp)
+                                    shape = RoundedCornerShape(8.dp),
                                 )
                             } else {
                                 Modifier
-                            }
-                        )
+                            },
+                        ),
                 )
             }
         }

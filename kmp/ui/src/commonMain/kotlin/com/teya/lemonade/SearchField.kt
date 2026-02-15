@@ -34,7 +34,6 @@ import com.teya.lemonade.core.LemonadeIcons
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
-
 /**
  * Input field designated to use for search and querying.
  *
@@ -124,10 +123,11 @@ internal fun CoreSearchField(
                 leadingIcon = leadingIcon,
                 onLeadingIconClicked = onLeadingIconClicked,
             )
-        }
+        },
     )
 }
 
+@Suppress("LongMethod", "LongParameterList")
 @Composable
 private fun CoreSearchFieldDecorationBox(
     input: String,
@@ -144,33 +144,37 @@ private fun CoreSearchFieldDecorationBox(
     val isFocused by interactionSource.collectIsFocusedAsState()
 
     val animatedBackgroundColor by animateColorAsState(
-        targetValue = when {
-            isFocused -> LocalColors.current.background.bgDefault
-            else -> LocalColors.current.background.bgElevated
+        targetValue = if (isFocused) {
+            LocalColors.current.background.bgDefault
+        } else {
+            LocalColors.current.background.bgElevated
         },
     )
     val animatedSelectionColor by animateColorAsState(
-        targetValue = when {
-            isFocused -> LocalColors.current.border.borderSelected
-            else -> LocalColors.current.border.borderSelected.copy(
+        targetValue = if (isFocused) {
+            LocalColors.current.border.borderSelected
+        } else {
+            LocalColors.current.border.borderSelected.copy(
                 alpha = LocalOpacities.current.base.opacity0,
             )
         },
     )
 
     val animatedFocusedShadowColor by animateColorAsState(
-        targetValue = when {
-            isFocused -> LocalColors.current.background.bgElevatedHigh
-            else -> LocalColors.current.background.bgElevatedHigh.copy(
+        targetValue = if (isFocused) {
+            LocalColors.current.background.bgElevatedHigh
+        } else {
+            LocalColors.current.background.bgElevatedHigh.copy(
                 alpha = LocalOpacities.current.base.opacity0,
             )
         },
     )
 
     val animatedFocusedShadowSpread by animateDpAsState(
-        targetValue = when {
-            isFocused -> LocalBorderWidths.current.base.border50
-            else -> Dp.Hairline
+        targetValue = if (isFocused) {
+            LocalBorderWidths.current.base.border50
+        } else {
+            Dp.Hairline
         },
     )
 
@@ -182,16 +186,14 @@ private fun CoreSearchFieldDecorationBox(
                 width = animatedFocusedShadowSpread,
                 shape = searchFieldShape,
                 color = animatedFocusedShadowColor,
-            )
-            .clip(shape = searchFieldShape)
+            ).clip(shape = searchFieldShape)
             .height(LocalSizes.current.size1100)
             .background(color = animatedBackgroundColor)
             .border(
                 width = LocalBorderWidths.current.state.borderSelected,
                 shape = searchFieldShape,
                 color = animatedSelectionColor,
-            )
-            .padding(horizontal = LocalSpaces.current.spacing300),
+            ).padding(horizontal = LocalSpaces.current.spacing300),
     ) {
         AnimatedContent(
             targetState = leadingIcon,
@@ -218,10 +220,9 @@ private fun CoreSearchFieldDecorationBox(
                         } else {
                             Modifier
                         },
-                    )
+                    ),
             )
         }
-
 
         Box(modifier = Modifier.weight(weight = 1f)) {
             innerTextField()
@@ -253,7 +254,7 @@ private fun CoreSearchFieldDecorationBox(
                         onClick = onInputClear,
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,
-                    )
+                    ),
             )
         }
     }
@@ -266,22 +267,23 @@ private data class SearchFieldPreviewData(
 
 private class SearchFieldPreviewProvider : PreviewParameterProvider<SearchFieldPreviewData> {
     override val values: Sequence<SearchFieldPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<SearchFieldPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<SearchFieldPreviewData> =
+        buildList {
             listOf(true, false).forEach { withContent ->
                 listOf(true, false).forEach { enabled ->
                     add(
                         SearchFieldPreviewData(
                             withContent = withContent,
                             enabled = enabled,
-                        )
+                        ),
                     )
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun LemonadeSearchFieldPreview(

@@ -84,8 +84,7 @@ public fun LemonadeUi.RadioButton(
                         onRadioButtonClicked()
                     }
                 },
-            )
-            .hoverable(interactionSource = interactionSource),
+            ).hoverable(interactionSource = interactionSource),
     ) {
         CoreRadioButton(
             checked = checked,
@@ -101,7 +100,7 @@ public fun LemonadeUi.RadioButton(
                     Modifier
                 } else {
                     Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                }
+                },
             ),
         ) {
             LemonadeUi.Text(
@@ -157,6 +156,7 @@ public fun LemonadeUi.RadioButton(
     )
 }
 
+@Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
 private fun CoreRadioButton(
     checked: Boolean,
@@ -178,9 +178,10 @@ private fun CoreRadioButton(
         },
     )
     val animatedBorderColor by animateColorAsState(
-        targetValue = when {
-            checked && enabled -> LocalColors.current.background.bgBrandHigh
-            else -> LocalColors.current.border.borderNeutralMedium
+        targetValue = if (checked && enabled) {
+            LocalColors.current.background.bgBrandHigh
+        } else {
+            LocalColors.current.border.borderNeutralMedium
         },
     )
 
@@ -199,27 +200,23 @@ private fun CoreRadioButton(
                         onRadioButtonClicked()
                     }
                 },
-            )
-            .hoverable(interactionSource = interactionSource)
+            ).hoverable(interactionSource = interactionSource)
             .focusable(
                 enabled = enabled,
                 interactionSource = interactionSource,
-            )
-            .then(
+            ).then(
                 other = if (isFocused && platformProperties.focusVisible) {
                     Modifier
                         .border(
                             width = LocalBorderWidths.current.state.focusRing,
                             shape = LocalShapes.current.radiusFull,
                             color = LocalColors.current.border.borderSelected,
-                        )
-                        .padding(all = LocalBorderWidths.current.state.focusRing + 1.dp)
+                        ).padding(all = LocalBorderWidths.current.state.focusRing + 1.dp)
                         .clip(shape = LocalShapes.current.radiusFull)
                 } else {
                     Modifier
                 },
-            )
-            .requiredSize(size = platformProperties.componentSize)
+            ).requiredSize(size = platformProperties.componentSize)
             .background(color = animatedBackgroundColor)
             .then(
                 other = if (!enabled && checked) {
@@ -256,13 +253,12 @@ private fun CoreRadioButton(
                             .background(
                                 color = animatedCenterColor,
                                 shape = LocalShapes.current.radiusFull,
-                            )
-                            .requiredSize(size = platformProperties.checkedCircleSize)
+                            ).requiredSize(size = platformProperties.checkedCircleSize),
                     )
                 } else {
                     Spacer(modifier = Modifier.matchParentSize())
                 }
-            }
+            },
         )
     }
 }
@@ -279,15 +275,14 @@ internal data class RadioButtonPlatformProps(
 internal expect val platformRadioButtonPropertiesProperties: RadioButtonPlatformProps
 
 @Composable
-internal fun defaultPlatformRadioButtonProps(): RadioButtonPlatformProps {
-    return RadioButtonPlatformProps(
+internal fun defaultPlatformRadioButtonProps(): RadioButtonPlatformProps =
+    RadioButtonPlatformProps(
         componentSize = 20.dp,
         checkedCircleSize = 10.dp,
         labelStyle = LocalTypographies.current.bodyMediumMedium,
         supportTextStyle = LocalTypographies.current.bodySmallRegular,
         focusVisible = true,
     )
-}
 
 private data class RadioPreviewData(
     val checked: Boolean,
@@ -298,8 +293,9 @@ private data class RadioPreviewData(
 
 private class RadioPreviewProvider : PreviewParameterProvider<RadioPreviewData> {
     override val values: Sequence<RadioPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<RadioPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<RadioPreviewData> =
+        buildList {
             listOf(true, false).forEach { checked ->
                 listOf(true, false).forEach { enabled ->
                     listOf(true, false).forEach { withLabel ->
@@ -310,16 +306,16 @@ private class RadioPreviewProvider : PreviewParameterProvider<RadioPreviewData> 
                                     label = "Label".takeIf { withLabel },
                                     supportText = "Support Text".takeIf { withSupportText },
                                     enabled = enabled,
-                                )
+                                ),
                             )
                         }
                     }
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun LemonadeLabeledRadioButtonPreview(

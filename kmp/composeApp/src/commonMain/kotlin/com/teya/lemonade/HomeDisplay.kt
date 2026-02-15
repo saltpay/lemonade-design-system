@@ -7,9 +7,7 @@ import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 
 @Composable
-internal fun HomeDisplay(
-    onNavigate: (Displays) -> Unit
-) {
+internal fun HomeDisplay(onNavigate: (Displays) -> Unit) {
     SampleScreenDisplayLazyColumn(
         title = "Lemonade Design System",
     ) {
@@ -17,7 +15,7 @@ internal fun HomeDisplay(
             DisplayRegistry.homeItems.forEach { display ->
                 LemonadeUi.Card(
                     header = CardHeaderConfig(display.title),
-                    modifier = Modifier.padding(top = LemonadeTheme.spaces.spacing400)
+                    modifier = Modifier.padding(top = LemonadeTheme.spaces.spacing400),
                 ) {
                     display.items.forEachIndexed { index, item ->
                         LemonadeUi.ActionListItem(
@@ -29,9 +27,9 @@ internal fun HomeDisplay(
                                     icon = LemonadeIcons.ChevronRight,
                                     size = LemonadeAssetSize.Medium,
                                     contentDescription = "Navigation indicator",
-                                    tint = LemonadeTheme.colors.content.contentTertiary
+                                    tint = LemonadeTheme.colors.content.contentTertiary,
                                 )
-                            }
+                            },
                         )
                     }
                 }
@@ -52,7 +50,7 @@ internal object DisplayRegistry {
                 Displays.Sizes,
                 Displays.Opacity,
                 Displays.BorderWidth,
-            )
+            ),
         ),
         DisplayData(
             title = "Assets",
@@ -60,13 +58,13 @@ internal object DisplayRegistry {
                 Displays.Icons,
                 Displays.CountryFlag,
                 Displays.BrandLogo,
-            )
+            ),
         ),
         DisplayData(
             title = "Typography",
             items = listOf(
                 Displays.Text,
-            )
+            ),
         ),
         DisplayData(
             title = "Form Controls",
@@ -76,14 +74,14 @@ internal object DisplayRegistry {
                 Displays.Checkbox,
                 Displays.RadioButton,
                 Displays.Switch,
-            )
+            ),
         ),
         DisplayData(
             title = "Input Fields",
             items = listOf(
                 Displays.TextField,
                 Displays.SearchField,
-            )
+            ),
         ),
         DisplayData(
             title = "Display Components",
@@ -94,7 +92,7 @@ internal object DisplayRegistry {
                 Displays.Card,
                 Displays.Spinner,
                 Displays.Divider,
-            )
+            ),
         ),
         DisplayData(
             title = "Selection & Lists",
@@ -104,13 +102,13 @@ internal object DisplayRegistry {
                 Displays.ResourceListItem,
                 Displays.SegmentedControl,
                 Displays.ActionListItem,
-            )
+            ),
         ),
         DisplayData(
             title = "Navigation",
             items = listOf(
                 Displays.Tile,
-            )
+            ),
         ),
         DisplayData(
             title = "Platform Specific",
@@ -120,6 +118,6 @@ internal object DisplayRegistry {
 
     data class DisplayData(
         val title: String,
-        val items: List<Displays>
+        val items: List<Displays>,
     )
 }
