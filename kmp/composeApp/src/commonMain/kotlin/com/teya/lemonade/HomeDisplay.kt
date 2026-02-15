@@ -104,6 +104,7 @@ internal object DisplayRegistry {
                 Displays.ResourceListItem,
                 Displays.SegmentedControl,
                 Displays.ActionListItem,
+                Displays.ActionRowItem,
             )
         ),
         DisplayData(
