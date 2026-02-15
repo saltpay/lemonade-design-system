@@ -21,6 +21,14 @@ jobs:
       - name: Setup Gradle
         uses: ./.github/actions/setup-gradle
 
+      - name: Detekt
+        run: ./gradlew detektMetadataCommonMain --no-daemon
+        working-directory: ./kmp
+
+      - name: Ktlint
+        run: ./gradlew ktlintCheck --no-daemon
+        working-directory: ./kmp
+
       - name: Build Project
         run: ./gradlew build --no-daemon
         working-directory: ./kmp
