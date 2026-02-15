@@ -76,8 +76,8 @@ private fun CoreLink(
     val isPressed by interactionSource.collectIsPressedAsState()
 
     val defaultColor = LocalColors.current.content.contentBrand
-    val hoveredColor = LocalColors.current.interaction.bgBrandPressed
-    val pressedColor = LocalColors.current.interaction.bgBrandInteractive
+    val hoveredColor = LocalColors.current.interaction.bgBrandInteractive
+    val pressedColor = LocalColors.current.interaction.bgBrandPressed
 
     val targetColor = when {
         isPressed -> pressedColor
