@@ -94,6 +94,7 @@ internal object DisplayRegistry {
                 Displays.Card,
                 Displays.Spinner,
                 Displays.Divider,
+                Displays.AlertDialog,
             )
         ),
         DisplayData(

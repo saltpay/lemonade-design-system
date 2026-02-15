@@ -2,6 +2,7 @@ package com.teya.lemonade.app
 
 import androidx.compose.runtime.Composable
 import com.teya.lemonade.ActionListItemDisplay
+import com.teya.lemonade.AlertDialogDisplay
 import com.teya.lemonade.BadgeDisplay
 import com.teya.lemonade.BorderWidthDisplay
 import com.teya.lemonade.BrandLogoDisplay
@@ -71,4 +72,5 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.BorderWidth to { _ -> BorderWidthDisplay() },
     Displays.Spinner to { _ -> SpinnerDisplay() },
     Displays.Divider to { _ -> DividerDisplay() },
+    Displays.AlertDialog to { _ -> AlertDialogDisplay() },
 )
