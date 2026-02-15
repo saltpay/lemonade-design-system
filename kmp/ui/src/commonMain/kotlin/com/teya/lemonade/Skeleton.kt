@@ -110,7 +110,6 @@ private fun CoreSkeleton(
 
 private data class SkeletonPreviewData(
     val shape: Shape,
-    val label: String,
 )
 
 private class SkeletonPreviewProvider : PreviewParameterProvider<SkeletonPreviewData> {
@@ -121,19 +120,16 @@ private class SkeletonPreviewProvider : PreviewParameterProvider<SkeletonPreview
             add(
                 element = SkeletonPreviewData(
                     shape = InternalLemonadeShapes().radius200,
-                    label = "radius200",
                 )
             )
             add(
                 element = SkeletonPreviewData(
                     shape = InternalLemonadeShapes().radius400,
-                    label = "radius400",
                 )
             )
             add(
                 element = SkeletonPreviewData(
                     shape = InternalLemonadeShapes().radiusFull,
-                    label = "radiusFull",
                 )
             )
         }.asSequence()
