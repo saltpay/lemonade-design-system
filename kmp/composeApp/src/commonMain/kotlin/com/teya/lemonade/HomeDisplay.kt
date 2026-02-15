@@ -92,6 +92,7 @@ internal object DisplayRegistry {
                 Displays.Card,
                 Displays.Spinner,
                 Displays.Divider,
+                Displays.Tooltip,
             ),
         ),
         DisplayData(
