@@ -19,6 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.teya.lemonade.core.LemonadeSkeletonSize
+import com.teya.lemonade.core.LemonadeSkeletonVariant
 
 @Composable
 internal fun SkeletonDisplay() {
@@ -33,23 +35,15 @@ internal fun SkeletonDisplay() {
     ) {
         // Text Lines
         SkeletonSection(title = "Text Lines") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
-            ) {
+            Column {
                 LemonadeUi.Skeleton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(height = 16.dp),
+                    modifier = Modifier.fillMaxWidth()
                 )
                 LemonadeUi.Skeleton(
-                    modifier = Modifier
-                        .fillMaxWidth(fraction = 0.7f)
-                        .height(height = 16.dp),
+                    modifier = Modifier.fillMaxWidth(fraction = 0.7f)
                 )
                 LemonadeUi.Skeleton(
-                    modifier = Modifier
-                        .fillMaxWidth(fraction = 0.5f)
-                        .height(height = 16.dp),
+                    modifier = Modifier.fillMaxWidth(fraction = 0.5f)
                 )
             }
         }
@@ -57,8 +51,8 @@ internal fun SkeletonDisplay() {
         // Avatar
         SkeletonSection(title = "Avatar") {
             LemonadeUi.Skeleton(
-                modifier = Modifier.size(size = 48.dp),
-                shape = LemonadeTheme.shapes.radiusFull,
+                variant = LemonadeSkeletonVariant.Circle,
+                modifier = Modifier.size(size = LemonadeTheme.sizes.size1200),
             )
         }
 
@@ -69,27 +63,25 @@ internal fun SkeletonDisplay() {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(shape = RoundedCornerShape(size = LemonadeTheme.radius.radius300))
+                    .clip(shape = RoundedCornerShape(size = LemonadeTheme.radius.radius500))
                     .background(color = LemonadeTheme.colors.background.bgElevated)
                     .padding(all = LemonadeTheme.spaces.spacing400),
             ) {
                 LemonadeUi.Skeleton(
-                    modifier = Modifier.size(size = 48.dp),
-                    shape = LemonadeTheme.shapes.radiusFull,
+                    variant = LemonadeSkeletonVariant.Circle,
+                    modifier = Modifier.size(size = LemonadeTheme.sizes.size1200),
                 )
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
                     modifier = Modifier.weight(weight = 1f),
                 ) {
                     LemonadeUi.Skeleton(
                         modifier = Modifier
                             .fillMaxWidth(fraction = 0.6f)
-                            .height(height = 16.dp),
                     )
                     LemonadeUi.Skeleton(
+                        size = LemonadeSkeletonSize.Small,
                         modifier = Modifier
                             .fillMaxWidth(fraction = 0.4f)
-                            .height(height = 12.dp),
                     )
                 }
             }
@@ -101,7 +93,6 @@ internal fun SkeletonDisplay() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(height = 200.dp),
-                shape = LemonadeTheme.shapes.radius300,
             )
         }
     }
