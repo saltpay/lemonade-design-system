@@ -21,27 +21,29 @@ internal struct InteractionColorsImpl: InteractionColors {
     var bgNeutralSubtleInteractive: Color { LemonadePrimitiveColors.Solid.Black.black200 }
     var bgPositiveSubtleInteractive: Color { LemonadePrimitiveColors.Alpha.GreenLime.alpha200 }
     var bgInfoSubtleInteractive: Color { LemonadePrimitiveColors.Alpha.Blue.alpha200 }
-    var bgNeutralInteractive: Color { LemonadePrimitiveColors.Solid.Neutral.neutral700 }
+    var bgNeutralInteractive: Color { LemonadePrimitiveColors.Solid.Neutral.neutral500 }
     var bgBrandHighInteractive: Color { LemonadePrimitiveColors.Solid.YellowLime.yellowLime900 }
-    var bgDefaultInteractive: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha50 }
-    var bgCautionInteractive: Color { LemonadePrimitiveColors.Solid.Orange.orange600 }
-    var bgPositiveInteractive: Color { LemonadePrimitiveColors.Solid.GreenLime.greenLime600 }
+    var bgDefaultInteractive: Color { LemonadePrimitiveColors.Solid.Neutral.neutral50 }
+    var bgCautionInteractive: Color { LemonadePrimitiveColors.Solid.Orange.orange500 }
+    var bgPositiveInteractive: Color { LemonadePrimitiveColors.Solid.GreenLime.greenLime500 }
     var bgSubtleInteractive: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha100 }
-    var bgInfoInteractive: Color { LemonadePrimitiveColors.Solid.Blue.blue600 }
+    var bgInfoInteractive: Color { LemonadePrimitiveColors.Solid.Blue.blue500 }
     var bgCautionSubtleInteractive: Color { LemonadePrimitiveColors.Alpha.Orange.alpha200 }
-    var bgCriticalInteractive: Color { LemonadePrimitiveColors.Solid.Red.red600 }
-    var bgBrandInteractive: Color { LemonadePrimitiveColors.Solid.YellowLime.yellowLime600 }
+    var bgCriticalInteractive: Color { LemonadePrimitiveColors.Solid.Red.red500 }
+    var bgBrandInteractive: Color { LemonadePrimitiveColors.Solid.YellowLime.yellowLime400 }
     var bgElevatedInteractive: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha200 }
     var bgCriticalSubtleInteractive: Color { LemonadePrimitiveColors.Alpha.Red.alpha200 }
-    var bgDefaultPressed: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha100 }
+    var bgDefaultPressed: Color { LemonadePrimitiveColors.Solid.Neutral.neutral200 }
+    var bgSubtlePressed: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha200 }
     var bgElevatedPressed: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha300 }
-    var bgBrandPressed: Color { LemonadePrimitiveColors.Solid.YellowLime.yellowLime700 }
+    var bgBrandPressed: Color { LemonadePrimitiveColors.Solid.YellowLime.yellowLime600 }
     var bgBrandHighPressed: Color { LemonadePrimitiveColors.Solid.YellowLime.yellowLime950 }
     var bgCriticalPressed: Color { LemonadePrimitiveColors.Solid.Red.red700 }
     var bgCautionPressed: Color { LemonadePrimitiveColors.Solid.Amber.amber700 }
     var bgInfoPressed: Color { LemonadePrimitiveColors.Solid.Blue.blue700 }
     var bgPositivePressed: Color { LemonadePrimitiveColors.Solid.GreenLime.greenLime700 }
     var bgNeutralPressed: Color { LemonadePrimitiveColors.Solid.Neutral.neutral800 }
+    var bgCriticalSubtlePressed: Color { LemonadePrimitiveColors.Alpha.Red.alpha300 }
     var bgCautionSubtlePressed: Color { LemonadePrimitiveColors.Alpha.Amber.alpha300 }
     var bgInfoSubtlePressed: Color { LemonadePrimitiveColors.Alpha.Blue.alpha300 }
     var bgPositiveSubtlePressed: Color { LemonadePrimitiveColors.Alpha.GreenLime.alpha300 }
@@ -54,34 +56,40 @@ internal struct InteractionColorsImpl: InteractionColors {
 internal struct BorderColorsImpl: BorderColors {
     var borderBrandInverse: Color { LemonadePrimitiveColors.Solid.YellowLime.yellowLime500 }
     var borderSelectedInverse: Color { LemonadePrimitiveColors.Solid.White.white700 }
-    var borderNeutralMediumInverse: Color { LemonadePrimitiveColors.Solid.White.white300 }
+    var borderNeutralMediumInverse: Color { LemonadePrimitiveColors.Solid.White.white200 }
     var borderNeutralLowInverse: Color { LemonadePrimitiveColors.Solid.White.white100 }
     var borderAlwaysDark: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha900 }
     var borderPositiveSubtle: Color { LemonadePrimitiveColors.Alpha.GreenLime.alpha500 }
     var borderInfoSubtle: Color { LemonadePrimitiveColors.Alpha.Blue.alpha500 }
     var borderCautionSubtle: Color { LemonadePrimitiveColors.Alpha.Orange.alpha500 }
     var borderCriticalSubtle: Color { LemonadePrimitiveColors.Alpha.Red.alpha500 }
-    var borderPositive: Color { LemonadePrimitiveColors.Solid.GreenLime.greenLime700 }
-    var borderInfo: Color { LemonadePrimitiveColors.Solid.Blue.blue700 }
-    var borderCaution: Color { LemonadePrimitiveColors.Solid.Amber.amber700 }
+    var borderPositive: Color { LemonadePrimitiveColors.Solid.GreenLime.greenLime600 }
+    var borderInfo: Color { LemonadePrimitiveColors.Solid.Blue.blue600 }
+    var borderCaution: Color { LemonadePrimitiveColors.Solid.Amber.amber600 }
     var borderOnBrandMedium: Color { LemonadePrimitiveColors.Solid.White.white500 }
     var borderBrand: Color { LemonadePrimitiveColors.Solid.YellowLime.yellowLime700 }
     var borderSelected: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha900 }
     var borderOnBrandLow: Color { LemonadePrimitiveColors.Solid.White.white300 }
     var borderOnBrandHigh: Color { LemonadePrimitiveColors.Solid.White.white700 }
-    var borderCritical: Color { LemonadePrimitiveColors.Solid.Red.red700 }
-    var borderNeutralLow: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha100 }
-    var borderNeutralMedium: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha200 }
+    var borderCritical: Color { LemonadePrimitiveColors.Solid.Red.red600 }
+    var borderNeutralLow: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha50 }
+    var borderNeutralMedium: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha100 }
     var borderAlwaysLight: Color { LemonadePrimitiveColors.Solid.White.white950 }
-    var borderNeutralHigh: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha300 }
+    var borderNeutralHigh: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha200 }
     var borderNeutralHighInverse: Color { LemonadePrimitiveColors.Solid.White.white400 }
+    var borderAlwaysLightLow: Color { LemonadePrimitiveColors.Solid.White.white100 }
+    var borderAlwaysLightMedium: Color { LemonadePrimitiveColors.Solid.White.white300 }
+    var borderAlwaysLightHigh: Color { LemonadePrimitiveColors.Solid.White.white500 }
+    var borderAlwaysDarkLow: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha100 }
+    var borderAlwaysDarkMedium: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha200 }
+    var borderAlwaysDarkHigh: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha300 }
 }
 
 internal struct ContentColorsImpl: ContentColors {
     var contentOnBrandLow: Color { LemonadePrimitiveColors.Solid.YellowLime.yellowLime700 }
     var contentBrand: Color { LemonadePrimitiveColors.Solid.YellowLime.yellowLime700 }
     var contentCaution: Color { LemonadePrimitiveColors.Solid.Amber.amber700 }
-    var contentInfo: Color { LemonadePrimitiveColors.Solid.Blue.blue800 }
+    var contentInfo: Color { LemonadePrimitiveColors.Solid.Blue.blue700 }
     var contentTertiary: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha400 }
     var contentAlwaysLight: Color { LemonadePrimitiveColors.Solid.White.white950 }
     var contentSecondary: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha600 }
@@ -95,10 +103,11 @@ internal struct ContentColorsImpl: ContentColors {
     var contentCritical: Color { LemonadePrimitiveColors.Solid.Red.red600 }
     var contentOnBrandHigh: Color { LemonadePrimitiveColors.Solid.YellowLime.yellowLime900 }
     var contentPrimary: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha900 }
+    var contentCriticalOnColor: Color { LemonadePrimitiveColors.Solid.Red.red400 }
     var contentCautionOnColor: Color { LemonadePrimitiveColors.Solid.Amber.amber400 }
     var contentInfoOnColor: Color { LemonadePrimitiveColors.Solid.Blue.blue400 }
     var contentPositiveOnColor: Color { LemonadePrimitiveColors.Solid.GreenLime.greenLime400 }
-    var contentNeutralOnColor: Color { LemonadePrimitiveColors.Solid.White.white700 }
+    var contentNeutralOnColor: Color { LemonadePrimitiveColors.Solid.White.white800 }
     var contentBrandHigh: Color { LemonadePrimitiveColors.Solid.YellowLime.yellowLime800 }
 }
 
@@ -106,26 +115,26 @@ internal struct BackgroundColorsImpl: BackgroundColors {
     var bgAlwaysLight: Color { LemonadePrimitiveColors.Solid.White.white950 }
     var bgAlwaysDark: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha950 }
     var bgDefaultInverse: Color { LemonadePrimitiveColors.Solid.Neutral.neutral950 }
-    var bgNeutralSubtle: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha100 }
+    var bgNeutralSubtle: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha50 }
     var bgCautionSubtle: Color { LemonadePrimitiveColors.Alpha.Amber.alpha100 }
     var bgCriticalSubtle: Color { LemonadePrimitiveColors.Alpha.Red.alpha100 }
     var bgNeutral: Color { LemonadePrimitiveColors.Solid.Neutral.neutral600 }
     var bgBrandSubtle: Color { LemonadePrimitiveColors.Alpha.YellowLime.alpha200 }
     var bgSubtleInverse: Color { LemonadePrimitiveColors.Solid.Neutral.neutral900 }
-    var bgBrandElevated: Color { LemonadePrimitiveColors.Solid.White.white400 }
+    var bgBrandElevated: Color { LemonadePrimitiveColors.Solid.White.white500 }
     var bgPositiveSubtle: Color { LemonadePrimitiveColors.Alpha.GreenLime.alpha100 }
     var bgDefault: Color { LemonadePrimitiveColors.Solid.White.white950 }
     var bgCritical: Color { LemonadePrimitiveColors.Solid.Red.red500 }
     var bgBrandHigh: Color { LemonadePrimitiveColors.Solid.YellowLime.yellowLime800 }
     var bgCaution: Color { LemonadePrimitiveColors.Solid.Amber.amber600 }
     var bgBrand: Color { LemonadePrimitiveColors.Solid.YellowLime.yellowLime500 }
-    var bgElevated: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha100 }
+    var bgElevated: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha50 }
     var bgElevatedInverse: Color { LemonadePrimitiveColors.Solid.White.white50 }
     var bgSubtle: Color { LemonadePrimitiveColors.Solid.Neutral.neutral50 }
     var bgInfo: Color { LemonadePrimitiveColors.Solid.Blue.blue600 }
     var bgPositive: Color { LemonadePrimitiveColors.Solid.GreenLime.greenLime600 }
     var bgInfoSubtle: Color { LemonadePrimitiveColors.Alpha.Blue.alpha100 }
-    var bgElevatedHigh: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha200 }
+    var bgElevatedHigh: Color { LemonadePrimitiveColors.Alpha.Neutral.alpha100 }
 }
 
 /// Light theme implementation

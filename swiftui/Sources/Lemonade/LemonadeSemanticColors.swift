@@ -37,6 +37,7 @@ public protocol InteractionColors {
     var bgElevatedInteractive: Color { get }
     var bgCriticalSubtleInteractive: Color { get }
     var bgDefaultPressed: Color { get }
+    var bgSubtlePressed: Color { get }
     var bgElevatedPressed: Color { get }
     var bgBrandPressed: Color { get }
     var bgBrandHighPressed: Color { get }
@@ -45,6 +46,7 @@ public protocol InteractionColors {
     var bgInfoPressed: Color { get }
     var bgPositivePressed: Color { get }
     var bgNeutralPressed: Color { get }
+    var bgCriticalSubtlePressed: Color { get }
     var bgCautionSubtlePressed: Color { get }
     var bgInfoSubtlePressed: Color { get }
     var bgPositiveSubtlePressed: Color { get }
@@ -79,6 +81,12 @@ public protocol BorderColors {
     var borderAlwaysLight: Color { get }
     var borderNeutralHigh: Color { get }
     var borderNeutralHighInverse: Color { get }
+    var borderAlwaysLightLow: Color { get }
+    var borderAlwaysLightMedium: Color { get }
+    var borderAlwaysLightHigh: Color { get }
+    var borderAlwaysDarkLow: Color { get }
+    var borderAlwaysDarkMedium: Color { get }
+    var borderAlwaysDarkHigh: Color { get }
 }
 
 /// Content color definitions
@@ -100,6 +108,7 @@ public protocol ContentColors {
     var contentCritical: Color { get }
     var contentOnBrandHigh: Color { get }
     var contentPrimary: Color { get }
+    var contentCriticalOnColor: Color { get }
     var contentCautionOnColor: Color { get }
     var contentInfoOnColor: Color { get }
     var contentPositiveOnColor: Color { get }
