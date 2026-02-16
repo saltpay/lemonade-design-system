@@ -1,5 +1,6 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -9,15 +10,21 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.teya.lemonade.core.LemonadeSkeletonSize
+import com.teya.lemonade.core.LemonadeSkeletonVariant
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
@@ -35,78 +42,101 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
  * LemonadeUi.Skeleton(
  *     modifier = Modifier
  *         .fillMaxWidth()
- *         .height(16.dp),
  * )
  *
  * // Circle avatar placeholder
  * LemonadeUi.Skeleton(
  *     modifier = Modifier.size(48.dp),
- *     shape = LemonadeTheme.shapes.radiusFull,
  * )
  * ```
  *
  * ## Parameters
  * @param modifier Optional [Modifier] for additional styling and layout adjustments.
- *   The caller is expected to set width and height via this modifier.
- * @param shape The [Shape] to be applied to the skeleton. Defaults to [LemonadeShapes.radius200].
  */
 @Composable
 public fun LemonadeUi.Skeleton(
     modifier: Modifier = Modifier,
-    shape: Shape = LocalShapes.current.radius200,
+    size: LemonadeSkeletonSize = LemonadeSkeletonSize.Medium,
+    variant: LemonadeSkeletonVariant = LemonadeSkeletonVariant.Line
 ) {
     CoreSkeleton(
-        shape = shape,
         modifier = modifier,
+        size = size,
+        variant = variant
     )
 }
 
 @Composable
 private fun CoreSkeleton(
-    shape: Shape,
+    size: LemonadeSkeletonSize,
     modifier: Modifier = Modifier,
+    variant: LemonadeSkeletonVariant
 ) {
-    val baseColor = LocalColors.current.background.bgSubtle
-    val highlightColor = LocalColors.current.background.bgElevated
 
     val infiniteTransition = rememberInfiniteTransition(label = "SkeletonShimmer")
 
-    val shimmerProgress by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 1f,
+    val fadeOpacity by infiniteTransition.animateFloat(
+        initialValue = LocalOpacities.current.base.opacity20,
+        targetValue = LocalOpacities.current.base.opacity60,
         animationSpec = infiniteRepeatable(
             animation = tween(
-                durationMillis = 1200,
+                durationMillis = 1000,
+                easing = EaseInOut
             ),
-            repeatMode = RepeatMode.Restart,
+            repeatMode = RepeatMode.Reverse,
         ),
-        label = "ShimmerProgress",
-    )
-
-    val shimmerBrush = Brush.linearGradient(
-        colors = listOf(
-            baseColor,
-            highlightColor,
-            baseColor,
-        ),
-        start = Offset(
-            x = shimmerProgress * 1000f - 300f,
-            y = 0f,
-        ),
-        end = Offset(
-            x = shimmerProgress * 1000f + 300f,
-            y = 0f,
-        ),
+        label = "FadeOpacity",
     )
 
     Box(
         modifier = modifier
-            .background(
-                brush = shimmerBrush,
-                shape = shape,
-            ),
-    )
+            .height(height = size.size)
+            .padding(vertical = variant.variantData.verticalSpacing)
+    ) {
+        Box(
+            modifier = modifier
+                .fillMaxHeight()
+                .clip(shape = variant.variantData.radius)
+                .alpha(alpha = fadeOpacity)
+                .background(color = LocalColors.current.background.bgElevatedHigh)
+        )
+    }
 }
+
+private val LemonadeSkeletonSize.size: Dp
+    @Composable get() {
+        return when (this) {
+            LemonadeSkeletonSize.XSmall -> LocalSizes.current.size400
+            LemonadeSkeletonSize.Small -> LocalSizes.current.size500
+            LemonadeSkeletonSize.Medium -> LocalSizes.current.size600
+            LemonadeSkeletonSize.Large -> LocalSizes.current.size700
+            LemonadeSkeletonSize.XLarge -> LocalSizes.current.size800
+            LemonadeSkeletonSize.XXLarge -> LocalSizes.current.size900
+        }
+    }
+
+@Stable
+private data class LemonadeSkeletonShapes(
+    val verticalSpacing: Dp,
+    val radius: Shape
+)
+
+private val LemonadeSkeletonVariant.variantData: LemonadeSkeletonShapes
+    @Composable get() {
+        return when (this) {
+            LemonadeSkeletonVariant.Line -> LemonadeSkeletonShapes(
+                verticalSpacing = LocalSpaces.current.spacing100,
+                radius = LocalShapes.current.radius100
+
+            )
+
+            LemonadeSkeletonVariant.Circle -> LemonadeSkeletonShapes(
+                verticalSpacing = LocalSpaces.current.spacing0,
+                radius = LocalShapes.current.radiusFull
+
+            )
+        }
+    }
 
 private data class SkeletonPreviewData(
     val shape: Shape,
@@ -142,12 +172,13 @@ private fun SkeletonPreview(
     @PreviewParameter(SkeletonPreviewProvider::class)
     previewData: SkeletonPreviewData,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(space = 4.dp)) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(space = 4.dp)
+    ) {
         LemonadeUi.Skeleton(
             modifier = Modifier
                 .width(width = 200.dp)
                 .height(height = 16.dp),
-            shape = previewData.shape,
         )
     }
 }
