@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,9 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeSkeletonSize
-import com.teya.lemonade.core.LemonadeSkeletonVariant
 
 @Composable
 internal fun SkeletonDisplay() {
@@ -36,13 +33,13 @@ internal fun SkeletonDisplay() {
         // Text Lines
         SkeletonSection(title = "Text Lines") {
             Column {
-                LemonadeUi.Skeleton(
+                LemonadeUi.LineSkeleton(
                     modifier = Modifier.fillMaxWidth()
                 )
-                LemonadeUi.Skeleton(
+                LemonadeUi.LineSkeleton(
                     modifier = Modifier.fillMaxWidth(fraction = 0.7f)
                 )
-                LemonadeUi.Skeleton(
+                LemonadeUi.LineSkeleton(
                     modifier = Modifier.fillMaxWidth(fraction = 0.5f)
                 )
             }
@@ -50,8 +47,7 @@ internal fun SkeletonDisplay() {
 
         // Avatar
         SkeletonSection(title = "Avatar") {
-            LemonadeUi.Skeleton(
-                variant = LemonadeSkeletonVariant.Circle,
+            LemonadeUi.CircleSkeleton(
                 modifier = Modifier.size(size = LemonadeTheme.sizes.size1200),
             )
         }
@@ -67,18 +63,17 @@ internal fun SkeletonDisplay() {
                     .background(color = LemonadeTheme.colors.background.bgElevated)
                     .padding(all = LemonadeTheme.spaces.spacing400),
             ) {
-                LemonadeUi.Skeleton(
-                    variant = LemonadeSkeletonVariant.Circle,
-                    modifier = Modifier.size(size = LemonadeTheme.sizes.size1200),
+                LemonadeUi.CircleSkeleton(
+                    size = LemonadeSkeletonSize.XXLarge,
                 )
                 Column(
                     modifier = Modifier.weight(weight = 1f),
                 ) {
-                    LemonadeUi.Skeleton(
+                    LemonadeUi.LineSkeleton(
                         modifier = Modifier
                             .fillMaxWidth(fraction = 0.6f)
                     )
-                    LemonadeUi.Skeleton(
+                    LemonadeUi.LineSkeleton(
                         size = LemonadeSkeletonSize.Small,
                         modifier = Modifier
                             .fillMaxWidth(fraction = 0.4f)
@@ -87,12 +82,11 @@ internal fun SkeletonDisplay() {
             }
         }
 
-        // Image Placeholder
-        SkeletonSection(title = "Image Placeholder") {
-            LemonadeUi.Skeleton(
+        // Block Placeholder
+        SkeletonSection(title = "Block Placeholder") {
+            LemonadeUi.BlockSkeleton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 200.dp),
             )
         }
     }
