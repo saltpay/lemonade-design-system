@@ -98,7 +98,8 @@ public fun LemonadeUi.LineSkeleton(
  *
  * ## Size Mapping
  * The [size] parameter maps to different diameter values defined in the design system:
- * - XSmall → 48dp, Small → 64dp, Medium → 80dp, Large → 96dp, etc.
+ * (via `LemonadeSkeletonSize` and the underlying sizing tokens such as `LemonadeAssetSize`).
+ * Refer to those types for the exact values used in this implementation.
  *
  * ## Variants
  * For text line placeholders, use [LineSkeleton].
@@ -141,7 +142,7 @@ public fun LemonadeUi.CircleSkeleton(
  * fade effect that cycles smoothly, providing a visual cue that data is being
  * fetched or processed.
  *
- * The block skeleton has a fixed height (1600dp) suitable for card or image placeholders,
+ * The block skeleton has a default fixed height (spacing1600 -> 64.dp) suitable for card or image placeholders,
  * while the width can be controlled through the [modifier] parameter. It uses a large
  * rounded corner radius appropriate for prominent content areas.
  *
@@ -215,9 +216,10 @@ private fun CoreSkeleton(
             .height(height = skeletonSize.height)
             .width(width = skeletonSize.width)
             .padding(vertical = variant.variantData.verticalSpacing)
+            .then(modifier)
     ) {
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxHeight()
                 .fillMaxWidth()
                 .clip(shape = variant.variantData.radius)
@@ -257,7 +259,7 @@ private fun LemonadeSkeletonSize.toSkeletonSizeDimensions(variant: LemonadeSkele
                 LemonadeSkeletonSize.Large -> LocalSizes.current.size700
                 LemonadeSkeletonSize.XLarge -> LocalSizes.current.size800
                 LemonadeSkeletonSize.XXLarge -> LocalSizes.current.size900
-                else -> LocalSizes.current.size800
+                else -> LocalSizes.current.size1000
             }
             SkeletonSizeDimensions(
                 width = Dp.Unspecified,
