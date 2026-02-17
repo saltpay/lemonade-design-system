@@ -50,9 +50,9 @@ public enum class LemonadeSkeletonSize {
  * - [Circle]: Circular skeleton for avatar and image content. Uses equal width/height
  *   from [LemonadeSkeletonSize] to create a perfect circle. Full rounded corner radius.
  *
- * - [Block]: Large block skeleton for card and image content. Uses fixed height (1600dp)
- *   with unspecified width. Large rounded corner radius suitable for prominent content.
- *
+ * - [Block]: Large block skeleton for card and image content. Uses fixed height
+ *   (64dp via the size1600 design token) with unspecified width. Large rounded
+ *   corner radius suitable for prominent content.
  * ## Usage
  * ```kotlin
  * // Text placeholder
