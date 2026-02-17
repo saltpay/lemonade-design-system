@@ -9,13 +9,17 @@ package com.teya.lemonade.core
  *
  * ## Size Scale
  * Ordered from smallest to largest:
- * - [XSmall]: Extra small size (48dp for circles)
- * - [Small]: Small size (64dp for circles)
- * - [Medium]: Medium size (80dp for circles) - default
- * - [Large]: Large size (96dp for circles)
- * - [XLarge]: Extra large size (128dp for circles)
- * - [XXLarge]: Double extra large size (160dp for circles)
- * - [XXXLarge]: Triple extra large size (192dp for circles)
+ * - [XSmall]: Extra small size for very compact skeletons
+ * - [Small]: Small size for compact skeletons
+ * - [Medium]: Medium size for standard skeletons (default)
+ * - [Large]: Large size for slightly more prominent skeletons
+ * - [XLarge]: Extra large size for prominent skeletons
+ * - [XXLarge]: Double extra large size for very prominent skeletons
+ * - [XXXLarge]: Triple extra large size for the largest skeletons
+ *
+ * Note: Concrete dp values for each size are derived from the design system sizing
+ * tokens (for example, `LemonadeSizes`) and may change over time. Consumers should rely
+ * on these semantic sizes rather than specific dp values.
  *
  * ## Usage
  * ```kotlin
