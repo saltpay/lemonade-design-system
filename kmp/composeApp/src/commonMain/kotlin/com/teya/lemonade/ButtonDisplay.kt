@@ -15,7 +15,6 @@ import com.teya.lemonade.core.LemonadeIcons
 @Composable
 internal fun ButtonDisplay() {
     SampleScreenDisplayColumn("Button", itemsSpacing = LemonadeTheme.spaces.spacing600) {
-
         LemonadeButtonVariant.entries.forEach { variant ->
             ButtonSection(title = variant.toString()) {
                 Column(
@@ -23,7 +22,7 @@ internal fun ButtonDisplay() {
                         space = LemonadeTheme.spaces.spacing300,
                     ),
                 ) {
-                    ButtonCard() {
+                    ButtonCard {
                         LemonadeButtonSize.entries.forEach { size ->
                             @OptIn(ExperimentalLemonadeComponent::class)
                             LemonadeUi.Button(
@@ -35,8 +34,7 @@ internal fun ButtonDisplay() {
                         }
                     }
 
-
-                    ButtonCard() {
+                    ButtonCard {
                         listOf("leading", "trailing").forEach { position ->
                             val leadingIcon = getButtonLeadingIcon(variant)
 
@@ -52,14 +50,14 @@ internal fun ButtonDisplay() {
                         }
                     }
 
-                    ButtonCard() {
+                    ButtonCard {
                         @OptIn(ExperimentalLemonadeComponent::class)
                         LemonadeUi.Button(
                             label = "Loading",
                             onClick = {},
                             variant = variant,
                             size = LemonadeButtonSize.Medium,
-                            loading = true
+                            loading = true,
                         )
 
                         @OptIn(ExperimentalLemonadeComponent::class)
@@ -78,9 +76,7 @@ internal fun ButtonDisplay() {
 }
 
 @Composable
-private fun ButtonCard(
-    content: @Composable () -> Unit,
-) {
+private fun ButtonCard(content: @Composable () -> Unit) {
     LemonadeUi.Card(
         contentPadding = LemonadeCardPadding.Medium,
     ) {
@@ -100,7 +96,7 @@ private fun ButtonCard(
 @Composable
 private fun ButtonSection(
     title: String,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
@@ -108,22 +104,21 @@ private fun ButtonSection(
         LemonadeUi.Text(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
-            color = LemonadeTheme.colors.content.contentSecondary
+            color = LemonadeTheme.colors.content.contentSecondary,
         )
         content()
     }
 }
 
-private fun getButtonLeadingIcon(
-    variant: LemonadeButtonVariant = LemonadeButtonVariant.Primary,
-): LemonadeIcons {
-    return when (variant) {
+private fun getButtonLeadingIcon(variant: LemonadeButtonVariant = LemonadeButtonVariant.Primary): LemonadeIcons =
+    when (variant) {
         LemonadeButtonVariant.Primary,
         LemonadeButtonVariant.Secondary,
         LemonadeButtonVariant.Neutral,
-        LemonadeButtonVariant.Special -> LemonadeIcons.Heart
+        LemonadeButtonVariant.Special,
+        -> LemonadeIcons.Heart
 
         LemonadeButtonVariant.CriticalSubtle,
-        LemonadeButtonVariant.CriticalSolid -> LemonadeIcons.Trash
+        LemonadeButtonVariant.CriticalSolid,
+        -> LemonadeIcons.Trash
     }
-}

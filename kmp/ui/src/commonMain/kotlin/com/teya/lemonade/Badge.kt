@@ -72,12 +72,12 @@ private fun CoreBadge(
             .background(LocalColors.current.background.bgBrand)
             .background(gradientOverlay)
             .padding(horizontal = props.horizontalPadding),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         LemonadeUi.Text(
             modifier = Modifier.padding(
                 horizontal = props.textHorizontalPadding,
-                vertical = props.textVerticalPadding
+                vertical = props.textVerticalPadding,
             ),
             text = text,
             textStyle = props.textStyle,
@@ -115,8 +115,8 @@ private val LemonadeBadgeSize.badgeProps: BadgeProps
                 textStyle = LocalTypographies.current.bodyXSmallSemiBold.textStyle.copy(
                     fontSize = 10.sp,
                     lineHeight = 14.sp,
-                    color = LocalColors.current.content.contentOnBrandHigh
-                )
+                    color = LocalColors.current.content.contentOnBrandHigh,
+                ),
             )
 
             LemonadeBadgeSize.Small -> BadgeProps(
@@ -125,8 +125,8 @@ private val LemonadeBadgeSize.badgeProps: BadgeProps
                 textVerticalPadding = 2.dp,
                 textHorizontalPadding = LocalSpaces.current.spacing50,
                 textStyle = LocalTypographies.current.bodyXSmallSemiBold.textStyle.copy(
-                    color = LocalColors.current.content.contentOnBrandHigh
-                )
+                    color = LocalColors.current.content.contentOnBrandHigh,
+                ),
             )
         }
     }
@@ -148,7 +148,7 @@ internal fun LemonadeBadgeBox(
             )
             Box(
                 modifier = Modifier.layoutId("badge"),
-                content = badge
+                content = badge,
             )
         },
         measurePolicy = { measurables, constraints ->
@@ -178,11 +178,11 @@ internal fun LemonadeBadgeBox(
                     y = 0,
                 )
                 badgePlaceable.placeRelative(
-                    x = (anchorPlaceable.width - badgePlaceable.width) + badgeOffset.x.roundToPx(),
+                    x = anchorPlaceable.width - badgePlaceable.width + badgeOffset.x.roundToPx(),
                     y = -badgeOffset.y.roundToPx(),
                 )
             }
-        }
+        },
     )
 }
 

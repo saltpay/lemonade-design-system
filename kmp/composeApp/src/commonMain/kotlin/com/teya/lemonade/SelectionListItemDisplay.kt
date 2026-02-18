@@ -20,6 +20,7 @@ import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.SelectListItemType
 
+@Suppress("LongMethod")
 @Composable
 internal fun SelectionListItemDisplay() {
     var singleSelection by remember { mutableIntStateOf(0) }
@@ -34,32 +35,30 @@ internal fun SelectionListItemDisplay() {
             .verticalScroll(state = rememberScrollState())
             .statusBarsPadding()
             .navigationBarsPadding()
-            .padding(all = LemonadeTheme.spaces.spacing400)
+            .padding(all = LemonadeTheme.spaces.spacing400),
     ) {
         // SelectListItem - Single
 
         LemonadeUi.Card(
-            header = CardHeaderConfig(title = "SelectListItem - Single")
+            header = CardHeaderConfig(title = "SelectListItem - Single"),
         ) {
-            (0..2).forEach { index ->
+            for (index in 0..2) {
                 LemonadeUi.SelectListItem(
                     label = "Option ${index + 1}",
                     type = SelectListItemType.Single,
                     checked = singleSelection == index,
                     onItemClicked = { singleSelection = index },
                     supportText = if (index == 0) "With support text" else null,
-                    showDivider = true
+                    showDivider = true,
                 )
             }
         }
 
-
         // SelectListItem - Multiple
         LemonadeUi.Card(
-            header = CardHeaderConfig(title = "SelectListItem - Multiple")
+            header = CardHeaderConfig(title = "SelectListItem - Multiple"),
         ) {
-
-            (0..2).forEach { index ->
+            for (index in 0..2) {
                 LemonadeUi.SelectListItem(
                     label = "Item ${index + 1}",
                     type = SelectListItemType.Multiple,
@@ -70,16 +69,16 @@ internal fun SelectionListItemDisplay() {
                         } else {
                             multipleSelections + index
                         }
-                    }
+                    },
                 )
             }
         }
 
         // SelectListItem - Toggle
         LemonadeUi.Card(
-            header = CardHeaderConfig(title = "SelectListItem - Toggle")
+            header = CardHeaderConfig(title = "SelectListItem - Toggle"),
         ) {
-            (0..2).forEach { index ->
+            for (index in 0..2) {
                 LemonadeUi.SelectListItem(
                     label = "Toggle ${index + 1}",
                     type = SelectListItemType.Toggle,
@@ -90,14 +89,14 @@ internal fun SelectionListItemDisplay() {
                         } else {
                             toggleSelections + index
                         }
-                    }
+                    },
                 )
             }
         }
 
         // SelectListItem with Leading
         LemonadeUi.Card(
-            header = CardHeaderConfig(title = "SelectListItem with Leading")
+            header = CardHeaderConfig(title = "SelectListItem with Leading"),
         ) {
             LemonadeUi.SelectListItem(
                 label = "With Icon",
@@ -111,20 +110,19 @@ internal fun SelectionListItemDisplay() {
                         contentDescription = null,
                         size = LemonadeAssetSize.Medium,
                     )
-                }
+                },
             )
         }
 
         LemonadeUi.Card(
-            header = CardHeaderConfig(title = "Disabled States")
+            header = CardHeaderConfig(title = "Disabled States"),
         ) {
-
             LemonadeUi.SelectListItem(
                 label = "Disabled Option",
                 type = SelectListItemType.Single,
                 checked = false,
                 onItemClicked = {},
-                enabled = false
+                enabled = false,
             )
 
             LemonadeUi.SelectListItem(
@@ -132,7 +130,7 @@ internal fun SelectionListItemDisplay() {
                 type = SelectListItemType.Toggle,
                 checked = true,
                 onItemClicked = {},
-                enabled = false
+                enabled = false,
             )
         }
     }

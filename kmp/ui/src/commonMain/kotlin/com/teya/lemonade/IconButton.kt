@@ -68,6 +68,7 @@ public fun LemonadeUi.IconButton(
     )
 }
 
+@Suppress("LongParameterList")
 @Composable
 private fun CoreIconButton(
     icon: LemonadeIcons,
@@ -100,19 +101,16 @@ private fun CoreIconButton(
                 } else {
                     Modifier
                 },
-            )
-            .clip(shape = size.sizeData.shape)
+            ).clip(shape = size.sizeData.shape)
             .clickable(
                 onClick = onClick,
                 role = Role.Button,
                 interactionSource = interactionSource,
                 indication = null,
                 enabled = enabled,
-            )
-            .background(
+            ).background(
                 color = animatedBackgroundColor,
-            )
-            .padding(all = size.sizeData.innerPaddings)
+            ).padding(all = size.sizeData.innerPaddings),
     )
 }
 
@@ -176,8 +174,9 @@ private data class IconButtonPreviewData(
 
 private class IconButtonPreviewProvider : PreviewParameterProvider<IconButtonPreviewData> {
     override val values: Sequence<IconButtonPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<IconButtonPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<IconButtonPreviewData> =
+        buildList {
             listOf(true, false).forEach { enabled ->
                 LemonadeIconButtonSize.entries.forEach { size ->
                     LemonadeIconButtonVariant.entries.forEach { variant ->
@@ -186,15 +185,15 @@ private class IconButtonPreviewProvider : PreviewParameterProvider<IconButtonPre
                                 size = size,
                                 variant = variant,
                                 enabled = enabled,
-                            )
+                            ),
                         )
                     }
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @Composable
 @LemonadePreview
 private fun SymbolContainerPreview(
@@ -207,6 +206,6 @@ private fun SymbolContainerPreview(
         variant = previewData.variant,
         enabled = previewData.enabled,
         contentDescription = null,
-        onClick = {  /* Click action */ },
+        onClick = { /* Click action */ },
     )
 }

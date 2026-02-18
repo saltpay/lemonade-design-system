@@ -82,7 +82,6 @@ public class TopBarState internal constructor(
     private val startCollapsed: Boolean = false,
     lockGestureAnimation: Boolean = false,
 ) {
-
     private var lockGestureAnimation by mutableStateOf(lockGestureAnimation)
 
     private val scrollOffsetAnimatable by derivedStateOf {
@@ -120,9 +119,7 @@ public class TopBarState internal constructor(
      *
      * @param animationSpec The animation specification to use. Defaults to a 300ms tween.
      */
-    public fun collapse(
-        animationSpec: AnimationSpec<Float> = tween(durationMillis = 300),
-    ) {
+    public fun collapse(animationSpec: AnimationSpec<Float> = tween(durationMillis = 300)) {
         if (scrollOffset < maxScrollOffset) {
             coroutineScope.launch {
                 scrollOffsetAnimatable.animateTo(
@@ -139,9 +136,7 @@ public class TopBarState internal constructor(
      *
      * @param animationSpec The animation specification to use. Defaults to a 300ms tween.
      */
-    public fun expand(
-        animationSpec: AnimationSpec<Float> = tween(durationMillis = 300),
-    ) {
+    public fun expand(animationSpec: AnimationSpec<Float> = tween(durationMillis = 300)) {
         if (scrollOffset > 0f) {
             coroutineScope.launch {
                 scrollOffsetAnimatable.animateTo(
@@ -275,15 +270,14 @@ public fun rememberTopBarState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     startCollapsed: Boolean = false,
     lockGestureAnimation: Boolean = false,
-): TopBarState {
-    return remember(startCollapsed, lockGestureAnimation) {
+): TopBarState =
+    remember(startCollapsed, lockGestureAnimation) {
         TopBarState(
             coroutineScope = coroutineScope,
             startCollapsed = startCollapsed,
             lockGestureAnimation = lockGestureAnimation,
         )
     }
-}
 
 /**
  * A collapsible top bar component that displays a large title which collapses
@@ -495,7 +489,7 @@ public fun LemonadeUi.TopBar(
                             label = label,
                         )
                     }
-                }
+                },
             )
         },
         collapsableSlot = { collapsableModifier ->
@@ -513,14 +507,13 @@ public fun LemonadeUi.TopBar(
                     .padding(
                         top = LocalSpaces.current.spacing50,
                         bottom = LocalSpaces.current.spacing200,
-                    )
-                    .onFocusChanged { focusState ->
+                    ).onFocusChanged { focusState ->
                         isSearchFocused = focusState.isFocused
                         state.setAnimationGesturesLock(locked = focusState.isFocused)
                         if (focusState.isFocused) {
                             state.expand()
                         }
-                    }
+                    },
             )
         },
         bottomSlot = bottomSlot?.let {
@@ -532,7 +525,7 @@ public fun LemonadeUi.TopBar(
                         if (searchFocused) {
                             bottomSlot()
                         }
-                    }
+                    },
                 )
             }
         },
@@ -554,7 +547,7 @@ private fun CoreTopBarActionContent(
             else -> LocalColors.current.interaction.bgNeutralSubtlePressed.copy(
                 alpha = LocalOpacities.current.base.opacity0,
             )
-        }
+        },
     )
     Box(
         contentAlignment = Alignment.Center,
@@ -562,13 +555,12 @@ private fun CoreTopBarActionContent(
             .background(
                 color = backgroundColor,
                 shape = LocalShapes.current.radius300,
-            )
-            .clickable(
+            ).clickable(
                 role = Role.Button,
                 onClick = onNavigationActionClicked,
                 interactionSource = interactionSource,
                 indication = null,
-            )
+            ),
     ) {
         LemonadeUi.Icon(
             icon = navigationAction.icon,
@@ -612,9 +604,9 @@ private fun CoreTopBar(
                 },
                 animationSpec = tween(
                     durationMillis = 200,
-                    easing = FastOutSlowInEasing
+                    easing = FastOutSlowInEasing,
                 ),
-                label = "DividerOpacity"
+                label = "DividerOpacity",
             )
 
             Spacer(
@@ -696,9 +688,9 @@ internal fun TopBarLayout(
                     .roundToInt()
 
             val totalHeight = fixedHeaderPlaceable.height +
-                    dividerPlaceable.height +
-                    visibleCollapsablePlaceableHeight +
-                    (bottomSlotPlaceable?.height ?: 0)
+                dividerPlaceable.height +
+                visibleCollapsablePlaceableHeight +
+                (bottomSlotPlaceable?.height ?: 0)
 
             layout(
                 width = constraints.maxWidth,
@@ -711,7 +703,6 @@ internal fun TopBarLayout(
                     y = yPosition,
                 )
                 yPosition += fixedHeaderPlaceable.height
-
 
                 collapsablePlaceable.placeRelative(
                     x = 0,
@@ -730,7 +721,7 @@ internal fun TopBarLayout(
                     y = yPosition,
                 )
             }
-        }
+        },
     )
 }
 
@@ -750,7 +741,7 @@ internal fun CoreTopBarContent(
         },
         animationSpec = tween(
             durationMillis = 200,
-            easing = FastOutSlowInEasing
+            easing = FastOutSlowInEasing,
         ),
     )
 
@@ -762,7 +753,7 @@ internal fun CoreTopBarContent(
         },
         animationSpec = tween(
             durationMillis = 200,
-            easing = FastOutSlowInEasing
+            easing = FastOutSlowInEasing,
         ),
     )
 
@@ -875,8 +866,9 @@ private data class TopBarPreviewData(
 
 private class TopBarPreviewProvider : PreviewParameterProvider<TopBarPreviewData> {
     override val values: Sequence<TopBarPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<TopBarPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<TopBarPreviewData> =
+        buildList {
             listOf(true, false).forEach { collapsed ->
                 (TopBarAction.entries + listOf(null)).forEach { action ->
                     listOf(0, 1, 2).forEach { trailingIconCount ->
@@ -894,7 +886,6 @@ private class TopBarPreviewProvider : PreviewParameterProvider<TopBarPreviewData
                 }
             }
         }.asSequence()
-    }
 }
 
 @LemonadePreview

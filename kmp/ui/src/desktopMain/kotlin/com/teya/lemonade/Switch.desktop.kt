@@ -2,8 +2,8 @@ package com.teya.lemonade
 
 import androidx.compose.ui.unit.dp
 
-internal actual fun SwitchState.getSwitchProps(): SwitchSizeProps {
-    return when(this){
+internal actual fun SwitchState.getSwitchProps(): SwitchSizeProps =
+    when (this) {
         SwitchState.Default -> SwitchSizeProps(
             minHeight = 20.dp,
             minWidth = 32.dp,
@@ -23,4 +23,3 @@ internal actual fun SwitchState.getSwitchProps(): SwitchSizeProps {
             minIndicatorWidth = 20.dp,
         )
     }
-}

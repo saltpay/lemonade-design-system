@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 
+@Suppress("LongMethod")
 @Composable
 internal fun TextDisplay() {
     Column(
@@ -26,19 +27,19 @@ internal fun TextDisplay() {
         // Display Styles
         TextSection(title = "Display") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 LemonadeUi.Text(
                     text = "Display Large",
-                    textStyle = LemonadeTheme.typography.displayLarge
+                    textStyle = LemonadeTheme.typography.displayLarge,
                 )
                 LemonadeUi.Text(
                     text = "Display Medium",
-                    textStyle = LemonadeTheme.typography.displayMedium
+                    textStyle = LemonadeTheme.typography.displayMedium,
                 )
                 LemonadeUi.Text(
                     text = "Display Small",
-                    textStyle = LemonadeTheme.typography.displaySmall
+                    textStyle = LemonadeTheme.typography.displaySmall,
                 )
             }
         }
@@ -46,31 +47,31 @@ internal fun TextDisplay() {
         // Heading Styles
         TextSection(title = "Heading") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
             ) {
                 LemonadeUi.Text(
                     text = "Heading XLarge",
-                    textStyle = LemonadeTheme.typography.headingXLarge
+                    textStyle = LemonadeTheme.typography.headingXLarge,
                 )
                 LemonadeUi.Text(
                     text = "Heading Large",
-                    textStyle = LemonadeTheme.typography.headingLarge
+                    textStyle = LemonadeTheme.typography.headingLarge,
                 )
                 LemonadeUi.Text(
                     text = "Heading Medium",
-                    textStyle = LemonadeTheme.typography.headingMedium
+                    textStyle = LemonadeTheme.typography.headingMedium,
                 )
                 LemonadeUi.Text(
                     text = "Heading Small",
-                    textStyle = LemonadeTheme.typography.headingSmall
+                    textStyle = LemonadeTheme.typography.headingSmall,
                 )
                 LemonadeUi.Text(
                     text = "Heading XSmall",
-                    textStyle = LemonadeTheme.typography.headingXSmall
+                    textStyle = LemonadeTheme.typography.headingXSmall,
                 )
                 LemonadeUi.Text(
                     text = "Heading XXSmall",
-                    textStyle = LemonadeTheme.typography.headingXXSmall
+                    textStyle = LemonadeTheme.typography.headingXXSmall,
                 )
             }
         }
@@ -78,20 +79,20 @@ internal fun TextDisplay() {
         // Body Styles
         TextSection(title = "Body") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
             ) {
                 // XLarge
                 LemonadeUi.Text(
                     text = "Body XLarge Regular",
-                    textStyle = LemonadeTheme.typography.bodyXLargeRegular
+                    textStyle = LemonadeTheme.typography.bodyXLargeRegular,
                 )
                 LemonadeUi.Text(
                     text = "Body XLarge Medium",
-                    textStyle = LemonadeTheme.typography.bodyXLargeMedium
+                    textStyle = LemonadeTheme.typography.bodyXLargeMedium,
                 )
                 LemonadeUi.Text(
                     text = "Body XLarge SemiBold",
-                    textStyle = LemonadeTheme.typography.bodyXLargeSemiBold
+                    textStyle = LemonadeTheme.typography.bodyXLargeSemiBold,
                 )
 
                 LemonadeUi.HorizontalDivider()
@@ -99,15 +100,15 @@ internal fun TextDisplay() {
                 // Large
                 LemonadeUi.Text(
                     text = "Body Large Regular",
-                    textStyle = LemonadeTheme.typography.bodyLargeRegular
+                    textStyle = LemonadeTheme.typography.bodyLargeRegular,
                 )
                 LemonadeUi.Text(
                     text = "Body Large Medium",
-                    textStyle = LemonadeTheme.typography.bodyLargeMedium
+                    textStyle = LemonadeTheme.typography.bodyLargeMedium,
                 )
                 LemonadeUi.Text(
                     text = "Body Large SemiBold",
-                    textStyle = LemonadeTheme.typography.bodyLargeSemiBold
+                    textStyle = LemonadeTheme.typography.bodyLargeSemiBold,
                 )
 
                 LemonadeUi.HorizontalDivider()
@@ -115,15 +116,15 @@ internal fun TextDisplay() {
                 // Medium
                 LemonadeUi.Text(
                     text = "Body Medium Regular",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
                 )
                 LemonadeUi.Text(
                     text = "Body Medium Medium",
-                    textStyle = LemonadeTheme.typography.bodyMediumMedium
+                    textStyle = LemonadeTheme.typography.bodyMediumMedium,
                 )
                 LemonadeUi.Text(
                     text = "Body Medium SemiBold",
-                    textStyle = LemonadeTheme.typography.bodyMediumSemiBold
+                    textStyle = LemonadeTheme.typography.bodyMediumSemiBold,
                 )
 
                 LemonadeUi.HorizontalDivider()
@@ -131,15 +132,15 @@ internal fun TextDisplay() {
                 // Small
                 LemonadeUi.Text(
                     text = "Body Small Regular",
-                    textStyle = LemonadeTheme.typography.bodySmallRegular
+                    textStyle = LemonadeTheme.typography.bodySmallRegular,
                 )
                 LemonadeUi.Text(
                     text = "Body Small Medium",
-                    textStyle = LemonadeTheme.typography.bodySmallMedium
+                    textStyle = LemonadeTheme.typography.bodySmallMedium,
                 )
                 LemonadeUi.Text(
                     text = "Body Small SemiBold",
-                    textStyle = LemonadeTheme.typography.bodySmallSemiBold
+                    textStyle = LemonadeTheme.typography.bodySmallSemiBold,
                 )
 
                 LemonadeUi.HorizontalDivider()
@@ -147,15 +148,15 @@ internal fun TextDisplay() {
                 // XSmall
                 LemonadeUi.Text(
                     text = "Body XSmall Regular",
-                    textStyle = LemonadeTheme.typography.bodyXSmallRegular
+                    textStyle = LemonadeTheme.typography.bodyXSmallRegular,
                 )
                 LemonadeUi.Text(
                     text = "Body XSmall Medium",
-                    textStyle = LemonadeTheme.typography.bodyXSmallMedium
+                    textStyle = LemonadeTheme.typography.bodyXSmallMedium,
                 )
                 LemonadeUi.Text(
                     text = "Body XSmall SemiBold",
-                    textStyle = LemonadeTheme.typography.bodyXSmallSemiBold
+                    textStyle = LemonadeTheme.typography.bodyXSmallSemiBold,
                 )
             }
         }
@@ -163,37 +164,37 @@ internal fun TextDisplay() {
         // Text Colors
         TextSection(title = "Colors") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
             ) {
                 LemonadeUi.Text(
                     text = "Primary",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentPrimary
+                    color = LemonadeTheme.colors.content.contentPrimary,
                 )
                 LemonadeUi.Text(
                     text = "Secondary",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentSecondary
+                    color = LemonadeTheme.colors.content.contentSecondary,
                 )
                 LemonadeUi.Text(
                     text = "Tertiary",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentTertiary
+                    color = LemonadeTheme.colors.content.contentTertiary,
                 )
                 LemonadeUi.Text(
                     text = "Critical",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentCritical
+                    color = LemonadeTheme.colors.content.contentCritical,
                 )
                 LemonadeUi.Text(
                     text = "Positive",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentPositive
+                    color = LemonadeTheme.colors.content.contentPositive,
                 )
                 LemonadeUi.Text(
                     text = "Info",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentInfo
+                    color = LemonadeTheme.colors.content.contentInfo,
                 )
             }
         }
@@ -201,20 +202,23 @@ internal fun TextDisplay() {
         // Overflow
         TextSection(title = "Overflow") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
             ) {
                 LemonadeUi.Text(
-                    text = "This is a very long text that will be truncated at the end with ellipsis because it exceeds the available width",
+                    text = "This is a very long text that will be truncated at the end " +
+                        "with ellipsis because it exceeds the available width",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
+                    maxLines = 1,
                 )
 
                 LemonadeUi.Text(
-                    text = "This text allows multiple lines but is limited to 2 lines maximum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
+                    text = "This text allows multiple lines but is limited to 2 lines " +
+                        "maximum. Lorem ipsum dolor sit amet, consectetur adipiscing " +
+                        "elit. Sed do eiusmod tempor incididunt ut labore.",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }
@@ -224,7 +228,7 @@ internal fun TextDisplay() {
 @Composable
 private fun TextSection(
     title: String,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
@@ -232,7 +236,7 @@ private fun TextSection(
         LemonadeUi.Text(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
-            color = LemonadeTheme.colors.content.contentSecondary
+            color = LemonadeTheme.colors.content.contentSecondary,
         )
         content()
     }

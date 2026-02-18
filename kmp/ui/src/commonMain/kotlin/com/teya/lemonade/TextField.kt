@@ -131,7 +131,7 @@ public fun LemonadeUi.TextField(
                 innerTextField = innerTextField,
                 modifier = Modifier.alpha(alpha = animatedAlpha),
             )
-        }
+        },
     )
 }
 
@@ -233,7 +233,7 @@ public fun LemonadeUi.TextFieldWithSelector(
                 interactionSource = interactionSource,
                 enabled = enabled,
             )
-        }
+        },
     )
 }
 
@@ -278,10 +278,11 @@ internal fun CoreTextField(
                 enabled = enabled,
                 textBoxContent = { textBoxContent(innerTextField) },
             )
-        }
+        },
     )
 }
 
+@Suppress("LongMethod", "CyclomaticComplexMethod", "LongParameterList")
 @Composable
 private fun CoreTextFieldDecorator(
     label: String?,
@@ -306,7 +307,7 @@ private fun CoreTextFieldDecorator(
             else -> LocalColors.current.background.bgSubtle.copy(
                 alpha = LocalOpacities.current.base.opacity0,
             )
-        }
+        },
     )
     val animatedBorderColor by animateColorAsState(
         targetValue = when {
@@ -370,25 +371,21 @@ private fun CoreTextFieldDecorator(
                         Modifier.requiredHeight(height = minHeight)
                     }
                         ?: Modifier,
-                )
-                .shadowBorder(
+                ).shadowBorder(
                     width = focusShadowBorderWidth,
                     shape = size.data.containerShape,
                     color = LocalColors.current.background.bgElevated,
-                )
-                .border(
+                ).border(
                     color = animatedBorderColor,
                     width = LocalBorderWidths.current.base.border25,
                     shape = size.data.containerShape,
-                )
-                .background(
+                ).background(
                     color = LocalColors.current.background.bgDefault,
                     shape = size.data.containerShape,
-                )
-                .background(
+                ).background(
                     color = animatedBackgroundColor,
                     shape = size.data.containerShape,
-                )
+                ),
         )
 
         when {
@@ -413,6 +410,7 @@ private fun CoreTextFieldDecorator(
     }
 }
 
+@Suppress("LongMethod", "LongParameterList")
 @Composable
 internal fun BoxScope.DefaultTextFieldWithSelector(
     placeholderText: String?,
@@ -447,8 +445,7 @@ internal fun BoxScope.DefaultTextFieldWithSelector(
                     interactionSource = interactionSource,
                     onClick = leadingAction,
                     indication = null,
-                )
-                .defaultMinSize(
+                ).defaultMinSize(
                     minHeight = size.data.minHeight
                         ?: Dp.Unspecified,
                 ),
@@ -496,6 +493,7 @@ internal fun BoxScope.DefaultTextFieldWithSelector(
     }
 }
 
+@Suppress("LongParameterList")
 @Composable
 internal fun BoxScope.DefaultTextBox(
     placeholderText: String?,
@@ -613,8 +611,8 @@ private data class TextFieldPreviewData(
 private class TextFieldPreviewProvider : PreviewParameterProvider<TextFieldPreviewData> {
     override val values: Sequence<TextFieldPreviewData> = buildAllVariants()
 
-    private fun buildAllVariants(): Sequence<TextFieldPreviewData> {
-        return buildList {
+    private fun buildAllVariants(): Sequence<TextFieldPreviewData> =
+        buildList {
             listOf(true, false).forEach { withOuterContent ->
                 listOf(true, false).forEach { enabled ->
                     listOf(true, false).forEach { error ->
@@ -628,7 +626,7 @@ private class TextFieldPreviewProvider : PreviewParameterProvider<TextFieldPrevi
                                         withTrailingIcon = trailing,
                                         withOuterContent = withOuterContent,
                                         size = null,
-                                    )
+                                    ),
                                 )
                             }
                         }
@@ -636,9 +634,9 @@ private class TextFieldPreviewProvider : PreviewParameterProvider<TextFieldPrevi
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @Composable
 @LemonadePreview
 private fun TextInputPreview(
@@ -648,7 +646,7 @@ private fun TextInputPreview(
     Column(verticalArrangement = Arrangement.spacedBy(space = 4.dp)) {
         LemonadeUi.TextField(
             input = "Sample text",
-            onInputChanged = {/* Nothing */ },
+            onInputChanged = { /* Nothing */ },
             enabled = previewData.enabled,
             error = previewData.error,
             label = "Label".takeIf { previewData.withOuterContent },
@@ -679,6 +677,7 @@ private fun TextInputPreview(
     }
 }
 
+@Suppress("UnusedPrivateMember")
 @Composable
 @LemonadePreview
 private fun TextInputWithSelectorPreview(
@@ -688,7 +687,7 @@ private fun TextInputWithSelectorPreview(
     Column(verticalArrangement = Arrangement.spacedBy(space = 4.dp)) {
         LemonadeUi.TextFieldWithSelector(
             input = "Sample text",
-            onInputChanged = {/* Nothing */ },
+            onInputChanged = { /* Nothing */ },
             enabled = previewData.enabled,
             error = previewData.error,
             label = "Label".takeIf { previewData.withOuterContent },

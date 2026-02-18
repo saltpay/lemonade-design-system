@@ -19,7 +19,7 @@ public fun LemonadeTheme(
     spaces: LemonadeSpaceValues = LemonadeTheme.spaces,
     borderWidths: LemonadeBorderWidth = LemonadeTheme.borderWidths,
     sizes: LemonadeSizeValues = LemonadeTheme.sizes,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
         LocalTypographies provides typography,

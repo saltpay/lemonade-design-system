@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 
+@Suppress("LongMethod")
 @Composable
 internal fun TextFieldDisplay() {
     var basicText by remember { mutableStateOf("") }
@@ -43,7 +44,7 @@ internal fun TextFieldDisplay() {
             LemonadeUi.TextField(
                 input = basicText,
                 onInputChanged = { basicText = it },
-                placeholderText = "Enter text..."
+                placeholderText = "Enter text...",
             )
         }
 
@@ -53,7 +54,7 @@ internal fun TextFieldDisplay() {
                 input = labeledText,
                 onInputChanged = { labeledText = it },
                 label = "Email Address",
-                placeholderText = "you@example.com"
+                placeholderText = "you@example.com",
             )
         }
 
@@ -65,7 +66,7 @@ internal fun TextFieldDisplay() {
                 label = "Username",
                 placeholderText = "Enter username",
                 errorMessage = "Username is already taken",
-                error = true
+                error = true,
             )
         }
 
@@ -76,7 +77,7 @@ internal fun TextFieldDisplay() {
                 onInputChanged = { supportText = it },
                 label = "Password",
                 supportText = "Must be at least 8 characters",
-                placeholderText = "Enter password"
+                placeholderText = "Enter password",
             )
         }
 
@@ -91,9 +92,9 @@ internal fun TextFieldDisplay() {
                     LemonadeUi.Icon(
                         icon = LemonadeIcons.Search,
                         contentDescription = null,
-                        tint = LemonadeTheme.colors.content.contentSecondary
+                        tint = LemonadeTheme.colors.content.contentSecondary,
                     )
-                }
+                },
             )
         }
 
@@ -108,9 +109,9 @@ internal fun TextFieldDisplay() {
                     LemonadeUi.Icon(
                         icon = LemonadeIcons.CircleInfo,
                         contentDescription = null,
-                        tint = LemonadeTheme.colors.content.contentSecondary
+                        tint = LemonadeTheme.colors.content.contentSecondary,
                     )
-                }
+                },
             )
         }
 
@@ -127,7 +128,7 @@ internal fun TextFieldDisplay() {
                     ) {
                         LemonadeUi.Text(
                             text = "+1",
-                            textStyle = LemonadeTheme.typography.bodyMediumMedium
+                            textStyle = LemonadeTheme.typography.bodyMediumMedium,
                         )
                         LemonadeUi.Icon(
                             icon = LemonadeIcons.ChevronDown,
@@ -137,7 +138,7 @@ internal fun TextFieldDisplay() {
                     }
                 },
                 label = "Phone Number",
-                placeholderText = "Enter phone number"
+                placeholderText = "Enter phone number",
             )
         }
 
@@ -148,7 +149,7 @@ internal fun TextFieldDisplay() {
                 onInputChanged = {},
                 label = "Disabled Field",
                 placeholderText = "Cannot edit",
-                enabled = false
+                enabled = false,
             )
         }
     }
@@ -157,7 +158,7 @@ internal fun TextFieldDisplay() {
 @Composable
 private fun TextFieldSection(
     title: String,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
@@ -165,7 +166,7 @@ private fun TextFieldSection(
         LemonadeUi.Text(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
-            color = LemonadeTheme.colors.content.contentSecondary
+            color = LemonadeTheme.colors.content.contentSecondary,
         )
         content()
     }

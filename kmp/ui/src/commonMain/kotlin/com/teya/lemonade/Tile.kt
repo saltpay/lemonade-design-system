@@ -69,10 +69,11 @@ internal fun LemonadeUi.MobileTile(
                     maxLines = 1,
                 )
             }
-        }
+        },
     )
 }
 
+@Suppress("LongMethod", "LongParameterList")
 @Composable
 private fun CoreTile(
     variant: LemonadeTileVariant,
@@ -113,21 +114,18 @@ private fun CoreTile(
                         } else {
                             Modifier
                         },
-                    )
-                    .then(
+                    ).then(
                         other = if (isFocused) {
                             Modifier
                                 .border(
                                     width = LocalBorderWidths.current.base.border25,
                                     color = LocalColors.current.border.borderSelected,
                                     shape = tileShape,
-                                )
-                                .padding(all = LocalSpaces.current.spacing50)
+                                ).padding(all = LocalSpaces.current.spacing50)
                         } else {
                             Modifier
-                        }
-                    )
-                    .then(
+                        },
+                    ).then(
                         other = variant.data.shadow?.let { lemonadeShadow ->
                             Modifier.lemonadeShadow(
                                 shadow = lemonadeShadow,
@@ -135,8 +133,7 @@ private fun CoreTile(
                             )
                         }
                             ?: Modifier,
-                    )
-                    .then(
+                    ).then(
                         other = variant.data.borderColor?.let { borderColor ->
                             Modifier.border(
                                 color = borderColor,
@@ -145,8 +142,7 @@ private fun CoreTile(
                             )
                         }
                             ?: Modifier,
-                    )
-                    .clip(shape = tileShape)
+                    ).clip(shape = tileShape)
                     .then(
                         other = if (onClick != null) {
                             Modifier.clickable(
@@ -158,12 +154,10 @@ private fun CoreTile(
                         } else {
                             Modifier
                         },
-                    )
-                    .background(
+                    ).background(
                         color = animatedBackgroundColor,
                         shape = tileShape,
-                    )
-                    .padding(
+                    ).padding(
                         horizontal = LocalSpaces.current.spacing100,
                         vertical = LocalSpaces.current.spacing400,
                     ),
@@ -176,7 +170,7 @@ internal data class TileData(
     val backgroundColor: Color,
     val backgroundPressedColor: Color,
     val borderColor: Color?,
-    val shadow: LemonadeShadow?
+    val shadow: LemonadeShadow?,
 )
 
 internal val LemonadeTileVariant.data: TileData
@@ -213,8 +207,9 @@ private data class TilePreviewData(
 
 private class TilePreviewProvider : PreviewParameterProvider<TilePreviewData> {
     override val values: Sequence<TilePreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<TilePreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<TilePreviewData> =
+        buildList {
             listOf(true, false).forEach { enabled ->
                 listOf(true, false).forEach { withAddon ->
                     LemonadeTileVariant.entries.forEach { variant ->
@@ -223,15 +218,15 @@ private class TilePreviewProvider : PreviewParameterProvider<TilePreviewData> {
                                 enabled = enabled,
                                 withAddon = withAddon,
                                 variant = variant,
-                            )
+                            ),
                         )
                     }
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun LemonadeLabeledRadioButtonPreview(
@@ -248,9 +243,8 @@ private fun LemonadeLabeledRadioButtonPreview(
                     LocalColors.current.background.bgBrand.copy(
                         alpha = LocalOpacities.current.base.opacity0,
                     )
-                }
-            )
-            .padding(30.dp),
+                },
+            ).padding(30.dp),
     ) {
         LemonadeUi.MobileTile(
             label = "Label",

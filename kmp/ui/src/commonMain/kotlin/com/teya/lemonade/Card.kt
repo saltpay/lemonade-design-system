@@ -36,7 +36,7 @@ public fun LemonadeUi.Card(
         contentPadding = contentPadding,
         background = background,
         header = header,
-        content = content
+        content = content,
     )
 }
 
@@ -52,7 +52,7 @@ private fun CoreCard(
     val headerConfig = if (hasHeader) {
         CardHeaderConfig(
             title = header.title,
-            trailingSlot = header.trailingSlot
+            trailingSlot = header.trailingSlot,
         )
     } else {
         null
@@ -62,7 +62,7 @@ private fun CoreCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(LocalRadius.current.radius400))
-            .background(color = background.background)
+            .background(color = background.background),
     ) {
         if (hasHeader) {
             CardHeader(config = headerConfig)
@@ -70,7 +70,7 @@ private fun CoreCard(
 
         Column(
             modifier = Modifier
-                .padding(contentPadding.spacing)
+                .padding(contentPadding.spacing),
         ) {
             content()
         }
@@ -79,7 +79,7 @@ private fun CoreCard(
 
 public data class CardHeaderConfig(
     val title: String,
-    val trailingSlot: (@Composable RowScope.() -> Unit)? = null
+    val trailingSlot: (@Composable RowScope.() -> Unit)? = null,
 )
 
 @Composable
@@ -100,7 +100,7 @@ private fun CardHeader(
                 top = LocalSpaces.current.spacing400,
                 end = LocalSpaces.current.spacing400,
                 bottom = LocalSpaces.current.spacing0,
-            )
+            ),
     ) {
         LemonadeUi.Text(
             text = title,
@@ -109,7 +109,6 @@ private fun CardHeader(
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1F),
         )
-
 
         if (trailingSlot !== null) {
             trailingSlot()
@@ -135,16 +134,18 @@ private val LemonadeCardBackground.background: Color
         }
     }
 
+@Suppress("DataClassShouldBeImmutable")
 private data class CardPreviewData(
     val background: LemonadeCardBackground,
     val contentPadding: LemonadeCardPadding,
-    var header: CardHeaderConfig?
+    var header: CardHeaderConfig?,
 )
 
 private class CardPreviewProvider : PreviewParameterProvider<CardPreviewData> {
     override val values: Sequence<CardPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<CardPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<CardPreviewData> =
+        buildList {
             LemonadeCardPadding.entries.forEach { contentPadding ->
                 LemonadeCardBackground.entries.forEach { background ->
                     listOf(true, false).forEach { withHeader ->
@@ -156,17 +157,17 @@ private class CardPreviewProvider : PreviewParameterProvider<CardPreviewData> {
                                     title = "Card heading",
                                     trailingSlot = {
                                         LemonadeUi.Tag("Tag label", voice = TagVoice.Neutral)
-                                    }
-                                ).takeIf { withHeader }
-                            )
+                                    },
+                                ).takeIf { withHeader },
+                            ),
                         )
                     }
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @OptIn(InternalLemonadeApi::class)
 @LemonadePreview
 @Composable
@@ -185,14 +186,14 @@ private fun CardPreview(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(LocalSizes.current.size1600)
-                    .background(LemonadePrimitiveColors.Alpha.Pink.alpha200)
+                    .background(LemonadePrimitiveColors.Alpha.Pink.alpha200),
             ) {
                 LemonadeUi.Text(
                     text = "Background: ${previewData.background} • Spacing: ${previewData.contentPadding}",
                     textStyle = LocalTypographies.current.bodySmallMedium,
-                    color = LocalColors.current.content.contentSecondary
+                    color = LocalColors.current.content.contentSecondary,
                 )
             }
-        }
+        },
     )
 }

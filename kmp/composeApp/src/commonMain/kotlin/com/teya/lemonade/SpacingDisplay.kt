@@ -23,7 +23,7 @@ import com.teya.lemonade.core.LemonadeSpaces
 
 private data class SpacingItem(
     val name: String,
-    val value: Dp
+    val value: Dp,
 )
 
 private val spacingItems = listOf(
@@ -58,7 +58,7 @@ internal fun SpacingDisplay() {
             LemonadeUi.Text(
                 text = "Spacing Tokens",
                 textStyle = LemonadeTheme.typography.headingMedium,
-                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing200)
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing200),
             )
         }
 
@@ -70,14 +70,14 @@ internal fun SpacingDisplay() {
                 LemonadeUi.Text(
                     text = item.name,
                     textStyle = LemonadeTheme.typography.bodySmallMedium,
-                    modifier = Modifier.width(100.dp)
+                    modifier = Modifier.width(100.dp),
                 )
 
                 LemonadeUi.Text(
                     text = "${item.value.value.toInt()}dp",
                     textStyle = LemonadeTheme.typography.bodySmallRegular,
                     color = LemonadeTheme.colors.content.contentSecondary,
-                    modifier = Modifier.width(50.dp)
+                    modifier = Modifier.width(50.dp),
                 )
 
                 Box(
@@ -85,7 +85,7 @@ internal fun SpacingDisplay() {
                         .width(item.value)
                         .height(24.dp)
                         .clip(RoundedCornerShape(4.dp))
-                        .background(LemonadePrimitiveColors.Solid.Green.green500)
+                        .background(LemonadePrimitiveColors.Solid.Green.green500),
                 )
             }
         }

@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeIcons
 
+@Suppress("LongMethod")
 @Composable
 internal fun ChipDisplay() {
     var selectedChips by remember { mutableStateOf(setOf("Option 1")) }
@@ -34,27 +35,27 @@ internal fun ChipDisplay() {
         // States
         ChipSection(title = "States") {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Chip(label = "Unselected", selected = false, leadingIcon = null)
                     LemonadeUi.Text(
                         text = "Unselected",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Chip(label = "Selected", selected = true, leadingIcon = null)
                     LemonadeUi.Text(
                         text = "Selected",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
             }
@@ -63,7 +64,7 @@ internal fun ChipDisplay() {
         // With Counter
         ChipSection(title = "With Counter") {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
             ) {
                 LemonadeUi.Chip(label = "Messages", selected = false, leadingIcon = null, counter = 5)
                 LemonadeUi.Chip(label = "Notifications", selected = true, leadingIcon = null, counter = 12)
@@ -73,20 +74,30 @@ internal fun ChipDisplay() {
         // With Icons
         ChipSection(title = "With Icons") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
                 ) {
                     LemonadeUi.Chip(label = "Favorites", selected = false, leadingIcon = LemonadeIcons.Heart)
                     LemonadeUi.Chip(label = "Favorites", selected = true, leadingIcon = LemonadeIcons.Heart)
                 }
 
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
                 ) {
-                    LemonadeUi.Chip(label = "Remove", selected = false, leadingIcon = null, trailingIcon = LemonadeIcons.CircleX)
-                    LemonadeUi.Chip(label = "Remove", selected = true, leadingIcon = null, trailingIcon = LemonadeIcons.CircleX)
+                    LemonadeUi.Chip(
+                        label = "Remove",
+                        selected = false,
+                        leadingIcon = null,
+                        trailingIcon = LemonadeIcons.CircleX,
+                    )
+                    LemonadeUi.Chip(
+                        label = "Remove",
+                        selected = true,
+                        leadingIcon = null,
+                        trailingIcon = LemonadeIcons.CircleX,
+                    )
                 }
             }
         }
@@ -94,15 +105,15 @@ internal fun ChipDisplay() {
         // Interactive Selection
         ChipSection(title = "Interactive Selection") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
             ) {
                 LemonadeUi.Text(
                     text = "Tap to select/deselect:",
-                    textStyle = LemonadeTheme.typography.bodySmallRegular
+                    textStyle = LemonadeTheme.typography.bodySmallRegular,
                 )
 
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     listOf("Option 1", "Option 2", "Option 3").forEach { option ->
                         LemonadeUi.Chip(
@@ -115,7 +126,7 @@ internal fun ChipDisplay() {
                                 } else {
                                     selectedChips + option
                                 }
-                            }
+                            },
                         )
                     }
                 }
@@ -123,7 +134,7 @@ internal fun ChipDisplay() {
                 LemonadeUi.Text(
                     text = "Selected: ${selectedChips.sorted().joinToString(", ")}",
                     textStyle = LemonadeTheme.typography.bodySmallRegular,
-                    color = LemonadeTheme.colors.content.contentSecondary
+                    color = LemonadeTheme.colors.content.contentSecondary,
                 )
             }
         }
@@ -131,7 +142,7 @@ internal fun ChipDisplay() {
         // Disabled
         ChipSection(title = "Disabled") {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
             ) {
                 LemonadeUi.Chip(label = "Disabled", selected = false, leadingIcon = null, enabled = false)
                 LemonadeUi.Chip(label = "Disabled", selected = true, leadingIcon = null, enabled = false)
@@ -143,7 +154,7 @@ internal fun ChipDisplay() {
 @Composable
 private fun ChipSection(
     title: String,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
@@ -151,7 +162,7 @@ private fun ChipSection(
         LemonadeUi.Text(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
-            color = LemonadeTheme.colors.content.contentSecondary
+            color = LemonadeTheme.colors.content.contentSecondary,
         )
         content()
     }

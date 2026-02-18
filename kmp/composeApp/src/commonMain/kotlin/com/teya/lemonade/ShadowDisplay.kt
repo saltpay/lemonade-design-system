@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.teya.lemonade.core.LemonadeShadow
 
+@Suppress("LongMethod")
 @Composable
 internal fun ShadowDisplay() {
     Column(
@@ -38,7 +39,7 @@ internal fun ShadowDisplay() {
             text = "Lemonade Component - Shadow",
             modifier = Modifier.padding(bottom = 8.dp),
             fontSize = 20.sp,
-            textStyle = LemonadeTheme.typography.bodyMediumRegular
+            textStyle = LemonadeTheme.typography.bodyMediumRegular,
         )
 
         LemonadeShadow.entries.forEach { shadow ->
@@ -52,15 +53,13 @@ internal fun ShadowDisplay() {
                     .lemonadeShadow(
                         shadow = shadow,
                         shape = LemonadeTheme.shapes.radius500,
-                    )
-                    .background(
+                    ).background(
                         color = LemonadeTheme.colors.background.bgDefault,
                         shape = LemonadeTheme.shapes.radius500,
-                    )
-                    .size(
+                    ).size(
                         height = 100.dp,
                         width = 300.dp,
-                    )
+                    ),
             )
         }
 
@@ -78,12 +77,10 @@ internal fun ShadowDisplay() {
                 .animateLemonadeShadow(
                     shape = LemonadeTheme.shapes.radius500,
                     shadow = shownShadow,
-                )
-                .background(
+                ).background(
                     color = LemonadeTheme.colors.background.bgDefault,
                     shape = LemonadeTheme.shapes.radius500,
-                )
-                .size(300.dp)
+                ).size(300.dp),
         )
 
         LemonadeUi.Switch(
@@ -95,7 +92,7 @@ internal fun ShadowDisplay() {
                 } else {
                     LemonadeShadow.None
                 }
-            }
+            },
         )
     }
 }

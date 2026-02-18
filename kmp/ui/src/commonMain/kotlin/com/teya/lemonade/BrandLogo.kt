@@ -24,7 +24,8 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
  * ```
  *
  * @param logo - The [LemonadeBrandLogos] to be displayed.
- * @param contentDescription - The localizable content description for the [logo]. Defaults to [LemonadeBrandLogos.name].
+ * @param contentDescription - The localizable content description for the [logo].
+ *  Defaults to [LemonadeBrandLogos.name].
  * @param size - The [LemonadeAssetSize] to be applied to the logo. Defaults to [LemonadeAssetSize.Medium]
  * @param Modifier - Optional [Modifier] for additional styling and layout adjustments.
  */
@@ -77,22 +78,23 @@ private data class BrandLogoPreviewData(
 
 private class BrandLogoPreviewProvider : PreviewParameterProvider<BrandLogoPreviewData> {
     override val values: Sequence<BrandLogoPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<BrandLogoPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<BrandLogoPreviewData> =
+        buildList {
             LemonadeBrandLogos.entries.take(5).forEach { logo ->
                 LemonadeAssetSize.entries.forEach { size ->
                     add(
                         BrandLogoPreviewData(
                             logo = logo,
                             size = size,
-                        )
+                        ),
                     )
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun CountryFlagPreview(

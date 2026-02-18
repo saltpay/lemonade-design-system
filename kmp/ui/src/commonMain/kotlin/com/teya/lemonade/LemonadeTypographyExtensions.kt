@@ -24,7 +24,7 @@ public val lemonadeFontFamily: FontFamily
         return FontFamily(
             Font(LemonadeRes.font.Figtree_Regular, FontWeight.Normal),
             Font(LemonadeRes.font.Figtree_Medium, FontWeight.Medium),
-            Font(LemonadeRes.font.Figtree_SemiBold, FontWeight.SemiBold)
+            Font(LemonadeRes.font.Figtree_SemiBold, FontWeight.SemiBold),
         )
     }
 
@@ -47,7 +47,7 @@ public val LemonadeTextStyle.textStyle: TextStyle
             fontSize = fontSize.sp,
             lineHeight = lineHeight.sp,
             letterSpacing = spacing.sp,
-            fontFeatureSettings = "psum"
+            fontFeatureSettings = "psum",
         )
     }
 

@@ -95,12 +95,12 @@ private fun CoreHorizontalDivider(
     val dashGap = LocalSpaces.current.spacing100
 
     Canvas(
-        modifier = modifier.height(thickness)
+        modifier = modifier.height(thickness),
     ) {
         val pathEffect = when (variant) {
             DividerVariant.Dashed -> PathEffect.dashPathEffect(
                 intervals = floatArrayOf(dashWidth.toPx(), dashGap.toPx()),
-                phase = 0f
+                phase = 0f,
             )
             DividerVariant.Solid -> null
         }
@@ -110,7 +110,7 @@ private fun CoreHorizontalDivider(
             start = Offset(0f, size.height / 2),
             end = Offset(size.width, size.height / 2),
             strokeWidth = thickness.toPx(),
-            pathEffect = pathEffect
+            pathEffect = pathEffect,
         )
     }
 }
@@ -160,12 +160,12 @@ private fun CoreVerticalDivider(
     val dashGap = LocalSpaces.current.spacing100
 
     Canvas(
-        modifier = modifier.width(thickness)
+        modifier = modifier.width(thickness),
     ) {
         val pathEffect = when (variant) {
             DividerVariant.Dashed -> PathEffect.dashPathEffect(
                 intervals = floatArrayOf(dashWidth.toPx(), dashGap.toPx()),
-                phase = 0f
+                phase = 0f,
             )
             DividerVariant.Solid -> null
         }
@@ -175,7 +175,7 @@ private fun CoreVerticalDivider(
             start = Offset(size.width / 2, 0f),
             end = Offset(size.width / 2, size.height),
             strokeWidth = thickness.toPx(),
-            pathEffect = pathEffect
+            pathEffect = pathEffect,
         )
     }
 }
@@ -190,22 +190,23 @@ private data class HorizontalDividerPreviewData(
 private class HorizontalDividerPreviewProvider :
     PreviewParameterProvider<HorizontalDividerPreviewData> {
     override val values: Sequence<HorizontalDividerPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<HorizontalDividerPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<HorizontalDividerPreviewData> =
+        buildList {
             listOf(null, "OR").forEach { label ->
                 DividerVariant.entries.forEach { variant ->
                     add(
                         HorizontalDividerPreviewData(
                             label = label,
                             variant = variant,
-                        )
+                        ),
                     )
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun HorizontalDividerPreview(
@@ -225,13 +226,15 @@ private data class VerticalDividerPreviewData(
 private class VerticalDividerPreviewProvider :
     PreviewParameterProvider<VerticalDividerPreviewData> {
     override val values: Sequence<VerticalDividerPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<VerticalDividerPreviewData> {
-        return DividerVariant.entries.map { variant ->
-            VerticalDividerPreviewData(variant = variant)
-        }.asSequence()
-    }
+
+    private fun buildAllVariants(): Sequence<VerticalDividerPreviewData> =
+        DividerVariant.entries
+            .map { variant ->
+                VerticalDividerPreviewData(variant = variant)
+            }.asSequence()
 }
 
+@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun VerticalDividerPreview(
@@ -245,4 +248,3 @@ private fun VerticalDividerPreview(
 }
 
 // endregion
-

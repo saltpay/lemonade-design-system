@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.CheckboxStatus
 
+@Suppress("LongMethod")
 @Composable
 internal fun CheckboxDisplay() {
     var isChecked1 by remember { mutableStateOf(false) }
@@ -37,47 +38,47 @@ internal fun CheckboxDisplay() {
         CheckboxSection(title = "States") {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing600),
-                verticalAlignment = Alignment.Top
+                verticalAlignment = Alignment.Top,
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Checkbox(
                         status = CheckboxStatus.Unchecked,
-                        onCheckboxClicked = {}
+                        onCheckboxClicked = {},
                     )
                     LemonadeUi.Text(
                         text = "Unchecked",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Checkbox(
                         status = CheckboxStatus.Checked,
-                        onCheckboxClicked = {}
+                        onCheckboxClicked = {},
                     )
                     LemonadeUi.Text(
                         text = "Checked",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Checkbox(
                         status = CheckboxStatus.Indeterminate,
-                        onCheckboxClicked = {}
+                        onCheckboxClicked = {},
                     )
                     LemonadeUi.Text(
                         text = "Indeterminate",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
             }
@@ -87,29 +88,29 @@ internal fun CheckboxDisplay() {
         CheckboxSection(title = "Interactive") {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 LemonadeUi.Checkbox(
                     status = if (isChecked1) CheckboxStatus.Checked else CheckboxStatus.Unchecked,
-                    onCheckboxClicked = { isChecked1 = !isChecked1 }
+                    onCheckboxClicked = { isChecked1 = !isChecked1 },
                 )
                 LemonadeUi.Text(
                     text = "Tap to toggle",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
                 )
             }
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 LemonadeUi.Checkbox(
                     status = if (isChecked2) CheckboxStatus.Checked else CheckboxStatus.Unchecked,
-                    onCheckboxClicked = { isChecked2 = !isChecked2 }
+                    onCheckboxClicked = { isChecked2 = !isChecked2 },
                 )
                 LemonadeUi.Text(
                     text = "Initially checked",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
                 )
             }
         }
@@ -119,19 +120,19 @@ internal fun CheckboxDisplay() {
             LemonadeUi.Checkbox(
                 status = if (labeledChecked) CheckboxStatus.Checked else CheckboxStatus.Unchecked,
                 onCheckboxClicked = { labeledChecked = !labeledChecked },
-                label = "Accept terms and conditions"
+                label = "Accept terms and conditions",
             )
 
             LemonadeUi.Checkbox(
                 status = CheckboxStatus.Checked,
                 onCheckboxClicked = {},
-                label = "Remember me"
+                label = "Remember me",
             )
 
             LemonadeUi.Checkbox(
                 status = CheckboxStatus.Indeterminate,
                 onCheckboxClicked = {},
-                label = "Select all items"
+                label = "Select all items",
             )
         }
 
@@ -139,33 +140,33 @@ internal fun CheckboxDisplay() {
         CheckboxSection(title = "Disabled") {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 LemonadeUi.Checkbox(
                     status = CheckboxStatus.Unchecked,
                     onCheckboxClicked = {},
-                    enabled = false
+                    enabled = false,
                 )
                 LemonadeUi.Text(
                     text = "Disabled unchecked",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentSecondary
+                    color = LemonadeTheme.colors.content.contentSecondary,
                 )
             }
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 LemonadeUi.Checkbox(
                     status = CheckboxStatus.Checked,
                     onCheckboxClicked = {},
-                    enabled = false
+                    enabled = false,
                 )
                 LemonadeUi.Text(
                     text = "Disabled checked",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentSecondary
+                    color = LemonadeTheme.colors.content.contentSecondary,
                 )
             }
 
@@ -173,7 +174,7 @@ internal fun CheckboxDisplay() {
                 status = CheckboxStatus.Checked,
                 onCheckboxClicked = {},
                 label = "Disabled with label",
-                enabled = false
+                enabled = false,
             )
         }
     }
@@ -182,7 +183,7 @@ internal fun CheckboxDisplay() {
 @Composable
 private fun CheckboxSection(
     title: String,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
@@ -190,7 +191,7 @@ private fun CheckboxSection(
         LemonadeUi.Text(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
-            color = LemonadeTheme.colors.content.contentSecondary
+            color = LemonadeTheme.colors.content.contentSecondary,
         )
         content()
     }

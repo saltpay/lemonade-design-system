@@ -170,7 +170,6 @@ private val LocalSymbolContainerPlatformDimensions =
         error("Local Symbol container platform dimensions not initialized")
     }
 
-
 private val SymbolContainerVoice.tintColor: Color
     @Composable get() {
         return when (this) {
@@ -205,8 +204,8 @@ private data class SymbolContainerPlatformDimensions(
 )
 
 @Composable
-private fun SymbolContainerSize.defaultSymbolContainerPlatformDimensions(): SymbolContainerPlatformDimensions {
-    return when (this) {
+private fun SymbolContainerSize.defaultSymbolContainerPlatformDimensions(): SymbolContainerPlatformDimensions =
+    when (this) {
         SymbolContainerSize.XSmall -> SymbolContainerPlatformDimensions(
             containerSize = LocalSizes.current.size600,
             contentSize = LocalSizes.current.size300,
@@ -242,7 +241,6 @@ private fun SymbolContainerSize.defaultSymbolContainerPlatformDimensions(): Symb
             textStyle = LocalTypographies.current.bodyXLargeSemiBold,
         )
     }
-}
 
 private data class SymbolContainerPreviewData(
     val content: Any,
@@ -253,8 +251,9 @@ private data class SymbolContainerPreviewData(
 private class SymbolContainerPreviewProvider :
     PreviewParameterProvider<SymbolContainerPreviewData> {
     override val values: Sequence<SymbolContainerPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<SymbolContainerPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<SymbolContainerPreviewData> =
+        buildList {
             SymbolContainerVoice.entries.forEach { voice ->
                 listOf("A", LemonadeIcons.Heart).forEach { content ->
                     SymbolContainerSize.entries.forEach { size ->
@@ -263,15 +262,15 @@ private class SymbolContainerPreviewProvider :
                                 content = content,
                                 size = size,
                                 voice = voice,
-                            )
+                            ),
                         )
                     }
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun SymbolContainerPreview(

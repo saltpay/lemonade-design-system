@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TabButtonProperties
 
+@Suppress("LongMethod")
 @Composable
 internal fun SegmentedControlDisplay() {
     var selectedTab1 by remember { mutableIntStateOf(0) }
@@ -24,7 +25,7 @@ internal fun SegmentedControlDisplay() {
                 properties = listOf(
                     TabButtonProperties(label = "Tab 1"),
                     TabButtonProperties(label = "Tab 2"),
-                )
+                ),
             )
         }
 
@@ -36,7 +37,7 @@ internal fun SegmentedControlDisplay() {
                     TabButtonProperties(label = "Tab 1", icon = LemonadeIcons.Heart),
                     TabButtonProperties(label = "Tab 2", icon = LemonadeIcons.Laptop),
                     TabButtonProperties(label = "Tab 3", icon = LemonadeIcons.User),
-                )
+                ),
             )
         }
 
@@ -49,11 +50,11 @@ internal fun SegmentedControlDisplay() {
                         TabButtonProperties(label = "First"),
                         TabButtonProperties(label = "Second"),
                         TabButtonProperties(label = "Third"),
-                    )
+                    ),
                 )
                 LemonadeUi.Text(
                     text = "Selected tab index: $selectedTab1",
-                    textStyle = LemonadeTheme.typography.bodySmallRegular
+                    textStyle = LemonadeTheme.typography.bodySmallRegular,
                 )
             }
         }
@@ -67,11 +68,11 @@ internal fun SegmentedControlDisplay() {
                         TabButtonProperties(label = "Home", icon = LemonadeIcons.Home),
                         TabButtonProperties(label = "Profile", icon = LemonadeIcons.User),
                         TabButtonProperties(label = "Settings", icon = LemonadeIcons.Gear),
-                    )
+                    ),
                 )
                 LemonadeUi.Text(
                     text = "Selected tab index: $selectedTab2",
-                    textStyle = LemonadeTheme.typography.bodySmallRegular
+                    textStyle = LemonadeTheme.typography.bodySmallRegular,
                 )
             }
         }
@@ -82,7 +83,7 @@ internal fun SegmentedControlDisplay() {
 private fun SegmentedControlSection(
     title: String,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         modifier = modifier,
@@ -91,7 +92,7 @@ private fun SegmentedControlSection(
         LemonadeUi.Text(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
-            color = LemonadeTheme.colors.content.contentSecondary
+            color = LemonadeTheme.colors.content.contentSecondary,
         )
         content()
     }

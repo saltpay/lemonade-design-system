@@ -47,7 +47,7 @@ private interface ScrollStateAdapter {
 }
 
 private class ListStateAdapter(
-    private val state: LazyListState
+    private val state: LazyListState,
 ) : ScrollStateAdapter {
     override val firstVisibleItemIndex: Int
         get() {
@@ -60,7 +60,7 @@ private class ListStateAdapter(
 }
 
 private class GridStateAdapter(
-    private val state: LazyGridState
+    private val state: LazyGridState,
 ) : ScrollStateAdapter {
     override val firstVisibleItemIndex: Int
         get() {
@@ -73,7 +73,7 @@ private class GridStateAdapter(
 }
 
 private class ColumnStateAdapter(
-    private val state: ScrollState
+    private val state: ScrollState,
 ) : ScrollStateAdapter {
     override val firstVisibleItemIndex: Int
         get() {
@@ -88,16 +88,17 @@ private class ColumnStateAdapter(
 @Composable
 private fun rememberCollapseProgress(
     listState: ScrollStateAdapter,
-    collapseDistance: Dp = 64.dp
+    collapseDistance: Dp = 64.dp,
 ): Float {
     val density = LocalDensity.current
     val collapsePx = with(density) { collapseDistance.toPx() }
 
     return remember(listState, density) {
         derivedStateOf {
-            val offset = when {
-                listState.firstVisibleItemIndex > 0 -> collapsePx
-                else -> listState.firstVisibleItemScrollOffset.toFloat()
+            val offset = if (listState.firstVisibleItemIndex > 0) {
+                collapsePx
+            } else {
+                listState.firstVisibleItemScrollOffset.toFloat()
             }
             (offset / collapsePx).coerceIn(0f, 1f)
         }
@@ -113,21 +114,20 @@ internal fun SampleScreenDisplayLazyColumn(
     header: @Composable (progress: Float) -> Unit = { progress ->
         SampleScreenHeader(title = title, progress = progress)
     },
-    content: LazyListScope.() -> Unit
+    content: LazyListScope.() -> Unit,
 ) {
     val density = LocalDensity.current
     val listState = rememberLazyListState()
 
-    val bottomGesturePadding = (WindowInsets.safeGestures.getBottom(density).dp / 2)
+    val bottomGesturePadding = WindowInsets.safeGestures.getBottom(density).dp / 2
 
     val progress = rememberCollapseProgress(ListStateAdapter(listState))
     var headerHeightDp by remember { mutableStateOf(0.dp) }
 
-
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(background)
+            .background(background),
     ) {
         LazyColumn(
             state = listState,
@@ -139,9 +139,9 @@ internal fun SampleScreenDisplayLazyColumn(
                 top = headerHeightDp,
                 start = contentHorizontalPadding,
                 end = contentHorizontalPadding,
-                bottom = bottomGesturePadding
+                bottom = bottomGesturePadding,
             ),
-            content = content
+            content = content,
         )
     }
 
@@ -151,7 +151,7 @@ internal fun SampleScreenDisplayLazyColumn(
             .zIndex(1f)
             .onSizeChanged {
                 headerHeightDp = with(density) { it.height.toDp() }
-            }
+            },
     ) {
         header(progress)
     }
@@ -168,10 +168,10 @@ internal fun SampleScreenDisplayLazyGrid(
     },
     columns: GridCells = GridCells.Adaptive(100.dp),
     columnsGap: Dp = LemonadeTheme.spaces.spacing200,
-    content: LazyGridScope.() -> Unit
+    content: LazyGridScope.() -> Unit,
 ) {
     val density = LocalDensity.current
-    val bottomGesturePadding = (WindowInsets.safeGestures.getBottom(density).dp / 2)
+    val bottomGesturePadding = WindowInsets.safeGestures.getBottom(density).dp / 2
 
     val listState = rememberLazyGridState()
 
@@ -181,14 +181,14 @@ internal fun SampleScreenDisplayLazyGrid(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(background)
+            .background(background),
     ) {
         Spacer(modifier = Modifier.height(headerHeightDp))
 
         Box(
             modifier = modifier
                 .fillMaxSize()
-                .background(background)
+                .background(background),
         ) {
             LazyVerticalGrid(
                 state = listState,
@@ -196,17 +196,17 @@ internal fun SampleScreenDisplayLazyGrid(
                 contentPadding = PaddingValues(
                     start = contentHorizontalPadding,
                     end = contentHorizontalPadding,
-                    bottom = bottomGesturePadding
+                    bottom = bottomGesturePadding,
                 ),
                 horizontalArrangement = Arrangement.spacedBy(
                     space = columnsGap,
-                    alignment = Alignment.CenterHorizontally
+                    alignment = Alignment.CenterHorizontally,
                 ),
                 verticalArrangement = Arrangement.spacedBy(
                     space = columnsGap,
-                    alignment = Alignment.CenterVertically
+                    alignment = Alignment.CenterVertically,
                 ),
-                content = content
+                content = content,
             )
         }
     }
@@ -217,7 +217,7 @@ internal fun SampleScreenDisplayLazyGrid(
             .zIndex(1f)
             .onSizeChanged {
                 headerHeightDp = with(density) { it.height.toDp() }
-            }
+            },
     ) {
         header(progress)
     }
@@ -234,9 +234,8 @@ internal fun SampleScreenDisplayColumn(
     header: @Composable (progress: Float) -> Unit = { progress ->
         SampleScreenHeader(title = title, progress = progress)
     },
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
-
     val density = LocalDensity.current
     val listState = rememberScrollState()
 
@@ -246,7 +245,7 @@ internal fun SampleScreenDisplayColumn(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(background)
+            .background(background),
     ) {
         Column(
             modifier = Modifier
@@ -259,11 +258,11 @@ internal fun SampleScreenDisplayColumn(
                         top = headerHeightDp,
                         start = contentHorizontalPadding,
                         end = contentHorizontalPadding,
-                        bottom = contentBottomPadding
-                    )
+                        bottom = contentBottomPadding,
+                    ),
                 ),
             verticalArrangement = Arrangement.spacedBy(itemsSpacing),
-            content = content
+            content = content,
         )
     }
 
@@ -273,10 +272,8 @@ internal fun SampleScreenDisplayColumn(
             .zIndex(1f)
             .onSizeChanged {
                 headerHeightDp = with(density) { it.height.toDp() }
-            }
+            },
     ) {
         header(progress)
     }
 }
-
-

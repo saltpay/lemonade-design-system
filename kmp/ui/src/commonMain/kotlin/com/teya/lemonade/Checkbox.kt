@@ -84,8 +84,7 @@ public fun LemonadeUi.Checkbox(
                 onClick = onCheckboxClicked,
                 interactionSource = interactionSource,
                 indication = null,
-            )
-            .hoverable(interactionSource = interactionSource),
+            ).hoverable(interactionSource = interactionSource),
     ) {
         CoreCheckbox(
             status = status,
@@ -138,6 +137,7 @@ public fun LemonadeUi.Checkbox(
  *  like hover and press to drive visual feedback.
  * @param enabled A boolean that controls the enabled state of the checkbox.
  */
+@Suppress("UnusedParameter")
 @Composable
 public fun LemonadeUi.Checkbox(
     status: CheckboxStatus,
@@ -154,6 +154,7 @@ public fun LemonadeUi.Checkbox(
     )
 }
 
+@Suppress("LongMethod", "CyclomaticComplexMethod", "UnusedParameter")
 @Composable
 private fun CoreCheckbox(
     status: CheckboxStatus,
@@ -204,38 +205,32 @@ private fun CoreCheckbox(
             .focusable(
                 enabled = enabled,
                 interactionSource = interactionSource,
-            )
-            .clip(shape = LocalShapes.current.radius150)
+            ).clip(shape = LocalShapes.current.radius150)
             .clickable(
                 role = Role.Checkbox,
                 enabled = enabled,
                 onClick = onCheckboxClicked,
                 interactionSource = interactionSource,
                 indication = null,
-            )
-            .then(
+            ).then(
                 other = if (isFocused && platformProps.focusVisible) {
                     Modifier
                         .border(
                             width = LocalBorderWidths.current.state.focusRing,
                             shape = LocalShapes.current.radius150,
                             color = LocalColors.current.border.borderSelected,
-                        )
-                        .padding(all = LocalBorderWidths.current.state.focusRing + 1.dp)
+                        ).padding(all = LocalBorderWidths.current.state.focusRing + 1.dp)
                         .clip(shape = LocalShapes.current.radius150)
                 } else {
                     Modifier
                 },
-            )
-            .border(
+            ).border(
                 width = LocalBorderWidths.current.base.border50,
                 color = animatedBorderColor,
                 shape = LocalShapes.current.radius150,
-            )
-            .background(color = animatedBackgroundColor)
+            ).background(color = animatedBackgroundColor)
             .requiredSize(size = platformProps.checkboxSize),
     ) {
-
         AnimatedContent(
             targetState = status.icon,
             transitionSpec = { fadeIn() + scaleIn() togetherWith fadeOut() + scaleOut() },
@@ -254,7 +249,6 @@ private fun CoreCheckbox(
         )
     }
 }
-
 
 private val CheckboxStatus.icon: LemonadeIcons?
     get() {
@@ -276,14 +270,13 @@ internal data class CheckboxPlatformProps(
 internal expect val platformCheckboxPropertiesProperties: CheckboxPlatformProps
 
 @Composable
-internal fun defaultPlatformCheckboxProps(): CheckboxPlatformProps {
-    return CheckboxPlatformProps(
+internal fun defaultPlatformCheckboxProps(): CheckboxPlatformProps =
+    CheckboxPlatformProps(
         checkboxSize = 22.dp,
         labelStyle = LocalTypographies.current.bodyMediumMedium,
         supportTextStyle = LocalTypographies.current.bodySmallRegular,
         focusVisible = false,
     )
-}
 
 @LemonadePreview
 @Composable
@@ -294,7 +287,7 @@ internal fun LemonadeCheckboxPreview() {
         verticalArrangement = Arrangement.spacedBy(
             space = 24.dp,
             alignment = Alignment.CenterVertically,
-        )
+        ),
     ) {
         CheckboxStatus.entries.forEach { status ->
             LemonadeUi.Checkbox(
@@ -320,7 +313,7 @@ internal fun LemonadeLabeledCheckboxPreview() {
         verticalArrangement = Arrangement.spacedBy(
             space = 24.dp,
             alignment = Alignment.CenterVertically,
-        )
+        ),
     ) {
         CheckboxStatus.entries.forEach { status ->
             LemonadeUi.Checkbox(

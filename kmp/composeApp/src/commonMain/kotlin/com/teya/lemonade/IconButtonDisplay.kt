@@ -16,6 +16,7 @@ import com.teya.lemonade.core.LemonadeIconButtonSize
 import com.teya.lemonade.core.LemonadeIconButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
 
+@Suppress("LongMethod")
 @Composable
 internal fun IconButtonDisplay() {
     Column(
@@ -30,22 +31,22 @@ internal fun IconButtonDisplay() {
         // Sizes
         IconButtonSection(title = "Sizes") {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 LemonadeIconButtonSize.entries.forEach { size ->
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                     ) {
                         LemonadeUi.IconButton(
                             icon = LemonadeIcons.Heart,
                             contentDescription = null,
                             size = size,
-                            onClick = {}
+                            onClick = {},
                         )
                         LemonadeUi.Text(
                             text = size.name,
-                            textStyle = LemonadeTheme.typography.bodySmallRegular
+                            textStyle = LemonadeTheme.typography.bodySmallRegular,
                         )
                     }
                 }
@@ -55,22 +56,22 @@ internal fun IconButtonDisplay() {
         // Variants
         IconButtonSection(title = "Variants") {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 LemonadeIconButtonVariant.entries.forEach { variant ->
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                     ) {
                         LemonadeUi.IconButton(
                             icon = LemonadeIcons.Heart,
                             contentDescription = null,
                             variant = variant,
-                            onClick = {}
+                            onClick = {},
                         )
                         LemonadeUi.Text(
                             text = variant.name,
-                            textStyle = LemonadeTheme.typography.bodySmallRegular
+                            textStyle = LemonadeTheme.typography.bodySmallRegular,
                         )
                     }
                 }
@@ -80,36 +81,36 @@ internal fun IconButtonDisplay() {
         // States
         IconButtonSection(title = "States") {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.IconButton(
                         icon = LemonadeIcons.Heart,
                         contentDescription = null,
                         enabled = true,
-                        onClick = {}
+                        onClick = {},
                     )
                     LemonadeUi.Text(
                         text = "Enabled",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.IconButton(
                         icon = LemonadeIcons.Heart,
                         contentDescription = null,
                         enabled = false,
-                        onClick = {}
+                        onClick = {},
                     )
                     LemonadeUi.Text(
                         text = "Disabled",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
             }
@@ -118,20 +119,20 @@ internal fun IconButtonDisplay() {
         // All Combinations
         IconButtonSection(title = "All Combinations") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 LemonadeIconButtonVariant.entries.forEach { variant ->
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                     ) {
                         LemonadeUi.Text(
                             text = variant.name,
                             textStyle = LemonadeTheme.typography.bodySmallRegular,
-                            color = LemonadeTheme.colors.content.contentSecondary
+                            color = LemonadeTheme.colors.content.contentSecondary,
                         )
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             LemonadeIconButtonSize.entries.forEach { size ->
                                 LemonadeUi.IconButton(
@@ -139,7 +140,7 @@ internal fun IconButtonDisplay() {
                                     contentDescription = null,
                                     variant = variant,
                                     size = size,
-                                    onClick = {}
+                                    onClick = {},
                                 )
                             }
                         }
@@ -151,7 +152,7 @@ internal fun IconButtonDisplay() {
         // Different Icons
         IconButtonSection(title = "Different Icons") {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 listOf(
                     LemonadeIcons.Heart,
@@ -163,7 +164,7 @@ internal fun IconButtonDisplay() {
                     LemonadeUi.IconButton(
                         icon = icon,
                         contentDescription = null,
-                        onClick = {}
+                        onClick = {},
                     )
                 }
             }
@@ -174,7 +175,7 @@ internal fun IconButtonDisplay() {
 @Composable
 private fun IconButtonSection(
     title: String,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
@@ -182,7 +183,7 @@ private fun IconButtonSection(
         LemonadeUi.Text(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
-            color = LemonadeTheme.colors.content.contentSecondary
+            color = LemonadeTheme.colors.content.contentSecondary,
         )
         content()
     }

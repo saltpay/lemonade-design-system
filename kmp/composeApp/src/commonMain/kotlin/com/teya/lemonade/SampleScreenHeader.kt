@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.lerp
 
+@Suppress("UnusedParameter")
 @Composable
 internal fun SampleScreenHeader(
     modifier: Modifier = Modifier,
@@ -30,7 +31,7 @@ internal fun SampleScreenHeader(
     val verticalPad = lerp(
         start = LemonadeTheme.spaces.spacing300,
         stop = LemonadeTheme.spaces.spacing100,
-        fraction = progress
+        fraction = progress,
     )
 
     val targetBgAlpha = if (progress > 0.7f) {
@@ -41,7 +42,7 @@ internal fun SampleScreenHeader(
 
     val animatedAlpha by animateFloatAsState(
         targetValue = targetBgAlpha,
-        label = "HeaderBackgroundAlpha"
+        label = "HeaderBackgroundAlpha",
     )
 
     val targetFontSize = if (progress > 0f) {
@@ -54,28 +55,27 @@ internal fun SampleScreenHeader(
         targetValue = targetFontSize,
         animationSpec = tween(
             durationMillis = 200,
-            easing = EaseInOut
+            easing = EaseInOut,
         ),
-        label = "HeaderFontSize"
+        label = "HeaderFontSize",
     )
-
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(background.copy(animatedAlpha))
-            .statusBarsPadding()
+            .statusBarsPadding(),
     ) {
         Column(
             modifier = Modifier
                 .padding(
                     horizontal = LemonadeTheme.spaces.spacing400,
-                    vertical = verticalPad
-                )
+                    vertical = verticalPad,
+                ),
         ) {
             LemonadeUi.Text(
                 text = title,
-                textStyle = LemonadeTheme.typography.headingMedium.copy(fontSize = animatedFontSize)
+                textStyle = LemonadeTheme.typography.headingMedium.copy(fontSize = animatedFontSize),
             )
         }
 
@@ -84,7 +84,7 @@ internal fun SampleScreenHeader(
                 .fillMaxWidth()
                 .height(LemonadeTheme.borderWidths.base.border25)
                 .alpha(progress)
-                .background(LemonadeTheme.colors.border.borderNeutralLow)
+                .background(LemonadeTheme.colors.border.borderNeutralLow),
         )
     }
 }

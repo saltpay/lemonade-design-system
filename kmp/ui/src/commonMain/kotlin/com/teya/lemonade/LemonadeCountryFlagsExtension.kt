@@ -117,13 +117,15 @@ public val LemonadeCountryFlags.drawableResource: DrawableResource
         LemonadeCountryFlags.GPGuadeloupe -> LemonadeRes.drawable.gen_GP_guadeloupe
         LemonadeCountryFlags.GQEquatorialGuinea -> LemonadeRes.drawable.gen_GQ_equatorial_guinea
         LemonadeCountryFlags.GRGreece -> LemonadeRes.drawable.gen_GR_greece
-        LemonadeCountryFlags.GSSouthGeorgiaAndSouthSandwichIslands -> LemonadeRes.drawable.gen_GS_south_georgia_and_south_sandwich_islands
+        LemonadeCountryFlags.GSSouthGeorgiaAndSouthSandwichIslands ->
+            LemonadeRes.drawable.gen_GS_south_georgia_and_south_sandwich_islands
         LemonadeCountryFlags.GTGuatemala -> LemonadeRes.drawable.gen_GT_guatemala
         LemonadeCountryFlags.GUGuam -> LemonadeRes.drawable.gen_GU_guam
         LemonadeCountryFlags.GWGuineaBissau -> LemonadeRes.drawable.gen_GW_guinea_bissau
         LemonadeCountryFlags.GYGuyana -> LemonadeRes.drawable.gen_GY_guyana
         LemonadeCountryFlags.HKHongKong -> LemonadeRes.drawable.gen_HK_hong_kong
-        LemonadeCountryFlags.HMHeardIslandAndMcdonaldIslands -> LemonadeRes.drawable.gen_HM_heard_island_and_mcdonald_islands
+        LemonadeCountryFlags.HMHeardIslandAndMcdonaldIslands ->
+            LemonadeRes.drawable.gen_HM_heard_island_and_mcdonald_islands
         LemonadeCountryFlags.HNHonduras -> LemonadeRes.drawable.gen_HN_honduras
         LemonadeCountryFlags.HRCroatia -> LemonadeRes.drawable.gen_HR_croatia
         LemonadeCountryFlags.HTHaiti -> LemonadeRes.drawable.gen_HT_haiti
@@ -227,7 +229,8 @@ public val LemonadeCountryFlags.drawableResource: DrawableResource
         LemonadeCountryFlags.SDSudan -> LemonadeRes.drawable.gen_SD_sudan
         LemonadeCountryFlags.SESweden -> LemonadeRes.drawable.gen_SE_sweden
         LemonadeCountryFlags.SGSingapore -> LemonadeRes.drawable.gen_SG_singapore
-        LemonadeCountryFlags.SHSaintHelenaAscensionTristanDaCunha -> LemonadeRes.drawable.gen_SH_saint_helena_ascension_tristan_da_cunha
+        LemonadeCountryFlags.SHSaintHelenaAscensionTristanDaCunha ->
+            LemonadeRes.drawable.gen_SH_saint_helena_ascension_tristan_da_cunha
         LemonadeCountryFlags.SISlovenia -> LemonadeRes.drawable.gen_SI_slovenia
         LemonadeCountryFlags.SJSvalbardAndJanMayen -> LemonadeRes.drawable.gen_SJ_svalbard_and_jan_mayen
         LemonadeCountryFlags.SKSlovakia -> LemonadeRes.drawable.gen_SK_slovakia
@@ -266,7 +269,8 @@ public val LemonadeCountryFlags.drawableResource: DrawableResource
         LemonadeCountryFlags.UYUruguay -> LemonadeRes.drawable.gen_UY_uruguay
         LemonadeCountryFlags.UZUzbekistan -> LemonadeRes.drawable.gen_UZ_uzbekistan
         LemonadeCountryFlags.VAHolySee -> LemonadeRes.drawable.gen_VA_holy_see
-        LemonadeCountryFlags.VCSaintVincentAndTheGrenadines -> LemonadeRes.drawable.gen_VC_saint_vincent_and_the_grenadines
+        LemonadeCountryFlags.VCSaintVincentAndTheGrenadines ->
+            LemonadeRes.drawable.gen_VC_saint_vincent_and_the_grenadines
         LemonadeCountryFlags.VEVenezuela -> LemonadeRes.drawable.gen_VE_venezuela
         LemonadeCountryFlags.VGBritishVirginIslands -> LemonadeRes.drawable.gen_VG_british_virgin_islands
         LemonadeCountryFlags.VIUsVirginIslands -> LemonadeRes.drawable.gen_VI_us_virgin_islands

@@ -120,21 +120,18 @@ private fun CoreTile(
                 } else {
                     Modifier
                 },
-            )
-            .then(
+            ).then(
                 other = if (isFocused) {
                     Modifier
                         .border(
                             width = LocalBorderWidths.current.base.border25,
                             color = LocalColors.current.border.borderSelected,
                             shape = tileShape,
-                        )
-                        .padding(all = LocalSpaces.current.spacing50)
+                        ).padding(all = LocalSpaces.current.spacing50)
                 } else {
                     Modifier
-                }
-            )
-            .then(
+                },
+            ).then(
                 other = variant.data.shadow?.let { lemonadeShadow ->
                     Modifier.lemonadeShadow(
                         shadow = lemonadeShadow,
@@ -142,8 +139,7 @@ private fun CoreTile(
                     )
                 }
                     ?: Modifier,
-            )
-            .then(
+            ).then(
                 other = variant.data.borderColor?.let { borderColor ->
                     Modifier.border(
                         color = borderColor,
@@ -152,8 +148,7 @@ private fun CoreTile(
                     )
                 }
                     ?: Modifier,
-            )
-            .clip(shape = tileShape)
+            ).clip(shape = tileShape)
             .then(
                 other = if (onClick != null) {
                     Modifier.clickable(
@@ -165,12 +160,10 @@ private fun CoreTile(
                 } else {
                     Modifier
                 },
-            )
-            .background(
+            ).background(
                 color = backgroundColor,
                 shape = tileShape,
-            )
-            .padding(all = LocalSpaces.current.spacing400),
+            ).padding(all = LocalSpaces.current.spacing400),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

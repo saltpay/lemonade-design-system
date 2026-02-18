@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package com.teya.lemonade.core
 
 public data class TabButtonProperties(

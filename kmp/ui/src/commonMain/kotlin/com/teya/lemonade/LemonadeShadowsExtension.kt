@@ -73,8 +73,8 @@ private fun Modifier.dropShadow(
     lemonadeShadow: LemonadeShadowData,
     shape: Shape,
     shadowColor: Color = Color(21, 34, 21).copy(alpha = 0.18f),
-): Modifier {
-    return composed {
+): Modifier =
+    composed {
         dropShadow(
             shape = shape,
             shadow = Shadow(
@@ -84,17 +84,14 @@ private fun Modifier.dropShadow(
                 offset = DpOffset(
                     x = lemonadeShadow.offsetX.dp,
                     y = lemonadeShadow.offsetY.dp,
-                )
-            )
+                ),
+            ),
         )
     }
-}
 
 @Composable
-private fun animatedShadowDataAsState(
-    targetValue: LemonadeShadowData,
-): State<LemonadeShadowData> {
-    return animateValueAsState(
+private fun animatedShadowDataAsState(targetValue: LemonadeShadowData): State<LemonadeShadowData> =
+    animateValueAsState(
         targetValue = targetValue,
         animationSpec = remember { tween(durationMillis = 200) },
         typeConverter = TwoWayConverter(
@@ -111,12 +108,11 @@ private fun animatedShadowDataAsState(
                     blur = vector.v1,
                     spread = vector.v2,
                     offsetX = vector.v3,
-                    offsetY = vector.v4
+                    offsetY = vector.v4,
                 )
-            }
+            },
         ),
     )
-}
 
 private val LemonadeShadow.normalizedShadowSequence: Sequence<LemonadeShadowData>
     get() {

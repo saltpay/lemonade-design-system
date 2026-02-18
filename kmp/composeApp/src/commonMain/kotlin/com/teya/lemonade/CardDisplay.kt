@@ -20,6 +20,7 @@ import com.teya.lemonade.core.LemonadeCardPadding
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TagVoice
 
+@Suppress("LongMethod")
 @Composable
 internal fun CardDisplay() {
     Column(
@@ -37,7 +38,7 @@ internal fun CardDisplay() {
             LemonadeUi.Card(contentPadding = LemonadeCardPadding.Medium) {
                 LemonadeUi.Text(
                     text = "This is a basic card with medium padding.",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
                 )
             }
         }
@@ -45,34 +46,34 @@ internal fun CardDisplay() {
         // Padding Variants
         CardSection(title = "Padding Variants") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 LemonadeUi.Card(contentPadding = LemonadeCardPadding.None) {
                     LemonadeUi.Text(
                         text = "No padding",
                         textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                        modifier = Modifier.padding(LemonadeTheme.spaces.spacing400)
+                        modifier = Modifier.padding(LemonadeTheme.spaces.spacing400),
                     )
                 }
 
                 LemonadeUi.Card(contentPadding = LemonadeCardPadding.XSmall) {
                     LemonadeUi.Text(
                         text = "XSmall padding",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                 }
 
                 LemonadeUi.Card(contentPadding = LemonadeCardPadding.Small) {
                     LemonadeUi.Text(
                         text = "Small padding",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                 }
 
                 LemonadeUi.Card(contentPadding = LemonadeCardPadding.Medium) {
                     LemonadeUi.Text(
                         text = "Medium padding",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                 }
             }
@@ -81,25 +82,25 @@ internal fun CardDisplay() {
         // Background Variants
         CardSection(title = "Background Variants") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 LemonadeUi.Card(
                     contentPadding = LemonadeCardPadding.Medium,
-                    background = LemonadeCardBackground.Default
+                    background = LemonadeCardBackground.Default,
                 ) {
                     LemonadeUi.Text(
                         text = "Default background",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                 }
 
                 LemonadeUi.Card(
                     contentPadding = LemonadeCardPadding.Medium,
-                    background = LemonadeCardBackground.Subtle
+                    background = LemonadeCardBackground.Subtle,
                 ) {
                     LemonadeUi.Text(
                         text = "Subtle background",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                 }
             }
@@ -108,15 +109,15 @@ internal fun CardDisplay() {
         // With Header
         CardSection(title = "With Header") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 LemonadeUi.Card(
                     contentPadding = LemonadeCardPadding.Medium,
-                    header = CardHeaderConfig(title = "Card Title")
+                    header = CardHeaderConfig(title = "Card Title"),
                 ) {
                     LemonadeUi.Text(
                         text = "Card content goes here. This is an example of a card with a header.",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                 }
 
@@ -126,12 +127,12 @@ internal fun CardDisplay() {
                         title = "With Trailing Slot",
                         trailingSlot = {
                             LemonadeUi.Tag(label = "New", voice = TagVoice.Positive)
-                        }
-                    )
+                        },
+                    ),
                 ) {
                     LemonadeUi.Text(
                         text = "This card has a header with a trailing tag.",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                 }
 
@@ -145,12 +146,12 @@ internal fun CardDisplay() {
                                 contentDescription = "More options",
                                 size = LemonadeAssetSize.Medium,
                             )
-                        }
-                    )
+                        },
+                    ),
                 ) {
                     LemonadeUi.Text(
                         text = "Card with action icon in header.",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                 }
             }
@@ -164,55 +165,55 @@ internal fun CardDisplay() {
                     title = "Order Summary",
                     trailingSlot = {
                         LemonadeUi.Tag(label = "Confirmed", voice = TagVoice.Positive)
-                    }
-                )
+                    },
+                ),
             ) {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         LemonadeUi.Text(
                             text = "Subtotal",
-                            textStyle = LemonadeTheme.typography.bodyMediumRegular
+                            textStyle = LemonadeTheme.typography.bodyMediumRegular,
                         )
                         LemonadeUi.Text(
                             text = "$99.00",
-                            textStyle = LemonadeTheme.typography.bodyMediumRegular
+                            textStyle = LemonadeTheme.typography.bodyMediumRegular,
                         )
                     }
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         LemonadeUi.Text(
                             text = "Shipping",
-                            textStyle = LemonadeTheme.typography.bodyMediumRegular
+                            textStyle = LemonadeTheme.typography.bodyMediumRegular,
                         )
                         LemonadeUi.Text(
                             text = "$5.00",
-                            textStyle = LemonadeTheme.typography.bodyMediumRegular
+                            textStyle = LemonadeTheme.typography.bodyMediumRegular,
                         )
                     }
 
                     LemonadeUi.HorizontalDivider(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         LemonadeUi.Text(
                             text = "Total",
-                            textStyle = LemonadeTheme.typography.bodyMediumSemiBold
+                            textStyle = LemonadeTheme.typography.bodyMediumSemiBold,
                         )
                         LemonadeUi.Text(
                             text = "$104.00",
-                            textStyle = LemonadeTheme.typography.bodyMediumSemiBold
+                            textStyle = LemonadeTheme.typography.bodyMediumSemiBold,
                         )
                     }
                 }
@@ -223,19 +224,19 @@ internal fun CardDisplay() {
         CardSection(title = "Nested Cards") {
             LemonadeUi.Card(
                 contentPadding = LemonadeCardPadding.Medium,
-                header = CardHeaderConfig(title = "Payment Methods")
+                header = CardHeaderConfig(title = "Payment Methods"),
             ) {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
                 ) {
                     LemonadeUi.Card(
                         contentPadding = LemonadeCardPadding.Small,
-                        background = LemonadeCardBackground.Subtle
+                        background = LemonadeCardBackground.Subtle,
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             LemonadeUi.Icon(
                                 icon = LemonadeIcons.Card,
@@ -245,12 +246,12 @@ internal fun CardDisplay() {
                             Column(modifier = Modifier.weight(1f)) {
                                 LemonadeUi.Text(
                                     text = "Visa ending in 4242",
-                                    textStyle = LemonadeTheme.typography.bodyMediumRegular
+                                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
                                 )
                                 LemonadeUi.Text(
                                     text = "Expires 12/25",
                                     textStyle = LemonadeTheme.typography.bodySmallRegular,
-                                    color = LemonadeTheme.colors.content.contentSecondary
+                                    color = LemonadeTheme.colors.content.contentSecondary,
                                 )
                             }
                             LemonadeUi.Tag(label = "Default", voice = TagVoice.Info)
@@ -259,12 +260,12 @@ internal fun CardDisplay() {
 
                     LemonadeUi.Card(
                         contentPadding = LemonadeCardPadding.Small,
-                        background = LemonadeCardBackground.Subtle
+                        background = LemonadeCardBackground.Subtle,
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             LemonadeUi.Icon(
                                 icon = LemonadeIcons.Card,
@@ -274,12 +275,12 @@ internal fun CardDisplay() {
                             Column(modifier = Modifier.weight(1f)) {
                                 LemonadeUi.Text(
                                     text = "Mastercard ending in 1234",
-                                    textStyle = LemonadeTheme.typography.bodyMediumRegular
+                                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
                                 )
                                 LemonadeUi.Text(
                                     text = "Expires 06/24",
                                     textStyle = LemonadeTheme.typography.bodySmallRegular,
-                                    color = LemonadeTheme.colors.content.contentSecondary
+                                    color = LemonadeTheme.colors.content.contentSecondary,
                                 )
                             }
                         }
@@ -293,7 +294,7 @@ internal fun CardDisplay() {
 @Composable
 private fun CardSection(
     title: String,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
@@ -301,7 +302,7 @@ private fun CardSection(
         LemonadeUi.Text(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
-            color = LemonadeTheme.colors.content.contentSecondary
+            color = LemonadeTheme.colors.content.contentSecondary,
         )
         content()
     }

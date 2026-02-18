@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 
-
 @Composable
 internal fun IconsDisplay() {
     Column(
@@ -36,11 +35,11 @@ internal fun IconsDisplay() {
             columns = GridCells.Adaptive(minSize = 80.dp),
             horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
             verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-            contentPadding = PaddingValues(LemonadeTheme.spaces.spacing400)
+            contentPadding = PaddingValues(LemonadeTheme.spaces.spacing400),
         ) {
             items(
                 items = LemonadeIcons.entries,
-                key = { it.ordinal }
+                key = { it.ordinal },
             ) { icon ->
                 Column(
                     modifier = Modifier
@@ -50,7 +49,7 @@ internal fun IconsDisplay() {
                         .background(LemonadeTheme.colors.background.bgSubtle)
                         .padding(LemonadeTheme.spaces.spacing200),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.Center,
                 ) {
                     LemonadeUi.Icon(
                         icon = icon,
@@ -65,7 +64,7 @@ internal fun IconsDisplay() {
                         textAlign = TextAlign.Center,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(top = LemonadeTheme.spaces.spacing100)
+                        modifier = Modifier.padding(top = LemonadeTheme.spaces.spacing100),
                     )
                 }
             }

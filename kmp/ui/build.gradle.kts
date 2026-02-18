@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.composeHotReload)
     alias(libs.plugins.kotlinSerialization)
     id("lemonade")
+    id("lemonade-lint")
 }
 
 lemonadePublishing {
@@ -41,16 +42,16 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-              implementation(compose.runtime)
-              implementation(compose.foundation)
-              implementation(compose.ui)
-              implementation(compose.components.resources)
-              implementation(compose.components.uiToolingPreview)
-              implementation(libs.androidx.lifecycle.viewmodelCompose)
-              implementation(libs.androidx.lifecycle.runtimeCompose)
-              implementation(libs.kotlinx.serializer)
-              api(projects.core)
-          }
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.ui)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(libs.androidx.lifecycle.viewmodelCompose)
+            implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.kotlinx.serializer)
+            api(projects.core)
+        }
 
         androidMain.dependencies {
             implementation(compose.preview)
@@ -67,11 +68,17 @@ kotlin {
 
 android {
     namespace = "com.teya.lemonade.ui"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk = libs.versions.android.compileSdk
+        .get()
+        .toInt()
 
     defaultConfig {
-        testOptions.targetSdk = libs.versions.android.targetSdk.get().toInt()
-        minSdk = libs.versions.android.minLibSdk.get().toInt()
+        testOptions.targetSdk = libs.versions.android.targetSdk
+            .get()
+            .toInt()
+        minSdk = libs.versions.android.minLibSdk
+            .get()
+            .toInt()
     }
 
     compileOptions {

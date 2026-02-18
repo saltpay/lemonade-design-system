@@ -23,7 +23,7 @@ import com.teya.lemonade.core.LemonadeRadius
 
 private data class RadiusItem(
     val name: String,
-    val value: Dp
+    val value: Dp,
 )
 
 private val radiusItems = listOf(
@@ -54,7 +54,7 @@ internal fun RadiusDisplay() {
             LemonadeUi.Text(
                 text = "Radius Tokens",
                 textStyle = LemonadeTheme.typography.headingMedium,
-                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing200)
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing200),
             )
         }
 
@@ -66,21 +66,21 @@ internal fun RadiusDisplay() {
                 LemonadeUi.Text(
                     text = item.name,
                     textStyle = LemonadeTheme.typography.bodySmallMedium,
-                    modifier = Modifier.width(100.dp)
+                    modifier = Modifier.width(100.dp),
                 )
 
                 LemonadeUi.Text(
                     text = "${item.value.value.toInt()}dp",
                     textStyle = LemonadeTheme.typography.bodySmallRegular,
                     color = LemonadeTheme.colors.content.contentSecondary,
-                    modifier = Modifier.width(50.dp)
+                    modifier = Modifier.width(50.dp),
                 )
 
                 Box(
                     modifier = Modifier
                         .size(80.dp)
                         .clip(RoundedCornerShape(item.value))
-                        .background(LemonadePrimitiveColors.Solid.Blue.blue500)
+                        .background(LemonadePrimitiveColors.Solid.Blue.blue500),
                 )
             }
         }

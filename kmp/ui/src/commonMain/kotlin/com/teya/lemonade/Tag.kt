@@ -64,8 +64,7 @@ private fun CoreTag(
             .background(
                 color = voice.containerColor,
                 shape = LocalShapes.current.radius100,
-            )
-            .padding(
+            ).padding(
                 vertical = LocalSpaces.current.spacing50,
                 horizontal = LocalSpaces.current.spacing100,
             ),
@@ -85,7 +84,7 @@ private fun CoreTag(
             overflow = TextOverflow.Ellipsis,
             textStyle = LocalTypographies.current.bodyXSmallSemiBold,
             maxLines = 1,
-            modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing50)
+            modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing50),
         )
     }
 }
@@ -120,22 +119,23 @@ private data class TagPreviewData(
 private class TagPreviewProvider :
     PreviewParameterProvider<TagPreviewData> {
     override val values: Sequence<TagPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<TagPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<TagPreviewData> =
+        buildList {
             listOf(true, false).forEach { withIcon ->
                 TagVoice.entries.forEach { voice ->
                     add(
                         element = TagPreviewData(
                             voice = voice,
                             withIcon = withIcon,
-                        )
+                        ),
                     )
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @Composable
 @LemonadePreview
 private fun SymbolContainerPreview(
@@ -153,7 +153,7 @@ private fun SymbolContainerPreview(
             label = "Fake long message - it had to be longer than that",
             icon = LemonadeIcons.Heart.takeIf { previewData.withIcon },
             voice = previewData.voice,
-            modifier = Modifier.requiredWidth(width = 100.dp)
+            modifier = Modifier.requiredWidth(width = 100.dp),
         )
     }
 }

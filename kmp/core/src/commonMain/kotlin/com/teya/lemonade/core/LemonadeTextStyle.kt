@@ -15,7 +15,7 @@ public data class LemonadeTextStyle(
     val fontSize: Float,
     val lineHeight: Float,
     val fontWeight: Int,
-    val letterSpacing: Float? = null
+    val letterSpacing: Float? = null,
 )
 
 /**

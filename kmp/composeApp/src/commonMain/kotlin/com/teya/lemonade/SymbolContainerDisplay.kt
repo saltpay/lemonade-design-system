@@ -21,6 +21,7 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.SymbolContainerVoice
 
+@Suppress("LongMethod")
 @Composable
 internal fun SymbolContainerDisplay() {
     Column(
@@ -35,80 +36,80 @@ internal fun SymbolContainerDisplay() {
         // Sizes (Icon)
         SymbolContainerSection(title = "Sizes (Icon)") {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.SymbolContainer(
                         icon = LemonadeIcons.Heart,
                         contentDescription = null,
-                        size = SymbolContainerSize.XSmall
+                        size = SymbolContainerSize.XSmall,
                     )
                     LemonadeUi.Text(
                         text = "XSmall",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.SymbolContainer(
                         icon = LemonadeIcons.Heart,
                         contentDescription = null,
-                        size = SymbolContainerSize.Small
+                        size = SymbolContainerSize.Small,
                     )
                     LemonadeUi.Text(
                         text = "Small",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.SymbolContainer(
                         icon = LemonadeIcons.Heart,
                         contentDescription = null,
-                        size = SymbolContainerSize.Medium
+                        size = SymbolContainerSize.Medium,
                     )
                     LemonadeUi.Text(
                         text = "Medium",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.SymbolContainer(
                         icon = LemonadeIcons.Heart,
                         contentDescription = null,
-                        size = SymbolContainerSize.Large
+                        size = SymbolContainerSize.Large,
                     )
                     LemonadeUi.Text(
                         text = "Large",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.SymbolContainer(
                         icon = LemonadeIcons.Heart,
                         contentDescription = null,
-                        size = SymbolContainerSize.XLarge
+                        size = SymbolContainerSize.XLarge,
                     )
                     LemonadeUi.Text(
                         text = "XLarge",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
             }
@@ -117,124 +118,124 @@ internal fun SymbolContainerDisplay() {
         // Voices
         SymbolContainerSection(title = "Voices") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                     ) {
                         LemonadeUi.SymbolContainer(
                             icon = LemonadeIcons.Heart,
                             contentDescription = null,
                             voice = SymbolContainerVoice.Neutral,
-                            size = SymbolContainerSize.Medium
+                            size = SymbolContainerSize.Medium,
                         )
                         LemonadeUi.Text(
                             text = "Neutral",
-                            textStyle = LemonadeTheme.typography.bodySmallRegular
+                            textStyle = LemonadeTheme.typography.bodySmallRegular,
                         )
                     }
 
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                     ) {
                         LemonadeUi.SymbolContainer(
                             icon = LemonadeIcons.CircleX,
                             contentDescription = null,
                             voice = SymbolContainerVoice.Critical,
-                            size = SymbolContainerSize.Medium
+                            size = SymbolContainerSize.Medium,
                         )
                         LemonadeUi.Text(
                             text = "Critical",
-                            textStyle = LemonadeTheme.typography.bodySmallRegular
+                            textStyle = LemonadeTheme.typography.bodySmallRegular,
                         )
                     }
 
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                     ) {
                         LemonadeUi.SymbolContainer(
                             icon = LemonadeIcons.TriangleAlert,
                             contentDescription = null,
                             voice = SymbolContainerVoice.Warning,
-                            size = SymbolContainerSize.Medium
+                            size = SymbolContainerSize.Medium,
                         )
                         LemonadeUi.Text(
                             text = "Warning",
-                            textStyle = LemonadeTheme.typography.bodySmallRegular
+                            textStyle = LemonadeTheme.typography.bodySmallRegular,
                         )
                     }
 
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                     ) {
                         LemonadeUi.SymbolContainer(
                             icon = LemonadeIcons.CircleInfo,
                             contentDescription = null,
                             voice = SymbolContainerVoice.Info,
-                            size = SymbolContainerSize.Medium
+                            size = SymbolContainerSize.Medium,
                         )
                         LemonadeUi.Text(
                             text = "Info",
-                            textStyle = LemonadeTheme.typography.bodySmallRegular
+                            textStyle = LemonadeTheme.typography.bodySmallRegular,
                         )
                     }
                 }
 
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                     ) {
                         LemonadeUi.SymbolContainer(
                             icon = LemonadeIcons.CircleCheck,
                             contentDescription = null,
                             voice = SymbolContainerVoice.Positive,
-                            size = SymbolContainerSize.Medium
+                            size = SymbolContainerSize.Medium,
                         )
                         LemonadeUi.Text(
                             text = "Positive",
-                            textStyle = LemonadeTheme.typography.bodySmallRegular
+                            textStyle = LemonadeTheme.typography.bodySmallRegular,
                         )
                     }
 
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                     ) {
                         LemonadeUi.SymbolContainer(
                             icon = LemonadeIcons.Star,
                             contentDescription = null,
                             voice = SymbolContainerVoice.Brand,
-                            size = SymbolContainerSize.Medium
+                            size = SymbolContainerSize.Medium,
                         )
                         LemonadeUi.Text(
                             text = "Brand",
-                            textStyle = LemonadeTheme.typography.bodySmallRegular
+                            textStyle = LemonadeTheme.typography.bodySmallRegular,
                         )
                     }
 
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                     ) {
                         LemonadeUi.SymbolContainer(
                             icon = LemonadeIcons.Star,
                             contentDescription = null,
                             voice = SymbolContainerVoice.BrandSubtle,
-                            size = SymbolContainerSize.Medium
+                            size = SymbolContainerSize.Medium,
                         )
                         LemonadeUi.Text(
                             text = "Brand Subtle",
-                            textStyle = LemonadeTheme.typography.bodySmallRegular
+                            textStyle = LemonadeTheme.typography.bodySmallRegular,
                         )
                     }
                 }
@@ -244,20 +245,40 @@ internal fun SymbolContainerDisplay() {
         // Text Variant
         SymbolContainerSection(title = "Text Variant") {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
-                LemonadeUi.SymbolContainer(text = "A", voice = SymbolContainerVoice.Neutral, size = SymbolContainerSize.Small)
-                LemonadeUi.SymbolContainer(text = "B", voice = SymbolContainerVoice.Info, size = SymbolContainerSize.Medium)
-                LemonadeUi.SymbolContainer(text = "C", voice = SymbolContainerVoice.Positive, size = SymbolContainerSize.Large)
-                LemonadeUi.SymbolContainer(text = "1", voice = SymbolContainerVoice.Critical, size = SymbolContainerSize.Medium)
-                LemonadeUi.SymbolContainer(text = "99", voice = SymbolContainerVoice.Warning, size = SymbolContainerSize.Large)
+                LemonadeUi.SymbolContainer(
+                    text = "A",
+                    voice = SymbolContainerVoice.Neutral,
+                    size = SymbolContainerSize.Small,
+                )
+                LemonadeUi.SymbolContainer(
+                    text = "B",
+                    voice = SymbolContainerVoice.Info,
+                    size = SymbolContainerSize.Medium,
+                )
+                LemonadeUi.SymbolContainer(
+                    text = "C",
+                    voice = SymbolContainerVoice.Positive,
+                    size = SymbolContainerSize.Large,
+                )
+                LemonadeUi.SymbolContainer(
+                    text = "1",
+                    voice = SymbolContainerVoice.Critical,
+                    size = SymbolContainerSize.Medium,
+                )
+                LemonadeUi.SymbolContainer(
+                    text = "99",
+                    voice = SymbolContainerVoice.Warning,
+                    size = SymbolContainerSize.Large,
+                )
             }
         }
 
         // Use Cases
         SymbolContainerSection(title = "Use Cases") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 // User avatar
                 Row(
@@ -267,20 +288,24 @@ internal fun SymbolContainerDisplay() {
                         .background(LemonadeTheme.colors.background.bgElevated)
                         .padding(LemonadeTheme.spaces.spacing400),
                     horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    LemonadeUi.SymbolContainer(text = "JD", voice = SymbolContainerVoice.Brand, size = SymbolContainerSize.Large)
+                    LemonadeUi.SymbolContainer(
+                        text = "JD",
+                        voice = SymbolContainerVoice.Brand,
+                        size = SymbolContainerSize.Large,
+                    )
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100)
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100),
                     ) {
                         LemonadeUi.Text(
                             text = "John Doe",
-                            textStyle = LemonadeTheme.typography.headingXSmall
+                            textStyle = LemonadeTheme.typography.headingXSmall,
                         )
                         LemonadeUi.Text(
                             text = "john@example.com",
                             textStyle = LemonadeTheme.typography.bodySmallRegular,
-                            color = LemonadeTheme.colors.content.contentSecondary
+                            color = LemonadeTheme.colors.content.contentSecondary,
                         )
                     }
                     Spacer(modifier = Modifier.weight(1f))
@@ -288,53 +313,53 @@ internal fun SymbolContainerDisplay() {
 
                 // Status indicators
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing600)
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing600),
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                     ) {
                         LemonadeUi.SymbolContainer(
                             icon = LemonadeIcons.CircleCheck,
                             contentDescription = null,
                             voice = SymbolContainerVoice.Positive,
-                            size = SymbolContainerSize.Large
+                            size = SymbolContainerSize.Large,
                         )
                         LemonadeUi.Text(
                             text = "Completed",
-                            textStyle = LemonadeTheme.typography.bodySmallRegular
+                            textStyle = LemonadeTheme.typography.bodySmallRegular,
                         )
                     }
 
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                     ) {
                         LemonadeUi.SymbolContainer(
                             icon = LemonadeIcons.Clock,
                             contentDescription = null,
                             voice = SymbolContainerVoice.Warning,
-                            size = SymbolContainerSize.Large
+                            size = SymbolContainerSize.Large,
                         )
                         LemonadeUi.Text(
                             text = "Pending",
-                            textStyle = LemonadeTheme.typography.bodySmallRegular
+                            textStyle = LemonadeTheme.typography.bodySmallRegular,
                         )
                     }
 
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                     ) {
                         LemonadeUi.SymbolContainer(
                             icon = LemonadeIcons.CircleX,
                             contentDescription = null,
                             voice = SymbolContainerVoice.Critical,
-                            size = SymbolContainerSize.Large
+                            size = SymbolContainerSize.Large,
                         )
                         LemonadeUi.Text(
                             text = "Failed",
-                            textStyle = LemonadeTheme.typography.bodySmallRegular
+                            textStyle = LemonadeTheme.typography.bodySmallRegular,
                         )
                     }
                 }
@@ -346,7 +371,7 @@ internal fun SymbolContainerDisplay() {
 @Composable
 private fun SymbolContainerSection(
     title: String,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
@@ -354,7 +379,7 @@ private fun SymbolContainerSection(
         LemonadeUi.Text(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
-            color = LemonadeTheme.colors.content.contentSecondary
+            color = LemonadeTheme.colors.content.contentSecondary,
         )
         content()
     }
