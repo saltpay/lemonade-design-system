@@ -105,7 +105,7 @@ internal val LocalTypographies: ProvidableCompositionLocal<LemonadeTypographyPro
     }
 
 internal val LocalContentColors: ProvidableCompositionLocal<Color> = staticCompositionLocalOf {
-    LemonadeLightTheme.content.contentNeutral
+    error(message = "No default Content Colors set in the LocalContentColors for theme")
 }
 
 internal val LocalTextStyles: ProvidableCompositionLocal<LemonadeTextStyle> =
