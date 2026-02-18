@@ -93,6 +93,7 @@ internal object DisplayRegistry {
                 Displays.SymbolContainer,
                 Displays.Card,
                 Displays.Spinner,
+                Displays.Snackbar,
                 Displays.Divider,
             )
         ),
