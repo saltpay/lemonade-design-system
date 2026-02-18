@@ -16,6 +16,7 @@ import com.teya.lemonade.DividerDisplay
 import com.teya.lemonade.HomeDisplay
 import com.teya.lemonade.IconButtonDisplay
 import com.teya.lemonade.IconsDisplay
+import com.teya.lemonade.LinkDisplay
 import com.teya.lemonade.OpacityDisplay
 import com.teya.lemonade.RadioButtonDisplay
 import com.teya.lemonade.RadiusDisplay
@@ -62,6 +63,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.Card to { _ -> CardDisplay() },
     Displays.Button to { _ -> ButtonDisplay() },
     Displays.IconButton to { _ -> IconButtonDisplay() },
+    Displays.Link to { _ -> LinkDisplay() },
     Displays.Shadows to { _ -> ShadowDisplay() },
     Displays.Tile to { _ -> TileDisplay() },
     Displays.Spacing to { _ -> SpacingDisplay() },
