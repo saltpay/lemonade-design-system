@@ -74,8 +74,8 @@ fun main() {
             println("✓ $themeName.swift created")
         }
 
-        // Generate the protocol once using the first mode's resources
-        val lightModeKey = modeKeys.first()
+        // Generate the protocol using the Light mode's resources
+        val lightModeKey = modeKeys.first { modeKey -> modesObject.getString(modeKey).equals("Light", ignoreCase = true) }
         val themeResources = readFileResourceFileByMode(
             file = colorTokensFile,
             modeKey = lightModeKey,

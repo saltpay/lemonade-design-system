@@ -74,8 +74,8 @@ fun main() {
             println("✓ $themeName.kt created")
         }
 
-        // Generate the interface once
-        val lightModeKey = modeKeys.first()
+        // Generate the interface using the Light mode's resources
+        val lightModeKey = modeKeys.first { modeKey -> modesObject.getString(modeKey).equals("Light", ignoreCase = true) }
         val themeResources = readFileResourceFileByMode(
             file = colorTokensFile,
             modeKey = lightModeKey,
@@ -181,7 +181,7 @@ private fun buildThemeCode(
         appendLine(" */")
         appendLine("@Stable")
         appendLine("@OptIn(InternalLemonadeApi::class)")
-        appendLine("internal object $fileName : LemonadeSemanticColors {")
+        appendLine("public object $fileName : LemonadeSemanticColors {")
         groupedThemeResources.forEach { (groupName, resources) ->
             if (groupName != null) {
                 append(
@@ -201,7 +201,7 @@ private fun buildGroupClassCode(
     resources: List<ResourceData<ThemeResourceData>>,
 ): String {
     return buildString {
-        appendLine("    override val ${groupName.sanitizedValueName()} = object : LemonadeSemanticColors.${groupName}Colors {")
+        appendLine("    override val ${groupName.sanitizedValueName()}: LemonadeSemanticColors.${groupName}Colors = object : LemonadeSemanticColors.${groupName}Colors {")
         resources.forEach { resource ->
             appendLine("        override val ${resource.name} = LemonadePrimitiveColors.${resource.value.valueGroup}.${resource.value.valueName}")
         }

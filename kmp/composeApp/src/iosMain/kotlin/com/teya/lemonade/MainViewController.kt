@@ -5,5 +5,9 @@ import com.teya.lemonade.app.App
 import platform.UIKit.UIViewController
 
 public fun MainViewController(): UIViewController {
-    return ComposeUIViewController { App() }
+    return ComposeUIViewController {
+        LemonadeStyledTheme {
+            App()
+        }
+    }
 }

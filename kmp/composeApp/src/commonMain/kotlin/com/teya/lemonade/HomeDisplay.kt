@@ -5,14 +5,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.TabButtonProperties
 
 @Composable
 internal fun HomeDisplay(
     onNavigate: (Displays) -> Unit
 ) {
+    val styleHandler = LocalLemonadeStyleHandler.current
+    val styles = LemonadeStyle.entries
+    val selectedIndex = styles.indexOf(styleHandler.currentStyle)
+
     SampleScreenDisplayLazyColumn(
         title = "Lemonade Design System",
     ) {
+        item {
+            LemonadeUi.SegmentedControl(
+                selectedTab = selectedIndex,
+                onTabSelected = { index -> styleHandler.currentStyle = styles[index] },
+                properties = styles.map { style -> TabButtonProperties(label = style.label) },
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing400),
+            )
+        }
         item {
             DisplayRegistry.homeItems.forEach { display ->
                 LemonadeUi.Card(
