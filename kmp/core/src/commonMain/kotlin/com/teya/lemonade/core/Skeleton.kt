@@ -1,0 +1,72 @@
+package com.teya.lemonade.core
+
+/**
+ * Enumeration of available skeleton size options.
+ *
+ * Defines the size scale for skeleton placeholders. Each size corresponds to a specific
+ * dimension in the design system's sizing scale. The actual pixel values depend on the
+ * skeleton variant and are resolved from the design system's composition locals.
+ *
+ * ## Size Scale
+ * Ordered from smallest to largest:
+ * - [XSmall]: Extra small size for very compact skeletons
+ * - [Small]: Small size for compact skeletons
+ * - [Medium]: Medium size for standard skeletons (default)
+ * - [Large]: Large size for slightly more prominent skeletons
+ * - [XLarge]: Extra large size for prominent skeletons
+ * - [XXLarge]: Double extra large size for very prominent skeletons
+ * - [XXXLarge]: Triple extra large size for the largest skeletons
+ *
+ * Note: Concrete dp values for each size are derived from the design system sizing
+ * tokens (for example, `LemonadeSizes`) and may change over time. Consumers should rely
+ * on these semantic sizes rather than specific dp values.
+ *
+ * ## Usage
+ * ```kotlin
+ * LemonadeUi.LineSkeleton(size = LemonadeSkeletonSize.Large)
+ * LemonadeUi.CircleSkeleton(size = LemonadeSkeletonSize.Small)
+ * ```
+ */
+public enum class LemonadeSkeletonSize {
+    XSmall,
+    Small,
+    Medium,
+    Large,
+    XLarge,
+    XXLarge,
+    XXXLarge,
+}
+
+/**
+ * Enumeration of skeleton shape variants.
+ *
+ * Defines the shape and styling of the skeleton placeholder. Each variant is designed
+ * to match specific content types and provides appropriate dimensions and corner radius.
+ *
+ * ## Variants
+ * - [Line]: Horizontal line skeleton for text content. Uses height-based sizing from [LemonadeSkeletonSize]
+ *   with unspecified width. Applied vertical spacing and small corner radius.
+ *
+ * - [Circle]: Circular skeleton for avatar and image content. Uses equal width/height
+ *   from [LemonadeSkeletonSize] to create a perfect circle. Full rounded corner radius.
+ *
+ * - [Block]: Large block skeleton for card and image content. Uses fixed height
+ *   (64dp via the size1600 design token) with unspecified width. Large rounded
+ *   corner radius suitable for prominent content.
+ * ## Usage
+ * ```kotlin
+ * // Text placeholder
+ * LemonadeUi.LineSkeleton(modifier = Modifier.fillMaxWidth())
+ *
+ * // Avatar placeholder
+ * LemonadeUi.CircleSkeleton()
+ *
+ * // Card placeholder
+ * LemonadeUi.BlockSkeleton(modifier = Modifier.fillMaxWidth())
+ * ```
+ */
+public enum class LemonadeSkeletonVariant {
+    Line,
+    Circle,
+    Block
+}
