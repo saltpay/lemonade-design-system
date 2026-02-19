@@ -1,9 +1,7 @@
 package com.teya.lemonade
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +13,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,19 +25,9 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTileVariant
 
 @Composable
-internal expect fun LemonadeUi.SampleTile(
-    label: String,
-    icon: LemonadeIcons,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    onClick: (() -> Unit)? = null,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    variant: LemonadeTileVariant = LemonadeTileVariant.Neutral,
-    addon: (@Composable () -> Unit)? = null,
-)
-
-@Composable
 internal fun TileDisplay() {
+    var tileSelection by remember { mutableIntStateOf(0) }
+
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
         modifier = Modifier
@@ -49,42 +40,27 @@ internal fun TileDisplay() {
         // Variants
         TileSection(title = "Variants") {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
-                ) {
-                    LemonadeUi.SampleTile(
-                        label = "Neutral",
-                        icon = LemonadeIcons.Heart,
-                        variant = LemonadeTileVariant.Neutral
-                    )
-                    LemonadeUi.Text(
-                        text = "Neutral",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
-                    )
-                }
+                LemonadeUi.Tile(
+                    label = "Neutral",
+                    icon = LemonadeIcons.Heart,
+                    variant = LemonadeTileVariant.Neutral,
+                    onClick = {},
+                    modifier = Modifier.weight(1f)
+                )
 
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
-                ) {
-                    LemonadeUi.SampleTile(
-                        label = "Muted",
-                        icon = LemonadeIcons.Star,
-                        variant = LemonadeTileVariant.Muted
-                    )
-                    LemonadeUi.Text(
-                        text = "Muted",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
-                    )
-                }
+                LemonadeUi.Tile(
+                    label = "Muted",
+                    icon = LemonadeIcons.Star,
+                    variant = LemonadeTileVariant.Muted,
+                    onClick = {},
+                    modifier = Modifier.weight(1f)
+                )
+
             }
-        }
 
-        // OnColor Variant
-        TileSection(title = "OnColor Variant") {
+            // OnColor Variant
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
@@ -94,11 +70,15 @@ internal fun TileDisplay() {
                     .background(LemonadeTheme.colors.background.bgBrand)
                     .padding(LemonadeTheme.spaces.spacing400)
             ) {
-                LemonadeUi.SampleTile(
-                    label = "OnColor",
-                    icon = LemonadeIcons.Check,
-                    variant = LemonadeTileVariant.OnColor
-                )
+                Row {
+                    LemonadeUi.Tile(
+                        label = "OnColor",
+                        icon = LemonadeIcons.Heart,
+                        variant = LemonadeTileVariant.OnColor,
+                        onClick = {},
+                        modifier = Modifier.weight(1f)
+                    )
+                }
                 LemonadeUi.Text(
                     text = "Use on brand backgrounds",
                     textStyle = LemonadeTheme.typography.bodySmallRegular,
@@ -107,48 +87,59 @@ internal fun TileDisplay() {
             }
         }
 
+        // Interaction Type
+        TileSection(title = "Interaction Type") {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+            ) {
+                LemonadeUi.Tile(
+                    modifier = Modifier.weight(1f),
+                    icon = LemonadeIcons.Heart,
+                    label = "Action",
+                    onClick = {},
+                )
+
+                LemonadeUi.Tile(
+                    "Selection",
+                    isSelected = tileSelection == 0,
+                    onClick = {
+                        tileSelection = if (tileSelection == 0) {
+                            1
+                        } else {
+                            0
+                        }
+                    },
+                    icon = LemonadeIcons.Heart,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+
         // With Addon (Badge)
         TileSection(title = "With Addon (Badge)") {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
             ) {
-                LemonadeUi.SampleTile(
+                LemonadeUi.Tile(
                     label = "Messages",
                     icon = LemonadeIcons.Envelope,
                     variant = LemonadeTileVariant.Neutral,
                     addon = {
                         LemonadeUi.Badge(text = "5", size = LemonadeBadgeSize.XSmall)
-                    }
+                    },
+                    onClick = {},
+                    modifier = Modifier.weight(1f)
                 )
 
-                LemonadeUi.SampleTile(
+                LemonadeUi.Tile(
                     label = "Updates",
                     icon = LemonadeIcons.Bell,
                     variant = LemonadeTileVariant.Neutral,
                     addon = {
                         LemonadeUi.Badge(text = "New", size = LemonadeBadgeSize.XSmall)
-                    }
-                )
-            }
-        }
-
-        // Interactive
-        TileSection(title = "Interactive") {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
-            ) {
-                LemonadeUi.SampleTile(
-                    label = "Tap me",
-                    icon = LemonadeIcons.HandCoins,
-                    onClick = { println("Tile tapped!") },
-                    variant = LemonadeTileVariant.Neutral
-                )
-
-                LemonadeUi.SampleTile(
-                    label = "Click",
-                    icon = LemonadeIcons.FingerPrint,
-                    onClick = { println("Click!") },
-                    variant = LemonadeTileVariant.Muted
+                    },
+                    onClick = {},
+                    modifier = Modifier.weight(1f)
                 )
             }
         }
@@ -158,18 +149,20 @@ internal fun TileDisplay() {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
             ) {
-                LemonadeUi.SampleTile(
+                LemonadeUi.Tile(
                     label = "Disabled",
                     icon = LemonadeIcons.Padlock,
                     enabled = false,
-                    variant = LemonadeTileVariant.Neutral
+                    variant = LemonadeTileVariant.Neutral,
+                    onClick = {},
                 )
 
-                LemonadeUi.SampleTile(
+                LemonadeUi.Tile(
                     label = "Disabled",
                     icon = LemonadeIcons.Padlock,
                     enabled = false,
-                    variant = LemonadeTileVariant.Muted
+                    variant = LemonadeTileVariant.Muted,
+                    onClick = {}
                 )
             }
         }
@@ -177,24 +170,24 @@ internal fun TileDisplay() {
         // Use Case: Quick Actions
         TileSection(title = "Use Case: Quick Actions") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
                 ) {
-                    LemonadeUi.SampleTile(
+                    LemonadeUi.Tile(
                         label = "Transfer",
                         icon = LemonadeIcons.ArrowLeftRight,
                         onClick = {},
                         variant = LemonadeTileVariant.Neutral
                     )
-                    LemonadeUi.SampleTile(
+                    LemonadeUi.Tile(
                         label = "Pay",
                         icon = LemonadeIcons.Card,
                         onClick = {},
                         variant = LemonadeTileVariant.Neutral
                     )
-                    LemonadeUi.SampleTile(
+                    LemonadeUi.Tile(
                         label = "Request",
                         icon = LemonadeIcons.Download,
                         onClick = {},
@@ -202,21 +195,21 @@ internal fun TileDisplay() {
                     )
                 }
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
                 ) {
-                    LemonadeUi.SampleTile(
+                    LemonadeUi.Tile(
                         label = "Scan",
                         icon = LemonadeIcons.QrCode,
                         onClick = {},
                         variant = LemonadeTileVariant.Neutral
                     )
-                    LemonadeUi.SampleTile(
+                    LemonadeUi.Tile(
                         label = "Top Up",
                         icon = LemonadeIcons.Plus,
                         onClick = {},
                         variant = LemonadeTileVariant.Neutral
                     )
-                    LemonadeUi.SampleTile(
+                    LemonadeUi.Tile(
                         label = "More",
                         icon = LemonadeIcons.EllipsisHorizontal,
                         onClick = {},
@@ -229,12 +222,12 @@ internal fun TileDisplay() {
         // Use Case: Dashboard
         TileSection(title = "Use Case: Dashboard") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
                 ) {
-                    LemonadeUi.SampleTile(
+                    LemonadeUi.Tile(
                         label = "Orders",
                         icon = LemonadeIcons.ShoppingBag,
                         onClick = {},
@@ -243,7 +236,7 @@ internal fun TileDisplay() {
                             LemonadeUi.Badge(text = "3", size = LemonadeBadgeSize.XSmall)
                         }
                     )
-                    LemonadeUi.SampleTile(
+                    LemonadeUi.Tile(
                         label = "Inventory",
                         icon = LemonadeIcons.Package,
                         onClick = {},
@@ -251,15 +244,15 @@ internal fun TileDisplay() {
                     )
                 }
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
                 ) {
-                    LemonadeUi.SampleTile(
+                    LemonadeUi.Tile(
                         label = "Reports",
                         icon = LemonadeIcons.Chart,
                         onClick = {},
                         variant = LemonadeTileVariant.Muted
                     )
-                    LemonadeUi.SampleTile(
+                    LemonadeUi.Tile(
                         label = "Settings",
                         icon = LemonadeIcons.Gear,
                         onClick = {},
@@ -278,6 +271,7 @@ private fun TileSection(
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+        modifier = Modifier.fillMaxWidth()
     ) {
         LemonadeUi.Text(
             text = title,

@@ -51,14 +51,14 @@ struct HomeView: View {
                     DemoItem(title: "IconButton", destination: AnyView(IconButtonDisplayView())),
                     DemoItem(title: "Checkbox", destination: AnyView(CheckboxDisplayView())),
                     DemoItem(title: "RadioButton", destination: AnyView(RadioButtonDisplayView())),
-                    DemoItem(title: "Switch", destination: AnyView(SwitchDisplayView()))
+                    DemoItem(title: "Switch", destination: AnyView(SwitchDisplayView())),
                 ]
             ),
             DemoSection(
                 title: "Input Fields",
                 items: [
                     DemoItem(title: "TextField", destination: AnyView(TextFieldDisplayView())),
-                    DemoItem(title: "SearchField", destination: AnyView(SearchFieldDisplayView()))
+                    DemoItem(title: "SearchField", destination: AnyView(SearchFieldDisplayView())),
                 ]
             ),
             DemoSection(
@@ -76,12 +76,7 @@ struct HomeView: View {
                 items: [
                     DemoItem(title: "Chip", destination: AnyView(ChipDisplayView())),
                     DemoItem(title: "ListItem", destination: AnyView(ListItemDisplayView())),
-                    DemoItem(title: "SegmentedControl", destination: AnyView(SegmentedControlDisplayView()))
-                ]
-            ),
-            DemoSection(
-                title: "Navigation",
-                items: [
+                    DemoItem(title: "SegmentedControl", destination: AnyView(SegmentedControlDisplayView())),
                     DemoItem(title: "Tile", destination: AnyView(TileDisplayView()))
                 ]
             ),

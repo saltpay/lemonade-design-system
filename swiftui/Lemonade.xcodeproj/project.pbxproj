@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		057823D7FEDAE4BC9E517786 /* LemonadeShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C40CD56F4FBC06ED54B7FE /* LemonadeShadow.swift */; };
-		A1B2C3D4E5F60718293A4B5C /* LemonadeDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E2F3A4B5C60718293A4B5D /* LemonadeDivider.swift */; };
-		A2B3C4D5E6F70819394B5C6D /* DividerDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E3F4A5B6C70819394B5C6E /* DividerDisplayView.swift */; };
 		07044DB3F54ED2F658CE9486 /* RadioButtonDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78C8CB708AD129000C9E182 /* RadioButtonDisplayView.swift */; };
 		0B9A821B0268313F4FD83123 /* Double+Lemonade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4466F4AB4051A6AD818E2E65 /* Double+Lemonade.swift */; };
 		0F3814C3B3E63E958C92868B /* ToastDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1929CB832015A1E26B6E56 /* ToastDisplayView.swift */; };
@@ -37,6 +35,7 @@
 		5356CA0E4BD7C4F2F50C6418 /* TextDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D43E190B99FE705D867E05A /* TextDisplayView.swift */; };
 		54AEAFAD61E034A05ADA0EE1 /* LemonadeListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9847921AD923342FFE5804E3 /* LemonadeListItem.swift */; };
 		5715F1F52048277B252D8CB4 /* Lemonade.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7062E2A9E901ABEF06AF2148 /* Lemonade.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5E451CF8963BCB4FFDBBFED6 /* DividerDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF75A43EA3633AB3AC6CBC0B /* DividerDisplayView.swift */; };
 		658E2F545E9F07ABE4E7456B /* SpacingDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6631230E1E48D13C320FE0FA /* SpacingDisplayView.swift */; };
 		67E232B29C4892E4BA908324 /* LemonadeSpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C230658AADDE26737C95BC7 /* LemonadeSpacing.swift */; };
 		691AFFC71CFF61FCED18B497 /* LemonadeSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466F43A7753A08A92D05A10B /* LemonadeSwitch.swift */; };
@@ -65,6 +64,7 @@
 		BDA4239CD9AA40CA8E48A3E3 /* LemonadeTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3280F4308F4F8C907074DC88 /* LemonadeTag.swift */; };
 		BE175C6921226C1FEC034F56 /* OpacityDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5EE55559BBBD865967D97F /* OpacityDisplayView.swift */; };
 		C4AE5EBAD8126D58F385CA1C /* LemonadeSymbolContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102DD2FA9EEDD18ECF928E2F /* LemonadeSymbolContainer.swift */; };
+		C4E04109B37985DAFB8A1511 /* LemonadeDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0EB20859E76EFADAAFA97D /* LemonadeDivider.swift */; };
 		C53937F392122D9AE6E143B3 /* LemonadeBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84754AC7EA41CD450B4A3D3 /* LemonadeBadge.swift */; };
 		C8C19A4E8981500F1F78DCD0 /* LemonadeIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821C65AE0A806A5CE3A5420C /* LemonadeIcons.swift */; };
 		D1AB07B96CF6C8DBDD04EF33 /* LemonadeRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E6EF804019369C94B35CE07 /* LemonadeRadius.swift */; };
@@ -124,6 +124,7 @@
 		10B43803EB4523DAB434B4A8 /* LemonadeBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeBorder.swift; sourceTree = "<group>"; };
 		119984E30EE1DEF0D7D08145 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = Sources/Lemonade/Resources/Fonts; sourceTree = SOURCE_ROOT; };
 		155B49ECAE5FDD0AE70D52D6 /* Font+Lemonade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Lemonade.swift"; sourceTree = "<group>"; };
+		1B0EB20859E76EFADAAFA97D /* LemonadeDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeDivider.swift; sourceTree = "<group>"; };
 		1D867A0773EFD9F1EFA2A500 /* Shape+Lemonade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shape+Lemonade.swift"; sourceTree = "<group>"; };
 		1F4BD07749C7B92F568286C0 /* LemonadeTransitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeTransitions.swift; sourceTree = "<group>"; };
 		2EDCF61E536A8E991993DC70 /* ListItemDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemDisplayView.swift; sourceTree = "<group>"; };
@@ -189,12 +190,11 @@
 		E2CC87622FE026817E028AA9 /* BrandLogosDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandLogosDisplayView.swift; sourceTree = "<group>"; };
 		E6C1043D4EDC3F7CA8D3FE97 /* LemonadePrimitiveColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadePrimitiveColors.swift; sourceTree = "<group>"; };
 		EC4E577A992EC3F5CFC898A3 /* ChipDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipDisplayView.swift; sourceTree = "<group>"; };
+		EF75A43EA3633AB3AC6CBC0B /* DividerDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerDisplayView.swift; sourceTree = "<group>"; };
 		F86241CEAF25BFC947DEA348 /* LemonadeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeCard.swift; sourceTree = "<group>"; };
 		F90230C017C806FE74DE7DAB /* SymbolContainerDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolContainerDisplayView.swift; sourceTree = "<group>"; };
 		F9C40CD56F4FBC06ED54B7FE /* LemonadeShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeShadow.swift; sourceTree = "<group>"; };
 		FE58BF3E61E443C432276FA5 /* LemonadeBrandLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeBrandLogo.swift; sourceTree = "<group>"; };
-		D1E2F3A4B5C60718293A4B5D /* LemonadeDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeDivider.swift; sourceTree = "<group>"; };
-		D2E3F4A5B6C70819394B5C6E /* DividerDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerDisplayView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -231,7 +231,7 @@
 				624A8C715ADEA72A999938BB /* LemonadeCheckbox.swift */,
 				93B6B5368067DD19A870DCEC /* LemonadeChip.swift */,
 				0025C6F06A07174C5A65B81C /* LemonadeCountryFlag.swift */,
-				D1E2F3A4B5C60718293A4B5D /* LemonadeDivider.swift */,
+				1B0EB20859E76EFADAAFA97D /* LemonadeDivider.swift */,
 				859CF0D948C7FBEBA570E014 /* LemonadeIcon.swift */,
 				7C11D27DF4332D0C3F1DFE1C /* LemonadeIconButton.swift */,
 				9847921AD923342FFE5804E3 /* LemonadeListItem.swift */,
@@ -290,7 +290,7 @@
 				51D1A0AC839EC3EF64263863 /* CheckboxDisplayView.swift */,
 				EC4E577A992EC3F5CFC898A3 /* ChipDisplayView.swift */,
 				0B5C7B4A04531F1245ECF213 /* ColorsDisplayView.swift */,
-				D2E3F4A5B6C70819394B5C6E /* DividerDisplayView.swift */,
+				EF75A43EA3633AB3AC6CBC0B /* DividerDisplayView.swift */,
 				7285C1DDEE5B35BE06264E87 /* FlagsDisplayView.swift */,
 				707483451DC517FF1245E815 /* HomeView.swift */,
 				950A736DF2DFC4CE907AF83F /* IconButtonDisplayView.swift */,
@@ -463,7 +463,7 @@
 				9065B57068A4520169A55124 /* LemonadeChip.swift in Sources */,
 				1BC665489BC2C0A52001DE16 /* LemonadeCountryFlag.swift in Sources */,
 				EB1F3180DA92EDBDE36FF039 /* LemonadeCountryFlags.swift in Sources */,
-				A1B2C3D4E5F60718293A4B5C /* LemonadeDivider.swift in Sources */,
+				C4E04109B37985DAFB8A1511 /* LemonadeDivider.swift in Sources */,
 				10196BC8EE1EDBF4D905BB23 /* LemonadeFonts.swift in Sources */,
 				AB82B862D5DC1D1A1DBC3432 /* LemonadeIcon.swift in Sources */,
 				51ED278C4F51DEB690683F6D /* LemonadeIconButton.swift in Sources */,
@@ -508,7 +508,7 @@
 				9BFCE355C073CFA5A50629CF /* CheckboxDisplayView.swift in Sources */,
 				48B4AF965E3410516AA80402 /* ChipDisplayView.swift in Sources */,
 				A5797DEB4E5308A6759B90F8 /* ColorsDisplayView.swift in Sources */,
-				A2B3C4D5E6F70819394B5C6D /* DividerDisplayView.swift in Sources */,
+				5E451CF8963BCB4FFDBBFED6 /* DividerDisplayView.swift in Sources */,
 				51BA607A037FF932F3A64E0A /* FlagsDisplayView.swift in Sources */,
 				38A4477EB25293A0D342E9E8 /* HomeView.swift in Sources */,
 				B2B128969E0AC3F8A502CCA5 /* IconButtonDisplayView.swift in Sources */,
