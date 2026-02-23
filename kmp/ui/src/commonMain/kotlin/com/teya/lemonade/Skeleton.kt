@@ -333,9 +333,10 @@ private class SkeletonPreviewProvider : PreviewParameterProvider<SkeletonPreview
     override val values: Sequence<SkeletonPreviewData> = buildAllVariants()
 
     private fun buildAllVariants(): Sequence<SkeletonPreviewData> =
-        SkeletonVariant.entries.map { entry ->
-            SkeletonPreviewData(variant = entry)
-        }.asSequence()
+        SkeletonVariant.entries
+            .map { entry ->
+                SkeletonPreviewData(variant = entry)
+            }.asSequence()
 }
 
 @Suppress("UnusedPrivateMember")
