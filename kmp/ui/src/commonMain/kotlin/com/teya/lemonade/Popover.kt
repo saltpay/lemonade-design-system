@@ -119,6 +119,7 @@ public fun LemonadeUi.PopoverBox(
     }
 }
 
+@Suppress("LongParameterList")
 @Composable
 private fun CorePopover(
     title: String,
@@ -150,46 +151,61 @@ private fun CorePopover(
                 color = LocalColors.current.content.contentPrimaryInverse,
             )
 
-            val hasPrimary = primaryActionLabel != null && onPrimaryAction != null
-            val hasSecondary = secondaryActionLabel != null && onSecondaryAction != null
+            PopoverActions(
+                primaryActionLabel = primaryActionLabel,
+                onPrimaryAction = onPrimaryAction,
+                secondaryActionLabel = secondaryActionLabel,
+                onSecondaryAction = onSecondaryAction,
+            )
+        }
+    }
+}
 
-            if (hasPrimary || hasSecondary) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(LocalSpaces.current.spacing200),
-                    modifier = Modifier.padding(top = LocalSpaces.current.spacing200),
-                ) {
-                    if (hasSecondary) {
-                        LemonadeUi.Text(
-                            text = secondaryActionLabel!!,
-                            textStyle = LocalTypographies.current.bodySmallSemiBold,
-                            color = LocalColors.current.content.contentSecondaryInverse,
-                            modifier = Modifier
-                                .clip(LocalShapes.current.radius200)
-                                .clickable { onSecondaryAction?.invoke() }
-                                .background(LocalColors.current.background.bgDefaultInverse)
-                                .padding(
-                                    horizontal = LocalSpaces.current.spacing300,
-                                    vertical = LocalSpaces.current.spacing100,
-                                ),
-                        )
-                    }
+@Composable
+private fun PopoverActions(
+    primaryActionLabel: String?,
+    onPrimaryAction: (() -> Unit)?,
+    secondaryActionLabel: String?,
+    onSecondaryAction: (() -> Unit)?,
+) {
+    val hasPrimary = primaryActionLabel != null && onPrimaryAction != null
+    val hasSecondary = secondaryActionLabel != null && onSecondaryAction != null
 
-                    if (hasPrimary) {
-                        LemonadeUi.Text(
-                            text = primaryActionLabel!!,
-                            textStyle = LocalTypographies.current.bodySmallSemiBold,
-                            color = LocalColors.current.content.contentPrimaryInverse,
-                            modifier = Modifier
-                                .clip(LocalShapes.current.radius200)
-                                .clickable { onPrimaryAction?.invoke() }
-                                .background(LocalColors.current.content.contentSecondaryInverse)
-                                .padding(
-                                    horizontal = LocalSpaces.current.spacing300,
-                                    vertical = LocalSpaces.current.spacing100,
-                                ),
-                        )
-                    }
-                }
+    if (hasPrimary || hasSecondary) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(LocalSpaces.current.spacing200),
+            modifier = Modifier.padding(top = LocalSpaces.current.spacing200),
+        ) {
+            if (hasSecondary) {
+                LemonadeUi.Text(
+                    text = secondaryActionLabel!!,
+                    textStyle = LocalTypographies.current.bodySmallSemiBold,
+                    color = LocalColors.current.content.contentSecondaryInverse,
+                    modifier = Modifier
+                        .clip(LocalShapes.current.radius200)
+                        .clickable { onSecondaryAction?.invoke() }
+                        .background(LocalColors.current.background.bgDefaultInverse)
+                        .padding(
+                            horizontal = LocalSpaces.current.spacing300,
+                            vertical = LocalSpaces.current.spacing100,
+                        ),
+                )
+            }
+
+            if (hasPrimary) {
+                LemonadeUi.Text(
+                    text = primaryActionLabel!!,
+                    textStyle = LocalTypographies.current.bodySmallSemiBold,
+                    color = LocalColors.current.content.contentPrimaryInverse,
+                    modifier = Modifier
+                        .clip(LocalShapes.current.radius200)
+                        .clickable { onPrimaryAction?.invoke() }
+                        .background(LocalColors.current.content.contentSecondaryInverse)
+                        .padding(
+                            horizontal = LocalSpaces.current.spacing300,
+                            vertical = LocalSpaces.current.spacing100,
+                        ),
+                )
             }
         }
     }
