@@ -26,10 +26,17 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeSkeletonSize
-import com.teya.lemonade.core.LemonadeSkeletonVariant
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
+/**
+ * Internal skeleton shape variant used to differentiate rendering logic.
+ */
+private enum class SkeletonVariant {
+    Line,
+    Circle,
+    Block,
+}
 
 /**
  * A skeleton loading placeholder displayed as a horizontal line with a shimmer animation.
@@ -78,7 +85,7 @@ public fun LemonadeUi.LineSkeleton(
     CoreSkeleton(
         modifier = modifier,
         size = size,
-        variant = LemonadeSkeletonVariant.Line
+        variant = SkeletonVariant.Line,
     )
 }
 
@@ -95,11 +102,6 @@ public fun LemonadeUi.LineSkeleton(
  * ## Animation
  * The skeleton animates with a fade in/out effect cycling over 1000ms using an ease-in-out curve.
  * The opacity oscillates between 20% and 60% to create a subtle shimmer effect.
- *
- * ## Size Mapping
- * The [size] parameter maps to different diameter values defined in the design system:
- * (via `LemonadeSkeletonSize` and the underlying sizing tokens such as `LemonadeAssetSize`).
- * Refer to those types for the exact values used in this implementation.
  *
  * ## Variants
  * For text line placeholders, use [LineSkeleton].
@@ -130,7 +132,7 @@ public fun LemonadeUi.CircleSkeleton(
     CoreSkeleton(
         modifier = modifier,
         size = size,
-        variant = LemonadeSkeletonVariant.Circle
+        variant = SkeletonVariant.Circle,
     )
 }
 
@@ -142,9 +144,9 @@ public fun LemonadeUi.CircleSkeleton(
  * fade effect that cycles smoothly, providing a visual cue that data is being
  * fetched or processed.
  *
- * The block skeleton has a default fixed height (spacing1600 -> 64.dp) suitable for card or image placeholders,
- * while the width can be controlled through the [modifier] parameter. It uses a large
- * rounded corner radius appropriate for prominent content areas.
+ * The block skeleton has a fixed height (via the size1600 design token) suitable for
+ * card or image placeholders, while the width can be controlled through the [modifier]
+ * parameter. It uses a large rounded corner radius appropriate for prominent content areas.
  *
  * ## Animation
  * The skeleton animates with a fade in/out effect cycling over 1000ms using an ease-in-out curve.
@@ -166,8 +168,8 @@ public fun LemonadeUi.CircleSkeleton(
  * // Customized block placeholder
  * LemonadeUi.BlockSkeleton(
  *     modifier = Modifier
- *         .fillMaxWidth(0.9f)
- *         .padding(LemonadeTheme.spaces.spacing400)
+ *         .fillMaxWidth(fraction = 0.9f)
+ *         .padding(all = LemonadeTheme.spaces.spacing400)
  * )
  * ```
  *
@@ -183,17 +185,16 @@ public fun LemonadeUi.BlockSkeleton(
     CoreSkeleton(
         modifier = modifier,
         size = size,
-        variant = LemonadeSkeletonVariant.Block
+        variant = SkeletonVariant.Block,
     )
 }
 
 @Composable
 private fun CoreSkeleton(
     size: LemonadeSkeletonSize,
+    variant: SkeletonVariant,
     modifier: Modifier = Modifier,
-    variant: LemonadeSkeletonVariant
 ) {
-
     val infiniteTransition = rememberInfiniteTransition(label = "SkeletonShimmer")
 
     val fadeOpacity by infiniteTransition.animateFloat(
@@ -202,7 +203,7 @@ private fun CoreSkeleton(
         animationSpec = infiniteRepeatable(
             animation = tween(
                 durationMillis = 1000,
-                easing = EaseInOut
+                easing = EaseInOut,
             ),
             repeatMode = RepeatMode.Reverse,
         ),
@@ -210,21 +211,21 @@ private fun CoreSkeleton(
     )
 
     val skeletonSize = size.toSkeletonSizeDimensions(variant = variant)
+    val variantData = variant.variantData
 
     Box(
         modifier = modifier
             .height(height = skeletonSize.height)
             .width(width = skeletonSize.width)
-            .padding(vertical = variant.variantData.verticalSpacing)
-            .then(modifier)
+            .padding(vertical = variantData.verticalSpacing),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxHeight()
                 .fillMaxWidth()
-                .clip(shape = variant.variantData.radius)
+                .clip(shape = variantData.radius)
                 .alpha(alpha = fadeOpacity)
-                .background(color = LocalColors.current.background.bgElevatedHigh)
+                .background(color = LocalColors.current.background.bgElevatedHigh),
         )
     }
 }
@@ -249,9 +250,11 @@ private data class SkeletonSizeDimensions(
 )
 
 @Composable
-private fun LemonadeSkeletonSize.toSkeletonSizeDimensions(variant: LemonadeSkeletonVariant): SkeletonSizeDimensions {
+private fun LemonadeSkeletonSize.toSkeletonSizeDimensions(
+    variant: SkeletonVariant,
+): SkeletonSizeDimensions {
     return when (variant) {
-        LemonadeSkeletonVariant.Line -> {
+        SkeletonVariant.Line -> {
             val heightSize = when (this) {
                 LemonadeSkeletonSize.XSmall -> LocalSizes.current.size400
                 LemonadeSkeletonSize.Small -> LocalSizes.current.size500
@@ -259,7 +262,7 @@ private fun LemonadeSkeletonSize.toSkeletonSizeDimensions(variant: LemonadeSkele
                 LemonadeSkeletonSize.Large -> LocalSizes.current.size700
                 LemonadeSkeletonSize.XLarge -> LocalSizes.current.size800
                 LemonadeSkeletonSize.XXLarge -> LocalSizes.current.size900
-                else -> LocalSizes.current.size1000
+                LemonadeSkeletonSize.XXXLarge -> LocalSizes.current.size1000
             }
             SkeletonSizeDimensions(
                 width = Dp.Unspecified,
@@ -267,14 +270,14 @@ private fun LemonadeSkeletonSize.toSkeletonSizeDimensions(variant: LemonadeSkele
             )
         }
 
-        LemonadeSkeletonVariant.Block -> {
+        SkeletonVariant.Block -> {
             SkeletonSizeDimensions(
                 width = Dp.Unspecified,
                 height = LocalSizes.current.size1600,
             )
         }
 
-        LemonadeSkeletonVariant.Circle -> {
+        SkeletonVariant.Circle -> {
             val size = when (this) {
                 LemonadeSkeletonSize.XSmall -> LemonadeAssetSize.XSmall.dp
                 LemonadeSkeletonSize.Small -> LemonadeAssetSize.Small.dp
@@ -293,57 +296,44 @@ private fun LemonadeSkeletonSize.toSkeletonSizeDimensions(variant: LemonadeSkele
 }
 
 @Stable
-private data class LemonadeSkeletonVariants(
+private data class SkeletonVariantData(
     val verticalSpacing: Dp,
-    val radius: Shape
+    val radius: Shape,
 )
 
-private val LemonadeSkeletonVariant.variantData: LemonadeSkeletonVariants
+private val SkeletonVariant.variantData: SkeletonVariantData
     @Composable get() {
         return when (this) {
-            LemonadeSkeletonVariant.Line -> LemonadeSkeletonVariants(
+            SkeletonVariant.Line -> SkeletonVariantData(
                 verticalSpacing = LocalSpaces.current.spacing100,
-                radius = LocalShapes.current.radius100
+                radius = LocalShapes.current.radius100,
             )
 
-            LemonadeSkeletonVariant.Block -> LemonadeSkeletonVariants(
+            SkeletonVariant.Block -> SkeletonVariantData(
                 verticalSpacing = LocalSpaces.current.spacing0,
-                radius = LocalShapes.current.radius500
+                radius = LocalShapes.current.radius500,
             )
 
-            LemonadeSkeletonVariant.Circle -> LemonadeSkeletonVariants(
+            SkeletonVariant.Circle -> SkeletonVariantData(
                 verticalSpacing = LocalSpaces.current.spacing0,
-                radius = LocalShapes.current.radiusFull
-
+                radius = LocalShapes.current.radiusFull,
             )
         }
     }
 
 private data class SkeletonPreviewData(
-    val shape: Shape,
+    val variant: SkeletonVariant,
 )
 
 private class SkeletonPreviewProvider : PreviewParameterProvider<SkeletonPreviewData> {
     override val values: Sequence<SkeletonPreviewData> = buildAllVariants()
 
     private fun buildAllVariants(): Sequence<SkeletonPreviewData> {
-        return buildList {
-            add(
-                element = SkeletonPreviewData(
-                    shape = InternalLemonadeShapes().radius200,
-                )
-            )
-            add(
-                element = SkeletonPreviewData(
-                    shape = InternalLemonadeShapes().radius400,
-                )
-            )
-            add(
-                element = SkeletonPreviewData(
-                    shape = InternalLemonadeShapes().radiusFull,
-                )
-            )
-        }.asSequence()
+        return SkeletonVariant.entries
+            .map { entry ->
+                SkeletonPreviewData(variant = entry)
+            }
+            .asSequence()
     }
 }
 
@@ -354,31 +344,41 @@ private fun SkeletonPreview(
     previewData: SkeletonPreviewData,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(space = 12.dp)
+        verticalArrangement = Arrangement.spacedBy(space = 12.dp),
     ) {
-        // Line variant with different sizes
-        LemonadeUi.LineSkeleton(
-            modifier = Modifier.width(width = 200.dp),
-            size = LemonadeSkeletonSize.Small,
-        )
-        LemonadeUi.LineSkeleton(
-            modifier = Modifier.width(width = 200.dp),
-            size = LemonadeSkeletonSize.Medium,
-        )
-        LemonadeUi.LineSkeleton(
-            modifier = Modifier.width(width = 200.dp),
-            size = LemonadeSkeletonSize.Large,
-        )
+        when (previewData.variant) {
+            SkeletonVariant.Line -> {
+                LemonadeUi.LineSkeleton(
+                    modifier = Modifier.width(width = 200.dp),
+                    size = LemonadeSkeletonSize.Small,
+                )
+                LemonadeUi.LineSkeleton(
+                    modifier = Modifier.width(width = 200.dp),
+                    size = LemonadeSkeletonSize.Medium,
+                )
+                LemonadeUi.LineSkeleton(
+                    modifier = Modifier.width(width = 200.dp),
+                    size = LemonadeSkeletonSize.Large,
+                )
+            }
 
-        // Circle variant with different sizes
-        LemonadeUi.CircleSkeleton(
-            size = LemonadeSkeletonSize.Small,
-        )
-        LemonadeUi.CircleSkeleton(
-            size = LemonadeSkeletonSize.Medium,
-        )
-        LemonadeUi.CircleSkeleton(
-            size = LemonadeSkeletonSize.Large,
-        )
+            SkeletonVariant.Circle -> {
+                LemonadeUi.CircleSkeleton(
+                    size = LemonadeSkeletonSize.Small,
+                )
+                LemonadeUi.CircleSkeleton(
+                    size = LemonadeSkeletonSize.Medium,
+                )
+                LemonadeUi.CircleSkeleton(
+                    size = LemonadeSkeletonSize.Large,
+                )
+            }
+
+            SkeletonVariant.Block -> {
+                LemonadeUi.BlockSkeleton(
+                    modifier = Modifier.width(width = 200.dp),
+                )
+            }
+        }
     }
 }

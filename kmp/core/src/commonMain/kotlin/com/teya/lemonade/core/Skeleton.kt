@@ -36,37 +36,3 @@ public enum class LemonadeSkeletonSize {
     XXLarge,
     XXXLarge,
 }
-
-/**
- * Enumeration of skeleton shape variants.
- *
- * Defines the shape and styling of the skeleton placeholder. Each variant is designed
- * to match specific content types and provides appropriate dimensions and corner radius.
- *
- * ## Variants
- * - [Line]: Horizontal line skeleton for text content. Uses height-based sizing from [LemonadeSkeletonSize]
- *   with unspecified width. Applied vertical spacing and small corner radius.
- *
- * - [Circle]: Circular skeleton for avatar and image content. Uses equal width/height
- *   from [LemonadeSkeletonSize] to create a perfect circle. Full rounded corner radius.
- *
- * - [Block]: Large block skeleton for card and image content. Uses fixed height
- *   (64dp via the size1600 design token) with unspecified width. Large rounded
- *   corner radius suitable for prominent content.
- * ## Usage
- * ```kotlin
- * // Text placeholder
- * LemonadeUi.LineSkeleton(modifier = Modifier.fillMaxWidth())
- *
- * // Avatar placeholder
- * LemonadeUi.CircleSkeleton()
- *
- * // Card placeholder
- * LemonadeUi.BlockSkeleton(modifier = Modifier.fillMaxWidth())
- * ```
- */
-public enum class LemonadeSkeletonVariant {
-    Line,
-    Circle,
-    Block
-}
