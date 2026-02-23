@@ -23,15 +23,15 @@ internal fun ColorsDisplay() {
             Column(verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)) {
                 allColorsLight.forEach { colorData ->
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100)
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100),
                     ) {
                         LemonadeUi.Text(
                             text = colorData.title,
                             textStyle = LemonadeTheme.typography.bodyXSmallOverline,
-                            color = LemonadeTheme.colors.content.contentTertiary
+                            color = LemonadeTheme.colors.content.contentTertiary,
                         )
                         Row(
-                            Modifier.clip(RoundedCornerShape(LemonadeTheme.radius.radius300))
+                            Modifier.clip(RoundedCornerShape(LemonadeTheme.radius.radius300)),
                         ) {
                             colorData.items.forEach { item ->
                                 Column(
@@ -40,12 +40,12 @@ internal fun ColorsDisplay() {
                                     modifier = Modifier
                                         .weight(1f)
                                         .height(LemonadeTheme.sizes.size1200)
-                                        .background(item.value)
+                                        .background(item.value),
                                 ) {
                                     LemonadeUi.Text(
                                         text = item.key,
                                         textStyle = LemonadeTheme.typography.bodyXSmallSemiBold,
-                                        color = getTextColor(item.value)
+                                        color = getTextColor(item.value),
                                     )
                                 }
                             }
@@ -56,7 +56,6 @@ internal fun ColorsDisplay() {
         }
     }
 }
-
 
 private val allColorsLight = listOf(
     ColorData(
@@ -73,7 +72,7 @@ private val allColorsLight = listOf(
             "800" to Solid.Yellow.yellow800,
             "900" to Solid.Yellow.yellow900,
             "950" to Solid.Yellow.yellow950,
-        )
+        ),
     ),
     ColorData(
         title = "Yellow Alpha",
@@ -89,7 +88,7 @@ private val allColorsLight = listOf(
             "800" to Alpha.Yellow.alpha800,
             "900" to Alpha.Yellow.alpha900,
             "950" to Alpha.Yellow.alpha950,
-        )
+        ),
     ),
     ColorData(
         title = "Amber",
@@ -105,7 +104,7 @@ private val allColorsLight = listOf(
             "800" to Solid.Amber.amber800,
             "900" to Solid.Amber.amber900,
             "950" to Solid.Amber.amber950,
-        )
+        ),
     ),
     ColorData(
         title = "Amber Alpha",
@@ -121,7 +120,7 @@ private val allColorsLight = listOf(
             "800" to Alpha.Amber.alpha800,
             "900" to Alpha.Amber.alpha900,
             "950" to Alpha.Amber.alpha950,
-        )
+        ),
     ),
     ColorData(
         title = "Orange",
@@ -137,7 +136,7 @@ private val allColorsLight = listOf(
             "800" to Solid.Orange.orange800,
             "900" to Solid.Orange.orange900,
             "950" to Solid.Orange.orange950,
-        )
+        ),
     ),
     ColorData(
         title = "Orange Alpha",
@@ -153,9 +152,8 @@ private val allColorsLight = listOf(
             "800" to Alpha.Orange.alpha800,
             "900" to Alpha.Orange.alpha900,
             "950" to Alpha.Orange.alpha950,
-        )
+        ),
     ),
-
     ColorData(
         title = "Red",
         items = mapOf(
@@ -170,7 +168,7 @@ private val allColorsLight = listOf(
             "800" to Solid.Red.red800,
             "900" to Solid.Red.red900,
             "950" to Solid.Red.red950,
-        )
+        ),
     ),
     ColorData(
         title = "Red Alpha",
@@ -186,7 +184,7 @@ private val allColorsLight = listOf(
             "800" to Alpha.Red.alpha800,
             "900" to Alpha.Red.alpha900,
             "950" to Alpha.Red.alpha950,
-        )
+        ),
     ),
     ColorData(
         title = "Rose",
@@ -202,7 +200,7 @@ private val allColorsLight = listOf(
             "800" to Solid.Rose.rose800,
             "900" to Solid.Rose.rose900,
             "950" to Solid.Rose.rose950,
-        )
+        ),
     ),
     ColorData(
         title = "Rose Alpha",
@@ -218,7 +216,7 @@ private val allColorsLight = listOf(
             "800" to Alpha.Rose.alpha800,
             "900" to Alpha.Rose.alpha900,
             "950" to Alpha.Rose.alpha950,
-        )
+        ),
     ),
     ColorData(
         title = "Pink",
@@ -234,7 +232,7 @@ private val allColorsLight = listOf(
             "800" to Solid.Pink.pink800,
             "900" to Solid.Pink.pink900,
             "950" to Solid.Pink.pink950,
-        )
+        ),
     ),
     ColorData(
         title = "Pink Alpha",
@@ -250,7 +248,7 @@ private val allColorsLight = listOf(
             "800" to Alpha.Pink.alpha800,
             "900" to Alpha.Pink.alpha900,
             "950" to Alpha.Pink.alpha950,
-        )
+        ),
     ),
     ColorData(
         title = "Purple",
@@ -266,7 +264,7 @@ private val allColorsLight = listOf(
             "800" to Solid.Purple.purple800,
             "900" to Solid.Purple.purple900,
             "950" to Solid.Purple.purple950,
-        )
+        ),
     ),
     ColorData(
         title = "Purple Alpha",
@@ -282,7 +280,7 @@ private val allColorsLight = listOf(
             "800" to Alpha.Purple.alpha800,
             "900" to Alpha.Purple.alpha900,
             "950" to Alpha.Purple.alpha950,
-        )
+        ),
     ),
     ColorData(
         title = "Violet",
@@ -298,7 +296,7 @@ private val allColorsLight = listOf(
             "800" to Solid.Violet.violet800,
             "900" to Solid.Violet.violet900,
             "950" to Solid.Violet.violet950,
-        )
+        ),
     ),
     ColorData(
         title = "Violet Alpha",
@@ -314,7 +312,7 @@ private val allColorsLight = listOf(
             "800" to Alpha.Violet.alpha800,
             "900" to Alpha.Violet.alpha900,
             "950" to Alpha.Violet.alpha950,
-        )
+        ),
     ),
     ColorData(
         title = "Indigo",
@@ -330,7 +328,7 @@ private val allColorsLight = listOf(
             "800" to Solid.Indigo.indigo800,
             "900" to Solid.Indigo.indigo900,
             "950" to Solid.Indigo.indigo950,
-        )
+        ),
     ),
     ColorData(
         title = "Indigo Alpha",
@@ -346,7 +344,7 @@ private val allColorsLight = listOf(
             "800" to Alpha.Indigo.alpha800,
             "900" to Alpha.Indigo.alpha900,
             "950" to Alpha.Indigo.alpha950,
-        )
+        ),
     ),
     ColorData(
         title = "Blue",
@@ -362,7 +360,7 @@ private val allColorsLight = listOf(
             "800" to Solid.Blue.blue800,
             "900" to Solid.Blue.blue900,
             "950" to Solid.Blue.blue950,
-        )
+        ),
     ),
     ColorData(
         title = "Blue Alpha",
@@ -378,7 +376,7 @@ private val allColorsLight = listOf(
             "800" to Alpha.Blue.alpha800,
             "900" to Alpha.Blue.alpha900,
             "950" to Alpha.Blue.alpha950,
-        )
+        ),
     ),
     ColorData(
         title = "Cyan",
@@ -394,7 +392,7 @@ private val allColorsLight = listOf(
             "800" to Solid.Cyan.cyan800,
             "900" to Solid.Cyan.cyan900,
             "950" to Solid.Cyan.cyan950,
-        )
+        ),
     ),
     ColorData(
         title = "Cyan Alpha",
@@ -410,7 +408,7 @@ private val allColorsLight = listOf(
             "800" to Alpha.Cyan.alpha800,
             "900" to Alpha.Cyan.alpha900,
             "950" to Alpha.Cyan.alpha950,
-        )
+        ),
     ),
     ColorData(
         title = "Teal",
@@ -426,7 +424,7 @@ private val allColorsLight = listOf(
             "800" to Solid.Teal.teal800,
             "900" to Solid.Teal.teal900,
             "950" to Solid.Teal.teal950,
-        )
+        ),
     ),
     ColorData(
         title = "Teal Alpha",
@@ -442,7 +440,7 @@ private val allColorsLight = listOf(
             "800" to Alpha.Teal.alpha800,
             "900" to Alpha.Teal.alpha900,
             "950" to Alpha.Teal.alpha950,
-        )
+        ),
     ),
     ColorData(
         title = "Green",
@@ -458,7 +456,7 @@ private val allColorsLight = listOf(
             "800" to Solid.Green.green800,
             "900" to Solid.Green.green900,
             "950" to Solid.Green.green950,
-        )
+        ),
     ),
     ColorData(
         title = "Green Alpha",
@@ -474,7 +472,7 @@ private val allColorsLight = listOf(
             "800" to Alpha.Green.alpha800,
             "900" to Alpha.Green.alpha900,
             "950" to Alpha.Green.alpha950,
-        )
+        ),
     ),
     ColorData(
         title = "Green-Lime",
@@ -490,7 +488,7 @@ private val allColorsLight = listOf(
             "800" to Solid.GreenLime.greenLime800,
             "900" to Solid.GreenLime.greenLime900,
             "950" to Solid.GreenLime.greenLime950,
-        )
+        ),
     ),
     ColorData(
         title = "Green-Lime Alpha",
@@ -505,8 +503,8 @@ private val allColorsLight = listOf(
             "700" to Alpha.GreenLime.alpha700,
             "800" to Alpha.GreenLime.alpha800,
             "900" to Alpha.GreenLime.alpha900,
-            "950" to Alpha.GreenLime.alpha950
-        )
+            "950" to Alpha.GreenLime.alpha950,
+        ),
     ),
     ColorData(
         title = "Yellow-Lime",
@@ -537,8 +535,8 @@ private val allColorsLight = listOf(
             "700" to Alpha.YellowLime.alpha700,
             "800" to Alpha.YellowLime.alpha800,
             "900" to Alpha.YellowLime.alpha900,
-            "950" to Alpha.YellowLime.alpha950
-        )
+            "950" to Alpha.YellowLime.alpha950,
+        ),
     ),
     ColorData(
         title = "Neutral",
@@ -554,7 +552,7 @@ private val allColorsLight = listOf(
             "800" to Solid.Neutral.neutral800,
             "900" to Solid.Neutral.neutral900,
             "950" to Solid.Neutral.neutral950,
-        )
+        ),
     ),
     ColorData(
         title = "Neutral Alpha",
@@ -570,13 +568,13 @@ private val allColorsLight = listOf(
             "800" to Alpha.Neutral.alpha800,
             "900" to Alpha.Neutral.alpha900,
             "950" to Alpha.Neutral.alpha950,
-        )
+        ),
     ),
 )
 
 private data class ColorData(
     val title: String,
-    val items: Map<String, Color>
+    val items: Map<String, Color>,
 )
 
 @Composable
@@ -587,7 +585,7 @@ private fun getTextColor(backgroundColor: Color): Color {
     val b = backgroundColor.blue
 
     // Calculate relative luminance using WCAG formula
-    val luminance = (0.299 * r + 0.587 * g + 0.114 * b)
+    val luminance = 0.299 * r + 0.587 * g + 0.114 * b
 
     // Use threshold of 0.5 (can adjust between 0.4-0.6 based on preference)
     return if (luminance > 0.5) {

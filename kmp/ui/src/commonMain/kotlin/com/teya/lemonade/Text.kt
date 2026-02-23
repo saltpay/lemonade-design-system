@@ -25,7 +25,6 @@ public fun LemonadeUi.Text(
     minLines: Int = 1,
     autoSize: TextAutoSize? = null,
 ) {
-
     val finalText = if (textStyle == LocalTypographies.current.bodyXSmallOverline) {
         text.uppercase()
     } else {
@@ -47,11 +46,11 @@ public fun LemonadeUi.Text(
             fontSize = finalFontSize,
             lineHeightStyle = LineHeightStyle(
                 alignment = LineHeightStyle.Alignment.Center,
-                trim = LineHeightStyle.Trim.None
+                trim = LineHeightStyle.Trim.None,
             ),
             color = finalColor,
             textAlign = textAlign,
-        )
+        ),
     )
 }
 

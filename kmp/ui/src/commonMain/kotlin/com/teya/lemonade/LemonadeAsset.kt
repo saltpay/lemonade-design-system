@@ -21,7 +21,8 @@ import com.teya.lemonade.core.LemonadeIcons
  * )
  * ```
  *
- * @param asset - The [LemonadeAsset] to be displayed. e.g.: [LemonadeIcons], [LemonadeCountryFlags], [LemonadeBrandLogos], ...
+ * @param asset - The [LemonadeAsset] to be displayed.
+ *  e.g.: [LemonadeIcons], [LemonadeCountryFlags], [LemonadeBrandLogos], ...
  * @param contentDescription - The localizable message to description for the asset.
  * @param size - The [LemonadeAssetSize] to be applied to the flag. Defaults to [LemonadeAssetSize.Medium]
  * @param Modifier - Optional [Modifier] for additional styling and layout adjustments.

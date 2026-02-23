@@ -24,7 +24,7 @@ import com.teya.lemonade.core.LemonadeSizes
 
 private data class SizeItem(
     val name: String,
-    val value: Dp
+    val value: Dp,
 )
 
 private val sizeItems = listOf(
@@ -56,7 +56,7 @@ internal fun SizesDisplay() {
             LemonadeUi.Text(
                 text = "Size Tokens",
                 textStyle = LemonadeTheme.typography.headingMedium,
-                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing200)
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing200),
             )
         }
 
@@ -68,14 +68,14 @@ internal fun SizesDisplay() {
                 LemonadeUi.Text(
                     text = item.name,
                     textStyle = LemonadeTheme.typography.bodySmallMedium,
-                    modifier = Modifier.width(80.dp)
+                    modifier = Modifier.width(80.dp),
                 )
 
                 LemonadeUi.Text(
                     text = "${item.value.value.toInt()}dp",
                     textStyle = LemonadeTheme.typography.bodySmallRegular,
                     color = LemonadeTheme.colors.content.contentSecondary,
-                    modifier = Modifier.width(50.dp)
+                    modifier = Modifier.width(50.dp),
                 )
 
                 val displaySize = min(item.value, 100.dp)
@@ -83,7 +83,7 @@ internal fun SizesDisplay() {
                     modifier = Modifier
                         .size(displaySize)
                         .clip(CircleShape)
-                        .background(LemonadePrimitiveColors.Solid.Purple.purple500)
+                        .background(LemonadePrimitiveColors.Solid.Purple.purple500),
                 )
             }
         }

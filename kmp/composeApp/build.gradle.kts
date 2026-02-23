@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
     alias(libs.plugins.kotlinSerialization)
+    id("lemonade-lint")
 }
 
 kotlin {
@@ -20,7 +21,7 @@ kotlin {
 
     listOf(
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
@@ -70,12 +71,18 @@ kotlin {
 
     android {
         namespace = "com.teya.lemonade"
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        compileSdk = libs.versions.android.compileSdk
+            .get()
+            .toInt()
 
         defaultConfig {
             applicationId = "com.teya.lemonade"
-            minSdk = libs.versions.android.minSdk.get().toInt()
-            targetSdk = libs.versions.android.targetSdk.get().toInt()
+            minSdk = libs.versions.android.minSdk
+                .get()
+                .toInt()
+            targetSdk = libs.versions.android.targetSdk
+                .get()
+                .toInt()
             versionCode = 1
             versionName = "1.0"
         }

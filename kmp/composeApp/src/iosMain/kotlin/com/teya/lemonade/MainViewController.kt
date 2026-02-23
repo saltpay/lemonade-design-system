@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:function-naming")
+
 package com.teya.lemonade
 
 import androidx.compose.ui.window.ComposeUIViewController

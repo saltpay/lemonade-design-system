@@ -3,10 +3,8 @@ package com.teya.lemonade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -23,7 +21,7 @@ import androidx.compose.ui.unit.dp
 
 private data class OpacityItem(
     val name: String,
-    val value: Float
+    val value: Float,
 )
 
 private val baseOpacityItems = listOf(
@@ -60,7 +58,7 @@ internal fun OpacityDisplay() {
             LemonadeUi.Text(
                 text = "Opacity Tokens",
                 textStyle = LemonadeTheme.typography.headingMedium,
-                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing200)
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing200),
             )
         }
 
@@ -68,7 +66,7 @@ internal fun OpacityDisplay() {
             LemonadeUi.Text(
                 text = "Base Opacities",
                 textStyle = LemonadeTheme.typography.headingXSmall,
-                modifier = Modifier.padding(vertical = LemonadeTheme.spaces.spacing200)
+                modifier = Modifier.padding(vertical = LemonadeTheme.spaces.spacing200),
             )
         }
 
@@ -80,7 +78,7 @@ internal fun OpacityDisplay() {
             LemonadeUi.Text(
                 text = "State Opacities",
                 textStyle = LemonadeTheme.typography.headingXSmall,
-                modifier = Modifier.padding(vertical = LemonadeTheme.spaces.spacing200)
+                modifier = Modifier.padding(vertical = LemonadeTheme.spaces.spacing200),
             )
         }
 
@@ -99,14 +97,14 @@ private fun OpacityRow(item: OpacityItem) {
         LemonadeUi.Text(
             text = item.name,
             textStyle = LemonadeTheme.typography.bodySmallMedium,
-            modifier = Modifier.width(120.dp)
+            modifier = Modifier.width(120.dp),
         )
 
         LemonadeUi.Text(
             text = "${(item.value * 100).toInt()}%",
             textStyle = LemonadeTheme.typography.bodySmallRegular,
             color = LemonadeTheme.colors.content.contentSecondary,
-            modifier = Modifier.width(50.dp)
+            modifier = Modifier.width(50.dp),
         )
 
         Box(
@@ -114,7 +112,10 @@ private fun OpacityRow(item: OpacityItem) {
                 .weight(1f)
                 .height(40.dp)
                 .clip(RoundedCornerShape(8.dp))
-                .background(LemonadePrimitiveColors.Solid.Green.green500.copy(alpha = item.value))
+                .background(
+                    LemonadePrimitiveColors.Solid.Green.green500
+                        .copy(alpha = item.value),
+                ),
         )
     }
 }

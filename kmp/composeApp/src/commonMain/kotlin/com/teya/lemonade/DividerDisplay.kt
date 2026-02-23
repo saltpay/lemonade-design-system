@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.DividerVariant
 
+@Suppress("LongMethod")
 @OptIn(ExperimentalLemonadeComponent::class)
 @Composable
 internal fun DividerDisplay() {
@@ -35,26 +36,26 @@ internal fun DividerDisplay() {
         // Horizontal Divider
         DividerSection(title = "Horizontal Divider") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Text(
                         text = "Default",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
-                        color = LemonadeTheme.colors.content.contentSecondary
+                        color = LemonadeTheme.colors.content.contentSecondary,
                     )
                     LemonadeUi.HorizontalDivider()
                 }
 
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Text(
                         text = "Dashed",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
-                        color = LemonadeTheme.colors.content.contentSecondary
+                        color = LemonadeTheme.colors.content.contentSecondary,
                     )
                     LemonadeUi.HorizontalDivider(variant = DividerVariant.Dashed)
                 }
@@ -64,26 +65,26 @@ internal fun DividerDisplay() {
         // Horizontal Divider with Label
         DividerSection(title = "Horizontal Divider with Label") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Text(
                         text = "Default with Label",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
-                        color = LemonadeTheme.colors.content.contentSecondary
+                        color = LemonadeTheme.colors.content.contentSecondary,
                     )
                     LemonadeUi.HorizontalDivider(label = "OR")
                 }
 
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Text(
                         text = "Dashed with Label",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
-                        color = LemonadeTheme.colors.content.contentSecondary
+                        color = LemonadeTheme.colors.content.contentSecondary,
                     )
                     LemonadeUi.HorizontalDivider(label = "OR", variant = DividerVariant.Dashed)
                 }
@@ -94,32 +95,32 @@ internal fun DividerDisplay() {
         DividerSection(title = "Vertical Divider") {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing600),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Text(
                         text = "Default",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
-                        color = LemonadeTheme.colors.content.contentSecondary
+                        color = LemonadeTheme.colors.content.contentSecondary,
                     )
                     LemonadeUi.VerticalDivider(modifier = Modifier.height(48.dp))
                 }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Text(
                         text = "Dashed",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
-                        color = LemonadeTheme.colors.content.contentSecondary
+                        color = LemonadeTheme.colors.content.contentSecondary,
                     )
                     LemonadeUi.VerticalDivider(
                         modifier = Modifier.height(48.dp),
-                        variant = DividerVariant.Dashed
+                        variant = DividerVariant.Dashed,
                     )
                 }
             }
@@ -128,7 +129,7 @@ internal fun DividerDisplay() {
         // In Context
         DividerSection(title = "In Context") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing600)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing600),
             ) {
                 // Content separation example
                 Column(
@@ -137,26 +138,26 @@ internal fun DividerDisplay() {
                         .clip(RoundedCornerShape(LemonadeTheme.radius.radius300))
                         .background(LemonadeTheme.colors.background.bgElevated)
                         .padding(LemonadeTheme.spaces.spacing400),
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
                 ) {
                     LemonadeUi.Text(
                         text = "Section 1",
-                        textStyle = LemonadeTheme.typography.bodyMediumMedium
+                        textStyle = LemonadeTheme.typography.bodyMediumMedium,
                     )
                     LemonadeUi.Text(
                         text = "Some content for the first section",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
-                        color = LemonadeTheme.colors.content.contentSecondary
+                        color = LemonadeTheme.colors.content.contentSecondary,
                     )
                     LemonadeUi.HorizontalDivider()
                     LemonadeUi.Text(
                         text = "Section 2",
-                        textStyle = LemonadeTheme.typography.bodyMediumMedium
+                        textStyle = LemonadeTheme.typography.bodyMediumMedium,
                     )
                     LemonadeUi.Text(
                         text = "Some content for the second section",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
-                        color = LemonadeTheme.colors.content.contentSecondary
+                        color = LemonadeTheme.colors.content.contentSecondary,
                     )
                 }
 
@@ -168,18 +169,18 @@ internal fun DividerDisplay() {
                         .background(LemonadeTheme.colors.background.bgElevated)
                         .padding(LemonadeTheme.spaces.spacing400),
                     verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     LemonadeUi.Button(
                         label = "Continue with Email",
                         onClick = { },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                     LemonadeUi.HorizontalDivider(label = "OR")
                     LemonadeUi.Button(
                         label = "Continue with Google",
                         onClick = { },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
 
@@ -191,47 +192,47 @@ internal fun DividerDisplay() {
                         .background(LemonadeTheme.colors.background.bgElevated)
                         .padding(LemonadeTheme.spaces.spacing400),
                     horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         LemonadeUi.Text(
                             text = "125",
-                            textStyle = LemonadeTheme.typography.headingSmall
+                            textStyle = LemonadeTheme.typography.headingSmall,
                         )
                         LemonadeUi.Text(
                             text = "Posts",
                             textStyle = LemonadeTheme.typography.bodySmallRegular,
-                            color = LemonadeTheme.colors.content.contentSecondary
+                            color = LemonadeTheme.colors.content.contentSecondary,
                         )
                     }
                     LemonadeUi.VerticalDivider(modifier = Modifier.height(40.dp))
                     Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         LemonadeUi.Text(
                             text = "1.2K",
-                            textStyle = LemonadeTheme.typography.headingSmall
+                            textStyle = LemonadeTheme.typography.headingSmall,
                         )
                         LemonadeUi.Text(
                             text = "Followers",
                             textStyle = LemonadeTheme.typography.bodySmallRegular,
-                            color = LemonadeTheme.colors.content.contentSecondary
+                            color = LemonadeTheme.colors.content.contentSecondary,
                         )
                     }
                     LemonadeUi.VerticalDivider(modifier = Modifier.height(40.dp))
                     Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         LemonadeUi.Text(
                             text = "348",
-                            textStyle = LemonadeTheme.typography.headingSmall
+                            textStyle = LemonadeTheme.typography.headingSmall,
                         )
                         LemonadeUi.Text(
                             text = "Following",
                             textStyle = LemonadeTheme.typography.bodySmallRegular,
-                            color = LemonadeTheme.colors.content.contentSecondary
+                            color = LemonadeTheme.colors.content.contentSecondary,
                         )
                     }
                 }
@@ -243,7 +244,7 @@ internal fun DividerDisplay() {
 @Composable
 private fun DividerSection(
     title: String,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
@@ -251,7 +252,7 @@ private fun DividerSection(
         LemonadeUi.Text(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
-            color = LemonadeTheme.colors.content.contentSecondary
+            color = LemonadeTheme.colors.content.contentSecondary,
         )
         content()
     }

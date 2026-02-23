@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinSerialization)
     id("lemonade")
+    id("lemonade-lint")
 }
 
 lemonadePublishing {

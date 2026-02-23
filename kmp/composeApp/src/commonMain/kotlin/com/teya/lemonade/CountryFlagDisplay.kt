@@ -16,8 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeCountryFlags
-import com.teya.lemonade.core.LemonadeIcons
-
 
 @Composable
 internal fun CountryFlagDisplay() {
@@ -31,11 +29,11 @@ internal fun CountryFlagDisplay() {
             modifier = Modifier.fillMaxWidth(),
             columns = GridCells.FixedSize(70.dp),
             horizontalArrangement = Arrangement.Center,
-            contentPadding = PaddingValues(16.dp)
+            contentPadding = PaddingValues(16.dp),
         ) {
             items(
                 items = LemonadeCountryFlags.entries,
-                key = { it.ordinal }
+                key = { it.ordinal },
             ) { icon ->
                 Column(
                     modifier = Modifier
@@ -43,7 +41,7 @@ internal fun CountryFlagDisplay() {
                         .height(70.dp)
                         .clickable { },
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.Center,
                 ) {
                     LemonadeUi.CountryFlag(
                         flag = icon,

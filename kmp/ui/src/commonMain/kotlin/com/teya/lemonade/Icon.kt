@@ -16,7 +16,6 @@ import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import org.jetbrains.compose.resources.painterResource
 
-
 /**
  * Icon component, to indication status and possible actions via iconography
  *
@@ -35,7 +34,8 @@ import org.jetbrains.compose.resources.painterResource
  *
  * ## Parameters
  * @param icon: The [LemonadeIcons] to be displayed.
- * @param contentDescription: A **localized** text that describes the icon or its action. Optional, but strongly recommended.
+ * @param contentDescription A **localized** text that describes the icon or its action.
+ *  Optional, but strongly recommended.
  * @param size: The [LemonadeAssetSize] to be applied to the icon. Defaults to [LemonadeAssetSize.Medium]
  * @param tint: The tint color to be applied to the icon. Defaults to the primary color of the [LemonadeTheme]
  * @param Modifier: Optional [Modifier] for additional styling and layout adjustments.
@@ -68,7 +68,8 @@ private fun CoreIcon(
     Image(
         painter = painter,
         contentDescription = contentDescription,
-        colorFilter = ColorFilter.tint(color = tint)
+        colorFilter = ColorFilter
+            .tint(color = tint)
             .takeIf { tint != Color.Unspecified },
         modifier = modifier.requiredSize(size = size.dp),
     )
@@ -86,7 +87,6 @@ private val LemonadeAssetSize.dp: Dp
             LemonadeAssetSize.XXXLarge -> LocalSizes.current.size1200
         }
     }
-
 
 @LemonadePreview
 @Composable

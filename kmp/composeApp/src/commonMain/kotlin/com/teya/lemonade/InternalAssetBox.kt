@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 @Composable
 internal fun LemonadeAssetBox(
     asset: @Composable BoxScope.() -> Unit,
-    label: String
+    label: String,
 ) {
     Column(
         modifier = Modifier
@@ -26,19 +26,17 @@ internal fun LemonadeAssetBox(
             .border(
                 width = LemonadeTheme.borderWidths.base.border25,
                 color = LemonadeTheme.colors.border.borderNeutralLow,
-                shape = RoundedCornerShape(LemonadeTheme.radius.radius400)
-            )
-            .background(
+                shape = RoundedCornerShape(LemonadeTheme.radius.radius400),
+            ).background(
                 color = LemonadeTheme.colors.background.bgDefault,
-                shape = RoundedCornerShape(LemonadeTheme.radius.radius400)
-            )
-            .padding(LemonadeTheme.spaces.spacing400)
+                shape = RoundedCornerShape(LemonadeTheme.radius.radius400),
+            ).padding(LemonadeTheme.spaces.spacing400)
             .heightIn(min = LemonadeTheme.sizes.size1600),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(
             space = LemonadeTheme.spaces.spacing300,
-            alignment = Alignment.CenterVertically
-        )
+            alignment = Alignment.CenterVertically,
+        ),
     ) {
         Box(content = asset)
         LemonadeUi.Text(
@@ -46,7 +44,7 @@ internal fun LemonadeAssetBox(
             textStyle = LemonadeTheme.typography.bodyXSmallRegular,
             color = LemonadeTheme.colors.content.contentSecondary,
             overflow = TextOverflow.Ellipsis,
-            maxLines = 1
+            maxLines = 1,
         )
     }
 }
