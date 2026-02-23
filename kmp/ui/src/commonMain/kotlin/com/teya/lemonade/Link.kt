@@ -14,7 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextDecoration
@@ -96,17 +95,17 @@ private fun CoreLink(
         color = animatedColor,
     )
 
+    val disabledModifier = if (!enabled) {
+        Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+    } else {
+        Modifier
+    }
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing100),
         modifier = modifier
-            .then(
-                other = if (!enabled) {
-                    Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                } else {
-                    Modifier
-                },
-            )
+            .then(other = disabledModifier)
             .clickable(
                 enabled = enabled,
                 onClick = onClick,
@@ -138,8 +137,9 @@ private data class LinkPreviewData(
 
 private class LinkPreviewProvider : PreviewParameterProvider<LinkPreviewData> {
     override val values: Sequence<LinkPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<LinkPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<LinkPreviewData> =
+        buildList {
             listOf(true, false).forEach { enabled ->
                 listOf(true, false).forEach { withIcon ->
                     add(
@@ -151,9 +151,9 @@ private class LinkPreviewProvider : PreviewParameterProvider<LinkPreviewData> {
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @Composable
 @LemonadePreview
 private fun LinkPreview(
