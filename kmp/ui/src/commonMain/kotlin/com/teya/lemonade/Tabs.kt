@@ -121,8 +121,7 @@ private fun TabItem(
                 role = Role.Tab,
                 interactionSource = interactionSource,
                 indication = null,
-            )
-            .padding(
+            ).padding(
                 horizontal = LocalSpaces.current.spacing300,
                 vertical = LocalSpaces.current.spacing200,
             ),
