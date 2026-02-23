@@ -152,7 +152,6 @@ internal fun CoreSegmentedControl(
     }
 }
 
-@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun SegmentedControlPreview() {

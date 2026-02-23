@@ -104,7 +104,6 @@ private class CountryFlagPreviewProvider : PreviewParameterProvider<CountryFlagP
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun CountryFlagPreview(

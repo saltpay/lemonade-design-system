@@ -226,7 +226,6 @@ private class TilePreviewProvider : PreviewParameterProvider<TilePreviewData> {
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun LemonadeLabeledRadioButtonPreview(

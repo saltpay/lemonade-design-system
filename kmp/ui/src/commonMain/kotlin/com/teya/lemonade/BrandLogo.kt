@@ -94,7 +94,6 @@ private class BrandLogoPreviewProvider : PreviewParameterProvider<BrandLogoPrevi
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun CountryFlagPreview(

@@ -505,7 +505,6 @@ private class SelectionListItemPreviewProvider :
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun SelectListItemPreview(
@@ -569,7 +568,6 @@ private class ResourceListItemPreviewProvider :
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun ResourceListItemPreview(

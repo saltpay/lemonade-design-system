@@ -153,7 +153,6 @@ private class LinkPreviewProvider : PreviewParameterProvider<LinkPreviewData> {
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @Composable
 @LemonadePreview
 private fun LinkPreview(

@@ -636,7 +636,6 @@ private class TextFieldPreviewProvider : PreviewParameterProvider<TextFieldPrevi
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @Composable
 @LemonadePreview
 private fun TextInputPreview(
@@ -677,7 +676,6 @@ private fun TextInputPreview(
     }
 }
 
-@Suppress("UnusedPrivateMember")
 @Composable
 @LemonadePreview
 private fun TextInputWithSelectorPreview(

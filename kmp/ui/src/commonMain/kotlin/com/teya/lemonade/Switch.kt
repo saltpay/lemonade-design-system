@@ -318,7 +318,6 @@ private class SwitchPreviewProvider : PreviewParameterProvider<SwitchPreviewData
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun LemonadeLabeledRadioButtonPreview(

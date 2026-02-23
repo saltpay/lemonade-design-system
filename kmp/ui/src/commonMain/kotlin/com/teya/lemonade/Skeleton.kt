@@ -339,7 +339,6 @@ private class SkeletonPreviewProvider : PreviewParameterProvider<SkeletonPreview
             }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @Composable
 @LemonadePreview
 private fun SkeletonPreview(
