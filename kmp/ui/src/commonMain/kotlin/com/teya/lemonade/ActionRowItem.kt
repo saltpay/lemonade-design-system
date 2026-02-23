@@ -64,16 +64,13 @@ public fun LemonadeUi.ActionRowItem(
                 width = LocalBorderWidths.current.base.border25,
                 color = LocalColors.current.border.borderNeutralLow,
                 shape = LocalShapes.current.radius300,
-            )
-            .clickable(
+            ).clickable(
                 enabled = enabled,
                 onClick = onClick,
-            )
-            .padding(
+            ).padding(
                 horizontal = LocalSpaces.current.spacing400,
                 vertical = LocalSpaces.current.spacing300,
-            )
-            .then(
+            ).then(
                 other = if (!enabled) {
                     Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
                 } else {
