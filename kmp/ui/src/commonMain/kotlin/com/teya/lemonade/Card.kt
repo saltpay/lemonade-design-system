@@ -167,7 +167,6 @@ private class CardPreviewProvider : PreviewParameterProvider<CardPreviewData> {
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @OptIn(InternalLemonadeApi::class)
 @LemonadePreview
 @Composable

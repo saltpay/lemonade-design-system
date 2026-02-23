@@ -283,7 +283,6 @@ private class SearchFieldPreviewProvider : PreviewParameterProvider<SearchFieldP
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun LemonadeSearchFieldPreview(

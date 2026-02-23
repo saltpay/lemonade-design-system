@@ -301,7 +301,6 @@ private class ButtonPreviewProvider : PreviewParameterProvider<ButtonPreviewData
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun LemonadeLabeledRadioButtonPreview(

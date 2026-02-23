@@ -135,7 +135,6 @@ private class TagPreviewProvider :
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @Composable
 @LemonadePreview
 private fun SymbolContainerPreview(
