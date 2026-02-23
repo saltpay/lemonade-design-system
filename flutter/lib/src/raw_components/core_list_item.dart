@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:lemonade_design_system/lemonade_design_system.dart';
 
 /// {@template _LemonadeCoreListItem}
@@ -32,6 +33,7 @@ class LemonadeCoreListItem extends StatefulWidget {
     this.enabled = true,
     this.leadingSlot,
     this.trailingSlot,
+    this.showDivider,
     this.semanticIdentifier,
     this.semanticLabel,
     super.key,
@@ -63,6 +65,11 @@ class LemonadeCoreListItem extends StatefulWidget {
   /// Optional widget placed at the end of the row (e.g. a tag or chevron).
   /// {@endtemplate}
   final WidgetBuilder? trailingSlot;
+
+  /// {@template LemonadeCoreListItem.showDivider}
+  /// Whether to show a divider line below the item.
+  /// {@endtemplate}
+  final bool? showDivider;
 
   /// {@template LemonadeCoreListItem.onPressed}
   /// Called when the item is tapped.
@@ -114,61 +121,81 @@ class _LemonadeCoreListItemState extends State<LemonadeCoreListItem> {
         onTapDown: (_) => _handlePressChange(isPressed: true),
         onTapUp: (_) => _handlePressChange(isPressed: false),
         onTapCancel: () => _handlePressChange(isPressed: false),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 120),
-          curve: Curves.easeOut,
-          decoration: BoxDecoration(
-            color: background,
-            borderRadius: BorderRadius.circular(spaces.spacing300),
-          ),
-          constraints: BoxConstraints(
-            minHeight: theme.sizes.size1200,
-          ),
-          padding: EdgeInsets.only(
-            left: spaces.spacing300,
-            top: spaces.spacing200,
-            right: spaces.spacing200,
-            bottom: spaces.spacing200,
-          ),
-          child: Opacity(
-            opacity: widget.enabled ? 1.0 : disabledOpacity,
-            child: Row(
-              children: <Widget>[
-                if (widget.leadingSlot != null) ...<Widget>[
-                  widget.leadingSlot!(context),
-                  SizedBox(width: spaces.spacing300),
-                ],
-
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(spaces.spacing100),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 120),
+                curve: Curves.easeOut,
+                decoration: BoxDecoration(
+                  color: background,
+                  borderRadius: BorderRadius.circular(spaces.spacing300),
+                ),
+                constraints: BoxConstraints(
+                  minHeight: theme.sizes.size1200,
+                ),
+                padding: EdgeInsets.only(
+                  left: spaces.spacing300,
+                  top: spaces.spacing300,
+                  right: spaces.spacing200,
+                  bottom: spaces.spacing300,
+                ),
+                child: Opacity(
+                  opacity: widget.enabled ? 1.0 : disabledOpacity,
+                  child: Row(
                     children: <Widget>[
-                      Text(
-                        widget.label,
-                        style: theme.typography.bodyMediumMedium.apply(
-                          color: theme.colors.content.contentPrimary,
+                      if (widget.leadingSlot != null) ...<Widget>[
+                        widget.leadingSlot!(context),
+                        SizedBox(width: spaces.spacing300),
+                      ],
+
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              widget.label,
+                              style: theme.typography.bodyMediumMedium.apply(
+                                color: theme.colors.content.contentPrimary,
+                              ),
+                            ),
+
+                            if (widget.description != null) ...<Widget>[
+                              Text(
+                                widget.description!,
+                                style: theme.typography.bodySmallRegular.apply(
+                                  color: theme.colors.content.contentSecondary,
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                       ),
 
-                      if (widget.description != null) ...<Widget>[
-                        Text(
-                          widget.description!,
-                          style: theme.typography.bodySmallRegular.apply(
-                            color: theme.colors.content.contentSecondary,
-                          ),
-                        ),
+                      if (widget.trailingSlot != null) ...<Widget>[
+                        SizedBox(width: spaces.spacing200),
+                        widget.trailingSlot!(context),
                       ],
                     ],
                   ),
                 ),
-
-                if (widget.trailingSlot != null) ...<Widget>[
-                  SizedBox(width: spaces.spacing200),
-                  widget.trailingSlot!(context),
-                ],
-              ],
+              ),
             ),
-          ),
+            if (widget.showDivider ?? false) ...<Widget>[
+              Padding(
+                padding: EdgeInsetsGeometry.symmetric(
+                  horizontal: spaces.spacing400,
+                ),
+                // TODO(felipeemarcon): Replace with LemonadeDivider when available
+                child: Divider(
+                  height: theme.border.base.border25,
+                  thickness: theme.border.base.border25,
+                  color: theme.colors.border.borderNeutralLow,
+                ),
+              ),
+            ],
+          ],
         ),
       ),
     );

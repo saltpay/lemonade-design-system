@@ -33,6 +33,7 @@ class LemonadeActionListItem extends StatefulWidget {
     this.leadingSlot,
     this.trailingSlot,
     this.withNavigation = false,
+    this.showDivider,
     this.semanticIdentifier,
     this.semanticLabel,
   });
@@ -74,6 +75,11 @@ class LemonadeActionListItem extends StatefulWidget {
   /// Defaults to false.
   /// {@endtemplate}
   final bool withNavigation;
+
+  /// {@template LemonadeCoreListItem.showDivider}
+  /// Whether to show a divider line below the item.
+  /// {@endtemplate}
+  final bool? showDivider;
 
   /// {@template LemonadeActionListItem.onPressed}
   /// Called when the item is tapped.
@@ -136,6 +142,7 @@ class _LemonadeActionListItemState extends State<LemonadeActionListItem> {
       enabled: widget.enabled,
       leadingSlot: widget.leadingSlot,
       trailingSlot: finalTrailingSlot,
+      showDivider: widget.showDivider,
       onPressed: widget.onPressed,
       semanticIdentifier: widget.semanticIdentifier,
       semanticLabel: widget.semanticLabel,
