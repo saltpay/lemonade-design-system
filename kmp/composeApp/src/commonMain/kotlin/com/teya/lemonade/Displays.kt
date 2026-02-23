@@ -20,6 +20,7 @@ internal interface Displays {
             RadioButton,
             SelectionListItem,
             ActionListItem,
+            ActionRowItem,
             ResourceListItem,
             Chip,
             SegmentedControl,
@@ -202,5 +203,10 @@ internal interface Displays {
     @Serializable
     data object Divider : Displays {
         override val label: String = "Divider"
+    }
+
+    @Serializable
+    data object ActionRowItem : Displays {
+        override val label: String = "ActionRowItem"
     }
 }

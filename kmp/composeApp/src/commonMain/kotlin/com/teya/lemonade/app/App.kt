@@ -2,6 +2,7 @@ package com.teya.lemonade.app
 
 import androidx.compose.runtime.Composable
 import com.teya.lemonade.ActionListItemDisplay
+import com.teya.lemonade.ActionRowItemDisplay
 import com.teya.lemonade.BadgeDisplay
 import com.teya.lemonade.BorderWidthDisplay
 import com.teya.lemonade.BrandLogoDisplay
@@ -52,6 +53,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.RadioButton to { _ -> RadioButtonDisplay() },
     Displays.SelectionListItem to { _ -> SelectionListItemDisplay() },
     Displays.ActionListItem to { _ -> ActionListItemDisplay() },
+    Displays.ActionRowItem to { _ -> ActionRowItemDisplay() },
     Displays.ResourceListItem to { _ -> ResourceListItemDisplay() },
     Displays.Chip to { _ -> ChipDisplay() },
     Displays.SegmentedControl to { _ -> SegmentedControlDisplay() },

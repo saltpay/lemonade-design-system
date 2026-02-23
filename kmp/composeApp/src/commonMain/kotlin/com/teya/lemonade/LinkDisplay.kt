@@ -29,90 +29,98 @@ internal fun LinkDisplay() {
             .navigationBarsPadding()
             .padding(LemonadeTheme.spaces.spacing400),
     ) {
-        // Basic
-        LinkSection(title = "Basic") {
+        BasicLinkSection()
+        WithIconLinkSection()
+        DisabledLinkSection()
+        InContextLinkSection()
+    }
+}
+
+@Composable
+private fun BasicLinkSection() {
+    LinkSection(title = "Basic") {
+        LemonadeUi.Link(
+            text = "Learn more",
+            onClick = { /* Nothing */ },
+        )
+    }
+}
+
+@Composable
+private fun WithIconLinkSection() {
+    LinkSection(title = "With Icon") {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+        ) {
             LemonadeUi.Link(
-                text = "Learn more",
+                text = "Open in browser",
                 onClick = { /* Nothing */ },
+                icon = LemonadeIcons.ExternalLink,
+            )
+            LemonadeUi.Link(
+                text = "Continue reading",
+                onClick = { /* Nothing */ },
+                icon = LemonadeIcons.ArrowRight,
             )
         }
+    }
+}
 
-        // With Icon
-        LinkSection(title = "With Icon") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+@Composable
+private fun DisabledLinkSection() {
+    LinkSection(title = "Disabled") {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+        ) {
+            LemonadeUi.Link(
+                text = "Unavailable link",
+                onClick = { /* Nothing */ },
+                enabled = false,
+            )
+            LemonadeUi.Link(
+                text = "Unavailable link with icon",
+                onClick = { /* Nothing */ },
+                enabled = false,
+                icon = LemonadeIcons.ExternalLink,
+            )
+        }
+    }
+}
+
+@Composable
+private fun InContextLinkSection() {
+    LinkSection(title = "In Context") {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(LemonadeTheme.radius.radius300))
+                .background(LemonadeTheme.colors.background.bgElevated)
+                .padding(LemonadeTheme.spaces.spacing400),
+        ) {
+            LemonadeUi.Text(
+                text = "Terms and Conditions",
+                textStyle = LemonadeTheme.typography.headingXSmall,
+            )
+            LemonadeUi.Text(
+                text = "By continuing you agree to our terms of service and privacy policy.",
+                textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                color = LemonadeTheme.colors.content.contentSecondary,
+            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 LemonadeUi.Link(
-                    text = "Open in browser",
+                    text = "Terms of Service",
                     onClick = { /* Nothing */ },
                     icon = LemonadeIcons.ExternalLink,
                 )
-
                 LemonadeUi.Link(
-                    text = "Continue reading",
+                    text = "Privacy Policy",
                     onClick = { /* Nothing */ },
-                    icon = LemonadeIcons.ArrowRight,
-                )
-            }
-        }
-
-        // Disabled
-        LinkSection(title = "Disabled") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
-            ) {
-                LemonadeUi.Link(
-                    text = "Unavailable link",
-                    onClick = { /* Nothing */ },
-                    enabled = false,
-                )
-
-                LemonadeUi.Link(
-                    text = "Unavailable link with icon",
-                    onClick = { /* Nothing */ },
-                    enabled = false,
                     icon = LemonadeIcons.ExternalLink,
                 )
-            }
-        }
-
-        // In Context
-        LinkSection(title = "In Context") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(LemonadeTheme.radius.radius300))
-                    .background(LemonadeTheme.colors.background.bgElevated)
-                    .padding(LemonadeTheme.spaces.spacing400),
-            ) {
-                LemonadeUi.Text(
-                    text = "Terms and Conditions",
-                    textStyle = LemonadeTheme.typography.headingXSmall,
-                )
-
-                LemonadeUi.Text(
-                    text = "By continuing you agree to our terms of service and privacy policy.",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentSecondary,
-                )
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    LemonadeUi.Link(
-                        text = "Terms of Service",
-                        onClick = { /* Nothing */ },
-                        icon = LemonadeIcons.ExternalLink,
-                    )
-
-                    LemonadeUi.Link(
-                        text = "Privacy Policy",
-                        onClick = { /* Nothing */ },
-                        icon = LemonadeIcons.ExternalLink,
-                    )
-                }
             }
         }
     }
