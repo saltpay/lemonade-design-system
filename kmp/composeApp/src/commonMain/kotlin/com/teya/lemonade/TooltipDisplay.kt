@@ -30,78 +30,85 @@ internal fun TooltipDisplay() {
             .navigationBarsPadding()
             .padding(LemonadeTheme.spaces.spacing400),
     ) {
-        // Standalone
-        TooltipSection(title = "Standalone") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-            ) {
-                LemonadeUi.Tooltip(
-                    text = "This is a helpful tooltip",
-                )
+        StandaloneTooltipSection()
+        InteractiveTooltipSection()
+    }
+}
 
-                LemonadeUi.Tooltip(
-                    text = "Short tip",
-                )
-
-                LemonadeUi.Tooltip(
-                    text = "This is a longer tooltip with more detailed information",
-                )
-            }
+@OptIn(ExperimentalLemonadeComponent::class)
+@Composable
+private fun StandaloneTooltipSection() {
+    TooltipSection(title = "Standalone") {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+        ) {
+            LemonadeUi.Tooltip(
+                text = "This is a helpful tooltip",
+            )
+            LemonadeUi.Tooltip(
+                text = "Short tip",
+            )
+            LemonadeUi.Tooltip(
+                text = "This is a longer tooltip with more detailed information",
+            )
         }
+    }
+}
 
-        // Interactive
-        TooltipSection(title = "Interactive (Tap to Toggle)") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+@OptIn(ExperimentalLemonadeComponent::class)
+@Composable
+private fun InteractiveTooltipSection() {
+    TooltipSection(title = "Interactive (Tap to Toggle)") {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+        ) {
+            LemonadeUi.Text(
+                text = "Tap buttons below to toggle their tooltips",
+                textStyle = LemonadeTheme.typography.bodySmallRegular,
+                color = LemonadeTheme.colors.content.contentSecondary,
+            )
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
-                LemonadeUi.Text(
-                    text = "Tap buttons below to toggle their tooltips",
-                    textStyle = LemonadeTheme.typography.bodySmallRegular,
-                    color = LemonadeTheme.colors.content.contentSecondary,
-                )
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-                ) {
-                    var showPrimary by remember { mutableStateOf(value = false) }
-                    LemonadeUi.TooltipBox(
-                        tooltipText = "Primary action button",
-                        isVisible = showPrimary,
-                    ) {
-                        LemonadeUi.Button(
-                            label = "Press me",
-                            onClick = { showPrimary = !showPrimary },
-                            variant = LemonadeButtonVariant.Primary,
-                            size = LemonadeButtonSize.Medium,
-                        )
-                    }
-
-                    var showSecondary by remember { mutableStateOf(value = false) }
-                    LemonadeUi.TooltipBox(
-                        tooltipText = "Secondary action",
-                        isVisible = showSecondary,
-                    ) {
-                        LemonadeUi.Button(
-                            label = "Or me",
-                            onClick = { showSecondary = !showSecondary },
-                            variant = LemonadeButtonVariant.Secondary,
-                            size = LemonadeButtonSize.Medium,
-                        )
-                    }
-                }
-
-                var showNeutral by remember { mutableStateOf(value = false) }
+                var showPrimary by remember { mutableStateOf(value = false) }
                 LemonadeUi.TooltipBox(
-                    tooltipText = "This tooltip appears on tap",
-                    isVisible = showNeutral,
+                    tooltipText = "Primary action button",
+                    isVisible = showPrimary,
                 ) {
                     LemonadeUi.Button(
-                        label = "Tap for tooltip",
-                        onClick = { showNeutral = !showNeutral },
-                        variant = LemonadeButtonVariant.Neutral,
+                        label = "Press me",
+                        onClick = { showPrimary = !showPrimary },
+                        variant = LemonadeButtonVariant.Primary,
                         size = LemonadeButtonSize.Medium,
                     )
                 }
+
+                var showSecondary by remember { mutableStateOf(value = false) }
+                LemonadeUi.TooltipBox(
+                    tooltipText = "Secondary action",
+                    isVisible = showSecondary,
+                ) {
+                    LemonadeUi.Button(
+                        label = "Or me",
+                        onClick = { showSecondary = !showSecondary },
+                        variant = LemonadeButtonVariant.Secondary,
+                        size = LemonadeButtonSize.Medium,
+                    )
+                }
+            }
+
+            var showNeutral by remember { mutableStateOf(value = false) }
+            LemonadeUi.TooltipBox(
+                tooltipText = "This tooltip appears on tap",
+                isVisible = showNeutral,
+            ) {
+                LemonadeUi.Button(
+                    label = "Tap for tooltip",
+                    onClick = { showNeutral = !showNeutral },
+                    variant = LemonadeButtonVariant.Neutral,
+                    size = LemonadeButtonSize.Medium,
+                )
             }
         }
     }
