@@ -29,68 +29,79 @@ internal fun PopoverDisplay() {
             .navigationBarsPadding()
             .padding(LemonadeTheme.spaces.spacing400),
     ) {
-        // Basic
-        PopoverSection(title = "Basic") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-            ) {
-                LemonadeUi.Popover(
-                    title = "Feature highlight",
-                    description = "This feature helps you manage your account settings easily.",
-                )
+        BasicPopoverSection()
+        WithActionsPopoverSection()
+        InteractivePopoverSection()
+    }
+}
 
-                LemonadeUi.Popover(
-                    title = "Quick tip",
-                    description = "Swipe left to reveal more options.",
-                )
-            }
+@OptIn(ExperimentalLemonadeComponent::class)
+@Composable
+private fun BasicPopoverSection() {
+    PopoverSection(title = "Basic") {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+        ) {
+            LemonadeUi.Popover(
+                title = "Feature highlight",
+                description = "This feature helps you manage your account settings easily.",
+            )
+            LemonadeUi.Popover(
+                title = "Quick tip",
+                description = "Swipe left to reveal more options.",
+            )
         }
+    }
+}
 
-        // With Actions
-        PopoverSection(title = "With Actions") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-            ) {
-                LemonadeUi.Popover(
-                    title = "New update available",
-                    description = "Version 2.0 includes performance improvements and bug fixes.",
-                    primaryActionLabel = "Update now",
-                    onPrimaryAction = {},
-                    secondaryActionLabel = "Later",
-                    onSecondaryAction = {},
-                )
-
-                LemonadeUi.Popover(
-                    title = "Enable notifications",
-                    description = "Stay updated with the latest changes to your account.",
-                    primaryActionLabel = "Enable",
-                    onPrimaryAction = {},
-                )
-            }
+@OptIn(ExperimentalLemonadeComponent::class)
+@Composable
+private fun WithActionsPopoverSection() {
+    PopoverSection(title = "With Actions") {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+        ) {
+            LemonadeUi.Popover(
+                title = "New update available",
+                description = "Version 2.0 includes performance improvements and bug fixes.",
+                primaryActionLabel = "Update now",
+                onPrimaryAction = {},
+                secondaryActionLabel = "Later",
+                onSecondaryAction = {},
+            )
+            LemonadeUi.Popover(
+                title = "Enable notifications",
+                description = "Stay updated with the latest changes to your account.",
+                primaryActionLabel = "Enable",
+                onPrimaryAction = {},
+            )
         }
+    }
+}
 
-        // Interactive
-        PopoverSection(title = "Interactive (Tap to Toggle)") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+@OptIn(ExperimentalLemonadeComponent::class)
+@Composable
+private fun InteractivePopoverSection() {
+    PopoverSection(title = "Interactive (Tap to Toggle)") {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+        ) {
+            var showPopover by remember { mutableStateOf(value = false) }
+            LemonadeUi.PopoverBox(
+                title = "Account info",
+                description = "Tap here to view your account details and manage your subscription.",
+                isVisible = showPopover,
+                primaryActionLabel = "View details",
+                onPrimaryAction = { showPopover = false },
+                secondaryActionLabel = "Dismiss",
+                onSecondaryAction = { showPopover = false },
             ) {
-                var showPopover by remember { mutableStateOf(value = false) }
-                LemonadeUi.PopoverBox(
-                    title = "Account info",
-                    description = "Tap here to view your account details and manage your subscription.",
-                    isVisible = showPopover,
-                    primaryActionLabel = "View details",
-                    onPrimaryAction = { showPopover = false },
-                    secondaryActionLabel = "Dismiss",
-                    onSecondaryAction = { showPopover = false },
-                ) {
-                    LemonadeUi.Button(
-                        label = "Show popover",
-                        onClick = { showPopover = !showPopover },
-                        variant = LemonadeButtonVariant.Primary,
-                        size = LemonadeButtonSize.Medium,
-                    )
-                }
+                LemonadeUi.Button(
+                    label = "Show popover",
+                    onClick = { showPopover = !showPopover },
+                    variant = LemonadeButtonVariant.Primary,
+                    size = LemonadeButtonSize.Medium,
+                )
             }
         }
     }
