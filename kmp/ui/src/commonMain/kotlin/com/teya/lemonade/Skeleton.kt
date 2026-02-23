@@ -175,7 +175,8 @@ public fun LemonadeUi.CircleSkeleton(
  *
  * ## Parameters
  * @param modifier Optional [Modifier] for layout adjustments. Width can be customized here.
- * @param size Currently unused for BlockSkeleton but kept for API consistency. Defaults to [LemonadeSkeletonSize.Medium].
+ * @param size Currently unused for BlockSkeleton but kept for API consistency.
+ *   Defaults to [LemonadeSkeletonSize.Medium].
  */
 @Composable
 public fun LemonadeUi.BlockSkeleton(
@@ -254,45 +255,52 @@ private fun LemonadeSkeletonSize.toSkeletonSizeDimensions(
     variant: SkeletonVariant,
 ): SkeletonSizeDimensions {
     return when (variant) {
-        SkeletonVariant.Line -> {
-            val heightSize = when (this) {
-                LemonadeSkeletonSize.XSmall -> LocalSizes.current.size400
-                LemonadeSkeletonSize.Small -> LocalSizes.current.size500
-                LemonadeSkeletonSize.Medium -> LocalSizes.current.size600
-                LemonadeSkeletonSize.Large -> LocalSizes.current.size700
-                LemonadeSkeletonSize.XLarge -> LocalSizes.current.size800
-                LemonadeSkeletonSize.XXLarge -> LocalSizes.current.size900
-                LemonadeSkeletonSize.XXXLarge -> LocalSizes.current.size1000
-            }
-            SkeletonSizeDimensions(
-                width = Dp.Unspecified,
-                height = heightSize,
-            )
-        }
-
-        SkeletonVariant.Block -> {
-            SkeletonSizeDimensions(
-                width = Dp.Unspecified,
-                height = LocalSizes.current.size1600,
-            )
-        }
-
-        SkeletonVariant.Circle -> {
-            val size = when (this) {
-                LemonadeSkeletonSize.XSmall -> LemonadeAssetSize.XSmall.dp
-                LemonadeSkeletonSize.Small -> LemonadeAssetSize.Small.dp
-                LemonadeSkeletonSize.Medium -> LemonadeAssetSize.Medium.dp
-                LemonadeSkeletonSize.Large -> LemonadeAssetSize.Large.dp
-                LemonadeSkeletonSize.XLarge -> LemonadeAssetSize.XLarge.dp
-                LemonadeSkeletonSize.XXLarge -> LemonadeAssetSize.XXLarge.dp
-                LemonadeSkeletonSize.XXXLarge -> LemonadeAssetSize.XXXLarge.dp
-            }
-            SkeletonSizeDimensions(
-                width = size,
-                height = size,
-            )
-        }
+        SkeletonVariant.Line -> toLineDimensions()
+        SkeletonVariant.Block -> toBlockDimensions()
+        SkeletonVariant.Circle -> toCircleDimensions()
     }
+}
+
+@Composable
+private fun LemonadeSkeletonSize.toLineDimensions(): SkeletonSizeDimensions {
+    val heightSize = when (this) {
+        LemonadeSkeletonSize.XSmall -> LocalSizes.current.size400
+        LemonadeSkeletonSize.Small -> LocalSizes.current.size500
+        LemonadeSkeletonSize.Medium -> LocalSizes.current.size600
+        LemonadeSkeletonSize.Large -> LocalSizes.current.size700
+        LemonadeSkeletonSize.XLarge -> LocalSizes.current.size800
+        LemonadeSkeletonSize.XXLarge -> LocalSizes.current.size900
+        LemonadeSkeletonSize.XXXLarge -> LocalSizes.current.size1000
+    }
+    return SkeletonSizeDimensions(
+        width = Dp.Unspecified,
+        height = heightSize,
+    )
+}
+
+@Composable
+private fun toBlockDimensions(): SkeletonSizeDimensions {
+    return SkeletonSizeDimensions(
+        width = Dp.Unspecified,
+        height = LocalSizes.current.size1600,
+    )
+}
+
+@Composable
+private fun LemonadeSkeletonSize.toCircleDimensions(): SkeletonSizeDimensions {
+    val size = when (this) {
+        LemonadeSkeletonSize.XSmall -> LemonadeAssetSize.XSmall.dp
+        LemonadeSkeletonSize.Small -> LemonadeAssetSize.Small.dp
+        LemonadeSkeletonSize.Medium -> LemonadeAssetSize.Medium.dp
+        LemonadeSkeletonSize.Large -> LemonadeAssetSize.Large.dp
+        LemonadeSkeletonSize.XLarge -> LemonadeAssetSize.XLarge.dp
+        LemonadeSkeletonSize.XXLarge -> LemonadeAssetSize.XXLarge.dp
+        LemonadeSkeletonSize.XXXLarge -> LemonadeAssetSize.XXXLarge.dp
+    }
+    return SkeletonSizeDimensions(
+        width = size,
+        height = size,
+    )
 }
 
 @Stable
@@ -337,6 +345,7 @@ private class SkeletonPreviewProvider : PreviewParameterProvider<SkeletonPreview
     }
 }
 
+@Suppress("UnusedPrivateMember")
 @Composable
 @LemonadePreview
 private fun SkeletonPreview(

@@ -30,65 +30,78 @@ internal fun SkeletonDisplay() {
             .navigationBarsPadding()
             .padding(all = LemonadeTheme.spaces.spacing400),
     ) {
-        // Text Lines
-        SkeletonSection(title = "Text Lines") {
-            Column {
-                LemonadeUi.LineSkeleton(
-                    modifier = Modifier.fillMaxWidth()
-                )
-                LemonadeUi.LineSkeleton(
-                    modifier = Modifier.fillMaxWidth(fraction = 0.7f)
-                )
-                LemonadeUi.LineSkeleton(
-                    modifier = Modifier.fillMaxWidth(fraction = 0.5f)
-                )
-            }
-        }
+        TextLinesSection()
+        AvatarSection()
+        CardSkeletonSection()
+        BlockPlaceholderSection()
+    }
+}
 
-        // Avatar
-        SkeletonSection(title = "Avatar") {
+@Composable
+private fun TextLinesSection() {
+    SkeletonSection(title = "Text Lines") {
+        Column {
+            LemonadeUi.LineSkeleton(
+                modifier = Modifier.fillMaxWidth()
+            )
+            LemonadeUi.LineSkeleton(
+                modifier = Modifier.fillMaxWidth(fraction = 0.7f)
+            )
+            LemonadeUi.LineSkeleton(
+                modifier = Modifier.fillMaxWidth(fraction = 0.5f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun AvatarSection() {
+    SkeletonSection(title = "Avatar") {
+        LemonadeUi.CircleSkeleton(
+            modifier = Modifier.size(size = LemonadeTheme.sizes.size1200),
+        )
+    }
+}
+
+@Composable
+private fun CardSkeletonSection() {
+    SkeletonSection(title = "Card Skeleton") {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing300),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(shape = RoundedCornerShape(size = LemonadeTheme.radius.radius500))
+                .background(color = LemonadeTheme.colors.background.bgElevated)
+                .padding(all = LemonadeTheme.spaces.spacing400),
+        ) {
             LemonadeUi.CircleSkeleton(
-                modifier = Modifier.size(size = LemonadeTheme.sizes.size1200),
+                size = LemonadeSkeletonSize.XXLarge,
             )
-        }
-
-        // Card Skeleton
-        SkeletonSection(title = "Card Skeleton") {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing300),
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(shape = RoundedCornerShape(size = LemonadeTheme.radius.radius500))
-                    .background(color = LemonadeTheme.colors.background.bgElevated)
-                    .padding(all = LemonadeTheme.spaces.spacing400),
+            Column(
+                modifier = Modifier.weight(weight = 1f),
             ) {
-                LemonadeUi.CircleSkeleton(
-                    size = LemonadeSkeletonSize.XXLarge,
+                LemonadeUi.LineSkeleton(
+                    modifier = Modifier
+                        .fillMaxWidth(fraction = 0.6f)
                 )
-                Column(
-                    modifier = Modifier.weight(weight = 1f),
-                ) {
-                    LemonadeUi.LineSkeleton(
-                        modifier = Modifier
-                            .fillMaxWidth(fraction = 0.6f)
-                    )
-                    LemonadeUi.LineSkeleton(
-                        size = LemonadeSkeletonSize.Small,
-                        modifier = Modifier
-                            .fillMaxWidth(fraction = 0.4f)
-                    )
-                }
+                LemonadeUi.LineSkeleton(
+                    size = LemonadeSkeletonSize.Small,
+                    modifier = Modifier
+                        .fillMaxWidth(fraction = 0.4f)
+                )
             }
         }
+    }
+}
 
-        // Block Placeholder
-        SkeletonSection(title = "Block Placeholder") {
-            LemonadeUi.BlockSkeleton(
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-        }
+@Composable
+private fun BlockPlaceholderSection() {
+    SkeletonSection(title = "Block Placeholder") {
+        LemonadeUi.BlockSkeleton(
+            modifier = Modifier
+                .fillMaxWidth()
+        )
     }
 }
 
