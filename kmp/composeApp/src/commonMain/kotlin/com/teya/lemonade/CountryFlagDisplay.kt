@@ -23,8 +23,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeCountryFlags
 
-
-
 @Composable
 internal fun CountryFlagDisplay() {
     val isoAlpha2Example = "GB"
@@ -40,13 +38,13 @@ internal fun CountryFlagDisplay() {
             columns = GridCells.Fixed(3),
             horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
             verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-            contentPadding = PaddingValues(LemonadeTheme.spaces.spacing400)
+            contentPadding = PaddingValues(LemonadeTheme.spaces.spacing400),
         ) {
             item(span = { GridItemSpan(3) }) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
                 ) {
                     LemonadeUi.Text(
                         text = "Using ISO Alpha2 Format",
@@ -55,7 +53,7 @@ internal fun CountryFlagDisplay() {
 
                     Column(
                         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         LemonadeCountryFlags.getOrNull(alpha2 = isoAlpha2Example)?.let {
                             FlagBox(flag = it, label = isoAlpha2Example)
@@ -69,13 +67,13 @@ internal fun CountryFlagDisplay() {
                     text = "Country Flags",
                     textStyle = LemonadeTheme.typography.headingXXSmall,
                     modifier = Modifier
-                        .padding(top = LemonadeTheme.spaces.spacing400)
+                        .padding(top = LemonadeTheme.spaces.spacing400),
                 )
             }
 
             items(
                 items = LemonadeCountryFlags.entries,
-                key = { it.ordinal }
+                key = { it.ordinal },
             ) { flag ->
                 Column(
                     modifier = Modifier
@@ -93,7 +91,7 @@ internal fun CountryFlagDisplay() {
 @Composable
 private fun FlagBox(
     flag: LemonadeCountryFlags,
-    label: String? = null
+    label: String? = null,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -104,12 +102,11 @@ private fun FlagBox(
             .border(
                 width = LemonadeTheme.borderWidths.base.border25,
                 color = LemonadeTheme.colors.border.borderNeutralLow,
-                shape = RoundedCornerShape(LemonadeTheme.radius.radius500)
-            )
-            .padding(
+                shape = RoundedCornerShape(LemonadeTheme.radius.radius500),
+            ).padding(
                 horizontal = LemonadeTheme.spaces.spacing200,
-                vertical = LemonadeTheme.spaces.spacing300
-            )
+                vertical = LemonadeTheme.spaces.spacing300,
+            ),
     ) {
         LemonadeUi.CountryFlag(
             flag = flag,
@@ -117,14 +114,14 @@ private fun FlagBox(
         )
         Spacer(
             modifier = Modifier
-                .height(LemonadeTheme.spaces.spacing200)
+                .height(LemonadeTheme.spaces.spacing200),
         )
         LemonadeUi.Text(
             text = label ?: flag.name,
             overflow = TextOverflow.Clip,
             maxLines = 1,
             textStyle = LemonadeTheme.typography.bodyXSmallRegular,
-            color = LemonadeTheme.colors.content.contentSecondary
+            color = LemonadeTheme.colors.content.contentSecondary,
         )
     }
 }
