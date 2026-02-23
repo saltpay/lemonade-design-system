@@ -61,8 +61,7 @@ private fun CoreToast(
             .background(
                 color = voice.containerColor,
                 shape = LocalShapes.current.radius300,
-            )
-            .padding(
+            ).padding(
                 vertical = LocalSpaces.current.spacing200,
                 horizontal = LocalSpaces.current.spacing300,
             ),
