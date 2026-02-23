@@ -201,7 +201,8 @@ private fun buildGroupClassCode(
     resources: List<ResourceData<ThemeResourceData>>,
 ): String {
     return buildString {
-        appendLine("    override val ${groupName.sanitizedValueName()}: LemonadeSemanticColors.${groupName}Colors = object : LemonadeSemanticColors.${groupName}Colors {")
+        appendLine("    override val ${groupName.sanitizedValueName()}: LemonadeSemanticColors.${groupName}Colors =")
+        appendLine("        object : LemonadeSemanticColors.${groupName}Colors {")
         resources.forEach { resource ->
             appendLine("        override val ${resource.name} = LemonadePrimitiveColors.${resource.value.valueGroup}.${resource.value.valueName}")
         }
