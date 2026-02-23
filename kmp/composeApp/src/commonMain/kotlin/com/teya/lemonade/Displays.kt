@@ -40,6 +40,7 @@ internal interface Displays {
             Opacity,
             BorderWidth,
             Spinner,
+            Snackbar,
             Divider,
         )
     }
@@ -197,6 +198,11 @@ internal interface Displays {
     @Serializable
     data object Spinner : Displays {
         override val label: String = "Spinner"
+    }
+
+    @Serializable
+    data object Snackbar : Displays {
+        override val label: String = "Snackbar"
     }
 
     @Serializable
