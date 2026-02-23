@@ -137,6 +137,7 @@ private fun buildThemeInterfaceCode(
         }
         groupedThemeResources.forEach { (groupName, resources) ->
             if (groupName != null) {
+                appendLine()
                 append(
                     buildGroupInterfaceCode(
                         groupName = groupName,
@@ -204,9 +205,9 @@ private fun buildGroupClassCode(
         appendLine("    override val ${groupName.sanitizedValueName()}: LemonadeSemanticColors.${groupName}Colors =")
         appendLine("        object : LemonadeSemanticColors.${groupName}Colors {")
         resources.forEach { resource ->
-            appendLine("        override val ${resource.name} = LemonadePrimitiveColors.${resource.value.valueGroup}.${resource.value.valueName}")
+            appendLine("            override val ${resource.name} = LemonadePrimitiveColors.${resource.value.valueGroup}.${resource.value.valueName}")
         }
-        appendLine("    }")
+        appendLine("        }")
     }
 }
 
