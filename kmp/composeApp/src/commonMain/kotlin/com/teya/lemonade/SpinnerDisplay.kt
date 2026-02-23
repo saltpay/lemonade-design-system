@@ -9,13 +9,13 @@ internal fun SpinnerDisplay() {
     SampleScreenDisplayLazyGrid(title = "Spinner") {
         items(
             items = LemonadeAssetSize.entries,
-            key = { it.ordinal }
+            key = { it.ordinal },
         ) { size ->
             LemonadeAssetBox(
                 asset = {
                     LemonadeUi.Spinner(size = size)
                 },
-                label = size.name
+                label = size.name,
             )
         }
     }

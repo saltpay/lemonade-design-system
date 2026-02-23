@@ -15,7 +15,7 @@ internal actual fun LemonadeUi.SampleTile(
     onClick: (() -> Unit)?,
     interactionSource: MutableInteractionSource,
     variant: LemonadeTileVariant,
-    addon: @Composable (() -> Unit)?
+    addon: @Composable (() -> Unit)?,
 ) {
     LemonadeUi.Tile(
         label = label,

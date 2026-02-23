@@ -17,6 +17,7 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeListItemVoice
 import com.teya.lemonade.core.TagVoice
 
+@Suppress("LongMethod")
 @Composable
 internal fun ActionListItemDisplay() {
     Column(
@@ -27,11 +28,11 @@ internal fun ActionListItemDisplay() {
             .verticalScroll(state = rememberScrollState())
             .statusBarsPadding()
             .navigationBarsPadding()
-            .padding(all = LemonadeTheme.spaces.spacing400)
+            .padding(all = LemonadeTheme.spaces.spacing400),
     ) {
         // ActionListItem
         LemonadeUi.Card(
-            header = CardHeaderConfig(title = "ActionListItem")
+            header = CardHeaderConfig(title = "ActionListItem"),
         ) {
             LemonadeUi.ActionListItem(
                 label = "Settings",
@@ -44,7 +45,7 @@ internal fun ActionListItemDisplay() {
                         contentDescription = null,
                         size = LemonadeAssetSize.Medium,
                     )
-                }
+                },
             )
 
             LemonadeUi.ActionListItem(
@@ -59,7 +60,7 @@ internal fun ActionListItemDisplay() {
                         contentDescription = null,
                         size = LemonadeAssetSize.Medium,
                     )
-                }
+                },
             )
 
             LemonadeUi.ActionListItem(
@@ -73,13 +74,13 @@ internal fun ActionListItemDisplay() {
                         contentDescription = null,
                         size = LemonadeAssetSize.Medium,
                     )
-                }
+                },
             )
         }
 
         // ActionListItem with Trailing Slot
         LemonadeUi.Card(
-            header = CardHeaderConfig(title = "ActionListItem with Trailing")
+            header = CardHeaderConfig(title = "ActionListItem with Trailing"),
         ) {
             LemonadeUi.ActionListItem(
                 label = "Updates Available",
@@ -95,7 +96,7 @@ internal fun ActionListItemDisplay() {
                 showDivider = true,
                 trailingSlot = {
                     LemonadeUi.Badge(text = "3", size = LemonadeBadgeSize.Small)
-                }
+                },
             )
 
             LemonadeUi.ActionListItem(
@@ -106,19 +107,18 @@ internal fun ActionListItemDisplay() {
                     LemonadeUi.Icon(
                         icon = LemonadeIcons.Sparkles,
                         contentDescription = null,
-                        size = LemonadeAssetSize.Medium
+                        size = LemonadeAssetSize.Medium,
                     )
                 },
                 showDivider = true,
                 trailingSlot = {
                     LemonadeUi.Tag(label = "New", voice = TagVoice.Positive)
-                }
+                },
             )
         }
         LemonadeUi.Card(
-            header = CardHeaderConfig(title = "ActionListItem - Critical Voice")
+            header = CardHeaderConfig(title = "ActionListItem - Critical Voice"),
         ) {
-
             LemonadeUi.ActionListItem(
                 label = "Delete Account",
                 voice = LemonadeListItemVoice.Critical,
@@ -129,9 +129,9 @@ internal fun ActionListItemDisplay() {
                         icon = LemonadeIcons.Trash,
                         contentDescription = null,
                         size = LemonadeAssetSize.Medium,
-                        tint = LemonadeTheme.colors.content.contentCritical
+                        tint = LemonadeTheme.colors.content.contentCritical,
                     )
-                }
+                },
             )
 
             LemonadeUi.ActionListItem(
@@ -145,14 +145,14 @@ internal fun ActionListItemDisplay() {
                         icon = LemonadeIcons.LogOut,
                         contentDescription = null,
                         size = LemonadeAssetSize.Medium,
-                        tint = LemonadeTheme.colors.content.contentCritical
+                        tint = LemonadeTheme.colors.content.contentCritical,
                     )
-                }
+                },
             )
         }
 
         LemonadeUi.Card(
-            header = CardHeaderConfig(title = "Disabled States")
+            header = CardHeaderConfig(title = "Disabled States"),
         ) {
             LemonadeUi.ActionListItem(
                 label = "Disabled Action",
@@ -165,7 +165,7 @@ internal fun ActionListItemDisplay() {
                         contentDescription = null,
                         size = LemonadeAssetSize.Medium,
                     )
-                }
+                },
             )
         }
     }

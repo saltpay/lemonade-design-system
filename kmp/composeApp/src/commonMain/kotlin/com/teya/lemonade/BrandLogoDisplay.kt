@@ -17,11 +17,11 @@ import com.teya.lemonade.core.LemonadeBrandLogos
 internal fun BrandLogoDisplay() {
     SampleScreenDisplayLazyGrid(
         title = "Brand Logos",
-        columnsGap = LemonadeTheme.spaces.spacing200
+        columnsGap = LemonadeTheme.spaces.spacing200,
     ) {
         items(
             items = LemonadeBrandLogos.entries,
-            key = { it.ordinal }
+            key = { it.ordinal },
         ) { icon ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -37,6 +37,5 @@ internal fun BrandLogoDisplay() {
                 )
             }
         }
-
     }
 }

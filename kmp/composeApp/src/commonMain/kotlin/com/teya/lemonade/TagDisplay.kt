@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -23,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TagVoice
 
+@Suppress("LongMethod")
 @Composable
 internal fun TagDisplay() {
     Column(
@@ -37,10 +37,10 @@ internal fun TagDisplay() {
         // Voices
         TagSection(title = "Voices") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Tag(label = "Neutral", voice = TagVoice.Neutral)
                     LemonadeUi.Tag(label = "Critical", voice = TagVoice.Critical)
@@ -48,7 +48,7 @@ internal fun TagDisplay() {
                 }
 
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Tag(label = "Info", voice = TagVoice.Info)
                     LemonadeUi.Tag(label = "Positive", voice = TagVoice.Positive)
@@ -59,7 +59,7 @@ internal fun TagDisplay() {
         // With Icons
         TagSection(title = "With Icons") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
             ) {
                 LemonadeUi.Tag(label = "Neutral", icon = LemonadeIcons.Heart, voice = TagVoice.Neutral)
                 LemonadeUi.Tag(label = "Error", icon = LemonadeIcons.CircleX, voice = TagVoice.Critical)
@@ -72,52 +72,52 @@ internal fun TagDisplay() {
         // Use Cases
         TagSection(title = "Use Cases") {
             Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 // Status tags
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     LemonadeUi.Text(
                         text = "Order Status:",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                     LemonadeUi.Tag(label = "Shipped", icon = LemonadeIcons.Check, voice = TagVoice.Positive)
                 }
 
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     LemonadeUi.Text(
                         text = "Payment:",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                     LemonadeUi.Tag(label = "Pending", voice = TagVoice.Warning)
                 }
 
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     LemonadeUi.Text(
                         text = "Account:",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                     LemonadeUi.Tag(label = "Verified", icon = LemonadeIcons.CircleCheck, voice = TagVoice.Info)
                 }
 
                 // Category tags
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Text(
                         text = "Categories:",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                        horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                     ) {
                         LemonadeUi.Tag(label = "Electronics", voice = TagVoice.Neutral)
                         LemonadeUi.Tag(label = "Sale", voice = TagVoice.Critical)
@@ -136,26 +136,26 @@ internal fun TagDisplay() {
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(LemonadeTheme.radius.radius300))
                     .background(LemonadeTheme.colors.background.bgElevated)
-                    .padding(LemonadeTheme.spaces.spacing400)
+                    .padding(LemonadeTheme.spaces.spacing400),
             ) {
                 Box(
                     modifier = Modifier
                         .size(60.dp)
                         .clip(RoundedCornerShape(LemonadeTheme.radius.radius200))
-                        .background(LemonadeTheme.colors.background.bgSubtle)
+                        .background(LemonadeTheme.colors.background.bgSubtle),
                 )
 
                 Column(
                     verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100),
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 ) {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         LemonadeUi.Text(
                             text = "Product Name",
-                            textStyle = LemonadeTheme.typography.headingXSmall
+                            textStyle = LemonadeTheme.typography.headingXSmall,
                         )
                         LemonadeUi.Tag(label = "New", voice = TagVoice.Positive)
                     }
@@ -163,11 +163,11 @@ internal fun TagDisplay() {
                     LemonadeUi.Text(
                         text = "$99.99",
                         textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                        color = LemonadeTheme.colors.content.contentSecondary
+                        color = LemonadeTheme.colors.content.contentSecondary,
                     )
 
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100)
+                        horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100),
                     ) {
                         LemonadeUi.Tag(label = "In Stock", voice = TagVoice.Info)
                         LemonadeUi.Tag(label = "Free Shipping", voice = TagVoice.Neutral)
@@ -181,7 +181,7 @@ internal fun TagDisplay() {
 @Composable
 private fun TagSection(
     title: String,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
@@ -189,7 +189,7 @@ private fun TagSection(
         LemonadeUi.Text(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
-            color = LemonadeTheme.colors.content.contentSecondary
+            color = LemonadeTheme.colors.content.contentSecondary,
         )
         content()
     }

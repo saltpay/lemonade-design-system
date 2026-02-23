@@ -3,7 +3,6 @@ package com.teya.lemonade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -19,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+@Suppress("LongMethod")
 @Composable
 internal fun SwitchDisplay() {
     var isOn1 by remember { mutableStateOf(false) }
@@ -39,33 +39,33 @@ internal fun SwitchDisplay() {
         SwitchSection(title = "States") {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing600),
-                verticalAlignment = Alignment.Top
+                verticalAlignment = Alignment.Top,
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Switch(
                         checked = false,
-                        onCheckedChange = {}
+                        onCheckedChange = {},
                     )
                     LemonadeUi.Text(
                         text = "Off",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Switch(
                         checked = true,
-                        onCheckedChange = {}
+                        onCheckedChange = {},
                     )
                     LemonadeUi.Text(
                         text = "On",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
             }
@@ -76,30 +76,30 @@ internal fun SwitchDisplay() {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 LemonadeUi.Text(
                     text = "Dark Mode",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
                 )
                 LemonadeUi.Switch(
                     checked = isOn1,
-                    onCheckedChange = { isOn1 = it }
+                    onCheckedChange = { isOn1 = it },
                 )
             }
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 LemonadeUi.Text(
                     text = "Notifications",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
                 )
                 LemonadeUi.Switch(
                     checked = isOn2,
-                    onCheckedChange = { isOn2 = it }
+                    onCheckedChange = { isOn2 = it },
                 )
             }
         }
@@ -109,13 +109,13 @@ internal fun SwitchDisplay() {
             LemonadeUi.Switch(
                 checked = isOn3,
                 onCheckedChange = { isOn3 = it },
-                label = "Enable push notifications"
+                label = "Enable push notifications",
             )
 
             LemonadeUi.Switch(
                 checked = isOn4,
                 onCheckedChange = { isOn4 = it },
-                label = "Auto-update apps"
+                label = "Auto-update apps",
             )
         }
 
@@ -125,14 +125,14 @@ internal fun SwitchDisplay() {
                 checked = true,
                 onCheckedChange = {},
                 label = "Location Services",
-                supportText = "Allow app to access your location"
+                supportText = "Allow app to access your location",
             )
 
             LemonadeUi.Switch(
                 checked = false,
                 onCheckedChange = {},
                 label = "Analytics",
-                supportText = "Help us improve by sharing anonymous usage data"
+                supportText = "Help us improve by sharing anonymous usage data",
             )
         }
 
@@ -141,34 +141,34 @@ internal fun SwitchDisplay() {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 LemonadeUi.Text(
                     text = "Disabled Off",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentSecondary
+                    color = LemonadeTheme.colors.content.contentSecondary,
                 )
                 LemonadeUi.Switch(
                     checked = false,
                     onCheckedChange = {},
-                    enabled = false
+                    enabled = false,
                 )
             }
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 LemonadeUi.Text(
                     text = "Disabled On",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentSecondary
+                    color = LemonadeTheme.colors.content.contentSecondary,
                 )
                 LemonadeUi.Switch(
                     checked = true,
                     onCheckedChange = {},
-                    enabled = false
+                    enabled = false,
                 )
             }
 
@@ -176,7 +176,7 @@ internal fun SwitchDisplay() {
                 checked = true,
                 onCheckedChange = {},
                 label = "Disabled with label",
-                enabled = false
+                enabled = false,
             )
         }
     }
@@ -185,7 +185,7 @@ internal fun SwitchDisplay() {
 @Composable
 private fun SwitchSection(
     title: String,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
@@ -193,7 +193,7 @@ private fun SwitchSection(
         LemonadeUi.Text(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
-            color = LemonadeTheme.colors.content.contentSecondary
+            color = LemonadeTheme.colors.content.contentSecondary,
         )
         content()
     }

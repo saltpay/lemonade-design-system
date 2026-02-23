@@ -16,6 +16,7 @@ import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.SymbolContainerVoice
 import com.teya.lemonade.core.TagVoice
 
+@Suppress("LongMethod")
 @Composable
 internal fun ResourceListItemDisplay() {
     Column(
@@ -27,11 +28,11 @@ internal fun ResourceListItemDisplay() {
             .statusBarsPadding()
             .navigationBarsPadding(),
         verticalArrangement = Arrangement.spacedBy(
-            LemonadeTheme.spaces.spacing400
-        )
+            LemonadeTheme.spaces.spacing400,
+        ),
     ) {
         LemonadeUi.Card(
-            header = CardHeaderConfig(title = "ResourceListItem")
+            header = CardHeaderConfig(title = "ResourceListItem"),
         ) {
             LemonadeUi.ResourceListItem(
                 label = "Account Balance",
@@ -44,9 +45,9 @@ internal fun ResourceListItemDisplay() {
                         icon = LemonadeIcons.Money,
                         contentDescription = null,
                         voice = SymbolContainerVoice.Info,
-                        size = SymbolContainerSize.Large
+                        size = SymbolContainerSize.Large,
                     )
-                }
+                },
             )
 
             LemonadeUi.ResourceListItem(
@@ -59,14 +60,14 @@ internal fun ResourceListItemDisplay() {
                         icon = LemonadeIcons.Coins,
                         contentDescription = null,
                         voice = SymbolContainerVoice.Positive,
-                        size = SymbolContainerSize.Large
+                        size = SymbolContainerSize.Large,
                     )
-                }
+                },
             )
         }
 
         LemonadeUi.Card(
-            header = CardHeaderConfig(title = "ResourceListItem with Addon")
+            header = CardHeaderConfig(title = "ResourceListItem with Addon"),
         ) {
             LemonadeUi.ResourceListItem(
                 label = "Last Transaction",
@@ -82,9 +83,9 @@ internal fun ResourceListItemDisplay() {
                         icon = LemonadeIcons.ArrowUpRight,
                         contentDescription = null,
                         voice = SymbolContainerVoice.Critical,
-                        size = SymbolContainerSize.Large
+                        size = SymbolContainerSize.Large,
                     )
-                }
+                },
             )
         }
     }

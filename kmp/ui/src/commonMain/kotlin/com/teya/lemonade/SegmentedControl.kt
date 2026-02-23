@@ -83,6 +83,7 @@ public fun LemonadeUi.SegmentedControl(
     )
 }
 
+@Suppress("LongMethod")
 @Composable
 internal fun CoreSegmentedControl(
     content: @Composable BoxScope.(Int) -> Unit,
@@ -103,8 +104,7 @@ internal fun CoreSegmentedControl(
             .background(
                 color = LocalColors.current.background.bgElevated,
                 shape = LocalShapes.current.radius200,
-            )
-            .padding(all = LocalSpaces.current.spacing50),
+            ).padding(all = LocalSpaces.current.spacing50),
     ) {
         repeat(times = tabCount()) { tabIndex ->
             val tabInteractionSource = remember { MutableInteractionSource() }
@@ -132,21 +132,18 @@ internal fun CoreSegmentedControl(
                         } else {
                             LemonadeShadow.None
                         },
-                    )
-                    .weight(weight = 1f)
+                    ).weight(weight = 1f)
                     .clip(shape = LocalShapes.current.radius200)
                     .clickable(
                         onClick = { onTabSelected(tabIndex) },
                         role = Role.Tab,
                         interactionSource = tabInteractionSource,
                         indication = null,
-                    )
-                    .background(color = animatedBackgroundColor)
+                    ).background(color = animatedBackgroundColor)
                     .defaultMinSize(
                         minHeight = LocalSizes.current.size800,
                         minWidth = LocalSizes.current.size1600,
-                    )
-                    .padding(
+                    ).padding(
                         vertical = LocalSpaces.current.spacing100,
                         horizontal = LocalSpaces.current.spacing200,
                     ),
@@ -155,6 +152,7 @@ internal fun CoreSegmentedControl(
     }
 }
 
+@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun SegmentedControlPreview() {

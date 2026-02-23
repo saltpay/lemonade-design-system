@@ -2,7 +2,7 @@ package com.teya.lemonade
 
 @RequiresOptIn(
     message = "This API is internal use it at your own risk",
-    level = RequiresOptIn.Level.WARNING
+    level = RequiresOptIn.Level.WARNING,
 )
 @Retention(AnnotationRetention.BINARY)
 @Target(
@@ -10,6 +10,6 @@ package com.teya.lemonade
     AnnotationTarget.FUNCTION,
     AnnotationTarget.PROPERTY,
     AnnotationTarget.CONSTRUCTOR,
-    AnnotationTarget.TYPEALIAS
+    AnnotationTarget.TYPEALIAS,
 )
 public annotation class InternalLemonadeApi(val message: String = "")

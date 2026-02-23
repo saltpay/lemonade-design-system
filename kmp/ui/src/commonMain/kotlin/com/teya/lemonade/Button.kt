@@ -92,7 +92,7 @@ public fun LemonadeUi.Button(
                     textStyle = size.contentData.textStyle,
                     color = variant.variantData.contentColor,
                     modifier = Modifier
-                        .padding(horizontal = LocalSpaces.current.spacing200)
+                        .padding(horizontal = LocalSpaces.current.spacing200),
                 )
 
                 if (trailingIcon != null) {
@@ -134,7 +134,7 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
                 minHeight = LocalSizes.current.size1000,
                 minWidth = LocalSizes.current.size1600,
                 shape = LocalShapes.current.radius300,
-                textStyle = LocalTypographies.current.bodySmallSemiBold
+                textStyle = LocalTypographies.current.bodySmallSemiBold,
             )
 
             LemonadeButtonSize.Medium -> LemonadeButtonContentData(
@@ -143,7 +143,7 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
                 minHeight = LocalSizes.current.size1200,
                 minWidth = LocalSizes.current.size1600,
                 shape = LocalShapes.current.radius300,
-                textStyle = LocalTypographies.current.bodyMediumSemiBold
+                textStyle = LocalTypographies.current.bodyMediumSemiBold,
             )
 
             LemonadeButtonSize.Large -> LemonadeButtonContentData(
@@ -152,11 +152,10 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
                 minHeight = LocalSizes.current.size1400,
                 minWidth = LocalSizes.current.size1600,
                 shape = LocalShapes.current.radius400,
-                textStyle = LocalTypographies.current.bodyMediumSemiBold
+                textStyle = LocalTypographies.current.bodyMediumSemiBold,
             )
         }
     }
-
 
 private val LemonadeButtonVariant.variantData: LemonadeButtonColors
     @Composable get() {
@@ -199,13 +198,15 @@ private val LemonadeButtonVariant.variantData: LemonadeButtonColors
                 brushBackgroundColor = Brush.horizontalGradient(
                     colors = listOf(
                         LocalColors.current.background.bgBrandElevated,
-                        LocalColors.current.background.bgBrandElevated.copy(alpha = 0f),
+                        LocalColors.current.background.bgBrandElevated
+                            .copy(alpha = 0f),
                     ),
-                )
+                ),
             )
         }
     }
 
+@Suppress("LongParameterList")
 @Composable
 private fun CoreButton(
     contentSlot: @Composable RowScope.() -> Unit,
@@ -234,31 +235,27 @@ private fun CoreButton(
         modifier = modifier
             .defaultMinSize(
                 minWidth = size.contentData.minWidth,
-            )
-            .height(size.contentData.minHeight)
+            ).height(size.contentData.minHeight)
             .then(
                 other = if (!enabled) {
                     Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
                 } else {
                     Modifier
                 },
-            )
-            .clip(shape = size.contentData.shape)
+            ).clip(shape = size.contentData.shape)
             .clickable(
                 enabled = enabled && !loading,
                 onClick = onClick,
                 interactionSource = interactionSource,
                 role = Role.Button,
                 indication = null,
-            )
-            .background(color = animatedBackgroundColor)
+            ).background(color = animatedBackgroundColor)
             .then(
                 other = variant.variantData.brushBackgroundColor?.let { brush ->
                     Modifier.background(brush = brush)
                 }
                     ?: Modifier,
-            )
-            .padding(
+            ).padding(
                 vertical = size.contentData.verticalPadding,
                 horizontal = size.contentData.horizontalPadding,
             ),
@@ -276,8 +273,9 @@ private data class ButtonPreviewData(
 
 private class ButtonPreviewProvider : PreviewParameterProvider<ButtonPreviewData> {
     override val values: Sequence<ButtonPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<ButtonPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<ButtonPreviewData> =
+        buildList {
             LemonadeButtonSize.entries.forEach { size ->
                 LemonadeButtonVariant.entries.forEach { variant ->
                     listOf(true, false).forEach { leadingIcon ->
@@ -292,7 +290,7 @@ private class ButtonPreviewProvider : PreviewParameterProvider<ButtonPreviewData
                                             loading = loading,
                                             size = size,
                                             variant = variant,
-                                        )
+                                        ),
                                     )
                                 }
                             }
@@ -301,9 +299,9 @@ private class ButtonPreviewProvider : PreviewParameterProvider<ButtonPreviewData
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun LemonadeLabeledRadioButtonPreview(

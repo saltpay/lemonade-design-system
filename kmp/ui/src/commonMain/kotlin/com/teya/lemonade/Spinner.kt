@@ -24,7 +24,6 @@ import com.teya.lemonade.core.LemonadeAssetSize
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
-
 /**
  * Spinner component, to indication status and possible actions via iconography
  *
@@ -40,8 +39,10 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
  * ```
  *
  * ## Parameters
- * @param size: The [LemonadeAssetSize] to be applied to the spinner. Defaults to [LemonadeAssetSize.Medium]
- * @param tint: The tint color to be applied to the spinner. Defaults to the secondary content color of the [LemonadeTheme]
+ * @param size The [LemonadeAssetSize] to be applied to the spinner.
+ *  Defaults to [LemonadeAssetSize.Medium]
+ * @param tint The tint color to be applied to the spinner.
+ *  Defaults to the secondary content color of the [LemonadeTheme]
  * @param Modifier: Optional [Modifier] for additional styling and layout adjustments.
  */
 @Composable
@@ -53,7 +54,7 @@ public fun LemonadeUi.Spinner(
     CoreSpinner(
         tint = tint,
         spinnerSize = size,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -71,24 +72,23 @@ private fun CoreSpinner(
         animationSpec = infiniteRepeatable(
             animation = tween(
                 durationMillis = 1000,
-                easing = EaseInOut
+                easing = EaseInOut,
             ),
-            repeatMode = RepeatMode.Restart
+            repeatMode = RepeatMode.Restart,
         ),
-        label = "Rotate it"
+        label = "Rotate it",
     )
 
     val strokeBaseWidth = LocalBorderWidths.current.base.border50
     val spinnerBaseSize = LocalSizes.current.size500
 
-
     Canvas(
         modifier = modifier
-            .size(spinnerSize.dp)
+            .size(spinnerSize.dp),
     ) {
-
         /**
-         * Ensures that when the Spinner resizes, its stroke resizes with it, keeping its width relative to the Spinner size.
+         * Ensures that when the Spinner resizes, its stroke resizes
+         * with it, keeping its width relative to the Spinner size.
          */
         val strokeWidth = size.minDimension * (strokeBaseWidth / spinnerBaseSize)
 
@@ -100,7 +100,7 @@ private fun CoreSpinner(
                 topLeft = Offset.Zero,
                 useCenter = false,
                 size = Size(size.width, size.height),
-                style = Stroke(width = strokeWidth)
+                style = Stroke(width = strokeWidth),
             )
         }
     }
@@ -120,24 +120,25 @@ private val LemonadeAssetSize.dp: Dp
     }
 
 private data class SpinnerPreviewData(
-    val size: LemonadeAssetSize
+    val size: LemonadeAssetSize,
 )
 
 private class SpinnerPreviewProvider : PreviewParameterProvider<SpinnerPreviewData> {
     override val values: Sequence<SpinnerPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<SpinnerPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<SpinnerPreviewData> =
+        buildList {
             LemonadeAssetSize.entries.forEach { size ->
                 add(
                     element = SpinnerPreviewData(
                         size = size,
-                    )
+                    ),
                 )
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @Composable
 @LemonadePreview
 private fun SpinnerPreview(
