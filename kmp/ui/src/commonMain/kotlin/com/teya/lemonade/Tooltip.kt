@@ -38,30 +38,6 @@ public fun LemonadeUi.Tooltip(
 }
 
 /**
- * TooltipBox component that wraps content and shows a tooltip on long press.
- *
- * This component provides an interactive way to display tooltips by responding to long press
- * gestures on the wrapped content. The tooltip automatically appears above the content when
- * long pressed and dismisses after 2 seconds.
- *
- * ## Usage
- * ```kotlin
- * LemonadeUi.TooltipBox(
- *     tooltipText = "Additional information"
- * ) {
- *     LemonadeUi.Button(
- *         label = "Press and hold",
- *         onClick = {}
- *     )
- * }
- * ```
- *
- * ## Parameters
- * - `tooltipText`: The text to display in the tooltip.
- * - `modifier`: Optional [Modifier] for additional styling and layout adjustments.
- * - `content`: The composable content that will trigger the tooltip on long press.
- */
-/**
  * TooltipBox component that wraps content and shows a tooltip when visible.
  *
  * This component provides an interactive way to display tooltips. The tooltip
