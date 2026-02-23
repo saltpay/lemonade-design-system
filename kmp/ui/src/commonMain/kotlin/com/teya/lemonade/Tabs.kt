@@ -146,6 +146,7 @@ private fun TabItem(
     }
 }
 
+@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun TabsPreview() {
@@ -156,6 +157,7 @@ private fun TabsPreview() {
     )
 }
 
+@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun TabsManyItemsPreview() {
