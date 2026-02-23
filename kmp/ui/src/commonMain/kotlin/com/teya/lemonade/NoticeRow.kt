@@ -74,8 +74,7 @@ private fun CoreNoticeRow(
             .background(
                 color = voice.containerColor,
                 shape = LocalShapes.current.radius300,
-            )
-            .padding(all = LocalSpaces.current.spacing300),
+            ).padding(all = LocalSpaces.current.spacing300),
     ) {
         if (leadingIcon != null) {
             LemonadeUi.Icon(
@@ -160,8 +159,8 @@ private class NoticeRowPreviewProvider :
     PreviewParameterProvider<NoticeRowPreviewData> {
     override val values: Sequence<NoticeRowPreviewData> = buildAllVariants()
 
-    private fun buildAllVariants(): Sequence<NoticeRowPreviewData> {
-        return buildList {
+    private fun buildAllVariants(): Sequence<NoticeRowPreviewData> =
+        buildList {
             listOf(true, false).forEach { hasTitle ->
                 listOf(true, false).forEach { hasDismiss ->
                     NoticeRowVoice.entries.forEach { voice ->
@@ -176,7 +175,6 @@ private class NoticeRowPreviewProvider :
                 }
             }
         }.asSequence()
-    }
 }
 
 @Suppress("UnusedPrivateMember")
