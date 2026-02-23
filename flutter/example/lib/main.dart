@@ -67,6 +67,10 @@ class MainScreen extends StatelessWidget {
               onPressed: () => context.push('/chip'),
             ),
             ExampleListTile(
+              title: 'Content Item',
+              onPressed: () => context.push('/content_item'),
+            ),
+            ExampleListTile(
               title: 'Country Flag',
               onPressed: () => context.push('/country_flag'),
             ),
