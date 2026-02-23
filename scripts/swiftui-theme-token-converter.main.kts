@@ -2,6 +2,7 @@
 
 @file:Import("swiftui-resource-file-loading.main.kts")
 
+import org.json.JSONObject
 import java.io.File
 
 data class ThemeResourceData(
@@ -22,8 +23,62 @@ fun main() {
             error(message = "File $colorTokensFile does not exist in system")
         }
 
-        val themeResources = readFileResourceFile(
+        // Read the JSON to extract mode keys
+        val fileContent = colorTokensFile.readText()
+        val json = JSONObject(fileContent)
+        val modesObject = json.getJSONObject("modes")
+        val modeKeys = modesObject.keys().asSequence().toList()
+        
+        // Generate code for each theme mode
+        modeKeys.forEach { modeKey ->
+            val modeName = modesObject.getString(modeKey)
+            val themeName = when {
+                modeName.equals("Light", ignoreCase = true) -> "LemonadeLightTheme"
+                modeName.equals("Dark", ignoreCase = true) -> "LemonadeDarkTheme"
+                else -> "Lemonade${modeName}Theme"
+            }
+            
+            val themeResources = readFileResourceFileByMode(
+                file = colorTokensFile,
+                modeKey = modeKey,
+                resourceMap = { jsonObject ->
+                    val aliasName = jsonObject.optString("aliasName")
+                    val groups = aliasName?.sanitizedGroups().orEmpty()
+                    if (!aliasName.isNullOrBlank() && groups.isNotEmpty()) {
+                        ThemeResourceData(
+                            valueName = aliasName.sanitizedSwiftValueName(),
+                            valueGroup = if (groups.contains("Alpha")) {
+                                "Alpha.${groups.first()}"
+                            } else {
+                                "Solid.${groups.first()}"
+                            },
+                        )
+                    } else {
+                        null
+                    }
+                },
+            ).filterNull()
+            
+            println("✓ Loaded $modeName theme resource")
+
+            val classCode = buildThemeCode(
+                themeName = themeName,
+                themeDisplayName = modeName,
+                scriptFilePath = "scripts/swiftui-theme-token-converter.main.kts",
+                resources = themeResources,
+            )
+            println("✓ $modeName implementation generated")
+
+            val classOutputFile = File(outputDir, "$themeName.swift")
+            classOutputFile.writeText(classCode)
+            println("✓ $themeName.swift created")
+        }
+
+        // Generate the protocol using the Light mode's resources
+        val lightModeKey = modeKeys.first { modeKey -> modesObject.getString(modeKey).equals("Light", ignoreCase = true) }
+        val themeResources = readFileResourceFileByMode(
             file = colorTokensFile,
+            modeKey = lightModeKey,
             resourceMap = { jsonObject ->
                 val aliasName = jsonObject.optString("aliasName")
                 val groups = aliasName?.sanitizedGroups().orEmpty()
@@ -41,7 +96,6 @@ fun main() {
                 }
             },
         ).filterNull()
-        println("✓ Loaded theme resource")
 
         val interfaceCode = buildThemeProtocolCode(
             scriptFilePath = "scripts/swiftui-theme-token-converter.main.kts",
@@ -49,20 +103,12 @@ fun main() {
         )
         println("✓ Protocol generated")
 
-        val classCode = buildThemeCode(
-            themeName = "LemonadeLightTheme",
-            scriptFilePath = "scripts/swiftui-theme-token-converter.main.kts",
-            resources = themeResources,
-        )
-        println("✓ Implementation generated")
-
         val interfaceOutputFile = File(outputDir, "LemonadeSemanticColors.swift")
         interfaceOutputFile.writeText(interfaceCode)
-        val classOutputFile = File(outputDir, "LemonadeLightTheme.swift")
-        classOutputFile.writeText(classCode)
         println("✓ Definition & Implementation files created")
     } catch (error: Throwable) {
         println("✗ Failed to convert ${colorTokensFile.name}: ${error.message}")
+        error.printStackTrace()
     }
 }
 
@@ -124,12 +170,13 @@ private fun buildThemeCode(
     themeName: String,
     scriptFilePath: String,
     resources: List<ResourceData<ThemeResourceData>>,
+    themeDisplayName: String = "Light",
 ): String {
     val groupedThemeResources = resources.groupBy { it.groups.firstOrNull() }
     return buildString {
         appendLine("import SwiftUI")
         appendLine()
-        appendLine("/// Light theme implementation of semantic colors")
+        appendLine("/// $themeDisplayName theme implementation of semantic colors")
         appendLine("/// See LemonadeSemanticColors for details on the color structure.")
         appendLine("///")
         defaultSwiftAutoGenerationMessage(scriptFilePath = scriptFilePath).lines().forEach { line ->
@@ -148,7 +195,7 @@ private fun buildThemeCode(
                 appendLine()
             }
         }
-        appendLine("/// Light theme implementation")
+        appendLine("/// $themeDisplayName theme implementation")
         appendLine("public struct $themeName: LemonadeSemanticColors {")
         groupedThemeResources.forEach { (groupName, _) ->
             if (groupName != null) {
