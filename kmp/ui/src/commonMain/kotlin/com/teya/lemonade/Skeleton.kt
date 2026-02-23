@@ -251,15 +251,12 @@ private data class SkeletonSizeDimensions(
 )
 
 @Composable
-private fun LemonadeSkeletonSize.toSkeletonSizeDimensions(
-    variant: SkeletonVariant,
-): SkeletonSizeDimensions {
-    return when (variant) {
+private fun LemonadeSkeletonSize.toSkeletonSizeDimensions(variant: SkeletonVariant): SkeletonSizeDimensions =
+    when (variant) {
         SkeletonVariant.Line -> toLineDimensions()
         SkeletonVariant.Block -> toBlockDimensions()
         SkeletonVariant.Circle -> toCircleDimensions()
     }
-}
 
 @Composable
 private fun LemonadeSkeletonSize.toLineDimensions(): SkeletonSizeDimensions {
@@ -279,12 +276,11 @@ private fun LemonadeSkeletonSize.toLineDimensions(): SkeletonSizeDimensions {
 }
 
 @Composable
-private fun toBlockDimensions(): SkeletonSizeDimensions {
-    return SkeletonSizeDimensions(
+private fun toBlockDimensions(): SkeletonSizeDimensions =
+    SkeletonSizeDimensions(
         width = Dp.Unspecified,
         height = LocalSizes.current.size1600,
     )
-}
 
 @Composable
 private fun LemonadeSkeletonSize.toCircleDimensions(): SkeletonSizeDimensions {
@@ -336,13 +332,10 @@ private data class SkeletonPreviewData(
 private class SkeletonPreviewProvider : PreviewParameterProvider<SkeletonPreviewData> {
     override val values: Sequence<SkeletonPreviewData> = buildAllVariants()
 
-    private fun buildAllVariants(): Sequence<SkeletonPreviewData> {
-        return SkeletonVariant.entries
-            .map { entry ->
-                SkeletonPreviewData(variant = entry)
-            }
-            .asSequence()
-    }
+    private fun buildAllVariants(): Sequence<SkeletonPreviewData> =
+        SkeletonVariant.entries.map { entry ->
+            SkeletonPreviewData(variant = entry)
+        }.asSequence()
 }
 
 @Suppress("UnusedPrivateMember")
