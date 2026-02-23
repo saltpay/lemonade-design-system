@@ -179,6 +179,7 @@ private class NoticeRowPreviewProvider :
     }
 }
 
+@Suppress("UnusedPrivateMember")
 @Composable
 @LemonadePreview
 private fun NoticeRowPreview(
@@ -196,7 +197,8 @@ private fun NoticeRowPreview(
         )
 
         LemonadeUi.NoticeRow(
-            description = "This is a longer notice message that spans multiple lines to demonstrate how the component handles text wrapping and longer content",
+            description = "This is a longer notice message that spans multiple lines to" +
+                " demonstrate how the component handles text wrapping and longer content",
             title = "Long Content Notice".takeIf { previewData.hasTitle },
             voice = previewData.voice,
             onDismiss = {}.takeIf { previewData.hasDismiss },
