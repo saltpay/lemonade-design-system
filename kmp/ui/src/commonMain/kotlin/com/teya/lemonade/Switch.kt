@@ -48,11 +48,14 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
  * ```
  *
  * ## Parameters
- * @param checked: `true` if the switch is in the "on" state, `false` otherwise.
- * @param onCheckedChange: A callback invoked when the user interacts with the switch to change its state.
- * @param enabled: Optional - controls the enabled state of the switch. When `false`, interaction is disabled and it is visually styled as such. Defaults to true.
- * @param interactionSource: Optional [MutableInteractionSource] used to observe interaction states like hover and press to drive visual feedback.
- * @param modifier: Optional [Modifier] to be applied to the root container of the switch.
+ * @param checked `true` if the switch is in the "on" state, `false` otherwise.
+ * @param onCheckedChange A callback invoked when the user interacts with the switch
+ *  to change its state.
+ * @param enabled Optional - controls the enabled state of the switch. When `false`,
+ *  interaction is disabled and it is visually styled as such. Defaults to true.
+ * @param interactionSource Optional [MutableInteractionSource] used to observe interaction
+ *  states like hover and press to drive visual feedback.
+ * @param modifier Optional [Modifier] to be applied to the root container of the switch.
  */
 @Composable
 public fun LemonadeUi.Switch(
@@ -89,13 +92,18 @@ public fun LemonadeUi.Switch(
  * ```
  *
  * ## Parameters
- * @param checked: `true` if the switch is in the "on" state, `false` otherwise.
- * @param onCheckedChange: A callback invoked when the user interacts with the switch to change its state.
- * @param label: A [String] to be shown as the label for the component.
- * @param supportText: Optional - [String] shown as a suppor text for the label on the component.
- * @param enabled: Optional - controls the enabled state of the switch. When `false`, interaction is disabled and it is visually styled as such. Defaults to true.
- * @param interactionSource: Optional [MutableInteractionSource] used to observe interaction states like hover and press to drive visual feedback.
- * @param modifier: Optional [Modifier] to be applied to the root container of the switch.
+ * @param checked `true` if the switch is in the "on" state, `false` otherwise.
+ * @param onCheckedChange A callback invoked when the user interacts with the switch
+ *  to change its state.
+ * @param label A [String] to be shown as the label for the component.
+ * @param supportText Optional - [String] shown as a support text for the label on
+ *  the component.
+ * @param enabled Optional - controls the enabled state of the switch. When `false`,
+ *  interaction is disabled and it is visually styled as such. Defaults to true.
+ * @param interactionSource Optional [MutableInteractionSource] used to observe
+ *  interaction states like hover and press to drive visual feedback.
+ * @param modifier Optional [Modifier] to be applied to the root container of
+ *  the switch.
  */
 @Composable
 public fun LemonadeUi.Switch(
@@ -117,8 +125,7 @@ public fun LemonadeUi.Switch(
                 interactionSource = interactionSource,
                 role = Role.Switch,
                 onValueChange = onCheckedChange,
-            )
-            .hoverable(interactionSource = interactionSource),
+            ).hoverable(interactionSource = interactionSource),
     ) {
         CoreSwitch(
             checked = checked,
@@ -133,7 +140,7 @@ public fun LemonadeUi.Switch(
                     Modifier
                 } else {
                     Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                }
+                },
             ),
         ) {
             LemonadeUi.Text(
@@ -152,6 +159,7 @@ public fun LemonadeUi.Switch(
     }
 }
 
+@Suppress("LongMethod")
 @Composable
 private fun CoreSwitch(
     checked: Boolean,
@@ -185,12 +193,13 @@ private fun CoreSwitch(
             checked -> LocalColors.current.background.bgBrandHigh
             isPressed -> LocalColors.current.interaction.bgElevatedPressed
             else -> LocalColors.current.background.bgElevatedHigh
-        }
+        },
     )
     val animatedKnobColor by animateColorAsState(
-        targetValue = when {
-            !enabled -> LocalColors.current.background.bgElevatedHigh
-            else -> LocalColors.current.background.bgDefault
+        targetValue = if (!enabled) {
+            LocalColors.current.background.bgElevatedHigh
+        } else {
+            LocalColors.current.background.bgDefault
         },
     )
 
@@ -203,14 +212,12 @@ private fun CoreSwitch(
             .hoverable(
                 interactionSource = interactionSource,
                 enabled = enabled,
-            )
-            .size(
+            ).size(
                 size = DpSize(
                     height = switchProps.minHeight,
                     width = switchProps.minWidth,
                 ),
-            )
-            .aspectRatio(ratio = switchProps.minWidth / switchProps.minHeight)
+            ).aspectRatio(ratio = switchProps.minWidth / switchProps.minHeight)
             .clip(shape = LocalShapes.current.radiusFull)
             .clickable(
                 role = Role.Switch,
@@ -218,8 +225,7 @@ private fun CoreSwitch(
                 enabled = enabled,
                 indication = null,
                 onClick = { onCheckedChange(!checked) },
-            )
-            .background(color = animatedBaseColor)
+            ).background(color = animatedBaseColor)
             .padding(all = LocalSpaces.current.spacing50),
     ) {
         Box(
@@ -233,22 +239,19 @@ private fun CoreSwitch(
                         )
                     } else {
                         Modifier
-                    }
-                )
-                .border(
+                    },
+                ).border(
                     width = LocalBorderWidths.current.base.border25,
                     color = LocalColors.current.background.bgElevated,
                     shape = LocalShapes.current.radiusFull,
-                )
-                .padding(all = 1.dp)
+                ).padding(all = 1.dp)
                 .background(
                     shape = LocalShapes.current.radiusFull,
                     color = animatedKnobColor,
-                )
+                ),
         )
     }
 }
-
 
 internal data class SwitchSizeProps(
     val minHeight: Dp,
@@ -263,13 +266,13 @@ internal enum class SwitchState {
     Pressed,
 }
 
-
 internal expect fun SwitchState.getSwitchProps(): SwitchSizeProps
 
-internal fun SwitchState.defaultSwitchProps(): SwitchSizeProps {
-    return when (this) {
+internal fun SwitchState.defaultSwitchProps(): SwitchSizeProps =
+    when (this) {
         SwitchState.Default,
-        SwitchState.Hover -> SwitchSizeProps(
+        SwitchState.Hover,
+        -> SwitchSizeProps(
             minHeight = 28.dp,
             minWidth = 48.dp,
             minIndicatorHeight = 22.dp,
@@ -283,7 +286,6 @@ internal fun SwitchState.defaultSwitchProps(): SwitchSizeProps {
             minIndicatorWidth = 26.dp,
         )
     }
-}
 
 private data class SwitchPreviewData(
     val checked: Boolean,
@@ -294,8 +296,9 @@ private data class SwitchPreviewData(
 
 private class SwitchPreviewProvider : PreviewParameterProvider<SwitchPreviewData> {
     override val values: Sequence<SwitchPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<SwitchPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<SwitchPreviewData> =
+        buildList {
             listOf(true, false).forEach { checked ->
                 listOf(true, false).forEach { enabled ->
                     listOf(true, false).forEach { withLabel ->
@@ -306,16 +309,16 @@ private class SwitchPreviewProvider : PreviewParameterProvider<SwitchPreviewData
                                     label = "Label".takeIf { withLabel },
                                     supportText = "Support Text".takeIf { withSupportText },
                                     enabled = enabled,
-                                )
+                                ),
                             )
                         }
                     }
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun LemonadeLabeledRadioButtonPreview(

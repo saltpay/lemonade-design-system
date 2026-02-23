@@ -24,6 +24,7 @@ import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeCountryFlags
 
 
+
 @Composable
 internal fun CountryFlagDisplay() {
     val isoAlpha2Example = "GB"
@@ -80,7 +81,7 @@ internal fun CountryFlagDisplay() {
                     modifier = Modifier
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.Center,
                 ) {
                     FlagBox(flag = flag)
                 }

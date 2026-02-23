@@ -56,13 +56,24 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
  * @param label: The text to be displayed in the chip.
  * @param selected: Set to 'true' if the chip is in the selected state.
  * @param modifier: Optional - [Modifier] to be applied to the root container of the chip.
- * @param counter: Optional - [Int] number to be displayed in the chip in case it is counting the amount of a subject.
- * @param leadingPainter: Optional - [Painter] to be displayed in the leading position of the chip.
- * @param trailingIcon: Optional - [LemonadeIcons] to be displayed in the trailing position of the chip.
- * @param enabled: Optional - controls the enabled state of the chip. When `false`, interaction is disabled and it is visually styled as such. Defaults to true.
- * @param onChipClicked: Optional - sets the callback for when the chip is clicked. If null the clickable interactions will be automatically disabled.
- * @param onTrailingIconClick: Optional - Callback action triggered when the [trailingIcon] is clicked. Needs [trailingIcon] to not be null.
- * @param interactionSource: Optional - [MutableInteractionSource] used to observe interaction states like hover and press to drive visual feedback.
+ * @param counter: Optional - [Int] number to be displayed in the chip
+ *  in case it is counting the amount of a subject.
+ * @param leadingPainter: Optional - [Painter] to be displayed
+ *  in the leading position of the chip.
+ * @param trailingIcon: Optional - [LemonadeIcons] to be displayed
+ *  in the trailing position of the chip.
+ * @param enabled: Optional - controls the enabled state of the chip.
+ *  When `false`, interaction is disabled and it is visually styled
+ *  as such. Defaults to true.
+ * @param onChipClicked: Optional - sets the callback for when
+ *  the chip is clicked. If null the clickable interactions will be
+ *  automatically disabled.
+ * @param onTrailingIconClick: Optional - Callback action triggered
+ *  when the [trailingIcon] is clicked.
+ *  Needs [trailingIcon] to not be null.
+ * @param interactionSource: Optional - [MutableInteractionSource]
+ *  used to observe interaction states like hover and press to drive
+ *  visual feedback.
  */
 @Composable
 public fun LemonadeUi.Chip(
@@ -94,8 +105,7 @@ public fun LemonadeUi.Chip(
                             width = LocalBorderWidths.current.base.border25,
                             shape = LocalShapes.current.radiusFull,
                             color = LocalColors.current.border.borderNeutralMedium,
-                        )
-                        .requiredSize(size = 20.dp)
+                        ).requiredSize(size = 20.dp),
                 )
             }
         } else {
@@ -137,13 +147,24 @@ public fun LemonadeUi.Chip(
  * @param label: The text to be displayed in the chip.
  * @param selected: Set to 'true' if the chip is in the selected state.
  * @param modifier: Optional - [Modifier] to be applied to the root container of the chip.
- * @param counter: Optional - [Int] number to be displayed in the chip in case it is counting the amount of a subject.
- * @param leadingIcon: Optional - [LemonadeIcons] to be displayed in the leading position of the chip.
- * @param trailingIcon: Optional - [LemonadeIcons] to be displayed in the trailing position of the chip.
- * @param enabled: Optional - controls the enabled state of the chip. When `false`, interaction is disabled and it is visually styled as such. Defaults to true.
- * @param onChipClicked: Optional - sets the callback for when the chip is clicked. If null the clickable interactions will be automatically disabled.
- * @param onTrailingIconClick: Optional - Callback action triggered when the [trailingIcon] is clicked. Needs [trailingIcon] to not be null.
- * @param interactionSource: Optional - [MutableInteractionSource] used to observe interaction states like hover and press to drive visual feedback.
+ * @param counter: Optional - [Int] number to be displayed in the chip
+ *  in case it is counting the amount of a subject.
+ * @param leadingIcon: Optional - [LemonadeIcons] to be displayed
+ *  in the leading position of the chip.
+ * @param trailingIcon: Optional - [LemonadeIcons] to be displayed
+ *  in the trailing position of the chip.
+ * @param enabled: Optional - controls the enabled state of the chip.
+ *  When `false`, interaction is disabled and it is visually styled
+ *  as such. Defaults to true.
+ * @param onChipClicked: Optional - sets the callback for when
+ *  the chip is clicked. If null the clickable interactions will be
+ *  automatically disabled.
+ * @param onTrailingIconClick: Optional - Callback action triggered
+ *  when the [trailingIcon] is clicked.
+ *  Needs [trailingIcon] to not be null.
+ * @param interactionSource: Optional - [MutableInteractionSource]
+ *  used to observe interaction states like hover and press to drive
+ *  visual feedback.
  */
 @Composable
 public fun LemonadeUi.Chip(
@@ -194,6 +215,7 @@ public fun LemonadeUi.Chip(
     )
 }
 
+@Suppress("LongMethod", "LongParameterList")
 @Composable
 internal fun CoreChip(
     label: String,
@@ -216,45 +238,41 @@ internal fun CoreChip(
     val animatedBorderColor by animateColorAsState(targetValue = props.borderColor)
     val animatedContentColor by animateColorAsState(targetValue = props.contentColor)
     val animatedBackgroundColor by animateColorAsState(
-        targetValue = when {
-            (isHover || isPressed) -> props.pressedBackgroundColor
-            else -> props.backgroundColor
+        targetValue = if (isHover || isPressed) {
+            props.pressedBackgroundColor
+        } else {
+            props.backgroundColor
         },
     )
     CompositionLocalProvider(LocalChipContentColor provides { animatedContentColor }) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
+            modifier = modifier
                 .then(
                     other = if (!enabled) {
                         Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
                     } else {
                         Modifier
-                    }
-                )
-                .clip(shape = LocalShapes.current.radiusFull)
+                    },
+                ).clip(shape = LocalShapes.current.radiusFull)
                 .defaultMinSize(
                     minWidth = platformDimensions.minSize.width,
                     minHeight = platformDimensions.minSize.height,
-                )
-                .clickable(
+                ).clickable(
                     role = Role.Button,
                     enabled = onChipClicked != null && enabled,
                     onClick = { onChipClicked?.invoke() },
                     interactionSource = interactionSource,
                     indication = null,
-                )
-                .border(
+                ).border(
                     color = animatedBorderColor,
                     shape = LocalShapes.current.radiusFull,
                     width = 1.dp,
-                )
-                .background(
+                ).background(
                     color = animatedBackgroundColor,
                     shape = LocalShapes.current.radiusFull,
-                )
-                .padding(
+                ).padding(
                     horizontal = LocalSpaces.current.spacing200,
                     vertical = LocalSpaces.current.spacing100,
                 ),
@@ -283,12 +301,10 @@ internal fun CoreChip(
                         .defaultMinSize(
                             minWidth = 18.dp,
                             minHeight = 16.dp,
-                        )
-                        .background(
+                        ).background(
                             color = LocalColors.current.background.bgBrand,
                             shape = LocalShapes.current.radiusFull,
-                        )
-                        .padding(horizontal = LocalSpaces.current.spacing100),
+                        ).padding(horizontal = LocalSpaces.current.spacing100),
                 ) {
                     LemonadeUi.Text(
                         text = counter.toString(),
@@ -318,8 +334,7 @@ internal fun CoreChip(
                             } else {
                                 Modifier
                             },
-                        )
-                        .requiredSize(size = platformDimensions.actionsSize),
+                        ).requiredSize(size = platformDimensions.actionsSize),
                 )
             }
         }
@@ -331,7 +346,6 @@ private val LocalChipContentColor: ProvidableCompositionLocal<@Composable () -> 
         { LocalColors.current.content.contentPrimary }
     }
 
-
 internal expect val chipPlatformDimensions: ChipPlatformDimensions
 
 internal data class ChipPlatformDimensions(
@@ -342,8 +356,8 @@ internal data class ChipPlatformDimensions(
 )
 
 @Composable
-internal fun defaultChipDimensions(): ChipPlatformDimensions {
-    return ChipPlatformDimensions(
+internal fun defaultChipDimensions(): ChipPlatformDimensions =
+    ChipPlatformDimensions(
         labelFontStyle = LocalTypographies.current.bodySmallMedium,
         counterFontStyle = LocalTypographies.current.bodyXSmallSemiBold,
         actionsSize = 16.dp,
@@ -352,7 +366,6 @@ internal fun defaultChipDimensions(): ChipPlatformDimensions {
             height = 32.dp,
         ),
     )
-}
 
 private data class ChipProps(
     val backgroundColor: Color,
@@ -363,8 +376,8 @@ private data class ChipProps(
 )
 
 @Composable
-private fun getChipProps(selected: Boolean): ChipProps {
-    return if (selected) {
+private fun getChipProps(selected: Boolean): ChipProps =
+    if (selected) {
         ChipProps(
             backgroundColor = LocalColors.current.background.bgBrandHigh,
             pressedBackgroundColor = LocalColors.current.interaction.bgBrandHighInteractive,
@@ -381,7 +394,6 @@ private fun getChipProps(selected: Boolean): ChipProps {
             borderColor = LocalColors.current.border.borderNeutralMedium,
         )
     }
-}
 
 private data class ChipPreviewData(
     val counter: Int?,
@@ -393,8 +405,9 @@ private data class ChipPreviewData(
 
 private class ChipPreviewProvider : PreviewParameterProvider<ChipPreviewData> {
     override val values: Sequence<ChipPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<ChipPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<ChipPreviewData> =
+        buildList {
             listOf(true, false).forEach { enabled ->
                 listOf(true, false).forEach { withCounter ->
                     listOf(true, false).forEach { selected ->
@@ -407,7 +420,7 @@ private class ChipPreviewProvider : PreviewParameterProvider<ChipPreviewData> {
                                         counter = 5.takeIf { withCounter },
                                         leadingIcon = LemonadeIcons.Airplane.takeIf { withLeadingIcon },
                                         trailingIcon = LemonadeIcons.Airplane.takeIf { withTrailingIcon },
-                                    )
+                                    ),
                                 )
                             }
                         }
@@ -415,9 +428,9 @@ private class ChipPreviewProvider : PreviewParameterProvider<ChipPreviewData> {
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun ChipPreview(

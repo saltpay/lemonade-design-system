@@ -33,7 +33,8 @@ internal actual fun App() {
                 .fillMaxHeight()
                 .weight(weight = 4f),
         ) {
-            currentScreenStack.elementAtOrNull(1)
+            currentScreenStack
+                .elementAtOrNull(1)
                 ?.let { focusScreen ->
                     screens[focusScreen]?.invoke { replaceScreen ->
                         currentScreenStack = setOf(Displays.Home, replaceScreen)

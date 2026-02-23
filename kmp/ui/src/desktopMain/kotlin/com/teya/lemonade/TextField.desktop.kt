@@ -54,6 +54,6 @@ public fun LemonadeUi.TextField(
                 innerTextField = innerTextField,
                 modifier = modifier,
             )
-        }
+        },
     )
 }

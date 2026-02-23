@@ -27,7 +27,8 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
  * ```
  *
  * @param flag - The [LemonadeCountryFlags] to be displayed.
- * @param contentDescription - The localizable message to be shown as content description for the [flag]. Defaults to [LemonadeCountryFlags.name].
+ * @param contentDescription - The localizable message to be shown as content
+ *  description for the [flag]. Defaults to [LemonadeCountryFlags.name].
  * @param size - The [LemonadeAssetSize] to be applied to the flag. Defaults to [LemonadeAssetSize.Medium]
  * @param Modifier - Optional [Modifier] for additional styling and layout adjustments.
  */
@@ -63,8 +64,7 @@ public fun CoreCountryFlag(
                 width = LocalBorderWidths.current.base.border25,
                 color = LocalColors.current.border.borderNeutralMedium,
                 shape = LocalShapes.current.radiusFull,
-            )
-            .requiredSize(size = size.dp),
+            ).requiredSize(size = size.dp),
     )
 }
 
@@ -88,22 +88,23 @@ private data class CountryFlagPreviewData(
 
 private class CountryFlagPreviewProvider : PreviewParameterProvider<CountryFlagPreviewData> {
     override val values: Sequence<CountryFlagPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<CountryFlagPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<CountryFlagPreviewData> =
+        buildList {
             LemonadeCountryFlags.entries.take(5).forEach { flag ->
                 LemonadeAssetSize.entries.forEach { size ->
                     add(
                         CountryFlagPreviewData(
                             flag = flag,
                             size = size,
-                        )
+                        ),
                     )
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun CountryFlagPreview(

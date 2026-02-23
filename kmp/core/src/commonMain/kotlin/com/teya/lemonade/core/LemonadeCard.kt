@@ -4,7 +4,7 @@ public enum class LemonadeCardPadding {
     None,
     XSmall,
     Small,
-    Medium
+    Medium,
 }
 
 public enum class LemonadeCardBackground {

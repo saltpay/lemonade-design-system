@@ -68,6 +68,7 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
  * @param leadingSlot - A Slot to be placed in the leading position of the list item.
  * @param trailingSlot - A Slot to be placed in the trailing position of the list item.
  */
+@Suppress("LongMethod")
 @Composable
 public fun LemonadeUi.SelectListItem(
     label: String,
@@ -102,7 +103,8 @@ public fun LemonadeUi.SelectListItem(
                 }
 
                 SelectListItemType.Multiple,
-                SelectListItemType.Toggle -> {
+                SelectListItemType.Toggle,
+                -> {
                     onItemClicked()
                 }
             }
@@ -112,7 +114,7 @@ public fun LemonadeUi.SelectListItem(
         trailingSlot = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(LocalSpaces.current.spacing200)
+                horizontalArrangement = Arrangement.spacedBy(LocalSpaces.current.spacing200),
             ) {
                 if (trailingSlot != null) {
                     trailingSlot()
@@ -223,7 +225,7 @@ public fun LemonadeUi.ResourceListItem(
                 LemonadeUi.Text(
                     text = value,
                     textStyle = LocalTypographies.current.bodyMediumMedium,
-                    textAlign = TextAlign.Left
+                    textAlign = TextAlign.Left,
                 )
 
                 if (addonSlot != null) {
@@ -260,8 +262,9 @@ public fun LemonadeUi.ResourceListItem(
  * @param supportText - text [String] to be displayed as Support Text.
  * @param leadingSlot - slot content to be placed in the leading position of the component.
  * @param trailingSlot - slot content to be placed in the trailing position of the component.
- * @param voice - [LemonadeListItemVoice] to define the tone of voice. This will effectively define
- *  color of the background while it's hovered or pressed, alongside the content's tints. Defaults to [LemonadeListItemVoice.Neutral].
+ * @param voice - [LemonadeListItemVoice] to define the tone of voice. This will effectively
+ *  define color of the background while it's hovered or pressed, alongside the content's
+ *  tints. Defaults to [LemonadeListItemVoice.Neutral].
  * @param showNavigationIndicator - [Boolean] indicates navigation visually.
  * @param enabled - [Boolean] flag to define if the component is enabled or not. If disabled, click interactions
  *  and visual states are disabled.
@@ -296,8 +299,8 @@ public fun LemonadeUi.ActionListItem(
                         Modifier
                     } else {
                         Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                    }
-                )
+                    },
+                ),
             ) {
                 if (trailingSlot !== null) {
                     trailingSlot()
@@ -308,11 +311,10 @@ public fun LemonadeUi.ActionListItem(
                         icon = LemonadeIcons.ChevronRight,
                         tint = LocalColors.current.content.contentTertiary,
                         size = LemonadeAssetSize.Medium,
-                        contentDescription = "Navigation indicator"
+                        contentDescription = "Navigation indicator",
                     )
                 }
             }
-
         },
         voice = voice,
         onListItemClick = onItemClicked,
@@ -324,7 +326,7 @@ public fun LemonadeUi.ActionListItem(
     )
 }
 
-
+@Suppress("LongMethod", "LongParameterList")
 @Composable
 private fun CoreListItem(
     label: String,
@@ -349,7 +351,7 @@ private fun CoreListItem(
             voice.interactionBackground.copy(
                 alpha = LocalOpacities.current.base.opacity0,
             )
-        }
+        },
     )
     SafeArea(modifier = modifier, showDivider = showDivider) {
         Row(
@@ -368,9 +370,8 @@ private fun CoreListItem(
                         )
                     } else {
                         Modifier
-                    }
-                )
-                .background(color = animatedBackgroundColor)
+                    },
+                ).background(color = animatedBackgroundColor)
                 .defaultMinSize(minHeight = LocalSizes.current.size1200)
                 .padding(
                     horizontal = LocalSpaces.current.spacing300,
@@ -429,29 +430,28 @@ private fun CoreListItem(
 private fun SafeArea(
     modifier: Modifier = Modifier,
     showDivider: Boolean,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
-        modifier = modifier.background(color = Color.Transparent)
+        modifier = modifier.background(color = Color.Transparent),
     ) {
         Column(
             modifier = Modifier
                 .padding(LocalSpaces.current.spacing100)
                 .background(color = Color.Transparent),
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             content()
         }
 
         if (showDivider) {
             LemonadeUi.HorizontalDivider(
-                modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing400)
+                modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing400),
             )
         }
     }
 }
-
 
 private val LemonadeListItemVoice.interactionBackground: Color
     @Composable get() {
@@ -480,8 +480,9 @@ private data class SelectionListItemPreviewData(
 private class SelectionListItemPreviewProvider :
     PreviewParameterProvider<SelectionListItemPreviewData> {
     override val values: Sequence<SelectionListItemPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<SelectionListItemPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<SelectionListItemPreviewData> =
+        buildList {
             SelectListItemType.entries.forEach { type ->
                 listOf(true, false).forEach { enabled ->
                     listOf(true, false).forEach { leading ->
@@ -494,7 +495,7 @@ private class SelectionListItemPreviewProvider :
                                         enabled = enabled,
                                         leading = leading,
                                         trailing = trailing,
-                                    )
+                                    ),
                                 )
                             }
                         }
@@ -502,9 +503,9 @@ private class SelectionListItemPreviewProvider :
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun SelectListItemPreview(
@@ -549,8 +550,9 @@ private data class ResourceListItemPreviewData(
 private class ResourceListItemPreviewProvider :
     PreviewParameterProvider<ResourceListItemPreviewData> {
     override val values: Sequence<ResourceListItemPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<ResourceListItemPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<ResourceListItemPreviewData> =
+        buildList {
             listOf(true, false).forEach { addonSlot ->
                 listOf(true, false).forEach { enabled ->
                     listOf(true, false).forEach { withSupportText ->
@@ -559,15 +561,15 @@ private class ResourceListItemPreviewProvider :
                                 withAddonSlot = addonSlot,
                                 enabled = enabled,
                                 supportText = withSupportText,
-                            )
+                            ),
                         )
                     }
                 }
             }
         }.asSequence()
-    }
 }
 
+@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun ResourceListItemPreview(
@@ -597,7 +599,7 @@ private fun ResourceListItemPreview(
                 size = SymbolContainerSize.Large,
                 contentDescription = null,
             )
-        }
+        },
     )
 }
 
@@ -605,14 +607,15 @@ private data class ActionListItemPreviewData(
     val voice: Boolean,
     val enabled: Boolean,
     val supportText: Boolean,
-    val trailingSlot: Boolean
+    val trailingSlot: Boolean,
 )
 
 private class ActionListItemPreviewProvider :
     PreviewParameterProvider<ActionListItemPreviewData> {
     override val values: Sequence<ActionListItemPreviewData> = buildAllVariants()
-    private fun buildAllVariants(): Sequence<ActionListItemPreviewData> {
-        return buildList {
+
+    private fun buildAllVariants(): Sequence<ActionListItemPreviewData> =
+        buildList {
             listOf(true, false).forEach { voice ->
                 listOf(true, false).forEach { enabled ->
                     listOf(true, false).forEach { withSupportText ->
@@ -622,15 +625,14 @@ private class ActionListItemPreviewProvider :
                                     voice = voice,
                                     enabled = enabled,
                                     supportText = withSupportText,
-                                    trailingSlot = trailingSlot
-                                )
+                                    trailingSlot = trailingSlot,
+                                ),
                             )
                         }
                     }
                 }
             }
         }.asSequence()
-    }
 }
 
 @LemonadePreview
@@ -660,6 +662,6 @@ private fun ActionListItemPreviewProvider(
                 size = LemonadeAssetSize.Medium,
                 contentDescription = null,
             )
-        }
+        },
     )
 }

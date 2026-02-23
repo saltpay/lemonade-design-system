@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+@Suppress("LongMethod")
 @Composable
 internal fun RadioButtonDisplay() {
     var selectedOption by remember { mutableIntStateOf(0) }
@@ -34,33 +35,33 @@ internal fun RadioButtonDisplay() {
         RadioButtonSection(title = "States") {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing600),
-                verticalAlignment = Alignment.Top
+                verticalAlignment = Alignment.Top,
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.RadioButton(
                         checked = false,
-                        onRadioButtonClicked = {}
+                        onRadioButtonClicked = {},
                     )
                     LemonadeUi.Text(
                         text = "Unchecked",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.RadioButton(
                         checked = true,
-                        onRadioButtonClicked = {}
+                        onRadioButtonClicked = {},
                     )
                     LemonadeUi.Text(
                         text = "Checked",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
             }
@@ -68,18 +69,18 @@ internal fun RadioButtonDisplay() {
 
         // Interactive Group
         RadioButtonSection(title = "Interactive Group") {
-            (0..2).forEach { index ->
+            for (index in 0..2) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     LemonadeUi.RadioButton(
                         checked = selectedOption == index,
-                        onRadioButtonClicked = { selectedOption = index }
+                        onRadioButtonClicked = { selectedOption = index },
                     )
                     LemonadeUi.Text(
                         text = "Option ${index + 1}",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                 }
             }
@@ -90,19 +91,19 @@ internal fun RadioButtonDisplay() {
             LemonadeUi.RadioButton(
                 checked = selectedOption == 0,
                 onRadioButtonClicked = { selectedOption = 0 },
-                label = "Free shipping"
+                label = "Free shipping",
             )
 
             LemonadeUi.RadioButton(
                 checked = selectedOption == 1,
                 onRadioButtonClicked = { selectedOption = 1 },
-                label = "Express delivery"
+                label = "Express delivery",
             )
 
             LemonadeUi.RadioButton(
                 checked = selectedOption == 2,
                 onRadioButtonClicked = { selectedOption = 2 },
-                label = "Same day delivery"
+                label = "Same day delivery",
             )
         }
 
@@ -112,14 +113,14 @@ internal fun RadioButtonDisplay() {
                 checked = true,
                 onRadioButtonClicked = {},
                 label = "Standard Plan",
-                supportText = "\$9.99/month - Basic features"
+                supportText = "\$9.99/month - Basic features",
             )
 
             LemonadeUi.RadioButton(
                 checked = false,
                 onRadioButtonClicked = {},
                 label = "Premium Plan",
-                supportText = "\$19.99/month - All features included"
+                supportText = "\$19.99/month - All features included",
             )
         }
 
@@ -127,33 +128,33 @@ internal fun RadioButtonDisplay() {
         RadioButtonSection(title = "Disabled") {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 LemonadeUi.RadioButton(
                     checked = false,
                     onRadioButtonClicked = {},
-                    enabled = false
+                    enabled = false,
                 )
                 LemonadeUi.Text(
                     text = "Disabled unchecked",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentSecondary
+                    color = LemonadeTheme.colors.content.contentSecondary,
                 )
             }
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 LemonadeUi.RadioButton(
                     checked = true,
                     onRadioButtonClicked = {},
-                    enabled = false
+                    enabled = false,
                 )
                 LemonadeUi.Text(
                     text = "Disabled checked",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentSecondary
+                    color = LemonadeTheme.colors.content.contentSecondary,
                 )
             }
 
@@ -161,7 +162,7 @@ internal fun RadioButtonDisplay() {
                 checked = true,
                 onRadioButtonClicked = {},
                 label = "Disabled with label",
-                enabled = false
+                enabled = false,
             )
         }
     }
@@ -170,7 +171,7 @@ internal fun RadioButtonDisplay() {
 @Composable
 private fun RadioButtonSection(
     title: String,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
@@ -178,7 +179,7 @@ private fun RadioButtonSection(
         LemonadeUi.Text(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
-            color = LemonadeTheme.colors.content.contentSecondary
+            color = LemonadeTheme.colors.content.contentSecondary,
         )
         content()
     }
