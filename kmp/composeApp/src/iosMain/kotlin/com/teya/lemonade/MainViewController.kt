@@ -6,10 +6,9 @@ import androidx.compose.ui.window.ComposeUIViewController
 import com.teya.lemonade.app.App
 import platform.UIKit.UIViewController
 
-public fun MainViewController(): UIViewController {
-    return ComposeUIViewController {
+public fun MainViewController(): UIViewController =
+    ComposeUIViewController {
         LemonadeStyledTheme {
             App()
         }
     }
-}

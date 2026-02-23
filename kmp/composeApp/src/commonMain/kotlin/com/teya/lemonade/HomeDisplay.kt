@@ -8,9 +8,7 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TabButtonProperties
 
 @Composable
-internal fun HomeDisplay(
-    onNavigate: (Displays) -> Unit
-) {
+internal fun HomeDisplay(onNavigate: (Displays) -> Unit) {
     val styleHandler = LocalLemonadeStyleHandler.current
     val styles = LemonadeStyle.entries
     val selectedIndex = styles.indexOf(styleHandler.currentStyle)
