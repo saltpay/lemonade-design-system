@@ -25,8 +25,8 @@ import com.teya.lemonade.SearchFieldDisplay
 import com.teya.lemonade.SegmentedControlDisplay
 import com.teya.lemonade.SelectionListItemDisplay
 import com.teya.lemonade.ShadowDisplay
-import com.teya.lemonade.SkeletonDisplay
 import com.teya.lemonade.SizesDisplay
+import com.teya.lemonade.SkeletonDisplay
 import com.teya.lemonade.SpacingDisplay
 import com.teya.lemonade.SpinnerDisplay
 import com.teya.lemonade.SwitchDisplay

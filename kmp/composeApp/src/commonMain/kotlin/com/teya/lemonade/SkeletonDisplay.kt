@@ -42,13 +42,13 @@ private fun TextLinesSection() {
     SkeletonSection(title = "Text Lines") {
         Column {
             LemonadeUi.LineSkeleton(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
             LemonadeUi.LineSkeleton(
-                modifier = Modifier.fillMaxWidth(fraction = 0.7f)
+                modifier = Modifier.fillMaxWidth(fraction = 0.7f),
             )
             LemonadeUi.LineSkeleton(
-                modifier = Modifier.fillMaxWidth(fraction = 0.5f)
+                modifier = Modifier.fillMaxWidth(fraction = 0.5f),
             )
         }
     }
@@ -83,12 +83,12 @@ private fun CardSkeletonSection() {
             ) {
                 LemonadeUi.LineSkeleton(
                     modifier = Modifier
-                        .fillMaxWidth(fraction = 0.6f)
+                        .fillMaxWidth(fraction = 0.6f),
                 )
                 LemonadeUi.LineSkeleton(
                     size = LemonadeSkeletonSize.Small,
                     modifier = Modifier
-                        .fillMaxWidth(fraction = 0.4f)
+                        .fillMaxWidth(fraction = 0.4f),
                 )
             }
         }
@@ -100,7 +100,7 @@ private fun BlockPlaceholderSection() {
     SkeletonSection(title = "Block Placeholder") {
         LemonadeUi.BlockSkeleton(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         )
     }
 }
