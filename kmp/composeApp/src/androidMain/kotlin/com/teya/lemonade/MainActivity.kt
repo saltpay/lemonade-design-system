@@ -17,7 +17,7 @@ public class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            M3LemonadeTheme {
+            LemonadeExpressiveTheme {
                 val backStack = remember {
                     mutableStateListOf<Displays>(Displays.Home)
                 }
