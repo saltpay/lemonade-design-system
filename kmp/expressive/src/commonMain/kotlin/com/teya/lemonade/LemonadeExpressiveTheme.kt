@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-public fun M3LemonadeTheme(
+public fun LemonadeExpressiveTheme(
     colors: LemonadeSemanticColors = LemonadeTheme.colors,
     typography: LemonadeTypographyProvider = LemonadeTheme.typography,
     radius: LemonadeRadiusValues = LemonadeTheme.radius,
@@ -34,12 +34,12 @@ public fun M3LemonadeTheme(
         spaces = spaces,
         borderWidths = borderWidths,
         sizes = sizes,
-        effects = m3LemonadeEffects(effects = effects),
+        effects = lemonadeExpressiveEffects(effects = effects),
     ) {
         MaterialExpressiveTheme(
-            colorScheme = m3LemonadeColorScheme(),
-            shapes = m3LemonadeShapes(),
-            typography = m3LemonadeTypography(),
+            colorScheme = lemonadeExpressiveColorScheme(),
+            shapes = lemonadeExpressiveShapes(),
+            typography = lemonadeExpressiveTypography(),
             motionScheme = MotionScheme.expressive(),
             content = content,
         )
@@ -47,7 +47,7 @@ public fun M3LemonadeTheme(
 }
 
 @Composable
-private fun m3LemonadeTypography(): Typography {
+private fun lemonadeExpressiveTypography(): Typography {
     val typography = LemonadeTheme.typography
     return Typography(
         displayLarge = typography.displayLarge.textStyle,
@@ -70,7 +70,7 @@ private fun m3LemonadeTypography(): Typography {
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun m3LemonadeShapes(): Shapes {
+private fun lemonadeExpressiveShapes(): Shapes {
     val radius = LemonadeTheme.radius
     return Shapes(
         extraSmall = RoundedCornerShape(radius.radius100),
@@ -83,7 +83,7 @@ private fun m3LemonadeShapes(): Shapes {
 }
 
 @Composable
-private fun m3LemonadeColorScheme(): ColorScheme {
+private fun lemonadeExpressiveColorScheme(): ColorScheme {
     val colors = LemonadeTheme.colors
     return ColorScheme(
         primary = colors.content.contentBrand,
@@ -137,7 +137,7 @@ private fun m3LemonadeColorScheme(): ColorScheme {
     )
 }
 
-private fun m3LemonadeEffects(effects: LemonadeEffects): LemonadeEffects {
+private fun lemonadeExpressiveEffects(effects: LemonadeEffects): LemonadeEffects {
     return object : LemonadeEffects by effects {
         override val interactionIndication: Indication = ripple()
     }
