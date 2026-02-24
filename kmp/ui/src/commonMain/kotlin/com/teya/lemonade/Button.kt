@@ -249,8 +249,7 @@ private fun CoreButton(
                 interactionSource = interactionSource,
                 role = Role.Button,
                 indication = LocalEffects.current.interactionIndication,
-            )
-            .background(color = animatedBackgroundColor)
+            ).background(color = animatedBackgroundColor)
             .then(
                 other = variant.variantData.brushBackgroundColor?.let { brush ->
                     Modifier.background(brush = brush)

@@ -254,7 +254,7 @@ private fun CoreSearchFieldDecorationBox(
                         onClick = onInputClear,
                         interactionSource = remember { MutableInteractionSource() },
                         indication = LocalEffects.current.interactionIndication,
-                    )
+                    ),
             )
         }
     }

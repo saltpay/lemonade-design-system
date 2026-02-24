@@ -265,8 +265,7 @@ internal fun CoreChip(
                     onClick = { onChipClicked?.invoke() },
                     interactionSource = interactionSource,
                     indication = LocalEffects.current.interactionIndication,
-                )
-                .border(
+                ).border(
                     color = animatedBorderColor,
                     shape = LocalShapes.current.radiusFull,
                     width = 1.dp,
