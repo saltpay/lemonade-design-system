@@ -18,7 +18,7 @@ import com.teya.lemonade.core.LemonadeIcons
 import androidx.compose.material3.Text as M3Text
 
 /**
- * A dropdown menu overlay following the Lemonade Design System, wrapping Material 3's [DropdownMenu].
+ * A dropdown menu overlay following the Lemonade Design System.
  *
  * This composable provides a popup menu anchored to its parent layout, styled with Lemonade
  * design tokens for shape, color, and spacing. The menu visibility is controlled by the [expanded]
@@ -66,7 +66,7 @@ import androidx.compose.material3.Text as M3Text
  * @see LemonadeUi.DropdownItem For individual menu items within this dropdown.
  * @see LemonadeUi.Dialog For a dialog overlay with the same visibility pattern.
  * @see LemonadeUi.BottomSheet For a bottom sheet overlay with the same visibility pattern.
- * @see DropdownMenu The underlying Material 3 component.
+ * @see DropdownMenu The underlying component.
  */
 @Composable
 public fun LemonadeUi.Dropdown(
@@ -102,7 +102,7 @@ public fun LemonadeUi.Dropdown(
 /**
  * A single item within a [LemonadeUi.Dropdown] menu, following the Lemonade Design System.
  *
- * This composable wraps Material 3's [DropdownMenuItem] with Lemonade styling, and restricts
+ * This composable wraps [DropdownMenuItem] with Lemonade styling, and restricts
  * icon parameters to [LemonadeIcons] values instead of arbitrary composable lambdas. Icons are
  * rendered internally using [LemonadeUi.Icon] at appropriate sizes: [LemonadeAssetSize.Medium]
  * for leading icons and [LemonadeAssetSize.Small] for trailing icons.
