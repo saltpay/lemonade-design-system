@@ -1,6 +1,8 @@
 package com.teya.lemonade.app
 
 import androidx.compose.runtime.Composable
+import com.teya.lemonade.BottomSheetDisplay
+import com.teya.lemonade.BottomSheetSampleDisplay
 import com.teya.lemonade.DialogDisplay
 import com.teya.lemonade.DialogSampleDisplay
 import com.teya.lemonade.Displays
@@ -20,6 +22,7 @@ internal actual val platformScreens: Map<Displays, @Composable ((onNavigate: (Di
     mapOf(
         DropdownDisplay to { _ -> DropdownSampleDisplay() },
         DialogDisplay to { _ -> DialogSampleDisplay() },
+        BottomSheetDisplay to { _ -> BottomSheetSampleDisplay() },
         SearchTopBarDisplay to { _ -> SearchTopBarSampleDisplay() },
         TopBarDisplay to { _ -> TopBarSampleDisplay() },
     )

@@ -2,9 +2,10 @@ package com.teya.lemonade
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -21,9 +22,9 @@ import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonVariant
 
 @Composable
-internal fun DialogSampleDisplay() {
-    var showBasicDialog by remember { mutableStateOf(false) }
-    var showNonDismissableDialog by remember { mutableStateOf(false) }
+internal fun BottomSheetSampleDisplay() {
+    var showBasicSheet by remember { mutableStateOf(false) }
+    var showNoDragHandleSheet by remember { mutableStateOf(false) }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
@@ -34,38 +35,38 @@ internal fun DialogSampleDisplay() {
             .navigationBarsPadding()
             .padding(LemonadeTheme.spaces.spacing400),
     ) {
-        // Basic Dialog
-        DialogSection(title = "Basic Dialog") {
+        // Basic Bottom Sheet
+        BottomSheetSection(title = "Basic Bottom Sheet") {
             @OptIn(ExperimentalLemonadeComponent::class)
             LemonadeUi.Button(
-                label = "Open Dialog",
-                onClick = { showBasicDialog = true },
+                label = "Open Bottom Sheet",
+                onClick = { showBasicSheet = true },
                 variant = LemonadeButtonVariant.Secondary,
                 size = LemonadeButtonSize.Medium,
             )
         }
 
-        // Non-Dismissable Dialog
-        DialogSection(title = "Non-Dismissable Dialog") {
+        // Without Drag Handle
+        BottomSheetSection(title = "Without Drag Handle") {
             LemonadeUi.Text(
-                text = "This dialog cannot be dismissed by tapping outside or pressing back",
+                text = "This bottom sheet has no drag handle",
                 textStyle = LemonadeTheme.typography.bodySmallRegular,
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
             @OptIn(ExperimentalLemonadeComponent::class)
             LemonadeUi.Button(
-                label = "Open Non-Dismissable Dialog",
-                onClick = { showNonDismissableDialog = true },
+                label = "Open Without Drag Handle",
+                onClick = { showNoDragHandleSheet = true },
                 variant = LemonadeButtonVariant.Secondary,
                 size = LemonadeButtonSize.Medium,
             )
         }
     }
 
-    // Basic Dialog
-    LemonadeUi.Dialog(
-        expanded = showBasicDialog,
-        onDismissRequest = { showBasicDialog = false },
+    // Basic Bottom Sheet
+    LemonadeUi.BottomSheet(
+        expanded = showBasicSheet,
+        onDismissRequest = { showBasicSheet = false },
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
@@ -74,80 +75,63 @@ internal fun DialogSampleDisplay() {
                 .padding(LemonadeTheme.spaces.spacing400),
         ) {
             LemonadeUi.Text(
-                text = "Dialog Title",
+                text = "Bottom Sheet Title",
                 textStyle = LemonadeTheme.typography.headingSmall,
             )
             LemonadeUi.Text(
-                text = "This is an example dialog with free-form content. You can place any composable content here.",
+                text = "This is an example bottom sheet with free-form content. Swipe down or tap the scrim to dismiss.",
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(
-                    space = LemonadeTheme.spaces.spacing200,
-                    alignment = Alignment.End,
-                ),
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                @OptIn(ExperimentalLemonadeComponent::class)
-                LemonadeUi.Button(
-                    label = "Cancel",
-                    onClick = { showBasicDialog = false },
-                    variant = LemonadeButtonVariant.Tertiary,
-                    size = LemonadeButtonSize.Small,
-                )
-                @OptIn(ExperimentalLemonadeComponent::class)
-                LemonadeUi.Button(
-                    label = "Confirm",
-                    onClick = { showBasicDialog = false },
-                    variant = LemonadeButtonVariant.Primary,
-                    size = LemonadeButtonSize.Small,
-                )
-            }
+            @OptIn(ExperimentalLemonadeComponent::class)
+            LemonadeUi.Button(
+                label = "Close",
+                onClick = { showBasicSheet = false },
+                variant = LemonadeButtonVariant.Primary,
+                size = LemonadeButtonSize.Medium,
+            )
+            Spacer(
+                modifier = Modifier.height(LemonadeTheme.spaces.spacing400),
+            )
         }
     }
 
-    // Non-Dismissable Dialog
-    LemonadeUi.Dialog(
-        expanded = showNonDismissableDialog,
-        onDismissRequest = { showNonDismissableDialog = false },
-        dismissOnClickOutside = false,
-        dismissOnBackPress = false,
+    // Without Drag Handle
+    LemonadeUi.BottomSheet(
+        expanded = showNoDragHandleSheet,
+        onDismissRequest = { showNoDragHandleSheet = false },
+        showDragHandle = false,
     ) {
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(LemonadeTheme.spaces.spacing400),
         ) {
             LemonadeUi.Text(
-                text = "Non-Dismissable Dialog",
+                text = "No Drag Handle",
                 textStyle = LemonadeTheme.typography.headingSmall,
             )
             LemonadeUi.Text(
-                text = "You must use the button below to close this dialog. Tapping outside or pressing back will not dismiss it.",
+                text = "This bottom sheet has no drag handle visible. Tap the scrim or use the button to close.",
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(
-                    space = LemonadeTheme.spaces.spacing200,
-                    alignment = Alignment.End,
-                ),
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                @OptIn(ExperimentalLemonadeComponent::class)
-                LemonadeUi.Button(
-                    label = "Close",
-                    onClick = { showNonDismissableDialog = false },
-                    variant = LemonadeButtonVariant.Primary,
-                    size = LemonadeButtonSize.Small,
-                )
-            }
+            @OptIn(ExperimentalLemonadeComponent::class)
+            LemonadeUi.Button(
+                label = "Close",
+                onClick = { showNoDragHandleSheet = false },
+                variant = LemonadeButtonVariant.Primary,
+                size = LemonadeButtonSize.Medium,
+            )
+            Spacer(
+                modifier = Modifier.height(LemonadeTheme.spaces.spacing400),
+            )
         }
     }
 }
 
 @Composable
-private fun DialogSection(
+private fun BottomSheetSection(
     title: String,
     content: @Composable () -> Unit,
 ) {
