@@ -58,7 +58,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.kotlinx.serializer)
             implementation(projects.ui)
-            implementation(projects.material)
+            implementation(projects.expressive)
             implementation(kotlin("script-runtime"))
         }
         commonTest.dependencies {

@@ -36,4 +36,4 @@ plugins {
 include(":composeApp")
 include(":core")
 include(":ui")
-include(":material")
+include(":expressive")
