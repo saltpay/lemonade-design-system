@@ -366,7 +366,7 @@ private fun CoreListItem(
                             role = role,
                             onClick = onListItemClick,
                             interactionSource = interactionSource,
-                            indication = null,
+                            indication = LocalEffects.current.interactionIndication,
                         )
                     } else {
                         Modifier

@@ -150,6 +150,7 @@ private fun CoreTile(
                                 interactionSource = interactionSource,
                                 role = Role.Button,
                                 enabled = enabled,
+                                indication = LocalEffects.current.interactionIndication,
                             )
                         } else {
                             Modifier
