@@ -12,7 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.unit.dp
 
 /**
- * A bottom sheet overlay following the Lemonade Design System, wrapping Material 3's [ModalBottomSheet].
+ * A bottom sheet overlay following the Lemonade Design System.
  *
  * This composable provides a modal bottom sheet that slides up from the bottom of the screen,
  * styled with Lemonade design tokens for shape, color, and elevation. The sheet visibility is
@@ -58,13 +58,13 @@ import androidx.compose.ui.unit.dp
  * - The sheet uses [LemonadeTheme.radius.radius500] for the top corners.
  * - Background color is [LemonadeTheme.colors.background.bgDefault].
  * - Tonal elevation is set to 0.dp; the sheet relies on Lemonade color tokens for visual hierarchy.
- * - The drag handle uses Material 3's default [BottomSheetDefaults.DragHandle] styling.
+ * - The drag handle uses the default [BottomSheetDefaults.DragHandle] styling.
  * - For overlay components with a unified visibility API, see also [LemonadeUi.Dialog] and
  *   [LemonadeUi.Dropdown], which share the same `expanded` flag pattern.
  *
  * @see LemonadeUi.Dialog For a dialog overlay with the same visibility pattern.
  * @see LemonadeUi.Dropdown For a dropdown menu overlay with the same visibility pattern.
- * @see ModalBottomSheet The underlying Material 3 component.
+ * @see ModalBottomSheet The underlying component.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
