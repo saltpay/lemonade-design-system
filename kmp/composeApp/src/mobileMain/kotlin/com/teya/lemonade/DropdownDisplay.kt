@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
@@ -91,35 +90,17 @@ internal fun DropdownSampleDisplay() {
                     LemonadeUi.DropdownItem(
                         text = "Settings",
                         onClick = { leadingIconsExpanded = false },
-                        leadingIcon = {
-                            LemonadeUi.Icon(
-                                icon = LemonadeIcons.Gear,
-                                contentDescription = null,
-                                size = LemonadeAssetSize.Medium,
-                            )
-                        },
+                        leadingIcon = LemonadeIcons.Gear,
                     )
                     LemonadeUi.DropdownItem(
                         text = "Profile",
                         onClick = { leadingIconsExpanded = false },
-                        leadingIcon = {
-                            LemonadeUi.Icon(
-                                icon = LemonadeIcons.User,
-                                contentDescription = null,
-                                size = LemonadeAssetSize.Medium,
-                            )
-                        },
+                        leadingIcon = LemonadeIcons.User,
                     )
                     LemonadeUi.DropdownItem(
                         text = "Notifications",
                         onClick = { leadingIconsExpanded = false },
-                        leadingIcon = {
-                            LemonadeUi.Icon(
-                                icon = LemonadeIcons.Bell,
-                                contentDescription = null,
-                                size = LemonadeAssetSize.Medium,
-                            )
-                        },
+                        leadingIcon = LemonadeIcons.Bell,
                     )
                 }
             }
@@ -143,35 +124,17 @@ internal fun DropdownSampleDisplay() {
                     LemonadeUi.DropdownItem(
                         text = "Edit",
                         onClick = { trailingIconsExpanded = false },
-                        trailingIcon = {
-                            LemonadeUi.Icon(
-                                icon = LemonadeIcons.PencilLine,
-                                contentDescription = null,
-                                size = LemonadeAssetSize.Small,
-                            )
-                        },
+                        trailingIcon = LemonadeIcons.PencilLine,
                     )
                     LemonadeUi.DropdownItem(
                         text = "Share",
                         onClick = { trailingIconsExpanded = false },
-                        trailingIcon = {
-                            LemonadeUi.Icon(
-                                icon = LemonadeIcons.Share,
-                                contentDescription = null,
-                                size = LemonadeAssetSize.Small,
-                            )
-                        },
+                        trailingIcon = LemonadeIcons.Share,
                     )
                     LemonadeUi.DropdownItem(
                         text = "Delete",
                         onClick = { trailingIconsExpanded = false },
-                        trailingIcon = {
-                            LemonadeUi.Icon(
-                                icon = LemonadeIcons.Trash,
-                                contentDescription = null,
-                                size = LemonadeAssetSize.Small,
-                            )
-                        },
+                        trailingIcon = LemonadeIcons.Trash,
                     )
                 }
             }
@@ -228,18 +191,13 @@ internal fun DropdownSampleDisplay() {
                 LemonadeUi.Dropdown(
                     expanded = nonDismissableExpanded,
                     onDismissRequest = { nonDismissableExpanded = false },
-                    dismissable = false,
+                    dismissOnBackPress = false,
+                    dismissOnClickOutside = false,
                 ) {
                     LemonadeUi.DropdownItem(
                         text = "Close Menu",
                         onClick = { nonDismissableExpanded = false },
-                        leadingIcon = {
-                            LemonadeUi.Icon(
-                                icon = LemonadeIcons.Times,
-                                contentDescription = null,
-                                size = LemonadeAssetSize.Small,
-                            )
-                        },
+                        leadingIcon = LemonadeIcons.Times,
                     )
                     LemonadeUi.DropdownItem(
                         text = "Another Option",
