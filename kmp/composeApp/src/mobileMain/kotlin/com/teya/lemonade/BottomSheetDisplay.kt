@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,7 +21,6 @@ import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonVariant
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun BottomSheetSampleDisplay() {
     var showBasicSheet by remember { mutableStateOf(false) }
