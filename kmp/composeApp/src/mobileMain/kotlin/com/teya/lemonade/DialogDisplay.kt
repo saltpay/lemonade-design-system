@@ -92,7 +92,7 @@ internal fun DialogSampleDisplay() {
                 LemonadeUi.Button(
                     label = "Cancel",
                     onClick = { showBasicDialog = false },
-                    variant = LemonadeButtonVariant.Tertiary,
+                    variant = LemonadeButtonVariant.Neutral,
                     size = LemonadeButtonSize.Small,
                 )
                 @OptIn(ExperimentalLemonadeComponent::class)
