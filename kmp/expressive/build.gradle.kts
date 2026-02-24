@@ -13,7 +13,7 @@ plugins {
 }
 
 lemonadePublishing {
-    artifactId = "lemonade-material"
+    artifactId = "lemonade-expressive"
 }
 
 kotlin {
@@ -56,7 +56,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.teya.lemonade.material"
+    namespace = "com.teya.lemonade.expressive"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
