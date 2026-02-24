@@ -57,7 +57,7 @@ private fun CoreCard(
     } else {
         null
     }
-    
+
     Column(
         modifier = modifier
             .fillMaxWidth()
