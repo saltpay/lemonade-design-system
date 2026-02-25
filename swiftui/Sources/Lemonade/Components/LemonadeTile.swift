@@ -120,25 +120,37 @@ private struct LemonadeTileView<AddonContent: View>: View {
         isPressed ? variant.backgroundPressedColor : variant.backgroundColor
     }
 
+    private var tileContent: some View {
+        VStack(spacing: LemonadeTheme.spaces.spacing200) {
+            LemonadeUi.Icon(
+                icon: icon,
+                contentDescription: nil,
+                size: .medium
+            )
+
+            LemonadeUi.Text(
+                label,
+                textStyle: LemonadeTypography.shared.bodyMediumMedium,
+                color: LemonadeTheme.colors.content.contentPrimary,
+                overflow: .tail,
+                maxLines: 1
+            )
+        }
+    }
+
     var body: some View {
         ZStack(alignment: .topTrailing) {
             // Main tile content
-            VStack(spacing: LemonadeTheme.spaces.spacing200) {
-                LemonadeUi.Icon(
-                    icon: icon,
-                    contentDescription: nil,
-                    size: .medium
-                )
-
-                LemonadeUi.Text(
-                    label,
-                    textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                    color: LemonadeTheme.colors.content.contentPrimary,
-                    overflow: .tail,
-                    maxLines: 1
-                )
+            Group {
+                if #available(iOS 16, macOS 13, *) {
+                    DefaultMinSize(minWidth: minWidth) {
+                        tileContent
+                    }
+                } else {
+                    tileContent
+                        .frame(minWidth: minWidth)
+                }
             }
-            .frame(minWidth: minWidth)
             .padding(.horizontal, LemonadeTheme.spaces.spacing100)
             .padding(.vertical, LemonadeTheme.spaces.spacing400)
             .background(backgroundColor)
@@ -236,6 +248,22 @@ struct LemonadeTile_Previews: PreviewProvider {
                     enabled: false,
                     variant: .neutral
                 )
+            }
+
+            // Tight container — tiles shrink below 120pt instead of overflowing
+            // Only demonstrates correctly on iOS 16+ where DefaultMinSize is used
+            if #available(iOS 16, macOS 13, *) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Tight container (200pt for 3 tiles)")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    HStack(spacing: 8) {
+                        LemonadeUi.Tile(label: "One", icon: .heart, variant: .neutral)
+                        LemonadeUi.Tile(label: "Two", icon: .star, variant: .neutral)
+                        LemonadeUi.Tile(label: "Three", icon: .check, variant: .neutral)
+                    }
+                    .frame(width: 200)
+                }
             }
         }
         .padding()

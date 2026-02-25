@@ -117,6 +117,35 @@ struct TileDisplayView: View {
                     }
                 }
 
+                // Constrained HStack — tiles shrink below default 120pt
+                sectionView(title: "Constrained HStack (3 tiles, padded)") {
+                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
+                        LemonadeUi.Tile(
+                            label: "Transfer",
+                            icon: .arrowLeftRight,
+                            onClick: {},
+                            variant: .neutral
+                        )
+                        .frame(maxWidth: .infinity)
+
+                        LemonadeUi.Tile(
+                            label: "Pay",
+                            icon: .card,
+                            onClick: {},
+                            variant: .neutral
+                        )
+                        .frame(maxWidth: .infinity)
+
+                        LemonadeUi.Tile(
+                            label: "Request",
+                            icon: .download,
+                            onClick: {},
+                            variant: .neutral
+                        )
+                        .frame(maxWidth: .infinity)
+                    }
+                }
+
                 // Use Case: Quick Actions
                 sectionView(title: "Use Case: Quick Actions") {
                     LazyVGrid(columns: [
