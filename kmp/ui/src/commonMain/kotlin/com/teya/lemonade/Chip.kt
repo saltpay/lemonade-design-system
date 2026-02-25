@@ -430,7 +430,6 @@ private class ChipPreviewProvider : PreviewParameterProvider<ChipPreviewData> {
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun ChipPreview(

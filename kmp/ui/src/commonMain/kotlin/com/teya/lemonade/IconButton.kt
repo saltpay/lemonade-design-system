@@ -193,7 +193,6 @@ private class IconButtonPreviewProvider : PreviewParameterProvider<IconButtonPre
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @Composable
 @LemonadePreview
 private fun SymbolContainerPreview(

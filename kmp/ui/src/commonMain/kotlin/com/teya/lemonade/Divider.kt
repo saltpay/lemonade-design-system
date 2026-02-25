@@ -206,7 +206,6 @@ private class HorizontalDividerPreviewProvider :
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun HorizontalDividerPreview(
@@ -234,7 +233,6 @@ private class VerticalDividerPreviewProvider :
             }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun VerticalDividerPreview(

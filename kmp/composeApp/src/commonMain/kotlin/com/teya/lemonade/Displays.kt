@@ -33,6 +33,7 @@ internal interface Displays {
             IconButton,
             Link,
             Shadows,
+            Skeleton,
             Tile,
             Spacing,
             Radius,
@@ -162,6 +163,11 @@ internal interface Displays {
     @Serializable
     data object Shadows : Displays {
         override val label: String = "Shadows"
+    }
+
+    @Serializable
+    data object Skeleton : Displays {
+        override val label: String = "Skeleton"
     }
 
     @Serializable

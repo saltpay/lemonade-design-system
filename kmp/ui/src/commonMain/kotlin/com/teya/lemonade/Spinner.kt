@@ -138,7 +138,6 @@ private class SpinnerPreviewProvider : PreviewParameterProvider<SpinnerPreviewDa
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @Composable
 @LemonadePreview
 private fun SpinnerPreview(

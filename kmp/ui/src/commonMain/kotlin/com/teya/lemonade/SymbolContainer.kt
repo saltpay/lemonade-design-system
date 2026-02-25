@@ -270,7 +270,6 @@ private class SymbolContainerPreviewProvider :
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun SymbolContainerPreview(
