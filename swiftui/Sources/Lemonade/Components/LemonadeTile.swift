@@ -114,8 +114,6 @@ private struct LemonadeTileView<AddonContent: View>: View {
 
     @State private var isPressed = false
 
-    private let minWidth: CGFloat = 120
-
     private var backgroundColor: Color {
         isPressed ? variant.backgroundPressedColor : variant.backgroundColor
     }
@@ -138,7 +136,6 @@ private struct LemonadeTileView<AddonContent: View>: View {
                     maxLines: 1
                 )
             }
-            .frame(minWidth: minWidth)
             .padding(.horizontal, LemonadeTheme.spaces.spacing100)
             .padding(.vertical, LemonadeTheme.spaces.spacing400)
             .background(backgroundColor)
