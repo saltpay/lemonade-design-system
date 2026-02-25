@@ -87,6 +87,7 @@
 		F42CFCBA2ECE4415C9556A67 /* ListItemDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDCF61E536A8E991993DC70 /* ListItemDisplayView.swift */; };
 		FD372D62EDA6C7A0422F37B2 /* LemonadeToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329E4F4BCF65D5688A9253E5 /* LemonadeToast.swift */; };
 		FDD389FA67D01795A48EA1F6 /* CGFloat+Lemonade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0B0C43DBB4426BDB2FA6BC /* CGFloat+Lemonade.swift */; };
+		B2C3D4E5F6A70819394B5C6D /* DefaultMinSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C2D3E4F5A60718293A4B5C /* DefaultMinSize.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -193,6 +194,7 @@
 		F90230C017C806FE74DE7DAB /* SymbolContainerDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolContainerDisplayView.swift; sourceTree = "<group>"; };
 		F9C40CD56F4FBC06ED54B7FE /* LemonadeShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeShadow.swift; sourceTree = "<group>"; };
 		FE58BF3E61E443C432276FA5 /* LemonadeBrandLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeBrandLogo.swift; sourceTree = "<group>"; };
+		B1C2D3E4F5A60718293A4B5C /* DefaultMinSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMinSize.swift; sourceTree = "<group>"; };
 		D1E2F3A4B5C60718293A4B5D /* LemonadeDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeDivider.swift; sourceTree = "<group>"; };
 		D2E3F4A5B6C70819394B5C6E /* DividerDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerDisplayView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -273,6 +275,7 @@
 				48E25CA038CC2E91DEB0D036 /* LemonadeUi.swift */,
 				31958ED0F0ED07544A25AA1D /* Components */,
 				2444F0F442F81744E46E7B0C /* Extensions */,
+				C1D2E3F4A5B60718293A4B5C /* Layouts */,
 				D2C34FD59DCF55604F1EC4D7 /* Modifiers */,
 				5DBD20C5BBAEFE6DEBFD59E8 /* Resources */,
 			);
@@ -349,6 +352,14 @@
 				60DCF52F3B472EB8CF527E44 /* Sources */,
 				865D9770A57D884D35955B4A /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		C1D2E3F4A5B60718293A4B5C /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				B1C2D3E4F5A60718293A4B5C /* DefaultMinSize.swift */,
+			);
+			path = Layouts;
 			sourceTree = "<group>";
 		};
 		D2C34FD59DCF55604F1EC4D7 /* Modifiers */ = {
@@ -493,6 +504,7 @@
 				B0549DDE170EDD8246C85EFB /* LemonadeTypography.swift in Sources */,
 				5041602F7C5DC3FFD9A2BD2A /* LemonadeUi.swift in Sources */,
 				D8A6F14152CAAF7F1B48D363 /* Shape+Lemonade.swift in Sources */,
+				B2C3D4E5F6A70819394B5C6D /* DefaultMinSize.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
