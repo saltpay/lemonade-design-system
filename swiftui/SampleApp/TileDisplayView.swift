@@ -117,6 +117,43 @@ struct TileDisplayView: View {
                     }
                 }
 
+                // Use Case: Constrained HStack (3 tiles, padded)
+                sectionView(title: "Use Case: Constrained HStack") {
+                    VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing200) {
+                        LemonadeUi.Text(
+                            "3 tiles in an HStack with .frame(maxWidth: .infinity) and horizontal padding — the layout that caused overflow on narrower screens.",
+                            textStyle: LemonadeTypography.shared.bodySmallRegular,
+                            color: .content.contentSecondary
+                        )
+
+                        HStack(spacing: LemonadeTheme.spaces.spacing300) {
+                            LemonadeUi.Tile(
+                                label: "Add money",
+                                icon: .moneyArrowDown,
+                                onClick: {},
+                                variant: .neutral
+                            )
+                            .frame(maxWidth: .infinity)
+
+                            LemonadeUi.Tile(
+                                label: "Transfer",
+                                icon: .arrowsExchange,
+                                onClick: {},
+                                variant: .neutral
+                            )
+                            .frame(maxWidth: .infinity)
+
+                            LemonadeUi.Tile(
+                                label: "Card",
+                                icon: .card,
+                                onClick: {},
+                                variant: .neutral
+                            )
+                            .frame(maxWidth: .infinity)
+                        }
+                    }
+                }
+
                 // Use Case: Quick Actions
                 sectionView(title: "Use Case: Quick Actions") {
                     LazyVGrid(columns: [
