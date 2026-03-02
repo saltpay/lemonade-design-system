@@ -100,7 +100,6 @@ public fun LemonadeUi.ActionRowItem(
     }
 }
 
-@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun ActionRowItemPreview() {
@@ -111,7 +110,6 @@ private fun ActionRowItemPreview() {
     )
 }
 
-@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun ActionRowItemWithTrailingPreview() {
@@ -130,7 +128,6 @@ private fun ActionRowItemWithTrailingPreview() {
     )
 }
 
-@Suppress("UnusedPrivateMember")
 @LemonadePreview
 @Composable
 private fun ActionRowItemDisabledPreview() {
