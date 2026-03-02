@@ -177,7 +177,6 @@ private class NoticeRowPreviewProvider :
         }.asSequence()
 }
 
-@Suppress("UnusedPrivateMember")
 @Composable
 @LemonadePreview
 private fun NoticeRowPreview(
