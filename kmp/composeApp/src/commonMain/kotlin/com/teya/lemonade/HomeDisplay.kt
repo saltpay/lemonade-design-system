@@ -109,6 +109,7 @@ internal object DisplayRegistry {
             title = "Navigation",
             items = listOf(
                 Displays.Link,
+                Displays.Tabs,
                 Displays.Tile,
             ),
         ),

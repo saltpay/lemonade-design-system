@@ -42,6 +42,7 @@ internal interface Displays {
             BorderWidth,
             Spinner,
             Divider,
+            Tabs,
         )
     }
 
@@ -208,5 +209,10 @@ internal interface Displays {
     @Serializable
     data object Divider : Displays {
         override val label: String = "Divider"
+    }
+
+    @Serializable
+    data object Tabs : Displays {
+        override val label: String = "Tabs"
     }
 }
