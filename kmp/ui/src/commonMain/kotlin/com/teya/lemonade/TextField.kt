@@ -284,7 +284,7 @@ internal fun CoreTextField(
 
 @Suppress("LongMethod", "CyclomaticComplexMethod", "LongParameterList")
 @Composable
-private fun CoreTextFieldDecorator(
+internal fun CoreTextFieldDecorator(
     label: String?,
     optionalIndicator: String?,
     supportText: String?,
