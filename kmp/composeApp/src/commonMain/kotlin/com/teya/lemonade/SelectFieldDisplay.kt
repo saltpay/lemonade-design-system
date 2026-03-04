@@ -28,6 +28,7 @@ internal fun SelectFieldDisplay() {
         SelectFieldSection(title = "Basic") {
             LemonadeUi.SelectField(
                 onClick = { },
+                selectedValue = "ABC",
                 placeholderText = "Select an option",
             )
         }
@@ -38,6 +39,7 @@ internal fun SelectFieldDisplay() {
                 onClick = { },
                 placeholderText = "Select a category",
                 label = "Category",
+                selectedValue = null,
             )
         }
 
@@ -74,6 +76,7 @@ internal fun SelectFieldDisplay() {
                 label = "Required Field",
                 errorMessage = "Please select an option",
                 error = true,
+                selectedValue = null,
             )
         }
 
@@ -85,6 +88,7 @@ internal fun SelectFieldDisplay() {
                 label = "Country",
                 supportText = "Choose your country of residence",
                 optionalIndicator = "Optional",
+                selectedValue = null,
             )
         }
 

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -116,16 +117,16 @@ public fun LemonadeUi.SelectField(
 
             AnimatedContent(
                 targetState = selectedValue ?: placeholderText,
+                modifier = Modifier.weight(weight = 1f),
                 content = { showingText ->
                     if (showingText != null) {
                         LemonadeUi.Text(
                             text = showingText,
                             textStyle = LocalTypographies.current.bodyMediumRegular,
                             color = LocalColors.current.content.contentPrimary,
-                            modifier = Modifier.weight(weight = 1f),
                         )
                     } else {
-                        Spacer(modifier = Modifier.weight(weight = 1f))
+                        Spacer(modifier = Modifier.fillMaxWidth())
                     }
                 },
             )
