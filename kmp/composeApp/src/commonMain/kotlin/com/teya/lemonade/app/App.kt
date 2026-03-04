@@ -22,6 +22,7 @@ import com.teya.lemonade.RadioButtonDisplay
 import com.teya.lemonade.RadiusDisplay
 import com.teya.lemonade.ResourceListItemDisplay
 import com.teya.lemonade.SearchFieldDisplay
+import com.teya.lemonade.SelectFieldDisplay
 import com.teya.lemonade.SegmentedControlDisplay
 import com.teya.lemonade.SelectionListItemDisplay
 import com.teya.lemonade.ShadowDisplay
@@ -62,6 +63,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.Tag to { _ -> TagDisplay() },
     Displays.TextField to { _ -> TextFieldDisplay() },
     Displays.SearchField to { _ -> SearchFieldDisplay() },
+    Displays.SelectField to { _ -> SelectFieldDisplay() },
     Displays.Card to { _ -> CardDisplay() },
     Displays.Button to { _ -> ButtonDisplay() },
     Displays.IconButton to { _ -> IconButtonDisplay() },

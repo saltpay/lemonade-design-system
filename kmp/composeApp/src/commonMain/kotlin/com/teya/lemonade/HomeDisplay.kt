@@ -81,6 +81,7 @@ internal object DisplayRegistry {
             items = listOf(
                 Displays.TextField,
                 Displays.SearchField,
+                Displays.SelectField,
             ),
         ),
         DisplayData(
