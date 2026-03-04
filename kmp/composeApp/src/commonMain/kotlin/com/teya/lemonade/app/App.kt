@@ -22,8 +22,8 @@ import com.teya.lemonade.RadioButtonDisplay
 import com.teya.lemonade.RadiusDisplay
 import com.teya.lemonade.ResourceListItemDisplay
 import com.teya.lemonade.SearchFieldDisplay
-import com.teya.lemonade.SelectFieldDisplay
 import com.teya.lemonade.SegmentedControlDisplay
+import com.teya.lemonade.SelectFieldDisplay
 import com.teya.lemonade.SelectionListItemDisplay
 import com.teya.lemonade.ShadowDisplay
 import com.teya.lemonade.SizesDisplay

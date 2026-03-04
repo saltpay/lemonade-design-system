@@ -1,5 +1,6 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -62,7 +63,7 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 @Composable
 public fun LemonadeUi.SelectField(
     onClick: () -> Unit,
-    selectedValue: String? = null,
+    selectedValue: String?,
     placeholderText: String? = null,
     label: String? = null,
     optionalIndicator: String? = null,
@@ -90,7 +91,13 @@ public fun LemonadeUi.SelectField(
         interactionSource = interactionSource,
         error = error,
         enabled = enabled,
-        modifier = modifier,
+        modifier = modifier.clickable(
+            enabled = enabled,
+            interactionSource = interactionSource,
+            indication = null,
+            role = Role.DropdownList,
+            onClick = onClick,
+        ),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -98,13 +105,6 @@ public fun LemonadeUi.SelectField(
             modifier = Modifier
                 .alpha(alpha = animatedAlpha)
                 .align(alignment = Alignment.CenterStart)
-                .clickable(
-                    enabled = enabled,
-                    interactionSource = interactionSource,
-                    indication = null,
-                    role = Role.DropdownList,
-                    onClick = onClick,
-                )
                 .padding(
                     horizontal = LocalSpaces.current.spacing400,
                     vertical = LocalSpaces.current.spacing400,
@@ -114,23 +114,21 @@ public fun LemonadeUi.SelectField(
                 leadingContent()
             }
 
-            if (selectedValue != null) {
-                LemonadeUi.Text(
-                    text = selectedValue,
-                    textStyle = LocalTypographies.current.bodyMediumRegular,
-                    color = LocalColors.current.content.contentPrimary,
-                    modifier = Modifier.weight(weight = 1f),
-                )
-            } else if (placeholderText != null) {
-                LemonadeUi.Text(
-                    text = placeholderText,
-                    textStyle = LocalTypographies.current.bodyMediumRegular,
-                    color = LocalColors.current.content.contentSecondary,
-                    modifier = Modifier.weight(weight = 1f),
-                )
-            } else {
-                Spacer(modifier = Modifier.weight(weight = 1f))
-            }
+            AnimatedContent(
+                targetState = selectedValue ?: placeholderText,
+                content = { showingText ->
+                    if (showingText != null) {
+                        LemonadeUi.Text(
+                            text = showingText,
+                            textStyle = LocalTypographies.current.bodyMediumRegular,
+                            color = LocalColors.current.content.contentPrimary,
+                            modifier = Modifier.weight(weight = 1f),
+                        )
+                    } else {
+                        Spacer(modifier = Modifier.weight(weight = 1f))
+                    }
+                },
+            )
 
             LemonadeUi.Icon(
                 icon = LemonadeIcons.ChevronDown,
