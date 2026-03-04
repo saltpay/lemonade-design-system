@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeIcons
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
@@ -101,6 +102,7 @@ public fun LemonadeUi.SelectField(
                     enabled = enabled,
                     interactionSource = interactionSource,
                     indication = null,
+                    role = Role.DropdownList,
                     onClick = onClick,
                 )
                 .padding(
