@@ -46,17 +46,15 @@ public extension LemonadeUi {
     }
 
     /// Block skeleton placeholder for card/image loading.
-    /// Full width, fixed 160pt height.
+    /// Full width, fixed height (size1600 token).
     ///
     /// ## Usage
     /// ```swift
     /// LemonadeUi.BlockSkeleton()
     /// ```
     @ViewBuilder
-    static func BlockSkeleton(
-        size: LemonadeSkeletonSize = .medium
-    ) -> some View {
-        SkeletonView(variant: .block, size: size)
+    static func BlockSkeleton() -> some View {
+        SkeletonView(variant: .block, size: .medium)
     }
 }
 
