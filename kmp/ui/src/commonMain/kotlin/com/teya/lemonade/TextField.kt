@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -284,7 +285,7 @@ internal fun CoreTextField(
 
 @Suppress("LongMethod", "CyclomaticComplexMethod", "LongParameterList")
 @Composable
-private fun CoreTextFieldDecorator(
+internal fun CoreTextFieldDecorator(
     label: String?,
     optionalIndicator: String?,
     supportText: String?,
@@ -296,6 +297,7 @@ private fun CoreTextFieldDecorator(
     modifier: Modifier = Modifier,
     textBoxContent: @Composable BoxScope.() -> Unit,
 ) {
+    val isPressed by interactionSource.collectIsPressedAsState()
     val isHovering by interactionSource.collectIsHoveredAsState()
     val isFocused by interactionSource.collectIsFocusedAsState()
 
@@ -303,7 +305,7 @@ private fun CoreTextFieldDecorator(
         targetValue = when {
             !enabled -> LocalColors.current.background.bgElevated
             error && !isFocused -> LocalColors.current.background.bgCriticalSubtle
-            isHovering -> LocalColors.current.interaction.bgSubtleInteractive
+            isHovering || isPressed -> LocalColors.current.interaction.bgSubtleInteractive
             else -> LocalColors.current.background.bgSubtle.copy(
                 alpha = LocalOpacities.current.base.opacity0,
             )

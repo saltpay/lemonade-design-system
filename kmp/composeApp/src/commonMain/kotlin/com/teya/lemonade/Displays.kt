@@ -28,6 +28,7 @@ internal interface Displays {
             Tag,
             TextField,
             SearchField,
+            SelectField,
             Card,
             Button,
             IconButton,
@@ -139,6 +140,11 @@ internal interface Displays {
     @Serializable
     data object SearchField : Displays {
         override val label: String = "SearchField"
+    }
+
+    @Serializable
+    data object SelectField : Displays {
+        override val label: String = "SelectField"
     }
 
     @Serializable
