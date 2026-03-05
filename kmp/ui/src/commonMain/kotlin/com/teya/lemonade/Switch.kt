@@ -266,17 +266,20 @@ internal enum class SwitchState {
     Pressed,
 }
 
-internal expect fun SwitchState.getSwitchProps(): SwitchSizeProps
-
-internal fun SwitchState.defaultSwitchProps(): SwitchSizeProps =
+internal fun SwitchState.getSwitchProps(): SwitchSizeProps =
     when (this) {
-        SwitchState.Default,
-        SwitchState.Hover,
-        -> SwitchSizeProps(
+        SwitchState.Default -> SwitchSizeProps(
             minHeight = 28.dp,
             minWidth = 48.dp,
             minIndicatorHeight = 22.dp,
             minIndicatorWidth = 22.dp,
+        )
+
+        SwitchState.Hover -> SwitchSizeProps(
+            minHeight = 28.dp,
+            minWidth = 48.dp,
+            minIndicatorHeight = 22.dp,
+            minIndicatorWidth = 24.dp,
         )
 
         SwitchState.Pressed -> SwitchSizeProps(
