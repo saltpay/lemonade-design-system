@@ -23,7 +23,7 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTileVariant
 
 @Composable
-internal expect fun LemonadeUi.SampleTile(
+internal fun LemonadeUi.SampleTile(
     label: String,
     icon: LemonadeIcons,
     modifier: Modifier = Modifier,
@@ -32,7 +32,22 @@ internal expect fun LemonadeUi.SampleTile(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     variant: LemonadeTileVariant = LemonadeTileVariant.Neutral,
     addon: (@Composable () -> Unit)? = null,
-)
+) {
+    LemonadeUi.Tile(
+        label = label,
+        icon = icon,
+        modifier = modifier,
+        enabled = enabled,
+        onClick = onClick,
+        interactionSource = interactionSource,
+        variant = variant,
+        addon = if (addon != null) {
+            { addon() }
+        } else {
+            null
+        },
+    )
+}
 
 @Suppress("LongMethod")
 @Composable
