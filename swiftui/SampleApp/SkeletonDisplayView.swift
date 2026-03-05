@@ -4,11 +4,11 @@ import Lemonade
 struct SkeletonDisplayView: View {
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
+            VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing800) {
                 sectionView(title: "Line Skeleton") {
-                    VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing300) {
                         ForEach(skeletonSizes, id: \.label) { item in
-                            VStack(alignment: .leading, spacing: 4) {
+                            VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing100) {
                                 Text(item.label)
                                     .font(.caption)
                                     .foregroundStyle(.content.contentSecondary)
@@ -19,9 +19,9 @@ struct SkeletonDisplayView: View {
                 }
 
                 sectionView(title: "Circle Skeleton") {
-                    HStack(spacing: 16) {
+                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
                         ForEach(skeletonSizes, id: \.label) { item in
-                            VStack(spacing: 4) {
+                            VStack(spacing: LemonadeTheme.spaces.spacing100) {
                                 LemonadeUi.CircleSkeleton(size: item.size)
                                 Text(item.label)
                                     .font(.caption2)
@@ -36,12 +36,12 @@ struct SkeletonDisplayView: View {
                 }
 
                 sectionView(title: "Content Placeholder") {
-                    HStack(alignment: .top, spacing: 12) {
+                    HStack(alignment: .top, spacing: LemonadeTheme.spaces.spacing300) {
                         LemonadeUi.CircleSkeleton(size: .large)
-                        VStack(alignment: .leading, spacing: 8) {
+                        VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing200) {
                             LemonadeUi.LineSkeleton(size: .small)
                             LemonadeUi.LineSkeleton(size: .xSmall)
-                                .frame(width: 160)
+                                .frame(maxWidth: 160)
                         }
                     }
                 }
@@ -62,7 +62,7 @@ struct SkeletonDisplayView: View {
     }
 
     private func sectionView<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing300) {
             Text(title)
                 .font(.headline)
                 .foregroundStyle(.content.contentSecondary)

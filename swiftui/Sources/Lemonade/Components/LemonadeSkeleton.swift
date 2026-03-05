@@ -144,12 +144,12 @@ private struct SkeletonView: View {
 #if DEBUG
 struct LemonadeSkeleton_Previews: PreviewProvider {
     static var previews: some View {
-        VStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing600) {
             LemonadeUi.LineSkeleton(size: .small)
             LemonadeUi.LineSkeleton(size: .medium)
             LemonadeUi.LineSkeleton(size: .large)
 
-            HStack(spacing: 16) {
+            HStack(spacing: LemonadeTheme.spaces.spacing400) {
                 LemonadeUi.CircleSkeleton(size: .small)
                 LemonadeUi.CircleSkeleton(size: .medium)
                 LemonadeUi.CircleSkeleton(size: .large)
