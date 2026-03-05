@@ -102,38 +102,45 @@ private struct SkeletonView: View {
     let variant: SkeletonVariant
     let size: LemonadeSkeletonSize
 
-    @State private var opacity: Double = LemonadeTheme.opacity.base.opacity20
+    @State private var shimmerOffset: CGFloat = -1
 
     var body: some View {
         skeletonShape
-            .opacity(opacity)
             .onAppear {
                 withAnimation(
                     .easeInOut(duration: 1.0)
                     .repeatForever(autoreverses: true)
                 ) {
-                    opacity = LemonadeTheme.opacity.base.opacity60
+                    shimmerOffset = 1
                 }
             }
     }
 
     @ViewBuilder
     private var skeletonShape: some View {
+        let baseColor = LemonadeTheme.colors.background.bgElevated
+        let highlightColor = LemonadeTheme.colors.background.bgElevatedHigh
+        let gradient = LinearGradient(
+            gradient: Gradient(colors: [baseColor, highlightColor, baseColor]),
+            startPoint: UnitPoint(x: shimmerOffset - 0.5, y: 0.5),
+            endPoint: UnitPoint(x: shimmerOffset + 0.5, y: 0.5)
+        )
+
         switch variant {
         case .line:
             RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius100)
-                .fill(LemonadeTheme.colors.background.bgElevatedHigh)
+                .fill(gradient)
                 .frame(height: size.lineHeight)
                 .padding(.vertical, LemonadeTheme.spaces.spacing100)
 
         case .circle:
             Circle()
-                .fill(LemonadeTheme.colors.background.bgElevatedHigh)
+                .fill(gradient)
                 .frame(width: size.circleDiameter, height: size.circleDiameter)
 
         case .block:
             RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
-                .fill(LemonadeTheme.colors.background.bgElevatedHigh)
+                .fill(gradient)
                 .frame(height: LemonadeTheme.sizes.size1600)
         }
     }
