@@ -33,7 +33,7 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 @Composable
-internal fun LemonadeUi.MobileTile(
+public fun LemonadeUi.Tile(
     label: String,
     icon: LemonadeIcons,
     modifier: Modifier = Modifier,
@@ -245,7 +245,7 @@ private fun LemonadeLabeledRadioButtonPreview(
                 },
             ).padding(30.dp),
     ) {
-        LemonadeUi.MobileTile(
+        LemonadeUi.Tile(
             label = "Label",
             icon = LemonadeIcons.Heart,
             enabled = previewData.enabled,
