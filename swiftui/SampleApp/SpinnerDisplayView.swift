@@ -39,14 +39,49 @@ struct SpinnerDisplayView: View {
                     }
                 }
 
-                // In Context
-                sectionView(title: "In Context - Loading Button") {
-                    LemonadeUi.Button(
-                        label: "Submit",
-                        onClick: { },
-                        loading: true
-                    )
-                    .frame(maxWidth: .infinity)
+                // Loading Buttons - All Variants
+                sectionView(title: "Loading Buttons") {
+                    VStack(spacing: 12) {
+                        LemonadeUi.Button(
+                            label: "Primary",
+                            onClick: { },
+                            variant: .primary,
+                            loading: true
+                        )
+                        .frame(maxWidth: .infinity)
+
+                        LemonadeUi.Button(
+                            label: "Secondary",
+                            onClick: { },
+                            variant: .secondary,
+                            loading: true
+                        )
+                        .frame(maxWidth: .infinity)
+
+                        LemonadeUi.Button(
+                            label: "Neutral",
+                            onClick: { },
+                            variant: .neutral,
+                            loading: true
+                        )
+                        .frame(maxWidth: .infinity)
+
+                        LemonadeUi.Button(
+                            label: "Critical",
+                            onClick: { },
+                            variant: .critical,
+                            loading: true
+                        )
+                        .frame(maxWidth: .infinity)
+
+                        LemonadeUi.Button(
+                            label: "Special",
+                            onClick: { },
+                            variant: .special,
+                            loading: true
+                        )
+                        .frame(maxWidth: .infinity)
+                    }
                 }
             }
             .padding()
