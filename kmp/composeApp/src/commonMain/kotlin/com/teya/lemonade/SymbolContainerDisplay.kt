@@ -17,6 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import com.teya.lemonade.core.LemonadeBadgeSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.SymbolContainerShape
@@ -467,6 +469,119 @@ internal fun SymbolContainerDisplay() {
                             textStyle = LemonadeTheme.typography.bodySmallRegular,
                         )
                     }
+                }
+            }
+        }
+
+        // Painter Variant (fill = false)
+        SymbolContainerSection(title = "Painter (fill = false)") {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        painter = ColorPainter(Color.Red),
+                        contentDescription = "Netflix logo",
+                        fill = false,
+                        size = SymbolContainerSize.Small,
+                    )
+                    LemonadeUi.Text(
+                        text = "Small",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        painter = ColorPainter(Color.Red),
+                        contentDescription = "Netflix logo",
+                        fill = false,
+                        size = SymbolContainerSize.Medium,
+                    )
+                    LemonadeUi.Text(
+                        text = "Medium",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        painter = ColorPainter(Color.Red),
+                        contentDescription = "Netflix logo",
+                        fill = false,
+                        size = SymbolContainerSize.Large,
+                    )
+                    LemonadeUi.Text(
+                        text = "Large",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+            }
+        }
+
+        // Painter Variant (fill = true)
+        SymbolContainerSection(title = "Painter (fill = true)") {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        painter = ColorPainter(Color.Red),
+                        contentDescription = "Netflix logo",
+                        fill = true,
+                        size = SymbolContainerSize.Small,
+                        shape = SymbolContainerShape.Circle,
+                    )
+                    LemonadeUi.Text(
+                        text = "Circle",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        painter = ColorPainter(Color.Red),
+                        contentDescription = "Netflix logo",
+                        fill = true,
+                        size = SymbolContainerSize.Medium,
+                        shape = SymbolContainerShape.Rounded,
+                    )
+                    LemonadeUi.Text(
+                        text = "Rounded",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        painter = ColorPainter(Color.Red),
+                        contentDescription = "Netflix logo",
+                        fill = true,
+                        size = SymbolContainerSize.Large,
+                        shape = SymbolContainerShape.Circle,
+                    )
+                    LemonadeUi.Text(
+                        text = "Large",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
                 }
             }
         }
