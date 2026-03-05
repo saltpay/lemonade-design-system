@@ -158,3 +158,10 @@ swiftui/fastlane/test_output
 
 # Swift Package Manager resolved file
 swiftui/Package.resolved
+
+# Claude
+docs/
+.claude/settings.local.json
+kmp/.claude/settings.local.json
+swiftui/.claude/settings.local.json
+flutter/.claude/settings.local.json
