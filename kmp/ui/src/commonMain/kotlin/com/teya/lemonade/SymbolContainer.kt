@@ -11,12 +11,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTextStyle
+import com.teya.lemonade.core.SymbolContainerShape
 import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.SymbolContainerVoice
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
@@ -40,6 +42,7 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
  * @param voice - [SymbolContainerVoice] to define the tone of voice. This will effectively define
  *  color of the background and the tint for the [icon]. Defaults to [SymbolContainerVoice.Neutral].
  * @param size - [SymbolContainerSize] to define the container's size. Defaults to [SymbolContainerSize.Medium].
+ * @param shape - [SymbolContainerShape] to define the container's shape. Defaults to [SymbolContainerShape.Circle].
  * @param badgeSlot - Optional composable slot for a badge overlay positioned at the bottom-right corner.
  */
 @Composable
@@ -49,11 +52,13 @@ public fun LemonadeUi.SymbolContainer(
     modifier: Modifier = Modifier,
     voice: SymbolContainerVoice = SymbolContainerVoice.Neutral,
     size: SymbolContainerSize = SymbolContainerSize.Medium,
+    shape: SymbolContainerShape = SymbolContainerShape.Circle,
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     CoreSymbolContainer(
         voice = voice,
         size = size,
+        shape = shape,
         modifier = modifier,
         badgeSlot = badgeSlot,
         contentSlot = {
@@ -83,6 +88,7 @@ public fun LemonadeUi.SymbolContainer(
  * @param voice - [SymbolContainerVoice] to define the tone of voice. This will effectively define
  *  color of the background and the color for the [text]. Defaults to [SymbolContainerVoice.Neutral].
  * @param size - [SymbolContainerSize] to define the container's size. Defaults to [SymbolContainerSize.Medium].
+ * @param shape - [SymbolContainerShape] to define the container's shape. Defaults to [SymbolContainerShape.Circle].
  * @param badgeSlot - Optional composable slot for a badge overlay positioned at the bottom-right corner.
  */
 @Composable
@@ -91,11 +97,13 @@ public fun LemonadeUi.SymbolContainer(
     modifier: Modifier = Modifier,
     voice: SymbolContainerVoice = SymbolContainerVoice.Neutral,
     size: SymbolContainerSize = SymbolContainerSize.Medium,
+    shape: SymbolContainerShape = SymbolContainerShape.Circle,
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     CoreSymbolContainer(
         voice = voice,
         size = size,
+        shape = shape,
         modifier = modifier,
         badgeSlot = badgeSlot,
         contentSlot = {
@@ -129,6 +137,7 @@ public fun LemonadeUi.SymbolContainer(
  * @param voice - [SymbolContainerVoice] to define the tone of voice. This will effectively define
  *  color of the background. Defaults to [SymbolContainerVoice.Neutral].
  * @param size - [SymbolContainerSize] to define the container's size. Defaults to [SymbolContainerSize.Medium].
+ * @param shape - [SymbolContainerShape] to define the container's shape. Defaults to [SymbolContainerShape.Circle].
  * @param badgeSlot - Optional composable slot for a badge overlay positioned at the bottom-right corner.
  */
 @Composable
@@ -137,11 +146,13 @@ public fun LemonadeUi.SymbolContainer(
     modifier: Modifier = Modifier,
     voice: SymbolContainerVoice = SymbolContainerVoice.Neutral,
     size: SymbolContainerSize = SymbolContainerSize.Medium,
+    shape: SymbolContainerShape = SymbolContainerShape.Circle,
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     CoreSymbolContainer(
         voice = voice,
         size = size,
+        shape = shape,
         modifier = modifier,
         badgeSlot = badgeSlot,
         contentSlot = {
@@ -161,10 +172,12 @@ private fun CoreSymbolContainer(
     contentSlot: @Composable BoxScope.() -> Unit,
     voice: SymbolContainerVoice,
     size: SymbolContainerSize,
+    shape: SymbolContainerShape,
     modifier: Modifier = Modifier,
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     val dimensions = size.defaultSymbolContainerPlatformDimensions()
+    val resolvedShape = shape.resolveShape()
     CompositionLocalProvider(LocalSymbolContainerPlatformDimensions provides dimensions) {
         if (badgeSlot != null) {
             val density = LocalDensity.current
@@ -186,7 +199,7 @@ private fun CoreSymbolContainer(
                         content = contentSlot,
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
-                            .clip(shape = LocalShapes.current.radiusFull)
+                            .clip(shape = resolvedShape)
                             .background(color = voice.containerColor)
                             .requiredSize(size = dimensions.containerSize),
                     )
@@ -197,7 +210,7 @@ private fun CoreSymbolContainer(
                 content = contentSlot,
                 contentAlignment = Alignment.Center,
                 modifier = modifier
-                    .clip(shape = LocalShapes.current.radiusFull)
+                    .clip(shape = resolvedShape)
                     .background(color = voice.containerColor)
                     .requiredSize(size = dimensions.containerSize),
             )
@@ -234,6 +247,13 @@ private val SymbolContainerVoice.containerColor: Color
             SymbolContainerVoice.Brand -> LocalColors.current.background.bgBrand
             SymbolContainerVoice.BrandSubtle -> LocalColors.current.background.bgBrandSubtle
         }
+    }
+
+@Composable
+private fun SymbolContainerShape.resolveShape(): Shape =
+    when (this) {
+        SymbolContainerShape.Circle -> LocalShapes.current.radiusFull
+        SymbolContainerShape.Rounded -> LocalShapes.current.radius300
     }
 
 private data class SymbolContainerPlatformDimensions(
@@ -286,6 +306,7 @@ private data class SymbolContainerPreviewData(
     val content: Any,
     val size: SymbolContainerSize,
     val voice: SymbolContainerVoice,
+    val shape: SymbolContainerShape,
 )
 
 private class SymbolContainerPreviewProvider :
@@ -297,13 +318,16 @@ private class SymbolContainerPreviewProvider :
             SymbolContainerVoice.entries.forEach { voice ->
                 listOf("A", LemonadeIcons.Heart).forEach { content ->
                     SymbolContainerSize.entries.forEach { size ->
-                        add(
-                            SymbolContainerPreviewData(
-                                content = content,
-                                size = size,
-                                voice = voice,
-                            ),
-                        )
+                        SymbolContainerShape.entries.forEach { shape ->
+                            add(
+                                SymbolContainerPreviewData(
+                                    content = content,
+                                    size = size,
+                                    voice = voice,
+                                    shape = shape,
+                                ),
+                            )
+                        }
                     }
                 }
             }
@@ -322,6 +346,7 @@ private fun SymbolContainerPreview(
                 icon = previewData.content,
                 size = previewData.size,
                 voice = previewData.voice,
+                shape = previewData.shape,
                 contentDescription = "Content Description",
             )
         }
@@ -331,6 +356,7 @@ private fun SymbolContainerPreview(
                 text = previewData.content,
                 size = previewData.size,
                 voice = previewData.voice,
+                shape = previewData.shape,
             )
         }
     }

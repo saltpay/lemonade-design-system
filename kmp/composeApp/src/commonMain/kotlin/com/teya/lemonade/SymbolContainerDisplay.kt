@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.teya.lemonade.core.LemonadeBadgeSize
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.SymbolContainerShape
 import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.SymbolContainerVoice
 
@@ -110,6 +111,45 @@ internal fun SymbolContainerDisplay() {
                     )
                     LemonadeUi.Text(
                         text = "XLarge",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+            }
+        }
+
+        // Shapes
+        SymbolContainerSection(title = "Shapes") {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.Medium,
+                        shape = SymbolContainerShape.Circle,
+                    )
+                    LemonadeUi.Text(
+                        text = "Circle",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.Medium,
+                        shape = SymbolContainerShape.Rounded,
+                    )
+                    LemonadeUi.Text(
+                        text = "Rounded",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
