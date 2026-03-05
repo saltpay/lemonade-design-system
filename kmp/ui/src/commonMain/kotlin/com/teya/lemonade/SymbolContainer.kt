@@ -1,5 +1,6 @@
 package com.teya.lemonade
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -12,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
@@ -111,6 +114,64 @@ public fun LemonadeUi.SymbolContainer(
                 text = text,
                 color = voice.tintColor,
                 textStyle = LocalSymbolContainerPlatformDimensions.current.textStyle,
+            )
+        },
+    )
+}
+
+/**
+ * A versatile container used to display a [Painter] image, such as a brand logo or user avatar.
+ *  Supports consistent sizing and different tone of voice.
+ * ## Usage
+ * ```kotlin
+ * LemonadeUi.SymbolContainer(
+ *     painter = painterResource(Res.drawable.logo),
+ *     contentDescription = "Brand Logo",
+ *     fill = true,
+ *     voice = SymbolContainerVoice.Neutral,
+ *     size = SymbolContainerSize.Large,
+ * )
+ * ```
+ * @param painter - [Painter] to be displayed inside the container. Rendered with its original colors (no tint).
+ * @param contentDescription - the **localized** content description for the [painter].
+ * @param fill - When `true`, the [painter] fills the entire container and is clipped by the [shape].
+ *  When `false`, the [painter] is sized to the content area (same as icon/text overloads) and centered.
+ * @param modifier - Optional, the [Modifier] to be applied to the base component.
+ * @param voice - [SymbolContainerVoice] to define the tone of voice. This will effectively define
+ *  color of the background. Defaults to [SymbolContainerVoice.Neutral].
+ * @param size - [SymbolContainerSize] to define the container's size. Defaults to [SymbolContainerSize.Medium].
+ * @param shape - [SymbolContainerShape] to define the container's shape. Defaults to [SymbolContainerShape.Circle].
+ * @param badgeSlot - Optional composable slot for a badge overlay positioned at the bottom-right corner.
+ */
+@Composable
+public fun LemonadeUi.SymbolContainer(
+    painter: Painter,
+    contentDescription: String?,
+    fill: Boolean,
+    modifier: Modifier = Modifier,
+    voice: SymbolContainerVoice = SymbolContainerVoice.Neutral,
+    size: SymbolContainerSize = SymbolContainerSize.Medium,
+    shape: SymbolContainerShape = SymbolContainerShape.Circle,
+    badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
+) {
+    CoreSymbolContainer(
+        voice = voice,
+        size = size,
+        shape = shape,
+        modifier = modifier,
+        badgeSlot = badgeSlot,
+        contentSlot = {
+            Image(
+                painter = painter,
+                contentDescription = contentDescription,
+                contentScale = if (fill) ContentScale.Crop else ContentScale.Fit,
+                modifier = if (fill) {
+                    Modifier.matchParentSize()
+                } else {
+                    Modifier.requiredSize(
+                        size = LocalSymbolContainerPlatformDimensions.current.contentSize,
+                    )
+                },
             )
         },
     )
