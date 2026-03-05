@@ -17,13 +17,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.ColorPainter
 import com.teya.lemonade.core.LemonadeBadgeSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.SymbolContainerShape
 import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.SymbolContainerVoice
+import lemonade.composeapp.generated.resources.Res
+import lemonade.composeapp.generated.resources.netflix_logo
+import org.jetbrains.compose.resources.painterResource
 
 @Suppress("LongMethod")
 @Composable
@@ -483,7 +484,7 @@ internal fun SymbolContainerDisplay() {
                     verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.SymbolContainer(
-                        painter = ColorPainter(Color.Red),
+                        painter = painterResource(Res.drawable.netflix_logo),
                         contentDescription = "Netflix logo",
                         fill = false,
                         size = SymbolContainerSize.Small,
@@ -499,7 +500,7 @@ internal fun SymbolContainerDisplay() {
                     verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.SymbolContainer(
-                        painter = ColorPainter(Color.Red),
+                        painter = painterResource(Res.drawable.netflix_logo),
                         contentDescription = "Netflix logo",
                         fill = false,
                         size = SymbolContainerSize.Medium,
@@ -515,7 +516,7 @@ internal fun SymbolContainerDisplay() {
                     verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.SymbolContainer(
-                        painter = ColorPainter(Color.Red),
+                        painter = painterResource(Res.drawable.netflix_logo),
                         contentDescription = "Netflix logo",
                         fill = false,
                         size = SymbolContainerSize.Large,
@@ -538,7 +539,7 @@ internal fun SymbolContainerDisplay() {
                     verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.SymbolContainer(
-                        painter = ColorPainter(Color.Red),
+                        painter = painterResource(Res.drawable.netflix_logo),
                         contentDescription = "Netflix logo",
                         fill = true,
                         size = SymbolContainerSize.Small,
@@ -555,7 +556,7 @@ internal fun SymbolContainerDisplay() {
                     verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.SymbolContainer(
-                        painter = ColorPainter(Color.Red),
+                        painter = painterResource(Res.drawable.netflix_logo),
                         contentDescription = "Netflix logo",
                         fill = true,
                         size = SymbolContainerSize.Medium,
@@ -572,7 +573,7 @@ internal fun SymbolContainerDisplay() {
                     verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.SymbolContainer(
-                        painter = ColorPainter(Color.Red),
+                        painter = painterResource(Res.drawable.netflix_logo),
                         contentDescription = "Netflix logo",
                         fill = true,
                         size = SymbolContainerSize.Large,

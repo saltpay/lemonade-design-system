@@ -147,8 +147,8 @@ public fun LemonadeUi.SymbolContainer(
 public fun LemonadeUi.SymbolContainer(
     painter: Painter,
     contentDescription: String?,
-    fill: Boolean,
     modifier: Modifier = Modifier,
+    fill: Boolean = true,
     voice: SymbolContainerVoice = SymbolContainerVoice.Neutral,
     size: SymbolContainerSize = SymbolContainerSize.Medium,
     shape: SymbolContainerShape = SymbolContainerShape.Circle,
@@ -164,14 +164,21 @@ public fun LemonadeUi.SymbolContainer(
             Image(
                 painter = painter,
                 contentDescription = contentDescription,
-                contentScale = if (fill) ContentScale.Crop else ContentScale.Fit,
-                modifier = if (fill) {
-                    Modifier.matchParentSize()
+                alignment = Alignment.Center,
+                contentScale = if (fill) {
+                    ContentScale.Crop
                 } else {
-                    Modifier.requiredSize(
-                        size = LocalSymbolContainerPlatformDimensions.current.contentSize,
-                    )
+                    ContentScale.Fit
                 },
+                modifier = Modifier.then(
+                    if (fill) {
+                        Modifier.matchParentSize()
+                    } else {
+                        Modifier.requiredSize(
+                            size = LocalSymbolContainerPlatformDimensions.current.contentSize,
+                        )
+                    },
+                ),
             )
         },
     )

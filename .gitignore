@@ -84,6 +84,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Git worktrees
+.worktrees/
+
 # Temporary files
 *.tmp
 *.temp
