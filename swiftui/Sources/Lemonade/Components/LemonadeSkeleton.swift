@@ -53,8 +53,10 @@ public extension LemonadeUi {
     /// LemonadeUi.BlockSkeleton()
     /// ```
     @ViewBuilder
-    static func BlockSkeleton() -> some View {
-        SkeletonView(variant: .block, size: .medium)
+    static func BlockSkeleton(
+        size: LemonadeSkeletonSize = .medium
+    ) -> some View {
+        SkeletonView(variant: .block, size: size)
     }
 }
 
