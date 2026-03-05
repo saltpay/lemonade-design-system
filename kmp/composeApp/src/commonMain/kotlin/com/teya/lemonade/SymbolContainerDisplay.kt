@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import com.teya.lemonade.core.LemonadeBadgeSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.SymbolContainerVoice
@@ -272,6 +273,70 @@ internal fun SymbolContainerDisplay() {
                     voice = SymbolContainerVoice.Warning,
                     size = SymbolContainerSize.Large,
                 )
+            }
+        }
+
+        // With Badge
+        SymbolContainerSection(title = "With Badge") {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing600),
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.Small,
+                        badgeSlot = {
+                            LemonadeUi.Badge(
+                                text = "3",
+                                size = LemonadeBadgeSize.XSmall,
+                            )
+                        },
+                    )
+                    LemonadeUi.Text(
+                        text = "Small",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.Medium,
+                        badgeSlot = {
+                            LemonadeUi.Badge(text = "3")
+                        },
+                    )
+                    LemonadeUi.Text(
+                        text = "Medium",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.Large,
+                        badgeSlot = {
+                            LemonadeUi.Badge(text = "3")
+                        },
+                    )
+                    LemonadeUi.Text(
+                        text = "Large",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
             }
         }
 

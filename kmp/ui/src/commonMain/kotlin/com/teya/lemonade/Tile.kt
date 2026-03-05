@@ -95,12 +95,16 @@ private fun CoreTile(
             variant.data.backgroundColor
         },
     )
+
+    val spaces = LocalSpaces.current
     LemonadeBadgeBox(
         modifier = modifier,
-        badgeOffset = DpOffset(
-            x = LocalSpaces.current.spacing200,
-            y = LocalSpaces.current.spacing200,
-        ),
+        badgeOffset = {
+            DpOffset(
+                x = spaces.spacing200,
+                y = spaces.spacing200,
+            )
+        },
         badge = { addon?.invoke(this) },
         content = {
             Box(

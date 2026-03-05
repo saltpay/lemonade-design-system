@@ -11,7 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTextStyle
@@ -38,6 +40,7 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
  * @param voice - [SymbolContainerVoice] to define the tone of voice. This will effectively define
  *  color of the background and the tint for the [icon]. Defaults to [SymbolContainerVoice.Neutral].
  * @param size - [SymbolContainerSize] to define the container's size. Defaults to [SymbolContainerSize.Medium].
+ * @param badgeSlot - Optional composable slot for a badge overlay positioned at the bottom-right corner.
  */
 @Composable
 public fun LemonadeUi.SymbolContainer(
@@ -46,11 +49,13 @@ public fun LemonadeUi.SymbolContainer(
     modifier: Modifier = Modifier,
     voice: SymbolContainerVoice = SymbolContainerVoice.Neutral,
     size: SymbolContainerSize = SymbolContainerSize.Medium,
+    badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     CoreSymbolContainer(
         voice = voice,
         size = size,
         modifier = modifier,
+        badgeSlot = badgeSlot,
         contentSlot = {
             LemonadeUi.Icon(
                 icon = icon,
@@ -78,6 +83,7 @@ public fun LemonadeUi.SymbolContainer(
  * @param voice - [SymbolContainerVoice] to define the tone of voice. This will effectively define
  *  color of the background and the color for the [text]. Defaults to [SymbolContainerVoice.Neutral].
  * @param size - [SymbolContainerSize] to define the container's size. Defaults to [SymbolContainerSize.Medium].
+ * @param badgeSlot - Optional composable slot for a badge overlay positioned at the bottom-right corner.
  */
 @Composable
 public fun LemonadeUi.SymbolContainer(
@@ -85,11 +91,13 @@ public fun LemonadeUi.SymbolContainer(
     modifier: Modifier = Modifier,
     voice: SymbolContainerVoice = SymbolContainerVoice.Neutral,
     size: SymbolContainerSize = SymbolContainerSize.Medium,
+    badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     CoreSymbolContainer(
         voice = voice,
         size = size,
         modifier = modifier,
+        badgeSlot = badgeSlot,
         contentSlot = {
             LemonadeUi.Text(
                 text = text,
@@ -121,6 +129,7 @@ public fun LemonadeUi.SymbolContainer(
  * @param voice - [SymbolContainerVoice] to define the tone of voice. This will effectively define
  *  color of the background. Defaults to [SymbolContainerVoice.Neutral].
  * @param size - [SymbolContainerSize] to define the container's size. Defaults to [SymbolContainerSize.Medium].
+ * @param badgeSlot - Optional composable slot for a badge overlay positioned at the bottom-right corner.
  */
 @Composable
 public fun LemonadeUi.SymbolContainer(
@@ -128,11 +137,13 @@ public fun LemonadeUi.SymbolContainer(
     modifier: Modifier = Modifier,
     voice: SymbolContainerVoice = SymbolContainerVoice.Neutral,
     size: SymbolContainerSize = SymbolContainerSize.Medium,
+    badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     CoreSymbolContainer(
         voice = voice,
         size = size,
         modifier = modifier,
+        badgeSlot = badgeSlot,
         contentSlot = {
             Box(
                 content = contentSlot,
@@ -151,17 +162,46 @@ private fun CoreSymbolContainer(
     voice: SymbolContainerVoice,
     size: SymbolContainerSize,
     modifier: Modifier = Modifier,
+    badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     val dimensions = size.defaultSymbolContainerPlatformDimensions()
     CompositionLocalProvider(LocalSymbolContainerPlatformDimensions provides dimensions) {
-        Box(
-            content = contentSlot,
-            contentAlignment = Alignment.Center,
-            modifier = modifier
-                .clip(shape = LocalShapes.current.radiusFull)
-                .background(color = voice.containerColor)
-                .requiredSize(size = dimensions.containerSize),
-        )
+        if (badgeSlot != null) {
+            val density = LocalDensity.current
+            val spaces = LocalSpaces.current
+            LemonadeBadgeBox(
+                modifier = modifier,
+                badgeOffset = { badgeSize ->
+                    val startingHeight = with(density) {
+                        badgeSize.height.toDp() - dimensions.containerSize
+                    }
+                    DpOffset(
+                        x = spaces.spacing100,
+                        y = startingHeight - spaces.spacing100,
+                    )
+                },
+                badge = badgeSlot,
+                content = {
+                    Box(
+                        content = contentSlot,
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .clip(shape = LocalShapes.current.radiusFull)
+                            .background(color = voice.containerColor)
+                            .requiredSize(size = dimensions.containerSize),
+                    )
+                },
+            )
+        } else {
+            Box(
+                content = contentSlot,
+                contentAlignment = Alignment.Center,
+                modifier = modifier
+                    .clip(shape = LocalShapes.current.radiusFull)
+                    .background(color = voice.containerColor)
+                    .requiredSize(size = dimensions.containerSize),
+            )
+        }
     }
 }
 
