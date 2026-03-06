@@ -79,6 +79,25 @@ struct ButtonDisplayView: View {
                     }
                 }
 
+                // Critical Solid Variant
+                sectionView(title: "Critical Solid") {
+                    VStack(spacing: 16) {
+                        HStack(spacing: 12) {
+                            LemonadeUi.Button(label: "Small", onClick: {}, variant: .criticalSolid, size: .small)
+                            LemonadeUi.Button(label: "Medium", onClick: {}, variant: .criticalSolid, size: .medium)
+                            LemonadeUi.Button(label: "Large", onClick: {}, variant: .criticalSolid, size: .large)
+                        }
+
+                        HStack(spacing: 12) {
+                            LemonadeUi.Button(label: "Delete", onClick: {}, leadingIcon: .trash, variant: .criticalSolid, size: .medium)
+                        }
+
+                        LemonadeUi.Button(label: "Disabled", onClick: {}, variant: .criticalSolid, size: .medium, enabled: false)
+
+                        LemonadeUi.Button(label: "Loading", onClick: {}, variant: .criticalSolid, size: .medium, loading: true)
+                    }
+                }
+
                 // Special Variant
                 sectionView(title: "Special") {
                     VStack(spacing: 16) {

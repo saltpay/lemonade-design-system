@@ -8,6 +8,7 @@ public enum LemonadeButtonVariant {
     case secondary
     case neutral
     case critical
+    case criticalSolid
     case special
 }
 
@@ -170,6 +171,12 @@ private extension LemonadeButtonVariant {
                 contentColor: LemonadeTheme.colors.content.contentCritical,
                 solidBackgroundColor: LemonadeTheme.colors.background.bgCriticalSubtle,
                 pressedBackgroundColor: LemonadeTheme.colors.interaction.bgCriticalSubtleInteractive
+            )
+        case .criticalSolid:
+            return LemonadeButtonColors(
+                contentColor: LemonadeTheme.colors.content.contentAlwaysLight,
+                solidBackgroundColor: LemonadeTheme.colors.background.bgCritical,
+                pressedBackgroundColor: LemonadeTheme.colors.interaction.bgCriticalInteractive
             )
         case .special:
             return LemonadeButtonColors(
