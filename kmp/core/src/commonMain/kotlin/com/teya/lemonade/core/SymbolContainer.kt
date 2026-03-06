@@ -17,3 +17,8 @@ public enum class SymbolContainerSize {
     Large,
     XLarge,
 }
+
+public enum class SymbolContainerShape {
+    Circle,
+    Rounded,
+}
