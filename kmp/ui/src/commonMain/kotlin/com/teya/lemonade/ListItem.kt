@@ -83,7 +83,7 @@ public fun LemonadeUi.SelectListItem(
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
 ) {
-    CoreListItem(
+    LemonadeUi.ListItem(
         modifier = modifier,
         label = label,
         supportText = supportText,
@@ -198,7 +198,7 @@ public fun LemonadeUi.ResourceListItem(
     supportText: String? = null,
     showDivider: Boolean = false,
 ) {
-    CoreListItem(
+    LemonadeUi.ListItem(
         label = label,
         supportText = supportText,
         leadingSlot = {
@@ -288,7 +288,7 @@ public fun LemonadeUi.ActionListItem(
     showNavigationIndicator: Boolean = false,
     showDivider: Boolean = false,
 ) {
-    CoreListItem(
+    LemonadeUi.ListItem(
         label = label,
         supportText = supportText,
         leadingSlot = leadingSlot,
@@ -326,11 +326,79 @@ public fun LemonadeUi.ActionListItem(
     )
 }
 
+@Composable
+private fun LemonadeUi.ListItem(
+    label: String,
+    supportText: String? = null,
+    leadingSlot: (@Composable RowScope.() -> Unit)?,
+    trailingSlot: (@Composable RowScope.() -> Unit)?,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    onListItemClick: (() -> Unit)?,
+    role: Role?,
+    enabled: Boolean,
+    modifier: Modifier = Modifier,
+    showDivider: Boolean,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+) {
+    LemonadeUi.ListItem(
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        voice = voice,
+        onListItemClick = onListItemClick,
+        role = role,
+        enabled = enabled,
+        modifier = modifier,
+        showDivider = showDivider,
+        interactionSource = interactionSource,
+        contentSlot = {
+            LemonadeUi.Text(
+                text = label,
+                textStyle = LocalTypographies.current.bodyMediumMedium,
+                color = voice.contentColor,
+            )
+
+            if (supportText != null) {
+                LemonadeUi.Text(
+                    text = supportText,
+                    textStyle = LocalTypographies.current.bodySmallRegular,
+                    color = LocalColors.current.content.contentSecondary,
+                )
+            }
+        },
+    )
+}
+
+@Composable
+private fun LemonadeUi.ListItem(
+    contentSlot: @Composable ColumnScope.() -> Unit,
+    leadingSlot: (@Composable RowScope.() -> Unit)?,
+    trailingSlot: (@Composable RowScope.() -> Unit)?,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    onListItemClick: (() -> Unit)?,
+    role: Role?,
+    enabled: Boolean,
+    modifier: Modifier = Modifier,
+    showDivider: Boolean,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+) {
+    CoreListItem(
+        contentSlot = contentSlot,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        voice = voice,
+        onListItemClick = onListItemClick,
+        role = role,
+        enabled = enabled,
+        modifier = modifier,
+        showDivider = showDivider,
+        interactionSource = interactionSource,
+    )
+}
+
 @Suppress("LongMethod", "LongParameterList")
 @Composable
 private fun CoreListItem(
-    label: String,
-    supportText: String?,
+    contentSlot: @Composable ColumnScope.() -> Unit,
     leadingSlot: (@Composable RowScope.() -> Unit)?,
     trailingSlot: (@Composable RowScope.() -> Unit)?,
     voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
@@ -394,6 +462,7 @@ private fun CoreListItem(
             }
 
             Column(
+                content = contentSlot,
                 modifier = Modifier
                     .weight(weight = 1f)
                     .then(
@@ -403,21 +472,7 @@ private fun CoreListItem(
                             Modifier
                         },
                     ),
-            ) {
-                LemonadeUi.Text(
-                    text = label,
-                    textStyle = LocalTypographies.current.bodyMediumMedium,
-                    color = voice.contentColor,
-                )
-
-                if (supportText != null) {
-                    LemonadeUi.Text(
-                        text = supportText,
-                        textStyle = LocalTypographies.current.bodySmallRegular,
-                        color = LocalColors.current.content.contentSecondary,
-                    )
-                }
-            }
+            )
 
             if (trailingSlot != null) {
                 trailingSlot()
