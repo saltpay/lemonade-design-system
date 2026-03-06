@@ -18,6 +18,7 @@ import com.teya.lemonade.IconButtonDisplay
 import com.teya.lemonade.IconsDisplay
 import com.teya.lemonade.LinkDisplay
 import com.teya.lemonade.OpacityDisplay
+import com.teya.lemonade.PopoverDisplay
 import com.teya.lemonade.RadioButtonDisplay
 import com.teya.lemonade.RadiusDisplay
 import com.teya.lemonade.ResourceListItemDisplay
@@ -79,4 +80,5 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.Spinner to { _ -> SpinnerDisplay() },
     Displays.Divider to { _ -> DividerDisplay() },
     Displays.Tabs to { _ -> TabsDisplay() },
+    Displays.Popover to { _ -> PopoverDisplay() },
 )
