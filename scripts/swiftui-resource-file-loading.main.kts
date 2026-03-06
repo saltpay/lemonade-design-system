@@ -75,6 +75,37 @@ fun <T> readFileResourceFile(
     return resources
 }
 
+fun <T> readFileResourceFileByMode(
+    file: File,
+    modeKey: String,
+    resourceMap: (JSONObject) -> T,
+): List<ResourceData<T>> {
+    val fileContent = file.readText()
+    val json = JSONObject(fileContent)
+    val variablesJsonArray = json.getJSONArray("variables")
+    val resources = mutableListOf<ResourceData<T>>()
+    println("Found ${variablesJsonArray.length()} variables")
+    repeat(times = variablesJsonArray.length()) { index ->
+        val variableJsonObject = variablesJsonArray.getJSONObject(index)
+        if (!variableJsonObject.optBoolean("hiddenFromPublishing")) {
+            val name = variableJsonObject.getString("name")
+            val resolvedValues = variableJsonObject.getJSONObject("resolvedValuesByMode")
+            if (resolvedValues.has(modeKey)) {
+                val resolvedValueKeyObject = resolvedValues.getJSONObject(modeKey)
+                resources.add(
+                    ResourceData(
+                        groups = name.sanitizedGroups(),
+                        groupFullName = name.sanitizedSwiftClassName(),
+                        name = name.sanitizedSwiftValueName(),
+                        value = resourceMap(resolvedValueKeyObject),
+                    )
+                )
+            }
+        }
+    }
+    return resources
+}
+
 fun String.sanitizedGroups(): List<String> {
     val groups = split("/")
     val valueName = groups.subList(0, groups.lastIndex)

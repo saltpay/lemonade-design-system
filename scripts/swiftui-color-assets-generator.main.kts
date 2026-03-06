@@ -5,6 +5,7 @@
 
 import org.json.JSONObject
 import java.io.File
+import java.util.Locale
 import kotlin.math.roundToInt
 
 /**
@@ -33,9 +34,7 @@ data class ColorResource(
 )
 
 fun main() {
-    val lightThemeFile = File("tokens/theme-colors.json")
-    // Dark theme file - uncomment when available
-    // val darkThemeFile = File("tokens/theme-colors-dark.json")
+    val themeFile = File("tokens/theme-colors.json")
 
     val assetsDir = File("swiftui/Sources/Lemonade/Resources/Assets.xcassets/Colors")
     val swiftOutputDir = File("swiftui/Sources/Lemonade")
@@ -57,19 +56,26 @@ fun main() {
 """.trimIndent()
         File(assetsDir, "Contents.json").writeText(folderContentsJson)
 
-        if (!lightThemeFile.exists()) {
-            error("File $lightThemeFile does not exist")
+        if (!themeFile.exists()) {
+            error("File $themeFile does not exist")
         }
 
-        // Parse light theme colors
-        val lightColors = parseThemeColors(lightThemeFile)
+        // Read modes from theme file to identify light and dark mode keys
+        val json = JSONObject(themeFile.readText())
+        val modesObject = json.getJSONObject("modes")
+        val modeEntries = modesObject.keys().asSequence().toList()
+        val lightModeKey = modeEntries.first { modesObject.getString(it).equals("Light", ignoreCase = true) }
+        val darkModeKey = modeEntries.first { modesObject.getString(it).equals("Dark", ignoreCase = true) }
+
+        // Parse light and dark theme colors
+        val lightColors = parseThemeColors(themeFile, lightModeKey)
         println("✓ Loaded ${lightColors.size} colors from light theme")
 
-        // TODO: Parse dark theme colors when available
-        // val darkColors = parseThemeColors(darkThemeFile)
+        val darkColors = parseThemeColors(themeFile, darkModeKey)
+        println("✓ Loaded ${darkColors.size} colors from dark theme")
 
-        // Create color resources (for now, dark = light as placeholder)
-        val colorResources = lightColors.map { (key, color) ->
+        // Create color resources with both light and dark values
+        val colorResources = lightColors.map { (key, lightColor) ->
             val parts = key.split("/")
             val group = parts.getOrNull(0)?.sanitizeGroup() ?: "Other"
             val name = parts.last().sanitizeSwiftName()
@@ -79,8 +85,8 @@ fun main() {
                 group = group,
                 name = name,
                 assetName = assetName,
-                lightColor = color,
-                darkColor = null, // Will use light as fallback
+                lightColor = lightColor,
+                darkColor = darkColors[key],
             )
         }
 
@@ -104,7 +110,7 @@ fun main() {
     }
 }
 
-fun parseThemeColors(file: File): Map<String, ColorValue> {
+fun parseThemeColors(file: File, modeKey: String): Map<String, ColorValue> {
     val content = file.readText()
     val json = JSONObject(content)
     val variables = json.getJSONArray("variables")
@@ -117,9 +123,7 @@ fun parseThemeColors(file: File): Map<String, ColorValue> {
         val name = variable.getString("name")
         val resolvedValues = variable.getJSONObject("resolvedValuesByMode")
 
-        // Get first mode's resolved value
-        val modeKey = resolvedValues.keys().asSequence().firstOrNull() ?: continue
-        val modeValue = resolvedValues.getJSONObject(modeKey)
+        val modeValue = resolvedValues.optJSONObject(modeKey) ?: continue
         val resolved = modeValue.optJSONObject("resolvedValue") ?: continue
 
         colors[name] = ColorValue(
@@ -185,7 +189,7 @@ fun generateColorAsset(assetsDir: File, resource: ColorResource) {
 }
 
 fun formatColorComponent(value: Double): String {
-    return "%.3f".format(value)
+    return "%.3f".format(Locale.US, value)
 }
 
 fun generateColorShorthand(resources: List<ColorResource>): String {
