@@ -99,6 +99,9 @@ public enum SymbolContainerShape {
 // MARK: - SymbolContainer Component
 
 public extension LemonadeUi {
+
+    // MARK: Icon
+
     /// A versatile container used to display an icon with consistent sizing and tone.
     ///
     /// - Parameters:
@@ -107,7 +110,7 @@ public extension LemonadeUi {
     ///   - voice: SymbolContainerVoice to define the tone. Defaults to .neutral
     ///   - size: SymbolContainerSize to define the container's size. Defaults to .medium
     ///   - shape: SymbolContainerShape to define the container's shape. Defaults to .circle
-    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the bottom-right corner
+    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the top-right corner
     /// - Returns: A styled SymbolContainer view with icon
     @ViewBuilder
     static func SymbolContainer<Badge: View>(
@@ -137,15 +140,17 @@ public extension LemonadeUi {
         size: SymbolContainerSize = .medium,
         shape: SymbolContainerShape = .circle
     ) -> some View {
-        LemonadeSymbolContainerView<EmptyView>(voice: voice, size: size, shape: shape, badgeSlot: nil) {
-            LemonadeUi.Icon(
-                icon: icon,
-                contentDescription: contentDescription,
-                size: size.iconSize,
-                tint: voice.tintColor
-            )
-        }
+        SymbolContainer(
+            icon: icon,
+            contentDescription: contentDescription,
+            voice: voice,
+            size: size,
+            shape: shape,
+            badgeSlot: { EmptyView() }
+        )
     }
+
+    // MARK: Text
 
     /// A versatile container used to display text with consistent sizing and tone.
     ///
@@ -154,7 +159,7 @@ public extension LemonadeUi {
     ///   - voice: SymbolContainerVoice to define the tone. Defaults to .neutral
     ///   - size: SymbolContainerSize to define the container's size. Defaults to .medium
     ///   - shape: SymbolContainerShape to define the container's shape. Defaults to .circle
-    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the bottom-right corner
+    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the top-right corner
     /// - Returns: A styled SymbolContainer view with text
     @ViewBuilder
     static func SymbolContainer<Badge: View>(
@@ -181,14 +186,16 @@ public extension LemonadeUi {
         size: SymbolContainerSize = .medium,
         shape: SymbolContainerShape = .circle
     ) -> some View {
-        LemonadeSymbolContainerView<EmptyView>(voice: voice, size: size, shape: shape, badgeSlot: nil) {
-            LemonadeUi.Text(
-                text,
-                textStyle: size.textStyle,
-                color: voice.tintColor
-            )
-        }
+        SymbolContainer(
+            text: text,
+            voice: voice,
+            size: size,
+            shape: shape,
+            badgeSlot: { EmptyView() }
+        )
     }
+
+    // MARK: Image
 
     /// A versatile container used to display an image with consistent sizing and tone.
     ///
@@ -199,7 +206,7 @@ public extension LemonadeUi {
     ///   - voice: SymbolContainerVoice to define the tone. Defaults to .neutral
     ///   - size: SymbolContainerSize to define the container's size. Defaults to .medium
     ///   - shape: SymbolContainerShape to define the container's shape. Defaults to .circle
-    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the bottom-right corner
+    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the top-right corner
     /// - Returns: A styled SymbolContainer view with image
     @ViewBuilder
     static func SymbolContainer<Badge: View>(
@@ -212,16 +219,13 @@ public extension LemonadeUi {
         @ViewBuilder badgeSlot: @escaping () -> Badge
     ) -> some View {
         LemonadeSymbolContainerView(voice: voice, size: size, shape: shape, badgeSlot: badgeSlot) {
-            image
-                .resizable()
-                .aspectRatio(contentMode: fill ? .fill : .fit)
-                .frame(
-                    width: fill ? size.containerSize : size.contentSize,
-                    height: fill ? size.containerSize : size.contentSize
-                )
-                .clipped()
-                .accessibilityLabel(contentDescription ?? "")
-                .accessibilityHidden(contentDescription == nil)
+            SymbolContainerImageContent(
+                image: image,
+                contentDescription: contentDescription,
+                fill: fill,
+                containerSize: size.containerSize,
+                contentSize: size.contentSize
+            )
         }
     }
 
@@ -235,19 +239,18 @@ public extension LemonadeUi {
         size: SymbolContainerSize = .medium,
         shape: SymbolContainerShape = .circle
     ) -> some View {
-        LemonadeSymbolContainerView<EmptyView>(voice: voice, size: size, shape: shape, badgeSlot: nil) {
-            image
-                .resizable()
-                .aspectRatio(contentMode: fill ? .fill : .fit)
-                .frame(
-                    width: fill ? size.containerSize : size.contentSize,
-                    height: fill ? size.containerSize : size.contentSize
-                )
-                .clipped()
-                .accessibilityLabel(contentDescription ?? "")
-                .accessibilityHidden(contentDescription == nil)
-        }
+        SymbolContainer(
+            image: image,
+            contentDescription: contentDescription,
+            fill: fill,
+            voice: voice,
+            size: size,
+            shape: shape,
+            badgeSlot: { EmptyView() }
+        )
     }
+
+    // MARK: Custom Content
 
     /// A versatile container used to display custom content with consistent sizing and tone.
     ///
@@ -255,7 +258,7 @@ public extension LemonadeUi {
     ///   - voice: SymbolContainerVoice to define the tone. Defaults to .neutral
     ///   - size: SymbolContainerSize to define the container's size. Defaults to .medium
     ///   - shape: SymbolContainerShape to define the container's shape. Defaults to .circle
-    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the bottom-right corner
+    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the top-right corner
     ///   - content: Custom content to display inside the container
     /// - Returns: A styled SymbolContainer view with custom content
     @ViewBuilder
@@ -280,35 +283,47 @@ public extension LemonadeUi {
         shape: SymbolContainerShape = .circle,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View {
-        LemonadeSymbolContainerView<EmptyView>(voice: voice, size: size, shape: shape, badgeSlot: nil) {
-            content()
-                .frame(width: size.contentSize, height: size.contentSize)
-        }
+        SymbolContainer(
+            voice: voice,
+            size: size,
+            shape: shape,
+            badgeSlot: { EmptyView() },
+            content: content
+        )
+    }
+}
+
+// MARK: - Image Content Helper
+
+private struct SymbolContainerImageContent: View {
+    let image: Image
+    let contentDescription: String?
+    let fill: Bool
+    let containerSize: CGFloat
+    let contentSize: CGFloat
+
+    var body: some View {
+        image
+            .resizable()
+            .aspectRatio(contentMode: fill ? .fill : .fit)
+            .frame(
+                width: fill ? containerSize : contentSize,
+                height: fill ? containerSize : contentSize
+            )
+            .clipped()
+            .accessibilityLabel(contentDescription ?? "")
+            .accessibilityHidden(contentDescription == nil)
     }
 }
 
 // MARK: - Internal SymbolContainer View
 
-private struct LemonadeSymbolContainerView<Badge: View>: View {
+private struct LemonadeSymbolContainerView<Content: View, Badge: View>: View {
     let voice: SymbolContainerVoice
     let size: SymbolContainerSize
     let shape: SymbolContainerShape
-    let badgeSlot: (() -> Badge)?
-    let content: () -> AnyView
-
-    init<Content: View>(
-        voice: SymbolContainerVoice,
-        size: SymbolContainerSize,
-        shape: SymbolContainerShape,
-        badgeSlot: (() -> Badge)?,
-        @ViewBuilder content: @escaping () -> Content
-    ) {
-        self.voice = voice
-        self.size = size
-        self.shape = shape
-        self.badgeSlot = badgeSlot
-        self.content = { AnyView(content()) }
-    }
+    let badgeSlot: () -> Badge
+    let content: () -> Content
 
     @ViewBuilder
     private var containerView: some View {
@@ -325,7 +340,9 @@ private struct LemonadeSymbolContainerView<Badge: View>: View {
     }
 
     var body: some View {
-        if let badgeSlot = badgeSlot {
+        if Badge.self == EmptyView.self {
+            containerView
+        } else {
             ZStack(alignment: .topTrailing) {
                 containerView
 
@@ -335,8 +352,6 @@ private struct LemonadeSymbolContainerView<Badge: View>: View {
                         y: -LemonadeTheme.spaces.spacing100
                     )
             }
-        } else {
-            containerView
         }
     }
 }
