@@ -107,7 +107,7 @@ private struct LemonadeSelectFieldView<LeadingContent: View>: View {
         case (true, _, true):
             return LemonadeTheme.colors.interaction.bgSubtleInteractive
         default:
-            return .clear
+            return LemonadeTheme.colors.background.bgDefault
         }
     }
 
@@ -182,7 +182,6 @@ private struct LemonadeSelectFieldView<LeadingContent: View>: View {
             .buttonStyle(PlainButtonStyle())
             .disabled(!enabled)
             .frame(minHeight: LemonadeTheme.sizes.size1400)
-            .background(LemonadeTheme.colors.background.bgDefault)
             .background(backgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius300))
             .overlay(
