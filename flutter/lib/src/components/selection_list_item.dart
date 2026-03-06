@@ -63,6 +63,7 @@ class LemonadeSelectionListItem extends StatefulWidget {
     this.enabled = true,
     this.leadingSlot,
     this.trailingSlot,
+    this.showDivider,
     this.semanticIdentifier,
     this.semanticLabel,
   });
@@ -114,6 +115,11 @@ class LemonadeSelectionListItem extends StatefulWidget {
   /// Optional widget placed before the selection control (e.g. a tag).
   /// {@endtemplate}
   final WidgetBuilder? trailingSlot;
+
+  /// {@template LemonadeCoreListItem.showDivider}
+  /// Whether to show a divider line below the item.
+  /// {@endtemplate}
+  final bool? showDivider;
 
   /// {@template LemonadeSelectionListItem.semanticIdentifier}
   /// An identifier for the item used for accessibility and testing.
@@ -186,6 +192,7 @@ class _LemonadeSelectionListItemState extends State<LemonadeSelectionListItem> {
         enabled: widget.enabled,
         leadingSlot: widget.leadingSlot,
         trailingSlot: combinedTrailingSlot,
+        showDivider: widget.showDivider,
         onPressed: _handleTap,
       ),
     );
