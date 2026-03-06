@@ -70,7 +70,7 @@ public extension LemonadeUi {
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent
     ) -> some View {
-        LemonadeCoreListItemView(
+        ListItem(
             label: label,
             supportText: supportText,
             voice: .neutral,
@@ -223,7 +223,7 @@ public extension LemonadeUi {
         @ViewBuilder addonSlot: @escaping () -> AddonContent,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent
     ) -> some View {
-        LemonadeCoreListItemView(
+        ListItem(
             label: label,
             supportText: supportText,
             voice: .neutral,
@@ -312,7 +312,7 @@ public extension LemonadeUi {
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent
     ) -> some View {
-        LemonadeCoreListItemView(
+        ListItem(
             label: label,
             supportText: supportText,
             voice: voice,
@@ -413,11 +413,94 @@ public extension LemonadeUi {
     }
 }
 
+// MARK: - Private ListItem Helpers
+
+private extension LemonadeUi {
+    /// Convenience overload that composes standard label and support-text content from string
+    /// parameters and delegates to the content-slot variant of ListItem.
+    ///
+    /// - Parameters:
+    ///   - label: Label String to be displayed
+    ///   - supportText: Optional support text displayed below the label
+    ///   - voice: LemonadeListItemVoice to define tone of voice
+    ///   - enabled: Flag to define if component is enabled
+    ///   - showDivider: Flag to show a divider below the list item
+    ///   - onListItemClick: Optional callback triggered on click interaction
+    ///   - leadingSlot: Slot content to be placed in leading position
+    ///   - trailingSlot: Slot content to be placed in trailing position
+    @ViewBuilder
+    static func ListItem<LeadingContent: View, TrailingContent: View>(
+        label: String,
+        supportText: String? = nil,
+        voice: LemonadeListItemVoice = .neutral,
+        enabled: Bool = true,
+        showDivider: Bool = false,
+        onListItemClick: (() -> Void)? = nil,
+        @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
+        @ViewBuilder trailingSlot: @escaping () -> TrailingContent
+    ) -> some View {
+        ListItem(
+            voice: voice,
+            enabled: enabled,
+            showDivider: showDivider,
+            onListItemClick: onListItemClick,
+            leadingSlot: leadingSlot,
+            trailingSlot: trailingSlot,
+            contentSlot: {
+                LemonadeUi.Text(
+                    label,
+                    textStyle: LemonadeTypography.shared.bodyMediumMedium,
+                    color: voice.contentColor
+                )
+
+                if let supportText = supportText {
+                    LemonadeUi.Text(
+                        supportText,
+                        textStyle: LemonadeTypography.shared.bodySmallRegular,
+                        color: LemonadeTheme.colors.content.contentSecondary
+                    )
+                }
+            }
+        )
+    }
+
+    /// Foundational list-item overload that accepts a generic content slot for custom content,
+    /// delegating layout and interaction handling to LemonadeCoreListItemView.
+    ///
+    /// - Parameters:
+    ///   - voice: LemonadeListItemVoice to define tone of voice
+    ///   - enabled: Flag to define if component is enabled
+    ///   - showDivider: Flag to show a divider below the list item
+    ///   - onListItemClick: Optional callback triggered on click interaction
+    ///   - leadingSlot: Slot content to be placed in leading position
+    ///   - trailingSlot: Slot content to be placed in trailing position
+    ///   - contentSlot: Content slot for the main body of the list item
+    @ViewBuilder
+    static func ListItem<ContentSlot: View, LeadingContent: View, TrailingContent: View>(
+        voice: LemonadeListItemVoice = .neutral,
+        enabled: Bool = true,
+        showDivider: Bool = false,
+        onListItemClick: (() -> Void)? = nil,
+        @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
+        @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
+        @ViewBuilder contentSlot: @escaping () -> ContentSlot
+    ) -> some View {
+        LemonadeCoreListItemView(
+            contentSlot: contentSlot,
+            voice: voice,
+            enabled: enabled,
+            showDivider: showDivider,
+            onListItemClick: onListItemClick,
+            leadingSlot: leadingSlot,
+            trailingSlot: trailingSlot
+        )
+    }
+}
+
 // MARK: - Core ListItem View
 
-private struct LemonadeCoreListItemView<LeadingContent: View, TrailingContent: View>: View {
-    let label: String
-    let supportText: String?
+private struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, TrailingContent: View>: View {
+    let contentSlot: () -> ContentSlot
     let voice: LemonadeListItemVoice
     let enabled: Bool
     let showDivider: Bool
@@ -447,19 +530,7 @@ private struct LemonadeCoreListItemView<LeadingContent: View, TrailingContent: V
 
             // Content column
             VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
-                LemonadeUi.Text(
-                    label,
-                    textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                    color: voice.contentColor
-                )
-
-                if let supportText = supportText {
-                    LemonadeUi.Text(
-                        supportText,
-                        textStyle: LemonadeTypography.shared.bodySmallRegular,
-                        color: LemonadeTheme.colors.content.contentSecondary
-                    )
-                }
+                contentSlot()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
