@@ -345,16 +345,16 @@ public fun LemonadeUi.ActionListItem(
 @Composable
 private fun LemonadeUi.ListItem(
     label: String,
-    supportText: String? = null,
-    leadingSlot: (@Composable RowScope.() -> Unit)?,
-    trailingSlot: (@Composable RowScope.() -> Unit)?,
-    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
-    onListItemClick: (() -> Unit)?,
-    role: Role?,
-    enabled: Boolean,
     modifier: Modifier = Modifier,
-    showDivider: Boolean,
+    onListItemClick: (() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    role: Role = Role.Button,
+    enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showDivider: Boolean = false,
+    supportText: String? = null,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
 ) {
     LemonadeUi.ListItem(
         leadingSlot = leadingSlot,
@@ -403,15 +403,15 @@ private fun LemonadeUi.ListItem(
 @Composable
 private fun LemonadeUi.ListItem(
     contentSlot: @Composable ColumnScope.() -> Unit,
-    leadingSlot: (@Composable RowScope.() -> Unit)?,
-    trailingSlot: (@Composable RowScope.() -> Unit)?,
-    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
-    onListItemClick: (() -> Unit)?,
-    role: Role?,
-    enabled: Boolean,
     modifier: Modifier = Modifier,
-    showDivider: Boolean,
+    onListItemClick: (() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    role: Role = Role.Button,
+    enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showDivider: Boolean = false,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
 ) {
     CoreListItem(
         contentSlot = contentSlot,
