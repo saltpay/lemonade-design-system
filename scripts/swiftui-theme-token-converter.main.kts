@@ -188,6 +188,7 @@ private fun buildThemeCode(
             if (groupName != null) {
                 append(
                     buildGroupStructCode(
+                        themeName = themeName,
                         groupName = groupName,
                         resources = resources,
                     )
@@ -199,7 +200,7 @@ private fun buildThemeCode(
         appendLine("public struct $themeName: LemonadeSemanticColors {")
         groupedThemeResources.forEach { (groupName, _) ->
             if (groupName != null) {
-                appendLine("    public let ${groupName.sanitizedSwiftValueName()}: ${groupName}Colors = ${groupName}ColorsImpl()")
+                appendLine("    public let ${groupName.sanitizedSwiftValueName()}: ${groupName}Colors = ${themeName}${groupName}ColorsImpl()")
             }
         }
         appendLine()
@@ -209,11 +210,12 @@ private fun buildThemeCode(
 }
 
 private fun buildGroupStructCode(
+    themeName: String,
     groupName: String,
     resources: List<ResourceData<ThemeResourceData>>,
 ): String {
     return buildString {
-        appendLine("internal struct ${groupName}ColorsImpl: ${groupName}Colors {")
+        appendLine("internal struct ${themeName}${groupName}ColorsImpl: ${groupName}Colors {")
         resources.forEach { resource ->
             appendLine("    var ${resource.name}: Color { LemonadePrimitiveColors.${resource.value.valueGroup}.${resource.value.valueName} }")
         }

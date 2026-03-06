@@ -12,7 +12,7 @@ struct ShadowsDisplayView: View {
                             .foregroundStyle(.content.contentSecondary)
 
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(.white)
+                            .fill(.bg.bgElevated)
                             .frame(height: 100)
                             .lemonadeShadow(item.shadow)
                     }
