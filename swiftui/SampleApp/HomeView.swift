@@ -83,6 +83,7 @@ struct HomeView: View {
             DemoSection(
                 title: "Navigation",
                 items: [
+                    DemoItem(title: "Tabs", destination: AnyView(TabsDisplayView())),
                     DemoItem(title: "Tile", destination: AnyView(TileDisplayView()))
                 ]
             ),
