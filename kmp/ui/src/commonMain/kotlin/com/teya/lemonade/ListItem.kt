@@ -68,7 +68,6 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
  * @param leadingSlot - A Slot to be placed in the leading position of the list item.
  * @param trailingSlot - A Slot to be placed in the trailing position of the list item.
  */
-@Suppress("LongMethod")
 @Composable
 public fun LemonadeUi.SelectListItem(
     label: String,
@@ -326,6 +325,23 @@ public fun LemonadeUi.ActionListItem(
     )
 }
 
+/**
+ * Convenience overload that composes standard label and support-text content from string parameters
+ * and delegates to the content-slot variant of [ListItem].
+ *
+ * @param label - Label [String] to be displayed in the list item.
+ * @param supportText - Optional support text [String] displayed below the [label].
+ * @param leadingSlot - A slot to be placed in the leading position of the list item.
+ * @param trailingSlot - A slot to be placed in the trailing position of the list item.
+ * @param voice - [LemonadeListItemVoice] that defines the visual voice of the list item.
+ * @param onListItemClick - Optional callback triggered on click interaction with the list item.
+ * @param role - Optional semantic [Role] applied to the list item for accessibility.
+ * @param enabled - Flag that defines if the component is enabled or not. If disabled, click
+ *  interactions and visual states are disabled.
+ * @param modifier - [Modifier] to be applied to the base container of the component.
+ * @param showDivider - Flag to show a divider below the list item.
+ * @param interactionSource - [MutableInteractionSource] for interaction events.
+ */
 @Composable
 private fun LemonadeUi.ListItem(
     label: String,
@@ -368,6 +384,22 @@ private fun LemonadeUi.ListItem(
     )
 }
 
+/**
+ * Foundational list-item overload that accepts a generic content slot for custom content,
+ * delegating layout and interaction handling to [CoreListItem].
+ *
+ * @param contentSlot - Composable content slot for the main body of the list item.
+ * @param leadingSlot - A slot to be placed in the leading position of the list item.
+ * @param trailingSlot - A slot to be placed in the trailing position of the list item.
+ * @param voice - [LemonadeListItemVoice] that defines the visual voice of the list item.
+ * @param onListItemClick - Optional callback triggered on click interaction with the list item.
+ * @param role - Optional semantic [Role] applied to the list item for accessibility.
+ * @param enabled - Flag that defines if the component is enabled or not. If disabled, click
+ *  interactions and visual states are disabled.
+ * @param modifier - [Modifier] to be applied to the base container of the component.
+ * @param showDivider - Flag to show a divider below the list item.
+ * @param interactionSource - [MutableInteractionSource] for interaction events.
+ */
 @Composable
 private fun LemonadeUi.ListItem(
     contentSlot: @Composable ColumnScope.() -> Unit,
@@ -395,7 +427,6 @@ private fun LemonadeUi.ListItem(
     )
 }
 
-@Suppress("LongMethod", "LongParameterList")
 @Composable
 private fun CoreListItem(
     contentSlot: @Composable ColumnScope.() -> Unit,
@@ -582,7 +613,7 @@ private fun SelectListItemPreview(
         } else {
             null
         },
-        trailingSlot = if (previewData.leading) {
+        trailingSlot = if (previewData.trailing) {
             {
                 LemonadeUi.Icon(
                     icon = LemonadeIcons.Airplane,
@@ -661,6 +692,7 @@ private data class ActionListItemPreviewData(
     val enabled: Boolean,
     val supportText: Boolean,
     val trailingSlot: Boolean,
+    val showNavigationIndicator: Boolean,
 )
 
 private class ActionListItemPreviewProvider :
@@ -673,14 +705,17 @@ private class ActionListItemPreviewProvider :
                 listOf(true, false).forEach { enabled ->
                     listOf(true, false).forEach { withSupportText ->
                         listOf(true, false).forEach { trailingSlot ->
-                            add(
-                                ActionListItemPreviewData(
-                                    voice = voice,
-                                    enabled = enabled,
-                                    supportText = withSupportText,
-                                    trailingSlot = trailingSlot,
-                                ),
-                            )
+                            listOf(true, false).forEach { showNavigationIndicator ->
+                                add(
+                                    ActionListItemPreviewData(
+                                        voice = voice,
+                                        enabled = enabled,
+                                        supportText = withSupportText,
+                                        trailingSlot = trailingSlot,
+                                        showNavigationIndicator = showNavigationIndicator,
+                                    ),
+                                )
+                            }
                         }
                     }
                 }
@@ -690,7 +725,7 @@ private class ActionListItemPreviewProvider :
 
 @LemonadePreview
 @Composable
-private fun ActionListItemPreviewProvider(
+private fun ActionListItemPreview(
     @PreviewParameter(ActionListItemPreviewProvider::class)
     previewData: ActionListItemPreviewData,
 ) {
@@ -699,6 +734,8 @@ private fun ActionListItemPreviewProvider(
         showDivider = true,
         supportText = "Support text".takeIf { previewData.supportText },
         enabled = previewData.enabled,
+        voice = if (previewData.voice) LemonadeListItemVoice.Critical else LemonadeListItemVoice.Neutral,
+        showNavigationIndicator = previewData.showNavigationIndicator,
         trailingSlot = if (previewData.trailingSlot) {
             {
                 LemonadeUi.Tag(
