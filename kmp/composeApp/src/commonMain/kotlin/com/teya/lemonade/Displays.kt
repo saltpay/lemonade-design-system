@@ -44,6 +44,7 @@ internal interface Displays {
             Spinner,
             Divider,
             Tabs,
+            Tooltip,
         )
     }
 
@@ -220,5 +221,10 @@ internal interface Displays {
     @Serializable
     data object Tabs : Displays {
         override val label: String = "Tabs"
+    }
+
+    @Serializable
+    data object Tooltip : Displays {
+        override val label: String = "Tooltip"
     }
 }
