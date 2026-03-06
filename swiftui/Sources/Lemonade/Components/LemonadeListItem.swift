@@ -3,6 +3,9 @@ import SwiftUI
 // MARK: - SelectListItemType
 
 /// Defines the selection behavior type for SelectListItem.
+/// - `single`: Radio button selection (only one item can be selected)
+/// - `multiple`: Checkbox selection (multiple items can be selected)
+/// - `toggle`: Switch control in trailing slot (toggles on each tap)
 public enum SelectListItemType {
     case single
     case multiple

@@ -110,7 +110,7 @@ public extension LemonadeUi {
     ///   - voice: SymbolContainerVoice to define the tone. Defaults to .neutral
     ///   - size: SymbolContainerSize to define the container's size. Defaults to .medium
     ///   - shape: SymbolContainerShape to define the container's shape. Defaults to .circle
-    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the top-right corner
+    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the bottom-right corner
     /// - Returns: A styled SymbolContainer view with icon
     @ViewBuilder
     static func SymbolContainer<Badge: View>(
@@ -159,7 +159,7 @@ public extension LemonadeUi {
     ///   - voice: SymbolContainerVoice to define the tone. Defaults to .neutral
     ///   - size: SymbolContainerSize to define the container's size. Defaults to .medium
     ///   - shape: SymbolContainerShape to define the container's shape. Defaults to .circle
-    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the top-right corner
+    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the bottom-right corner
     /// - Returns: A styled SymbolContainer view with text
     @ViewBuilder
     static func SymbolContainer<Badge: View>(
@@ -206,7 +206,7 @@ public extension LemonadeUi {
     ///   - voice: SymbolContainerVoice to define the tone. Defaults to .neutral
     ///   - size: SymbolContainerSize to define the container's size. Defaults to .medium
     ///   - shape: SymbolContainerShape to define the container's shape. Defaults to .circle
-    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the top-right corner
+    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the bottom-right corner
     /// - Returns: A styled SymbolContainer view with image
     @ViewBuilder
     static func SymbolContainer<Badge: View>(
@@ -258,7 +258,7 @@ public extension LemonadeUi {
     ///   - voice: SymbolContainerVoice to define the tone. Defaults to .neutral
     ///   - size: SymbolContainerSize to define the container's size. Defaults to .medium
     ///   - shape: SymbolContainerShape to define the container's shape. Defaults to .circle
-    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the top-right corner
+    ///   - badgeSlot: Optional content to be displayed as a badge overlay at the bottom-right corner
     ///   - content: Custom content to display inside the container
     /// - Returns: A styled SymbolContainer view with custom content
     @ViewBuilder
@@ -343,13 +343,13 @@ private struct LemonadeSymbolContainerView<Content: View, Badge: View>: View {
         if Badge.self == EmptyView.self {
             containerView
         } else {
-            ZStack(alignment: .topTrailing) {
+            ZStack(alignment: .bottomTrailing) {
                 containerView
 
                 badgeSlot()
                     .offset(
                         x: LemonadeTheme.spaces.spacing100,
-                        y: -LemonadeTheme.spaces.spacing100
+                        y: LemonadeTheme.spaces.spacing100
                     )
             }
         }
