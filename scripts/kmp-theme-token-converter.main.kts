@@ -2,6 +2,7 @@
 
 @file:Import("kmp-resource-file-loading.main.kts")
 
+import org.json.JSONObject
 import java.io.File
 
 data class ThemeResourceData(
@@ -22,8 +23,62 @@ fun main() {
             error(message = "File $colorTokensFile does not exist in system")
         }
 
-        val themeResources = readFileResourceFile(
+        // Read the JSON to extract mode keys
+        val fileContent = colorTokensFile.readText()
+        val json = JSONObject(fileContent)
+        val modesObject = json.getJSONObject("modes")
+        val modeKeys = modesObject.keys().asSequence().toList()
+        
+        // Generate code for each theme mode
+        modeKeys.forEach { modeKey ->
+            val modeName = modesObject.getString(modeKey)
+            val themeName = when {
+                modeName.equals("Light", ignoreCase = true) -> "LemonadeLightTheme"
+                modeName.equals("Dark", ignoreCase = true) -> "LemonadeDarkTheme"
+                else -> "Lemonade${modeName}Theme"
+            }
+            
+            val themeResources = readFileResourceFileByMode(
+                file = colorTokensFile,
+                modeKey = modeKey,
+                resourceMap = { jsonObject ->
+                    val aliasName = jsonObject.optString("aliasName")
+                    val groups = aliasName?.sanitizedGroups().orEmpty()
+                    if (!aliasName.isNullOrBlank() && groups.isNotEmpty()) {
+                        ThemeResourceData(
+                            valueName = aliasName.sanitizedValueName(),
+                            valueGroup = if (groups.contains("Alpha")) {
+                                "Alpha.${groups.first()}"
+                            } else {
+                                "Solid.${groups.first()}"
+                            },
+                        )
+                    } else {
+                        null
+                    }
+                },
+            ).filterNull()
+            
+            println("✓ Loaded $modeName theme resource")
+
+            val classCode = buildThemeCode(
+                fileName = themeName,
+                scriptFilePath = "scripts/kmp-theme-token-converter.main.kts",
+                resources = themeResources,
+                themeName = modeName,
+            )
+            println("✓ $modeName implementation generated")
+
+            val classOutputFile = File(outputDir, "$themeName.kt")
+            classOutputFile.writeText(classCode)
+            println("✓ $themeName.kt created")
+        }
+
+        // Generate the interface using the Light mode's resources
+        val lightModeKey = modeKeys.first { modeKey -> modesObject.getString(modeKey).equals("Light", ignoreCase = true) }
+        val themeResources = readFileResourceFileByMode(
             file = colorTokensFile,
+            modeKey = lightModeKey,
             resourceMap = { jsonObject ->
                 val aliasName = jsonObject.optString("aliasName")
                 val groups = aliasName?.sanitizedGroups().orEmpty()
@@ -41,7 +96,6 @@ fun main() {
                 }
             },
         ).filterNull()
-        println("✓ Loaded theme resource")
 
         val interfaceCode = buildThemeInterfaceCode(
             scriptFilePath = "scripts/kmp-theme-token-converter.main.kts",
@@ -49,20 +103,12 @@ fun main() {
         )
         println("✓ Interface generated")
 
-        val classCode = buildThemeCode(
-            fileName = "LemonadeLightTheme",
-            scriptFilePath = "scripts/kmp-theme-token-converter.main.kts",
-            resources = themeResources,
-        )
-        println("✓ Implementation generated")
-
         val interfaceOutputFile = File(outputDir, "LemonadeSemanticColors.kt")
         interfaceOutputFile.writeText(interfaceCode)
-        val classOutputFile = File(outputDir, "LemonadeLightTheme.kt")
-        classOutputFile.writeText(classCode)
         println("✓ Definition & Implementation files created")
     } catch (error: Throwable) {
         println("✗ Failed to convert ${colorTokensFile.name}: ${error.message}")
+        error.printStackTrace()
     }
 }
 
@@ -91,6 +137,7 @@ private fun buildThemeInterfaceCode(
         }
         groupedThemeResources.forEach { (groupName, resources) ->
             if (groupName != null) {
+                appendLine()
                 append(
                     buildGroupInterfaceCode(
                         groupName = groupName,
@@ -120,6 +167,7 @@ private fun buildThemeCode(
     fileName: String,
     scriptFilePath: String,
     resources: List<ResourceData<ThemeResourceData>>,
+    themeName: String = "Light",
 ): String {
     val groupedThemeResources = resources.groupBy { it.groups.firstOrNull() }
     return buildString {
@@ -128,13 +176,13 @@ private fun buildThemeCode(
         appendLine("import androidx.compose.runtime.Stable")
         appendLine()
         appendLine("/**")
-        appendLine(" * Light theme implementation of semantic colors")
+        appendLine(" * $themeName theme implementation of semantic colors")
         appendLine(" * See [LemonadeSemanticColors] for details on the color structure.")
         append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
         appendLine(" */")
         appendLine("@Stable")
         appendLine("@OptIn(InternalLemonadeApi::class)")
-        appendLine("internal object $fileName : LemonadeSemanticColors {")
+        appendLine("public object $fileName : LemonadeSemanticColors {")
         groupedThemeResources.forEach { (groupName, resources) ->
             if (groupName != null) {
                 append(
@@ -154,11 +202,12 @@ private fun buildGroupClassCode(
     resources: List<ResourceData<ThemeResourceData>>,
 ): String {
     return buildString {
-        appendLine("    override val ${groupName.sanitizedValueName()} = object : LemonadeSemanticColors.${groupName}Colors {")
+        appendLine("    override val ${groupName.sanitizedValueName()}: LemonadeSemanticColors.${groupName}Colors =")
+        appendLine("        object : LemonadeSemanticColors.${groupName}Colors {")
         resources.forEach { resource ->
-            appendLine("        override val ${resource.name} = LemonadePrimitiveColors.${resource.value.valueGroup}.${resource.value.valueName}")
+            appendLine("            override val ${resource.name} = LemonadePrimitiveColors.${resource.value.valueGroup}.${resource.value.valueName}")
         }
-        appendLine("    }")
+        appendLine("        }")
     }
 }
 

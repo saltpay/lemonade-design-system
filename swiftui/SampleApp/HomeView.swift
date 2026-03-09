@@ -2,6 +2,7 @@ import SwiftUI
 import Lemonade
 
 struct HomeView: View {
+    @EnvironmentObject private var styleHandler: LemonadeStyleHandler
     @State private var searchText: String = ""
 
     private struct DemoItem: Identifiable {
@@ -83,12 +84,14 @@ struct HomeView: View {
             DemoSection(
                 title: "Navigation",
                 items: [
+                    DemoItem(title: "Link", destination: AnyView(LinkDisplayView())),
                     DemoItem(title: "Tile", destination: AnyView(TileDisplayView()))
                 ]
             ),
             DemoSection(
                 title: "Feedback",
                 items: [
+                    DemoItem(title: "Spinner", destination: AnyView(SpinnerDisplayView())),
                     DemoItem(title: "Toast", destination: AnyView(ToastDisplayView()))
                 ]
             )
@@ -109,8 +112,22 @@ struct HomeView: View {
         }
     }
 
+    private var selectedStyleIndex: Int {
+        LemonadeStyle.allCases.firstIndex(of: styleHandler.currentStyle) ?? 0
+    }
+
     var body: some View {
         List {
+            Section {
+                LemonadeUi.SegmentedControl(
+                    properties: LemonadeStyle.allCases.map { LemonadeTabButtonProperties(label: $0.label) },
+                    selectedTab: selectedStyleIndex,
+                    onTabSelected: { index in
+                        styleHandler.currentStyle = LemonadeStyle.allCases[index]
+                    }
+                )
+            }
+
             ForEach(filteredSections) { section in
                 Section(section.title) {
                     ForEach(section.items) { item in
@@ -130,4 +147,5 @@ struct HomeView: View {
     NavigationStack {
         HomeView()
     }
+    .environmentObject(LemonadeStyleHandler())
 }

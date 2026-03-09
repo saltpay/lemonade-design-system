@@ -157,13 +157,18 @@ private struct LemonadeSelectFieldView<LeadingContent: View>: View {
                         leadingContent()
                     }
 
-                    if let text = selectedValue ?? placeholderText {
+                    if let text = selectedValue.flatMap({ $0.trimmingCharacters(in: .whitespaces).isEmpty ? nil : $0 }) {
                         LemonadeUi.Text(
                             text,
                             textStyle: LemonadeTypography.shared.bodyMediumRegular,
-                            color: selectedValue != nil
-                                ? LemonadeTheme.colors.content.contentPrimary
-                                : LemonadeTheme.colors.content.contentSecondary
+                            color: LemonadeTheme.colors.content.contentPrimary
+                        )
+                        .lineLimit(1)
+                    } else if let placeholderText = placeholderText {
+                        LemonadeUi.Text(
+                            placeholderText,
+                            textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                            color: LemonadeTheme.colors.content.contentSecondary
                         )
                         .lineLimit(1)
                     }
@@ -176,8 +181,8 @@ private struct LemonadeSelectFieldView<LeadingContent: View>: View {
                         tint: LemonadeTheme.colors.content.contentSecondary
                     )
                 }
-                .padding(.horizontal, LemonadeTheme.spaces.spacing400)
-                .padding(.vertical, LemonadeTheme.spaces.spacing400)
+                .padding(.horizontal, LemonadeTheme.spaces.spacing300)
+                .padding(.vertical, LemonadeTheme.spaces.spacing300)
             }
             .buttonStyle(PlainButtonStyle())
             .disabled(!enabled)

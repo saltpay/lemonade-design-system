@@ -52,7 +52,6 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
  * @param interactionSource - [MutableInteractionSource] to be applied to the Button.
  */
 @Composable
-@ExperimentalLemonadeComponent
 public fun LemonadeUi.Button(
     label: String,
     onClick: () -> Unit,
