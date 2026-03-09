@@ -61,6 +61,7 @@ public extension LemonadeUi {
     ///   - enabled: Flag to define if component is enabled. Defaults to true
     ///   - onClick: Callback called when component is tapped
     ///   - variant: LemonadeTileVariant to define visual style. Defaults to .neutral
+    ///   - stretched: Whether the tile should stretch to fill available width. Defaults to false
     ///   - addon: Optional content to be displayed as a badge overlay
     /// - Returns: A styled Tile view
     @ViewBuilder
@@ -70,6 +71,7 @@ public extension LemonadeUi {
         enabled: Bool = true,
         onClick: (() -> Void)? = nil,
         variant: LemonadeTileVariant = .neutral,
+        stretched: Bool = false,
         @ViewBuilder addon: @escaping () -> AddonContent
     ) -> some View {
         LemonadeTileView(
@@ -78,6 +80,7 @@ public extension LemonadeUi {
             enabled: enabled,
             onClick: onClick,
             variant: variant,
+            stretched: stretched,
             addon: addon
         )
     }
@@ -89,7 +92,8 @@ public extension LemonadeUi {
         icon: LemonadeIcon,
         enabled: Bool = true,
         onClick: (() -> Void)? = nil,
-        variant: LemonadeTileVariant = .neutral
+        variant: LemonadeTileVariant = .neutral,
+        stretched: Bool = false
     ) -> some View {
         LemonadeTileView<EmptyView>(
             label: label,
@@ -97,6 +101,7 @@ public extension LemonadeUi {
             enabled: enabled,
             onClick: onClick,
             variant: variant,
+            stretched: stretched,
             addon: nil
         )
     }
@@ -110,6 +115,7 @@ private struct LemonadeTileView<AddonContent: View>: View {
     let enabled: Bool
     let onClick: (() -> Void)?
     let variant: LemonadeTileVariant
+    let stretched: Bool
     let addon: (() -> AddonContent)?
 
     @State private var isPressed = false
@@ -153,6 +159,7 @@ private struct LemonadeTileView<AddonContent: View>: View {
             }
             .padding(.horizontal, LemonadeTheme.spaces.spacing100)
             .padding(.vertical, LemonadeTheme.spaces.spacing400)
+            .applyIf(stretched) { $0.frame(maxWidth: .infinity) }
             .background(backgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
             .overlay(
