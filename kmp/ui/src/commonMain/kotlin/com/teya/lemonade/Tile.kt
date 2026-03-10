@@ -115,9 +115,10 @@ private fun CoreTile(
 
     val tileShape = LocalShapes.current.radius500
     val animatedBackgroundColor by animateColorAsState(
-        targetValue = when {
-            isPressed -> variant.data.backgroundPressedColor
-            else -> variant.data.backgroundColor
+        targetValue = if (isPressed) {
+            variant.data.backgroundPressedColor
+        } else {
+            variant.data.backgroundColor
         },
     )
     val animatedBorderColor by animateColorAsState(
