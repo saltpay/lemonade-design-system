@@ -34,6 +34,26 @@ import com.teya.lemonade.core.LemonadeTileVariant
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
+/**
+ * Lemonade tile component. Used for displaying an icon with a label in a selectable card layout.
+ * ## Usage
+ * ```kotlin
+ * LemonadeUi.Tile(
+ *   label = "Transfer",
+ *   icon = LemonadeIcons.ArrowLeftRight,
+ *   onClick = { println("tile tapped!") },
+ * )
+ * ```
+ * @param label - [String] to be displayed as the Tile's label.
+ * @param icon - [LemonadeIcons] displayed above the label.
+ * @param modifier - [Modifier] to be applied to the Tile.
+ * @param enabled - [Boolean] flag to enable or disable the Tile.
+ * @param alignment - [Alignment.Horizontal] to align the Tile's content horizontally.
+ * @param onClick - Callback to be invoked when the Tile is clicked.
+ * @param interactionSource - [MutableInteractionSource] to be applied to the Tile.
+ * @param variant - [LemonadeTileVariant] to style the Tile accordingly.
+ * @param addon - Optional composable content displayed as a badge overlay on the Tile.
+ */
 @Composable
 public fun LemonadeUi.Tile(
     label: String,
@@ -225,6 +245,7 @@ private data class TilePreviewData(
     val enabled: Boolean,
     val withAddon: Boolean,
     val variant: LemonadeTileVariant,
+    val alignment: Alignment.Horizontal,
 )
 
 private class TilePreviewProvider : PreviewParameterProvider<TilePreviewData> {
@@ -235,13 +256,20 @@ private class TilePreviewProvider : PreviewParameterProvider<TilePreviewData> {
             listOf(true, false).forEach { enabled ->
                 listOf(true, false).forEach { withAddon ->
                     LemonadeTileVariant.entries.forEach { variant ->
-                        add(
-                            TilePreviewData(
-                                enabled = enabled,
-                                withAddon = withAddon,
-                                variant = variant,
-                            ),
-                        )
+                        listOf(
+                            Alignment.Start,
+                            Alignment.CenterHorizontally,
+                            Alignment.End,
+                        ).forEach { alignment ->
+                            add(
+                                TilePreviewData(
+                                    enabled = enabled,
+                                    withAddon = withAddon,
+                                    variant = variant,
+                                    alignment = alignment,
+                                ),
+                            )
+                        }
                     }
                 }
             }
@@ -250,7 +278,7 @@ private class TilePreviewProvider : PreviewParameterProvider<TilePreviewData> {
 
 @LemonadePreview
 @Composable
-private fun LemonadeLabeledRadioButtonPreview(
+private fun LemonadeTilePreview(
     @PreviewParameter(TilePreviewProvider::class)
     previewData: TilePreviewData,
 ) {
@@ -258,7 +286,10 @@ private fun LemonadeLabeledRadioButtonPreview(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .background(
-                color = if (previewData.variant == LemonadeTileVariant.OnColor) {
+                color = if (
+                    previewData.variant == LemonadeTileVariant.OnColor ||
+                    previewData.variant == LemonadeTileVariant.Selected
+                ) {
                     LocalColors.current.background.bgBrand
                 } else {
                     LocalColors.current.background.bgBrand.copy(
@@ -271,6 +302,7 @@ private fun LemonadeLabeledRadioButtonPreview(
             label = "Label",
             icon = LemonadeIcons.Heart,
             enabled = previewData.enabled,
+            alignment = previewData.alignment,
             variant = previewData.variant,
             addon = if (previewData.withAddon) {
                 {

@@ -66,6 +66,21 @@ internal fun TileDisplay() {
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.Tile(
+                        label = "Selected",
+                        icon = LemonadeIcons.CircleCheck,
+                        variant = LemonadeTileVariant.Selected,
+                    )
+                    LemonadeUi.Text(
+                        text = "Selected",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
             }
         }
 
@@ -89,6 +104,31 @@ internal fun TileDisplay() {
                     text = "Use on brand backgrounds",
                     textStyle = LemonadeTheme.typography.bodySmallRegular,
                     color = LemonadeTheme.colors.content.contentOnBrandHigh,
+                )
+            }
+        }
+
+        // Alignment
+        TileSection(title = "Alignment") {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            ) {
+                LemonadeUi.Tile(
+                    label = "Start",
+                    icon = LemonadeIcons.ArrowLeft,
+                    alignment = Alignment.Start,
+                )
+
+                LemonadeUi.Tile(
+                    label = "Center",
+                    icon = LemonadeIcons.ArrowLeftRight,
+                    alignment = Alignment.CenterHorizontally,
+                )
+
+                LemonadeUi.Tile(
+                    label = "End",
+                    icon = LemonadeIcons.ArrowRight,
+                    alignment = Alignment.End,
                 )
             }
         }
