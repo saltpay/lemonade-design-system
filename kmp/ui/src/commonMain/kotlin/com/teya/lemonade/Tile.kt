@@ -182,6 +182,7 @@ private fun CoreTile(
                                 interactionSource = interactionSource,
                                 role = Role.Button,
                                 enabled = enabled,
+                                indication = null,
                             )
                         } else {
                             Modifier
