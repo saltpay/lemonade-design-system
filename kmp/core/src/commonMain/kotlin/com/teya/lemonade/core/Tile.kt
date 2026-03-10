@@ -6,4 +6,5 @@ public enum class LemonadeTileVariant {
     Neutral,
     Muted,
     OnColor,
+    Selected,
 }

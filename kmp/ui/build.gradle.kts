@@ -54,7 +54,7 @@ kotlin {
         }
 
         androidMain.dependencies {
-            implementation(compose.preview)
+            implementation(libs.compose.ui.tooling.preview)
         }
         val desktopMain by getting
         desktopMain.dependencies {
@@ -88,7 +88,7 @@ android {
 }
 
 dependencies {
-    debugImplementation(compose.uiTooling)
+    debugImplementation(libs.compose.ui.tooling)
 }
 
 compose.resources {

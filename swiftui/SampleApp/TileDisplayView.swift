@@ -31,6 +31,18 @@ struct TileDisplayView: View {
                                 textStyle: LemonadeTypography.shared.bodySmallRegular
                             )
                         }
+
+                        VStack(spacing: LemonadeTheme.spaces.spacing200) {
+                            LemonadeUi.Tile(
+                                label: "Selected",
+                                icon: .circleCheck,
+                                variant: .selected
+                            )
+                            LemonadeUi.Text(
+                                "Selected",
+                                textStyle: LemonadeTypography.shared.bodySmallRegular
+                            )
+                        }
                     }
                 }
 
@@ -51,6 +63,31 @@ struct TileDisplayView: View {
                     .padding(LemonadeTheme.spaces.spacing400)
                     .background(.bg.bgBrand)
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius300))
+                }
+
+                sectionView(title: "Alignment") {
+                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
+                        LemonadeUi.Tile(
+                            label: "Start",
+                            icon: .arrowLeft,
+                            variant: .neutral,
+                            alignment: .leading
+                        )
+
+                        LemonadeUi.Tile(
+                            label: "Center",
+                            icon: .arrowLeftRight,
+                            variant: .neutral,
+                            alignment: .center
+                        )
+
+                        LemonadeUi.Tile(
+                            label: "End",
+                            icon: .arrowRight,
+                            variant: .neutral,
+                            alignment: .trailing
+                        )
+                    }
                 }
 
                 // MARK: - Features
