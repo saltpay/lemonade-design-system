@@ -57,6 +57,7 @@ public fun LemonadeUi.Tile(
             Column(
                 verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),
                 horizontalAlignment = alignment,
+                modifier = Modifier.matchParentSize(),
             ) {
                 LemonadeUi.Icon(
                     icon = icon,
