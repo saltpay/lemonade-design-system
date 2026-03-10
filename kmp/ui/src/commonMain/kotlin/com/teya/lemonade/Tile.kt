@@ -75,9 +75,11 @@ public fun LemonadeUi.Tile(
         interactionSource = interactionSource,
         content = {
             Column(
-                verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),
+                verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing400),
                 horizontalAlignment = alignment,
-                modifier = Modifier.matchParentSize(),
+                modifier = Modifier
+                    .defaultMinSize(minWidth = 120.dp)
+                    .padding(all = LocalSpaces.current.spacing400),
             ) {
                 LemonadeUi.Icon(
                     icon = icon,
@@ -87,7 +89,7 @@ public fun LemonadeUi.Tile(
 
                 LemonadeUi.Text(
                     text = label,
-                    textStyle = LocalTypographies.current.bodyMediumMedium,
+                    textStyle = LocalTypographies.current.bodySmallSemiBold,
                     color = LocalColors.current.content.contentPrimary,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
@@ -140,18 +142,13 @@ private fun CoreTile(
                 contentAlignment = Alignment.Center,
                 content = content,
                 modifier = Modifier
-                    .defaultMinSize(
-                        minWidth = 120.dp,
-                        minHeight = 80.dp,
-                    )
                     .then(
                         other = if (!enabled) {
                             Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
                         } else {
                             Modifier
                         },
-                    )
-                    .then(
+                    ).then(
                         other = if (isFocused) {
                             Modifier
                                 .border(
@@ -162,8 +159,7 @@ private fun CoreTile(
                         } else {
                             Modifier
                         },
-                    )
-                    .then(
+                    ).then(
                         other = variant.data.shadow?.let { lemonadeShadow ->
                             Modifier.lemonadeShadow(
                                 shadow = lemonadeShadow,
@@ -171,15 +167,13 @@ private fun CoreTile(
                             )
                         }
                             ?: Modifier,
-                    )
-                    .then(
+                    ).then(
                         other = Modifier.border(
                             color = animatedBorderColor,
                             shape = tileShape,
                             width = animatedBorderWidth,
                         ),
-                    )
-                    .clip(shape = tileShape)
+                    ).clip(shape = tileShape)
                     .then(
                         other = if (onClick != null) {
                             Modifier.clickable(
@@ -191,12 +185,10 @@ private fun CoreTile(
                         } else {
                             Modifier
                         },
-                    )
-                    .background(
+                    ).background(
                         color = animatedBackgroundColor,
                         shape = tileShape,
-                    )
-                    .padding(all = LocalSpaces.current.spacing400),
+                    ),
             )
         },
     )
@@ -238,9 +230,9 @@ internal val LemonadeTileVariant.data: TileData
             )
 
             LemonadeTileVariant.Selected -> TileData(
-                backgroundColor = LocalColors.current.background.bgBrandElevated,
+                backgroundColor = LocalColors.current.background.bgBrandSubtle,
                 backgroundPressedColor = LocalColors.current.interaction.bgBrandElevatedPressed,
-                borderColor = LocalColors.current.border.borderNeutralHigh,
+                borderColor = LocalColors.current.border.borderSelected,
                 borderWidth = LocalBorderWidths.current.base.border50,
                 shadow = null,
             )

@@ -1,6 +1,7 @@
 package com.teya.lemonade
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,6 +37,7 @@ internal fun TileDisplay() {
         TileSection(title = "Variants") {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+                modifier = Modifier.horizontalScroll(rememberScrollState()),
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -112,6 +114,7 @@ internal fun TileDisplay() {
         TileSection(title = "Alignment") {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+                modifier = Modifier.horizontalScroll(rememberScrollState()),
             ) {
                 LemonadeUi.Tile(
                     label = "Start",
@@ -137,6 +140,7 @@ internal fun TileDisplay() {
         TileSection(title = "With Addon (Badge)") {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+                modifier = Modifier.horizontalScroll(rememberScrollState()),
             ) {
                 LemonadeUi.Tile(
                     label = "Messages",
@@ -162,6 +166,7 @@ internal fun TileDisplay() {
         TileSection(title = "Interactive") {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+                modifier = Modifier.horizontalScroll(rememberScrollState()),
             ) {
                 LemonadeUi.Tile(
                     label = "Tap me",
@@ -183,6 +188,7 @@ internal fun TileDisplay() {
         TileSection(title = "Disabled") {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+                modifier = Modifier.horizontalScroll(rememberScrollState()),
             ) {
                 LemonadeUi.Tile(
                     label = "Disabled",
@@ -207,6 +213,7 @@ internal fun TileDisplay() {
             ) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+                    modifier = Modifier.horizontalScroll(rememberScrollState()),
                 ) {
                     LemonadeUi.Tile(
                         label = "Transfer",
@@ -229,6 +236,7 @@ internal fun TileDisplay() {
                 }
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+                    modifier = Modifier.horizontalScroll(rememberScrollState()),
                 ) {
                     LemonadeUi.Tile(
                         label = "Scan",
@@ -259,6 +267,7 @@ internal fun TileDisplay() {
             ) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+                    modifier = Modifier.horizontalScroll(rememberScrollState()),
                 ) {
                     LemonadeUi.Tile(
                         label = "Orders",
@@ -278,6 +287,7 @@ internal fun TileDisplay() {
                 }
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+                    modifier = Modifier.horizontalScroll(rememberScrollState()),
                 ) {
                     LemonadeUi.Tile(
                         label = "Reports",
