@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,10 +30,15 @@ import com.teya.lemonade.core.LemonadeIcons
 @Composable
 internal fun IconsDisplay() {
     var searchQuery by remember { mutableStateOf("") }
-    val allIcons = LemonadeIcons.entries
-    val filteredIcons = remember(searchQuery) {
-        if (searchQuery.isBlank()) allIcons
-        else allIcons.filter { it.name.contains(searchQuery, ignoreCase = true) }
+    val allIcons = remember { LemonadeIcons.entries }
+    val filteredIcons by remember {
+        derivedStateOf {
+            if (searchQuery.isBlank()) {
+                allIcons
+            } else {
+                allIcons.filter { it.name.contains(searchQuery, ignoreCase = true) }
+            }
+        }
     }
 
     Column(

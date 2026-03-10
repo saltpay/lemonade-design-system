@@ -81,7 +81,7 @@ fun main() {
         appendLine(whenEntries)
         appendLine("                else -> null")
         appendLine("            }")
-        appendLine("    }")
+        append("    }")
     }
 
     val content = flagsFile.readText()
@@ -100,10 +100,10 @@ fun main() {
         return
     }
 
-    // Add semicolon to the last enum entry if it doesn't already have one
+    // Add trailing comma + semicolon to the last enum entry if it doesn't already have one
     val lastEntry = lines[lastEntryIndex].trimEnd()
     if (!lastEntry.endsWith(";")) {
-        lines[lastEntryIndex] = lastEntry.removeSuffix(",") + ";"
+        lines[lastEntryIndex] = lastEntry.removeSuffix(",") + ", ;"
     }
 
     // Insert the companion object before the closing brace

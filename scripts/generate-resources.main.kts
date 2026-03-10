@@ -39,12 +39,16 @@ fun runGroup(groupName: String, scripts: List<String>) {
         println("-----------------------")
         try {
             println("Running script: $script")
-            ProcessBuilder(script.split(" "))
+            val exitCode = ProcessBuilder(script.split(" "))
                 .inheritIO()
                 .start()
                 .waitFor()
+            if (exitCode != 0) {
+                error("Script '$script' failed with exit code $exitCode")
+            }
         } catch (error: Throwable) {
-            println("Failed to run script '$script': $error")
+            println("FATAL: $error")
+            kotlin.system.exitProcess(1)
         }
         println("-----------------------")
     }

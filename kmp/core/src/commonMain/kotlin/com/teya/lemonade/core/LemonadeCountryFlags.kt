@@ -279,7 +279,7 @@ public enum class LemonadeCountryFlags : LemonadeAsset {
     YTMayotte,
     ZASouthAfrica,
     ZMZambia,
-    ZWZimbabwe;
+    ZWZimbabwe, ;
 
     /**
      * Auto-generated companion object for looking up [LemonadeCountryFlags] by ISO 3166-1 alpha-2 country code.
@@ -562,5 +562,4 @@ public enum class LemonadeCountryFlags : LemonadeAsset {
                 else -> null
             }
     }
-
 }
