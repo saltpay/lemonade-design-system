@@ -1,6 +1,7 @@
 package com.teya.lemonade
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
@@ -38,6 +40,7 @@ public fun LemonadeUi.Tile(
     icon: LemonadeIcons,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    alignment: Alignment.Horizontal = Alignment.CenterHorizontally,
     onClick: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     variant: LemonadeTileVariant = LemonadeTileVariant.Neutral,
@@ -53,7 +56,7 @@ public fun LemonadeUi.Tile(
         content = {
             Column(
                 verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = alignment,
             ) {
                 LemonadeUi.Icon(
                     icon = icon,
@@ -89,11 +92,16 @@ private fun CoreTile(
 
     val tileShape = LocalShapes.current.radius500
     val animatedBackgroundColor by animateColorAsState(
-        targetValue = if (isPressed) {
-            variant.data.backgroundPressedColor
-        } else {
-            variant.data.backgroundColor
+        targetValue = when {
+            isPressed -> variant.data.backgroundPressedColor
+            else -> variant.data.backgroundColor
         },
+    )
+    val animatedBorderColor by animateColorAsState(
+        targetValue = variant.data.borderColor,
+    )
+    val animatedBorderWidth by animateDpAsState(
+        targetValue = variant.data.borderWidth,
     )
 
     val spaces = LocalSpaces.current
@@ -138,14 +146,11 @@ private fun CoreTile(
                         }
                             ?: Modifier,
                     ).then(
-                        other = variant.data.borderColor?.let { borderColor ->
-                            Modifier.border(
-                                color = borderColor,
-                                shape = tileShape,
-                                width = LocalBorderWidths.current.base.border25,
-                            )
-                        }
-                            ?: Modifier,
+                        other = Modifier.border(
+                            color = animatedBorderColor,
+                            shape = tileShape,
+                            width = animatedBorderWidth,
+                        ),
                     ).clip(shape = tileShape)
                     .then(
                         other = if (onClick != null) {
@@ -173,7 +178,8 @@ private fun CoreTile(
 internal data class TileData(
     val backgroundColor: Color,
     val backgroundPressedColor: Color,
-    val borderColor: Color?,
+    val borderColor: Color,
+    val borderWidth: Dp,
     val shadow: LemonadeShadow?,
 )
 
@@ -184,6 +190,7 @@ internal val LemonadeTileVariant.data: TileData
                 backgroundColor = LocalColors.current.background.bgElevated,
                 backgroundPressedColor = LocalColors.current.interaction.bgElevatedPressed,
                 borderColor = LocalColors.current.border.borderNeutralMedium,
+                borderWidth = LocalBorderWidths.current.base.border25,
                 shadow = null,
             )
 
@@ -191,6 +198,7 @@ internal val LemonadeTileVariant.data: TileData
                 backgroundColor = LocalColors.current.background.bgDefault,
                 backgroundPressedColor = LocalColors.current.interaction.bgDefaultPressed,
                 borderColor = LocalColors.current.border.borderNeutralMedium,
+                borderWidth = LocalBorderWidths.current.base.border25,
                 shadow = LemonadeShadow.Xsmall,
             )
 
@@ -198,6 +206,15 @@ internal val LemonadeTileVariant.data: TileData
                 backgroundColor = LocalColors.current.background.bgBrandElevated,
                 backgroundPressedColor = LocalColors.current.interaction.bgBrandElevatedPressed,
                 borderColor = LocalColors.current.border.borderNeutralMediumInverse,
+                borderWidth = LocalBorderWidths.current.base.border25,
+                shadow = null,
+            )
+
+            LemonadeTileVariant.Selected -> TileData(
+                backgroundColor = LocalColors.current.background.bgBrandElevated,
+                backgroundPressedColor = LocalColors.current.interaction.bgBrandElevatedPressed,
+                borderColor = LocalColors.current.border.borderNeutralHigh,
+                borderWidth = LocalBorderWidths.current.base.border50,
                 shadow = null,
             )
         }
