@@ -13,7 +13,8 @@ public enum LemonadeTileVariant {
         switch self {
         case .neutral: return LemonadeTheme.colors.background.bgElevated
         case .muted: return LemonadeTheme.colors.background.bgDefault
-        case .onColor, .selected: return LemonadeTheme.colors.background.bgBrandElevated
+        case .onColor: return LemonadeTheme.colors.background.bgBrandElevated
+        case .selected: return LemonadeTheme.colors.background.bgBrandSubtle
         }
     }
 
@@ -29,7 +30,7 @@ public enum LemonadeTileVariant {
         switch self {
         case .neutral, .muted: return LemonadeTheme.colors.border.borderNeutralMedium
         case .onColor: return LemonadeTheme.colors.border.borderNeutralMediumInverse
-        case .selected: return LemonadeTheme.colors.border.borderNeutralHigh
+        case .selected: return LemonadeTheme.colors.border.borderSelected
         }
     }
 
@@ -136,14 +137,13 @@ private struct LemonadeTileView<AddonContent: View>: View {
     @State private var isPressed = false
 
     private let minWidth: CGFloat = 120
-    private let minHeight: CGFloat = 80
 
     private var backgroundColor: Color {
         isPressed ? variant.backgroundPressedColor : variant.backgroundColor
     }
 
     private var tileContent: some View {
-        VStack(alignment: alignment, spacing: LemonadeTheme.spaces.spacing200) {
+        VStack(alignment: alignment, spacing: LemonadeTheme.spaces.spacing400) {
             LemonadeUi.Icon(
                 icon: icon,
                 contentDescription: nil,
@@ -152,12 +152,14 @@ private struct LemonadeTileView<AddonContent: View>: View {
 
             LemonadeUi.Text(
                 label,
-                textStyle: LemonadeTypography.shared.bodyMediumMedium,
+                textStyle: LemonadeTypography.shared.bodySmallSemiBold,
                 color: LemonadeTheme.colors.content.contentPrimary,
                 overflow: .tail,
                 maxLines: 1
             )
         }
+        .frame(maxWidth: .infinity, alignment: Alignment(horizontal: alignment, vertical: .center))
+        .padding(LemonadeTheme.spaces.spacing400)
     }
 
     var body: some View {
@@ -165,16 +167,14 @@ private struct LemonadeTileView<AddonContent: View>: View {
             // Main tile content
             Group {
                 if #available(iOS 16, macOS 13, *) {
-                    DefaultMinSize(minWidth: minWidth, minHeight: minHeight) {
+                    DefaultMinSize(minWidth: minWidth) {
                         tileContent
                     }
                 } else {
                     tileContent
-                        .frame(minWidth: minWidth, minHeight: minHeight)
+                        .frame(minWidth: minWidth)
                 }
             }
-            .padding(.horizontal, LemonadeTheme.spaces.spacing100)
-            .padding(.vertical, LemonadeTheme.spaces.spacing400)
             .applyIf(stretched) { $0.frame(maxWidth: .infinity) }
             .background(backgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
