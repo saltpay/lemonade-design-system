@@ -3,9 +3,13 @@ import SwiftUI
 // MARK: - SelectListItemType
 
 /// Defines the selection behavior type for SelectListItem.
+/// - `single`: Radio button selection (only one item can be selected)
+/// - `multiple`: Checkbox selection (multiple items can be selected)
+/// - `toggle`: Switch control in trailing slot (toggles on each tap)
 public enum SelectListItemType {
     case single
     case multiple
+    case toggle
 }
 
 // MARK: - LemonadeListItemVoice
@@ -82,7 +86,7 @@ public extension LemonadeUi {
                     if !checked {
                         onItemClicked()
                     }
-                case .multiple:
+                case .multiple, .toggle:
                     onItemClicked()
                 }
             },
@@ -102,6 +106,12 @@ public extension LemonadeUi {
                         LemonadeUi.Checkbox(
                             status: checked ? .checked : .unchecked,
                             onCheckboxClicked: onItemClicked,
+                            enabled: enabled
+                        )
+                    case .toggle:
+                        LemonadeUi.Switch(
+                            checked: checked,
+                            onCheckedChange: { _ in onItemClicked() },
                             enabled: enabled
                         )
                     }

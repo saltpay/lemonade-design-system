@@ -91,6 +91,131 @@ struct SymbolContainerDisplayView: View {
                     }
                 }
 
+                // Shapes
+                sectionView(title: "Shapes") {
+                    HStack(spacing: 16) {
+                        VStack(spacing: 8) {
+                            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: nil, size: .medium, shape: .circle)
+                            Text("Circle")
+                                .font(.caption)
+                        }
+
+                        VStack(spacing: 8) {
+                            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: nil, size: .medium, shape: .rounded)
+                            Text("Rounded")
+                                .font(.caption)
+                        }
+                    }
+                }
+
+                // With Badge
+                sectionView(title: "With Badge") {
+                    HStack(spacing: 24) {
+                        VStack(spacing: 8) {
+                            LemonadeUi.SymbolContainer(
+                                icon: .heart,
+                                contentDescription: nil,
+                                size: .small
+                            ) {
+                                LemonadeUi.Badge(text: "3", size: .xSmall)
+                            }
+                            Text("Small")
+                                .font(.caption)
+                        }
+
+                        VStack(spacing: 8) {
+                            LemonadeUi.SymbolContainer(
+                                icon: .heart,
+                                contentDescription: nil,
+                                size: .medium
+                            ) {
+                                LemonadeUi.Badge(text: "3", size: .xSmall)
+                            }
+                            Text("Medium")
+                                .font(.caption)
+                        }
+
+                        VStack(spacing: 8) {
+                            LemonadeUi.SymbolContainer(
+                                icon: .heart,
+                                contentDescription: nil,
+                                size: .large
+                            ) {
+                                LemonadeUi.Badge(text: "3")
+                            }
+                            Text("Large")
+                                .font(.caption)
+                        }
+                    }
+                }
+
+                // Image Variant (fill = false)
+                sectionView(title: "Image (fill = false)") {
+                    HStack(spacing: 16) {
+                        VStack(spacing: 8) {
+                            LemonadeUi.SymbolContainer(
+                                image: Image(systemName: "star.fill"),
+                                contentDescription: "Star",
+                                fill: false,
+                                size: .small
+                            )
+                            Text("Small")
+                                .font(.caption)
+                        }
+
+                        VStack(spacing: 8) {
+                            LemonadeUi.SymbolContainer(
+                                image: Image(systemName: "star.fill"),
+                                contentDescription: "Star",
+                                fill: false,
+                                size: .medium
+                            )
+                            Text("Medium")
+                                .font(.caption)
+                        }
+
+                        VStack(spacing: 8) {
+                            LemonadeUi.SymbolContainer(
+                                image: Image(systemName: "star.fill"),
+                                contentDescription: "Star",
+                                fill: false,
+                                size: .large
+                            )
+                            Text("Large")
+                                .font(.caption)
+                        }
+                    }
+                }
+
+                // Image Variant (fill = true)
+                sectionView(title: "Image (fill = true)") {
+                    HStack(spacing: 16) {
+                        VStack(spacing: 8) {
+                            LemonadeUi.SymbolContainer(
+                                image: Image(systemName: "photo"),
+                                contentDescription: "Photo",
+                                fill: true,
+                                size: .small,
+                                shape: .circle
+                            )
+                            Text("Circle")
+                                .font(.caption)
+                        }
+
+                        VStack(spacing: 8) {
+                            LemonadeUi.SymbolContainer(
+                                image: Image(systemName: "photo"),
+                                contentDescription: "Photo",
+                                fill: true,
+                                size: .medium,
+                                shape: .rounded
+                            )
+                            Text("Rounded")
+                                .font(.caption)
+                        }
+                    }
+                }
+
                 // Text Variant
                 sectionView(title: "Text Variant") {
                     HStack(spacing: 16) {
