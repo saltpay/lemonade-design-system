@@ -79,7 +79,7 @@ internal fun CountryFlagDisplay() {
                     modifier = Modifier
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.Center,
                 ) {
                     FlagBox(flag = flag)
                 }
