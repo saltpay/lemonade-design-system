@@ -302,6 +302,7 @@ public enum class LemonadeCountryFlags : LemonadeAsset {
          * @param alpha2 the ISO 3166-1 alpha-2 country code.
          * @return the matching [LemonadeCountryFlags] entry, or `null` if the code is not recognized.
          */
+        @Suppress("LongMethod", "CyclomaticComplexMethod")
         public fun getOrNull(alpha2: String): LemonadeCountryFlags? =
             when (alpha2.uppercase()) {
                 "AC" -> ACAscensionIsland

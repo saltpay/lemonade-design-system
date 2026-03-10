@@ -75,6 +75,7 @@ fun main() {
         appendLine("         * @param alpha2 the ISO 3166-1 alpha-2 country code.")
         appendLine("         * @return the matching [LemonadeCountryFlags] entry, or `null` if the code is not recognized.")
         appendLine("         */")
+        appendLine("        @Suppress(\"LongMethod\", \"CyclomaticComplexMethod\")")
         appendLine("        public fun getOrNull(alpha2: String): LemonadeCountryFlags? =")
         appendLine("            when (alpha2.uppercase()) {")
         appendLine(whenEntries)
