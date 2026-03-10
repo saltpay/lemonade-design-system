@@ -229,7 +229,7 @@ internal fun CoreChip(
     modifier: Modifier = Modifier,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
-    val platformDimensions = chipPlatformDimensions
+    val platformDimensions = defaultChipDimensions()
     val props = getChipProps(selected = selected)
 
     val isHover by interactionSource.collectIsHoveredAsState()
@@ -345,8 +345,6 @@ private val LocalChipContentColor: ProvidableCompositionLocal<@Composable () -> 
     staticCompositionLocalOf {
         { LocalColors.current.content.contentPrimary }
     }
-
-internal expect val chipPlatformDimensions: ChipPlatformDimensions
 
 internal data class ChipPlatformDimensions(
     val labelFontStyle: LemonadeTextStyle,

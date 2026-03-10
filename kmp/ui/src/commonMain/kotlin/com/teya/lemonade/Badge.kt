@@ -20,6 +20,7 @@ import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastFirst
@@ -135,7 +136,7 @@ private val LemonadeBadgeSize.badgeProps: BadgeProps
 internal fun LemonadeBadgeBox(
     badge: @Composable BoxScope.() -> Unit,
     content: @Composable BoxScope.() -> Unit,
-    badgeOffset: DpOffset,
+    badgeOffset: (IntSize) -> DpOffset,
     modifier: Modifier = Modifier,
 ) {
     Layout(
@@ -173,6 +174,12 @@ internal fun LemonadeBadgeBox(
                     LastBaseline to lastBaseline,
                 ),
             ) {
+                val badgeOffset = badgeOffset(
+                    IntSize(
+                        width = badgePlaceable.width,
+                        height = badgePlaceable.height,
+                    ),
+                )
                 anchorPlaceable.placeRelative(
                     x = 0,
                     y = 0,

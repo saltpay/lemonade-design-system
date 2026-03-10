@@ -69,7 +69,7 @@ public fun LemonadeUi.RadioButton(
     supportText: String? = null,
     enabled: Boolean = true,
 ) {
-    val props = platformRadioButtonPropertiesProperties
+    val props = defaultPlatformRadioButtonProps()
     Row(
         horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),
         modifier = modifier
@@ -163,7 +163,7 @@ private fun CoreRadioButton(
     onRadioButtonClicked: () -> Unit,
     enabled: Boolean,
     modifier: Modifier = Modifier,
-    platformProperties: RadioButtonPlatformProps = platformRadioButtonPropertiesProperties,
+    platformProperties: RadioButtonPlatformProps = defaultPlatformRadioButtonProps(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val isHovered by interactionSource.collectIsHoveredAsState()
@@ -271,8 +271,6 @@ internal data class RadioButtonPlatformProps(
     val supportTextStyle: LemonadeTextStyle,
     val focusVisible: Boolean,
 )
-
-internal expect val platformRadioButtonPropertiesProperties: RadioButtonPlatformProps
 
 @Composable
 internal fun defaultPlatformRadioButtonProps(): RadioButtonPlatformProps =
