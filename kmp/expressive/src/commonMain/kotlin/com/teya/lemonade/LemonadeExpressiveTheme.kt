@@ -23,7 +23,7 @@ public fun LemonadeExpressiveTheme(
     borderWidths: LemonadeBorderWidth = LemonadeTheme.borderWidths,
     sizes: LemonadeSizeValues = LemonadeTheme.sizes,
     effects: LemonadeEffects = LemonadeTheme.effects,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     LemonadeTheme(
         colors = colors,
@@ -137,8 +137,7 @@ private fun lemonadeExpressiveColorScheme(): ColorScheme {
     )
 }
 
-private fun lemonadeExpressiveEffects(effects: LemonadeEffects): LemonadeEffects {
-    return object : LemonadeEffects by effects {
+private fun lemonadeExpressiveEffects(effects: LemonadeEffects): LemonadeEffects =
+    object : LemonadeEffects by effects {
         override val interactionIndication: Indication = ripple()
     }
-}

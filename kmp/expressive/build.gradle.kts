@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.composeHotReload)
     alias(libs.plugins.kotlinSerialization)
     id("lemonade")
+    id("lemonade-lint")
 }
 
 lemonadePublishing {
@@ -57,11 +58,17 @@ kotlin {
 
 android {
     namespace = "com.teya.lemonade.expressive"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk = libs.versions.android.compileSdk
+        .get()
+        .toInt()
 
     defaultConfig {
-        testOptions.targetSdk = libs.versions.android.targetSdk.get().toInt()
-        minSdk = libs.versions.android.minLibSdk.get().toInt()
+        testOptions.targetSdk = libs.versions.android.targetSdk
+            .get()
+            .toInt()
+        minSdk = libs.versions.android.minLibSdk
+            .get()
+            .toInt()
     }
 
     compileOptions {
