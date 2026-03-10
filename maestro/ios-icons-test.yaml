@@ -1,0 +1,15 @@
+appId: com.teya.lemonade.sampleapp
+---
+- launchApp
+- assertVisible: "Lemonade DS"
+- swipe:
+    direction: UP
+    duration: 500
+- assertVisible: "Icons"
+- tapOn: "Icons"
+- swipe:
+    direction: UP
+    duration: 500
+- swipe:
+    direction: UP
+    duration: 500
