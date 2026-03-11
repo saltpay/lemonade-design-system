@@ -118,6 +118,7 @@ public protocol ContentColors {
 
 /// Background color definitions
 public protocol BackgroundColors {
+    var bgTransparent: Color { get }
     var bgAlwaysLight: Color { get }
     var bgAlwaysDark: Color { get }
     var bgDefaultInverse: Color { get }
