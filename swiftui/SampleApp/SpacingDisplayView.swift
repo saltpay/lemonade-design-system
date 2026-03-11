@@ -17,7 +17,7 @@ struct SpacingDisplayView: View {
                             .frame(width: 50)
 
                         Rectangle()
-                            .fill(LemonadePrimitiveColors.Solid.Green.green500)
+                            .fill(.content.contentPositive)
                             .frame(width: item.value, height: 24)
                             .clipShape(RoundedRectangle(cornerRadius: 4))
 

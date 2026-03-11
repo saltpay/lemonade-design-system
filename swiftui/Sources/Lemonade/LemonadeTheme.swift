@@ -26,7 +26,7 @@ import SwiftUI
 public enum LemonadeTheme {
     /// Semantic color tokens - automatically adapts to light/dark mode
     /// Uses dynamic UIColor internally so no @MainActor required
-    nonisolated(unsafe) public static var colors: LemonadeSemanticColors = LemonadeLightTheme()
+    nonisolated(unsafe) public static var colors: LemonadeSemanticColors = LemonadeAdaptiveTheme()
 
     /// Spacing tokens
     public static let spaces: LemonadeSpaceValues = LemonadeSpaceValuesImpl()

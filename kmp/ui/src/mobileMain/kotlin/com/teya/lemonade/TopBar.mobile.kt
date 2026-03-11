@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -584,6 +585,7 @@ private fun CoreTopBar(
         modifier = modifier
             .clipToBounds()
             .background(color = backgroundColor)
+            .displayCutoutPadding()
             .statusBarsPadding(),
         fixedHeaderSlot = fixedHeaderSlot,
         collapsableSlot = collapsableSlot,

@@ -4,6 +4,7 @@ import Lemonade
 struct ListItemDisplayView: View {
     @State private var singleSelection = 0
     @State private var multipleSelections: Set<Int> = [0]
+    @State private var toggleStates: [Bool] = [true, false, true]
 
     var body: some View {
         ScrollView(.vertical) {
@@ -43,6 +44,23 @@ struct ListItemDisplayView: View {
                                 }
                             },
                             showDivider: index < 2
+                        )
+                    }
+                }
+
+                // MARK: - SelectListItem - Toggle
+                LemonadeUi.Card(
+                    contentPadding: .none,
+                    header: CardHeaderConfig(title: "SelectListItem - Toggle")
+                ) {
+                    ForEach(0..<3, id: \.self) { index in
+                        LemonadeUi.SelectListItem(
+                            label: "Setting \(index + 1)",
+                            type: .toggle,
+                            checked: toggleStates[index],
+                            onItemClicked: { toggleStates[index].toggle() },
+                            showDivider: index < 2,
+                            supportText: index == 0 ? "With support text" : nil
                         )
                     }
                 }
