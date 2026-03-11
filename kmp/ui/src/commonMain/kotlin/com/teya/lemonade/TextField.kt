@@ -246,7 +246,7 @@ public fun LemonadeUi.TextField(
  *     label = "Label",
  *     supportText = "Support Text",
  *     optionalIndicator = "Optional",
- *     leadingAction = { /* handle leadingContent clicked */ }
+ *     leadingAction = { /* handle leadingContent clicked */ },
  *     leadingContent = {
  *         Row(
  *             horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
@@ -357,7 +357,7 @@ public fun LemonadeUi.TextFieldWithSelector(
  *         textFieldValue = newValue
  *         controller.onTextChanged(newValue.text)
  *     },
- *     leadingAction = { /* handle leadingContent clicked */ }
+ *     leadingAction = { /* handle leadingContent clicked */ },
  *     leadingContent = {
  *         Row(
  *             horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
@@ -444,8 +444,57 @@ public fun LemonadeUi.TextFieldWithSelector(
 }
 
 /**
- * CoreTextField overload that accepts [TextFieldValue] for cursor position control.
- * This is the primary implementation that the String-based overload delegates to.
+ * String-based CoreTextField using BasicTextField's String API directly.
+ * This preserves cursor position and selection state managed internally by BasicTextField.
+ */
+@Composable
+internal fun CoreTextField(
+    input: String,
+    onInputChanged: (String) -> Unit,
+    label: String? = null,
+    optionalIndicator: String? = null,
+    supportText: String? = null,
+    errorMessage: String? = null,
+    size: TextFieldSize? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    keyboardActions: KeyboardActions = KeyboardActions(),
+    keyboardOptions: KeyboardOptions = KeyboardOptions(),
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    error: Boolean = false,
+    enabled: Boolean = true,
+    textBoxContent: @Composable BoxScope.(@Composable () -> Unit) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    BasicTextField(
+        value = input,
+        onValueChange = onInputChanged,
+        interactionSource = interactionSource,
+        enabled = enabled,
+        keyboardActions = keyboardActions,
+        keyboardOptions = keyboardOptions,
+        visualTransformation = visualTransformation,
+        textStyle = size.data.contentStyle.textStyle,
+        singleLine = true,
+        modifier = modifier,
+        decorationBox = { innerTextField ->
+            CoreTextFieldDecorator(
+                label = label,
+                optionalIndicator = optionalIndicator,
+                supportText = supportText,
+                errorMessage = errorMessage,
+                size = size,
+                interactionSource = interactionSource,
+                error = error,
+                enabled = enabled,
+                textBoxContent = { textBoxContent(innerTextField) },
+            )
+        },
+    )
+}
+
+/**
+ * TextFieldValue-based CoreTextField for cursor position control.
+ * Use this when you need to control cursor position or selection externally.
  */
 @Composable
 internal fun CoreTextField(
@@ -489,46 +538,6 @@ internal fun CoreTextField(
                 textBoxContent = { textBoxContent(innerTextField) },
             )
         },
-    )
-}
-
-/**
- * String-based CoreTextField that delegates to the TextFieldValue-based implementation.
- */
-@Composable
-internal fun CoreTextField(
-    input: String,
-    onInputChanged: (String) -> Unit,
-    label: String? = null,
-    optionalIndicator: String? = null,
-    supportText: String? = null,
-    errorMessage: String? = null,
-    size: TextFieldSize? = null,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    keyboardActions: KeyboardActions = KeyboardActions(),
-    keyboardOptions: KeyboardOptions = KeyboardOptions(),
-    visualTransformation: VisualTransformation = VisualTransformation.None,
-    error: Boolean = false,
-    enabled: Boolean = true,
-    textBoxContent: @Composable BoxScope.(@Composable () -> Unit) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    CoreTextField(
-        value = TextFieldValue(text = input, selection = TextRange(input.length)),
-        onValueChange = { onInputChanged(it.text) },
-        label = label,
-        optionalIndicator = optionalIndicator,
-        supportText = supportText,
-        errorMessage = errorMessage,
-        size = size,
-        interactionSource = interactionSource,
-        keyboardActions = keyboardActions,
-        keyboardOptions = keyboardOptions,
-        visualTransformation = visualTransformation,
-        error = error,
-        enabled = enabled,
-        textBoxContent = textBoxContent,
-        modifier = modifier,
     )
 }
 
