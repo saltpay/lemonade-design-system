@@ -2,8 +2,7 @@ import SwiftUI
 
 /// Adaptive theme that uses Asset Catalog colors with built-in light/dark appearance variants.
 ///
-/// Unlike `LemonadeLightTheme` and `LemonadeDarkTheme` which use hardcoded primitive colors,
-/// this theme returns `Color` values from the asset catalog that automatically adapt to the
+/// Returns `Color` values from the asset catalog that automatically adapt to the
 /// system's current appearance (light/dark mode) without any manual switching.
 ///
 /// Usage:
