@@ -25,10 +25,12 @@ public enum LemonadeRadius {
     case radius100
     case radius150
     case radius200
+    case radius250
     case radius300
     case radius400
     case radius500
     case radius600
+    case semantic
     case radius800
     case radiusFull
 
@@ -40,10 +42,12 @@ public enum LemonadeRadius {
         case .radius100: return 4
         case .radius150: return 6
         case .radius200: return 8
+        case .radius250: return 10
         case .radius300: return 12
         case .radius400: return 16
         case .radius500: return 20
         case .radius600: return 24
+        case .semantic: return 24
         case .radius800: return 32
         case .radiusFull: return 999
         }
@@ -62,10 +66,12 @@ public protocol LemonadeRadiusValues {
     var radius100: CGFloat { get }
     var radius150: CGFloat { get }
     var radius200: CGFloat { get }
+    var radius250: CGFloat { get }
     var radius300: CGFloat { get }
     var radius400: CGFloat { get }
     var radius500: CGFloat { get }
     var radius600: CGFloat { get }
+    var radiusContainerDefault: CGFloat { get }
     var radius800: CGFloat { get }
     var radiusFull: CGFloat { get }
 }
@@ -77,10 +83,12 @@ public protocol LemonadeShapes {
     var radius100: RoundedRectangle { get }
     var radius150: RoundedRectangle { get }
     var radius200: RoundedRectangle { get }
+    var radius250: RoundedRectangle { get }
     var radius300: RoundedRectangle { get }
     var radius400: RoundedRectangle { get }
     var radius500: RoundedRectangle { get }
     var radius600: RoundedRectangle { get }
+    var radiusContainerDefault: RoundedRectangle { get }
     var radius800: RoundedRectangle { get }
     var radiusFull: RoundedRectangle { get }
 }
@@ -92,10 +100,12 @@ public struct LemonadeRadiusValuesImpl: LemonadeRadiusValues {
     public let radius100: CGFloat = LemonadeRadius.radius100.value
     public let radius150: CGFloat = LemonadeRadius.radius150.value
     public let radius200: CGFloat = LemonadeRadius.radius200.value
+    public let radius250: CGFloat = LemonadeRadius.radius250.value
     public let radius300: CGFloat = LemonadeRadius.radius300.value
     public let radius400: CGFloat = LemonadeRadius.radius400.value
     public let radius500: CGFloat = LemonadeRadius.radius500.value
     public let radius600: CGFloat = LemonadeRadius.radius600.value
+    public let radiusContainerDefault: CGFloat = LemonadeRadius.semantic.value
     public let radius800: CGFloat = LemonadeRadius.radius800.value
     public let radiusFull: CGFloat = LemonadeRadius.radiusFull.value
 
@@ -109,10 +119,12 @@ public struct LemonadeShapesImpl: LemonadeShapes {
     public var radius100: RoundedRectangle { LemonadeRadius.radius100.shape }
     public var radius150: RoundedRectangle { LemonadeRadius.radius150.shape }
     public var radius200: RoundedRectangle { LemonadeRadius.radius200.shape }
+    public var radius250: RoundedRectangle { LemonadeRadius.radius250.shape }
     public var radius300: RoundedRectangle { LemonadeRadius.radius300.shape }
     public var radius400: RoundedRectangle { LemonadeRadius.radius400.shape }
     public var radius500: RoundedRectangle { LemonadeRadius.radius500.shape }
     public var radius600: RoundedRectangle { LemonadeRadius.radius600.shape }
+    public var radiusContainerDefault: RoundedRectangle { LemonadeRadius.semantic.shape }
     public var radius800: RoundedRectangle { LemonadeRadius.radius800.shape }
     public var radiusFull: RoundedRectangle { LemonadeRadius.radiusFull.shape }
 

@@ -26,10 +26,12 @@ class LemonadeRadius {
     this.radius100 = 4.0,
     this.radius150 = 6.0,
     this.radius200 = 8.0,
+    this.radius250 = 10.0,
     this.radius300 = 12.0,
     this.radius400 = 16.0,
     this.radius500 = 20.0,
     this.radius600 = 24.0,
+    this.radiusContainerDefault = 24.0,
     this.radius800 = 32.0,
     this.radiusFull = 999.0,
   });
@@ -49,10 +51,12 @@ class LemonadeRadius {
       radius100: lerpDouble(a.radius100, b.radius100, t)!,
       radius150: lerpDouble(a.radius150, b.radius150, t)!,
       radius200: lerpDouble(a.radius200, b.radius200, t)!,
+      radius250: lerpDouble(a.radius250, b.radius250, t)!,
       radius300: lerpDouble(a.radius300, b.radius300, t)!,
       radius400: lerpDouble(a.radius400, b.radius400, t)!,
       radius500: lerpDouble(a.radius500, b.radius500, t)!,
       radius600: lerpDouble(a.radius600, b.radius600, t)!,
+      radiusContainerDefault: lerpDouble(a.radiusContainerDefault, b.radiusContainerDefault, t)!,
       radius800: lerpDouble(a.radius800, b.radius800, t)!,
       radiusFull: lerpDouble(a.radiusFull, b.radiusFull, t)!,
     );
@@ -73,6 +77,9 @@ class LemonadeRadius {
   /// Radius value of 8px from token `radius200`
   final double radius200;
 
+  /// Radius value of 10px from token `radius250`
+  final double radius250;
+
   /// Radius value of 12px from token `radius300`
   final double radius300;
 
@@ -84,6 +91,9 @@ class LemonadeRadius {
 
   /// Radius value of 24px from token `radius600`
   final double radius600;
+
+  /// Radius value of 24px from token `radiusContainerDefault`
+  final double radiusContainerDefault;
 
   /// Radius value of 32px from token `radius800`
   final double radius800;
@@ -101,10 +111,12 @@ class LemonadeRadius {
           radius100 == other.radius100 &&
           radius150 == other.radius150 &&
           radius200 == other.radius200 &&
+          radius250 == other.radius250 &&
           radius300 == other.radius300 &&
           radius400 == other.radius400 &&
           radius500 == other.radius500 &&
           radius600 == other.radius600 &&
+          radiusContainerDefault == other.radiusContainerDefault &&
           radius800 == other.radius800 &&
           radiusFull == other.radiusFull;
 
@@ -115,10 +127,12 @@ class LemonadeRadius {
     radius100,
     radius150,
     radius200,
+    radius250,
     radius300,
     radius400,
     radius500,
     radius600,
+    radiusContainerDefault,
     radius800,
     radiusFull,
   );
