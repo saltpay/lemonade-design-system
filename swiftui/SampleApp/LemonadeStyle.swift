@@ -1,4 +1,3 @@
-import Lemonade
 import SwiftUI
 
 enum LemonadeStyle: CaseIterable {
@@ -15,13 +14,6 @@ enum LemonadeStyle: CaseIterable {
         switch self {
         case .light: .light
         case .dark: .dark
-        }
-    }
-
-    var colors: LemonadeSemanticColors {
-        switch self {
-        case .light: LemonadeLightTheme()
-        case .dark: LemonadeDarkTheme()
         }
     }
 }
