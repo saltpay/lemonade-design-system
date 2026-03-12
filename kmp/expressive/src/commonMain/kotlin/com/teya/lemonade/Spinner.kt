@@ -6,6 +6,6 @@ import androidx.compose.material3.LoadingIndicator as M3LoadingIndicator
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-public fun LemonadeUi.LoadingIndicator() {
+public fun LemonadeUi.Spinner() {
     M3LoadingIndicator()
 }
