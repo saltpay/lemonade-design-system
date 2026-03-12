@@ -74,8 +74,8 @@ private fun buildRadiusClass(
 
         // Sub-classes for each semantic group (like LemonadeBaseOpacity)
         groupedTokens.forEach { (groupName, groupTokens) ->
-            val className = "Lemonade${groupName.capitalize()}Radius"
-            appendLine("/// ${groupName.capitalize()} radius values")
+            val className = "Lemonade${groupName.replaceFirstChar { it.uppercase() }}Radius"
+            appendLine("/// ${groupName.replaceFirstChar { it.uppercase() }} radius values")
             appendLine("@immutable")
             appendLine("class $className {")
             appendLine("  /// Creates a [$className] configuration.")
@@ -144,7 +144,7 @@ private fun buildRadiusClass(
         }
         groupedTokens.forEach { (groupName, _) ->
             val prop = groupName.replaceFirstChar { it.lowercase() }
-            val cls = "Lemonade${groupName.capitalize()}Radius"
+            val cls = "Lemonade${groupName.replaceFirstChar { it.uppercase() }}Radius"
             appendLine()
             append("    this.$prop = const $cls(),")
         }
@@ -166,7 +166,7 @@ private fun buildRadiusClass(
         }
         groupedTokens.forEach { (groupName, _) ->
             val prop = groupName.replaceFirstChar { it.lowercase() }
-            val cls = "Lemonade${groupName.capitalize()}Radius"
+            val cls = "Lemonade${groupName.replaceFirstChar { it.uppercase() }}Radius"
             appendLine("      $prop: $cls.lerp(a.$prop, b.$prop, t),")
         }
         appendLine("    );")
@@ -179,8 +179,8 @@ private fun buildRadiusClass(
         }
         groupedTokens.forEach { (groupName, _) ->
             val prop = groupName.replaceFirstChar { it.lowercase() }
-            val cls = "Lemonade${groupName.capitalize()}Radius"
-            appendLine("  /// ${groupName.capitalize()} radius values")
+            val cls = "Lemonade${groupName.replaceFirstChar { it.uppercase() }}Radius"
+            appendLine("  /// ${groupName.replaceFirstChar { it.uppercase() }} radius values")
             appendLine("  final $cls $prop;")
             appendLine()
         }
@@ -221,8 +221,8 @@ private fun buildShapesClass(
 
         // Sub-classes per semantic group
         groupedTokens.forEach { (groupName, groupTokens) ->
-            val className = "Lemonade${groupName.capitalize()}Shapes"
-            appendLine("/// ${groupName.capitalize()} shape values")
+            val className = "Lemonade${groupName.replaceFirstChar { it.uppercase() }}Shapes"
+            appendLine("/// ${groupName.replaceFirstChar { it.uppercase() }} shape values")
             appendLine("@immutable")
             appendLine("class $className {")
             appendLine("  /// Creates a [$className] configuration.")
@@ -299,7 +299,7 @@ private fun buildShapesClass(
         }
         groupedTokens.forEach { (groupName, _) ->
             val prop = groupName.replaceFirstChar { it.lowercase() }
-            val cls = "Lemonade${groupName.capitalize()}Shapes"
+            val cls = "Lemonade${groupName.replaceFirstChar { it.uppercase() }}Shapes"
             appendLine()
             append("    this.$prop = const $cls(),")
         }
@@ -321,7 +321,7 @@ private fun buildShapesClass(
         }
         groupedTokens.forEach { (groupName, _) ->
             val prop = groupName.replaceFirstChar { it.lowercase() }
-            val cls = "Lemonade${groupName.capitalize()}Shapes"
+            val cls = "Lemonade${groupName.replaceFirstChar { it.uppercase() }}Shapes"
             appendLine("      $prop: $cls.lerp(a.$prop, b.$prop, t),")
         }
         appendLine("    );")
@@ -334,8 +334,8 @@ private fun buildShapesClass(
         }
         groupedTokens.forEach { (groupName, _) ->
             val prop = groupName.replaceFirstChar { it.lowercase() }
-            val cls = "Lemonade${groupName.capitalize()}Shapes"
-            appendLine("  /// ${groupName.capitalize()} shape values")
+            val cls = "Lemonade${groupName.replaceFirstChar { it.uppercase() }}Shapes"
+            appendLine("  /// ${groupName.replaceFirstChar { it.uppercase() }} shape values")
             appendLine("  final $cls $prop;")
             appendLine()
         }
