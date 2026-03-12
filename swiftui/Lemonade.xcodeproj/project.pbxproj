@@ -66,6 +66,8 @@
 		B579339C01F3B314291B383E /* RadiusDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE64A12F963CE478335AF04 /* RadiusDisplayView.swift */; };
 		B5D30A1CAD5F5B44E1D1E402 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDAE9861867D763DA08E5126 /* Assets.xcassets */; };
 		BB6860A845F463E38F669D11 /* LemonadeTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3769FDCA7B142885A491F2 /* LemonadeTextField.swift */; };
+		CC7960B956E574F39F880E2D /* LemonadeTextFieldValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8071CA67F685049A991F3E /* LemonadeTextFieldValue.swift */; };
+		EE9182DB78A796150BA02A4F /* LemonadeUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9293EC89B8A7261CB13B50 /* LemonadeUITextField.swift */; };
 		BDA4239CD9AA40CA8E48A3E3 /* LemonadeTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3280F4308F4F8C907074DC88 /* LemonadeTag.swift */; };
 		BE175C6921226C1FEC034F56 /* OpacityDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5EE55559BBBD865967D97F /* OpacityDisplayView.swift */; };
 		C4AE5EBAD8126D58F385CA1C /* LemonadeSymbolContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102DD2FA9EEDD18ECF928E2F /* LemonadeSymbolContainer.swift */; };
@@ -197,6 +199,8 @@
 		C84754AC7EA41CD450B4A3D3 /* LemonadeBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeBadge.swift; sourceTree = "<group>"; };
 		CE6AEB9B2BC6A819D92224CC /* LemonadeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeButton.swift; sourceTree = "<group>"; };
 		CF3769FDCA7B142885A491F2 /* LemonadeTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeTextField.swift; sourceTree = "<group>"; };
+		DD8071CA67F685049A991F3E /* LemonadeTextFieldValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeTextFieldValue.swift; sourceTree = "<group>"; };
+		FF9293EC89B8A7261CB13B50 /* LemonadeUITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeUITextField.swift; sourceTree = "<group>"; };
 		CFA789EE2F4371A1DBD4A6A7 /* DefaultMinSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMinSize.swift; sourceTree = "<group>"; };
 		D0FE00739D9EC1D0D781DBE1 /* SegmentedControlDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlDisplayView.swift; sourceTree = "<group>"; };
 		D38253A95E9AE0FED8C76E46 /* TagDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDisplayView.swift; sourceTree = "<group>"; };
@@ -262,6 +266,8 @@
 				3280F4308F4F8C907074DC88 /* LemonadeTag.swift */,
 				94708CC26C49F2A293272282 /* LemonadeText.swift */,
 				CF3769FDCA7B142885A491F2 /* LemonadeTextField.swift */,
+				DD8071CA67F685049A991F3E /* LemonadeTextFieldValue.swift */,
+				FF9293EC89B8A7261CB13B50 /* LemonadeUITextField.swift */,
 				62A5B05AB1009ED997AE0B33 /* LemonadeTile.swift */,
 				329E4F4BCF65D5688A9253E5 /* LemonadeToast.swift */,
 				E25620DF4633F646ADC0146B /* LemonadeToastManager.swift */,
@@ -520,6 +526,8 @@
 				BDA4239CD9AA40CA8E48A3E3 /* LemonadeTag.swift in Sources */,
 				4236C35CE0C567203CF74E91 /* LemonadeText.swift in Sources */,
 				BB6860A845F463E38F669D11 /* LemonadeTextField.swift in Sources */,
+				CC7960B956E574F39F880E2D /* LemonadeTextFieldValue.swift in Sources */,
+				EE9182DB78A796150BA02A4F /* LemonadeUITextField.swift in Sources */,
 				EFA42A9AE4A04A9DD371A729 /* LemonadeTheme.swift in Sources */,
 				D62BBD607DF9115DEBC9A233 /* LemonadeTile.swift in Sources */,
 				FD372D62EDA6C7A0422F37B2 /* LemonadeToast.swift in Sources */,
