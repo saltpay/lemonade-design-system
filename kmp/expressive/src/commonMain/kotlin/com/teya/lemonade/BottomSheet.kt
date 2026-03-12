@@ -27,8 +27,6 @@ import androidx.compose.ui.unit.dp
  *   animates out and is removed from composition after the animation completes.
  * @param onDismissRequest Callback invoked when the user requests to dismiss the bottom sheet
  *   (e.g., by swiping down, tapping the scrim, or pressing back).
- * @param sheetState The [SheetState] that controls the bottom sheet's internal state (e.g., expanded,
- *   partially expanded). Defaults to [rememberModalBottomSheetState].
  * @param showDragHandle Whether to display the drag handle at the top of the sheet. Defaults to `true`.
  * @param content A composable lambda with [ColumnScope] receiver that defines the sheet's content.
  *
@@ -71,10 +69,10 @@ import androidx.compose.ui.unit.dp
 public fun LemonadeUi.BottomSheet(
     expanded: Boolean,
     onDismissRequest: () -> Unit,
-    sheetState: SheetState = rememberModalBottomSheetState(),
     showDragHandle: Boolean = true,
     content: @Composable ColumnScope.() -> Unit,
 ) {
+    val sheetState = rememberModalBottomSheetState()
     LaunchedEffect(expanded) {
         if (!expanded && sheetState.isVisible) {
             sheetState.hide()
