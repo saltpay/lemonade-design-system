@@ -49,7 +49,9 @@ private fun buildRadiusCode(
     resources: List<ResourceData<RadiusResource>>,
 ): String {
     val primitiveResources = resources.filter { it.groups.isEmpty() }
-    val groupedResources = resources.filter { it.groups.isNotEmpty() }
+    val groupedResources = resources
+        .filter { it.groups.isNotEmpty() }
+        .filter { it.groupFullName != null }
         .groupBy { it.groupFullName!! }
 
     return buildString {
@@ -160,7 +162,7 @@ private fun buildRadiusCode(
             appendLine("    public var ${resource.name}: RoundedRectangle { LemonadeRadius.${resource.name}.shape }")
         }
         groupedResources.forEach { (groupName, _) ->
-            appendLine("    public let ${groupName.replaceFirstChar { it.lowercase() }}: ${groupName}Shapes = ${groupName}ShapesImpl()")
+            appendLine("    public var ${groupName.replaceFirstChar { it.lowercase() }}: ${groupName}Shapes { ${groupName}ShapesImpl() }")
         }
         appendLine()
         appendLine("    public init() {}")
