@@ -116,11 +116,13 @@ public extension LemonadeUi {
 
 // MARK: - TextField with TextFieldValue (Cursor Control)
 
-#if canImport(UIKit)
 public extension LemonadeUi {
     /// Text Field component with TextFieldValue for cursor position control.
     /// Use this overload when you need to programmatically control cursor position,
     /// such as when formatting phone numbers or other structured input.
+    ///
+    /// - Note: Cursor position control is fully supported on iOS. On macOS, the text field
+    ///   functions normally but cursor position changes are not applied (no-op).
     ///
     /// ## Usage
     /// ```swift
@@ -220,7 +222,6 @@ public extension LemonadeUi {
         )
     }
 }
-#endif
 
 // MARK: - TextFieldWithSelector Component
 
@@ -336,11 +337,13 @@ public extension LemonadeUi {
 
 // MARK: - TextFieldWithSelector with TextFieldValue (Cursor Control)
 
-#if canImport(UIKit)
 public extension LemonadeUi {
     /// A text input with selector using TextFieldValue for cursor position control.
     /// Use this for structured input like phone numbers where you need to format
     /// the input while maintaining correct cursor position.
+    ///
+    /// - Note: Cursor position control is fully supported on iOS. On macOS, the text field
+    ///   functions normally but cursor position changes are not applied (no-op).
     ///
     /// ## Usage
     /// ```swift
@@ -454,7 +457,6 @@ public extension LemonadeUi {
         )
     }
 }
-#endif
 
 // MARK: - Internal TextField View
 
@@ -474,7 +476,7 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
     @FocusState private var isFocused: Bool
     @State private var isHovered = false
 
-    private let minHeight: CGFloat = 56 // size1400
+    private var minHeight: CGFloat { LemonadeTheme.sizes.size1400 }
     private let cornerRadius: CGFloat = 12 // radius300
     private let horizontalPadding: CGFloat = 12 // spacing300
     private let verticalPadding: CGFloat = 12 // spacing300
@@ -626,7 +628,7 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
     @FocusState private var isFocused: Bool
     @State private var isHovered = false
 
-    private let minHeight: CGFloat = 56 // size1400
+    private var minHeight: CGFloat { LemonadeTheme.sizes.size1400 }
     private let cornerRadius: CGFloat = 12 // radius300
     private let horizontalPadding: CGFloat = 12 // spacing300
     private let verticalPadding: CGFloat = 12 // spacing300
@@ -773,9 +775,10 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
     }
 }
 
-// MARK: - Internal TextField Value View (iOS only)
+// MARK: - Internal TextField Value View (Platform-specific)
 
 #if canImport(UIKit)
+// iOS: Full cursor position control via UITextField
 private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent: View>: View {
     @Binding var value: LemonadeTextFieldValue
     let onValueChange: ((LemonadeTextFieldValue) -> Void)?
@@ -792,7 +795,7 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
     @State private var isFocused = false
     @State private var isHovered = false
 
-    private let minHeight: CGFloat = 56 // size1400
+    private var minHeight: CGFloat { LemonadeTheme.sizes.size1400 }
     private let cornerRadius: CGFloat = 12 // radius300
     private let horizontalPadding: CGFloat = 12 // spacing300
     private let verticalPadding: CGFloat = 12 // spacing300
@@ -924,11 +927,54 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
         .animation(.easeInOut(duration: 0.15), value: error)
     }
 }
+#else
+// MARK: - macOS Fallback (cursor control is no-op)
+private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent: View>: View {
+    @Binding var value: LemonadeTextFieldValue
+    let onValueChange: ((LemonadeTextFieldValue) -> Void)?
+    let label: String?
+    let optionalIndicator: String?
+    let supportText: String?
+    let placeholderText: String?
+    let errorMessage: String?
+    let error: Bool
+    let enabled: Bool
+    let leadingContent: (() -> LeadingContent)?
+    let trailingContent: (() -> TrailingContent)?
+
+    private var textBinding: Binding<String> {
+        Binding(
+            get: { value.text },
+            set: { newText in
+                let newValue = LemonadeTextFieldValue(text: newText)
+                value = newValue
+                onValueChange?(newValue)
+            }
+        )
+    }
+
+    var body: some View {
+        LemonadeTextFieldView(
+            input: textBinding,
+            onInputChanged: nil,
+            label: label,
+            optionalIndicator: optionalIndicator,
+            supportText: supportText,
+            placeholderText: placeholderText,
+            errorMessage: errorMessage,
+            error: error,
+            enabled: enabled,
+            leadingContent: leadingContent,
+            trailingContent: trailingContent
+        )
+    }
+}
 #endif
 
-// MARK: - Internal TextField With Selector Value View (iOS only)
+// MARK: - Internal TextField With Selector Value View (Platform-specific)
 
 #if canImport(UIKit)
+// iOS: Full cursor position control via UITextField
 private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, TrailingContent: View>: View {
     @Binding var value: LemonadeTextFieldValue
     let onValueChange: ((LemonadeTextFieldValue) -> Void)?
@@ -946,7 +992,7 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
     @State private var isFocused = false
     @State private var isHovered = false
 
-    private let minHeight: CGFloat = 56 // size1400
+    private var minHeight: CGFloat { LemonadeTheme.sizes.size1400 }
     private let cornerRadius: CGFloat = 12 // radius300
     private let horizontalPadding: CGFloat = 12 // spacing300
     private let verticalPadding: CGFloat = 12 // spacing300
@@ -1090,6 +1136,50 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
         }
         .animation(.easeInOut(duration: 0.15), value: isFocused)
         .animation(.easeInOut(duration: 0.15), value: error)
+    }
+}
+#else
+// MARK: - macOS Fallback (cursor control is no-op)
+private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, TrailingContent: View>: View {
+    @Binding var value: LemonadeTextFieldValue
+    let onValueChange: ((LemonadeTextFieldValue) -> Void)?
+    let leadingAction: () -> Void
+    let leadingContent: () -> LeadingContent
+    let label: String?
+    let optionalIndicator: String?
+    let supportText: String?
+    let placeholderText: String?
+    let errorMessage: String?
+    let error: Bool
+    let enabled: Bool
+    let trailingContent: (() -> TrailingContent)?
+
+    private var textBinding: Binding<String> {
+        Binding(
+            get: { value.text },
+            set: { newText in
+                let newValue = LemonadeTextFieldValue(text: newText)
+                value = newValue
+                onValueChange?(newValue)
+            }
+        )
+    }
+
+    var body: some View {
+        LemonadeTextFieldWithSelectorView(
+            input: textBinding,
+            onInputChanged: nil,
+            leadingAction: leadingAction,
+            leadingContent: leadingContent,
+            label: label,
+            optionalIndicator: optionalIndicator,
+            supportText: supportText,
+            placeholderText: placeholderText,
+            errorMessage: errorMessage,
+            error: error,
+            enabled: enabled,
+            trailingContent: trailingContent
+        )
     }
 }
 #endif

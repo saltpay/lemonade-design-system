@@ -18,9 +18,9 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     var onEditingChanged: ((Bool) -> Void)?
 
     /// Clamps cursor position to valid UTF-16 range for the given text
-    private func clampedCursorPosition(for text: String) -> Int {
+    private func clampedCursorPosition(_ position: Int, for text: String) -> Int {
         let utf16Length = text.utf16.count
-        return min(max(value.cursorPosition, 0), utf16Length)
+        return min(max(position, 0), utf16Length)
     }
 
     func makeUIView(context: Context) -> UITextField {
@@ -34,7 +34,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.text = value.text
 
         // Set initial cursor position (clamped to valid range)
-        let clampedPosition = clampedCursorPosition(for: value.text)
+        let clampedPosition = clampedCursorPosition(value.cursorPosition, for: value.text)
         if let position = textField.position(
             from: textField.beginningOfDocument,
             offset: clampedPosition
@@ -53,7 +53,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     }
 
     func updateUIView(_ textField: UITextField, context: Context) {
-        // Prevent updates while user is actively editing to avoid cursor jumping
+        // Guard against re-entrant updates from our own callbacks to avoid infinite loops
         guard !context.coordinator.isUpdating else { return }
         context.coordinator.isUpdating = true
         defer { context.coordinator.isUpdating = false }
@@ -67,7 +67,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
 
         // Update cursor position (clamped to valid range for current text)
         let textForCursor = textField.text ?? ""
-        let clampedPosition = min(max(value.cursorPosition, 0), textForCursor.utf16.count)
+        let clampedPosition = clampedCursorPosition(value.cursorPosition, for: textForCursor)
         if let newPosition = textField.position(
             from: textField.beginningOfDocument,
             offset: clampedPosition
