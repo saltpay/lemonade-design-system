@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeButtonSize
+import androidx.compose.material3.ExperimentalMaterial3Api
 import com.teya.lemonade.core.LemonadeButtonVariant
 
 @Composable
@@ -64,6 +65,7 @@ internal fun BottomSheetSampleDisplay() {
     }
 
     // Basic Bottom Sheet
+    @OptIn(ExperimentalMaterial3Api::class)
     LemonadeUi.BottomSheet(
         expanded = showBasicSheet,
         onDismissRequest = { showBasicSheet = false },
@@ -96,6 +98,7 @@ internal fun BottomSheetSampleDisplay() {
     }
 
     // Without Drag Handle
+    @OptIn(ExperimentalMaterial3Api::class)
     LemonadeUi.BottomSheet(
         expanded = showNoDragHandleSheet,
         onDismissRequest = { showNoDragHandleSheet = false },
