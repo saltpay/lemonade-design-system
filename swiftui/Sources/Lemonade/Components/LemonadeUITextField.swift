@@ -87,7 +87,14 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.isEnabled = isEnabled
         textField.font = textStyle.uiFont
         textField.textColor = UIColor(textColor)
-        textField.keyboardType = keyboardType
+
+        // Update keyboard type and reload if changed while focused
+        if textField.keyboardType != keyboardType {
+            textField.keyboardType = keyboardType
+            if textField.isFirstResponder {
+                textField.reloadInputViews()
+            }
+        }
 
         // Handle focus state
         updateFocus(textField)

@@ -116,6 +116,9 @@ public extension LemonadeUi {
 
 // MARK: - TextField with TextFieldValue (Cursor Control)
 
+#if canImport(UIKit)
+import UIKit
+
 public extension LemonadeUi {
     /// Text Field component with TextFieldValue for cursor position control.
     /// Use this overload when you need to programmatically control cursor position,
@@ -161,7 +164,8 @@ public extension LemonadeUi {
         placeholderText: String? = nil,
         errorMessage: String? = nil,
         error: Bool = false,
-        enabled: Bool = true
+        enabled: Bool = true,
+        keyboardType: UIKeyboardType = .default
     ) -> some View {
         LemonadeTextFieldValueView<EmptyView, EmptyView>(
             value: value,
@@ -173,6 +177,7 @@ public extension LemonadeUi {
             errorMessage: errorMessage,
             error: error,
             enabled: enabled,
+            keyboardType: keyboardType,
             leadingContent: nil,
             trailingContent: nil
         )
@@ -204,6 +209,7 @@ public extension LemonadeUi {
         errorMessage: String? = nil,
         error: Bool = false,
         enabled: Bool = true,
+        keyboardType: UIKeyboardType = .default,
         @ViewBuilder leadingContent: @escaping () -> LeadingContent,
         @ViewBuilder trailingContent: @escaping () -> TrailingContent
     ) -> some View {
@@ -217,11 +223,13 @@ public extension LemonadeUi {
             errorMessage: errorMessage,
             error: error,
             enabled: enabled,
+            keyboardType: keyboardType,
             leadingContent: leadingContent,
             trailingContent: trailingContent
         )
     }
 }
+#endif
 
 // MARK: - TextFieldWithSelector Component
 
@@ -337,6 +345,7 @@ public extension LemonadeUi {
 
 // MARK: - TextFieldWithSelector with TextFieldValue (Cursor Control)
 
+#if canImport(UIKit)
 public extension LemonadeUi {
     /// A text input with selector using TextFieldValue for cursor position control.
     /// Use this for structured input like phone numbers where you need to format
@@ -461,6 +470,7 @@ public extension LemonadeUi {
         )
     }
 }
+#endif
 
 // MARK: - Internal TextField View
 
@@ -793,6 +803,7 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
     let errorMessage: String?
     let error: Bool
     let enabled: Bool
+    let keyboardType: UIKeyboardType
     let leadingContent: (() -> LeadingContent)?
     let trailingContent: (() -> TrailingContent)?
 
@@ -879,6 +890,7 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
                         isEnabled: enabled,
                         textStyle: LemonadeTypography.shared.bodyMediumRegular,
                         textColor: LemonadeTheme.colors.content.contentPrimary,
+                        keyboardType: keyboardType,
                         onValueChange: onValueChange
                     )
                 }
