@@ -13,6 +13,41 @@ import 'dart:ui';
 
 import 'package:lemonade_design_system/lemonade_design_system.dart';
 
+/// Semantic radius values
+@immutable
+class LemonadeSemanticRadius {
+  /// Creates a [LemonadeSemanticRadius] configuration.
+  const LemonadeSemanticRadius({
+    this.radiusContainerDefault = 24.0,
+  });
+
+  /// Linearly interpolates between two [LemonadeSemanticRadius] objects.
+  factory LemonadeSemanticRadius.lerp(
+    LemonadeSemanticRadius a,
+    LemonadeSemanticRadius b,
+    double t,
+  ) {
+    if (identical(a, b)) return a;
+
+    return LemonadeSemanticRadius(
+      radiusContainerDefault: lerpDouble(a.radiusContainerDefault, b.radiusContainerDefault, t)!,
+    );
+  }
+
+  /// Radius value of 24px from token `radiusContainerDefault`
+  final double radiusContainerDefault;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LemonadeSemanticRadius &&
+          runtimeType == other.runtimeType &&
+          radiusContainerDefault == other.radiusContainerDefault;
+
+  @override
+  int get hashCode => radiusContainerDefault.hashCode;
+}
+
 /// Radius configuration for the Lemonade Design System.
 ///
 /// Sets a small, clear set of predefined radius values for UI elements to ensure
@@ -31,9 +66,9 @@ class LemonadeRadius {
     this.radius400 = 16.0,
     this.radius500 = 20.0,
     this.radius600 = 24.0,
-    this.radiusContainerDefault = 24.0,
     this.radius800 = 32.0,
     this.radiusFull = 999.0,
+    this.semantic = const LemonadeSemanticRadius(),
   });
 
   /// Linearly interpolates between two [LemonadeRadius] objects.
@@ -56,9 +91,9 @@ class LemonadeRadius {
       radius400: lerpDouble(a.radius400, b.radius400, t)!,
       radius500: lerpDouble(a.radius500, b.radius500, t)!,
       radius600: lerpDouble(a.radius600, b.radius600, t)!,
-      radiusContainerDefault: lerpDouble(a.radiusContainerDefault, b.radiusContainerDefault, t)!,
       radius800: lerpDouble(a.radius800, b.radius800, t)!,
       radiusFull: lerpDouble(a.radiusFull, b.radiusFull, t)!,
+      semantic: LemonadeSemanticRadius.lerp(a.semantic, b.semantic, t),
     );
   }
 
@@ -92,14 +127,14 @@ class LemonadeRadius {
   /// Radius value of 24px from token `radius600`
   final double radius600;
 
-  /// Radius value of 24px from token `radiusContainerDefault`
-  final double radiusContainerDefault;
-
   /// Radius value of 32px from token `radius800`
   final double radius800;
 
   /// Radius value of 999px from token `radiusFull`
   final double radiusFull;
+
+  /// Semantic radius values
+  final LemonadeSemanticRadius semantic;
 
   @override
   bool operator ==(Object other) =>
@@ -116,9 +151,9 @@ class LemonadeRadius {
           radius400 == other.radius400 &&
           radius500 == other.radius500 &&
           radius600 == other.radius600 &&
-          radiusContainerDefault == other.radiusContainerDefault &&
           radius800 == other.radius800 &&
-          radiusFull == other.radiusFull;
+          radiusFull == other.radiusFull &&
+          semantic == other.semantic;
 
   @override
   int get hashCode => Object.hash(
@@ -132,9 +167,9 @@ class LemonadeRadius {
     radius400,
     radius500,
     radius600,
-    radiusContainerDefault,
     radius800,
     radiusFull,
+    semantic,
   );
 
   /// Helper method to access [LemonadeRadius] from the closest
