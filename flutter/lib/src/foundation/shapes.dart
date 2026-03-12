@@ -11,6 +11,43 @@
 
 import 'package:lemonade_design_system/lemonade_design_system.dart';
 
+/// Semantic shape values
+@immutable
+class LemonadeSemanticShapes {
+  /// Creates a [LemonadeSemanticShapes] configuration.
+  const LemonadeSemanticShapes({
+    this.radiusContainerDefault = const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(24.0)),
+    ),
+  });
+
+  /// Linearly interpolates between two [LemonadeSemanticShapes] objects.
+  factory LemonadeSemanticShapes.lerp(
+    LemonadeSemanticShapes a,
+    LemonadeSemanticShapes b,
+    double t,
+  ) {
+    if (identical(a, b)) return a;
+
+    return LemonadeSemanticShapes(
+      radiusContainerDefault: ShapeBorder.lerp(a.radiusContainerDefault, b.radiusContainerDefault, t)!,
+    );
+  }
+
+  /// Radius value of 24px from token `radiusContainerDefault`
+  final ShapeBorder radiusContainerDefault;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LemonadeSemanticShapes &&
+          runtimeType == other.runtimeType &&
+          radiusContainerDefault == other.radiusContainerDefault;
+
+  @override
+  int get hashCode => radiusContainerDefault.hashCode;
+}
+
 /// Shape configuration for the Lemonade Design System.
 ///
 /// Provides predefined shape values based on radius tokens for consistent
@@ -49,15 +86,13 @@ class LemonadeShapes {
     this.radius600 = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(24.0)),
     ),
-    this.radiusContainerDefault = const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(24.0)),
-    ),
     this.radius800 = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(32.0)),
     ),
     this.radiusFull = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(999.0)),
     ),
+    this.semantic = const LemonadeSemanticShapes(),
   });
 
   /// Linearly interpolates between two [LemonadeShapes] objects.
@@ -80,9 +115,9 @@ class LemonadeShapes {
       radius400: ShapeBorder.lerp(a.radius400, b.radius400, t)!,
       radius500: ShapeBorder.lerp(a.radius500, b.radius500, t)!,
       radius600: ShapeBorder.lerp(a.radius600, b.radius600, t)!,
-      radiusContainerDefault: ShapeBorder.lerp(a.radiusContainerDefault, b.radiusContainerDefault, t)!,
       radius800: ShapeBorder.lerp(a.radius800, b.radius800, t)!,
       radiusFull: ShapeBorder.lerp(a.radiusFull, b.radiusFull, t)!,
+      semantic: LemonadeSemanticShapes.lerp(a.semantic, b.semantic, t),
     );
   }
 
@@ -116,14 +151,14 @@ class LemonadeShapes {
   /// Radius value of 24px from token `radius600`
   final ShapeBorder radius600;
 
-  /// Radius value of 24px from token `radiusContainerDefault`
-  final ShapeBorder radiusContainerDefault;
-
   /// Radius value of 32px from token `radius800`
   final ShapeBorder radius800;
 
   /// Radius value of 999px from token `radiusFull`
   final ShapeBorder radiusFull;
+
+  /// Semantic shape values
+  final LemonadeSemanticShapes semantic;
 
   @override
   bool operator ==(Object other) =>
@@ -140,9 +175,9 @@ class LemonadeShapes {
           radius400 == other.radius400 &&
           radius500 == other.radius500 &&
           radius600 == other.radius600 &&
-          radiusContainerDefault == other.radiusContainerDefault &&
           radius800 == other.radius800 &&
-          radiusFull == other.radiusFull;
+          radiusFull == other.radiusFull &&
+          semantic == other.semantic;
 
   @override
   int get hashCode => Object.hash(
@@ -156,9 +191,9 @@ class LemonadeShapes {
     radius400,
     radius500,
     radius600,
-    radiusContainerDefault,
     radius800,
     radiusFull,
+    semantic,
   );
 
   /// Helper method to access [LemonadeShapes] from the closest
