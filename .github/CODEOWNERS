@@ -6,3 +6,4 @@
 
 # Folder-specific owners
 /flutter/   @saltpay/lemonade @saltpay/lemonade-flutter
+/swiftui/   @saltpay/lemonade @saltpay/lemonade-swift
