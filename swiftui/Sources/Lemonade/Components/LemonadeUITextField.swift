@@ -14,6 +14,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     var isEnabled: Bool
     var textStyle: LemonadeTextStyle
     var textColor: Color
+    var keyboardType: UIKeyboardType
     var onValueChange: ((LemonadeTextFieldValue) -> Void)?
     var onEditingChanged: ((Bool) -> Void)?
 
@@ -31,6 +32,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.borderStyle = .none
         textField.backgroundColor = .clear
         textField.isEnabled = isEnabled
+        textField.keyboardType = keyboardType
         textField.text = value.text
 
         // Set initial cursor position (clamped to valid range)
@@ -85,6 +87,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.isEnabled = isEnabled
         textField.font = textStyle.uiFont
         textField.textColor = UIColor(textColor)
+        textField.keyboardType = keyboardType
 
         // Handle focus state
         updateFocus(textField)

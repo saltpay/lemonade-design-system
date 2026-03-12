@@ -392,7 +392,8 @@ public extension LemonadeUi {
         placeholderText: String? = nil,
         errorMessage: String? = nil,
         error: Bool = false,
-        enabled: Bool = true
+        enabled: Bool = true,
+        keyboardType: UIKeyboardType = .default
     ) -> some View {
         LemonadeTextFieldWithSelectorValueView<LeadingContent, EmptyView>(
             value: value,
@@ -406,6 +407,7 @@ public extension LemonadeUi {
             errorMessage: errorMessage,
             error: error,
             enabled: enabled,
+            keyboardType: keyboardType,
             trailingContent: nil
         )
     }
@@ -439,6 +441,7 @@ public extension LemonadeUi {
         errorMessage: String? = nil,
         error: Bool = false,
         enabled: Bool = true,
+        keyboardType: UIKeyboardType = .default,
         @ViewBuilder trailingContent: @escaping () -> TrailingContent
     ) -> some View {
         LemonadeTextFieldWithSelectorValueView(
@@ -453,6 +456,7 @@ public extension LemonadeUi {
             errorMessage: errorMessage,
             error: error,
             enabled: enabled,
+            keyboardType: keyboardType,
             trailingContent: trailingContent
         )
     }
@@ -974,6 +978,8 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
 // MARK: - Internal TextField With Selector Value View (Platform-specific)
 
 #if canImport(UIKit)
+import UIKit
+
 // iOS: Full cursor position control via UITextField
 private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, TrailingContent: View>: View {
     @Binding var value: LemonadeTextFieldValue
@@ -987,6 +993,7 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
     let errorMessage: String?
     let error: Bool
     let enabled: Bool
+    let keyboardType: UIKeyboardType
     let trailingContent: (() -> TrailingContent)?
 
     @State private var isFocused = false
@@ -1085,6 +1092,7 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
                             isEnabled: enabled,
                             textStyle: LemonadeTypography.shared.bodyMediumRegular,
                             textColor: LemonadeTheme.colors.content.contentPrimary,
+                            keyboardType: keyboardType,
                             onValueChange: onValueChange
                         )
                     }
