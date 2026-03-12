@@ -124,8 +124,10 @@ private fun buildRadiusImplementationCode(
         primitiveResources.forEach { resource ->
             appendLine("    public val ${resource.name}: Dp")
         }
-        groupedResources.forEach { (groupName, groupTokens) ->
+        groupedResources.forEach { (groupName, _) ->
             appendLine("    public val ${groupName.replaceFirstChar { it.lowercase() }}: $groupName")
+        }
+        groupedResources.forEach { (groupName, groupTokens) ->
             appendLine("    public interface $groupName {")
             groupTokens.forEach { token ->
                 appendLine("        public val ${token.name}: Dp")
@@ -140,8 +142,10 @@ private fun buildRadiusImplementationCode(
         primitiveResources.forEach { resource ->
             appendLine("    public val ${resource.name}: Shape")
         }
-        groupedResources.forEach { (groupName, groupTokens) ->
+        groupedResources.forEach { (groupName, _) ->
             appendLine("    public val ${groupName.replaceFirstChar { it.lowercase() }}: $groupName")
+        }
+        groupedResources.forEach { (groupName, groupTokens) ->
             appendLine("    public interface $groupName {")
             groupTokens.forEach { token ->
                 appendLine("        public val ${token.name}: Shape")
