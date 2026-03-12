@@ -1,11 +1,11 @@
 package com.teya.lemonade
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeRadius
-import androidx.compose.runtime.Stable
 
 /**
  * Lemonade Design System Radius tokens.
