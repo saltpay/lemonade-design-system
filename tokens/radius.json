@@ -296,8 +296,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.radius.semantic.radiusContainer",
-        "iOS": "context.lemonade.radius.semantic.radiusContainer"
+        "ANDROID": "LemonadeTheme.radius.semantic.radiusContainerDefault",
+        "iOS": "context.lemonade.radius.semantic.radiusContainerDefault"
       }
     },
     {

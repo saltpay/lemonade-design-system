@@ -142,7 +142,7 @@ public struct LemonadeShapesImpl: LemonadeShapes {
     public var radius600: RoundedRectangle { LemonadeRadius.radius600.shape }
     public var radius800: RoundedRectangle { LemonadeRadius.radius800.shape }
     public var radiusFull: RoundedRectangle { LemonadeRadius.radiusFull.shape }
-    public var semantic: SemanticShapes { SemanticShapesImpl() }
+    public let semantic: SemanticShapes = SemanticShapesImpl()
 
     public init() {}
 }

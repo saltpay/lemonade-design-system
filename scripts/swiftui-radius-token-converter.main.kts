@@ -162,7 +162,7 @@ private fun buildRadiusCode(
             appendLine("    public var ${resource.name}: RoundedRectangle { LemonadeRadius.${resource.name}.shape }")
         }
         groupedResources.forEach { (groupName, _) ->
-            appendLine("    public var ${groupName.replaceFirstChar { it.lowercase() }}: ${groupName}Shapes { ${groupName}ShapesImpl() }")
+            appendLine("    public let ${groupName.replaceFirstChar { it.lowercase() }}: ${groupName}Shapes = ${groupName}ShapesImpl()")
         }
         appendLine()
         appendLine("    public init() {}")
