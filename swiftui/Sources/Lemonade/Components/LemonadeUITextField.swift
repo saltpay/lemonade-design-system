@@ -5,12 +5,23 @@ import UIKit
 
 /// Internal UIViewRepresentable wrapper around UITextField for cursor position control.
 /// This enables LemonadeTextFieldValue support on iOS.
+///
+/// - Note: Cursor positions are measured in UTF-16 code units to match UIKit's internal indexing
+///   and maintain compatibility with Kotlin/Compose on Android.
 internal struct LemonadeUITextField: UIViewRepresentable {
     @Binding var value: LemonadeTextFieldValue
+    @Binding var isFocused: Bool
     var isEnabled: Bool
     var textStyle: LemonadeTextStyle
     var textColor: Color
+    var onValueChange: ((LemonadeTextFieldValue) -> Void)?
     var onEditingChanged: ((Bool) -> Void)?
+
+    /// Clamps cursor position to valid UTF-16 range for the given text
+    private func clampedCursorPosition(for text: String) -> Int {
+        let utf16Length = text.utf16.count
+        return min(max(value.cursorPosition, 0), utf16Length)
+    }
 
     func makeUIView(context: Context) -> UITextField {
         let textField = UITextField()
@@ -22,10 +33,11 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.isEnabled = isEnabled
         textField.text = value.text
 
-        // Set initial cursor position
+        // Set initial cursor position (clamped to valid range)
+        let clampedPosition = clampedCursorPosition(for: value.text)
         if let position = textField.position(
             from: textField.beginningOfDocument,
-            offset: value.cursorPosition
+            offset: clampedPosition
         ) {
             textField.selectedTextRange = textField.textRange(from: position, to: position)
         }
@@ -46,22 +58,26 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         context.coordinator.isUpdating = true
         defer { context.coordinator.isUpdating = false }
 
+        let currentText = textField.text ?? ""
+
         // Update text if changed externally
-        if textField.text != value.text {
+        if currentText != value.text {
             textField.text = value.text
         }
 
-        // Update cursor position
+        // Update cursor position (clamped to valid range for current text)
+        let textForCursor = textField.text ?? ""
+        let clampedPosition = min(max(value.cursorPosition, 0), textForCursor.utf16.count)
         if let newPosition = textField.position(
             from: textField.beginningOfDocument,
-            offset: value.cursorPosition
+            offset: clampedPosition
         ) {
             let currentOffset = textField.selectedTextRange.map {
                 textField.offset(from: textField.beginningOfDocument, to: $0.start)
             } ?? -1
 
             // Only update if different to avoid cursor jumping
-            if currentOffset != value.cursorPosition {
+            if currentOffset != clampedPosition {
                 textField.selectedTextRange = textField.textRange(from: newPosition, to: newPosition)
             }
         }
@@ -69,6 +85,17 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.isEnabled = isEnabled
         textField.font = textStyle.uiFont
         textField.textColor = UIColor(textColor)
+
+        // Handle focus state
+        updateFocus(textField)
+    }
+
+    private func updateFocus(_ textField: UITextField) {
+        if isFocused && !textField.isFirstResponder {
+            textField.becomeFirstResponder()
+        } else if !isFocused && textField.isFirstResponder {
+            textField.resignFirstResponder()
+        }
     }
 
     func makeCoordinator() -> Coordinator {
@@ -89,18 +116,38 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             let text = textField.text ?? ""
             let cursorPosition = getCursorPosition(textField)
 
-            parent.value = LemonadeTextFieldValue(
+            let newValue = LemonadeTextFieldValue(
                 text: text,
                 cursorPosition: cursorPosition
             )
+            parent.value = newValue
+            parent.onValueChange?(newValue)
         }
 
         func textFieldDidBeginEditing(_ textField: UITextField) {
+            parent.isFocused = true
             parent.onEditingChanged?(true)
         }
 
         func textFieldDidEndEditing(_ textField: UITextField) {
+            parent.isFocused = false
             parent.onEditingChanged?(false)
+        }
+
+        func textFieldDidChangeSelection(_ textField: UITextField) {
+            guard !isUpdating else { return }
+
+            let cursorPosition = getCursorPosition(textField)
+            if parent.value.cursorPosition != cursorPosition {
+                isUpdating = true
+                let newValue = LemonadeTextFieldValue(
+                    text: parent.value.text,
+                    cursorPosition: cursorPosition
+                )
+                parent.value = newValue
+                parent.onValueChange?(newValue)
+                isUpdating = false
+            }
         }
 
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -108,22 +155,10 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             return true
         }
 
+        /// Returns cursor position as UTF-16 code unit offset (matches UIKit's internal indexing)
         private func getCursorPosition(_ textField: UITextField) -> Int {
             guard let selectedRange = textField.selectedTextRange else { return 0 }
             return textField.offset(from: textField.beginningOfDocument, to: selectedRange.start)
-        }
-    }
-}
-
-// MARK: - Focus Support
-
-extension LemonadeUITextField {
-    /// Makes the text field become first responder when focused
-    func focused(_ isFocused: Bool, textField: UITextField) {
-        if isFocused && !textField.isFirstResponder {
-            textField.becomeFirstResponder()
-        } else if !isFocused && textField.isFirstResponder {
-            textField.resignFirstResponder()
         }
     }
 }

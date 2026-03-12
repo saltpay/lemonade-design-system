@@ -868,16 +868,12 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
 
                     LemonadeUITextField(
                         value: $value,
+                        isFocused: $isFocused,
                         isEnabled: enabled,
                         textStyle: LemonadeTypography.shared.bodyMediumRegular,
                         textColor: LemonadeTheme.colors.content.contentPrimary,
-                        onEditingChanged: { editing in
-                            isFocused = editing
-                        }
+                        onValueChange: onValueChange
                     )
-                    .onChange(of: value) { newValue in
-                        onValueChange?(newValue)
-                    }
                 }
 
                 if let trailingContent = trailingContent {
@@ -1039,16 +1035,12 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
 
                         LemonadeUITextField(
                             value: $value,
+                            isFocused: $isFocused,
                             isEnabled: enabled,
                             textStyle: LemonadeTypography.shared.bodyMediumRegular,
                             textColor: LemonadeTheme.colors.content.contentPrimary,
-                            onEditingChanged: { editing in
-                                isFocused = editing
-                            }
+                            onValueChange: onValueChange
                         )
-                        .onChange(of: value) { newValue in
-                            onValueChange?(newValue)
-                        }
                     }
 
                     if let trailingContent = trailingContent {

@@ -18,28 +18,33 @@ import Foundation
 ///     }
 /// )
 /// ```
+///
+/// - Note: `cursorPosition` is measured in UTF-16 code units for compatibility with
+///   UIKit (iOS) and Kotlin/Compose (Android). For most ASCII text, this equals character count.
+///   For emoji and combined characters, use `text.utf16.count` to calculate positions.
 public struct LemonadeTextFieldValue: Equatable {
     /// The text content of the text field
     public var text: String
 
-    /// The cursor position as an integer offset from the start of the text.
-    /// Valid range is 0 to text.count (inclusive).
+    /// The cursor position as a UTF-16 code unit offset from the start of the text.
+    /// Valid range is 0 to text.utf16.count (inclusive).
     public var cursorPosition: Int
 
     /// Creates a TextFieldValue with text and optional cursor position.
     /// - Parameters:
     ///   - text: The text content
-    ///   - cursorPosition: The cursor position. If nil, defaults to end of text.
+    ///   - cursorPosition: The cursor position in UTF-16 code units. If nil, defaults to end of text.
     public init(text: String = "", cursorPosition: Int? = nil) {
         self.text = text
-        let position = cursorPosition ?? text.count
-        self.cursorPosition = min(max(position, 0), text.count)
+        let utf16Length = text.utf16.count
+        let position = cursorPosition ?? utf16Length
+        self.cursorPosition = min(max(position, 0), utf16Length)
     }
 
     /// Creates a TextFieldValue with cursor at the end of the text.
     /// - Parameter text: The text content
     public static func atEnd(_ text: String) -> LemonadeTextFieldValue {
-        LemonadeTextFieldValue(text: text, cursorPosition: text.count)
+        LemonadeTextFieldValue(text: text, cursorPosition: text.utf16.count)
     }
 
     /// Creates a TextFieldValue with cursor at the start of the text.
