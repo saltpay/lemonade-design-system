@@ -30,7 +30,6 @@ public enum LemonadeRadius: Sendable {
     case radius400
     case radius500
     case radius600
-    case semantic
     case radius800
     case radiusFull
 
@@ -47,7 +46,6 @@ public enum LemonadeRadius: Sendable {
         case .radius400: return 16
         case .radius500: return 20
         case .radius600: return 24
-        case .semantic: return 24
         case .radius800: return 32
         case .radiusFull: return 999
         }
@@ -57,6 +55,16 @@ public enum LemonadeRadius: Sendable {
     public var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: value)
     }
+}
+
+/// Semantic radius values
+public protocol SemanticRadiusValues {
+    var radiusContainerDefault: CGFloat { get }
+}
+
+/// Semantic shape values
+public protocol SemanticShapes {
+    var radiusContainerDefault: RoundedRectangle { get }
 }
 
 /// Protocol for radius values
@@ -71,9 +79,9 @@ public protocol LemonadeRadiusValues {
     var radius400: CGFloat { get }
     var radius500: CGFloat { get }
     var radius600: CGFloat { get }
-    var radiusContainerDefault: CGFloat { get }
     var radius800: CGFloat { get }
     var radiusFull: CGFloat { get }
+    var semantic: SemanticRadiusValues { get }
 }
 
 /// Protocol for shape values
@@ -88,9 +96,17 @@ public protocol LemonadeShapes {
     var radius400: RoundedRectangle { get }
     var radius500: RoundedRectangle { get }
     var radius600: RoundedRectangle { get }
-    var radiusContainerDefault: RoundedRectangle { get }
     var radius800: RoundedRectangle { get }
     var radiusFull: RoundedRectangle { get }
+    var semantic: SemanticShapes { get }
+}
+
+internal struct SemanticRadiusValuesImpl: SemanticRadiusValues {
+    let radiusContainerDefault: CGFloat = 24
+}
+
+internal struct SemanticShapesImpl: SemanticShapes {
+    var radiusContainerDefault: RoundedRectangle { RoundedRectangle(cornerRadius: 24) }
 }
 
 /// Default radius values implementation
@@ -105,9 +121,9 @@ public struct LemonadeRadiusValuesImpl: LemonadeRadiusValues, Sendable {
     public let radius400: CGFloat = LemonadeRadius.radius400.value
     public let radius500: CGFloat = LemonadeRadius.radius500.value
     public let radius600: CGFloat = LemonadeRadius.radius600.value
-    public let radiusContainerDefault: CGFloat = LemonadeRadius.semantic.value
     public let radius800: CGFloat = LemonadeRadius.radius800.value
     public let radiusFull: CGFloat = LemonadeRadius.radiusFull.value
+    public let semantic: SemanticRadiusValues = SemanticRadiusValuesImpl()
 
     public init() {}
 }
@@ -124,9 +140,9 @@ public struct LemonadeShapesImpl: LemonadeShapes, Sendable {
     public var radius400: RoundedRectangle { LemonadeRadius.radius400.shape }
     public var radius500: RoundedRectangle { LemonadeRadius.radius500.shape }
     public var radius600: RoundedRectangle { LemonadeRadius.radius600.shape }
-    public var radiusContainerDefault: RoundedRectangle { LemonadeRadius.semantic.shape }
     public var radius800: RoundedRectangle { LemonadeRadius.radius800.shape }
     public var radiusFull: RoundedRectangle { LemonadeRadius.radiusFull.shape }
+    public let semantic: SemanticShapes = SemanticShapesImpl()
 
     public init() {}
 }
