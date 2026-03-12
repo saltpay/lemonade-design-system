@@ -12,6 +12,7 @@ import com.teya.lemonade.ChipDisplay
 import com.teya.lemonade.ColorsDisplay
 import com.teya.lemonade.CountryFlagDisplay
 import com.teya.lemonade.Displays
+import com.teya.lemonade.DatePickerDisplay
 import com.teya.lemonade.DividerDisplay
 import com.teya.lemonade.HomeDisplay
 import com.teya.lemonade.IconButtonDisplay
@@ -79,4 +80,5 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.Spinner to { _ -> SpinnerDisplay() },
     Displays.Divider to { _ -> DividerDisplay() },
     Displays.Tabs to { _ -> TabsDisplay() },
+    Displays.DatePicker to { _ -> DatePickerDisplay() },
 )

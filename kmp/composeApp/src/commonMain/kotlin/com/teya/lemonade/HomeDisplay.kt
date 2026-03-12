@@ -95,6 +95,7 @@ internal object DisplayRegistry {
                 Displays.Checkbox,
                 Displays.RadioButton,
                 Displays.Switch,
+                Displays.DatePicker,
             ),
         ),
         DisplayData(

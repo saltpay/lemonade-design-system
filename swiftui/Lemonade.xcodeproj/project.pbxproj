@@ -11,6 +11,8 @@
 		057823D7FEDAE4BC9E517786 /* LemonadeShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C40CD56F4FBC06ED54B7FE /* LemonadeShadow.swift */; };
 		07044DB3F54ED2F658CE9486 /* RadioButtonDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78C8CB708AD129000C9E182 /* RadioButtonDisplayView.swift */; };
 		0B9A821B0268313F4FD83123 /* Double+Lemonade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4466F4AB4051A6AD818E2E65 /* Double+Lemonade.swift */; };
+		0E1A2B3C4D5E6F7A8B9C0D1E /* LemonadeDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F7A8B9C0D1E2F /* LemonadeDatePicker.swift */; };
+		0F1A2B3C4D5E6F7A8B9C0D1E /* DatePickerDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3B4C5D6E7F8A9B0C1D2E3F /* DatePickerDisplayView.swift */; };
 		0F3814C3B3E63E958C92868B /* ToastDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1929CB832015A1E26B6E56 /* ToastDisplayView.swift */; };
 		10196BC8EE1EDBF4D905BB23 /* LemonadeFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7835AEB1F1A959BDF06118ED /* LemonadeFonts.swift */; };
 		106F4C9B4C3E989E2E97206D /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 119984E30EE1DEF0D7D08145 /* Fonts */; };
@@ -131,6 +133,8 @@
 		0B5EE55559BBBD865967D97F /* OpacityDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpacityDisplayView.swift; sourceTree = "<group>"; };
 		0BBBB6C04C853C8B88545DD5 /* LemonadeTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeTheme.swift; sourceTree = "<group>"; };
 		0C7429F0E596CCBBB4ACDEB9 /* LemonadeSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeSpinner.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F7A8B9C0D1E2F /* LemonadeDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeDatePicker.swift; sourceTree = "<group>"; };
+		2A3B4C5D6E7F8A9B0C1D2E3F /* DatePickerDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerDisplayView.swift; sourceTree = "<group>"; };
 		0FA5D577532CC7CD6E2FFEA3 /* CardDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDisplayView.swift; sourceTree = "<group>"; };
 		102DD2FA9EEDD18ECF928E2F /* LemonadeSymbolContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeSymbolContainer.swift; sourceTree = "<group>"; };
 		10B43803EB4523DAB434B4A8 /* LemonadeBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeBorder.swift; sourceTree = "<group>"; };
@@ -251,6 +255,7 @@
 				624A8C715ADEA72A999938BB /* LemonadeCheckbox.swift */,
 				93B6B5368067DD19A870DCEC /* LemonadeChip.swift */,
 				0025C6F06A07174C5A65B81C /* LemonadeCountryFlag.swift */,
+				1A2B3C4D5E6F7A8B9C0D1E2F /* LemonadeDatePicker.swift */,
 				1B0EB20859E76EFADAAFA97D /* LemonadeDivider.swift */,
 				859CF0D948C7FBEBA570E014 /* LemonadeIcon.swift */,
 				7C11D27DF4332D0C3F1DFE1C /* LemonadeIconButton.swift */,
@@ -315,6 +320,7 @@
 				51D1A0AC839EC3EF64263863 /* CheckboxDisplayView.swift */,
 				EC4E577A992EC3F5CFC898A3 /* ChipDisplayView.swift */,
 				0B5C7B4A04531F1245ECF213 /* ColorsDisplayView.swift */,
+				2A3B4C5D6E7F8A9B0C1D2E3F /* DatePickerDisplayView.swift */,
 				EF75A43EA3633AB3AC6CBC0B /* DividerDisplayView.swift */,
 				7285C1DDEE5B35BE06264E87 /* FlagsDisplayView.swift */,
 				707483451DC517FF1245E815 /* HomeView.swift */,
@@ -502,6 +508,7 @@
 				9065B57068A4520169A55124 /* LemonadeChip.swift in Sources */,
 				1BC665489BC2C0A52001DE16 /* LemonadeCountryFlag.swift in Sources */,
 				EB1F3180DA92EDBDE36FF039 /* LemonadeCountryFlags.swift in Sources */,
+				0E1A2B3C4D5E6F7A8B9C0D1E /* LemonadeDatePicker.swift in Sources */,
 				C4E04109B37985DAFB8A1511 /* LemonadeDivider.swift in Sources */,
 				10196BC8EE1EDBF4D905BB23 /* LemonadeFonts.swift in Sources */,
 				AB82B862D5DC1D1A1DBC3432 /* LemonadeIcon.swift in Sources */,
@@ -551,6 +558,7 @@
 				9BFCE355C073CFA5A50629CF /* CheckboxDisplayView.swift in Sources */,
 				48B4AF965E3410516AA80402 /* ChipDisplayView.swift in Sources */,
 				A5797DEB4E5308A6759B90F8 /* ColorsDisplayView.swift in Sources */,
+				0F1A2B3C4D5E6F7A8B9C0D1E /* DatePickerDisplayView.swift in Sources */,
 				5E451CF8963BCB4FFDBBFED6 /* DividerDisplayView.swift in Sources */,
 				51BA607A037FF932F3A64E0A /* FlagsDisplayView.swift in Sources */,
 				38A4477EB25293A0D342E9E8 /* HomeView.swift in Sources */,
