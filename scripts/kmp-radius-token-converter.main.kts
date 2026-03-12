@@ -4,7 +4,7 @@
 
 import java.io.File
 
-data class RadiusResource(
+private data class RadiusResource(
     val radiusValue: Int,
 )
 
@@ -61,6 +61,8 @@ private fun buildRadiusDefinitionCode(
     scriptFilePath: String,
     resources: List<ResourceData<RadiusResource>>,
 ): String {
+    val primitiveResources = resources.filter { it.groups.isEmpty() }
+
     return buildString {
         appendLine("package com.teya.lemonade.core")
         appendLine()
@@ -72,7 +74,7 @@ private fun buildRadiusDefinitionCode(
         append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
         appendLine(" */")
         appendLine("public enum class LemonadeRadius {")
-        resources.forEach { resource ->
+        primitiveResources.forEach { resource ->
             appendLine("    ${resource.groupFullName},")
         }
         appendLine("}")
@@ -83,6 +85,12 @@ private fun buildRadiusImplementationCode(
     scriptFilePath: String,
     resources: List<ResourceData<RadiusResource>>,
 ): String {
+    val primitiveResources = resources.filter { it.groups.isEmpty() }
+    val groupedResources = resources
+        .filter { it.groups.isNotEmpty() }
+        .filter { it.groupFullName != null }
+        .groupBy { it.groupFullName!! }
+
     return buildString {
         appendLine("package com.teya.lemonade")
         appendLine()
@@ -101,36 +109,86 @@ private fun buildRadiusImplementationCode(
         appendLine(" * ")
         append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
         appendLine(" */")
+
+        // dp extension: primitives only
         appendLine("public val LemonadeRadius.dp: Dp")
         appendLine("    get() = when (this) {")
-        resources.forEach { resource ->
+        primitiveResources.forEach { resource ->
             appendLine("        LemonadeRadius.${resource.groupFullName} -> ${resource.value.radiusValue}.dp")
         }
         appendLine("    }")
         appendLine()
+
+        // LemonadeRadiusValues: primitives flat + semantic nested interface
         appendLine("public interface LemonadeRadiusValues {")
-        resources.forEach { resource ->
+        primitiveResources.forEach { resource ->
             appendLine("    public val ${resource.name}: Dp")
         }
-        appendLine("}")
-        appendLine()
-        appendLine("public interface LemonadeShapes {")
-        resources.forEach { resource ->
-            appendLine("    public val ${resource.name}: Shape")
+        groupedResources.forEach { (groupName, groupTokens) ->
+            appendLine("    public val ${groupName.replaceFirstChar { it.lowercase() }}: $groupName")
+            appendLine("    public interface $groupName {")
+            groupTokens.forEach { token ->
+                appendLine("        public val ${token.name}: Dp")
+            }
+            appendLine("    }")
         }
         appendLine("}")
         appendLine()
+
+        // LemonadeShapes: same structure
+        appendLine("public interface LemonadeShapes {")
+        primitiveResources.forEach { resource ->
+            appendLine("    public val ${resource.name}: Shape")
+        }
+        groupedResources.forEach { (groupName, groupTokens) ->
+            appendLine("    public val ${groupName.replaceFirstChar { it.lowercase() }}: $groupName")
+            appendLine("    public interface $groupName {")
+            groupTokens.forEach { token ->
+                appendLine("        public val ${token.name}: Shape")
+            }
+            appendLine("    }")
+        }
+        appendLine("}")
+        appendLine()
+
+        // Internal impl for each semantic group
+        groupedResources.forEach { (groupName, groupTokens) ->
+            appendLine("@Stable")
+            appendLine("internal data class InternalLemonade${groupName}RadiusValues(")
+            groupTokens.forEach { token ->
+                appendLine("    override val ${token.name}: Dp = ${token.value.radiusValue}.dp,")
+            }
+            appendLine("): LemonadeRadiusValues.$groupName")
+            appendLine()
+            appendLine("@Stable")
+            appendLine("internal data class InternalLemonade${groupName}Shapes(")
+            groupTokens.forEach { token ->
+                appendLine("    override val ${token.name}: Shape = RoundedCornerShape(size = ${token.value.radiusValue}.dp),")
+            }
+            appendLine("): LemonadeShapes.$groupName")
+            appendLine()
+        }
+
+        // InternalLemonadeRadiusValues
         appendLine("@Stable")
         appendLine("internal data class InternalLemonadeRadiusValues(")
-        resources.forEach { resource ->
+        primitiveResources.forEach { resource ->
             appendLine("    override val ${resource.name}: Dp = LemonadeRadius.${resource.groupFullName}.dp,")
+        }
+        groupedResources.forEach { (groupName, _) ->
+            appendLine("    override val ${groupName.replaceFirstChar { it.lowercase() }}: LemonadeRadiusValues.$groupName = InternalLemonade${groupName}RadiusValues(),")
         }
         appendLine("): LemonadeRadiusValues")
         appendLine()
+
+        // InternalLemonadeShapes
         appendLine("@Stable")
         appendLine("internal data class InternalLemonadeShapes(")
-        resources.forEach { resource ->
+        primitiveResources.forEach { resource ->
             appendLine("    override val ${resource.name}: Shape = RoundedCornerShape(size = LemonadeRadius.${resource.groupFullName}.dp),")
+        }
+        groupedResources.forEach { (groupName, _) ->
+            appendLine("    override val ${groupName.replaceFirstChar { it.lowercase() }}: LemonadeShapes.$groupName = InternalLemonade${groupName}Shapes(),")
         }
         appendLine("): LemonadeShapes")
     }
