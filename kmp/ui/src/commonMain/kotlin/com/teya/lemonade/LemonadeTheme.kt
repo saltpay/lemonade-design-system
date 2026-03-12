@@ -1,5 +1,6 @@
 package com.teya.lemonade
 
+import androidx.compose.foundation.Indication
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ProvidableCompositionLocal
@@ -19,6 +20,7 @@ public fun LemonadeTheme(
     spaces: LemonadeSpaceValues = LemonadeTheme.spaces,
     borderWidths: LemonadeBorderWidth = LemonadeTheme.borderWidths,
     sizes: LemonadeSizeValues = LemonadeTheme.sizes,
+    effects: LemonadeEffects = LemonadeTheme.effects,
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
@@ -32,6 +34,7 @@ public fun LemonadeTheme(
         LocalSpaces provides spaces,
         LocalBorderWidths provides borderWidths,
         LocalSizes provides sizes,
+        LocalEffects provides effects,
         content = content,
     )
 }
@@ -92,6 +95,13 @@ public object LemonadeTheme {
         get() {
             return LocalSizes.current
         }
+
+    public val effects: LemonadeEffects
+        @Composable
+        @ReadOnlyComposable
+        get() {
+            return LocalEffects.current
+        }
 }
 
 internal val LocalColors: ProvidableCompositionLocal<LemonadeSemanticColors> =
@@ -139,4 +149,10 @@ internal val LocalBorderWidths: ProvidableCompositionLocal<LemonadeBorderWidth> 
 
 internal val LocalSizes: ProvidableCompositionLocal<LemonadeSizeValues> = staticCompositionLocalOf {
     InternalLemonadeSizeValues()
+}
+
+internal val LocalEffects: ProvidableCompositionLocal<LemonadeEffects> = staticCompositionLocalOf {
+    object : LemonadeEffects {
+        override val interactionIndication: Indication? = null
+    }
 }

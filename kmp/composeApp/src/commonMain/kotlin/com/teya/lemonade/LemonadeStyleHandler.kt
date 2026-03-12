@@ -8,8 +8,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 
-internal class LemonadeStyleHandler(initialStyle: LemonadeStyle = LemonadeStyle.Default) {
+internal class LemonadeStyleHandler(
+    initialStyle: LemonadeStyle = LemonadeStyle.Default,
+    initialVariant: LemonadeThemeVariant = LemonadeThemeVariant.Default,
+) {
     var currentStyle: LemonadeStyle by mutableStateOf(initialStyle)
+    var currentVariant: LemonadeThemeVariant by mutableStateOf(initialVariant)
 }
 
 internal val LocalLemonadeStyleHandler = staticCompositionLocalOf {
@@ -17,8 +21,10 @@ internal val LocalLemonadeStyleHandler = staticCompositionLocalOf {
 }
 
 @Composable
-internal fun rememberLemonadeStyleHandler(initialStyle: LemonadeStyle = LemonadeStyle.Default): LemonadeStyleHandler =
-    remember { LemonadeStyleHandler(initialStyle) }
+internal fun rememberLemonadeStyleHandler(
+    initialStyle: LemonadeStyle = LemonadeStyle.Default,
+    initialVariant: LemonadeThemeVariant = LemonadeThemeVariant.Default,
+): LemonadeStyleHandler = remember { LemonadeStyleHandler(initialStyle, initialVariant) }
 
 @Composable
 internal fun LemonadeStyledTheme(
@@ -26,8 +32,13 @@ internal fun LemonadeStyledTheme(
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(LocalLemonadeStyleHandler provides handler) {
-        LemonadeTheme(colors = handler.currentStyle.colors) {
-            content()
+        when (handler.currentVariant) {
+            LemonadeThemeVariant.Standard -> LemonadeTheme(colors = handler.currentStyle.colors) {
+                content()
+            }
+            LemonadeThemeVariant.Expressive -> LemonadeExpressiveTheme(colors = handler.currentStyle.colors) {
+                content()
+            }
         }
     }
 }

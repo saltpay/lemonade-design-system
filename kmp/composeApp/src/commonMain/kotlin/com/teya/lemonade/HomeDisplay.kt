@@ -12,6 +12,8 @@ internal fun HomeDisplay(onNavigate: (Displays) -> Unit) {
     val styleHandler = LocalLemonadeStyleHandler.current
     val styles = LemonadeStyle.entries
     val selectedIndex = styles.indexOf(styleHandler.currentStyle)
+    val variants = LemonadeThemeVariant.entries
+    val selectedVariantIndex = variants.indexOf(styleHandler.currentVariant)
 
     SampleScreenDisplayLazyColumn(
         title = "Lemonade Design System",
@@ -21,6 +23,12 @@ internal fun HomeDisplay(onNavigate: (Displays) -> Unit) {
                 selectedTab = selectedIndex,
                 onTabSelected = { index -> styleHandler.currentStyle = styles[index] },
                 properties = styles.map { style -> TabButtonProperties(label = style.label) },
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing200),
+            )
+            LemonadeUi.SegmentedControl(
+                selectedTab = selectedVariantIndex,
+                onTabSelected = { index -> styleHandler.currentVariant = variants[index] },
+                properties = variants.map { variant -> TabButtonProperties(label = variant.label) },
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing400),
             )
         }
