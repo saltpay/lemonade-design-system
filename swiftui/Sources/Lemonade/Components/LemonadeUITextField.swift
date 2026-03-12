@@ -14,7 +14,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     var isEnabled: Bool
     var textStyle: LemonadeTextStyle
     var textColor: Color
-    var keyboardType: UIKeyboardType
+    var keyboardType: UIKeyboardType = .default
     var onValueChange: ((LemonadeTextFieldValue) -> Void)?
     var onEditingChanged: ((Bool) -> Void)?
 
