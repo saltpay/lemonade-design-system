@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +36,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.disabled
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Dp
 import com.teya.lemonade.core.LemonadeIconButtonVariant
 import com.teya.lemonade.core.LemonadeIcons
 import kotlinx.coroutines.launch
@@ -59,52 +64,143 @@ private const val PAGES_TOTAL = 1200
 private const val CENTER_PAGE = PAGES_TOTAL / 2
 
 /**
+ * State holder for [LemonadeUi.DatePicker].
+ *
+ * Holds the currently selected date as observable state, plus the selectable date range.
+ * Observe [selectedDate] to react to user selections.
+ *
+ * @param initialDate The initially selected date — seeds [selectedDate].
+ * @param minDate Minimum selectable date.
+ * @param maxDate Maximum selectable date.
+ * @see rememberDatePickerState
+ */
+@Stable
+public class DatePickerState internal constructor(
+    initialDate: LocalDate? = null,
+    public val minDate: LocalDate? = null,
+    public val maxDate: LocalDate? = null,
+) {
+    public var selectedDate: LocalDate? by mutableStateOf(initialDate)
+        internal set
+}
+
+/**
+ * Creates and remembers a [DatePickerState].
+ *
+ * @param initialDate The initially selected date.
+ * @param minDate Minimum selectable date.
+ * @param maxDate Maximum selectable date.
+ */
+@Composable
+public fun rememberDatePickerState(
+    initialDate: LocalDate? = null,
+    minDate: LocalDate? = null,
+    maxDate: LocalDate? = null,
+): DatePickerState =
+    remember(initialDate, minDate, maxDate) {
+        DatePickerState(
+            initialDate = initialDate,
+            minDate = minDate,
+            maxDate = maxDate,
+        )
+    }
+
+/**
+ * State holder for [LemonadeUi.DateRangePicker].
+ *
+ * Holds the currently selected start/end dates as observable state, plus the selectable
+ * date range and maximum range length. Observe [selectedStartDate] and [selectedEndDate]
+ * to react to user selections.
+ *
+ * @param initialStartDate Initial start date — seeds [selectedStartDate].
+ * @param initialEndDate Initial end date — seeds [selectedEndDate].
+ * @param minDate Minimum selectable date.
+ * @param maxDate Maximum selectable date.
+ * @param maxRangeDays Maximum number of days allowed in a date range selection.
+ * @see rememberDateRangePickerState
+ */
+@Stable
+public class DateRangePickerState internal constructor(
+    initialStartDate: LocalDate? = null,
+    initialEndDate: LocalDate? = null,
+    public val minDate: LocalDate? = null,
+    public val maxDate: LocalDate? = null,
+    public val maxRangeDays: Int? = null,
+) {
+    public var selectedStartDate: LocalDate? by mutableStateOf(initialStartDate)
+        internal set
+    public var selectedEndDate: LocalDate? by mutableStateOf(initialEndDate)
+        internal set
+}
+
+/**
+ * Creates and remembers a [DateRangePickerState].
+ *
+ * @param initialStartDate Initial start date for the range.
+ * @param initialEndDate Initial end date for the range.
+ * @param minDate Minimum selectable date.
+ * @param maxDate Maximum selectable date.
+ * @param maxRangeDays Maximum number of days allowed in a date range selection.
+ */
+@Composable
+public fun rememberDateRangePickerState(
+    initialStartDate: LocalDate? = null,
+    initialEndDate: LocalDate? = null,
+    minDate: LocalDate? = null,
+    maxDate: LocalDate? = null,
+    maxRangeDays: Int? = null,
+): DateRangePickerState =
+    remember(initialStartDate, initialEndDate, minDate, maxDate, maxRangeDays) {
+        DateRangePickerState(
+            initialStartDate = initialStartDate,
+            initialEndDate = initialEndDate,
+            minDate = minDate,
+            maxDate = maxDate,
+            maxRangeDays = maxRangeDays,
+        )
+    }
+
+/**
  * A single-date picker widget from the Lemonade Design System.
  *
  * Provides a scrollable month view that allows users to select a single date.
  * It features smooth page animations between months and supports restricting
- * selection to a specific date range using [minDate] and [maxDate].
+ * selection to a specific date range using [DatePickerState.minDate] and [DatePickerState.maxDate].
  *
  * ## Usage
  * ```kotlin
+ * val state = rememberDatePickerState(initialDate = today)
  * LemonadeUi.DatePicker(
- *     monthFormatter = { month -> "Month $month" },
+ *     state = state,
+ *     monthFormatter = { monthNumber -> monthNames[monthNumber - 1] },
  *     weekdayAbbreviations = listOf("S", "M", "T", "W", "T", "F", "S"),
- *     onDateChanged = { date -> println(date) },
  * )
+ * // Observe: state.selectedDate
  * ```
  *
  * @param monthFormatter Formatter that returns the month name for a given month number (1-12).
- * @param weekdayAbbreviations Exactly 7 items representing Sunday through Saturday.
+ * Needs to be localized by the caller.
+ * @param weekdayAbbreviations List of exactly 7 items representing Sunday through Saturday.
+ * Needs to be localized by the caller.
  * @param modifier Optional [Modifier] for layout adjustments.
- * @param initialDate The initially selected date.
- * @param onDateChanged Called when a date is selected.
- * @param minDate Minimum selectable date.
- * @param maxDate Maximum selectable date.
+ * @param state Configuration state created via [rememberDatePickerState].
+ * Observe [DatePickerState.selectedDate] to react to user selections.
  */
 @Composable
 public fun LemonadeUi.DatePicker(
     monthFormatter: (month: Int) -> String,
     weekdayAbbreviations: List<String>,
     modifier: Modifier = Modifier,
-    initialDate: LocalDate? = null,
-    onDateChanged: ((LocalDate) -> Unit)? = null,
-    minDate: LocalDate? = null,
-    maxDate: LocalDate? = null,
+    state: DatePickerState = rememberDatePickerState(),
 ) {
-    var selectedDate by remember { mutableStateOf(initialDate) }
-
     CoreDatePicker(
         monthFormatter = monthFormatter,
         weekdayAbbreviations = weekdayAbbreviations,
         modifier = modifier,
-        selectedDates = setOfNotNull(selectedDate),
-        onDateSelected = { date ->
-            selectedDate = date
-            onDateChanged?.invoke(date)
-        },
-        minDate = minDate,
-        maxDate = maxDate,
+        selectedDates = setOfNotNull(state.selectedDate),
+        onDateSelected = { date -> state.selectedDate = date },
+        minDate = state.minDate,
+        maxDate = state.maxDate,
     )
 }
 
@@ -117,44 +213,43 @@ public fun LemonadeUi.DatePicker(
  *
  * ## Usage
  * ```kotlin
+ * val state = rememberDateRangePickerState(maxRangeDays = 7)
  * LemonadeUi.DateRangePicker(
- *     monthFormatter = { month -> "Month $month" },
+ *     state = state,
+ *     monthFormatter = { monthNumber -> monthNames[monthNumber - 1] },
  *     weekdayAbbreviations = listOf("S", "M", "T", "W", "T", "F", "S"),
- *     onDateRangeChanged = { start, end -> println("$start - $end") },
  * )
+ * // Observe: state.selectedStartDate, state.selectedEndDate
  * ```
  *
  * @param monthFormatter Formatter that returns the month name for a given month number (1-12).
- * @param weekdayAbbreviations Exactly 7 items representing Sunday through Saturday.
+ * Needs to be localized by the caller.
+ * @param weekdayAbbreviations List of exactly 7 items representing Sunday through Saturday.
+ * Needs to be localized by the caller.
  * @param modifier Optional [Modifier] for layout adjustments.
- * @param onDateRangeChanged Called when a complete date range is selected (start and end).
- * @param initialStartDate Initial start date for the range.
- * @param initialEndDate Initial end date for the range.
- * @param minDate Minimum selectable date.
- * @param maxDate Maximum selectable date.
- * @param maxRangeDays Maximum number of days allowed in a date range selection.
+ * @param state Configuration state created via [rememberDateRangePickerState].
+ * Observe [DateRangePickerState.selectedStartDate] and [DateRangePickerState.selectedEndDate]
+ * to react to user selections.
  */
 @Composable
 public fun LemonadeUi.DateRangePicker(
     monthFormatter: (month: Int) -> String,
     weekdayAbbreviations: List<String>,
     modifier: Modifier = Modifier,
-    onDateRangeChanged: ((start: LocalDate, end: LocalDate) -> Unit)? = null,
-    initialStartDate: LocalDate? = null,
-    initialEndDate: LocalDate? = null,
-    minDate: LocalDate? = null,
-    maxDate: LocalDate? = null,
-    maxRangeDays: Int? = null,
+    state: DateRangePickerState = rememberDateRangePickerState(),
 ) {
-    var rangeStartDate by remember { mutableStateOf(initialStartDate) }
-    var rangeEndDate by remember { mutableStateOf(initialEndDate) }
-    val isSelectingEndDate = rangeStartDate != null && rangeEndDate == null
+    val isSelectingEndDate = state.selectedStartDate != null && state.selectedEndDate == null
 
-    val effectiveMin = remember(minDate, rangeStartDate, isSelectingEndDate, maxRangeDays) {
-        var min = minDate
-        if (isSelectingEndDate && maxRangeDays != null) {
-            rangeStartDate?.let { start ->
-                val rangeMin = start.minus(maxRangeDays, DateTimeUnit.DAY)
+    val effectiveMin = remember(
+        state.minDate,
+        state.selectedStartDate,
+        isSelectingEndDate,
+        state.maxRangeDays,
+    ) {
+        var min = state.minDate
+        if (isSelectingEndDate && state.maxRangeDays != null) {
+            state.selectedStartDate?.let { start ->
+                val rangeMin = start.minus(state.maxRangeDays, DateTimeUnit.DAY)
                 if (min == null || rangeMin > min) {
                     min = rangeMin
                 }
@@ -162,11 +257,16 @@ public fun LemonadeUi.DateRangePicker(
         }
         min
     }
-    val effectiveMax = remember(maxDate, rangeStartDate, isSelectingEndDate, maxRangeDays) {
-        var max = maxDate
-        if (isSelectingEndDate && maxRangeDays != null) {
-            rangeStartDate?.let { start ->
-                val rangeMax = start.plus(maxRangeDays, DateTimeUnit.DAY)
+    val effectiveMax = remember(
+        state.maxDate,
+        state.selectedStartDate,
+        isSelectingEndDate,
+        state.maxRangeDays,
+    ) {
+        var max = state.maxDate
+        if (isSelectingEndDate && state.maxRangeDays != null) {
+            state.selectedStartDate?.let { start ->
+                val rangeMax = start.plus(state.maxRangeDays, DateTimeUnit.DAY)
 
                 if (max == null || rangeMax < max) {
                     max = rangeMax
@@ -180,23 +280,18 @@ public fun LemonadeUi.DateRangePicker(
         monthFormatter = monthFormatter,
         weekdayAbbreviations = weekdayAbbreviations,
         modifier = modifier,
-        selectedDates = setOfNotNull(rangeStartDate, rangeEndDate),
+        selectedDates = setOfNotNull(state.selectedStartDate, state.selectedEndDate),
         onDateSelected = { date ->
-            val start = rangeStartDate
+            val start = state.selectedStartDate
 
             if (!isSelectingEndDate || start == null) {
-                rangeStartDate = date
-                rangeEndDate = null
+                state.selectedStartDate = date
+                state.selectedEndDate = null
                 return@CoreDatePicker
             }
 
-            val newStart = minOf(start, date)
-            val newEnd = maxOf(start, date)
-
-            rangeStartDate = newStart
-            rangeEndDate = newEnd
-
-            onDateRangeChanged?.invoke(newStart, newEnd)
+            state.selectedStartDate = minOf(start, date)
+            state.selectedEndDate = maxOf(start, date)
         },
         minDate = effectiveMin,
         maxDate = effectiveMax,
@@ -205,9 +300,9 @@ public fun LemonadeUi.DateRangePicker(
 
 @Composable
 private fun CoreDatePicker(
+    modifier: Modifier,
     monthFormatter: (Int) -> String,
     weekdayAbbreviations: List<String>,
-    modifier: Modifier,
     selectedDates: Set<LocalDate>,
     onDateSelected: (LocalDate) -> Unit,
     minDate: LocalDate?,
@@ -224,13 +319,15 @@ private fun CoreDatePicker(
 
     val headerLabel = "${monthFormatter(centerYearMonth.month.number)} ${centerYearMonth.year}"
 
-    val canGoPrev = minDate?.let {
-        it <= centerYearMonth.minus(1, DateTimeUnit.MONTH).lastDay
-    } ?: true
+    val canGoPrev = pagerState.currentPage > 0 &&
+        minDate?.let {
+            it <= centerYearMonth.minus(1, DateTimeUnit.MONTH).lastDay
+        } ?: true
 
-    val canGoNext = maxDate?.let {
-        it >= centerYearMonth.plus(1, DateTimeUnit.MONTH).firstDay
-    } ?: true
+    val canGoNext = pagerState.currentPage < PAGES_TOTAL - 1 &&
+        maxDate?.let {
+            it >= centerYearMonth.plus(1, DateTimeUnit.MONTH).firstDay
+        } ?: true
 
     val horizontalPadding = LocalSpaces.current.spacing400
 
@@ -243,9 +340,10 @@ private fun CoreDatePicker(
             yearMonth = centerYearMonth,
             onYearMonthChange = { newYearMonth ->
                 val diff = centerYearMonth.monthsUntil(newYearMonth)
+                val targetPage = (pagerState.currentPage + diff).coerceIn(0, PAGES_TOTAL - 1)
 
                 coroutineScope.launch {
-                    pagerState.animateScrollToPage(pagerState.currentPage + diff)
+                    pagerState.animateScrollToPage(targetPage)
                 }
             },
             headerLabel = headerLabel,
@@ -260,18 +358,20 @@ private fun CoreDatePicker(
                 .fillMaxWidth()
                 .padding(horizontal = horizontalPadding),
         ) {
-            weekdayAbbreviations.forEach { day ->
-                Box(
-                    modifier = Modifier.weight(1f),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    LemonadeUi.Text(
-                        text = day,
-                        textStyle = LocalTypographies.current.bodyXSmallOverline,
-                        color = LocalColors.current.content.contentPrimary,
-                    )
+            weekdayAbbreviations
+                .take(DayOfWeek.entries.size)
+                .forEach { day ->
+                    Box(
+                        modifier = Modifier.weight(1f),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        LemonadeUi.Text(
+                            text = day,
+                            textStyle = LocalTypographies.current.bodyXSmallOverline,
+                            color = LocalColors.current.content.contentPrimary,
+                        )
+                    }
                 }
-            }
         }
 
         Spacer(modifier = Modifier.height(LocalSpaces.current.spacing100))
@@ -332,32 +432,31 @@ private fun MonthHeader(
 }
 
 private fun generateMonthDays(month: YearMonth): List<LocalDate> {
-    val firstDayOfMonth = month.firstDay.dayOfWeek
+    val firstDayOfMonth = month.firstDay.dayOfWeek.ordinal
 
-    val startingWeekDay = DayOfWeek.SUNDAY
-    val firstDayOffset = (firstDayOfMonth.ordinal - startingWeekDay.ordinal + DayOfWeek.entries.size) % DayOfWeek.entries.size
-    val days = mutableListOf<LocalDate>()
+    val startingWeekDay = DayOfWeek.SUNDAY.ordinal
+    val firstDayOffset =
+        (firstDayOfMonth - startingWeekDay + DayOfWeek.entries.size) % DayOfWeek.entries.size
 
-    // Previous month
-    val previousMonth = month.minusMonth()
-    val prevMonthLength = previousMonth.numberOfDays
-    for (i in firstDayOffset downTo 1) {
-        days.add(previousMonth.onDay(prevMonthLength - i + 1))
+    return buildList {
+        // Previous month
+        val previousMonth = month.minusMonth()
+        val prevMonthLength = previousMonth.numberOfDays
+        for (day in prevMonthLength downTo prevMonthLength - firstDayOffset + 1) {
+            add(previousMonth.onDay(day))
+        }
+
+        // Current month
+        for (day in 1..month.numberOfDays) {
+            add(month.onDay(day))
+        }
+
+        // Next month
+        val nextMonth = month.plusMonth()
+        for (day in 1..42 - size) {
+            add(nextMonth.onDay(day))
+        }
     }
-
-    // Current month
-    for (day in 1..month.numberOfDays) {
-        days.add(month.onDay(day))
-    }
-
-    // Next month
-    val nextMonth = month.plusMonth()
-    var nextDay = 1
-    while (days.size % DayOfWeek.entries.size != 0 || days.size < 42) {
-        days.add(nextMonth.onDay(nextDay++))
-    }
-
-    return days
 }
 
 @Composable
@@ -377,8 +476,6 @@ private fun MonthGrid(
     val rangeEndDate = if (isRangeComplete) selectedDates.max() else null
 
     val cellHorizontalPadding = LocalSpaces.current.spacing200
-    val cellRadius = LocalRadius.current.radius200
-    val colors = LocalColors.current
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -386,28 +483,12 @@ private fun MonthGrid(
     ) {
         days.chunked(DayOfWeek.entries.size).forEach { week ->
             Row(
-                modifier = Modifier
-                    .drawBehind {
-                        if (rangeStartDate != null && rangeEndDate != null) {
-                            val cellWidth = size.width / DayOfWeek.entries.size
-                            val paddingPx = cellHorizontalPadding.toPx()
-
-                            val startIndex = week.indexOfFirst { it >= rangeStartDate }
-                            val endIndex = week.indexOfLast { it <= rangeEndDate }
-
-                            if (startIndex != -1 && endIndex != -1) {
-                                val left = cellWidth * startIndex + paddingPx
-                                val right = cellWidth * (endIndex + 1) - paddingPx
-
-                                drawRoundRect(
-                                    color = colors.background.bgBrandSubtle,
-                                    topLeft = Offset(left, 0f),
-                                    size = Size(right - left, size.height),
-                                    cornerRadius = CornerRadius(cellRadius.toPx())
-                                )
-                            }
-                        }
-                    }
+                modifier = Modifier.drawRangeHighlight(
+                    week = week,
+                    rangeStartDate = rangeStartDate,
+                    rangeEndDate = rangeEndDate,
+                    cellHorizontalPadding = cellHorizontalPadding,
+                ),
             ) {
                 week.forEach { current ->
                     val isInRange = rangeStartDate?.let { start ->
@@ -437,6 +518,38 @@ private fun MonthGrid(
 }
 
 @Composable
+private fun Modifier.drawRangeHighlight(
+    week: List<LocalDate>,
+    rangeStartDate: LocalDate?,
+    rangeEndDate: LocalDate?,
+    cellHorizontalPadding: Dp,
+): Modifier {
+    if (rangeStartDate == null || rangeEndDate == null) return this
+
+    val cellRadius = LocalRadius.current.radius200
+    val highlightColor = LocalColors.current.background.bgBrandSubtle
+
+    return drawBehind {
+        val startIndex = week.indexOfFirst { it >= rangeStartDate }
+        val endIndex = week.indexOfLast { it <= rangeEndDate }
+
+        if (startIndex != -1 && endIndex != -1) {
+            val cellWidth = size.width / DayOfWeek.entries.size
+            val paddingPx = cellHorizontalPadding.toPx()
+            val left = cellWidth * startIndex + paddingPx
+            val right = cellWidth * (endIndex + 1) - paddingPx
+
+            drawRoundRect(
+                color = highlightColor,
+                topLeft = Offset(left, 0f),
+                size = Size(right - left, size.height),
+                cornerRadius = CornerRadius(cellRadius.toPx()),
+            )
+        }
+    }
+}
+
+@Composable
 private fun RowScope.ContentCell(
     modifier: Modifier = Modifier,
     text: String,
@@ -458,14 +571,16 @@ private fun RowScope.ContentCell(
         else -> LocalColors.current.content.contentPrimary
     }
 
-    val textStyle = when {
-        isCurrent -> LocalTypographies.current.bodyMediumSemiBold
-        else -> LocalTypographies.current.bodyMediumMedium
+    val textStyle = if (isCurrent) {
+        LocalTypographies.current.bodyMediumSemiBold
+    } else {
+        LocalTypographies.current.bodyMediumMedium
     }
 
-    val backgroundColor = when {
-        isSelected -> LocalColors.current.interaction.bgBrandInteractive
-        else -> Color.Transparent
+    val backgroundColor = if (isSelected) {
+        LocalColors.current.interaction.bgBrandInteractive
+    } else {
+        Color.Transparent
     }
 
     val cellShape = LocalShapes.current.radius200
@@ -483,19 +598,24 @@ private fun RowScope.ContentCell(
                         )
                 } else {
                     Modifier
-                }
+                },
             ).clip(
-                shape = cellShape
+                shape = cellShape,
             ).clickable(
                 onClick = onClick,
                 interactionSource = interactionSource,
                 role = Role.Button,
                 enabled = isEnabled,
-                indication = null,
-            ).background(
+                indication = LocalEffects.current.interactionIndication,
+            ).semantics {
+                selected = isSelected
+                if (!isEnabled) {
+                    disabled()
+                }
+            }.background(
                 color = backgroundColor,
             ),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         LemonadeUi.Text(
             modifier = Modifier.padding(vertical = LocalSpaces.current.spacing200),
@@ -505,15 +625,16 @@ private fun RowScope.ContentCell(
         )
 
         if (isCurrent) {
-            Box(modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = LocalSpaces.current.spacing100)
-                .size(LocalSpaces.current.spacing100)
-                .background(
-                    color = textColor,
-                    shape = LocalShapes.current.radiusFull,
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = LocalSpaces.current.spacing100)
+                    .size(LocalSpaces.current.spacing100)
+                    .background(
+                        color = textColor,
+                        shape = LocalShapes.current.radiusFull,
                     ),
-                )
+            )
         }
     }
 }

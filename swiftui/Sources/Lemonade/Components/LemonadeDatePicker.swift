@@ -1,5 +1,50 @@
 import SwiftUI
 
+// MARK: - State Classes
+
+/// State holder for ``LemonadeUi/DatePicker(state:monthFormatter:weekdayAbbreviations:)``.
+///
+/// Holds the currently selected date as observable state, plus the selectable date range.
+/// Observe ``selectedDate`` to react to user selections.
+public final class LemonadeDatePickerState: ObservableObject {
+    @Published public internal(set) var selectedDate: Date?
+    public let minDate: Date?
+    public let maxDate: Date?
+
+    public init(initialDate: Date? = nil, minDate: Date? = nil, maxDate: Date? = nil) {
+        self.selectedDate = initialDate
+        self.minDate = minDate
+        self.maxDate = maxDate
+    }
+}
+
+/// State holder for ``LemonadeUi/DateRangePicker(state:monthFormatter:weekdayAbbreviations:)``.
+///
+/// Holds the currently selected start/end dates as observable state, plus the selectable
+/// date range and maximum range length. Observe ``selectedStartDate`` and ``selectedEndDate``
+/// to react to user selections.
+public final class LemonadeDateRangePickerState: ObservableObject {
+    @Published public internal(set) var selectedStartDate: Date?
+    @Published public internal(set) var selectedEndDate: Date?
+    public let minDate: Date?
+    public let maxDate: Date?
+    public let maxRangeDays: Int?
+
+    public init(
+        initialStartDate: Date? = nil,
+        initialEndDate: Date? = nil,
+        minDate: Date? = nil,
+        maxDate: Date? = nil,
+        maxRangeDays: Int? = nil
+    ) {
+        self.selectedStartDate = initialStartDate
+        self.selectedEndDate = initialEndDate
+        self.minDate = minDate
+        self.maxDate = maxDate
+        self.maxRangeDays = maxRangeDays
+    }
+}
+
 // MARK: - Public API
 
 public extension LemonadeUi {
@@ -9,36 +54,30 @@ public extension LemonadeUi {
     ///
     /// ## Usage
     /// ```swift
+    /// @StateObject var state = LemonadeDatePickerState()
     /// LemonadeUi.DatePicker(
+    ///     state: state,
     ///     monthFormatter: { month in DateFormatter().monthSymbols[month - 1] },
-    ///     weekdayAbbreviations: ["S", "M", "T", "W", "T", "F", "S"],
-    ///     onDateChanged: { date in print(date) }
+    ///     weekdayAbbreviations: ["S", "M", "T", "W", "T", "F", "S"]
     /// )
+    /// // Observe: state.selectedDate
     /// ```
     ///
     /// - Parameters:
+    ///   - state: Configuration state holding the selected date, min/max bounds.
+    ///     Observe ``LemonadeDatePickerState/selectedDate`` to react to user selections.
     ///   - monthFormatter: Formatter that returns the month name for a given month number (1-12).
     ///   - weekdayAbbreviations: Exactly 7 items representing Sunday through Saturday.
-    ///   - initialDate: The initially selected date.
-    ///   - onDateChanged: Called when a date is selected.
-    ///   - minDate: Minimum selectable date.
-    ///   - maxDate: Maximum selectable date.
     @ViewBuilder
     static func DatePicker(
+        state: LemonadeDatePickerState,
         monthFormatter: @escaping (Int) -> String,
-        weekdayAbbreviations: [String],
-        initialDate: Date? = nil,
-        onDateChanged: ((Date) -> Void)? = nil,
-        minDate: Date? = nil,
-        maxDate: Date? = nil
+        weekdayAbbreviations: [String]
     ) -> some View {
         LemonadeDatePickerView(
+            state: state,
             monthFormatter: monthFormatter,
-            weekdayAbbreviations: weekdayAbbreviations,
-            initialDate: initialDate,
-            onDateChanged: onDateChanged,
-            minDate: minDate,
-            maxDate: maxDate
+            weekdayAbbreviations: weekdayAbbreviations
         )
     }
 
@@ -50,42 +89,31 @@ public extension LemonadeUi {
     ///
     /// ## Usage
     /// ```swift
+    /// @StateObject var state = LemonadeDateRangePickerState()
     /// LemonadeUi.DateRangePicker(
+    ///     state: state,
     ///     monthFormatter: { month in DateFormatter().monthSymbols[month - 1] },
-    ///     weekdayAbbreviations: ["S", "M", "T", "W", "T", "F", "S"],
-    ///     onDateRangeChanged: { start, end in print("\(start) - \(end)") }
+    ///     weekdayAbbreviations: ["S", "M", "T", "W", "T", "F", "S"]
     /// )
+    /// // Observe: state.selectedStartDate, state.selectedEndDate
     /// ```
     ///
     /// - Parameters:
+    ///   - state: Configuration state holding the selected dates, min/max bounds, and max range.
+    ///     Observe ``LemonadeDateRangePickerState/selectedStartDate`` and
+    ///     ``LemonadeDateRangePickerState/selectedEndDate`` to react to user selections.
     ///   - monthFormatter: Formatter that returns the month name for a given month number (1-12).
     ///   - weekdayAbbreviations: Exactly 7 items representing Sunday through Saturday.
-    ///   - onDateRangeChanged: Called when a complete date range is selected (start and end).
-    ///   - initialStartDate: Initial start date for the range.
-    ///   - initialEndDate: Initial end date for the range.
-    ///   - minDate: Minimum selectable date.
-    ///   - maxDate: Maximum selectable date.
-    ///   - maxRangeDays: Maximum number of days allowed in a date range selection.
     @ViewBuilder
     static func DateRangePicker(
+        state: LemonadeDateRangePickerState,
         monthFormatter: @escaping (Int) -> String,
-        weekdayAbbreviations: [String],
-        onDateRangeChanged: ((Date, Date) -> Void)? = nil,
-        initialStartDate: Date? = nil,
-        initialEndDate: Date? = nil,
-        minDate: Date? = nil,
-        maxDate: Date? = nil,
-        maxRangeDays: Int? = nil
+        weekdayAbbreviations: [String]
     ) -> some View {
         LemonadeDateRangePickerView(
+            state: state,
             monthFormatter: monthFormatter,
-            weekdayAbbreviations: weekdayAbbreviations,
-            onDateRangeChanged: onDateRangeChanged,
-            initialStartDate: initialStartDate,
-            initialEndDate: initialEndDate,
-            minDate: minDate,
-            maxDate: maxDate,
-            maxRangeDays: maxRangeDays
+            weekdayAbbreviations: weekdayAbbreviations
         )
     }
 }
@@ -93,43 +121,20 @@ public extension LemonadeUi {
 // MARK: - Single Date Picker View
 
 private struct LemonadeDatePickerView: View {
+    @ObservedObject var state: LemonadeDatePickerState
     let monthFormatter: (Int) -> String
     let weekdayAbbreviations: [String]
-    let initialDate: Date?
-    let onDateChanged: ((Date) -> Void)?
-    let minDate: Date?
-    let maxDate: Date?
-
-    @State private var selectedDate: Date?
-
-    init(
-        monthFormatter: @escaping (Int) -> String,
-        weekdayAbbreviations: [String],
-        initialDate: Date?,
-        onDateChanged: ((Date) -> Void)?,
-        minDate: Date?,
-        maxDate: Date?
-    ) {
-        self.monthFormatter = monthFormatter
-        self.weekdayAbbreviations = weekdayAbbreviations
-        self.initialDate = initialDate
-        self.onDateChanged = onDateChanged
-        self.minDate = minDate
-        self.maxDate = maxDate
-        self._selectedDate = State(initialValue: initialDate)
-    }
 
     var body: some View {
         CoreDatePickerView(
             monthFormatter: monthFormatter,
             weekdayAbbreviations: weekdayAbbreviations,
-            selectedDates: selectedDate.map { Set([$0]) } ?? [],
+            selectedDates: state.selectedDate.map { Set([$0]) } ?? [],
             onDateSelected: { date in
-                selectedDate = date
-                onDateChanged?(date)
+                state.selectedDate = date
             },
-            minDate: minDate,
-            maxDate: maxDate
+            minDate: state.minDate,
+            maxDate: state.maxDate
         )
     }
 }
@@ -137,43 +142,17 @@ private struct LemonadeDatePickerView: View {
 // MARK: - Date Range Picker View
 
 private struct LemonadeDateRangePickerView: View {
+    @ObservedObject var state: LemonadeDateRangePickerState
     let monthFormatter: (Int) -> String
     let weekdayAbbreviations: [String]
-    let onDateRangeChanged: ((Date, Date) -> Void)?
-    let minDate: Date?
-    let maxDate: Date?
-    let maxRangeDays: Int?
-
-    @State private var rangeStartDate: Date?
-    @State private var rangeEndDate: Date?
-
-    init(
-        monthFormatter: @escaping (Int) -> String,
-        weekdayAbbreviations: [String],
-        onDateRangeChanged: ((Date, Date) -> Void)?,
-        initialStartDate: Date?,
-        initialEndDate: Date?,
-        minDate: Date?,
-        maxDate: Date?,
-        maxRangeDays: Int?
-    ) {
-        self.monthFormatter = monthFormatter
-        self.weekdayAbbreviations = weekdayAbbreviations
-        self.onDateRangeChanged = onDateRangeChanged
-        self.minDate = minDate
-        self.maxDate = maxDate
-        self.maxRangeDays = maxRangeDays
-        self._rangeStartDate = State(initialValue: initialStartDate)
-        self._rangeEndDate = State(initialValue: initialEndDate)
-    }
 
     private var isSelectingEndDate: Bool {
-        rangeStartDate != nil && rangeEndDate == nil
+        state.selectedStartDate != nil && state.selectedEndDate == nil
     }
 
     private var effectiveMin: Date? {
-        var min = minDate
-        if isSelectingEndDate, let maxDays = maxRangeDays, let start = rangeStartDate {
+        var min = state.minDate
+        if isSelectingEndDate, let maxDays = state.maxRangeDays, let start = state.selectedStartDate {
             let rangeMin = Calendar.current.date(byAdding: .day, value: -maxDays, to: start)!
             if min == nil || rangeMin > min! {
                 min = rangeMin
@@ -183,8 +162,8 @@ private struct LemonadeDateRangePickerView: View {
     }
 
     private var effectiveMax: Date? {
-        var max = maxDate
-        if isSelectingEndDate, let maxDays = maxRangeDays, let start = rangeStartDate {
+        var max = state.maxDate
+        if isSelectingEndDate, let maxDays = state.maxRangeDays, let start = state.selectedStartDate {
             let rangeMax = Calendar.current.date(byAdding: .day, value: maxDays, to: start)!
             if max == nil || rangeMax < max! {
                 max = rangeMax
@@ -197,19 +176,18 @@ private struct LemonadeDateRangePickerView: View {
         CoreDatePickerView(
             monthFormatter: monthFormatter,
             weekdayAbbreviations: weekdayAbbreviations,
-            selectedDates: Set([rangeStartDate, rangeEndDate].compactMap { $0 }),
+            selectedDates: Set([state.selectedStartDate, state.selectedEndDate].compactMap { $0 }),
             onDateSelected: { date in
-                guard isSelectingEndDate, let start = rangeStartDate else {
-                    rangeStartDate = date
-                    rangeEndDate = nil
+                guard isSelectingEndDate, let start = state.selectedStartDate else {
+                    state.selectedStartDate = date
+                    state.selectedEndDate = nil
                     return
                 }
 
                 let newStart = min(date, start)
                 let newEnd = max(date, start)
-                rangeStartDate = newStart
-                rangeEndDate = newEnd
-                onDateRangeChanged?(newStart, newEnd)
+                state.selectedStartDate = newStart
+                state.selectedEndDate = newEnd
             },
             minDate: effectiveMin,
             maxDate: effectiveMax
@@ -246,6 +224,7 @@ private struct CoreDatePickerView: View {
     }
 
     private var canGoPrev: Bool {
+        guard displayedMonthOffset > -centerPage else { return false }
         guard let min = minDate else { return true }
         let prevMonth = calendar.date(byAdding: .month, value: displayedMonthOffset - 1, to: today)!
         let prevYM = calendar.dateComponents([.year, .month], from: prevMonth)
@@ -254,6 +233,7 @@ private struct CoreDatePickerView: View {
     }
 
     private var canGoNext: Bool {
+        guard displayedMonthOffset < centerPage - 1 else { return false }
         guard let max = maxDate else { return true }
         let nextMonth = calendar.date(byAdding: .month, value: displayedMonthOffset + 1, to: today)!
         let nextYM = calendar.dateComponents([.year, .month], from: nextMonth)
@@ -267,15 +247,15 @@ private struct CoreDatePickerView: View {
                 headerLabel: headerLabel,
                 canGoPrev: canGoPrev,
                 canGoNext: canGoNext,
-                onPrev: { displayedMonthOffset -= 1 },
-                onNext: { displayedMonthOffset += 1 }
+                onPrev: { displayedMonthOffset = max(displayedMonthOffset - 1, -centerPage) },
+                onNext: { displayedMonthOffset = min(displayedMonthOffset + 1, centerPage - 1) }
             )
             .padding(.horizontal, LemonadeTheme.spaces.spacing400)
 
             Spacer().frame(height: LemonadeTheme.spaces.spacing200)
 
             HStack(spacing: 0) {
-                ForEach(Array(weekdayAbbreviations.enumerated()), id: \.offset) { _, day in
+                ForEach(Array(weekdayAbbreviations.prefix(7).enumerated()), id: \.offset) { _, day in
                     LemonadeUi.Text(
                         day,
                         textStyle: LemonadeTypography.shared.bodyXSmallOverline,
@@ -504,6 +484,7 @@ private struct ContentCellView: View {
         }
         .buttonStyle(.plain)
         .disabled(!isEnabled)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 
@@ -558,23 +539,36 @@ private enum DatePickerUtils {
 // MARK: - Previews
 
 #if DEBUG
+private struct DatePickerPreview: View {
+    @StateObject private var state = LemonadeDatePickerState()
+
+    var body: some View {
+        LemonadeUi.DatePicker(
+            state: state,
+            monthFormatter: { month in DateFormatter().monthSymbols[month - 1] },
+            weekdayAbbreviations: ["S", "M", "T", "W", "T", "F", "S"]
+        )
+    }
+}
+
+private struct DateRangePickerPreview: View {
+    @StateObject private var state = LemonadeDateRangePickerState()
+
+    var body: some View {
+        LemonadeUi.DateRangePicker(
+            state: state,
+            monthFormatter: { month in DateFormatter().monthSymbols[month - 1] },
+            weekdayAbbreviations: ["S", "M", "T", "W", "T", "F", "S"]
+        )
+    }
+}
+
 struct LemonadeDatePicker_Previews: PreviewProvider {
     static var previews: some View {
         ScrollView {
             VStack(spacing: 32) {
-                LemonadeUi.DatePicker(
-                    monthFormatter: { month in
-                        DateFormatter().monthSymbols[month - 1]
-                    },
-                    weekdayAbbreviations: ["S", "M", "T", "W", "T", "F", "S"]
-                )
-
-                LemonadeUi.DateRangePicker(
-                    monthFormatter: { month in
-                        DateFormatter().monthSymbols[month - 1]
-                    },
-                    weekdayAbbreviations: ["S", "M", "T", "W", "T", "F", "S"]
-                )
+                DatePickerPreview()
+                DateRangePickerPreview()
             }
             .padding()
         }

@@ -2,10 +2,10 @@ import SwiftUI
 import Lemonade
 
 struct DatePickerDisplayView: View {
-    @State private var selectedDate: Date?
-    @State private var rangeStart: Date?
-    @State private var rangeEnd: Date?
-    @State private var constrainedDate: Date?
+    @StateObject private var singleState = LemonadeDatePickerState()
+    @StateObject private var rangeState = LemonadeDateRangePickerState()
+    @StateObject private var constrainedState: LemonadeDatePickerState
+    @StateObject private var maxRangeState = LemonadeDateRangePickerState(maxRangeDays: 7)
 
     private let monthFormatter: (Int) -> String = { month in
         DateFormatter().monthSymbols[month - 1]
@@ -19,20 +19,25 @@ struct DatePickerDisplayView: View {
         return f
     }
 
+    init() {
+        let today = Calendar.current.startOfDay(for: Date())
+        let minDate = Calendar.current.date(byAdding: .day, value: -7, to: today)!
+        let maxDate = Calendar.current.date(byAdding: .day, value: 30, to: today)!
+        _constrainedState = StateObject(wrappedValue: LemonadeDatePickerState(minDate: minDate, maxDate: maxDate))
+    }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 32) {
                 sectionView(title: "Single Date Picker") {
                     VStack(alignment: .leading, spacing: 12) {
                         LemonadeUi.DatePicker(
+                            state: singleState,
                             monthFormatter: monthFormatter,
-                            weekdayAbbreviations: weekdays,
-                            onDateChanged: { date in
-                                selectedDate = date
-                            }
+                            weekdayAbbreviations: weekdays
                         )
 
-                        if let date = selectedDate {
+                        if let date = singleState.selectedDate {
                             LemonadeUi.Text(
                                 "Selected: \(dateFormatter.string(from: date))",
                                 textStyle: LemonadeTypography.shared.bodySmallSemiBold,
@@ -45,15 +50,12 @@ struct DatePickerDisplayView: View {
                 sectionView(title: "Date Range Picker") {
                     VStack(alignment: .leading, spacing: 12) {
                         LemonadeUi.DateRangePicker(
+                            state: rangeState,
                             monthFormatter: monthFormatter,
-                            weekdayAbbreviations: weekdays,
-                            onDateRangeChanged: { start, end in
-                                rangeStart = start
-                                rangeEnd = end
-                            }
+                            weekdayAbbreviations: weekdays
                         )
 
-                        if let start = rangeStart, let end = rangeEnd {
+                        if let start = rangeState.selectedStartDate, let end = rangeState.selectedEndDate {
                             LemonadeUi.Text(
                                 "Range: \(dateFormatter.string(from: start)) - \(dateFormatter.string(from: end))",
                                 textStyle: LemonadeTypography.shared.bodySmallSemiBold,
@@ -65,18 +67,10 @@ struct DatePickerDisplayView: View {
 
                 sectionView(title: "With Min/Max Constraints") {
                     VStack(alignment: .leading, spacing: 12) {
-                        let today = Calendar.current.startOfDay(for: Date())
-                        let minDate = Calendar.current.date(byAdding: .day, value: -7, to: today)!
-                        let maxDate = Calendar.current.date(byAdding: .day, value: 30, to: today)!
-
                         LemonadeUi.DatePicker(
+                            state: constrainedState,
                             monthFormatter: monthFormatter,
-                            weekdayAbbreviations: weekdays,
-                            onDateChanged: { date in
-                                constrainedDate = date
-                            },
-                            minDate: minDate,
-                            maxDate: maxDate
+                            weekdayAbbreviations: weekdays
                         )
 
                         LemonadeUi.Text(
@@ -85,7 +79,7 @@ struct DatePickerDisplayView: View {
                             color: LemonadeTheme.colors.content.contentSecondary
                         )
 
-                        if let date = constrainedDate {
+                        if let date = constrainedState.selectedDate {
                             LemonadeUi.Text(
                                 "Selected: \(dateFormatter.string(from: date))",
                                 textStyle: LemonadeTypography.shared.bodySmallSemiBold,
@@ -97,12 +91,9 @@ struct DatePickerDisplayView: View {
 
                 sectionView(title: "Range with Max Days (7)") {
                     LemonadeUi.DateRangePicker(
+                        state: maxRangeState,
                         monthFormatter: monthFormatter,
-                        weekdayAbbreviations: weekdays,
-                        onDateRangeChanged: { start, end in
-                            print("Max range: \(start) - \(end)")
-                        },
-                        maxRangeDays: 7
+                        weekdayAbbreviations: weekdays
                     )
                 }
             }

@@ -9,20 +9,28 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.todayIn
+import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 private val monthNames = listOf(
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
 )
 
 private val weekdayAbbreviations = listOf("S", "M", "T", "W", "T", "F", "S")
@@ -32,17 +40,11 @@ private fun formatMonth(month: Int): String = monthNames[month - 1]
 @Suppress("LongMethod")
 @Composable
 internal fun DatePickerDisplay() {
-    var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
-    var selectedDateFuture by remember { mutableStateOf<LocalDate?>(null) }
-    var selectedDatePast by remember { mutableStateOf<LocalDate?>(null) }
-    var selectedDateCustom by remember { mutableStateOf<LocalDate?>(null) }
-    var rangeStart by remember { mutableStateOf<LocalDate?>(null) }
-    var rangeEnd by remember { mutableStateOf<LocalDate?>(null) }
-    var maxRangeStart by remember { mutableStateOf<LocalDate?>(null) }
-    var maxRangeEnd by remember { mutableStateOf<LocalDate?>(null) }
-
     @OptIn(ExperimentalTime::class)
-    val today = remember { kotlin.time.Clock.System.todayIn(TimeZone.currentSystemDefault()) }
+    val today = remember {
+        Clock.System
+            .todayIn(TimeZone.currentSystemDefault())
+    }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
@@ -54,42 +56,42 @@ internal fun DatePickerDisplay() {
             .padding(LemonadeTheme.spaces.spacing400),
     ) {
         DatePickerSection(title = "Default (all dates selectable)") {
+            val state = rememberDatePickerState(initialDate = today)
             LemonadeUi.DatePicker(
+                state = state,
                 monthFormatter = ::formatMonth,
                 weekdayAbbreviations = weekdayAbbreviations,
-                initialDate = today,
-                onDateChanged = { date -> selectedDate = date },
             )
             LemonadeUi.Text(
-                text = "Selected: ${selectedDate?.let { formatDate(it) }}",
+                text = "Selected: ${state.selectedDate?.let { formatDate(it) }}",
                 textStyle = LemonadeTheme.typography.bodySmallRegular,
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
         }
 
         DatePickerSection(title = "Future dates only (minDate: today)") {
+            val state = rememberDatePickerState(minDate = today)
             LemonadeUi.DatePicker(
+                state = state,
                 monthFormatter = ::formatMonth,
                 weekdayAbbreviations = weekdayAbbreviations,
-                minDate = today,
-                onDateChanged = { date -> selectedDateFuture = date },
             )
             LemonadeUi.Text(
-                text = "Selected: ${selectedDateFuture?.let { formatDate(it) }}",
+                text = "Selected: ${state.selectedDate?.let { formatDate(it) }}",
                 textStyle = LemonadeTheme.typography.bodySmallRegular,
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
         }
 
         DatePickerSection(title = "Past dates only (maxDate: today)") {
+            val state = rememberDatePickerState(maxDate = today)
             LemonadeUi.DatePicker(
+                state = state,
                 monthFormatter = ::formatMonth,
                 weekdayAbbreviations = weekdayAbbreviations,
-                maxDate = today,
-                onDateChanged = { date -> selectedDatePast = date },
             )
             LemonadeUi.Text(
-                text = "Selected: ${selectedDatePast?.let { formatDate(it) }}",
+                text = "Selected: ${state.selectedDate?.let { formatDate(it) }}",
                 textStyle = LemonadeTheme.typography.bodySmallRegular,
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
@@ -99,48 +101,47 @@ internal fun DatePickerDisplay() {
             val monthNumber = today.month.number
             val customMinDate = LocalDate(today.year, monthNumber, 1)
             val customMaxDate = LocalDate(today.year, monthNumber, daysInMonth(today.year, monthNumber))
-            LemonadeUi.DatePicker(
-                monthFormatter = ::formatMonth,
-                weekdayAbbreviations = weekdayAbbreviations,
+            val state = rememberDatePickerState(
                 minDate = customMinDate,
                 maxDate = customMaxDate,
-                onDateChanged = { date -> selectedDateCustom = date },
+            )
+            LemonadeUi.DatePicker(
+                state = state,
+                monthFormatter = ::formatMonth,
+                weekdayAbbreviations = weekdayAbbreviations,
             )
             LemonadeUi.Text(
-                text = "Selected: ${selectedDateCustom?.let { formatDate(it) }}",
+                text = "Selected: ${state.selectedDate?.let { formatDate(it) }}",
                 textStyle = LemonadeTheme.typography.bodySmallRegular,
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
         }
 
         DatePickerSection(title = "Date Range Mode") {
+            val state = rememberDateRangePickerState()
             LemonadeUi.DateRangePicker(
+                state = state,
                 monthFormatter = ::formatMonth,
                 weekdayAbbreviations = weekdayAbbreviations,
-                onDateRangeChanged = { start, end ->
-                    rangeStart = start
-                    rangeEnd = end
-                },
             )
             LemonadeUi.Text(
-                text = "Range: ${rangeStart?.let { formatDate(it) }} - ${rangeEnd?.let { formatDate(it) }}",
+                text = "Range: ${state.selectedStartDate?.let { formatDate(it) }} - " +
+                    "${state.selectedEndDate?.let { formatDate(it) }}",
                 textStyle = LemonadeTheme.typography.bodySmallRegular,
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
         }
 
         DatePickerSection(title = "Date Range with max 7 days") {
+            val state = rememberDateRangePickerState(maxRangeDays = 7)
             LemonadeUi.DateRangePicker(
+                state = state,
                 monthFormatter = ::formatMonth,
                 weekdayAbbreviations = weekdayAbbreviations,
-                maxRangeDays = 7,
-                onDateRangeChanged = { start, end ->
-                    maxRangeStart = start
-                    maxRangeEnd = end
-                },
             )
             LemonadeUi.Text(
-                text = "Range: ${maxRangeStart?.let { formatDate(it) }} - ${maxRangeEnd?.let { formatDate(it) }}",
+                text = "Range: ${state.selectedStartDate?.let { formatDate(it) }} - " +
+                    "${state.selectedEndDate?.let { formatDate(it) }}",
                 textStyle = LemonadeTheme.typography.bodySmallRegular,
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
@@ -165,15 +166,15 @@ private fun DatePickerSection(
     }
 }
 
-private fun daysInMonth(year: Int, month: Int): Int {
-    return when (month) {
+private fun daysInMonth(
+    year: Int,
+    month: Int,
+): Int =
+    when (month) {
         1, 3, 5, 7, 8, 10, 12 -> 31
         4, 6, 9, 11 -> 30
         2 -> if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) 29 else 28
         else -> 30
     }
-}
 
-private fun formatDate(date: LocalDate): String {
-    return "${date.day}/${date.month.number}/${date.year}"
-}
+private fun formatDate(date: LocalDate): String = "${date.day}/${date.month.number}/${date.year}"
