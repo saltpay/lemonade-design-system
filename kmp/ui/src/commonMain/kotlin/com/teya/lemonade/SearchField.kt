@@ -103,7 +103,9 @@ internal fun CoreSearchField(
         enabled = enabled,
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions,
-        textStyle = LocalTypographies.current.bodyMediumRegular.textStyle,
+        textStyle = LocalTypographies.current.bodyMediumRegular.textStyle.copy(
+            color = LocalColors.current.content.contentPrimary,
+        ),
         singleLine = true,
         modifier = modifier.then(
             other = if (enabled) {
