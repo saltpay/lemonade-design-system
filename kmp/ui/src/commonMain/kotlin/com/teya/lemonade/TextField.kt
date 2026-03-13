@@ -473,7 +473,9 @@ internal fun CoreTextField(
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions,
         visualTransformation = visualTransformation,
-        textStyle = size.data.contentStyle.textStyle,
+        textStyle = size.data.contentStyle.textStyle.copy(
+            color = LocalColors.current.content.contentPrimary,
+        ),
         singleLine = true,
         modifier = modifier,
         decorationBox = { innerTextField ->
@@ -522,7 +524,9 @@ internal fun CoreTextField(
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions,
         visualTransformation = visualTransformation,
-        textStyle = size.data.contentStyle.textStyle,
+        textStyle = size.data.contentStyle.textStyle.copy(
+            color = LocalColors.current.content.contentPrimary,
+        ),
         singleLine = true,
         modifier = modifier,
         decorationBox = { innerTextField ->
