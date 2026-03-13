@@ -52,7 +52,8 @@ struct HomeView: View {
                     DemoItem(title: "IconButton", destination: AnyView(IconButtonDisplayView())),
                     DemoItem(title: "Checkbox", destination: AnyView(CheckboxDisplayView())),
                     DemoItem(title: "RadioButton", destination: AnyView(RadioButtonDisplayView())),
-                    DemoItem(title: "Switch", destination: AnyView(SwitchDisplayView()))
+                    DemoItem(title: "Switch", destination: AnyView(SwitchDisplayView())),
+                    DemoItem(title: "DatePicker", destination: AnyView(DatePickerDisplayView()))
                 ]
             ),
             DemoSection(
