@@ -115,6 +115,7 @@ internal object DisplayRegistry {
                 Displays.Spinner,
                 Displays.Skeleton,
                 Displays.Divider,
+                Displays.Toast,
             ),
         ),
         DisplayData(
