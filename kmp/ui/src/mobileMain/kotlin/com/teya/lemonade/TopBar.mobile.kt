@@ -85,6 +85,10 @@ public class TopBarState internal constructor(
 ) {
     private var lockGestureAnimation by mutableStateOf(lockGestureAnimation)
 
+    internal val isPermanentlyCollapsed: Boolean by derivedStateOf {
+        startCollapsed && lockGestureAnimation
+    }
+
     private val scrollOffsetAnimatable by derivedStateOf {
         Animatable(
             initialValue = if (startCollapsed) {
@@ -599,7 +603,7 @@ private fun CoreTopBar(
         },
         dividerSlot = { dividerModifier ->
             val dividerAlpha by animateFloatAsState(
-                targetValue = if (state.collapseProgress == 1f) {
+                targetValue = if (state.collapseProgress == 1f && !state.isPermanentlyCollapsed) {
                     LocalOpacities.current.base.opacity100
                 } else {
                     LocalOpacities.current.base.opacity0
