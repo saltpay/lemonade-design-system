@@ -472,6 +472,179 @@ public extension LemonadeUi {
 }
 #endif
 
+// MARK: - TextField with Visual Transformation
+
+#if canImport(UIKit)
+public extension LemonadeUi {
+    /// Text Field with Visual Transformation - displays formatted text while storing raw data.
+    /// This mirrors Compose's VisualTransformation API for feature parity with KMP.
+    ///
+    /// ## Usage
+    /// ```swift
+    /// @State private var phoneNumber = ""
+    ///
+    /// LemonadeUi.TextField(
+    ///     rawText: $phoneNumber,
+    ///     visualTransformation: PhoneNumberTransformation(),
+    ///     label: "Phone Number",
+    ///     placeholderText: "Enter phone number"
+    /// )
+    /// ```
+    ///
+    /// The `rawText` binding holds the original unformatted data (e.g., "1234567890"),
+    /// while the visual transformation displays formatted text (e.g., "123-456-7890").
+    /// Cursor positions are automatically mapped between raw and displayed text.
+    ///
+    /// - Parameters:
+    ///   - rawText: Binding to the raw (unformatted) text
+    ///   - onRawTextChange: Callback when the raw text changes
+    ///   - visualTransformation: Transformation to apply for display
+    ///   - label: Label displayed above the text field
+    ///   - optionalIndicator: Optional text displayed on the right of the label
+    ///   - supportText: Support text displayed below the text field
+    ///   - placeholderText: Placeholder text when the field is empty
+    ///   - errorMessage: Error message displayed when error is true
+    ///   - error: Whether the text field has an error
+    ///   - enabled: Whether the text field is enabled
+    /// - Returns: A styled TextField view with visual transformation
+    @ViewBuilder
+    static func TextField(
+        rawText: Binding<String>,
+        onRawTextChange: ((String) -> Void)? = nil,
+        visualTransformation: LemonadeVisualTransformation,
+        label: String? = nil,
+        optionalIndicator: String? = nil,
+        supportText: String? = nil,
+        placeholderText: String? = nil,
+        errorMessage: String? = nil,
+        error: Bool = false,
+        enabled: Bool = true,
+        keyboardType: UIKeyboardType = .default
+    ) -> some View {
+        LemonadeTextFieldWithTransformationView<EmptyView, EmptyView>(
+            rawText: rawText,
+            onRawTextChange: onRawTextChange,
+            visualTransformation: visualTransformation,
+            label: label,
+            optionalIndicator: optionalIndicator,
+            supportText: supportText,
+            placeholderText: placeholderText,
+            errorMessage: errorMessage,
+            error: error,
+            enabled: enabled,
+            keyboardType: keyboardType,
+            leadingContent: nil,
+            trailingContent: nil
+        )
+    }
+
+    /// TextField with selector using Visual Transformation.
+    /// Combines a selectable prefix (like country code) with formatted text display.
+    ///
+    /// ## Usage
+    /// ```swift
+    /// @State private var phoneNumber = ""
+    ///
+    /// LemonadeUi.TextFieldWithSelector(
+    ///     rawText: $phoneNumber,
+    ///     visualTransformation: PhoneNumberTransformation(countryCode: "+1"),
+    ///     leadingAction: { showCountryPicker() },
+    ///     leadingContent: {
+    ///         HStack {
+    ///             CountryFlag(country: .us)
+    ///             Icon(icon: .chevronDown)
+    ///         }
+    ///     },
+    ///     label: "Phone Number"
+    /// )
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - rawText: Binding to the raw (unformatted) text
+    ///   - onRawTextChange: Callback when the raw text changes
+    ///   - visualTransformation: Transformation to apply for display
+    ///   - leadingAction: Action triggered when the leading content is clicked
+    ///   - leadingContent: Content displayed on the left as selector
+    ///   - label: Label displayed above the text field
+    ///   - optionalIndicator: Optional text displayed on the right of the label
+    ///   - supportText: Support text displayed below the text field
+    ///   - placeholderText: Placeholder text when the field is empty
+    ///   - errorMessage: Error message displayed when error is true
+    ///   - error: Whether the text field has an error
+    ///   - enabled: Whether the text field is enabled
+    /// - Returns: A styled TextFieldWithSelector view with visual transformation
+    @ViewBuilder
+    static func TextFieldWithSelector<LeadingContent: View>(
+        rawText: Binding<String>,
+        onRawTextChange: ((String) -> Void)? = nil,
+        visualTransformation: LemonadeVisualTransformation,
+        leadingAction: @escaping () -> Void,
+        @ViewBuilder leadingContent: @escaping () -> LeadingContent,
+        label: String? = nil,
+        optionalIndicator: String? = nil,
+        supportText: String? = nil,
+        placeholderText: String? = nil,
+        errorMessage: String? = nil,
+        error: Bool = false,
+        enabled: Bool = true,
+        keyboardType: UIKeyboardType = .default
+    ) -> some View {
+        LemonadeTextFieldWithSelectorTransformationView<LeadingContent, EmptyView>(
+            rawText: rawText,
+            onRawTextChange: onRawTextChange,
+            visualTransformation: visualTransformation,
+            leadingAction: leadingAction,
+            leadingContent: leadingContent,
+            label: label,
+            optionalIndicator: optionalIndicator,
+            supportText: supportText,
+            placeholderText: placeholderText,
+            errorMessage: errorMessage,
+            error: error,
+            enabled: enabled,
+            keyboardType: keyboardType,
+            trailingContent: nil
+        )
+    }
+
+    /// TextFieldWithSelector with Visual Transformation and trailing content.
+    @ViewBuilder
+    static func TextFieldWithSelector<LeadingContent: View, TrailingContent: View>(
+        rawText: Binding<String>,
+        onRawTextChange: ((String) -> Void)? = nil,
+        visualTransformation: LemonadeVisualTransformation,
+        leadingAction: @escaping () -> Void,
+        @ViewBuilder leadingContent: @escaping () -> LeadingContent,
+        label: String? = nil,
+        optionalIndicator: String? = nil,
+        supportText: String? = nil,
+        placeholderText: String? = nil,
+        errorMessage: String? = nil,
+        error: Bool = false,
+        enabled: Bool = true,
+        keyboardType: UIKeyboardType = .default,
+        @ViewBuilder trailingContent: @escaping () -> TrailingContent
+    ) -> some View {
+        LemonadeTextFieldWithSelectorTransformationView(
+            rawText: rawText,
+            onRawTextChange: onRawTextChange,
+            visualTransformation: visualTransformation,
+            leadingAction: leadingAction,
+            leadingContent: leadingContent,
+            label: label,
+            optionalIndicator: optionalIndicator,
+            supportText: supportText,
+            placeholderText: placeholderText,
+            errorMessage: errorMessage,
+            error: error,
+            enabled: enabled,
+            keyboardType: keyboardType,
+            trailingContent: trailingContent
+        )
+    }
+}
+#endif
+
 // MARK: - Internal TextField View
 
 private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View>: View {
@@ -1106,6 +1279,339 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
                             textColor: LemonadeTheme.colors.content.contentPrimary,
                             keyboardType: keyboardType,
                             onValueChange: onValueChange
+                        )
+                    }
+
+                    if let trailingContent = trailingContent {
+                        trailingContent()
+                    }
+                }
+                .padding(.horizontal, horizontalPadding)
+                .padding(.vertical, verticalPadding)
+                .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+            }
+            .frame(minHeight: minHeight)
+            .background(LemonadeTheme.colors.background.bgDefault)
+            .background(backgroundColor)
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .stroke(borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius + 2)
+                    .stroke(
+                        isFocused ? LemonadeTheme.colors.background.bgElevated : .clear,
+                        lineWidth: LemonadeTheme.borderWidth.base.border50
+                    )
+                    .padding(-2)
+            )
+            .onHover { hovering in
+                isHovered = hovering
+            }
+
+            // Support/Error text
+            if enabled && error, let errorMessage = errorMessage {
+                LemonadeUi.Text(
+                    errorMessage,
+                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
+                    color: LemonadeTheme.colors.content.contentCritical
+                )
+                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
+            } else if let supportText = supportText {
+                LemonadeUi.Text(
+                    supportText,
+                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
+                    color: LemonadeTheme.colors.content.contentSecondary
+                )
+                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
+            }
+        }
+        .animation(.easeInOut(duration: 0.15), value: isFocused)
+        .animation(.easeInOut(duration: 0.15), value: error)
+    }
+}
+
+// MARK: - Internal TextField with Visual Transformation View
+
+private struct LemonadeTextFieldWithTransformationView<LeadingContent: View, TrailingContent: View>: View {
+    @Binding var rawText: String
+    let onRawTextChange: ((String) -> Void)?
+    let visualTransformation: LemonadeVisualTransformation
+    let label: String?
+    let optionalIndicator: String?
+    let supportText: String?
+    let placeholderText: String?
+    let errorMessage: String?
+    let error: Bool
+    let enabled: Bool
+    let keyboardType: UIKeyboardType
+    let leadingContent: (() -> LeadingContent)?
+    let trailingContent: (() -> TrailingContent)?
+
+    @State private var isFocused = false
+    @State private var isHovered = false
+
+    private var minHeight: CGFloat { LemonadeTheme.sizes.size1400 }
+    private let cornerRadius: CGFloat = 12
+    private let horizontalPadding: CGFloat = 12
+    private let verticalPadding: CGFloat = 12
+
+    private var displayedText: String {
+        visualTransformation.transform(rawText).text
+    }
+
+    private var backgroundColor: Color {
+        switch (enabled, error, isFocused, isHovered) {
+        case (false, _, _, _):
+            return LemonadeTheme.colors.background.bgElevated
+        case (true, true, false, _):
+            return LemonadeTheme.colors.background.bgCriticalSubtle
+        case (true, _, _, true):
+            return LemonadeTheme.colors.interaction.bgSubtleInteractive
+        default:
+            return .clear
+        }
+    }
+
+    private var borderColor: Color {
+        switch (enabled, isFocused, error) {
+        case (false, _, _):
+            return .clear
+        case (true, true, _):
+            return LemonadeTheme.colors.border.borderSelected
+        case (true, false, true):
+            return LemonadeTheme.colors.border.borderCritical
+        default:
+            return LemonadeTheme.colors.border.borderNeutralMedium
+        }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
+            // Label row
+            if label != nil || optionalIndicator != nil {
+                HStack {
+                    if let label = label {
+                        LemonadeUi.Text(
+                            label,
+                            textStyle: LemonadeTypography.shared.bodySmallMedium,
+                            color: enabled
+                                ? LemonadeTheme.colors.content.contentPrimary
+                                : LemonadeTheme.colors.content.contentSecondary
+                        )
+                    }
+
+                    Spacer()
+
+                    if let optionalIndicator = optionalIndicator {
+                        LemonadeUi.Text(
+                            optionalIndicator,
+                            textStyle: LemonadeTypography.shared.bodySmallRegular,
+                            color: LemonadeTheme.colors.content.contentSecondary
+                        )
+                    }
+                }
+                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
+            }
+
+            // Text field container
+            HStack(spacing: LemonadeTheme.spaces.spacing300) {
+                if let leadingContent = leadingContent {
+                    leadingContent()
+                }
+
+                ZStack(alignment: .leading) {
+                    if rawText.isEmpty, let placeholderText = placeholderText {
+                        LemonadeUi.Text(
+                            placeholderText,
+                            textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                            color: LemonadeTheme.colors.content.contentSecondary
+                        )
+                    }
+
+                    LemonadeUITextFieldWithTransformation(
+                        rawText: $rawText,
+                        isFocused: $isFocused,
+                        isEnabled: enabled,
+                        textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                        textColor: LemonadeTheme.colors.content.contentPrimary,
+                        keyboardType: keyboardType,
+                        visualTransformation: visualTransformation,
+                        onRawTextChange: onRawTextChange
+                    )
+                }
+
+                if let trailingContent = trailingContent {
+                    trailingContent()
+                }
+            }
+            .padding(.horizontal, horizontalPadding)
+            .padding(.vertical, verticalPadding)
+            .frame(minHeight: minHeight)
+            .background(LemonadeTheme.colors.background.bgDefault)
+            .background(backgroundColor)
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .stroke(borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius + 2)
+                    .stroke(
+                        isFocused ? LemonadeTheme.colors.background.bgElevated : .clear,
+                        lineWidth: LemonadeTheme.borderWidth.base.border50
+                    )
+                    .padding(-2)
+            )
+            .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+            .onHover { hovering in
+                isHovered = hovering
+            }
+
+            // Support/Error text
+            if enabled && error, let errorMessage = errorMessage {
+                LemonadeUi.Text(
+                    errorMessage,
+                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
+                    color: LemonadeTheme.colors.content.contentCritical
+                )
+                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
+            } else if let supportText = supportText {
+                LemonadeUi.Text(
+                    supportText,
+                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
+                    color: LemonadeTheme.colors.content.contentSecondary
+                )
+                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
+            }
+        }
+        .animation(.easeInOut(duration: 0.15), value: isFocused)
+        .animation(.easeInOut(duration: 0.15), value: error)
+    }
+}
+
+// MARK: - Internal TextFieldWithSelector with Visual Transformation View
+
+private struct LemonadeTextFieldWithSelectorTransformationView<LeadingContent: View, TrailingContent: View>: View {
+    @Binding var rawText: String
+    let onRawTextChange: ((String) -> Void)?
+    let visualTransformation: LemonadeVisualTransformation
+    let leadingAction: () -> Void
+    let leadingContent: () -> LeadingContent
+    let label: String?
+    let optionalIndicator: String?
+    let supportText: String?
+    let placeholderText: String?
+    let errorMessage: String?
+    let error: Bool
+    let enabled: Bool
+    let keyboardType: UIKeyboardType
+    let trailingContent: (() -> TrailingContent)?
+
+    @State private var isFocused = false
+    @State private var isHovered = false
+
+    private var minHeight: CGFloat { LemonadeTheme.sizes.size1400 }
+    private let cornerRadius: CGFloat = 12
+    private let horizontalPadding: CGFloat = 12
+    private let verticalPadding: CGFloat = 12
+
+    private var displayedText: String {
+        visualTransformation.transform(rawText).text
+    }
+
+    private var backgroundColor: Color {
+        switch (enabled, error, isFocused, isHovered) {
+        case (false, _, _, _):
+            return LemonadeTheme.colors.background.bgElevated
+        case (true, true, false, _):
+            return LemonadeTheme.colors.background.bgCriticalSubtle
+        case (true, _, _, true):
+            return LemonadeTheme.colors.interaction.bgSubtleInteractive
+        default:
+            return .clear
+        }
+    }
+
+    private var borderColor: Color {
+        switch (enabled, isFocused, error) {
+        case (false, _, _):
+            return .clear
+        case (true, true, _):
+            return LemonadeTheme.colors.border.borderSelected
+        case (true, false, true):
+            return LemonadeTheme.colors.border.borderCritical
+        default:
+            return LemonadeTheme.colors.border.borderNeutralMedium
+        }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
+            // Label row
+            if label != nil || optionalIndicator != nil {
+                HStack {
+                    if let label = label {
+                        LemonadeUi.Text(
+                            label,
+                            textStyle: LemonadeTypography.shared.bodySmallMedium,
+                            color: enabled
+                                ? LemonadeTheme.colors.content.contentPrimary
+                                : LemonadeTheme.colors.content.contentSecondary
+                        )
+                    }
+
+                    Spacer()
+
+                    if let optionalIndicator = optionalIndicator {
+                        LemonadeUi.Text(
+                            optionalIndicator,
+                            textStyle: LemonadeTypography.shared.bodySmallRegular,
+                            color: LemonadeTheme.colors.content.contentSecondary
+                        )
+                    }
+                }
+                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
+            }
+
+            // Text field container with selector
+            HStack(spacing: 0) {
+                // Selector button
+                SwiftUI.Button(action: leadingAction) {
+                    leadingContent()
+                        .padding(LemonadeTheme.spaces.spacing400)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .disabled(!enabled)
+                .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+
+                // Divider
+                Rectangle()
+                    .fill(LemonadeTheme.colors.border.borderNeutralMedium)
+                    .frame(width: LemonadeTheme.borderWidth.base.border25)
+                    .frame(minHeight: minHeight)
+
+                // Text input area
+                HStack(spacing: LemonadeTheme.spaces.spacing300) {
+                    ZStack(alignment: .leading) {
+                        if rawText.isEmpty, let placeholderText = placeholderText {
+                            LemonadeUi.Text(
+                                placeholderText,
+                                textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                                color: LemonadeTheme.colors.content.contentSecondary
+                            )
+                        }
+
+                        LemonadeUITextFieldWithTransformation(
+                            rawText: $rawText,
+                            isFocused: $isFocused,
+                            isEnabled: enabled,
+                            textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                            textColor: LemonadeTheme.colors.content.contentPrimary,
+                            keyboardType: keyboardType,
+                            visualTransformation: visualTransformation,
+                            onRawTextChange: onRawTextChange
                         )
                     }
 
