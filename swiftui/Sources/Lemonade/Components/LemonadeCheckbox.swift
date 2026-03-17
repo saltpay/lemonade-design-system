@@ -127,6 +127,8 @@ private struct LemonadeCheckboxWithLabel: View {
         }
         .buttonStyle(PlainButtonStyle())
         .disabled(!enabled)
+        .accessibilityElement(children: .combine)
+        .accessibilityValue(status == .checked ? "Checked" : status == .indeterminate ? "Indeterminate" : "Unchecked")
     }
 }
 
@@ -203,6 +205,9 @@ private struct LemonadeCoreCheckbox: View {
         .onHover { hovering in
             isHovered = hovering
         }
+        .accessibilityLabel("Checkbox")
+        .accessibilityValue(status == .checked ? "Checked" : status == .indeterminate ? "Indeterminate" : "Unchecked")
+        .accessibilityAddTraits(.isButton)
     }
 }
 

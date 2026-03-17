@@ -113,6 +113,7 @@ private struct LemonadeSearchFieldView: View {
                     )
                 }
                 .buttonStyle(PlainButtonStyle())
+                .accessibilityLabel("Clear search")
             }
         }
         .padding(.horizontal, horizontalPadding)

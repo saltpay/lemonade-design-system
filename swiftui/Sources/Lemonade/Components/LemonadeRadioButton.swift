@@ -114,6 +114,8 @@ private struct LemonadeRadioButtonWithLabel: View {
         }
         .buttonStyle(PlainButtonStyle())
         .disabled(!enabled)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(checked ? .isSelected : [])
     }
 }
 
@@ -197,6 +199,8 @@ private struct LemonadeCoreRadioButton: View {
         .onHover { hovering in
             isHovered = hovering
         }
+        .accessibilityLabel("Radio button")
+        .accessibilityAddTraits(checked ? .isSelected : [])
     }
 }
 

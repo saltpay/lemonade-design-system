@@ -118,6 +118,7 @@ private struct LemonadeBadgeView: View {
                 }
             )
             .clipShape(Capsule())
+            .accessibilityLabel("Badge: \(text)")
     }
 }
 
