@@ -59,6 +59,7 @@ kotlin {
             implementation(libs.kotlinx.serializer)
             implementation(projects.ui)
             implementation(projects.expressive)
+            implementation(projects.extensions.calendar)
             implementation(kotlin("script-runtime"))
         }
         commonTest.dependencies {
