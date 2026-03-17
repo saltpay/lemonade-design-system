@@ -1,5 +1,18 @@
 import SwiftUI
 
+// MARK: - Localization Helper
+
+/// Internal helper for localized strings within the Lemonade library bundle.
+func lemonadeLocalizedString(_ key: String) -> String {
+    NSLocalizedString(key, bundle: .lemonade, comment: "")
+}
+
+/// Internal helper for localized strings with format arguments within the Lemonade library bundle.
+func lemonadeLocalizedString(_ key: String, _ arguments: CVarArg...) -> String {
+    let format = NSLocalizedString(key, bundle: .lemonade, comment: "")
+    return String(format: format, arguments: arguments)
+}
+
 // MARK: - Conditional View Modifier
 
 extension View {

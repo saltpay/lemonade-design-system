@@ -194,12 +194,14 @@ private struct LemonadeCoreRadioButton: View {
             .animation(.easeInOut(duration: 0.15), value: isHovered)
         }
         .frame(width: LemonadeTheme.sizes.size550, height: LemonadeTheme.sizes.size600)
+        .frame(minWidth: 44, minHeight: 44)
+        .contentShape(Rectangle())
         .buttonStyle(PlainButtonStyle())
         .disabled(!enabled)
         .onHover { hovering in
             isHovered = hovering
         }
-        .accessibilityLabel("Radio button")
+        .accessibilityLabel(lemonadeLocalizedString("lemonade_radio_button"))
         .accessibilityAddTraits(checked ? .isSelected : [])
     }
 }
