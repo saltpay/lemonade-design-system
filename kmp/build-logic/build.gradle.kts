@@ -12,9 +12,9 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        register("LemonadePublishPlugin") {
+        register("LemonadePlugin") {
             id = "lemonade"
-            implementationClass = "LemonadePublishPlugin"
+            implementationClass = "LemonadePlugin"
         }
         register("LemonadeLintPlugin") {
             id = "lemonade-lint"
