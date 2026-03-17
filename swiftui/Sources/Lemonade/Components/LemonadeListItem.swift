@@ -137,6 +137,7 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
                 }
                 .buttonStyle(ListItemButtonStyle(voice: voice))
                 .disabled(!enabled)
+                .accessibilityAddTraits(.isButton)
             } else {
                 listItemContent
             }

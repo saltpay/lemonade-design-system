@@ -276,6 +276,10 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
                 onChipClicked()
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(label)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityAddTraits(selected ? .isSelected : [])
         .animation(.easeInOut(duration: 0.15), value: selected)
     }
 }
