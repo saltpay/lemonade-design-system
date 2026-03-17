@@ -84,7 +84,7 @@ public extension LemonadeUi {
                 }
             }
         )
-        .accessibilityValue(checked ? "Selected" : "Not selected")
+        .accessibilityValue(checked ? lemonadeLocalizedString("lemonade_selected") : lemonadeLocalizedString("lemonade_not_selected"))
     }
 
     /// A list item with the sole purpose of selection without leading slot.

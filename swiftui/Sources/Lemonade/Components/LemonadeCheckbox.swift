@@ -128,7 +128,13 @@ private struct LemonadeCheckboxWithLabel: View {
         .buttonStyle(PlainButtonStyle())
         .disabled(!enabled)
         .accessibilityElement(children: .combine)
-        .accessibilityValue(status == .checked ? "Checked" : status == .indeterminate ? "Indeterminate" : "Unchecked")
+        .accessibilityValue(
+            status == .checked
+                ? lemonadeLocalizedString("lemonade_checkbox_checked")
+                : status == .indeterminate
+                    ? lemonadeLocalizedString("lemonade_checkbox_indeterminate")
+                    : lemonadeLocalizedString("lemonade_checkbox_unchecked")
+        )
     }
 }
 
@@ -200,13 +206,21 @@ private struct LemonadeCoreCheckbox: View {
             .animation(.easeInOut(duration: 0.15), value: isHovered)
         }
         .frame(height: LemonadeTheme.sizes.size600)
+        .frame(minWidth: 44, minHeight: 44)
+        .contentShape(Rectangle())
         .buttonStyle(PlainButtonStyle())
         .disabled(!enabled)
         .onHover { hovering in
             isHovered = hovering
         }
-        .accessibilityLabel("Checkbox")
-        .accessibilityValue(status == .checked ? "Checked" : status == .indeterminate ? "Indeterminate" : "Unchecked")
+        .accessibilityLabel(lemonadeLocalizedString("lemonade_checkbox"))
+        .accessibilityValue(
+            status == .checked
+                ? lemonadeLocalizedString("lemonade_checkbox_checked")
+                : status == .indeterminate
+                    ? lemonadeLocalizedString("lemonade_checkbox_indeterminate")
+                    : lemonadeLocalizedString("lemonade_checkbox_unchecked")
+        )
         .accessibilityAddTraits(.isButton)
     }
 }

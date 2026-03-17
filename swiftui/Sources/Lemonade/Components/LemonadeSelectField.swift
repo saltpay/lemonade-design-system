@@ -147,9 +147,9 @@ private struct LemonadeSelectFieldView<LeadingContent: View>: View {
             ))
             .accessibilityAddTraits(.isButton)
             .accessibilityRemoveTraits(.isStaticText)
-            .accessibilityLabel(label ?? "Select field")
+            .accessibilityLabel(label ?? lemonadeLocalizedString("lemonade_select_field"))
             .accessibilityValue(selectedValue ?? placeholderText ?? "")
-            .accessibilityHint("Double tap to select")
+            .accessibilityHint(lemonadeLocalizedString("lemonade_double_tap_to_select"))
 
             TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }

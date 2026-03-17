@@ -235,7 +235,7 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
             // Counter
             if let counter = counter {
                 SwiftUI.Text("\(counter)")
-                    .font(.custom(LemonadeTypography.fontFamily, size: LemonadeTheme.sizes.size250).weight(.semibold))
+                    .font(.custom(LemonadeTypography.fontFamily, size: LemonadeTheme.sizes.size250, relativeTo: .caption2).weight(.semibold))
                     .foregroundStyle(LemonadeTheme.colors.content.contentOnBrandHigh)
                     .lineLimit(1)
                     .padding(.horizontal, LemonadeTheme.spaces.spacing100)
@@ -270,7 +270,8 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
                 .stroke(borderColor, lineWidth: 1)
         )
         .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-        .contentShape(Capsule())
+        .frame(minHeight: 44)
+        .contentShape(Rectangle())
         .onTapGesture {
             if let onChipClicked = onChipClicked, enabled {
                 onChipClicked()

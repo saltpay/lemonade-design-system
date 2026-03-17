@@ -194,7 +194,7 @@ private struct LemonadeDateRangePickerView: View {
             minDate: effectiveMin,
             maxDate: effectiveMax
         )
-        .accessibilityHint(isSelectingEndDate ? "Select an end date" : "Select a start date")
+        .accessibilityHint(isSelectingEndDate ? lemonadeLocalizedString("lemonade_select_end_date") : lemonadeLocalizedString("lemonade_select_start_date"))
     }
 }
 
