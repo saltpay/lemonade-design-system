@@ -86,7 +86,7 @@ public interface LemonadeSizeValues {
 }
 
 @Stable
-internal data class InternalLemonadeSizeValues(
+public data class InternalLemonadeSizeValues(
     override val size0: Dp = LemonadeSizes.Size0.dp,
     override val size50: Dp = LemonadeSizes.Size50.dp,
     override val size100: Dp = LemonadeSizes.Size100.dp,

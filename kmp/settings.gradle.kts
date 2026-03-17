@@ -35,5 +35,8 @@ plugins {
 
 include(":composeApp")
 include(":core")
+include(":tokens")
 include(":ui")
 include(":expressive")
+include(":extensions:calendar")
+include(":extensions:serializationx")
