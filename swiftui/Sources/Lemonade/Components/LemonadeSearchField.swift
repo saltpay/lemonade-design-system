@@ -142,21 +142,21 @@ private struct LemonadeSearchFieldView: View {
 struct LemonadeSearchField_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 24) {
-            StatefulPreview("") { input in
+            StatefulPreviewWrapper("") { input in
                 LemonadeUi.SearchField(
                     input: input,
                     placeholder: "Search..."
                 )
             }
 
-            StatefulPreview("Sample text") { input in
+            StatefulPreviewWrapper("Sample text") { input in
                 LemonadeUi.SearchField(
                     input: input,
                     placeholder: "Search..."
                 )
             }
 
-            StatefulPreview("") { input in
+            StatefulPreviewWrapper("") { input in
                 LemonadeUi.SearchField(
                     input: input,
                     placeholder: "Disabled search",
@@ -166,20 +166,6 @@ struct LemonadeSearchField_Previews: PreviewProvider {
         }
         .padding()
         .previewLayout(.sizeThatFits)
-    }
-}
-
-private struct StatefulPreview<Value, Content: View>: View {
-    @State private var value: Value
-    let content: (Binding<Value>) -> Content
-
-    init(_ value: Value, @ViewBuilder content: @escaping (Binding<Value>) -> Content) {
-        _value = State(initialValue: value)
-        self.content = content
-    }
-
-    var body: some View {
-        content($value)
     }
 }
 #endif

@@ -203,19 +203,6 @@ private struct LemonadeTileView<AddonContent: View>: View {
     }
 }
 
-// MARK: - View Extension Helper
-
-private extension View {
-    @ViewBuilder
-    func applyIf<T: View>(_ condition: Bool, transform: (Self) -> T) -> some View {
-        if condition {
-            transform(self)
-        } else {
-            self
-        }
-    }
-}
-
 // MARK: - Previews
 
 #if DEBUG

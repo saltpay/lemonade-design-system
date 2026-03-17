@@ -490,64 +490,9 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
     @FocusState private var isFocused: Bool
     @State private var isHovered = false
 
-    private var minHeight: CGFloat { LemonadeTheme.sizes.size1400 }
-    private let cornerRadius: CGFloat = LemonadeTheme.radius.radius300
-    private let horizontalPadding: CGFloat = LemonadeTheme.spaces.spacing300
-    private let verticalPadding: CGFloat = LemonadeTheme.spaces.spacing300
-
-    private var backgroundColor: Color {
-        switch (enabled, error, isFocused, isHovered) {
-        case (false, _, _, _):
-            return LemonadeTheme.colors.background.bgElevated
-        case (true, true, false, _):
-            return LemonadeTheme.colors.background.bgCriticalSubtle
-        case (true, _, _, true):
-            return LemonadeTheme.colors.interaction.bgSubtleInteractive
-        default:
-            return .clear
-        }
-    }
-
-    private var borderColor: Color {
-        switch (enabled, isFocused, error) {
-        case (false, _, _):
-            return .clear
-        case (true, true, _):
-            return LemonadeTheme.colors.border.borderSelected
-        case (true, false, true):
-            return LemonadeTheme.colors.border.borderCritical
-        default:
-            return LemonadeTheme.colors.border.borderNeutralMedium
-        }
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
-            // Label row
-            if label != nil || optionalIndicator != nil {
-                HStack {
-                    if let label = label {
-                        LemonadeUi.Text(
-                            label,
-                            textStyle: LemonadeTypography.shared.bodySmallMedium,
-                            color: enabled
-                                ? LemonadeTheme.colors.content.contentPrimary
-                                : LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-
-                    Spacer()
-
-                    if let optionalIndicator = optionalIndicator {
-                        LemonadeUi.Text(
-                            optionalIndicator,
-                            textStyle: LemonadeTypography.shared.bodySmallRegular,
-                            color: LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-                }
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            }
+            TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
 
             // Text field container
             HStack(spacing: LemonadeTheme.spaces.spacing300) {
@@ -578,45 +523,18 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
                     trailingContent()
                 }
             }
-            .padding(.horizontal, horizontalPadding)
-            .padding(.vertical, verticalPadding)
-            .frame(minHeight: minHeight)
-            .background(LemonadeTheme.colors.background.bgDefault)
-            .background(backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius + 2)
-                    .stroke(
-                        isFocused ? LemonadeTheme.colors.background.bgElevated : .clear,
-                        lineWidth: LemonadeTheme.borderWidth.base.border50
-                    )
-                    .padding(-2)
-            )
-            .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-            .onHover { hovering in
-                isHovered = hovering
-            }
+            .padding(.horizontal, TextFieldConstants.horizontalPadding)
+            .padding(.vertical, TextFieldConstants.verticalPadding)
+            .modifier(TextFieldContainerModifier(
+                backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
+                borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
+                enabled: enabled,
+                isFocused: isFocused,
+                cornerRadius: TextFieldConstants.cornerRadius,
+                isHovered: $isHovered
+            ))
 
-            // Support/Error text
-            if enabled && error, let errorMessage = errorMessage {
-                LemonadeUi.Text(
-                    errorMessage,
-                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                    color: LemonadeTheme.colors.content.contentCritical
-                )
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            } else if let supportText = supportText {
-                LemonadeUi.Text(
-                    supportText,
-                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                    color: LemonadeTheme.colors.content.contentSecondary
-                )
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            }
+            TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }
         .animation(.easeInOut(duration: 0.15), value: isFocused)
         .animation(.easeInOut(duration: 0.15), value: error)
@@ -642,64 +560,9 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
     @FocusState private var isFocused: Bool
     @State private var isHovered = false
 
-    private var minHeight: CGFloat { LemonadeTheme.sizes.size1400 }
-    private let cornerRadius: CGFloat = LemonadeTheme.radius.radius300
-    private let horizontalPadding: CGFloat = LemonadeTheme.spaces.spacing300
-    private let verticalPadding: CGFloat = LemonadeTheme.spaces.spacing300
-
-    private var backgroundColor: Color {
-        switch (enabled, error, isFocused, isHovered) {
-        case (false, _, _, _):
-            return LemonadeTheme.colors.background.bgElevated
-        case (true, true, false, _):
-            return LemonadeTheme.colors.background.bgCriticalSubtle
-        case (true, _, _, true):
-            return LemonadeTheme.colors.interaction.bgSubtleInteractive
-        default:
-            return .clear
-        }
-    }
-
-    private var borderColor: Color {
-        switch (enabled, isFocused, error) {
-        case (false, _, _):
-            return .clear
-        case (true, true, _):
-            return LemonadeTheme.colors.border.borderSelected
-        case (true, false, true):
-            return LemonadeTheme.colors.border.borderCritical
-        default:
-            return LemonadeTheme.colors.border.borderNeutralMedium
-        }
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
-            // Label row
-            if label != nil || optionalIndicator != nil {
-                HStack {
-                    if let label = label {
-                        LemonadeUi.Text(
-                            label,
-                            textStyle: LemonadeTypography.shared.bodySmallMedium,
-                            color: enabled
-                                ? LemonadeTheme.colors.content.contentPrimary
-                                : LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-
-                    Spacer()
-
-                    if let optionalIndicator = optionalIndicator {
-                        LemonadeUi.Text(
-                            optionalIndicator,
-                            textStyle: LemonadeTypography.shared.bodySmallRegular,
-                            color: LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-                }
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            }
+            TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
 
             // Text field container with selector
             HStack(spacing: 0) {
@@ -716,7 +579,7 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
                 Rectangle()
                     .fill(LemonadeTheme.colors.border.borderNeutralMedium)
                     .frame(width: LemonadeTheme.borderWidth.base.border25)
-                    .frame(minHeight: minHeight)
+                    .frame(minHeight: TextFieldConstants.minHeight)
 
                 // Text input area
                 HStack(spacing: LemonadeTheme.spaces.spacing300) {
@@ -743,46 +606,21 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
                         trailingContent()
                     }
                 }
-                .padding(.horizontal, horizontalPadding)
-                .padding(.vertical, verticalPadding)
+                .padding(.horizontal, TextFieldConstants.horizontalPadding)
+                .padding(.vertical, TextFieldConstants.verticalPadding)
                 .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
             }
-            .frame(minHeight: minHeight)
-            .background(LemonadeTheme.colors.background.bgDefault)
-            .background(backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius + 2)
-                    .stroke(
-                        isFocused ? LemonadeTheme.colors.background.bgElevated : .clear,
-                        lineWidth: LemonadeTheme.borderWidth.base.border50
-                    )
-                    .padding(-2)
-            )
-            .onHover { hovering in
-                isHovered = hovering
-            }
+            .modifier(TextFieldContainerModifier(
+                backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
+                borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
+                enabled: enabled,
+                isFocused: isFocused,
+                cornerRadius: TextFieldConstants.cornerRadius,
+                applyOpacity: false,
+                isHovered: $isHovered
+            ))
 
-            // Support/Error text
-            if enabled && error, let errorMessage = errorMessage {
-                LemonadeUi.Text(
-                    errorMessage,
-                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                    color: LemonadeTheme.colors.content.contentCritical
-                )
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            } else if let supportText = supportText {
-                LemonadeUi.Text(
-                    supportText,
-                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                    color: LemonadeTheme.colors.content.contentSecondary
-                )
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            }
+            TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }
         .animation(.easeInOut(duration: 0.15), value: isFocused)
         .animation(.easeInOut(duration: 0.15), value: error)
@@ -810,64 +648,9 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
     @State private var isFocused = false
     @State private var isHovered = false
 
-    private var minHeight: CGFloat { LemonadeTheme.sizes.size1400 }
-    private let cornerRadius: CGFloat = LemonadeTheme.radius.radius300
-    private let horizontalPadding: CGFloat = LemonadeTheme.spaces.spacing300
-    private let verticalPadding: CGFloat = LemonadeTheme.spaces.spacing300
-
-    private var backgroundColor: Color {
-        switch (enabled, error, isFocused, isHovered) {
-        case (false, _, _, _):
-            return LemonadeTheme.colors.background.bgElevated
-        case (true, true, false, _):
-            return LemonadeTheme.colors.background.bgCriticalSubtle
-        case (true, _, _, true):
-            return LemonadeTheme.colors.interaction.bgSubtleInteractive
-        default:
-            return .clear
-        }
-    }
-
-    private var borderColor: Color {
-        switch (enabled, isFocused, error) {
-        case (false, _, _):
-            return .clear
-        case (true, true, _):
-            return LemonadeTheme.colors.border.borderSelected
-        case (true, false, true):
-            return LemonadeTheme.colors.border.borderCritical
-        default:
-            return LemonadeTheme.colors.border.borderNeutralMedium
-        }
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
-            // Label row
-            if label != nil || optionalIndicator != nil {
-                HStack {
-                    if let label = label {
-                        LemonadeUi.Text(
-                            label,
-                            textStyle: LemonadeTypography.shared.bodySmallMedium,
-                            color: enabled
-                                ? LemonadeTheme.colors.content.contentPrimary
-                                : LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-
-                    Spacer()
-
-                    if let optionalIndicator = optionalIndicator {
-                        LemonadeUi.Text(
-                            optionalIndicator,
-                            textStyle: LemonadeTypography.shared.bodySmallRegular,
-                            color: LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-                }
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            }
+            TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
 
             // Text field container
             HStack(spacing: LemonadeTheme.spaces.spacing300) {
@@ -899,45 +682,18 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
                     trailingContent()
                 }
             }
-            .padding(.horizontal, horizontalPadding)
-            .padding(.vertical, verticalPadding)
-            .frame(minHeight: minHeight)
-            .background(LemonadeTheme.colors.background.bgDefault)
-            .background(backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius + 2)
-                    .stroke(
-                        isFocused ? LemonadeTheme.colors.background.bgElevated : .clear,
-                        lineWidth: LemonadeTheme.borderWidth.base.border50
-                    )
-                    .padding(-2)
-            )
-            .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-            .onHover { hovering in
-                isHovered = hovering
-            }
+            .padding(.horizontal, TextFieldConstants.horizontalPadding)
+            .padding(.vertical, TextFieldConstants.verticalPadding)
+            .modifier(TextFieldContainerModifier(
+                backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
+                borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
+                enabled: enabled,
+                isFocused: isFocused,
+                cornerRadius: TextFieldConstants.cornerRadius,
+                isHovered: $isHovered
+            ))
 
-            // Support/Error text
-            if enabled && error, let errorMessage = errorMessage {
-                LemonadeUi.Text(
-                    errorMessage,
-                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                    color: LemonadeTheme.colors.content.contentCritical
-                )
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            } else if let supportText = supportText {
-                LemonadeUi.Text(
-                    supportText,
-                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                    color: LemonadeTheme.colors.content.contentSecondary
-                )
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            }
+            TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }
         .animation(.easeInOut(duration: 0.15), value: isFocused)
         .animation(.easeInOut(duration: 0.15), value: error)
@@ -1011,64 +767,9 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
     @State private var isFocused = false
     @State private var isHovered = false
 
-    private var minHeight: CGFloat { LemonadeTheme.sizes.size1400 }
-    private let cornerRadius: CGFloat = LemonadeTheme.radius.radius300
-    private let horizontalPadding: CGFloat = LemonadeTheme.spaces.spacing300
-    private let verticalPadding: CGFloat = LemonadeTheme.spaces.spacing300
-
-    private var backgroundColor: Color {
-        switch (enabled, error, isFocused, isHovered) {
-        case (false, _, _, _):
-            return LemonadeTheme.colors.background.bgElevated
-        case (true, true, false, _):
-            return LemonadeTheme.colors.background.bgCriticalSubtle
-        case (true, _, _, true):
-            return LemonadeTheme.colors.interaction.bgSubtleInteractive
-        default:
-            return .clear
-        }
-    }
-
-    private var borderColor: Color {
-        switch (enabled, isFocused, error) {
-        case (false, _, _):
-            return .clear
-        case (true, true, _):
-            return LemonadeTheme.colors.border.borderSelected
-        case (true, false, true):
-            return LemonadeTheme.colors.border.borderCritical
-        default:
-            return LemonadeTheme.colors.border.borderNeutralMedium
-        }
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
-            // Label row
-            if label != nil || optionalIndicator != nil {
-                HStack {
-                    if let label = label {
-                        LemonadeUi.Text(
-                            label,
-                            textStyle: LemonadeTypography.shared.bodySmallMedium,
-                            color: enabled
-                                ? LemonadeTheme.colors.content.contentPrimary
-                                : LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-
-                    Spacer()
-
-                    if let optionalIndicator = optionalIndicator {
-                        LemonadeUi.Text(
-                            optionalIndicator,
-                            textStyle: LemonadeTypography.shared.bodySmallRegular,
-                            color: LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-                }
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            }
+            TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
 
             // Text field container with selector
             HStack(spacing: 0) {
@@ -1085,7 +786,7 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
                 Rectangle()
                     .fill(LemonadeTheme.colors.border.borderNeutralMedium)
                     .frame(width: LemonadeTheme.borderWidth.base.border25)
-                    .frame(minHeight: minHeight)
+                    .frame(minHeight: TextFieldConstants.minHeight)
 
                 // Text input area
                 HStack(spacing: LemonadeTheme.spaces.spacing300) {
@@ -1113,46 +814,21 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
                         trailingContent()
                     }
                 }
-                .padding(.horizontal, horizontalPadding)
-                .padding(.vertical, verticalPadding)
+                .padding(.horizontal, TextFieldConstants.horizontalPadding)
+                .padding(.vertical, TextFieldConstants.verticalPadding)
                 .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
             }
-            .frame(minHeight: minHeight)
-            .background(LemonadeTheme.colors.background.bgDefault)
-            .background(backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius + 2)
-                    .stroke(
-                        isFocused ? LemonadeTheme.colors.background.bgElevated : .clear,
-                        lineWidth: LemonadeTheme.borderWidth.base.border50
-                    )
-                    .padding(-2)
-            )
-            .onHover { hovering in
-                isHovered = hovering
-            }
+            .modifier(TextFieldContainerModifier(
+                backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
+                borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
+                enabled: enabled,
+                isFocused: isFocused,
+                cornerRadius: TextFieldConstants.cornerRadius,
+                applyOpacity: false,
+                isHovered: $isHovered
+            ))
 
-            // Support/Error text
-            if enabled && error, let errorMessage = errorMessage {
-                LemonadeUi.Text(
-                    errorMessage,
-                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                    color: LemonadeTheme.colors.content.contentCritical
-                )
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            } else if let supportText = supportText {
-                LemonadeUi.Text(
-                    supportText,
-                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                    color: LemonadeTheme.colors.content.contentSecondary
-                )
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            }
+            TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }
         .animation(.easeInOut(duration: 0.15), value: isFocused)
         .animation(.easeInOut(duration: 0.15), value: error)
@@ -1293,18 +969,4 @@ struct LemonadeTextField_Previews: PreviewProvider {
     }
 }
 
-// Helper for stateful previews
-private struct StatefulPreviewWrapper<Value, Content: View>: View {
-    @State private var value: Value
-    let content: (Binding<Value>) -> Content
-
-    init(_ value: Value, @ViewBuilder content: @escaping (Binding<Value>) -> Content) {
-        _value = State(initialValue: value)
-        self.content = content
-    }
-
-    var body: some View {
-        content($value)
-    }
-}
 #endif

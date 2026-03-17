@@ -235,7 +235,7 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
             // Counter
             if let counter = counter {
                 SwiftUI.Text("\(counter)")
-                    .font(.custom("Figtree", size: LemonadeTheme.sizes.size250).weight(.semibold))
+                    .font(.custom(LemonadeTypography.fontFamily, size: LemonadeTheme.sizes.size250).weight(.semibold))
                     .foregroundStyle(LemonadeTheme.colors.content.contentOnBrandHigh)
                     .lineLimit(1)
                     .padding(.horizontal, LemonadeTheme.spaces.spacing100)

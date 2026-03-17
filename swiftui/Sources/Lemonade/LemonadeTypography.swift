@@ -119,6 +119,9 @@ public struct LemonadeTypography: LemonadeTypographyProtocol {
     /// Shared instance to avoid repeated allocations
     public static let shared = LemonadeTypography()
 
+    /// The font family used across the design system.
+    public static let fontFamily = "Figtree"
+
     public init() {}
 
     // Display styles
@@ -149,6 +152,7 @@ public struct LemonadeTypography: LemonadeTypographyProtocol {
     public let bodyMediumRegular = LemonadeTextStyle(fontSize: 16, lineHeight: 24, fontWeight: .regular)
     public let bodyMediumMedium = LemonadeTextStyle(fontSize: 16, lineHeight: 24, fontWeight: .medium)
     public let bodyMediumSemiBold = LemonadeTextStyle(fontSize: 16, lineHeight: 24, fontWeight: .semibold)
+    /// Maps to `.semibold` weight because the Figtree font family does not include a true bold weight.
     public let bodyMediumBold = LemonadeTextStyle(fontSize: 16, lineHeight: 24, fontWeight: .semibold)
 
     // Body Small styles

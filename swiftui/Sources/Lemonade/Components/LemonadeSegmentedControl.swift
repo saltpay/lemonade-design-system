@@ -134,27 +134,12 @@ private struct LemonadeSegmentedTabButton: View {
             .lemonadeShadow(shadow)
             .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius200))
         }
-        .buttonStyle(LemonadeSegmentedButtonStyle(isPressed: $isPressed))
+        .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
         .onHover { hovering in
             isHovering = hovering
         }
         .accessibilityAddTraits(.isButton)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
-    }
-}
-
-// MARK: - Button Style
-
-private struct LemonadeSegmentedButtonStyle: ButtonStyle {
-    @Binding var isPressed: Bool
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .onChange(of: configuration.isPressed) { newValue in
-                withAnimation(.easeInOut(duration: 0.1)) {
-                    isPressed = newValue
-                }
-            }
     }
 }
 
