@@ -491,9 +491,9 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
     @State private var isHovered = false
 
     private var minHeight: CGFloat { LemonadeTheme.sizes.size1400 }
-    private let cornerRadius: CGFloat = 12 // radius300
-    private let horizontalPadding: CGFloat = 12 // spacing300
-    private let verticalPadding: CGFloat = 12 // spacing300
+    private let cornerRadius: CGFloat = LemonadeTheme.radius.radius300
+    private let horizontalPadding: CGFloat = LemonadeTheme.spaces.spacing300
+    private let verticalPadding: CGFloat = LemonadeTheme.spaces.spacing300
 
     private var backgroundColor: Color {
         switch (enabled, error, isFocused, isHovered) {
@@ -643,9 +643,9 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
     @State private var isHovered = false
 
     private var minHeight: CGFloat { LemonadeTheme.sizes.size1400 }
-    private let cornerRadius: CGFloat = 12 // radius300
-    private let horizontalPadding: CGFloat = 12 // spacing300
-    private let verticalPadding: CGFloat = 12 // spacing300
+    private let cornerRadius: CGFloat = LemonadeTheme.radius.radius300
+    private let horizontalPadding: CGFloat = LemonadeTheme.spaces.spacing300
+    private let verticalPadding: CGFloat = LemonadeTheme.spaces.spacing300
 
     private var backgroundColor: Color {
         switch (enabled, error, isFocused, isHovered) {
@@ -811,9 +811,9 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
     @State private var isHovered = false
 
     private var minHeight: CGFloat { LemonadeTheme.sizes.size1400 }
-    private let cornerRadius: CGFloat = 12 // radius300
-    private let horizontalPadding: CGFloat = 12 // spacing300
-    private let verticalPadding: CGFloat = 12 // spacing300
+    private let cornerRadius: CGFloat = LemonadeTheme.radius.radius300
+    private let horizontalPadding: CGFloat = LemonadeTheme.spaces.spacing300
+    private let verticalPadding: CGFloat = LemonadeTheme.spaces.spacing300
 
     private var backgroundColor: Color {
         switch (enabled, error, isFocused, isHovered) {
@@ -1012,9 +1012,9 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
     @State private var isHovered = false
 
     private var minHeight: CGFloat { LemonadeTheme.sizes.size1400 }
-    private let cornerRadius: CGFloat = 12 // radius300
-    private let horizontalPadding: CGFloat = 12 // spacing300
-    private let verticalPadding: CGFloat = 12 // spacing300
+    private let cornerRadius: CGFloat = LemonadeTheme.radius.radius300
+    private let horizontalPadding: CGFloat = LemonadeTheme.spaces.spacing300
+    private let verticalPadding: CGFloat = LemonadeTheme.spaces.spacing300
 
     private var backgroundColor: Color {
         switch (enabled, error, isFocused, isHovered) {

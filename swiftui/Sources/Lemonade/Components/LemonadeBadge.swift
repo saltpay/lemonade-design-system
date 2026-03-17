@@ -9,8 +9,8 @@ public enum LemonadeBadgeSize {
 
     var height: CGFloat {
         switch self {
-        case .xSmall: return 16
-        case .small: return 20
+        case .xSmall: return LemonadeTheme.sizes.size400
+        case .small: return LemonadeTheme.sizes.size500
         }
     }
 
@@ -34,15 +34,15 @@ public enum LemonadeBadgeSize {
 
     var fontSize: CGFloat {
         switch self {
-        case .xSmall: return 10
-        case .small: return 12
+        case .xSmall: return LemonadeTheme.sizes.size250
+        case .small: return LemonadeTheme.sizes.size300
         }
     }
 
     var lineHeight: CGFloat {
         switch self {
-        case .xSmall: return 14
-        case .small: return 16
+        case .xSmall: return LemonadeTheme.sizes.size350
+        case .small: return LemonadeTheme.sizes.size400
         }
     }
 }
@@ -85,11 +85,13 @@ private struct LemonadeBadgeView: View {
     let text: String
     let size: LemonadeBadgeSize
 
-    // Gradient colors matching KMP implementation
-    private let gradientColors = [
-        Color(red: 214/255, green: 242/255, blue: 90/255), // #D6F25A
-        Color(red: 214/255, green: 242/255, blue: 90/255).opacity(0)
-    ]
+    private var gradientColors: [Color] {
+        let brandHighlight = LemonadeTheme.colors.background.bgBrandHigh
+        return [
+            brandHighlight,
+            brandHighlight.opacity(0)
+        ]
+    }
 
     var body: some View {
         SwiftUI.Text(text)

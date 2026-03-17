@@ -50,8 +50,8 @@ private struct LemonadeSearchFieldView: View {
 
     @FocusState private var isFocused: Bool
 
-    private let height: CGFloat = 44 // size1100
-    private let horizontalPadding: CGFloat = 12 // spacing300
+    private let height: CGFloat = LemonadeTheme.sizes.size1100
+    private let horizontalPadding: CGFloat = LemonadeTheme.spaces.spacing300
 
     private var backgroundColor: Color {
         isFocused

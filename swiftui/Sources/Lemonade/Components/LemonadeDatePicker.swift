@@ -205,13 +205,13 @@ private struct CoreDatePickerView: View {
     let minDate: Date?
     let maxDate: Date?
 
-    private let totalPages = 1200
+    private let totalPages = 240
     private var centerPage: Int { totalPages / 2 }
 
     @State private var displayedMonthOffset: Int = 0
 
-    private var calendar: Calendar { Calendar.current }
-    private var today: Date { DatePickerUtils.startOfDay(Date()) }
+    private let calendar = Calendar.current
+    private let today = DatePickerUtils.startOfDay(Date())
 
     private var currentYearMonth: DateComponents {
         let target = calendar.date(byAdding: .month, value: displayedMonthOffset, to: today)!
@@ -338,8 +338,8 @@ private struct MonthGridView: View {
     let maxDate: Date?
     let onDateSelected: (Date) -> Void
 
-    private var calendar: Calendar { Calendar.current }
-    private var today: Date { DatePickerUtils.startOfDay(Date()) }
+    private let calendar = Calendar.current
+    private let today = DatePickerUtils.startOfDay(Date())
 
     private var yearMonth: DateComponents {
         let target = calendar.date(byAdding: .month, value: monthOffset, to: baseDate)!
@@ -491,8 +491,8 @@ private struct ContentCellView: View {
 // MARK: - Utilities
 
 private enum DatePickerUtils {
-    static func startOfDay(_ date: Date) -> Date {
-        Calendar.current.startOfDay(for: date)
+    static func startOfDay(_ date: Date, calendar: Calendar = .current) -> Date {
+        calendar.startOfDay(for: date)
     }
 
     static func lastDayOfMonth(year: Int, month: Int, calendar: Calendar) -> Date {
@@ -506,7 +506,7 @@ private enum DatePickerUtils {
     static func generateMonthDays(year: Int, month: Int, calendar: Calendar) -> [Date] {
         let firstOfMonth = calendar.date(from: DateComponents(year: year, month: month, day: 1))!
         let weekday = calendar.component(.weekday, from: firstOfMonth) // 1=Sun, 7=Sat
-        let firstDayOffset = weekday - 1 // days from Sunday
+        let firstDayOffset = (weekday - calendar.firstWeekday + 7) % 7
 
         var days: [Date] = []
 

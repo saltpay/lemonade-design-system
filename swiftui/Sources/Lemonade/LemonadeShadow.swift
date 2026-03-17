@@ -81,15 +81,23 @@ public struct LemonadeShadowModifier: ViewModifier {
     }
 
     public func body(content: Content) -> some View {
-        shadow.shadowLayers.reduce(AnyView(content)) { view, shadowData in
-            AnyView(
-                view.shadow(
-                    color: color,
-                    radius: shadowData.blur / 2,
-                    x: shadowData.offsetX,
-                    y: shadowData.offsetY
-                )
-            )
+        let layers = shadow.shadowLayers
+        switch layers.count {
+        case 1:
+            content
+                .shadow(color: color, radius: layers[0].blur / 2, x: layers[0].offsetX, y: layers[0].offsetY)
+        case 2:
+            content
+                .shadow(color: color, radius: layers[0].blur / 2, x: layers[0].offsetX, y: layers[0].offsetY)
+                .shadow(color: color, radius: layers[1].blur / 2, x: layers[1].offsetX, y: layers[1].offsetY)
+        case 4:
+            content
+                .shadow(color: color, radius: layers[0].blur / 2, x: layers[0].offsetX, y: layers[0].offsetY)
+                .shadow(color: color, radius: layers[1].blur / 2, x: layers[1].offsetX, y: layers[1].offsetY)
+                .shadow(color: color, radius: layers[2].blur / 2, x: layers[2].offsetX, y: layers[2].offsetY)
+                .shadow(color: color, radius: layers[3].blur / 2, x: layers[3].offsetX, y: layers[3].offsetY)
+        default:
+            content
         }
     }
 }
