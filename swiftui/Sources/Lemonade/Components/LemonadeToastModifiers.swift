@@ -39,7 +39,7 @@ public extension View {
     ///     }
     /// }
     /// ```
-    func lemonadeToastContainer() -> some View {
+    public func lemonadeToastContainer() -> some View {
         LemonadeToastContainerView(content: self)
     }
 }

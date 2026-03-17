@@ -28,7 +28,7 @@ func textFieldBackgroundColor(
     case (true, _, _, true):
         return LemonadeTheme.colors.interaction.bgSubtleInteractive
     default:
-        return .clear
+        return LemonadeTheme.colors.background.bgDefault
     }
 }
 
@@ -164,7 +164,6 @@ struct TextFieldContainerModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .frame(minHeight: TextFieldConstants.minHeight)
-            .background(LemonadeTheme.colors.background.bgDefault)
             .background(backgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
             .overlay(

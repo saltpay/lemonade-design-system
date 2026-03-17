@@ -10,8 +10,8 @@ public struct LemonadeTabButtonProperties: Identifiable, Hashable {
     /// Optional icon to display before the label.
     public let icon: LemonadeIcon?
 
-    public init(label: String, icon: LemonadeIcon? = nil) {
-        self.id = label
+    public init(id: String? = nil, label: String, icon: LemonadeIcon? = nil) {
+        self.id = id ?? UUID().uuidString
         self.label = label
         self.icon = icon
     }

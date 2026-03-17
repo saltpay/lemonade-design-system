@@ -92,6 +92,7 @@ private struct LemonadeSwitchView: View {
         Toggle("", isOn: isOn)
             .labelsHidden()
             .tint(LemonadeTheme.colors.background.bgBrandHigh)
+            .accessibilityLabel("Switch")
             .disabled(!enabled)
     }
 }
