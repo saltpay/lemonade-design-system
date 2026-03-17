@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.gradle.agp)
     implementation(libs.gradle.vanniktech.publish)
     implementation(libs.gradle.kmp)
     implementation(libs.detekt.gradlePlugin)
