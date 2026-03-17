@@ -82,6 +82,7 @@ public struct LemonadeBorderWidthShorthand {
     // Base border widths
     public var border0: CGFloat { tokens.base.border0 }
     public var border25: CGFloat { tokens.base.border25 }
+    public var border40: CGFloat { tokens.base.border40 }
     public var border50: CGFloat { tokens.base.border50 }
     public var border75: CGFloat { tokens.base.border75 }
     public var border100: CGFloat { tokens.base.border100 }

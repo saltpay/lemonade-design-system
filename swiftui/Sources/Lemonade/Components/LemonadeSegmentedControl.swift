@@ -3,13 +3,15 @@ import SwiftUI
 // MARK: - Tab Button Properties
 
 /// Properties for a single tab button in a segmented control.
-public struct LemonadeTabButtonProperties {
+public struct LemonadeTabButtonProperties: Identifiable, Hashable {
+    public let id: String
     /// The label text for the tab.
     public let label: String
     /// Optional icon to display before the label.
     public let icon: LemonadeIcon?
 
     public init(label: String, icon: LemonadeIcon? = nil) {
+        self.id = label
         self.label = label
         self.icon = icon
     }
@@ -62,7 +64,7 @@ private struct LemonadeSegmentedControlView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            ForEach(Array(properties.enumerated()), id: \.offset) { index, property in
+            ForEach(Array(properties.enumerated()), id: \.element.id) { index, property in
                 LemonadeSegmentedTabButton(
                     property: property,
                     isSelected: index == selectedTab,

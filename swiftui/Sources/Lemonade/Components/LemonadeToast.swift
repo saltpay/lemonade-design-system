@@ -4,7 +4,7 @@ import SwiftUI
 
 /// The voice/variant of a toast notification.
 /// Determines the icon and color scheme used for the toast.
-public enum LemonadeToastVoice {
+public enum LemonadeToastVoice: Sendable {
     /// Success toast with a checkmark icon.
     case success
     /// Error toast with an error icon.

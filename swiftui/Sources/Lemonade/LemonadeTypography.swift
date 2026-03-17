@@ -5,7 +5,7 @@ import UIKit
 #endif
 
 /// Represents a text style with typographic properties.
-public struct LemonadeTextStyle {
+public struct LemonadeTextStyle: Sendable {
     /// The font size in points
     public let fontSize: CGFloat
     /// The line height in points

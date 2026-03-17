@@ -6,6 +6,7 @@ import SwiftUI
 ///
 /// Holds the currently selected date as observable state, plus the selectable date range.
 /// Observe ``selectedDate`` to react to user selections.
+@MainActor
 public final class LemonadeDatePickerState: ObservableObject {
     @Published public internal(set) var selectedDate: Date?
     public let minDate: Date?
@@ -23,6 +24,7 @@ public final class LemonadeDatePickerState: ObservableObject {
 /// Holds the currently selected start/end dates as observable state, plus the selectable
 /// date range and maximum range length. Observe ``selectedStartDate`` and ``selectedEndDate``
 /// to react to user selections.
+@MainActor
 public final class LemonadeDateRangePickerState: ObservableObject {
     @Published public internal(set) var selectedStartDate: Date?
     @Published public internal(set) var selectedEndDate: Date?

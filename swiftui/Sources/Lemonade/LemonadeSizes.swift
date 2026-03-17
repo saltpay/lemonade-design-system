@@ -19,7 +19,7 @@ import SwiftUI
 /// 
 
 /// Size token enum
-public enum LemonadeSizes {
+public enum LemonadeSizes: Sendable {
     case size0
     case size50
     case size100
@@ -99,7 +99,7 @@ public protocol LemonadeSizeValues {
 }
 
 /// Default size values implementation
-public struct LemonadeSizeValuesImpl: LemonadeSizeValues {
+public struct LemonadeSizeValuesImpl: LemonadeSizeValues, Sendable {
     public let size0: CGFloat = LemonadeSizes.size0.value
     public let size50: CGFloat = LemonadeSizes.size50.value
     public let size100: CGFloat = LemonadeSizes.size100.value

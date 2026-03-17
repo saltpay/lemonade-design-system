@@ -19,7 +19,7 @@ import SwiftUI
 /// 
 
 /// Radius token enum
-public enum LemonadeRadius {
+public enum LemonadeRadius: Sendable {
     case radius0
     case radius50
     case radius100
@@ -86,7 +86,7 @@ public protocol LemonadeShapes {
 }
 
 /// Default radius values implementation
-public struct LemonadeRadiusValuesImpl: LemonadeRadiusValues {
+public struct LemonadeRadiusValuesImpl: LemonadeRadiusValues, Sendable {
     public let radius0: CGFloat = LemonadeRadius.radius0.value
     public let radius50: CGFloat = LemonadeRadius.radius50.value
     public let radius100: CGFloat = LemonadeRadius.radius100.value
@@ -103,7 +103,7 @@ public struct LemonadeRadiusValuesImpl: LemonadeRadiusValues {
 }
 
 /// Default shapes implementation
-public struct LemonadeShapesImpl: LemonadeShapes {
+public struct LemonadeShapesImpl: LemonadeShapes, Sendable {
     public var radius0: RoundedRectangle { LemonadeRadius.radius0.shape }
     public var radius50: RoundedRectangle { LemonadeRadius.radius50.shape }
     public var radius100: RoundedRectangle { LemonadeRadius.radius100.shape }

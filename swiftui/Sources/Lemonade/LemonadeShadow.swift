@@ -17,8 +17,11 @@ import SwiftUI
 /// 
 
 /// Shadow data structure
-public struct LemonadeShadowData {
+public struct LemonadeShadowData: Sendable {
     public let blur: CGFloat
+    /// Spread value from the design token. Note: SwiftUI's `.shadow()` modifier
+    /// does not support spread, so this value is stored for reference but not
+    /// rendered. Consider overlay-based techniques if spread fidelity is required.
     public let spread: CGFloat
     public let offsetX: CGFloat
     public let offsetY: CGFloat
@@ -32,7 +35,7 @@ public struct LemonadeShadowData {
 }
 
 /// Shadow token enum
-public enum LemonadeShadow {
+public enum LemonadeShadow: Sendable {
     case large
     case medium
     case small
