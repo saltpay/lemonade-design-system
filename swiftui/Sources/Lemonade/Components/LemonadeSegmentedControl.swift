@@ -3,13 +3,15 @@ import SwiftUI
 // MARK: - Tab Button Properties
 
 /// Properties for a single tab button in a segmented control.
-public struct LemonadeTabButtonProperties {
+public struct LemonadeTabButtonProperties: Identifiable, Hashable {
+    public let id: String
     /// The label text for the tab.
     public let label: String
     /// Optional icon to display before the label.
     public let icon: LemonadeIcon?
 
-    public init(label: String, icon: LemonadeIcon? = nil) {
+    public init(id: String? = nil, label: String, icon: LemonadeIcon? = nil) {
+        self.id = id ?? UUID().uuidString
         self.label = label
         self.icon = icon
     }
@@ -62,7 +64,7 @@ private struct LemonadeSegmentedControlView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            ForEach(Array(properties.enumerated()), id: \.offset) { index, property in
+            ForEach(Array(properties.enumerated()), id: \.element.id) { index, property in
                 LemonadeSegmentedTabButton(
                     property: property,
                     isSelected: index == selectedTab,
@@ -134,27 +136,12 @@ private struct LemonadeSegmentedTabButton: View {
             .lemonadeShadow(shadow)
             .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius200))
         }
-        .buttonStyle(LemonadeSegmentedButtonStyle(isPressed: $isPressed))
+        .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
         .onHover { hovering in
             isHovering = hovering
         }
         .accessibilityAddTraits(.isButton)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
-    }
-}
-
-// MARK: - Button Style
-
-private struct LemonadeSegmentedButtonStyle: ButtonStyle {
-    @Binding var isPressed: Bool
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .onChange(of: configuration.isPressed) { newValue in
-                withAnimation(.easeInOut(duration: 0.1)) {
-                    isPressed = newValue
-                }
-            }
     }
 }
 

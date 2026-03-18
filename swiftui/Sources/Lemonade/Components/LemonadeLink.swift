@@ -78,25 +78,10 @@ private struct LemonadeLinkView: View {
                 }
             }
         }
-        .buttonStyle(LemonadeLinkButtonStyle(isPressed: $isPressed))
+        .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
         .disabled(!enabled)
         .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
         .accessibilityAddTraits(.isLink)
-    }
-}
-
-// MARK: - Link Button Style
-
-private struct LemonadeLinkButtonStyle: ButtonStyle {
-    @Binding var isPressed: Bool
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .onChange(of: configuration.isPressed) { newValue in
-                withAnimation(.easeInOut(duration: 0.1)) {
-                    isPressed = newValue
-                }
-            }
     }
 }
 

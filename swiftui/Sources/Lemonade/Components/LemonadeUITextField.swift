@@ -55,6 +55,8 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     }
 
     func updateUIView(_ textField: UITextField, context: Context) {
+        context.coordinator.parent = self  // Keep coordinator in sync
+
         // Guard against re-entrant updates from our own callbacks to avoid infinite loops
         guard !context.coordinator.isUpdating else { return }
         context.coordinator.isUpdating = true
@@ -150,13 +152,13 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             let cursorPosition = getCursorPosition(textField)
             if parent.value.cursorPosition != cursorPosition {
                 isUpdating = true
+                defer { isUpdating = false }
                 let newValue = LemonadeTextFieldValue(
                     text: parent.value.text,
                     cursorPosition: cursorPosition
                 )
                 parent.value = newValue
                 parent.onValueChange?(newValue)
-                isUpdating = false
             }
         }
 

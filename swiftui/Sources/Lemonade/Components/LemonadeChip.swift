@@ -113,7 +113,7 @@ public extension LemonadeUi {
                 leadingImage
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 20, height: 20)
+                    .frame(width: LemonadeTheme.sizes.size500, height: LemonadeTheme.sizes.size500)
                     .clipShape(Circle())
                     .overlay(
                         Circle()
@@ -198,22 +198,14 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
     @ViewBuilder let leadingContent: () -> LeadingContent
     @ViewBuilder let trailingContent: () -> TrailingContent
 
-    @State private var isPressed = false
-
     private let minWidth: CGFloat = 64
     private let minHeight: CGFloat = 32
-    private let actionsSize: CGFloat = 16
+    private let actionsSize: CGFloat = LemonadeTheme.sizes.size400
 
     private var backgroundColor: Color {
-        if selected {
-            return isPressed
-                ? LemonadeTheme.colors.interaction.bgBrandHighInteractive
-                : LemonadeTheme.colors.background.bgBrandHigh
-        } else {
-            return isPressed
-                ? LemonadeTheme.colors.interaction.bgSubtleInteractive
-                : LemonadeTheme.colors.background.bgDefault
-        }
+        selected
+            ? LemonadeTheme.colors.background.bgBrandHigh
+            : LemonadeTheme.colors.background.bgDefault
     }
 
     private var contentColor: Color {
@@ -243,7 +235,7 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
             // Counter
             if let counter = counter {
                 SwiftUI.Text("\(counter)")
-                    .font(.custom("Figtree", size: 10).weight(.semibold))
+                    .font(.custom(LemonadeTypography.fontFamily, size: LemonadeTheme.sizes.size250).weight(.semibold))
                     .foregroundStyle(LemonadeTheme.colors.content.contentOnBrandHigh)
                     .lineLimit(1)
                     .padding(.horizontal, LemonadeTheme.spaces.spacing100)
@@ -279,17 +271,11 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
         )
         .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
         .contentShape(Capsule())
-        .simultaneousGesture(
-            onChipClicked != nil && enabled
-                ? DragGesture(minimumDistance: 0)
-                    .onChanged { _ in isPressed = true }
-                    .onEnded { _ in
-                        isPressed = false
-                        onChipClicked?()
-                    }
-                : nil
-        )
-        .animation(.easeInOut(duration: 0.15), value: isPressed)
+        .onTapGesture {
+            if let onChipClicked = onChipClicked, enabled {
+                onChipClicked()
+            }
+        }
         .animation(.easeInOut(duration: 0.15), value: selected)
     }
 }
