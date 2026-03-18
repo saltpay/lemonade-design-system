@@ -362,6 +362,7 @@ public fun LemonadeUi.TopBar(
                         CoreTopBarActionContent(
                             navigationAction = navigationAction,
                             onNavigationActionClicked = onNavigationActionClicked,
+                            hasBackground = navigationAction.hasBackground,
                             modifier = Modifier.matchParentSize(),
                         )
                     }
@@ -440,6 +441,8 @@ public fun LemonadeUi.TopBar(
  * @param modifier [Modifier] applied to the top bar container.
  * @param state The [TopBarState] that manages collapse behavior. Create with [rememberTopBarState].
  * @param backgroundColor The background color of the top bar.
+ * @param showLargeTitle When `true`, displays a large title above the search field that collapses
+ *        together with the search. When `false` (default), only the search field collapses.
  * @param navigationAction Optional action icon displayed in the header. See [TopBarAction].
  * @param onNavigationActionClicked Callback triggered when [navigationAction] is clicked.
  * @param trailingSlot Optional composable displayed at the end of the fixed header.
@@ -455,6 +458,7 @@ public fun LemonadeUi.TopBar(
     modifier: Modifier = Modifier,
     state: TopBarState = rememberTopBarState(),
     backgroundColor: Color = LocalColors.current.background.bgDefault,
+    showLargeTitle: Boolean = false,
     navigationAction: TopBarAction? = null,
     onNavigationActionClicked: (() -> Unit)? = null,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
@@ -468,6 +472,7 @@ public fun LemonadeUi.TopBar(
         state = state,
         backgroundColor = backgroundColor,
         fixedHeaderSlot = { headerModifier ->
+            // Header always hides when search is focused (both large title and search-only modes)
             AnimatedContent(
                 modifier = headerModifier
                     .background(color = backgroundColor)
@@ -486,52 +491,90 @@ public fun LemonadeUi.TopBar(
                                     CoreTopBarActionContent(
                                         navigationAction = navigationAction,
                                         onNavigationActionClicked = onNavigationActionClicked,
+                                        hasBackground = navigationAction.hasBackground,
                                         modifier = Modifier.matchParentSize(),
                                     )
                                 }
                             },
                             trailingSlot = trailingSlot,
                             label = label,
+                            labelAlpha = if (showLargeTitle) state.collapseProgress else 1f,
                         )
                     }
                 },
             )
         },
         collapsableSlot = { collapsableModifier ->
-            CoreSearchField(
-                input = searchInput,
-                onInputChanged = onSearchChanged,
-                leadingIcon = if (isSearchFocused) {
-                    LemonadeIcons.ArrowLeft
-                } else {
-                    LemonadeIcons.Search
-                },
-                onLeadingIconClicked = focusManager::clearFocus,
-                modifier = collapsableModifier
-                    .padding(horizontal = LocalSpaces.current.spacing400)
-                    .padding(
-                        top = LocalSpaces.current.spacing50,
-                        bottom = LocalSpaces.current.spacing200,
-                    ).onFocusChanged { focusState ->
-                        isSearchFocused = focusState.isFocused
-                        state.setAnimationGesturesLock(locked = focusState.isFocused)
-                        if (focusState.isFocused) {
-                            state.expand()
-                        }
-                    },
-            )
-        },
-        bottomSlot = bottomSlot?.let {
-            {
-                AnimatedContent(
-                    targetState = isSearchFocused,
-                    transitionSpec = { expandVertically() togetherWith shrinkVertically() },
-                    content = { searchFocused ->
-                        if (searchFocused) {
-                            bottomSlot()
-                        }
-                    },
+            if (showLargeTitle) {
+                // Only large title in collapsable slot (search stays in bottomSlot)
+                CollapsableTitleOnly(
+                    label = label,
+                    modifier = collapsableModifier,
                 )
+            } else {
+                // Search-only in collapsable slot
+                CoreSearchField(
+                    input = searchInput,
+                    onInputChanged = onSearchChanged,
+                    leadingIcon = if (isSearchFocused) {
+                        LemonadeIcons.ArrowLeft
+                    } else {
+                        LemonadeIcons.Search
+                    },
+                    onLeadingIconClicked = focusManager::clearFocus,
+                    modifier = collapsableModifier
+                        .padding(horizontal = LocalSpaces.current.spacing400)
+                        .padding(
+                            top = LocalSpaces.current.spacing50,
+                            bottom = LocalSpaces.current.spacing200,
+                        ).onFocusChanged { focusState ->
+                            isSearchFocused = focusState.isFocused
+                            state.setAnimationGesturesLock(locked = focusState.isFocused)
+                            if (focusState.isFocused) {
+                                state.expand()
+                            }
+                        },
+                )
+            }
+        },
+        bottomSlot = if (showLargeTitle) {
+            // Search field in sticky bottomSlot when showLargeTitle=true
+            {
+                CoreSearchField(
+                    input = searchInput,
+                    onInputChanged = onSearchChanged,
+                    leadingIcon = if (isSearchFocused) {
+                        LemonadeIcons.ArrowLeft
+                    } else {
+                        LemonadeIcons.Search
+                    },
+                    onLeadingIconClicked = focusManager::clearFocus,
+                    modifier = Modifier
+                        .padding(horizontal = LocalSpaces.current.spacing400)
+                        .padding(bottom = LocalSpaces.current.spacing200)
+                        .onFocusChanged { focusState ->
+                            isSearchFocused = focusState.isFocused
+                            // Collapse large title when search is focused
+                            if (focusState.isFocused) {
+                                state.collapse()
+                            }
+                        },
+                )
+                bottomSlot?.invoke(this)
+            }
+        } else {
+            bottomSlot?.let {
+                {
+                    AnimatedContent(
+                        targetState = isSearchFocused,
+                        transitionSpec = { expandVertically() togetherWith shrinkVertically() },
+                        content = { searchFocused ->
+                            if (searchFocused) {
+                                bottomSlot()
+                            }
+                        },
+                    )
+                }
             }
         },
         modifier = modifier,
@@ -539,16 +582,42 @@ public fun LemonadeUi.TopBar(
 }
 
 @Composable
+@OptIn(ExperimentalLemonadeComponent::class)
+private fun CollapsableTitleOnly(
+    label: String,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = LocalSpaces.current.spacing400)
+            .padding(
+                top = LocalSpaces.current.spacing50,
+                bottom = LocalSpaces.current.spacing200,
+            ),
+    ) {
+        LemonadeUi.Text(
+            text = label,
+            textStyle = LocalTypographies.current.headingLarge,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 2,
+        )
+    }
+}
+
+@Composable
 private fun CoreTopBarActionContent(
     navigationAction: TopBarAction,
     onNavigationActionClicked: () -> Unit,
     modifier: Modifier = Modifier,
+    hasBackground: Boolean = false,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val backgroundColor by animateColorAsState(
         targetValue = when {
             isPressed -> LocalColors.current.interaction.bgNeutralSubtlePressed
+            hasBackground -> LocalColors.current.background.bgSubtle
             else -> LocalColors.current.interaction.bgNeutralSubtlePressed.copy(
                 alpha = LocalOpacities.current.base.opacity0,
             )
@@ -858,8 +927,8 @@ internal fun CoreTopBarContent(
 private val TopBarAction.icon: LemonadeIcons
     @Composable get() {
         return when (this) {
-            TopBarAction.Back -> LemonadeIcons.ArrowLeft
-            TopBarAction.Close -> LemonadeIcons.Times
+            TopBarAction.Back, TopBarAction.BackBoxed -> LemonadeIcons.ArrowLeft
+            TopBarAction.Close, TopBarAction.CloseBoxed -> LemonadeIcons.Times
         }
     }
 
@@ -932,6 +1001,30 @@ private fun SearchableTopBarPreview(
         navigationAction = previewData.action,
         searchInput = "Search",
         onSearchChanged = { /* Search Callback */ },
+        state = rememberTopBarState(
+            startCollapsed = previewData.collapsed,
+        ),
+        trailingSlot = previewData.trailingIconCount.toPreviewTrailingSlot(),
+    )
+}
+
+@LemonadePreview
+@Composable
+private fun LargeTitleWithSearchTopBarPreview(
+    @PreviewParameter(TopBarPreviewProvider::class)
+    previewData: TopBarPreviewData,
+) {
+    val label = if (previewData.longLabel) {
+        "A very long title that should truncate"
+    } else {
+        "Filter by Store"
+    }
+    LemonadeUi.TopBar(
+        label = label,
+        navigationAction = previewData.action,
+        searchInput = "",
+        onSearchChanged = { /* Search Callback */ },
+        showLargeTitle = true,
         state = rememberTopBarState(
             startCollapsed = previewData.collapsed,
         ),
