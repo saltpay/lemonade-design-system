@@ -509,7 +509,10 @@ public fun LemonadeUi.TopBar(
         },
         collapsableSlot = { collapsableSlotModifier ->
             Column(
-                modifier = collapsableSlotModifier
+                verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing100),
+                modifier = Modifier
+                    .clipToBounds()
+                    .then(other = collapsableSlotModifier)
                     .fillMaxWidth()
                     .padding(horizontal = LocalSpaces.current.spacing400)
                     .padding(
@@ -535,18 +538,13 @@ public fun LemonadeUi.TopBar(
                         LemonadeIcons.Search
                     },
                     onLeadingIconClicked = focusManager::clearFocus,
-                    modifier = collapsableSlotModifier
-                        .padding(horizontal = LocalSpaces.current.spacing400)
-                        .padding(
-                            top = LocalSpaces.current.spacing50,
-                            bottom = LocalSpaces.current.spacing200,
-                        ).onFocusChanged { focusState ->
-                            isSearchFocused = focusState.isFocused
-                            state.setAnimationGesturesLock(locked = focusState.isFocused)
-                            if (focusState.isFocused) {
-                                state.expand()
-                            }
-                        },
+                    modifier = Modifier.onFocusChanged { focusState ->
+                        isSearchFocused = focusState.isFocused
+                        state.setAnimationGesturesLock(locked = focusState.isFocused)
+                        if (focusState.isFocused) {
+                            state.expand()
+                        }
+                    },
                 )
             }
         },
@@ -615,8 +613,9 @@ private fun CoreTopBar(
 ) {
     TopBarLayout(
         state = state,
-        modifier = modifier
+        modifier = Modifier
             .clipToBounds()
+            .then(other = modifier)
             .background(color = backgroundColor)
             .displayCutoutPadding()
             .statusBarsPadding(),

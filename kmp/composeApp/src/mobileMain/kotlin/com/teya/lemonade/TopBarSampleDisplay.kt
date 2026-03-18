@@ -35,8 +35,10 @@ internal fun TopBarSampleDisplay() {
             label = "Top Bar",
             collapsedLabel = "Collapsed Top Bar",
             state = topBarState,
-            navigationAction = TopBarAction.Close,
-            onNavigationActionClicked = { /* Action Clicked */ },
+            navigationAction = NavigationAction(
+                navigationAction = TopBarAction.Close,
+                onNavigationActionClicked = { /* Action Clicked */ },
+            ),
             trailingSlot = {
                 LemonadeUi.IconButton(
                     icon = LemonadeIcons.ChevronDown,

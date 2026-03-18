@@ -69,8 +69,10 @@ internal fun SearchTopBarSampleDisplay() {
             state = topBarState,
             searchInput = searchInput,
             onSearchChanged = { searchInput = it },
-            navigationAction = TopBarAction.Close,
-            onNavigationActionClicked = { /* Action Clicked */ },
+            navigationAction = NavigationAction(
+                navigationAction = TopBarAction.Close,
+                onNavigationActionClicked = { /* Action Clicked */ },
+            ),
             trailingSlot = {
                 LemonadeUi.IconButton(
                     icon = LemonadeIcons.ChevronDown,

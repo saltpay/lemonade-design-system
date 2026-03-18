@@ -27,8 +27,10 @@ internal fun CollapsedTopBarSampleDisplay() {
         LemonadeUi.TopBar(
             label = "Collapsed Top Bar",
             state = topBarState,
-            navigationAction = TopBarAction.Back,
-            onNavigationActionClicked = { /* Action Clicked */ },
+            navigationAction = NavigationAction(
+                navigationAction = TopBarAction.Back,
+                onNavigationActionClicked = { /* Action Clicked */ },
+            ),
         )
 
         LazyColumn(
