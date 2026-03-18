@@ -9,6 +9,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
@@ -104,6 +105,14 @@ public class TopBarState internal constructor(
         get() = scrollOffsetAnimatable.value
     internal var maxScrollOffset: Float by mutableFloatStateOf(0f)
 
+    /** Whether the top bar is fully collapsed (`collapseProgress == 1f`). */
+    public val isCollapsed: Boolean by derivedStateOf {
+        collapseProgress == 1f
+    }
+
+    /**
+     * The current collapse progress as a value between `0f` (fully expanded) and `1f` (fully collapsed).
+     */
     public val collapseProgress: Float by derivedStateOf {
         if (maxScrollOffset > 0f) {
             (scrollOffset / maxScrollOffset).coerceIn(
@@ -153,6 +162,14 @@ public class TopBarState internal constructor(
         }
     }
 
+    /**
+     * Locks or unlocks scroll-gesture–driven collapse/expand animations.
+     *
+     * When [locked] is `true`, nested-scroll gestures will not change the collapse state;
+     * only programmatic calls to [collapse] and [expand] will have effect.
+     *
+     * @param locked `true` to lock gesture animations, `false` to unlock.
+     */
     public fun setAnimationGesturesLock(locked: Boolean) {
         lockGestureAnimation = locked
     }
@@ -376,7 +393,7 @@ public fun LemonadeUi.TopBar(
                 },
                 trailingSlot = trailingSlot,
                 label = collapsedLabel ?: label,
-                labelAlpha = state.collapseProgress,
+                isCollapsed = state.isCollapsed,
                 modifier = fixedHeaderModifier
                     .background(color = backgroundColor)
                     .zIndex(zIndex = 1f)
@@ -500,6 +517,7 @@ public fun LemonadeUi.TopBar(
                                     )
                                 }
                             },
+                            isCollapsed = state.isCollapsed,
                             trailingSlot = trailingSlot,
                             label = label,
                         )
@@ -509,7 +527,6 @@ public fun LemonadeUi.TopBar(
         },
         collapsableSlot = { collapsableSlotModifier ->
             Column(
-                verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing100),
                 modifier = Modifier
                     .clipToBounds()
                     .then(other = collapsableSlotModifier)
@@ -520,14 +537,23 @@ public fun LemonadeUi.TopBar(
                         bottom = LocalSpaces.current.spacing200,
                     ),
             ) {
-                expandedLabel?.let {
-                    LemonadeUi.Text(
-                        text = expandedLabel,
-                        textStyle = LocalTypographies.current.headingLarge,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 2,
-                    )
-                }
+                AnimatedContent(
+                    targetState = expandedLabel != null && !isSearchFocused,
+                    transitionSpec = { expandVertically() togetherWith shrinkVertically() + fadeOut() },
+                    content = { shouldShow ->
+                        if (shouldShow) {
+                            LemonadeUi.Text(
+                                text = expandedLabel.orEmpty(),
+                                textStyle = LocalTypographies.current.headingLarge,
+                                overflow = TextOverflow.Ellipsis,
+                                maxLines = 2,
+                                modifier = Modifier.padding(bottom = LocalSpaces.current.spacing100),
+                            )
+                        } else {
+                            Spacer(modifier = Modifier.fillMaxWidth())
+                        }
+                    },
+                )
 
                 CoreSearchField(
                     input = searchInput,
@@ -765,10 +791,10 @@ internal fun CoreTopBarContent(
     trailingSlot: @Composable (RowScope.() -> Unit)?,
     label: String,
     modifier: Modifier = Modifier,
-    labelAlpha: Float = LocalOpacities.current.base.opacity100,
+    isCollapsed: Boolean,
 ) {
     val animatedLabelOffsetY by animateDpAsState(
-        targetValue = if (labelAlpha == LocalOpacities.current.base.opacity100) {
+        targetValue = if (isCollapsed) {
             LocalSpaces.current.spacing0
         } else {
             LocalSpaces.current.spacing200
@@ -780,7 +806,7 @@ internal fun CoreTopBarContent(
     )
 
     val animatedLabelAlpha by animateFloatAsState(
-        targetValue = if (labelAlpha == LocalOpacities.current.base.opacity100) {
+        targetValue = if (isCollapsed) {
             LocalOpacities.current.base.opacity100
         } else {
             LocalOpacities.current.base.opacity0
@@ -903,21 +929,24 @@ private class TopBarPreviewProvider : PreviewParameterProvider<TopBarPreviewData
 
     private fun buildAllVariants(): Sequence<TopBarPreviewData> =
         buildList {
-            listOf(true, false).forEach { collapsed ->
-                (TopBarAction.entries).forEach { action ->
-                    listOf(0, 1, 2).forEach { trailingIconCount ->
-                        listOf(false, true).forEach { longLabel ->
-                            add(
-                                element = TopBarPreviewData(
-                                    collapsed = collapsed,
-                                    action = NavigationAction(
-                                        navigationAction = action,
-                                        onNavigationActionClicked = { /* nothing */ },
+            listOf(true, false).forEach { filled ->
+                listOf(true, false).forEach { collapsed ->
+                    (TopBarAction.entries).forEach { action ->
+                        listOf(0, 1, 2).forEach { trailingIconCount ->
+                            listOf(false, true).forEach { longLabel ->
+                                add(
+                                    element = TopBarPreviewData(
+                                        collapsed = collapsed,
+                                        action = NavigationAction(
+                                            navigationAction = action,
+                                            onNavigationActionClicked = { /* nothing */ },
+                                            filled = filled,
+                                        ),
+                                        trailingIconCount = trailingIconCount,
+                                        longLabel = longLabel,
                                     ),
-                                    trailingIconCount = trailingIconCount,
-                                    longLabel = longLabel,
-                                ),
-                            )
+                                )
+                            }
                         }
                     }
                 }
