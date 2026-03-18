@@ -442,7 +442,7 @@ private fun generateMonthDays(month: YearMonth): List<LocalDate> {
         // Previous month
         val previousMonth = month.minusMonth()
         val prevMonthLength = previousMonth.numberOfDays
-        for (day in prevMonthLength downTo prevMonthLength - firstDayOffset + 1) {
+        for (day in prevMonthLength - firstDayOffset + 1..prevMonthLength) {
             add(previousMonth.onDay(day))
         }
 
