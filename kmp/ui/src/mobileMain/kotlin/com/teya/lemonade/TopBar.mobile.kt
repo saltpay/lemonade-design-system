@@ -285,6 +285,13 @@ public fun rememberTopBarState(
         )
     }
 
+/**
+ * Holds the configuration for the navigation action displayed in the leading slot of a [TopBar][LemonadeUi.TopBar].
+ *
+ * @property navigationAction The visual action type (e.g. [TopBarAction.Back] or [TopBarAction.Close]).
+ * @property onNavigationActionClicked Callback invoked when the navigation action button is clicked.
+ * @property filled Whether the action button uses a filled background style. Defaults to `false`.
+ */
 public data class NavigationAction(
     val navigationAction: TopBarAction,
     val onNavigationActionClicked: (() -> Unit),
@@ -364,8 +371,7 @@ public fun LemonadeUi.TopBar(
                 leadingSlot = {
                     if (navigationAction != null) {
                         CoreTopBarActionContent(
-                            navigationAction = navigationAction.navigationAction,
-                            onNavigationActionClicked = navigationAction.onNavigationActionClicked,
+                            navigationAction = navigationAction,
                             modifier = Modifier.matchParentSize(),
                         )
                     }
@@ -486,8 +492,7 @@ public fun LemonadeUi.TopBar(
                             leadingSlot = {
                                 if (navigationAction != null) {
                                     CoreTopBarActionContent(
-                                        navigationAction = navigationAction.navigationAction,
-                                        onNavigationActionClicked = navigationAction.onNavigationActionClicked,
+                                        navigationAction = navigationAction,
                                         modifier = Modifier.matchParentSize(),
                                     )
                                 }
@@ -561,8 +566,7 @@ public fun LemonadeUi.TopBar(
 
 @Composable
 private fun CoreTopBarActionContent(
-    navigationAction: TopBarAction,
-    onNavigationActionClicked: () -> Unit,
+    navigationAction: NavigationAction,
     modifier: Modifier = Modifier,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -570,7 +574,8 @@ private fun CoreTopBarActionContent(
     val backgroundColor by animateColorAsState(
         targetValue = when {
             isPressed -> LocalColors.current.interaction.bgNeutralSubtlePressed
-            else -> LocalColors.current.interaction.bgNeutralSubtlePressed.copy(
+            navigationAction.filled -> LocalColors.current.background.bgNeutralSubtle
+            else -> LocalColors.current.background.bgNeutralSubtle.copy(
                 alpha = LocalOpacities.current.base.opacity0,
             )
         },
@@ -583,14 +588,14 @@ private fun CoreTopBarActionContent(
                 shape = LocalShapes.current.radius300,
             ).clickable(
                 role = Role.Button,
-                onClick = onNavigationActionClicked,
+                onClick = navigationAction.onNavigationActionClicked,
                 interactionSource = interactionSource,
                 indication = null,
             ),
     ) {
         LemonadeUi.Icon(
-            icon = navigationAction.icon,
-            contentDescription = navigationAction.name,
+            icon = navigationAction.navigationAction.icon,
+            contentDescription = navigationAction.navigationAction.name,
             size = LemonadeAssetSize.Medium,
         )
     }
