@@ -165,3 +165,4 @@ docs/
 kmp/.claude/settings.local.json
 swiftui/.claude/settings.local.json
 flutter/.claude/settings.local.json
+.build/
