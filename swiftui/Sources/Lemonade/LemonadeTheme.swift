@@ -3,7 +3,7 @@ import SwiftUI
 /// Lemonade Design System Theme
 /// Provides a centralized access point for all design system tokens.
 ///
-/// Colors automatically adapt to light/dark mode using dynamic UIColor.
+/// Colors automatically adapt to light/dark mode via asset catalog named colors.
 ///
 /// Usage:
 /// ```swift
@@ -25,8 +25,8 @@ import SwiftUI
 /// Main theme entry point for Lemonade Design System
 public enum LemonadeTheme {
     /// Semantic color tokens - automatically adapts to light/dark mode
-    /// Uses dynamic UIColor internally so no @MainActor required
-    nonisolated(unsafe) public static var colors: LemonadeSemanticColors = LemonadeAdaptiveTheme()
+    /// via asset catalog named colors.
+    public static let colors: LemonadeSemanticColors = LemonadeAdaptiveTheme()
 
     /// Spacing tokens
     public static let spaces: LemonadeSpaceValues = LemonadeSpaceValuesImpl()

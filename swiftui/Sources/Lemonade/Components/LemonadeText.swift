@@ -168,7 +168,7 @@ private struct LemonadeTextView: View {
         }
 
         let size = fontSize ?? style.fontSize
-        return .custom("Figtree", size: size).weight(style.fontWeight)
+        return .custom(LemonadeTypography.fontFamily, size: size).weight(style.fontWeight)
     }
 }
 

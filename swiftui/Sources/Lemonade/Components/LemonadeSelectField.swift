@@ -98,57 +98,9 @@ private struct LemonadeSelectFieldView<LeadingContent: View>: View {
 
     @State private var isHovered = false
 
-    private var backgroundColor: Color {
-        switch (enabled, error, isHovered) {
-        case (false, _, _):
-            return LemonadeTheme.colors.background.bgElevated
-        case (true, true, _):
-            return LemonadeTheme.colors.background.bgCriticalSubtle
-        case (true, _, true):
-            return LemonadeTheme.colors.interaction.bgSubtleInteractive
-        default:
-            return LemonadeTheme.colors.background.bgDefault
-        }
-    }
-
-    private var borderColor: Color {
-        switch (enabled, error) {
-        case (false, _):
-            return .clear
-        case (true, true):
-            return LemonadeTheme.colors.border.borderCritical
-        default:
-            return LemonadeTheme.colors.border.borderNeutralMedium
-        }
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
-            // Label row
-            if label != nil || optionalIndicator != nil {
-                HStack {
-                    if let label = label {
-                        LemonadeUi.Text(
-                            label,
-                            textStyle: LemonadeTypography.shared.bodySmallMedium,
-                            color: enabled
-                                ? LemonadeTheme.colors.content.contentPrimary
-                                : LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-
-                    Spacer()
-
-                    if let optionalIndicator = optionalIndicator {
-                        LemonadeUi.Text(
-                            optionalIndicator,
-                            textStyle: LemonadeTypography.shared.bodySmallRegular,
-                            color: LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-                }
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            }
+            TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
 
             // Select field container
             SwiftUI.Button(action: onClick) {
@@ -181,41 +133,22 @@ private struct LemonadeSelectFieldView<LeadingContent: View>: View {
                         tint: LemonadeTheme.colors.content.contentSecondary
                     )
                 }
-                .padding(.horizontal, LemonadeTheme.spaces.spacing300)
-                .padding(.vertical, LemonadeTheme.spaces.spacing300)
+                .padding(.horizontal, TextFieldConstants.horizontalPadding)
+                .padding(.vertical, TextFieldConstants.verticalPadding)
             }
             .buttonStyle(PlainButtonStyle())
             .disabled(!enabled)
-            .frame(minHeight: LemonadeTheme.sizes.size1400)
-            .background(backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius300))
-            .overlay(
-                RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius300)
-                    .stroke(borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
-            )
-            .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-            .onHover { hovering in
-                isHovered = hovering
-            }
+            .modifier(SelectFieldContainerModifier(
+                backgroundColor: selectFieldBackgroundColor(enabled: enabled, error: error, isHovered: isHovered),
+                borderColor: selectFieldBorderColor(enabled: enabled, error: error),
+                enabled: enabled,
+                cornerRadius: TextFieldConstants.cornerRadius,
+                isHovered: $isHovered
+            ))
             .accessibilityAddTraits(.isButton)
             .accessibilityRemoveTraits(.isStaticText)
 
-            // Support/Error text
-            if enabled && error, let errorMessage = errorMessage {
-                LemonadeUi.Text(
-                    errorMessage,
-                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                    color: LemonadeTheme.colors.content.contentCritical
-                )
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            } else if let supportText = supportText {
-                LemonadeUi.Text(
-                    supportText,
-                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                    color: LemonadeTheme.colors.content.contentSecondary
-                )
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            }
+            TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }
         .animation(.easeInOut(duration: 0.15), value: error)
     }

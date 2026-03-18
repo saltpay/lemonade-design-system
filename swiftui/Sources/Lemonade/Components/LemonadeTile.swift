@@ -134,12 +134,10 @@ private struct LemonadeTileView<AddonContent: View>: View {
     let alignment: HorizontalAlignment
     let addon: (() -> AddonContent)?
 
-    @State private var isPressed = false
-
     private let minWidth: CGFloat = 120
 
     private var backgroundColor: Color {
-        isPressed ? variant.backgroundPressedColor : variant.backgroundColor
+        variant.backgroundColor
     }
 
     private var tileContent: some View {
@@ -187,17 +185,11 @@ private struct LemonadeTileView<AddonContent: View>: View {
             }
             .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
             .contentShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
-            .simultaneousGesture(
-                onClick != nil && enabled
-                    ? DragGesture(minimumDistance: 0)
-                        .onChanged { _ in isPressed = true }
-                        .onEnded { _ in
-                            isPressed = false
-                            onClick?()
-                        }
-                    : nil
-            )
-            .animation(.easeInOut(duration: 0.15), value: isPressed)
+            .onTapGesture {
+                if let onClick = onClick, enabled {
+                    onClick()
+                }
+            }
 
             // Addon badge
             if let addon = addon {
@@ -207,19 +199,6 @@ private struct LemonadeTileView<AddonContent: View>: View {
                         y: -LemonadeTheme.spaces.spacing200
                     )
             }
-        }
-    }
-}
-
-// MARK: - View Extension Helper
-
-private extension View {
-    @ViewBuilder
-    func applyIf<T: View>(_ condition: Bool, transform: (Self) -> T) -> some View {
-        if condition {
-            transform(self)
-        } else {
-            self
         }
     }
 }
