@@ -15,7 +15,6 @@ import kotlinx.serialization.encoding.Encoder
  * the `@Serializable` annotation on the core data class.
  */
 public object LemonadeTextStyleSerializer : KSerializer<LemonadeTextStyle> {
-
     @Serializable
     @SerialName("LemonadeTextStyle")
     private data class Surrogate(
@@ -27,7 +26,10 @@ public object LemonadeTextStyleSerializer : KSerializer<LemonadeTextStyle> {
 
     override val descriptor: SerialDescriptor = Surrogate.serializer().descriptor
 
-    override fun serialize(encoder: Encoder, value: LemonadeTextStyle) {
+    override fun serialize(
+        encoder: Encoder,
+        value: LemonadeTextStyle,
+    ) {
         val surrogate = Surrogate(
             fontSize = value.fontSize,
             lineHeight = value.lineHeight,

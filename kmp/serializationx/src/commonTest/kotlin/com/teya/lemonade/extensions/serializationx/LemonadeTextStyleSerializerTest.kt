@@ -6,7 +6,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class LemonadeTextStyleSerializerTest {
-
     private val json = Json { prettyPrint = false }
 
     @Test

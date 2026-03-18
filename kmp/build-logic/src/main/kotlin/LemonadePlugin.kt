@@ -22,6 +22,8 @@ class LemonadePlugin : Plugin<Project> {
             configureKotlinTargets()
             configureAndroid()
 
+            pluginManager.apply(MavenPublishBasePlugin::class.java)
+
             val extension = extensions
                 .create("lemonadePublishing", LemonadePublishingPluginExtension::class.java)
 
@@ -76,8 +78,6 @@ class LemonadePlugin : Plugin<Project> {
     }
 
     private fun Project.configurePublishing(artifactId: String) {
-        pluginManager.apply(MavenPublishBasePlugin::class.java)
-
         extensions.configure<MavenPublishBaseExtension> {
             @Suppress("UnstableApiUsage")
             configureBasedOnAppliedPlugins(sourcesJar = true, javadocJar = true)
