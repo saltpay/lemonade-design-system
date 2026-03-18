@@ -315,13 +315,10 @@ public data class NavigationAction(
  *     LemonadeUi.TopBar(
  *         label = "Screen Title",
  *         state = topBarState,
- *         leadingSlot = {
- *             LemonadeUi.IconButton(
- *                 icon = LemonadeIcons.ChevronLeft,
- *                 contentDescription = "Back",
- *                 onClick = { /* handle back */ }
- *             )
- *         },
+ *         navigationAction = NavigationAction(
+ *             navigationAction = TopBarAction.Back,
+ *             onNavigationActionClicked = { /* handle back */ },
+ *         ),
  *         trailingSlot = {
  *             LemonadeUi.IconButton(
  *                 icon = LemonadeIcons.Settings,
@@ -346,6 +343,7 @@ public data class NavigationAction(
  * @param state The [TopBarState] that manages collapse behavior. Create with [rememberTopBarState].
  * @param backgroundColor The background color of the top bar.
  * @param modifier [Modifier] applied to the top bar container.
+ * @param navigationAction Optional [NavigationAction] displayed in the leading slot (e.g. back or close button).
  * @param trailingSlot Optional composable displayed at the end of the fixed header (typically action buttons).
  * @param bottomSlot Optional composable displayed below the expanded title. This content remains
  *        visible and acts as a sticky area when fully collapsed.
@@ -427,13 +425,16 @@ public fun LemonadeUi.TopBar(
  * var query by remember { mutableStateOf("") }
  *
  * Column {
- *     LemonadeUi.SearchTopBar(
+ *     LemonadeUi.TopBar(
  *         label = "Search",
  *         state = topBarState,
  *         searchInput = query,
  *         onSearchChanged = { query = it },
- *         navigationAction = TopBarAction.Back,
- *         onNavigationActionClicked = { /* handle back */ },
+ *         expandedLabel = "Discover",
+ *         navigationAction = NavigationAction(
+ *             navigationAction = TopBarAction.Back,
+ *             onNavigationActionClicked = { /* handle back */ },
+ *         ),
  *     )
  *
  *     LazyColumn(
@@ -450,6 +451,8 @@ public fun LemonadeUi.TopBar(
  * @param modifier [Modifier] applied to the top bar container.
  * @param state The [TopBarState] that manages collapse behavior. Create with [rememberTopBarState].
  * @param backgroundColor The background color of the top bar.
+ * @param expandedLabel Optional large title displayed above the search field in the collapsable area.
+ * @param navigationAction Optional [NavigationAction] displayed in the leading slot (e.g. back or close button).
  * @param trailingSlot Optional composable displayed at the end of the fixed header.
  * @param bottomSlot Optional composable shown below the search field when focused
  *        (e.g. search suggestions or filters).
@@ -965,6 +968,22 @@ private fun SearchableTopBarPreview(
             startCollapsed = previewData.collapsed,
         ),
         trailingSlot = previewData.trailingIconCount.toPreviewTrailingSlot(),
+    )
+}
+
+@LemonadePreview
+@Composable
+private fun SearchableTopBarWithExpandedTitlePreview() {
+    LemonadeUi.TopBar(
+        label = "Search",
+        searchInput = "",
+        onSearchChanged = {},
+        expandedLabel = "Discover",
+        navigationAction = NavigationAction(
+            navigationAction = TopBarAction.Back,
+            onNavigationActionClicked = {},
+        ),
+        state = rememberTopBarState(),
     )
 }
 
