@@ -4,8 +4,6 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.SizeTransform
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
@@ -290,23 +288,19 @@ public fun LemonadeToastHost(
                 targetState = toast,
                 contentAlignment = Alignment.BottomCenter,
                 transitionSpec = {
-                    (slideInVertically(
+                    slideInVertically(
                         animationSpec = spring(
                             dampingRatio = 0.8f,
                             stiffness = Spring.StiffnessMediumLow,
                         ),
                         initialOffsetY = { it },
-                    ) + fadeIn(
-                        animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
-                    )) togetherWith (slideOutVertically(
+                    ) togetherWith slideOutVertically(
                         animationSpec = spring(
                             dampingRatio = 0.8f,
                             stiffness = Spring.StiffnessMediumLow,
                         ),
                         targetOffsetY = { it },
-                    ) + fadeOut(
-                        animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
-                    )) using SizeTransform(clip = false)
+                    ) using SizeTransform(clip = false)
                 },
                 contentKey = { it?.id },
                 modifier = Modifier
