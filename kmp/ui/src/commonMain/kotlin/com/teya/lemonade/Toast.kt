@@ -3,6 +3,7 @@ package com.teya.lemonade
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -304,7 +305,7 @@ public fun LemonadeToastHost(
                         targetOffsetY = { it },
                     ) + fadeOut(
                         animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
-                    ))
+                    )) using SizeTransform(clip = false)
                 },
                 contentKey = { it?.id },
                 modifier = Modifier
