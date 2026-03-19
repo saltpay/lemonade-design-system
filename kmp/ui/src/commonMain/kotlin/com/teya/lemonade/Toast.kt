@@ -206,12 +206,10 @@ private fun CoreToast(
             .clip(shape = shapes.radiusFull)
             .background(color = colors.background.bgDefaultInverse)
             .padding(
-                start = spaces.spacing400,
-                end = spaces.spacing500,
-                top = spaces.spacing300,
-                bottom = spaces.spacing300,
+                horizontal = spaces.spacing400,
+                vertical = spaces.spacing300,
             ),
-        horizontalArrangement = Arrangement.spacedBy(spaces.spacing300),
+        horizontalArrangement = Arrangement.spacedBy(spaces.spacing200),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (resolvedIcon != null) {
@@ -229,6 +227,7 @@ private fun CoreToast(
             color = colors.content.contentPrimaryInverse,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(horizontal = spaces.spacing100),
         )
     }
 }
