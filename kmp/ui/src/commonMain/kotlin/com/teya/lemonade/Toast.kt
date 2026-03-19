@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -229,7 +229,6 @@ private fun CoreToast(
             color = colors.content.contentPrimaryInverse,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1f),
         )
     }
 }
@@ -310,11 +309,8 @@ public fun LemonadeToastHost(
                 contentKey = { it?.id },
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .padding(
-                        start = spaces.spacing400,
-                        end = spaces.spacing400,
-                        bottom = spaces.spacing600,
-                    ),
+                    .padding(bottom = spaces.spacing600)
+                    .padding(horizontal = spaces.spacing400),
             ) { animatedToast ->
                 if (animatedToast != null) {
                     var offsetY by remember(animatedToast.id) { mutableStateOf(0f) }
