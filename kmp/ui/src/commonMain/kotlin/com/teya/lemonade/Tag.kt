@@ -19,6 +19,20 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 /**
+ * Configuration data for a [LemonadeUi.Tag] composable.
+ * Use this to pass tag data as a parameter, ensuring only valid Tag content is accepted.
+ *
+ * @param label - [String] to be displayed in the tag.
+ * @param icon - optional [LemonadeIcons] to show as leading icon in the tag.
+ * @param voice - [TagVoice] to define the tone of voice. Defaults to [TagVoice.Neutral].
+ */
+public data class TagConfig(
+    val label: String,
+    val icon: LemonadeIcons? = null,
+    val voice: TagVoice = TagVoice.Neutral,
+)
+
+/**
  * A compact label used to categorise, organise, or annotate content.
  *  Typically static and non-interactive.
  * ## Usage

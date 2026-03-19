@@ -151,6 +151,30 @@ internal fun ActionListItemDisplay() {
             )
         }
 
+        // ActionListItem with Label Tag
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "ActionListItem with Label Tag"),
+        ) {
+            LemonadeUi.ActionListItem(
+                label = "Promotions",
+                labelTag = TagConfig(
+                    label = "New",
+                    voice = TagVoice.Positive,
+                ),
+                supportText = "View latest promotions",
+                showNavigationIndicator = true,
+                onItemClicked = {},
+                showDivider = true,
+                leadingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.Sparkles,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                    )
+                },
+            )
+        }
+
         LemonadeUi.Card(
             header = CardHeaderConfig(title = "Disabled States"),
         ) {

@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -275,6 +277,7 @@ public fun LemonadeUi.ResourceListItem(
 @Composable
 public fun LemonadeUi.ActionListItem(
     label: String,
+    labelTag: TagConfig? = null,
     modifier: Modifier = Modifier,
     supportText: String? = null,
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
@@ -289,6 +292,7 @@ public fun LemonadeUi.ActionListItem(
 ) {
     LemonadeUi.ListItem(
         label = label,
+        labelTag = labelTag,
         supportText = supportText,
         leadingSlot = leadingSlot,
         trailingSlot = {
@@ -345,6 +349,7 @@ public fun LemonadeUi.ActionListItem(
 @Composable
 private fun LemonadeUi.ListItem(
     label: String,
+    labelTag: TagConfig? = null,
     modifier: Modifier = Modifier,
     onListItemClick: (() -> Unit)? = null,
     voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
@@ -367,11 +372,28 @@ private fun LemonadeUi.ListItem(
         showDivider = showDivider,
         interactionSource = interactionSource,
         contentSlot = {
-            LemonadeUi.Text(
-                text = label,
-                textStyle = LocalTypographies.current.bodyMediumMedium,
-                color = voice.contentColor,
-            )
+            if (labelTag != null) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    LemonadeUi.Text(
+                        modifier = Modifier.weight(weight = 1f, fill = false),
+                        text = label,
+                        textStyle = LocalTypographies.current.bodyMediumMedium,
+                        color = voice.contentColor,
+                    )
+                    Spacer(modifier = Modifier.width(LocalSpaces.current.spacing200))
+                    LemonadeUi.Tag(
+                        label = labelTag.label,
+                        icon = labelTag.icon,
+                        voice = labelTag.voice,
+                    )
+                }
+            } else {
+                LemonadeUi.Text(
+                    text = label,
+                    textStyle = LocalTypographies.current.bodyMediumMedium,
+                    color = voice.contentColor,
+                )
+            }
 
             if (supportText != null) {
                 LemonadeUi.Text(
@@ -693,6 +715,7 @@ private data class ActionListItemPreviewData(
     val supportText: Boolean,
     val trailingSlot: Boolean,
     val showNavigationIndicator: Boolean,
+    val labelTag: Boolean,
 )
 
 private class ActionListItemPreviewProvider :
@@ -706,15 +729,18 @@ private class ActionListItemPreviewProvider :
                     listOf(true, false).forEach { withSupportText ->
                         listOf(true, false).forEach { trailingSlot ->
                             listOf(true, false).forEach { showNavigationIndicator ->
-                                add(
-                                    ActionListItemPreviewData(
-                                        voice = voice,
-                                        enabled = enabled,
-                                        supportText = withSupportText,
-                                        trailingSlot = trailingSlot,
-                                        showNavigationIndicator = showNavigationIndicator,
-                                    ),
-                                )
+                                listOf(true, false).forEach { labelTag ->
+                                    add(
+                                        ActionListItemPreviewData(
+                                            voice = voice,
+                                            enabled = enabled,
+                                            supportText = withSupportText,
+                                            trailingSlot = trailingSlot,
+                                            showNavigationIndicator = showNavigationIndicator,
+                                            labelTag = labelTag,
+                                        ),
+                                    )
+                                }
                             }
                         }
                     }
@@ -731,6 +757,10 @@ private fun ActionListItemPreview(
 ) {
     LemonadeUi.ActionListItem(
         label = "Label",
+        labelTag = TagConfig(
+            label = "New",
+            voice = TagVoice.Positive,
+        ).takeIf { previewData.labelTag },
         showDivider = true,
         supportText = "Support text".takeIf { previewData.supportText },
         enabled = previewData.enabled,
@@ -740,7 +770,7 @@ private fun ActionListItemPreview(
             {
                 LemonadeUi.Tag(
                     label = "New",
-                    voice = TagVoice.Warning,
+                    voice = TagVoice.Info,
                 )
             }
         } else {
