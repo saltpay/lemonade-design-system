@@ -46,6 +46,7 @@ internal interface Displays {
             Tabs,
             DatePicker,
             Notice,
+            Toast,
         )
     }
 
@@ -232,5 +233,10 @@ internal interface Displays {
     @Serializable
     data object Notice : Displays {
         override val label: String = "Notice"
+    }
+
+    @Serializable
+    data object Toast : Displays {
+        override val label: String = "Toast"
     }
 }
