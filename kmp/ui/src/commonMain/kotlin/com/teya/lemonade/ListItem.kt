@@ -259,6 +259,7 @@ public fun LemonadeUi.ResourceListItem(
  * )
  * ```
  * @param label - label [String] to be displayed in the list item.
+ * @param labelTag - optional [TagConfig] to display a label tag alongside the main label, typically positioned on the same row as the label.
  * @param modifier - [Modifier] to be applied to the base container of component.
  * @param supportText - text [String] to be displayed as Support Text.
  * @param leadingSlot - slot content to be placed in the leading position of the component.
