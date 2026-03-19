@@ -288,6 +288,7 @@ public fun LemonadeToastHost(
 
             AnimatedContent(
                 targetState = toast,
+                contentAlignment = Alignment.BottomCenter,
                 transitionSpec = {
                     (slideInVertically(
                         animationSpec = spring(
