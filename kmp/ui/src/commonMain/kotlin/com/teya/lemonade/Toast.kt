@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -22,11 +23,11 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -138,7 +139,7 @@ public class LemonadeToastState {
  * Provides the [LemonadeToastState] to the composition tree.
  * Must be used inside [LemonadeToastHost].
  */
-public val LocalLemonadeToastState: ProvidableCompositionLocal<LemonadeToastState> = compositionLocalOf {
+public val LocalLemonadeToastState: ProvidableCompositionLocal<LemonadeToastState> = staticCompositionLocalOf {
     error("No LemonadeToastState provided. Wrap your content with LemonadeToastHost.")
 }
 
@@ -235,6 +236,7 @@ private fun CoreToast(
 // ── Host ─────────────────────────────────────────────────────────────────
 
 private const val DRAG_DISMISS_THRESHOLD_DP = 25
+private const val DRAG_FADE_MULTIPLIER = 4
 
 /**
  * Provides [LemonadeToastState] to the composition tree and renders toast overlays
@@ -301,6 +303,7 @@ public fun LemonadeToastHost(
                 contentKey = { it?.id },
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
+                    .navigationBarsPadding()
                     .padding(bottom = spaces.spacing600)
                     .padding(horizontal = spaces.spacing400),
             ) { animatedToast ->
@@ -321,10 +324,8 @@ public fun LemonadeToastHost(
                                     offsetY = 0f
                                 },
                                 onVerticalDrag = { change, dragAmount ->
-                                    if (dragAmount > 0) { // Only allow downward drag
-                                        offsetY += dragAmount
-                                        change.consume()
-                                    }
+                                    offsetY = (offsetY + dragAmount).coerceAtLeast(0f)
+                                    change.consume()
                                 },
                             )
                         }
@@ -339,7 +340,9 @@ public fun LemonadeToastHost(
                         modifier = swipeModifier
                             .offset { IntOffset(0, offsetY.roundToInt()) }
                             .graphicsLayer {
-                                alpha = 1f - (offsetY / (DRAG_DISMISS_THRESHOLD_DP.dp.toPx() * 4)).coerceIn(0f, 1f)
+                                val fadeDistance =
+                                    DRAG_DISMISS_THRESHOLD_DP.dp.toPx() * DRAG_FADE_MULTIPLIER
+                                alpha = 1f - (offsetY / fadeDistance).coerceIn(0f, 1f)
                             },
                     )
                 }

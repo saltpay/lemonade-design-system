@@ -96,10 +96,10 @@ internal fun ToastDisplay() {
                 },
             )
             LemonadeUi.Button(
-                label = "Replace toast",
+                label = "Tap while visible to replace",
                 onClick = {
                     toastState.show(
-                        label = "First toast",
+                        label = "New toast replaced the old one",
                         voice = ToastVoice.Success,
                     )
                 },
