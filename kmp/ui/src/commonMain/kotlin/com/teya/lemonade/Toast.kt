@@ -265,9 +265,10 @@ public fun LemonadeToastHost(
             // Haptic feedback + auto-dismiss timer
             LaunchedEffect(toast?.id) {
                 if (toast != null) {
-                    val feedbackType = when (toast.voice) {
-                        ToastVoice.Neutral -> HapticFeedbackType.TextHandleMove
-                        else -> HapticFeedbackType.LongPress
+                    val feedbackType = if (toast.voice == ToastVoice.Neutral) {
+                        HapticFeedbackType.TextHandleMove
+                    } else {
+                        HapticFeedbackType.LongPress
                     }
                     haptic.performHapticFeedback(feedbackType)
                     delay(toast.duration.millis)
