@@ -293,13 +293,13 @@ public fun LemonadeToastHost(
                             dampingRatio = 0.8f,
                             stiffness = Spring.StiffnessMediumLow,
                         ),
-                        initialOffsetY = { it },
+                        initialOffsetY = { it * 2 },
                     ) togetherWith slideOutVertically(
                         animationSpec = spring(
                             dampingRatio = 0.8f,
                             stiffness = Spring.StiffnessMediumLow,
                         ),
-                        targetOffsetY = { it },
+                        targetOffsetY = { it * 2 },
                     ) using SizeTransform(clip = false)
                 },
                 contentKey = { it?.id },
