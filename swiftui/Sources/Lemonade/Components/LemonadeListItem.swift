@@ -42,6 +42,9 @@ extension LemonadeUi {
     ///
     /// - Parameters:
     ///   - label: Label String to be displayed
+    ///   - labelTag: Optional tag displayed inline with the label. When provided, the label
+    ///     content is laid out horizontally with the text leading and the tag trailing,
+    ///     separated by standard spacing.
     ///   - supportText: Optional support text displayed below the label
     ///   - voice: LemonadeListItemVoice to define tone of voice
     ///   - enabled: Flag to define if component is enabled
