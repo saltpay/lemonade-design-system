@@ -1,10 +1,10 @@
 package com.teya.lemonade
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
@@ -62,10 +62,13 @@ public enum class ToastVoice {
 public sealed class ToastDuration(public val millis: kotlin.Long) {
     /** 3 seconds */
     public data object Short : ToastDuration(3_000L)
+
     /** 6 seconds */
     public data object Medium : ToastDuration(6_000L)
+
     /** 9 seconds */
     public data object Long : ToastDuration(9_000L)
+
     /** Custom duration */
     public data class Custom(val customMillis: kotlin.Long) : ToastDuration(customMillis) {
         init {
@@ -286,13 +289,15 @@ public fun LemonadeToastHost(
                             stiffness = Spring.StiffnessMediumLow,
                         ),
                         initialOffsetY = { it * 2 },
-                    ) togetherWith slideOutVertically(
-                        animationSpec = spring(
-                            dampingRatio = 0.8f,
-                            stiffness = Spring.StiffnessMediumLow,
+                    ).togetherWith(
+                        slideOutVertically(
+                            animationSpec = spring(
+                                dampingRatio = 0.8f,
+                                stiffness = Spring.StiffnessMediumLow,
+                            ),
+                            targetOffsetY = { it * 2 },
                         ),
-                        targetOffsetY = { it * 2 },
-                    ) using SizeTransform(clip = false) { _, _ -> snap() }
+                    ).using(SizeTransform(clip = false) { _, _ -> snap() })
                 },
                 contentKey = { it?.id },
                 modifier = Modifier
