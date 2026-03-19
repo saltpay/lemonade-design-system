@@ -203,8 +203,7 @@ private fun CoreToast(
             .lemonadeShadow(
                 shadow = LemonadeShadow.Large,
                 shape = shapes.radiusFull,
-            )
-            .clip(shape = shapes.radiusFull)
+            ).clip(shape = shapes.radiusFull)
             .background(color = colors.background.bgDefaultInverse)
             .padding(
                 horizontal = spaces.spacing400,
