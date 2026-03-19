@@ -2,6 +2,7 @@ package com.teya.lemonade
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.slideInVertically
@@ -300,7 +301,7 @@ public fun LemonadeToastHost(
                             stiffness = Spring.StiffnessMediumLow,
                         ),
                         targetOffsetY = { it * 2 },
-                    ) using SizeTransform(clip = false)
+                    ) using SizeTransform(clip = false) { _, _ -> snap() }
                 },
                 contentKey = { it?.id },
                 modifier = Modifier
