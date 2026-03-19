@@ -32,6 +32,26 @@ public enum TagVoice {
     }
 }
 
+// MARK: - Tag Configuration
+
+/// Configuration data for a Tag composable.
+/// Use this to pass tag data as a parameter, ensuring only valid Tag content is accepted.
+public struct TagConfig {
+    public let label: String
+    public let icon: LemonadeIcon?
+    public let voice: TagVoice
+
+    public init(
+        label: String,
+        icon: LemonadeIcon? = nil,
+        voice: TagVoice = .neutral
+    ) {
+        self.label = label
+        self.icon = icon
+        self.voice = voice
+    }
+}
+
 // MARK: - Tag Component
 
 public extension LemonadeUi {

@@ -31,6 +31,7 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ActionListItem<LeadingContent: View, TrailingContent: View>(
         label: String,
+        labelTag: TagConfig? = nil,
         supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
@@ -42,6 +43,7 @@ public extension LemonadeUi {
     ) -> some View {
         ListItem(
             label: label,
+            labelTag: labelTag,
             supportText: supportText,
             voice: voice,
             enabled: enabled,
@@ -70,6 +72,7 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ActionListItem<LeadingContent: View>(
         label: String,
+        labelTag: TagConfig? = nil,
         supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
@@ -80,6 +83,7 @@ public extension LemonadeUi {
     ) -> some View {
         ActionListItem(
             label: label,
+            labelTag: labelTag,
             supportText: supportText,
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,
@@ -95,6 +99,7 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ActionListItem<TrailingContent: View>(
         label: String,
+        labelTag: TagConfig? = nil,
         supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
@@ -105,6 +110,7 @@ public extension LemonadeUi {
     ) -> some View {
         ActionListItem(
             label: label,
+            labelTag: labelTag,
             supportText: supportText,
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,
@@ -120,6 +126,7 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ActionListItem(
         label: String,
+        labelTag: TagConfig? = nil,
         supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
@@ -129,6 +136,7 @@ public extension LemonadeUi {
     ) -> some View {
         ActionListItem(
             label: label,
+            labelTag: labelTag,
             supportText: supportText,
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,

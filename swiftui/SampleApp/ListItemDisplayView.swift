@@ -248,6 +248,28 @@ struct ListItemDisplayView: View {
                     )
                 }
 
+                // MARK: - ActionListItem with Label Tag
+                LemonadeUi.Card(
+                    contentPadding: .none,
+                    header: CardHeaderConfig(title: "ActionListItem with Label Tag")
+                ) {
+                    LemonadeUi.ActionListItem(
+                        label: "Promotions",
+                        labelTag: TagConfig(label: "New", voice: .positive),
+                        supportText: "View latest promotions",
+                        showNavigationIndicator: true,
+                        showDivider: false,
+                        onItemClicked: {},
+                        leadingSlot: {
+                            LemonadeUi.Icon(
+                                icon: .sparkles,
+                                contentDescription: nil,
+                                size: .medium
+                            )
+                        }
+                    )
+                }
+
                 // MARK: - ActionListItem - Critical Voice
                 LemonadeUi.Card(
                     contentPadding: .none,

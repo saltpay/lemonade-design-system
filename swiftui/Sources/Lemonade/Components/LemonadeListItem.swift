@@ -52,6 +52,7 @@ extension LemonadeUi {
     @ViewBuilder
     static func ListItem<LeadingContent: View, TrailingContent: View>(
         label: String,
+        labelTag: TagConfig? = nil,
         supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         enabled: Bool = true,
@@ -68,11 +69,31 @@ extension LemonadeUi {
             leadingSlot: leadingSlot,
             trailingSlot: trailingSlot,
             contentSlot: {
-                LemonadeUi.Text(
-                    label,
-                    textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                    color: voice.contentColor
-                )
+                if let labelTag = labelTag {
+                    HStack(alignment: .center) {
+                        LemonadeUi.Text(
+                            label,
+                            textStyle: LemonadeTypography.shared.bodyMediumMedium,
+                            color: voice.contentColor
+                        )
+                        .layoutPriority(-1)
+
+                        Spacer()
+                            .frame(width: LemonadeTheme.spaces.spacing200)
+
+                        LemonadeUi.Tag(
+                            label: labelTag.label,
+                            icon: labelTag.icon,
+                            voice: labelTag.voice
+                        )
+                    }
+                } else {
+                    LemonadeUi.Text(
+                        label,
+                        textStyle: LemonadeTypography.shared.bodyMediumMedium,
+                        color: voice.contentColor
+                    )
+                }
 
                 if let supportText = supportText {
                     LemonadeUi.Text(
@@ -271,6 +292,22 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 label: "Action Item",
                 supportText: "Support text",
                 showNavigationIndicator: true,
+                showDivider: true,
+                onItemClicked: {},
+                leadingSlot: {
+                    LemonadeUi.Icon(
+                        icon: .heart,
+                        contentDescription: nil,
+                        size: .medium
+                    )
+                }
+            )
+
+            // ActionListItem with labelTag
+            LemonadeUi.ActionListItem(
+                label: "Action with Tag",
+                labelTag: TagConfig(label: "New", voice: .positive),
+                supportText: "Support text",
                 showDivider: true,
                 onItemClicked: {},
                 leadingSlot: {
