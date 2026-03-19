@@ -318,8 +318,9 @@ public fun LemonadeToastHost(
                                 onDragEnd = {
                                     if (offsetY > DRAG_DISMISS_THRESHOLD_DP.dp.toPx()) {
                                         toastState.dismiss()
+                                    } else {
+                                        offsetY = 0f
                                     }
-                                    offsetY = 0f
                                 },
                                 onDragCancel = {
                                     offsetY = 0f
