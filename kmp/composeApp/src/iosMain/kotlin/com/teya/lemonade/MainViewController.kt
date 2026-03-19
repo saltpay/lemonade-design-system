@@ -9,6 +9,8 @@ import platform.UIKit.UIViewController
 public fun MainViewController(): UIViewController =
     ComposeUIViewController {
         LemonadeStyledTheme {
-            App()
+            LemonadeToastHost {
+                App()
+            }
         }
     }
