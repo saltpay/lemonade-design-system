@@ -198,7 +198,6 @@ private fun CoreToast(
 
     Row(
         modifier = modifier
-            .fillMaxWidth()
             .heightIn(min = sizes.size1100)
             .lemonadeShadow(
                 shadow = LemonadeShadow.Large,
