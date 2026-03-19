@@ -34,7 +34,7 @@ public enum TagVoice {
 
 // MARK: - Tag Configuration
 
-/// Configuration data for a Tag composable.
+/// Configuration data for a Tag view/component.
 /// Use this to pass tag data as a parameter, ensuring only valid Tag content is accepted.
 public struct TagConfig {
     public let label: String
