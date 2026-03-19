@@ -23,7 +23,7 @@ public enum LemonadeToastVoice: Sendable {
     internal func iconColor(colors: LemonadeSemanticColors) -> Color {
         switch self {
         case .success: return colors.content.contentPositiveOnColor
-        case .error: return colors.content.contentCritical
+        case .error: return colors.content.contentCriticalOnColor
         case .neutral: return colors.content.contentNeutralOnColor
         }
     }
@@ -106,7 +106,7 @@ private struct LemonadeToastView: View {
     }
 
     var body: some View {
-        HStack(spacing: .space.spacing300) {
+        HStack(spacing: .space.spacing200) {
             if let icon = displayIcon {
                 LemonadeUi.Icon(
                     icon: icon,
@@ -118,19 +118,20 @@ private struct LemonadeToastView: View {
 
             Text(label)
                 .font(LemonadeTypography.shared.bodySmallMedium.font)
-                .foregroundStyle(.content.contentAlwaysLight)
+                .foregroundStyle(.content.contentPrimaryInverse)
                 .lineLimit(nil)
+                .padding(.horizontal, .space.spacing100)
         }
         .padding(
             EdgeInsets(
                 top: .space.spacing300,
                 leading: .space.spacing400,
                 bottom: .space.spacing300,
-                trailing: .space.spacing500
+                trailing: .space.spacing400
             )
         )
         .frame(minHeight: .size.size1100)
-        .background(.bg.bgAlwaysDark)
+        .background(.bg.bgDefaultInverse)
         .clipShape(RoundedRectangle(cornerRadius: .radius.radiusFull))
         .lemonadeShadow(.large)
         .accessibilityElement(children: .combine)
