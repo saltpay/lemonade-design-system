@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -25,7 +24,6 @@ import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -97,7 +95,7 @@ public class LemonadeToastState {
     internal var currentToast by mutableStateOf<ToastData?>(null)
         private set
 
-    private var nextId by mutableIntStateOf(0)
+    private var nextId: Int = 0
 
     /**
      * Show a toast. If a toast is already visible, it is replaced immediately.
@@ -264,21 +262,14 @@ public fun LemonadeToastHost(
             val haptic = LocalHapticFeedback.current
             val spaces = LocalSpaces.current
 
-            // Haptic feedback when a new toast appears
+            // Haptic feedback + auto-dismiss timer
             LaunchedEffect(toast?.id) {
                 if (toast != null) {
                     val feedbackType = when (toast.voice) {
-                        ToastVoice.Success -> HapticFeedbackType.LongPress
-                        ToastVoice.Error -> HapticFeedbackType.LongPress
                         ToastVoice.Neutral -> HapticFeedbackType.TextHandleMove
+                        else -> HapticFeedbackType.LongPress
                     }
                     haptic.performHapticFeedback(feedbackType)
-                }
-            }
-
-            // Auto-dismiss timer
-            LaunchedEffect(toast?.id) {
-                if (toast != null) {
                     delay(toast.duration.millis)
                     toastState.dismiss()
                 }

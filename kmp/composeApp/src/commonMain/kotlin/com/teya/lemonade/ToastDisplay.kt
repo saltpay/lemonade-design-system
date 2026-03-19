@@ -119,6 +119,7 @@ private fun ToastSection(
         LemonadeUi.Text(
             text = title,
             textStyle = LemonadeTheme.typography.headingXSmall,
+            color = LemonadeTheme.colors.content.contentSecondary,
         )
         content()
     }
