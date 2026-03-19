@@ -192,7 +192,7 @@ private fun CoreToast(
 
     val iconTint = when (voice) {
         ToastVoice.Success -> colors.content.contentPositiveOnColor
-        ToastVoice.Error -> colors.content.contentCritical
+        ToastVoice.Error -> colors.content.contentCriticalOnColor
         ToastVoice.Neutral -> colors.content.contentNeutralOnColor
     }
 
@@ -205,14 +205,14 @@ private fun CoreToast(
                 shape = shapes.radiusFull,
             )
             .clip(shape = shapes.radiusFull)
-            .background(color = colors.background.bgAlwaysDark)
+            .background(color = colors.background.bgDefaultInverse)
             .padding(
                 start = spaces.spacing400,
                 end = spaces.spacing500,
                 top = spaces.spacing300,
                 bottom = spaces.spacing300,
             ),
-        horizontalArrangement = Arrangement.spacedBy(spaces.spacing200),
+        horizontalArrangement = Arrangement.spacedBy(spaces.spacing300),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (resolvedIcon != null) {
@@ -227,7 +227,7 @@ private fun CoreToast(
         LemonadeUi.Text(
             text = label,
             textStyle = LocalTypographies.current.bodySmallMedium,
-            color = colors.content.contentAlwaysLight,
+            color = colors.content.contentPrimaryInverse,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f),
