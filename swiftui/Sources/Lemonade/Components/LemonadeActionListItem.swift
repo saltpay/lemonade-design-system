@@ -19,6 +19,7 @@ public extension LemonadeUi {
     ///
     /// - Parameters:
     ///   - label: Label String to be displayed
+    ///   - labelTag: Optional tag configuration displayed alongside the main label text
     ///   - supportText: Text to be displayed as Support Text
     ///   - voice: LemonadeListItemVoice to define tone of voice. Defaults to .neutral
     ///   - showNavigationIndicator: Indicates navigation visually
