@@ -11,8 +11,8 @@ import com.teya.lemonade.core.LemonadeRadius
  * Lemonade Design System Radius tokens.
  * Provides a consistent and scalable way to manage radius across interfaces.
  * These values can be used for cards, chips and rounded layouts in general.
- * 
- * 
+ *
+ *
  * Auto-generated content.
  *
  * ⚠️ **DO NOT MODIFY THIS FILE MANUALLY** ⚠️
