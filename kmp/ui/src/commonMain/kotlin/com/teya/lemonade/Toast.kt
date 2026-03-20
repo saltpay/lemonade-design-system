@@ -44,8 +44,6 @@ import com.teya.lemonade.core.LemonadeShadow
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
 
-// ── Voice ────────────────────────────────────────────────────────────────
-
 /**
  * Defines the tone of a toast notification.
  */
@@ -55,12 +53,10 @@ public enum class ToastVoice {
     Neutral,
 }
 
-// ── Duration ─────────────────────────────────────────────────────────────
-
 /**
  * Duration for which a toast is displayed before auto-dismissal.
  */
-public sealed class ToastDuration(public val millis: kotlin.Long) {
+public sealed class ToastDuration(internal val millis: kotlin.Long) {
     /** 3 seconds */
     public data object Short : ToastDuration(3_000L)
 
@@ -78,8 +74,6 @@ public sealed class ToastDuration(public val millis: kotlin.Long) {
     }
 }
 
-// ── Toast Data ───────────────────────────────────────────────────────────
-
 internal data class ToastData(
     val label: String,
     val voice: ToastVoice,
@@ -88,8 +82,6 @@ internal data class ToastData(
     val dismissible: Boolean,
     val id: Int,
 )
-
-// ── State ────────────────────────────────────────────────────────────────
 
 /**
  * State holder for the Lemonade Toast system. Obtain via [LocalLemonadeToastState].
@@ -133,8 +125,6 @@ public class LemonadeToastState {
     }
 }
 
-// ── CompositionLocal ─────────────────────────────────────────────────────
-
 /**
  * Provides the [LemonadeToastState] to the composition tree.
  * Must be used inside [LemonadeToastHost].
@@ -142,8 +132,6 @@ public class LemonadeToastState {
 public val LocalLemonadeToastState: ProvidableCompositionLocal<LemonadeToastState> = staticCompositionLocalOf {
     error("No LemonadeToastState provided. Wrap your content with LemonadeToastHost.")
 }
-
-// ── Visual Component ─────────────────────────────────────────────────────
 
 /**
  * A transient, non-interactive notification that appears at the bottom of the screen.
@@ -233,8 +221,6 @@ private fun CoreToast(
     }
 }
 
-// ── Host ─────────────────────────────────────────────────────────────────
-
 private const val DRAG_DISMISS_THRESHOLD_DP = 25
 private const val DRAG_FADE_MULTIPLIER = 4
 
@@ -259,7 +245,7 @@ public fun LemonadeToastHost(
     val toastState = remember { LemonadeToastState() }
 
     CompositionLocalProvider(LocalLemonadeToastState provides toastState) {
-        Box(modifier = modifier.fillMaxSize()) {
+        Box(modifier = modifier) {
             content()
 
             val toast = toastState.currentToast
