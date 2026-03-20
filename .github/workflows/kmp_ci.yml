@@ -7,16 +7,14 @@ on:
       - 'kmp/**'
       - '.github/workflows/kmp_ci.yml'
       - '.github/actions/setup-gradle/**'
-    paths-ignore:
-      - '**/*.md'
+      - '!**/*.md'
   pull_request:
     branches: [ "master", "main" ]
     paths:
       - 'kmp/**'
       - '.github/workflows/kmp_ci.yml'
       - '.github/actions/setup-gradle/**'
-    paths-ignore:
-      - '**/*.md'
+      - '!**/*.md'
 
 concurrency:
   group: kmp-ci-${{ github.ref }}
