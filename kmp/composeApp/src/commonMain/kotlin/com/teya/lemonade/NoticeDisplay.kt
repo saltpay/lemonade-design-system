@@ -143,16 +143,6 @@ internal fun NoticeDisplay() {
                 )
             }
         }
-
-        // Custom Icon
-        NoticeSection(title = "Custom Icon") {
-            LemonadeUi.Notice(
-                content = "Your favorites list has been updated.",
-                voice = NoticeVoice.Info,
-                actionLabel = "View favorites",
-                onActionClick = {},
-            )
-        }
     }
 }
 

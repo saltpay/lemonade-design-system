@@ -2,8 +2,6 @@ import SwiftUI
 import Lemonade
 
 struct NoticeDisplayView: View {
-    private let voices: [NoticeVoice] = [.info, .positive, .warning, .critical, .neutral]
-
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 32) {

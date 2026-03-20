@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - Voice
 
-public enum NoticeVoice {
+public enum NoticeVoice: Hashable {
     case info, positive, warning, critical, neutral
 
     var containerColor: Color {

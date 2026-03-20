@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -45,13 +46,12 @@ import com.teya.lemonade.core.NoticeVoice
  * ```
  *
  * @param content The body text displayed in the notice.
+ * @param voice [NoticeVoice] defining the semantic tone. Controls background, icon tint,
+ *  and action text colors.
  * @param modifier [Modifier] applied to the root container.
  * @param title Optional bold heading displayed above the content.
- * @param voice [NoticeVoice] defining the semantic tone. Controls background, icon tint,
- *  and action text colors. Defaults to [NoticeVoice.Info].
- * @param icon Optional [LemonadeIcons] for the leading icon. When not specified,
- *  a default icon is chosen based on [voice]. Pass explicit `null` after setting
- *  this parameter to hide the icon entirely — use [showIcon] = false for that.
+ * @param showIcon Whether to display the leading icon. The icon is automatically
+ *  chosen based on [voice]. Defaults to `true`.
  * @param actionLabel Optional text for the action button below the content.
  * @param onActionClick Callback invoked when the action is tapped.
  */
@@ -143,7 +143,7 @@ private fun CoreNotice(
             )
 
             if (actionLabel != null) {
-                Spacer(modifier = Modifier.padding(top = LocalSpaces.current.spacing200))
+                Spacer(modifier = Modifier.height(LocalSpaces.current.spacing200))
 
                 LemonadeUi.Text(
                     text = actionLabel,
@@ -162,7 +162,6 @@ private fun CoreNotice(
         }
     }
 }
-// region Voice → Token Mapping
 
 @Stable
 private data class NoticeColors(
@@ -215,10 +214,6 @@ private val NoticeVoice.defaultIcon: LemonadeIcons
         NoticeVoice.Neutral -> LemonadeIcons.Heart
     }
 
-// endregion
-
-// region Previews
-
 private data class NoticePreviewData(
     val voice: NoticeVoice,
     val withTitle: Boolean,
@@ -260,9 +255,8 @@ private fun NoticePreview(
         content = "This is a notice message with important information.",
         title = "Notice Title".takeIf { previewData.withTitle },
         voice = previewData.voice,
+        showIcon = previewData.withIcon,
         actionLabel = "Action".takeIf { previewData.withAction },
         onActionClick = {},
     )
 }
-
-// endregion
