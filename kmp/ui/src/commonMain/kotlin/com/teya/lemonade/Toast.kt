@@ -275,14 +275,14 @@ public fun LemonadeToastHost(
                             dampingRatio = 0.8f,
                             stiffness = Spring.StiffnessMediumLow,
                         ),
-                        initialOffsetY = { it * 2 },
+                        initialOffsetY = { fullHeight -> fullHeight * 4 },
                     ).togetherWith(
                         slideOutVertically(
                             animationSpec = spring(
                                 dampingRatio = 0.8f,
                                 stiffness = Spring.StiffnessMediumLow,
                             ),
-                            targetOffsetY = { it * 2 },
+                            targetOffsetY = { fullHeight -> fullHeight * 4 },
                         ),
                     ).using(SizeTransform(clip = false) { _, _ -> snap() })
                 },
