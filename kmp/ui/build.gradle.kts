@@ -44,7 +44,6 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
-//            implementation(libs.compose.ui)
             implementation(libs.components.resources)
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.kotlinx.serializer)
