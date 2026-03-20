@@ -13,7 +13,6 @@ import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
@@ -34,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
@@ -243,9 +243,12 @@ public fun LemonadeToastHost(
     content: @Composable () -> Unit,
 ) {
     val toastState = remember { LemonadeToastState() }
+    var hostHeightPx by remember { mutableStateOf(0) }
 
     CompositionLocalProvider(LocalLemonadeToastState provides toastState) {
-        Box(modifier = modifier) {
+        Box(
+            modifier = modifier.onSizeChanged { hostHeightPx = it.height },
+        ) {
             content()
 
             val toast = toastState.currentToast
@@ -275,14 +278,14 @@ public fun LemonadeToastHost(
                             dampingRatio = 0.8f,
                             stiffness = Spring.StiffnessMediumLow,
                         ),
-                        initialOffsetY = { fullHeight -> fullHeight * 4 },
+                        initialOffsetY = { hostHeightPx },
                     ).togetherWith(
                         slideOutVertically(
                             animationSpec = spring(
                                 dampingRatio = 0.8f,
                                 stiffness = Spring.StiffnessMediumLow,
                             ),
-                            targetOffsetY = { fullHeight -> fullHeight * 4 },
+                            targetOffsetY = { hostHeightPx },
                         ),
                     ).using(SizeTransform(clip = false) { _, _ -> snap() })
                 },
