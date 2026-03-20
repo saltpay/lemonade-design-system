@@ -141,7 +141,7 @@ private fun CoreNotice(
                                     onClick = onActionClick,
                                     role = Role.Button,
                                     interactionSource = remember { MutableInteractionSource() },
-                                    indication = null,
+                                    indication = LocalEffects.current.interactionIndication,
                                 )
                             } else {
                                 Modifier
