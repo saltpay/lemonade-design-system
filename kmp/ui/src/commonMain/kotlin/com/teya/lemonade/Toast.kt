@@ -285,7 +285,7 @@ public fun LemonadeToastHost(
                                 dampingRatio = 0.8f,
                                 stiffness = Spring.StiffnessMediumLow,
                             ),
-                            targetOffsetY = { hostHeightPx },
+                            targetOffsetY = { toastHeight -> toastHeight * 3 },
                         ),
                     ).using(SizeTransform(clip = false) { _, _ -> snap() })
                 },
