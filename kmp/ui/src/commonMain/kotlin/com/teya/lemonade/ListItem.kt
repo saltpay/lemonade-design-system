@@ -103,7 +103,7 @@ public fun LemonadeUi.SelectListItem(
 
                 SelectListItemType.Multiple,
                 SelectListItemType.Toggle,
-                    -> {
+                -> {
                     onItemClicked()
                 }
             }
