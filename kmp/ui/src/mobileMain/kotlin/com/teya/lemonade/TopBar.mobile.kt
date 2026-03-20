@@ -63,8 +63,8 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TopBarAction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import kotlin.math.roundToInt
 
 /**

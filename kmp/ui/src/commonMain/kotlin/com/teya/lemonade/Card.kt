@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.Dp
 import com.teya.lemonade.core.LemonadeCardBackground
 import com.teya.lemonade.core.LemonadeCardPadding
 import com.teya.lemonade.core.TagVoice
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 
 @Composable
 public fun LemonadeUi.Card(

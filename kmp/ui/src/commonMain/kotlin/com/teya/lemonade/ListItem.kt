@@ -25,6 +25,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.teya.lemonade.core.CheckboxStatus
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
@@ -33,8 +35,6 @@ import com.teya.lemonade.core.SelectListItemType
 import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.SymbolContainerVoice
 import com.teya.lemonade.core.TagVoice
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 /**
  * A list item with the sole purpose of selection of a single or multiple items, with behaviour
@@ -103,7 +103,7 @@ public fun LemonadeUi.SelectListItem(
 
                 SelectListItemType.Multiple,
                 SelectListItemType.Toggle,
-                -> {
+                    -> {
                     onItemClicked()
                 }
             }

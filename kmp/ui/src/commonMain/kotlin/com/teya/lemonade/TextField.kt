@@ -39,8 +39,8 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeCountryFlags
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTextStyle
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 
 /**
  * The Text Field component allows users to enter or edit text and adapts seamlessly across both
