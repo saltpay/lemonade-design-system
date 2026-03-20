@@ -6,6 +6,7 @@ import java.io.File
 
 private data class RadiusResource(
     val radiusValue: Int,
+    val aliasName: String?,
 )
 
 fun main() {
@@ -25,6 +26,7 @@ fun main() {
             resourceMap = { jsonObject ->
                 RadiusResource(
                     radiusValue = jsonObject.getInt("resolvedValue"),
+                    aliasName = if (jsonObject.has("aliasName")) jsonObject.getString("aliasName") else null,
                 )
             },
         ).sortedBy { it.value.radiusValue }
@@ -66,7 +68,7 @@ private fun buildRadiusCode(
         }
         appendLine()
         appendLine("/// Radius token enum")
-        appendLine("public enum LemonadeRadius {")
+        appendLine("public enum LemonadeRadius: Sendable {")
         primitiveResources.forEach { resource ->
             appendLine("    case ${resource.name}")
         }
@@ -131,13 +133,23 @@ private fun buildRadiusCode(
         groupedResources.forEach { (groupName, groupTokens) ->
             appendLine("internal struct ${groupName}RadiusValuesImpl: ${groupName}RadiusValues {")
             groupTokens.forEach { token ->
-                appendLine("    let ${token.name}: CGFloat = ${token.value.radiusValue}")
+                val aliasSwiftName = token.value.aliasName?.sanitizedSwiftValueName()
+                if (aliasSwiftName != null) {
+                    appendLine("    let ${token.name}: CGFloat = LemonadeRadius.${aliasSwiftName}.value")
+                } else {
+                    appendLine("    let ${token.name}: CGFloat = ${token.value.radiusValue}")
+                }
             }
             appendLine("}")
             appendLine()
             appendLine("internal struct ${groupName}ShapesImpl: ${groupName}Shapes {")
             groupTokens.forEach { token ->
-                appendLine("    var ${token.name}: RoundedRectangle { RoundedRectangle(cornerRadius: ${token.value.radiusValue}) }")
+                val aliasSwiftName = token.value.aliasName?.sanitizedSwiftValueName()
+                if (aliasSwiftName != null) {
+                    appendLine("    var ${token.name}: RoundedRectangle { LemonadeRadius.${aliasSwiftName}.shape }")
+                } else {
+                    appendLine("    var ${token.name}: RoundedRectangle { RoundedRectangle(cornerRadius: ${token.value.radiusValue}) }")
+                }
             }
             appendLine("}")
             appendLine()
@@ -145,7 +157,7 @@ private fun buildRadiusCode(
 
         // Root impl structs
         appendLine("/// Default radius values implementation")
-        appendLine("public struct LemonadeRadiusValuesImpl: LemonadeRadiusValues {")
+        appendLine("public struct LemonadeRadiusValuesImpl: LemonadeRadiusValues, Sendable {")
         primitiveResources.forEach { resource ->
             appendLine("    public let ${resource.name}: CGFloat = LemonadeRadius.${resource.name}.value")
         }
@@ -157,7 +169,7 @@ private fun buildRadiusCode(
         appendLine("}")
         appendLine()
         appendLine("/// Default shapes implementation")
-        appendLine("public struct LemonadeShapesImpl: LemonadeShapes {")
+        appendLine("public struct LemonadeShapesImpl: LemonadeShapes, Sendable {")
         primitiveResources.forEach { resource ->
             appendLine("    public var ${resource.name}: RoundedRectangle { LemonadeRadius.${resource.name}.shape }")
         }

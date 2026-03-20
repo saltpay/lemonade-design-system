@@ -102,11 +102,11 @@ public protocol LemonadeShapes {
 }
 
 internal struct SemanticRadiusValuesImpl: SemanticRadiusValues {
-    let radiusContainerDefault: CGFloat = 24
+    let radiusContainerDefault: CGFloat = LemonadeRadius.radius600.value
 }
 
 internal struct SemanticShapesImpl: SemanticShapes {
-    var radiusContainerDefault: RoundedRectangle { RoundedRectangle(cornerRadius: 24) }
+    var radiusContainerDefault: RoundedRectangle { LemonadeRadius.radius600.shape }
 }
 
 /// Default radius values implementation
