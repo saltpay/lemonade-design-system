@@ -115,7 +115,7 @@ private fun CoreNotice(
                     icon = icon,
                     contentDescription = null,
                     tint = colors.iconTintColor,
-                    size = LemonadeAssetSize.Medium
+                    size = LemonadeAssetSize.Medium,
                 )
             }
         }

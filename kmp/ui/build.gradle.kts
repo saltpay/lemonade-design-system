@@ -42,10 +42,10 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation("org.jetbrains.compose.runtime:runtime:1.10.3")
-            implementation("org.jetbrains.compose.foundation:foundation:1.10.3")
-            implementation("org.jetbrains.compose.ui:ui:1.10.3")
-            implementation("org.jetbrains.compose.components:components-resources:1.10.3")
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+//            implementation(libs.compose.ui)
+            implementation(libs.components.resources)
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.kotlinx.serializer)
             api(libs.kotlinx.datetime)
