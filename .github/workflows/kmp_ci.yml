@@ -76,8 +76,8 @@ jobs:
           restore-keys: |
             konan-${{ runner.os }}-
 
-      - name: Build Project
-        run: ./gradlew build --no-daemon
+      - name: Run Tests
+        run: ./gradlew allTests --no-daemon
         working-directory: ./kmp
 
       - name: Setup Dependency Submission
