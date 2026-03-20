@@ -58,7 +58,7 @@ jobs:
   build:
     name: Build
     runs-on: macos-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     permissions:
       contents: write
     steps:
