@@ -148,6 +148,7 @@ private fun CoreNotice(
                 LemonadeUi.Text(
                     text = actionLabel,
                     textStyle = LocalTypographies.current.bodyMediumSemiBold,
+                    color = colors.actionTextColor,
                     modifier = Modifier
                         .clickable(
                             onClick = { onActionClick?.invoke() },
