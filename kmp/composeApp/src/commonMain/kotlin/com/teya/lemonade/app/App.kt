@@ -39,6 +39,7 @@ import com.teya.lemonade.TagDisplay
 import com.teya.lemonade.TextDisplay
 import com.teya.lemonade.TextFieldDisplay
 import com.teya.lemonade.TileDisplay
+import com.teya.lemonade.ToastDisplay
 
 @Composable
 internal expect fun App()
@@ -83,4 +84,5 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.Tabs to { _ -> TabsDisplay() },
     Displays.DatePicker to { _ -> DatePickerDisplay() },
     Displays.Notice to { _ -> NoticeDisplay() },
+    Displays.Toast to { _ -> ToastDisplay() },
 )
