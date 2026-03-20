@@ -93,8 +93,7 @@ private fun CoreNotice(
             .background(
                 color = colors.containerColor,
                 shape = LocalShapes.current.radius500,
-            )
-            .padding(all = LocalSpaces.current.spacing400),
+            ).padding(all = LocalSpaces.current.spacing400),
     ) {
         if (icon != null) {
             LemonadeUi.Icon(
