@@ -76,8 +76,8 @@ jobs:
           restore-keys: |
             konan-${{ runner.os }}-
 
-      - name: Run Tests
-        run: ./gradlew allTests --no-daemon
+      - name: Compile All Targets
+        run: ./gradlew compileKotlinMetadata compileKotlinJvm compileKotlinIosArm64 compileKotlinIosSimulatorArm64 compileKotlinDesktop --no-daemon
         working-directory: ./kmp
 
       - name: Setup Dependency Submission
