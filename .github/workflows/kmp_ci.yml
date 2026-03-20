@@ -1,19 +1,34 @@
-name: KMP Compilation check
+name: KMP CI
 
 on:
   push:
     branches: [ "master", "main" ]
     paths:
       - 'kmp/**'
+      - '.github/workflows/kmp_ci.yml'
+      - '.github/actions/setup-gradle/**'
+    paths-ignore:
+      - '**/*.md'
   pull_request:
     branches: [ "master", "main" ]
     paths:
       - 'kmp/**'
+      - '.github/workflows/kmp_ci.yml'
+      - '.github/actions/setup-gradle/**'
+    paths-ignore:
+      - '**/*.md'
+
+concurrency:
+  group: kmp-ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: macos-latest
-
+  detekt:
+    name: Detekt
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GRADLE_OPTS: -Xmx3g
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,14 +36,70 @@ jobs:
       - name: Setup Gradle
         uses: ./.github/actions/setup-gradle
 
-      - name: Detekt
-        run: ./gradlew detektMetadataCommonMain --no-daemon
+      - name: Run Detekt
+        run: ./gradlew detektMetadataCommonMain --no-daemon -Dorg.gradle.jvmargs="-Xmx3g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
         working-directory: ./kmp
 
-      - name: Ktlint
-        run: ./gradlew ktlintCheck --no-daemon
+  ktlint:
+    name: Ktlint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GRADLE_OPTS: -Xmx3g
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Gradle
+        uses: ./.github/actions/setup-gradle
+
+      - name: Run Ktlint
+        run: ./gradlew ktlintCheck --no-daemon -Dorg.gradle.jvmargs="-Xmx3g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
         working-directory: ./kmp
+
+  build:
+    name: Build
+    runs-on: macos-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Gradle
+        uses: ./.github/actions/setup-gradle
+
+      - name: Cache Konan
+        uses: actions/cache@v4
+        with:
+          path: ~/.konan
+          key: konan-${{ runner.os }}-${{ hashFiles('kmp/gradle/libs.versions.toml') }}
+          restore-keys: |
+            konan-${{ runner.os }}-
 
       - name: Build Project
         run: ./gradlew build --no-daemon
         working-directory: ./kmp
+
+      - name: Setup Dependency Submission
+        uses: gradle/actions/dependency-submission@v4.4.2
+        with:
+          build-root-directory: kmp
+
+  ci-status:
+    name: CI Status
+    if: always()
+    needs: [ detekt, ktlint, build ]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check CI results
+        run: |
+          if [[ "${{ needs.detekt.result }}" != "success" || \
+                "${{ needs.ktlint.result }}" != "success" || \
+                "${{ needs.build.result }}" != "success" ]]; then
+            echo "CI did not succeed: detekt=${{ needs.detekt.result }}, ktlint=${{ needs.ktlint.result }}, build=${{ needs.build.result }}"
+            exit 1
+          fi
+          echo "All CI checks passed"
