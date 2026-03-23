@@ -109,6 +109,32 @@ public fun LemonadeUi.Button(
     )
 }
 
+/**
+ * Lemonade labeled button component with composable slots. Used for simple click actions with a
+ * text and optional composable leading/trailing content, allowing full customization of the
+ * slot contents instead of predefined icon references.
+ * ## Usage
+ * ```kotlin
+ * LemonadeUi.Button(
+ *   label = "click me!",
+ *   onClick = { println("button clicked!") },
+ *   leadingSlot = { colors -> Icon(..., tint = colors.contentColor) },
+ * )
+ * ```
+ * @param label - [String] to be displayed as the Button's label.
+ * @param onClick - Callback to be invoked when the Button is clicked.
+ * @param modifier - [Modifier] to be applied to the Button.
+ * @param leadingSlot - Composable slot shown before the label. Receives [LemonadeButtonColors]
+ * to access variant-aware colors.
+ * @param trailingSlot - Composable slot shown after the label. Receives [LemonadeButtonColors]
+ * to access variant-aware colors.
+ * @param variant - [LemonadeButtonVariant] to style the Button accordingly.
+ * @param size - [LemonadeButtonSize] to size the Button accordingly.
+ * @param spacedContents - [Boolean] flag to space contents evenly across the Button's width.
+ * @param enabled - [Boolean] flag to enable or disable the Button.
+ * @param loading - [Boolean] flag to enable the loading state.
+ * @param interactionSource - [MutableInteractionSource] to be applied to the Button.
+ */
 @Composable
 public fun LemonadeUi.Button(
     label: String,
@@ -373,6 +399,84 @@ private fun LemonadeLabeledRadioButtonPreview(
         onClick = { /* Nothing */ },
         leadingIcon = LemonadeIcons.Heart.takeIf { previewData.leadingIcon },
         trailingIcon = LemonadeIcons.Heart.takeIf { previewData.trailingIcon },
+        enabled = previewData.enabled,
+        loading = previewData.loading,
+        size = previewData.size,
+        variant = previewData.variant,
+    )
+}
+
+private data class SlotButtonPreviewData(
+    val leadingSlot: Boolean,
+    val trailingSlot: Boolean,
+    val enabled: Boolean,
+    val loading: Boolean,
+    val size: LemonadeButtonSize,
+    val variant: LemonadeButtonVariant,
+)
+
+private class SlotButtonPreviewProvider : PreviewParameterProvider<SlotButtonPreviewData> {
+    override val values: Sequence<SlotButtonPreviewData> = buildAllVariants()
+
+    private fun buildAllVariants(): Sequence<SlotButtonPreviewData> =
+        buildList {
+            LemonadeButtonSize.entries.forEach { size ->
+                LemonadeButtonVariant.entries.forEach { variant ->
+                    listOf(true, false).forEach { leadingSlot ->
+                        listOf(true, false).forEach { trailingSlot ->
+                            listOf(true, false).forEach { loading ->
+                                listOf(true, false).forEach { enabled ->
+                                    add(
+                                        SlotButtonPreviewData(
+                                            leadingSlot = leadingSlot,
+                                            trailingSlot = trailingSlot,
+                                            enabled = enabled,
+                                            loading = loading,
+                                            size = size,
+                                            variant = variant,
+                                        ),
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }.asSequence()
+}
+
+@LemonadePreview
+@Composable
+private fun LemonadeSlotButtonPreview(
+    @PreviewParameter(SlotButtonPreviewProvider::class)
+    previewData: SlotButtonPreviewData,
+) {
+    @OptIn(ExperimentalLemonadeComponent::class)
+    LemonadeUi.Button(
+        label = "Label",
+        onClick = { /* Nothing */ },
+        leadingSlot = if (previewData.leadingSlot) {
+            { colors ->
+                LemonadeUi.Icon(
+                    icon = LemonadeIcons.Heart,
+                    tint = colors.contentColor,
+                    contentDescription = null,
+                )
+            }
+        } else {
+            null
+        },
+        trailingSlot = if (previewData.trailingSlot) {
+            { colors ->
+                LemonadeUi.Icon(
+                    icon = LemonadeIcons.ChevronRight,
+                    tint = colors.contentColor,
+                    contentDescription = null,
+                )
+            }
+        } else {
+            null
+        },
         enabled = previewData.enabled,
         loading = previewData.loading,
         size = previewData.size,
