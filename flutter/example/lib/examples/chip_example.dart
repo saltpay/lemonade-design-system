@@ -49,6 +49,38 @@ class _ChipExampleScreenState extends State<ChipExampleScreen> {
               ],
             ),
             ExampleRow(
+              label: 'Label Only',
+              children: [
+                LemonadeChip(
+                  label: 'Unselected',
+                  onTap: () {},
+                ),
+                LemonadeChip(
+                  label: 'Selected',
+                  selected: true,
+                  onTap: () {},
+                ),
+              ],
+            ),
+            ExampleRow(
+              label: 'Label Only with Trailing',
+              children: [
+                LemonadeChip(
+                  label: 'Dismiss',
+                  trailingIcon: LemonadeIcons.circleX,
+                  onTap: () {},
+                  onTrailingIconTap: () {},
+                ),
+                LemonadeChip(
+                  label: 'Dismiss',
+                  selected: true,
+                  trailingIcon: LemonadeIcons.circleX,
+                  onTap: () {},
+                  onTrailingIconTap: () {},
+                ),
+              ],
+            ),
+            ExampleRow(
               label: 'With Icons',
               children: [
                 LemonadeChip(
@@ -61,6 +93,25 @@ class _ChipExampleScreenState extends State<ChipExampleScreen> {
                   trailingIcon: LemonadeIcons.chevronDown,
                   onTap: () {},
                   onTrailingIconTap: () {},
+                ),
+              ],
+            ),
+            ExampleRow(
+              label: 'Icon Only',
+              children: [
+                LemonadeChip.iconOnly(
+                  icon: LemonadeIcons.heart,
+                  onTap: () {},
+                ),
+                LemonadeChip.iconOnly(
+                  icon: LemonadeIcons.heart,
+                  selected: true,
+                  onTap: () {},
+                ),
+                LemonadeChip.iconOnly(
+                  icon: LemonadeIcons.star,
+                  counter: 3,
+                  onTap: () {},
                 ),
               ],
             ),
