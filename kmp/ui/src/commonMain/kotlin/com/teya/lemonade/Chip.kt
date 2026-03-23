@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
@@ -38,6 +39,83 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTextStyle
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
+
+
+@Composable
+public fun LemonadeUi.Chip(
+    label: String,
+    selected: Boolean,
+    modifier: Modifier = Modifier,
+    trailingIcon: LemonadeIcons? = null,
+    counter: Int? = null,
+    enabled: Boolean = true,
+    onChipClicked: (() -> Unit)? = null,
+    onTrailingIconClick: (() -> Unit)? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+) {
+    CoreChip(
+        selected = selected,
+        enabled = enabled,
+        counter = counter,
+        leadingSlot = null,
+        trailingSlot = if (trailingIcon != null) {
+            {
+                LemonadeUi.Icon(
+                    icon = trailingIcon,
+                    tint = LocalChipContentColor.current.invoke(),
+                    size = LemonadeAssetSize.Small,
+                    contentDescription = null,
+                )
+            }
+        } else {
+            null
+        },
+        onChipClicked = onChipClicked,
+        onTrailingIconClick = onTrailingIconClick,
+        modifier = modifier,
+        interactionSource = interactionSource,
+        contentSlot = {
+            LemonadeUi.Text(
+                text = label,
+                color = LocalChipContentColor.current(),
+                textStyle = defaultChipDimensions().labelFontStyle,
+                modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing100),
+            )
+        }
+    )
+}
+
+@Composable
+public fun LemonadeUi.Chip(
+    icon: LemonadeIcons,
+    selected: Boolean,
+    modifier: Modifier = Modifier,
+    counter: Int? = null,
+    enabled: Boolean = true,
+    onChipClicked: (() -> Unit)? = null,
+    onTrailingIconClick: (() -> Unit)? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+) {
+    CoreChip(
+        selected = selected,
+        enabled = enabled,
+        counter = counter,
+        leadingSlot = null,
+        trailingSlot = null,
+        onChipClicked = onChipClicked,
+        onTrailingIconClick = onTrailingIconClick,
+        modifier = modifier,
+        interactionSource = interactionSource,
+        contentSlot = {
+            LemonadeUi.Icon(
+                icon = icon,
+                tint = LocalChipContentColor.current.invoke(),
+                size = LemonadeAssetSize.Small,
+                contentDescription = null,
+            )
+        }
+    )
+}
 
 /**
  * A compact element used to display information, trigger actions, or represent selections.
@@ -89,7 +167,6 @@ public fun LemonadeUi.Chip(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     CoreChip(
-        label = label,
         selected = selected,
         enabled = enabled,
         counter = counter,
@@ -127,6 +204,14 @@ public fun LemonadeUi.Chip(
         onTrailingIconClick = onTrailingIconClick,
         modifier = modifier,
         interactionSource = interactionSource,
+        contentSlot = {
+            LemonadeUi.Text(
+                text = label,
+                color = LocalChipContentColor.current(),
+                textStyle = defaultChipDimensions().labelFontStyle,
+                modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing100),
+            )
+        }
     )
 }
 
@@ -180,7 +265,6 @@ public fun LemonadeUi.Chip(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     CoreChip(
-        label = label,
         selected = selected,
         enabled = enabled,
         counter = counter,
@@ -212,16 +296,24 @@ public fun LemonadeUi.Chip(
         onTrailingIconClick = onTrailingIconClick,
         modifier = modifier,
         interactionSource = interactionSource,
+        contentSlot = {
+            LemonadeUi.Text(
+                text = label,
+                color = LocalChipContentColor.current(),
+                textStyle = defaultChipDimensions().labelFontStyle,
+                modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing100),
+            )
+        }
     )
 }
 
 @Suppress("LongMethod", "LongParameterList")
 @Composable
 internal fun CoreChip(
-    label: String,
     selected: Boolean,
     enabled: Boolean,
     counter: Int?,
+    contentSlot: @Composable RowScope.() -> Unit,
     leadingSlot: (@Composable BoxScope.() -> Unit)?,
     trailingSlot: (@Composable BoxScope.() -> Unit)?,
     onChipClicked: (() -> Unit)?,
@@ -244,7 +336,9 @@ internal fun CoreChip(
             props.backgroundColor
         },
     )
-    CompositionLocalProvider(LocalChipContentColor provides { animatedContentColor }) {
+    CompositionLocalProvider(
+        LocalChipContentColor provides { animatedContentColor },
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
@@ -286,12 +380,7 @@ internal fun CoreChip(
                 )
             }
 
-            LemonadeUi.Text(
-                text = label,
-                color = animatedContentColor,
-                textStyle = platformDimensions.labelFontStyle,
-                modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing100),
-            )
+            contentSlot(this)
 
             if (counter != null) {
                 Box(
