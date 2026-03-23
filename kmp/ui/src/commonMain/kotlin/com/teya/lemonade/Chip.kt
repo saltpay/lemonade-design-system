@@ -40,7 +40,40 @@ import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTextStyle
 
-
+/**
+ * A compact element used to display information, trigger actions, or represent selections.
+ * Commonly used for tags, filters, or interactive choices in dense interfaces.
+ * This overload renders a label-only chip without a leading icon.
+ *
+ * ## Usage
+ * ```kotlin
+ * LemonadeUi.Chip(
+ *     label = "Label",
+ *     selected = true,
+ * )
+ * ```
+ *
+ * ## Parameters
+ * @param label: The text to be displayed in the chip.
+ * @param selected: Set to 'true' if the chip is in the selected state.
+ * @param modifier: Optional - [Modifier] to be applied to the root container of the chip.
+ * @param trailingIcon: Optional - [LemonadeIcons] to be displayed
+ *  in the trailing position of the chip.
+ * @param counter: Optional - [Int] number to be displayed in the chip
+ *  in case it is counting the amount of a subject.
+ * @param enabled: Optional - controls the enabled state of the chip.
+ *  When `false`, interaction is disabled and it is visually styled
+ *  as such. Defaults to true.
+ * @param onChipClicked: Optional - sets the callback for when
+ *  the chip is clicked. If null the clickable interactions will be
+ *  automatically disabled.
+ * @param onTrailingIconClick: Optional - Callback action triggered
+ *  when the [trailingIcon] is clicked.
+ *  Needs [trailingIcon] to not be null.
+ * @param interactionSource: Optional - [MutableInteractionSource]
+ *  used to observe interaction states like hover and press to drive
+ *  visual feedback.
+ */
 @Composable
 public fun LemonadeUi.Chip(
     label: String,
@@ -81,10 +114,41 @@ public fun LemonadeUi.Chip(
                 textStyle = defaultChipDimensions().labelFontStyle,
                 modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing100),
             )
-        }
+        },
     )
 }
 
+/**
+ * A compact element used to display information, trigger actions, or represent selections.
+ * Commonly used for tags, filters, or interactive choices in dense interfaces.
+ * This overload renders an icon-only chip without a text label.
+ *
+ * ## Usage
+ * ```kotlin
+ * LemonadeUi.Chip(
+ *     icon = LemonadeIcons.Heart,
+ *     selected = true,
+ * )
+ * ```
+ *
+ * ## Parameters
+ * @param icon: The [LemonadeIcons] to be displayed in the chip.
+ * @param selected: Set to 'true' if the chip is in the selected state.
+ * @param modifier: Optional - [Modifier] to be applied to the root container of the chip.
+ * @param counter: Optional - [Int] number to be displayed in the chip
+ *  in case it is counting the amount of a subject.
+ * @param enabled: Optional - controls the enabled state of the chip.
+ *  When `false`, interaction is disabled and it is visually styled
+ *  as such. Defaults to true.
+ * @param onChipClicked: Optional - sets the callback for when
+ *  the chip is clicked. If null the clickable interactions will be
+ *  automatically disabled.
+ * @param onTrailingIconClick: Optional - Callback action triggered
+ *  when the trailing icon is clicked.
+ * @param interactionSource: Optional - [MutableInteractionSource]
+ *  used to observe interaction states like hover and press to drive
+ *  visual feedback.
+ */
 @Composable
 public fun LemonadeUi.Chip(
     icon: LemonadeIcons,
@@ -113,7 +177,7 @@ public fun LemonadeUi.Chip(
                 size = LemonadeAssetSize.Small,
                 contentDescription = null,
             )
-        }
+        },
     )
 }
 
@@ -211,7 +275,7 @@ public fun LemonadeUi.Chip(
                 textStyle = defaultChipDimensions().labelFontStyle,
                 modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing100),
             )
-        }
+        },
     )
 }
 
@@ -303,7 +367,7 @@ public fun LemonadeUi.Chip(
                 textStyle = defaultChipDimensions().labelFontStyle,
                 modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing100),
             )
-        }
+        },
     )
 }
 
@@ -530,5 +594,92 @@ private fun ChipPreview(
         counter = previewData.counter,
         leadingIcon = previewData.leadingIcon,
         trailingIcon = previewData.trailingIcon,
+    )
+}
+
+private data class LabelOnlyChipPreviewData(
+    val isSelected: Boolean,
+    val enabled: Boolean,
+    val counter: Int?,
+    val trailingIcon: LemonadeIcons?,
+)
+
+private class LabelOnlyChipPreviewProvider : PreviewParameterProvider<LabelOnlyChipPreviewData> {
+    override val values: Sequence<LabelOnlyChipPreviewData> = buildAllVariants()
+
+    private fun buildAllVariants(): Sequence<LabelOnlyChipPreviewData> =
+        buildList {
+            listOf(true, false).forEach { enabled ->
+                listOf(true, false).forEach { withCounter ->
+                    listOf(true, false).forEach { selected ->
+                        listOf(true, false).forEach { withTrailingIcon ->
+                            add(
+                                LabelOnlyChipPreviewData(
+                                    isSelected = selected,
+                                    enabled = enabled,
+                                    counter = 5.takeIf { withCounter },
+                                    trailingIcon = LemonadeIcons.Airplane.takeIf { withTrailingIcon },
+                                ),
+                            )
+                        }
+                    }
+                }
+            }
+        }.asSequence()
+}
+
+@LemonadePreview
+@Composable
+private fun LabelOnlyChipPreview(
+    @PreviewParameter(LabelOnlyChipPreviewProvider::class)
+    previewData: LabelOnlyChipPreviewData,
+) {
+    LemonadeUi.Chip(
+        label = "Label",
+        selected = previewData.isSelected,
+        enabled = previewData.enabled,
+        counter = previewData.counter,
+        trailingIcon = previewData.trailingIcon,
+    )
+}
+
+private data class IconOnlyChipPreviewData(
+    val isSelected: Boolean,
+    val enabled: Boolean,
+    val counter: Int?,
+)
+
+private class IconOnlyChipPreviewProvider : PreviewParameterProvider<IconOnlyChipPreviewData> {
+    override val values: Sequence<IconOnlyChipPreviewData> = buildAllVariants()
+
+    private fun buildAllVariants(): Sequence<IconOnlyChipPreviewData> =
+        buildList {
+            listOf(true, false).forEach { enabled ->
+                listOf(true, false).forEach { withCounter ->
+                    listOf(true, false).forEach { selected ->
+                        add(
+                            IconOnlyChipPreviewData(
+                                isSelected = selected,
+                                enabled = enabled,
+                                counter = 5.takeIf { withCounter },
+                            ),
+                        )
+                    }
+                }
+            }
+        }.asSequence()
+}
+
+@LemonadePreview
+@Composable
+private fun IconOnlyChipPreview(
+    @PreviewParameter(IconOnlyChipPreviewProvider::class)
+    previewData: IconOnlyChipPreviewData,
+) {
+    LemonadeUi.Chip(
+        icon = LemonadeIcons.Heart,
+        selected = previewData.isSelected,
+        enabled = previewData.enabled,
+        counter = previewData.counter,
     )
 }
