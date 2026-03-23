@@ -4,8 +4,9 @@
 
 import java.io.File
 
-data class RadiusResource(
+private data class RadiusResource(
     val radiusValue: Int,
+    val aliasName: String?,
 )
 
 fun main() {
@@ -25,6 +26,7 @@ fun main() {
             resourceMap = { jsonObject ->
                 RadiusResource(
                     radiusValue = jsonObject.getInt("resolvedValue"),
+                    aliasName = if (jsonObject.has("aliasName")) jsonObject.getString("aliasName") else null,
                 )
             },
         ).sortedBy { it.value.radiusValue }
@@ -48,6 +50,12 @@ private fun buildRadiusCode(
     scriptFilePath: String,
     resources: List<ResourceData<RadiusResource>>,
 ): String {
+    val primitiveResources = resources.filter { it.groups.isEmpty() }
+    val groupedResources = resources
+        .filter { it.groups.isNotEmpty() }
+        .filter { it.groupFullName != null }
+        .groupBy { it.groupFullName!! }
+
     return buildString {
         appendLine("import SwiftUI")
         appendLine()
@@ -60,16 +68,16 @@ private fun buildRadiusCode(
         }
         appendLine()
         appendLine("/// Radius token enum")
-        appendLine("public enum LemonadeRadius {")
-        resources.forEach { resource ->
-            appendLine("    case ${resource.groupFullName?.replaceFirstChar { it.lowercase() }}")
+        appendLine("public enum LemonadeRadius: Sendable {")
+        primitiveResources.forEach { resource ->
+            appendLine("    case ${resource.name}")
         }
         appendLine()
         appendLine("    /// Returns the CGFloat value for this radius token")
         appendLine("    public var value: CGFloat {")
         appendLine("        switch self {")
-        resources.forEach { resource ->
-            appendLine("        case .${resource.groupFullName?.replaceFirstChar { it.lowercase() }}: return ${resource.value.radiusValue}")
+        primitiveResources.forEach { resource ->
+            appendLine("        case .${resource.name}: return ${resource.value.radiusValue}")
         }
         appendLine("        }")
         appendLine("    }")
@@ -80,33 +88,93 @@ private fun buildRadiusCode(
         appendLine("    }")
         appendLine("}")
         appendLine()
+
+        // Sub-protocols per semantic group
+        groupedResources.forEach { (groupName, groupTokens) ->
+            appendLine("/// ${groupName} radius values")
+            appendLine("public protocol ${groupName}RadiusValues {")
+            groupTokens.forEach { token ->
+                appendLine("    var ${token.name}: CGFloat { get }")
+            }
+            appendLine("}")
+            appendLine()
+            appendLine("/// ${groupName} shape values")
+            appendLine("public protocol ${groupName}Shapes {")
+            groupTokens.forEach { token ->
+                appendLine("    var ${token.name}: RoundedRectangle { get }")
+            }
+            appendLine("}")
+            appendLine()
+        }
+
+        // Root protocols: primitives flat + semantic nested
         appendLine("/// Protocol for radius values")
         appendLine("public protocol LemonadeRadiusValues {")
-        resources.forEach { resource ->
+        primitiveResources.forEach { resource ->
             appendLine("    var ${resource.name}: CGFloat { get }")
+        }
+        groupedResources.forEach { (groupName, _) ->
+            appendLine("    var ${groupName.replaceFirstChar { it.lowercase() }}: ${groupName}RadiusValues { get }")
         }
         appendLine("}")
         appendLine()
         appendLine("/// Protocol for shape values")
         appendLine("public protocol LemonadeShapes {")
-        resources.forEach { resource ->
+        primitiveResources.forEach { resource ->
             appendLine("    var ${resource.name}: RoundedRectangle { get }")
+        }
+        groupedResources.forEach { (groupName, _) ->
+            appendLine("    var ${groupName.replaceFirstChar { it.lowercase() }}: ${groupName}Shapes { get }")
         }
         appendLine("}")
         appendLine()
+
+        // Sub-impl structs
+        groupedResources.forEach { (groupName, groupTokens) ->
+            appendLine("internal struct ${groupName}RadiusValuesImpl: ${groupName}RadiusValues {")
+            groupTokens.forEach { token ->
+                val aliasSwiftName = token.value.aliasName?.sanitizedSwiftValueName()
+                if (aliasSwiftName != null) {
+                    appendLine("    let ${token.name}: CGFloat = LemonadeRadius.${aliasSwiftName}.value")
+                } else {
+                    appendLine("    let ${token.name}: CGFloat = ${token.value.radiusValue}")
+                }
+            }
+            appendLine("}")
+            appendLine()
+            appendLine("internal struct ${groupName}ShapesImpl: ${groupName}Shapes {")
+            groupTokens.forEach { token ->
+                val aliasSwiftName = token.value.aliasName?.sanitizedSwiftValueName()
+                if (aliasSwiftName != null) {
+                    appendLine("    var ${token.name}: RoundedRectangle { LemonadeRadius.${aliasSwiftName}.shape }")
+                } else {
+                    appendLine("    var ${token.name}: RoundedRectangle { RoundedRectangle(cornerRadius: ${token.value.radiusValue}) }")
+                }
+            }
+            appendLine("}")
+            appendLine()
+        }
+
+        // Root impl structs
         appendLine("/// Default radius values implementation")
-        appendLine("public struct LemonadeRadiusValuesImpl: LemonadeRadiusValues {")
-        resources.forEach { resource ->
-            appendLine("    public let ${resource.name}: CGFloat = LemonadeRadius.${resource.groupFullName?.replaceFirstChar { it.lowercase() }}.value")
+        appendLine("public struct LemonadeRadiusValuesImpl: LemonadeRadiusValues, Sendable {")
+        primitiveResources.forEach { resource ->
+            appendLine("    public let ${resource.name}: CGFloat = LemonadeRadius.${resource.name}.value")
+        }
+        groupedResources.forEach { (groupName, _) ->
+            appendLine("    public let ${groupName.replaceFirstChar { it.lowercase() }}: ${groupName}RadiusValues = ${groupName}RadiusValuesImpl()")
         }
         appendLine()
         appendLine("    public init() {}")
         appendLine("}")
         appendLine()
         appendLine("/// Default shapes implementation")
-        appendLine("public struct LemonadeShapesImpl: LemonadeShapes {")
-        resources.forEach { resource ->
-            appendLine("    public var ${resource.name}: RoundedRectangle { LemonadeRadius.${resource.groupFullName?.replaceFirstChar { it.lowercase() }}.shape }")
+        appendLine("public struct LemonadeShapesImpl: LemonadeShapes, Sendable {")
+        primitiveResources.forEach { resource ->
+            appendLine("    public var ${resource.name}: RoundedRectangle { LemonadeRadius.${resource.name}.shape }")
+        }
+        groupedResources.forEach { (groupName, _) ->
+            appendLine("    public let ${groupName.replaceFirstChar { it.lowercase() }}: ${groupName}Shapes = ${groupName}ShapesImpl()")
         }
         appendLine()
         appendLine("    public init() {}")
