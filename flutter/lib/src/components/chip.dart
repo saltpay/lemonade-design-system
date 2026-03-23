@@ -31,13 +31,21 @@ import 'package:lemonade_design_system/lemonade_design_system.dart';
 /// )
 /// ```
 ///
+/// Icon-only chip:
+/// ```dart
+/// LemonadeChip.iconOnly(
+///   icon: LemonadeIcons.heart,
+///   selected: true,
+/// )
+/// ```
+///
 /// See also:
 /// - [LemonadeChipTheme], for theme configuration
 /// {@endtemplate}
 class LemonadeChip extends StatefulWidget {
   /// {@macro LemonadeChip}
   const LemonadeChip({
-    required this.label,
+    required String this.label,
     this.selected = false,
     this.leadingIcon,
     this.trailingIcon,
@@ -48,13 +56,31 @@ class LemonadeChip extends StatefulWidget {
     this.semanticIdentifier,
     this.semanticLabel,
     super.key,
-  });
+  }) : icon = null;
+
+  /// Creates an icon-only chip without a text label.
+  const LemonadeChip.iconOnly({
+    required LemonadeIcons this.icon,
+    this.selected = false,
+    this.counter,
+    this.enabled = true,
+    this.onTap,
+    this.semanticIdentifier,
+    this.semanticLabel,
+    super.key,
+  })  : label = null,
+        leadingIcon = null,
+        trailingIcon = null,
+        onTrailingIconTap = null;
 
   /// The label text displayed on the chip.
-  final String label;
+  final String? label;
 
   /// Whether the chip is in a selected state.
   final bool selected;
+
+  /// Icon displayed as the sole content for icon-only chips.
+  final LemonadeIcons? icon;
 
   /// Optional icon displayed before the label.
   final LemonadeIcons? leadingIcon;
@@ -120,7 +146,7 @@ class _LemonadeChipState extends State<LemonadeChip> {
         : chipColors.backgroundColor;
 
     return Semantics(
-      label: widget.semanticLabel ?? widget.label,
+      label: widget.semanticLabel ?? widget.label ?? widget.icon?.name,
       identifier: widget.semanticIdentifier,
       button: widget.onTap != null,
       child: GestureDetector(
@@ -164,15 +190,29 @@ class _LemonadeChipState extends State<LemonadeChip> {
                     ),
                   ),
                 ],
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: spaces.spacing100),
-                  child: Text(
-                    widget.label,
-                    style: theme.typography.bodySmallMedium.apply(
-                      color: chipColors.contentColor,
+                if (widget.label != null)
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: spaces.spacing100),
+                    child: Text(
+                      widget.label!,
+                      style: theme.typography.bodySmallMedium.apply(
+                        color: chipColors.contentColor,
+                      ),
                     ),
                   ),
-                ),
+                if (widget.icon != null)
+                  SizedBox(
+                    width: chipTheme.iconSize,
+                    height: chipTheme.iconSize,
+                    child: Center(
+                      child: LemonadeIcon(
+                        icon: widget.icon!,
+                        size: LemonadeIconSize.small,
+                        color: chipColors.contentColor,
+                      ),
+                    ),
+                  ),
                 if (widget.counter != null) ...[
                   Container(
                     constraints: BoxConstraints(
