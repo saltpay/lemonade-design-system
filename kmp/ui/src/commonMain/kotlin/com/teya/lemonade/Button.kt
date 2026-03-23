@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
@@ -55,11 +56,12 @@ import com.teya.lemonade.core.LemonadeTextStyle
 public fun LemonadeUi.Button(
     label: String,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     leadingIcon: LemonadeIcons? = null,
     trailingIcon: LemonadeIcons? = null,
     variant: LemonadeButtonVariant = LemonadeButtonVariant.Primary,
     size: LemonadeButtonSize = LemonadeButtonSize.Large,
-    modifier: Modifier = Modifier,
+    spacedContents: Boolean = false,
     enabled: Boolean = true,
     loading: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -72,6 +74,7 @@ public fun LemonadeUi.Button(
         interactionSource = interactionSource,
         onClick = onClick,
         loading = loading,
+        spacedContents = spacedContents,
         contentSlot = {
             if (loading) {
                 LemonadeUi.Spinner(
@@ -106,16 +109,69 @@ public fun LemonadeUi.Button(
     )
 }
 
+@Composable
+public fun LemonadeUi.Button(
+    label: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    leadingSlot: (@Composable RowScope.(LemonadeButtonColors) -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.(LemonadeButtonColors) -> Unit)? = null,
+    variant: LemonadeButtonVariant = LemonadeButtonVariant.Primary,
+    size: LemonadeButtonSize = LemonadeButtonSize.Large,
+    spacedContents: Boolean = false,
+    enabled: Boolean = true,
+    loading: Boolean = false,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+) {
+    CoreButton(
+        variant = variant,
+        size = size,
+        modifier = modifier,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        onClick = onClick,
+        loading = loading,
+        spacedContents = spacedContents,
+        contentSlot = {
+            if (loading) {
+                LemonadeUi.Spinner(
+                    tint = variant.variantData.contentColor,
+                )
+            } else {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    leadingSlot?.invoke(this, variant.variantData)
+                }
+
+                LemonadeUi.Text(
+                    text = label,
+                    textStyle = size.contentData.textStyle,
+                    color = variant.variantData.contentColor,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .weight(
+                            weight = 1f,
+                            fill = spacedContents,
+                        ).padding(horizontal = LocalSpaces.current.spacing200),
+                )
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    trailingSlot?.invoke(this, variant.variantData)
+                }
+            }
+        },
+    )
+}
+
 @Stable
-private data class LemonadeButtonColors(
-    val contentColor: Color,
-    val solidBackgroundColor: Color,
-    val pressedBackgroundColor: Color,
-    val brushBackgroundColor: Brush? = null,
+public class LemonadeButtonColors internal constructor(
+    public val contentColor: Color,
+    public val solidBackgroundColor: Color,
+    public val pressedBackgroundColor: Color,
+    public val brushBackgroundColor: Brush? = null,
 )
 
 @Stable
-private data class LemonadeButtonContentData(
+private class LemonadeButtonContentData(
     val verticalPadding: Dp,
     val horizontalPadding: Dp,
     val minHeight: Dp,
@@ -214,6 +270,7 @@ private fun CoreButton(
     size: LemonadeButtonSize,
     enabled: Boolean,
     loading: Boolean,
+    spacedContents: Boolean,
     interactionSource: MutableInteractionSource,
     modifier: Modifier = Modifier,
 ) {
@@ -230,7 +287,11 @@ private fun CoreButton(
     Row(
         content = contentSlot,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = if (spacedContents) {
+            Arrangement.SpaceBetween
+        } else {
+            Arrangement.Center
+        },
         modifier = modifier
             .defaultMinSize(
                 minWidth = size.contentData.minWidth,
