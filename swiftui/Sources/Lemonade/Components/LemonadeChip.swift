@@ -81,6 +81,54 @@ public extension LemonadeUi {
         )
     }
 
+    /// An icon-only chip without a text label.
+    ///
+    /// ## Usage
+    /// ```swift
+    /// LemonadeUi.Chip(
+    ///     icon: .heart,
+    ///     selected: true
+    /// )
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - icon: The LemonadeIcon to display as the chip's content
+    ///   - selected: Set to true if the chip is in the selected state
+    ///   - counter: Optional Int number to be displayed in the chip
+    ///   - enabled: Controls the enabled state of the chip. Defaults to true
+    ///   - onChipClicked: Optional callback for when the chip is clicked
+    /// - Returns: A styled icon-only Chip view
+    @ViewBuilder
+    static func Chip(
+        icon: LemonadeIcon,
+        selected: Bool,
+        counter: Int? = nil,
+        enabled: Bool = true,
+        onChipClicked: (() -> Void)? = nil
+    ) -> some View {
+        LemonadeChipView(
+            selected: selected,
+            counter: counter,
+            enabled: enabled,
+            showLeadingSlot: false,
+            showTrailingSlot: false,
+            onChipClicked: onChipClicked,
+            onTrailingIconClick: nil,
+            contentSlot: {
+                LemonadeUi.Icon(
+                    icon: icon,
+                    contentDescription: nil,
+                    size: .small,
+                    tint: selected
+                        ? LemonadeTheme.colors.content.contentBrandInverse
+                        : LemonadeTheme.colors.content.contentPrimary
+                )
+            },
+            leadingSlot: { EmptyView() },
+            trailingSlot: { EmptyView() }
+        )
+    }
+
     /// A compact element used to display information with a custom leading image.
     ///
     /// ## Usage
