@@ -8,8 +8,11 @@ struct ChipDisplayView: View {
         ScrollView(.vertical) {
             VStack(alignment: .leading, spacing: 32) {
                 statesSection
+                labelOnlySection
+                labelOnlyWithTrailingSection
                 counterSection
                 iconsSection
+                iconOnlySection
                 interactiveSection
                 disabledSection
             }
@@ -36,6 +39,24 @@ struct ChipDisplayView: View {
         }
     }
 
+    private var labelOnlySection: some View {
+        sectionView(title: "Label Only") {
+            HStack(spacing: 12) {
+                LemonadeUi.Chip(label: "Unselected", selected: false)
+                LemonadeUi.Chip(label: "Selected", selected: true)
+            }
+        }
+    }
+
+    private var labelOnlyWithTrailingSection: some View {
+        sectionView(title: "Label Only with Trailing") {
+            HStack(spacing: 12) {
+                LemonadeUi.Chip(label: "Dismiss", selected: false, trailingIcon: .circleX)
+                LemonadeUi.Chip(label: "Dismiss", selected: true, trailingIcon: .circleX)
+            }
+        }
+    }
+
     private var counterSection: some View {
         sectionView(title: "With Counter") {
             HStack(spacing: 12) {
@@ -57,6 +78,16 @@ struct ChipDisplayView: View {
                     LemonadeUi.Chip(label: "Remove", selected: false, trailingIcon: .circleX)
                     LemonadeUi.Chip(label: "Remove", selected: true, trailingIcon: .circleX)
                 }
+            }
+        }
+    }
+
+    private var iconOnlySection: some View {
+        sectionView(title: "Icon Only") {
+            HStack(spacing: 12) {
+                LemonadeUi.Chip(icon: .heart, selected: false)
+                LemonadeUi.Chip(icon: .heart, selected: true)
+                LemonadeUi.Chip(icon: .star, selected: false, counter: 3)
             }
         }
     }
