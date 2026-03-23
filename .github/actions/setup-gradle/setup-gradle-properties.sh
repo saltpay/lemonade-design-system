@@ -17,6 +17,7 @@ write_common_properties() {
     write_property "org.gradle.parallel=true"
     write_property "org.gradle.configureondemand=false"
     write_property "org.gradle.caching=true"
+    write_property "org.gradle.configuration-cache.parallel=true"
     write_property "org.gradle.daemon=false"
     write_property "org.gradle.logging.stacktrace=all"
 
@@ -52,8 +53,8 @@ write_macos_properties() {
 
 write_linux_properties() {
     echo "🔥 Fine tuning Gradle properties for Linux GHA runner"
-    write_property "org.gradle.jvmargs=-Xmx6g -Xms1g -XX:MaxMetaspaceSize=1g -XX:+UseParallelGC -Dfile.encoding=UTF-8"
-    write_property "kotlin.daemon.jvmargs=-Xmx6g -Xms1g -XX:+UseParallelGC -Dfile.encoding=UTF-8"
+    write_property "org.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=1g -XX:+UseParallelGC -Dfile.encoding=UTF-8"
+    write_property "kotlin.daemon.jvmargs=-Xmx3g -XX:+UseParallelGC -Dfile.encoding=UTF-8"
     write_property "org.gradle.parallel.threads=4"
     echo "✅ Fine tuning complete"
 }

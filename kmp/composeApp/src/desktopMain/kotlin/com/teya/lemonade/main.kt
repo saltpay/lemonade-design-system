@@ -11,7 +11,9 @@ internal fun main() {
             title = "Lemonade",
         ) {
             LemonadeStyledTheme {
-                App()
+                LemonadeToastHost {
+                    App()
+                }
             }
         }
     }
