@@ -4,6 +4,7 @@
 
 import java.io.File
 import java.security.MessageDigest
+import org.json.JSONObject
 
 // === Name conversion utilities ===
 
@@ -48,20 +49,8 @@ fun sha256(file: File): String {
 fun loadCache(): MutableMap<String, String> {
     if (!cacheFile.exists()) return mutableMapOf()
     return try {
-        val content = cacheFile.readText()
-        val map = mutableMapOf<String, String>()
-        content.lines()
-            .filter { it.contains(":") && it.contains("\"") }
-            .forEach { line ->
-                val key = line.substringAfter("\"").substringBefore("\"")
-                val value = line.substringAfterLast("\"").let {
-                    line.substringBeforeLast("\"").substringAfterLast("\"")
-                }
-                if (key.isNotBlank() && value.isNotBlank()) {
-                    map[key] = value.trimEnd(',')
-                }
-            }
-        map
+        val json = JSONObject(cacheFile.readText())
+        json.keySet().associateWith { json.getString(it) }.toMutableMap()
     } catch (e: Exception) {
         println("⚠️ Failed to load cache, starting fresh: ${e.message}")
         mutableMapOf()
@@ -70,16 +59,7 @@ fun loadCache(): MutableMap<String, String> {
 
 fun saveCache(cache: Map<String, String>) {
     cacheFile.parentFile.mkdirs()
-    val json = buildString {
-        appendLine("{")
-        val entries = cache.entries.sortedBy { it.key }
-        entries.forEachIndexed { index, (key, value) ->
-            val comma = if (index < entries.size - 1) "," else ""
-            appendLine("  \"$key\": \"$value\"$comma")
-        }
-        appendLine("}")
-    }
-    cacheFile.writeText(json)
+    cacheFile.writeText(JSONObject(cache.toSortedMap()).toString(2))
 }
 
 // === Pre-compiled regexes for SVG parsing ===
@@ -508,18 +488,25 @@ fun main() {
 
         // Determine which files changed by comparing content hashes
         val changedFiles = mutableSetOf<String>()
+        val newHashes = mutableMapOf<String, String>()
         svgFiles.forEach { svgFile ->
             val hash = sha256(svgFile)
-            val cachedHash = cache[svgFile.path]
-            if (hash != cachedHash) {
+            newHashes[svgFile.path] = hash
+            if (hash != cache[svgFile.path]) {
                 changedFiles.add(svgFile.path)
             }
-            updatedCache[svgFile.path] = hash
         }
 
         // Prune cache entries for deleted SVGs in this pack
         val currentPaths = svgFiles.map { it.path }.toSet()
-        updatedCache.keys.removeAll { it.startsWith(pack.sourceDir) && it !in currentPaths }
+        updatedCache.keys.removeAll { it.startsWith("${pack.sourceDir}/") && it !in currentPaths }
+
+        // Cache unchanged files immediately; changed files are cached after successful conversion
+        newHashes.forEach { (path, hash) ->
+            if (path !in changedFiles) {
+                updatedCache[path] = hash
+            }
+        }
 
         if (changedFiles.isEmpty()) {
             println("✓ ${pack.name}: no changes detected, skipping conversions")
@@ -531,20 +518,8 @@ fun main() {
         generateKmpAssets(pack, svgFiles, changedFiles)
         generateSwiftAssets(pack, svgFiles, changedFiles)
 
-        // Run alpha-2 generator after flags are converted (appends companion object to the enum)
-        if (pack.packType == PackType.FLAG) {
-            println("Running kmp-country-flags-alpha2-generator...")
-            val result = ProcessBuilder("kotlin", "scripts/kmp-country-flags-alpha2-generator.main.kts")
-                .redirectErrorStream(true)
-                .start()
-            val output = result.inputStream.bufferedReader().readText()
-            val exitCode = result.waitFor()
-            if (exitCode == 0) {
-                println("✓ Alpha-2 generator complete")
-            } else {
-                println("✗ Alpha-2 generator failed: $output")
-            }
-        }
+        // Only cache changed files after successful conversion
+        changedFiles.forEach { path -> updatedCache[path] = newHashes[path]!! }
 
         println("✓ ${pack.name} complete")
     }
