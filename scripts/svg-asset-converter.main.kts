@@ -151,13 +151,13 @@ private fun generateKmpAssets(pack: PackConfig, svgFiles: List<File>, changedFil
             val fileName = svgFile.nameWithoutExtension
             iconNames.add(fileName)
 
-            if (svgFile.path !in changedFiles) return@forEach
+            val outputFileName = fileName.replace("-", "_")
+            val outputFile = File(outputDir, "gen_$outputFileName.xml")
+
+            if (svgFile.path !in changedFiles && outputFile.exists()) return@forEach
 
             val svgContent = svgFile.readText()
             val vectorDrawable = convertSvgToVectorDrawable(svgContent)
-
-            val outputFileName = fileName.replace("-", "_")
-            val outputFile = File(outputDir, "gen_$outputFileName.xml")
             outputFile.writeText(vectorDrawable)
             convertedCount++
         } catch (e: Exception) {
@@ -276,13 +276,13 @@ private fun generateSwiftAssets(pack: PackConfig, svgFiles: List<File>, changedF
 
     // Create imagesets with converted PDFs
     svgFiles.forEach { svgFile ->
-        if (svgFile.path !in changedFiles) return@forEach
-
         val name = svgFile.nameWithoutExtension
         val imagesetDir = File(assetsDir, "$name.imageset")
-        imagesetDir.mkdirs()
-
         val pdfFile = File(imagesetDir, "$name.pdf")
+
+        if (svgFile.path !in changedFiles && pdfFile.exists()) return@forEach
+
+        imagesetDir.mkdirs()
         try {
             convertSvgToPdf(svgFile, pdfFile)
         } catch (e: Exception) {
@@ -499,7 +499,7 @@ fun main() {
 
         // Prune cache entries for deleted SVGs in this pack
         val currentPaths = svgFiles.map { it.path }.toSet()
-        updatedCache.keys.removeAll { it.startsWith("${pack.sourceDir}/") && it !in currentPaths }
+        val deletionsOccurred = updatedCache.keys.removeAll { it.startsWith("${pack.sourceDir}/") && it !in currentPaths }
 
         // Cache unchanged files immediately; changed files are cached after successful conversion
         newHashes.forEach { (path, hash) ->
@@ -508,12 +508,27 @@ fun main() {
             }
         }
 
-        if (changedFiles.isEmpty()) {
+        // Also check for missing outputs (e.g., generated files deleted while cache intact)
+        val kmpDrawableDir = File("kmp/ui/src/commonMain/composeResources/drawable")
+        val assetsRoot = File("swiftui/Sources/Lemonade/Resources/Assets.xcassets")
+        val missingOutputs = svgFiles.any { svgFile ->
+            val name = svgFile.nameWithoutExtension
+            val kmpFile = File(kmpDrawableDir, "gen_${name.replace("-", "_")}.xml")
+            val pdfFile = File(assetsRoot, "$name.imageset/$name.pdf")
+            !kmpFile.exists() || !pdfFile.exists()
+        }
+
+        if (changedFiles.isEmpty() && !deletionsOccurred && !missingOutputs) {
             println("✓ ${pack.name}: no changes detected, skipping conversions")
             return@forEach
         }
 
-        println("${changedFiles.size} file(s) changed")
+        if (changedFiles.isNotEmpty()) {
+            println("${changedFiles.size} file(s) changed")
+        }
+        if (deletionsOccurred) {
+            println("Deletions detected, regenerating enum/extension files")
+        }
 
         generateKmpAssets(pack, svgFiles, changedFiles)
         generateSwiftAssets(pack, svgFiles, changedFiles)
