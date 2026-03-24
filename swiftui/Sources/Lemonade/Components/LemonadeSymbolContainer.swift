@@ -55,7 +55,7 @@ public enum SymbolContainerSize {
         case .medium: return LemonadeTheme.sizes.size1000
         case .large: return LemonadeTheme.sizes.size1200
         case .xLarge: return LemonadeTheme.sizes.size1600
-        case .xxLarge: return LemonadeTheme.sizes.size1800
+        case .xxLarge: return LemonadeTheme.sizes.size2000
         }
     }
 

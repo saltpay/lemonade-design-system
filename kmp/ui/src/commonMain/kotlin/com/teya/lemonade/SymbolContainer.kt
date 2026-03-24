@@ -370,7 +370,7 @@ private fun SymbolContainerSize.defaultSymbolContainerPlatformDimensions(): Symb
         )
 
         SymbolContainerSize.XXLarge -> SymbolContainerPlatformDimensions(
-            containerSize = LocalSizes.current.size1800,
+            containerSize = LocalSizes.current.size2000,
             contentSize = LocalSizes.current.size1000,
             lemonadeIconSize = LemonadeAssetSize.XXLarge,
             textStyle = LocalTypographies.current.headingSmall,

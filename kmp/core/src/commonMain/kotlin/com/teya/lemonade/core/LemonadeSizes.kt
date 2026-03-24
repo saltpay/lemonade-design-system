@@ -2,7 +2,7 @@ package com.teya.lemonade.core
 
 /**
  * Core definition of the LemonadeSizes tokens.
- *
+ * 
  * Auto-generated content.
  *
  * ⚠️ **DO NOT MODIFY THIS FILE MANUALLY** ⚠️
@@ -40,4 +40,8 @@ public enum class LemonadeSizes {
     Size1400,
     Size1600,
     Size1800,
+    Size2000,
+    Size2200,
+    Size2400,
+    Size2500,
 }
