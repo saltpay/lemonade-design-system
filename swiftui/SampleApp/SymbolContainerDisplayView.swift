@@ -98,18 +98,39 @@ struct SymbolContainerDisplayView: View {
 
     // MARK: - Shapes
 
+    private let roundedScalingSizes: [(SymbolContainerSize, String)] = [
+        (.large, "Rounded L"),
+        (.xLarge, "Rounded XL"),
+        (.xxLarge, "Rounded XXL"),
+    ]
+
     private var shapesSection: some View {
         sectionView(title: "Shapes") {
-            HStack(spacing: 16) {
-                ForEach(allShapes, id: \.0) { shape, label in
-                    VStack(spacing: 8) {
-                        LemonadeUi.SymbolContainer(
-                            icon: .heart,
-                            contentDescription: nil,
-                            size: .medium,
-                            shape: shape
-                        )
-                        Text(label).font(.caption)
+            VStack(alignment: .leading, spacing: 16) {
+                HStack(spacing: 16) {
+                    ForEach(allShapes, id: \.0) { shape, label in
+                        VStack(spacing: 8) {
+                            LemonadeUi.SymbolContainer(
+                                icon: .heart,
+                                contentDescription: nil,
+                                size: .medium,
+                                shape: shape
+                            )
+                            Text(label).font(.caption)
+                        }
+                    }
+                }
+                HStack(spacing: 16) {
+                    ForEach(roundedScalingSizes, id: \.0) { size, label in
+                        VStack(spacing: 8) {
+                            LemonadeUi.SymbolContainer(
+                                icon: .heart,
+                                contentDescription: nil,
+                                size: size,
+                                shape: .rounded
+                            )
+                            Text(label).font(.caption)
+                        }
                     }
                 }
             }

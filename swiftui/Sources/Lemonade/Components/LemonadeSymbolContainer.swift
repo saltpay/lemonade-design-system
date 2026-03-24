@@ -340,7 +340,18 @@ private struct LemonadeSymbolContainerView<Content: View, Badge: View>: View {
         case .circle:
             base.clipShape(Circle())
         case .rounded:
-            base.clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius300))
+            base.clipShape(RoundedRectangle(cornerRadius: roundedRadius(for: size)))
+        }
+    }
+
+    private func roundedRadius(for size: SymbolContainerSize) -> CGFloat {
+        switch size {
+        case .xSmall: LemonadeTheme.radius.radius200
+        case .small: LemonadeTheme.radius.radius250
+        case .medium: LemonadeTheme.radius.radius300
+        case .large: LemonadeTheme.radius.radius400
+        case .xLarge: LemonadeTheme.radius.radius500
+        case .xxLarge: LemonadeTheme.radius.radius600
         }
     }
 
