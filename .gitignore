@@ -87,6 +87,9 @@ yarn-error.log*
 # Git worktrees
 .worktrees/
 
+# Script caches
+.cache/
+
 # Temporary files
 *.tmp
 *.temp
