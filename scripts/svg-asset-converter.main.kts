@@ -3,6 +3,8 @@
 @file:Import("swiftui-resource-file-loading.main.kts")
 
 import java.io.File
+import java.security.MessageDigest
+import org.json.JSONObject
 
 // === Name conversion utilities ===
 
@@ -33,6 +35,32 @@ val packs = listOf(
     PackConfig("flags", "svg/flags", "LemonadeCountryFlags", "LemonadeCountryFlag", "LemonadeCountryFlags.swift", PackType.FLAG),
     PackConfig("brandLogos", "svg/brandLogos", "LemonadeBrandLogos", "LemonadeBrandLogo", "LemonadeBrandLogos.swift", PackType.BRAND_LOGO),
 )
+
+// === Content-hash cache ===
+
+val cacheFile = File(".cache/svg-converter-hashes.json")
+
+fun sha256(file: File): String {
+    val digest = MessageDigest.getInstance("SHA-256")
+    val bytes = file.readBytes()
+    return digest.digest(bytes).joinToString("") { "%02x".format(it) }
+}
+
+fun loadCache(): MutableMap<String, String> {
+    if (!cacheFile.exists()) return mutableMapOf()
+    return try {
+        val json = JSONObject(cacheFile.readText())
+        json.keySet().associateWith { json.getString(it) }.toMutableMap()
+    } catch (e: Exception) {
+        println("⚠️ Failed to load cache, starting fresh: ${e.message}")
+        mutableMapOf()
+    }
+}
+
+fun saveCache(cache: Map<String, String>) {
+    cacheFile.parentFile.mkdirs()
+    cacheFile.writeText(JSONObject(cache.toSortedMap()).toString(2))
+}
 
 // === Pre-compiled regexes for SVG parsing ===
 
@@ -111,23 +139,27 @@ private fun convertSvgToVectorDrawable(svgContent: String): String {
     }
 }
 
-private fun generateKmpAssets(pack: PackConfig, svgFiles: List<File>) {
+private fun generateKmpAssets(pack: PackConfig, svgFiles: List<File>, changedFiles: Set<String>) {
     val outputDir = File("kmp/ui/src/commonMain/composeResources/drawable")
     outputDir.mkdirs()
 
     val iconNames = mutableListOf<String>()
+    var convertedCount = 0
 
     svgFiles.forEach { svgFile ->
         try {
-            val svgContent = svgFile.readText()
             val fileName = svgFile.nameWithoutExtension
-            val vectorDrawable = convertSvgToVectorDrawable(svgContent)
+            iconNames.add(fileName)
 
             val outputFileName = fileName.replace("-", "_")
             val outputFile = File(outputDir, "gen_$outputFileName.xml")
-            outputFile.writeText(vectorDrawable)
 
-            iconNames.add(fileName)
+            if (svgFile.path !in changedFiles && outputFile.exists()) return@forEach
+
+            val svgContent = svgFile.readText()
+            val vectorDrawable = convertSvgToVectorDrawable(svgContent)
+            outputFile.writeText(vectorDrawable)
+            convertedCount++
         } catch (e: Exception) {
             println("✗ KMP: Failed to convert ${svgFile.name}: ${e.message}")
         }
@@ -137,7 +169,7 @@ private fun generateKmpAssets(pack: PackConfig, svgFiles: List<File>) {
         val sortedNames = iconNames.sorted()
         generateKmpEnum(pack, sortedNames)
         generateKmpExtension(pack, sortedNames)
-        println("✓ KMP: Generated ${sortedNames.size} drawables + enum + extension for ${pack.kmpEnumName}")
+        println("✓ KMP: Converted $convertedCount/${sortedNames.size} drawables (${sortedNames.size - convertedCount} cached) + enum + extension for ${pack.kmpEnumName}")
     }
 }
 
@@ -234,19 +266,23 @@ private fun ensureAssetCatalogRoot(assetsDir: File) {
 """)
 }
 
-private fun generateSwiftAssets(pack: PackConfig, svgFiles: List<File>) {
+private fun generateSwiftAssets(pack: PackConfig, svgFiles: List<File>, changedFiles: Set<String>) {
     val outputDir = File("swiftui/Sources/Lemonade")
     val assetsDir = File("swiftui/Sources/Lemonade/Resources/Assets.xcassets")
 
     outputDir.mkdirs()
 
+    var convertedCount = 0
+
     // Create imagesets with converted PDFs
     svgFiles.forEach { svgFile ->
         val name = svgFile.nameWithoutExtension
         val imagesetDir = File(assetsDir, "$name.imageset")
-        imagesetDir.mkdirs()
-
         val pdfFile = File(imagesetDir, "$name.pdf")
+
+        if (svgFile.path !in changedFiles && pdfFile.exists()) return@forEach
+
+        imagesetDir.mkdirs()
         try {
             convertSvgToPdf(svgFile, pdfFile)
         } catch (e: Exception) {
@@ -257,14 +293,15 @@ private fun generateSwiftAssets(pack: PackConfig, svgFiles: List<File>) {
         // Write Contents.json based on pack type
         val contentsJson = File(imagesetDir, "Contents.json")
         contentsJson.writeText(buildImagesetContentsJson(pack.packType, "$name.pdf"))
+        convertedCount++
     }
 
-    // Generate Swift enum file
+    // Generate Swift enum file (always, since it lists all entries)
     val swiftCode = buildSwiftEnum(pack, svgFiles)
     val outputFile = File(outputDir, pack.swiftFileName)
     outputFile.writeText(swiftCode)
 
-    println("✓ SwiftUI: Generated ${svgFiles.size} imagesets + ${pack.swiftFileName}")
+    println("✓ SwiftUI: Converted $convertedCount/${svgFiles.size} imagesets (${svgFiles.size - convertedCount} cached) + ${pack.swiftFileName}")
 }
 
 private fun buildImagesetContentsJson(packType: PackType, pdfFileName: String): String {
@@ -415,10 +452,21 @@ private fun buildBrandLogoSwiftEnum(pack: PackConfig, svgFiles: List<File>): Str
 // === Main entry point ===
 
 fun main() {
+    val forceRebuild = args.contains("--force")
+
     checkRsvgConvert()
+
+    val cache = if (forceRebuild) {
+        println("⚡ Force mode: rebuilding all assets")
+        mutableMapOf()
+    } else {
+        loadCache()
+    }
 
     val assetsDir = File("swiftui/Sources/Lemonade/Resources/Assets.xcassets")
     ensureAssetCatalogRoot(assetsDir)
+
+    val updatedCache = cache.toMutableMap()
 
     packs.forEach { pack ->
         println("=== Processing ${pack.name} ===")
@@ -438,11 +486,60 @@ fun main() {
 
         println("Found ${svgFiles.size} SVG files")
 
-        generateKmpAssets(pack, svgFiles)
-        generateSwiftAssets(pack, svgFiles)
+        // Determine which files changed by comparing content hashes
+        val changedFiles = mutableSetOf<String>()
+        val newHashes = mutableMapOf<String, String>()
+        svgFiles.forEach { svgFile ->
+            val hash = sha256(svgFile)
+            newHashes[svgFile.path] = hash
+            if (hash != cache[svgFile.path]) {
+                changedFiles.add(svgFile.path)
+            }
+        }
+
+        // Prune cache entries for deleted SVGs in this pack
+        val currentPaths = svgFiles.map { it.path }.toSet()
+        val deletionsOccurred = updatedCache.keys.removeAll { it.startsWith("${pack.sourceDir}/") && it !in currentPaths }
+
+        // Cache unchanged files immediately; changed files are cached after successful conversion
+        newHashes.forEach { (path, hash) ->
+            if (path !in changedFiles) {
+                updatedCache[path] = hash
+            }
+        }
+
+        // Also check for missing outputs (e.g., generated files deleted while cache intact)
+        val kmpDrawableDir = File("kmp/ui/src/commonMain/composeResources/drawable")
+        val assetsRoot = File("swiftui/Sources/Lemonade/Resources/Assets.xcassets")
+        val missingOutputs = svgFiles.any { svgFile ->
+            val name = svgFile.nameWithoutExtension
+            val kmpFile = File(kmpDrawableDir, "gen_${name.replace("-", "_")}.xml")
+            val pdfFile = File(assetsRoot, "$name.imageset/$name.pdf")
+            !kmpFile.exists() || !pdfFile.exists()
+        }
+
+        if (changedFiles.isEmpty() && !deletionsOccurred && !missingOutputs) {
+            println("✓ ${pack.name}: no changes detected, skipping conversions")
+            return@forEach
+        }
+
+        if (changedFiles.isNotEmpty()) {
+            println("${changedFiles.size} file(s) changed")
+        }
+        if (deletionsOccurred) {
+            println("Deletions detected, regenerating enum/extension files")
+        }
+
+        generateKmpAssets(pack, svgFiles, changedFiles)
+        generateSwiftAssets(pack, svgFiles, changedFiles)
+
+        // Only cache changed files after successful conversion
+        changedFiles.forEach { path -> updatedCache[path] = newHashes[path]!! }
 
         println("✓ ${pack.name} complete")
     }
+
+    saveCache(updatedCache)
     println("=== All packs processed ===")
 }
 
