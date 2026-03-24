@@ -34,6 +34,13 @@ jobs:
       - name: Show Xcode version
         run: xcodebuild -version
 
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+        working-directory: ./swiftui
+
       - name: Build XCFramework
         working-directory: ./swiftui
         run: |
