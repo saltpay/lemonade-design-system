@@ -531,6 +531,21 @@ fun main() {
         generateKmpAssets(pack, svgFiles, changedFiles)
         generateSwiftAssets(pack, svgFiles, changedFiles)
 
+        // Run alpha-2 generator after flags are converted (appends companion object to the enum)
+        if (pack.packType == PackType.FLAG) {
+            println("Running kmp-country-flags-alpha2-generator...")
+            val result = ProcessBuilder("kotlin", "scripts/kmp-country-flags-alpha2-generator.main.kts")
+                .redirectErrorStream(true)
+                .start()
+            val output = result.inputStream.bufferedReader().readText()
+            val exitCode = result.waitFor()
+            if (exitCode == 0) {
+                println("✓ Alpha-2 generator complete")
+            } else {
+                println("✗ Alpha-2 generator failed: $output")
+            }
+        }
+
         println("✓ ${pack.name} complete")
     }
 
