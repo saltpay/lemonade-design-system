@@ -37,6 +37,8 @@ struct SymbolContainerDisplayView: View {
         (.small, "Small"),
         (.medium, "Medium"),
         (.large, "Large"),
+        (.xLarge, "XLarge"),
+        (.xxLarge, "XXLarge"),
     ]
 
     var body: some View {
