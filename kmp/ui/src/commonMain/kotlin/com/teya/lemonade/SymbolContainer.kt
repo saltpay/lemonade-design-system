@@ -368,6 +368,13 @@ private fun SymbolContainerSize.defaultSymbolContainerPlatformDimensions(): Symb
             lemonadeIconSize = LemonadeAssetSize.XLarge,
             textStyle = LocalTypographies.current.bodyXLargeSemiBold,
         )
+
+        SymbolContainerSize.XXLarge -> SymbolContainerPlatformDimensions(
+            containerSize = LocalSizes.current.size1800,
+            contentSize = LocalSizes.current.size1000,
+            lemonadeIconSize = LemonadeAssetSize.XXLarge,
+            textStyle = LocalTypographies.current.headingSmall,
+        )
     }
 
 private data class SymbolContainerPreviewData(

@@ -39,4 +39,5 @@ public enum class LemonadeSizes {
     Size1200,
     Size1400,
     Size1600,
+    Size1800,
 }

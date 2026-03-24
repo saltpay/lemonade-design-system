@@ -49,6 +49,7 @@ public val LemonadeSizes.dp: Dp
             LemonadeSizes.Size1200 -> 48.dp
             LemonadeSizes.Size1400 -> 56.dp
             LemonadeSizes.Size1600 -> 64.dp
+            LemonadeSizes.Size1800 -> 72.dp
         }
     }
 
@@ -75,6 +76,7 @@ public interface LemonadeSizeValues {
     public val size1200: Dp
     public val size1400: Dp
     public val size1600: Dp
+    public val size1800: Dp
 }
 
 @Stable
@@ -101,4 +103,5 @@ internal data class InternalLemonadeSizeValues(
     override val size1200: Dp = LemonadeSizes.Size1200.dp,
     override val size1400: Dp = LemonadeSizes.Size1400.dp,
     override val size1600: Dp = LemonadeSizes.Size1600.dp,
+    override val size1800: Dp = LemonadeSizes.Size1800.dp,
 ) : LemonadeSizeValues

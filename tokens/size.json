@@ -513,6 +513,29 @@
       }
     },
     {
+      "id": "VariableID:15012:87783",
+      "name": "size-1800",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3183:0": 72
+      },
+      "resolvedValuesByMode": {
+        "3183:0": {
+          "resolvedValue": 72,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size1800",
+        "iOS": "context.lemonade.sizes.size1800"
+      }
+    },
+    {
       "id": "VariableID:3260:5769",
       "name": "size-550",
       "description": "",

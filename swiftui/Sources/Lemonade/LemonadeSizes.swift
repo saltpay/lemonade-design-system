@@ -42,6 +42,7 @@ public enum LemonadeSizes: Sendable {
     case size1200
     case size1400
     case size1600
+    case size1800
 
     /// Returns the CGFloat value for this size token
     public var value: CGFloat {
@@ -68,6 +69,7 @@ public enum LemonadeSizes: Sendable {
         case .size1200: return 48
         case .size1400: return 56
         case .size1600: return 64
+        case .size1800: return 72
         }
     }
 }
@@ -96,6 +98,7 @@ public protocol LemonadeSizeValues {
     var size1200: CGFloat { get }
     var size1400: CGFloat { get }
     var size1600: CGFloat { get }
+    var size1800: CGFloat { get }
 }
 
 /// Default size values implementation
@@ -122,6 +125,7 @@ public struct LemonadeSizeValuesImpl: LemonadeSizeValues, Sendable {
     public let size1200: CGFloat = LemonadeSizes.size1200.value
     public let size1400: CGFloat = LemonadeSizes.size1400.value
     public let size1600: CGFloat = LemonadeSizes.size1600.value
+    public let size1800: CGFloat = LemonadeSizes.size1800.value
 
     public init() {}
 }
