@@ -17,6 +17,8 @@ import org.jetbrains.compose.resources.DrawableResource
 public val LemonadeIcons.drawableResource: DrawableResource
     get() = when (this) {
         LemonadeIcons.Airplane -> LemonadeRes.drawable.gen_airplane
+        LemonadeIcons.AppearanceDarkMode -> LemonadeRes.drawable.gen_appearance_dark_mode
+        LemonadeIcons.AppearanceLightMode -> LemonadeRes.drawable.gen_appearance_light_mode
         LemonadeIcons.ArrowCornerDownLeft -> LemonadeRes.drawable.gen_arrow_corner_down_left
         LemonadeIcons.ArrowCornerDownLeftSlash -> LemonadeRes.drawable.gen_arrow_corner_down_left_slash
         LemonadeIcons.ArrowCornerDownRight -> LemonadeRes.drawable.gen_arrow_corner_down_right

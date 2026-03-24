@@ -1,9 +1,5 @@
 import SwiftUI
-#if canImport(UIKit)
 import UIKit
-#elseif canImport(AppKit)
-import AppKit
-#endif
 
 /// Lemonade Design System Icons.
 /// Icons are loaded from the asset catalog bundled with this module.
@@ -25,6 +21,8 @@ import AppKit
 /// Icon token enum
 public enum LemonadeIcon: String, CaseIterable {
     case airplane = "airplane"
+    case appearanceDarkMode = "appearance-dark-mode"
+    case appearanceLightMode = "appearance-light-mode"
     case arrowCornerDownLeft = "arrow-corner-down-left"
     case arrowCornerDownLeftSlash = "arrow-corner-down-left-slash"
     case arrowCornerDownRight = "arrow-corner-down-right"
@@ -275,14 +273,10 @@ public enum LemonadeIcon: String, CaseIterable {
 
     /// Returns the Image for this icon from the Lemonade bundle's asset catalog
     public var image: Image {
-        #if canImport(UIKit)
         if let uiImage = UIImage(named: rawValue, in: .lemonade, compatibleWith: nil) {
             return Image(uiImage: uiImage).renderingMode(.template)
         }
         return Image(systemName: "questionmark.square")
-        #else
-        return Image(self.rawValue, bundle: .lemonade).renderingMode(.template)
-        #endif
     }
 }
 
