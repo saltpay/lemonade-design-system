@@ -175,6 +175,57 @@ internal fun SymbolContainerDisplay() {
                     )
                 }
             }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.Large,
+                        shape = SymbolContainerShape.Rounded,
+                    )
+                    LemonadeUi.Text(
+                        text = "Rounded L",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.XLarge,
+                        shape = SymbolContainerShape.Rounded,
+                    )
+                    LemonadeUi.Text(
+                        text = "Rounded XL",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.XXLarge,
+                        shape = SymbolContainerShape.Rounded,
+                    )
+                    LemonadeUi.Text(
+                        text = "Rounded XXL",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+            }
         }
 
         // Voices

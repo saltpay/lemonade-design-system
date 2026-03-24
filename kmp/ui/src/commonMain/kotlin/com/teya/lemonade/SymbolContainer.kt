@@ -245,7 +245,7 @@ private fun CoreSymbolContainer(
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     val dimensions = size.defaultSymbolContainerPlatformDimensions()
-    val resolvedShape = shape.resolveShape()
+    val resolvedShape = shape.resolveShape(size)
     CompositionLocalProvider(LocalSymbolContainerPlatformDimensions provides dimensions) {
         if (badgeSlot != null) {
             val density = LocalDensity.current
@@ -318,10 +318,18 @@ private val SymbolContainerVoice.containerColor: Color
     }
 
 @Composable
-private fun SymbolContainerShape.resolveShape(): Shape =
+private fun SymbolContainerShape.resolveShape(size: SymbolContainerSize): Shape =
     when (this) {
         SymbolContainerShape.Circle -> LocalShapes.current.radiusFull
-        SymbolContainerShape.Rounded -> LocalShapes.current.radius300
+        SymbolContainerShape.Rounded -> when (size) {
+            SymbolContainerSize.XSmall,
+            SymbolContainerSize.Small,
+            SymbolContainerSize.Medium,
+            -> LocalShapes.current.radius300
+            SymbolContainerSize.Large -> LocalShapes.current.radius400
+            SymbolContainerSize.XLarge -> LocalShapes.current.radius500
+            SymbolContainerSize.XXLarge -> LocalShapes.current.radius600
+        }
     }
 
 private data class SymbolContainerPlatformDimensions(
