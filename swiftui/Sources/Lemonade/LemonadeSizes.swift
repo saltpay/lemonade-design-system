@@ -19,7 +19,7 @@ import SwiftUI
 /// 
 
 /// Size token enum
-public enum LemonadeSizes: Sendable {
+public enum LemonadeSizes {
     case size0
     case size50
     case size100
@@ -42,6 +42,11 @@ public enum LemonadeSizes: Sendable {
     case size1200
     case size1400
     case size1600
+    case size1800
+    case size2000
+    case size2200
+    case size2400
+    case size2500
 
     /// Returns the CGFloat value for this size token
     public var value: CGFloat {
@@ -68,6 +73,11 @@ public enum LemonadeSizes: Sendable {
         case .size1200: return 48
         case .size1400: return 56
         case .size1600: return 64
+        case .size1800: return 72
+        case .size2000: return 80
+        case .size2200: return 88
+        case .size2400: return 96
+        case .size2500: return 100
         }
     }
 }
@@ -96,10 +106,15 @@ public protocol LemonadeSizeValues {
     var size1200: CGFloat { get }
     var size1400: CGFloat { get }
     var size1600: CGFloat { get }
+    var size1800: CGFloat { get }
+    var size2000: CGFloat { get }
+    var size2200: CGFloat { get }
+    var size2400: CGFloat { get }
+    var size2500: CGFloat { get }
 }
 
 /// Default size values implementation
-public struct LemonadeSizeValuesImpl: LemonadeSizeValues, Sendable {
+public struct LemonadeSizeValuesImpl: LemonadeSizeValues {
     public let size0: CGFloat = LemonadeSizes.size0.value
     public let size50: CGFloat = LemonadeSizes.size50.value
     public let size100: CGFloat = LemonadeSizes.size100.value
@@ -122,6 +137,11 @@ public struct LemonadeSizeValuesImpl: LemonadeSizeValues, Sendable {
     public let size1200: CGFloat = LemonadeSizes.size1200.value
     public let size1400: CGFloat = LemonadeSizes.size1400.value
     public let size1600: CGFloat = LemonadeSizes.size1600.value
+    public let size1800: CGFloat = LemonadeSizes.size1800.value
+    public let size2000: CGFloat = LemonadeSizes.size2000.value
+    public let size2200: CGFloat = LemonadeSizes.size2200.value
+    public let size2400: CGFloat = LemonadeSizes.size2400.value
+    public let size2500: CGFloat = LemonadeSizes.size2500.value
 
     public init() {}
 }

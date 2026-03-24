@@ -118,6 +118,24 @@ internal fun SymbolContainerDisplay() {
                     )
                 }
             }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.XXLarge,
+                    )
+                    LemonadeUi.Text(
+                        text = "XXLarge",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+            }
         }
 
         // Shapes
@@ -523,6 +541,38 @@ internal fun SymbolContainerDisplay() {
                     )
                     LemonadeUi.Text(
                         text = "Large",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        painter = painterResource(Res.drawable.netflix_logo),
+                        contentDescription = "Netflix logo",
+                        fill = false,
+                        size = SymbolContainerSize.XLarge,
+                    )
+                    LemonadeUi.Text(
+                        text = "XLarge",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        painter = painterResource(Res.drawable.netflix_logo),
+                        contentDescription = "Netflix logo",
+                        fill = false,
+                        size = SymbolContainerSize.XXLarge,
+                    )
+                    LemonadeUi.Text(
+                        text = "XXLarge",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }

@@ -16,6 +16,7 @@ public enum class SymbolContainerSize {
     Medium,
     Large,
     XLarge,
+    XXLarge,
 }
 
 public enum class SymbolContainerShape {

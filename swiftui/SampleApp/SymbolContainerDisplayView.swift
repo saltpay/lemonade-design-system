@@ -2,301 +2,275 @@ import SwiftUI
 import Lemonade
 
 struct SymbolContainerDisplayView: View {
+    private let allSizes: [(SymbolContainerSize, String)] = [
+        (.xSmall, "XSmall"),
+        (.small, "Small"),
+        (.medium, "Medium"),
+        (.large, "Large"),
+        (.xLarge, "XLarge"),
+        (.xxLarge, "XXLarge"),
+    ]
+
+    private let allVoices: [(SymbolContainerVoice, String, LemonadeIcon)] = [
+        (.neutral, "Neutral", .heart),
+        (.critical, "Critical", .circleX),
+        (.warning, "Warning", .triangleAlert),
+        (.info, "Info", .circleInfo),
+        (.positive, "Positive", .circleCheck),
+        (.brand, "Brand", .star),
+        (.brandSubtle, "Brand Subtle", .star),
+    ]
+
+    private let allShapes: [(SymbolContainerShape, String)] = [
+        (.circle, "Circle"),
+        (.rounded, "Rounded"),
+    ]
+
+    private let badgeSizes: [(SymbolContainerSize, String)] = [
+        (.small, "Small"),
+        (.medium, "Medium"),
+        (.large, "Large"),
+        (.xLarge, "XLarge"),
+    ]
+
+    private let imageSizes: [(SymbolContainerSize, String)] = [
+        (.small, "Small"),
+        (.medium, "Medium"),
+        (.large, "Large"),
+        (.xLarge, "XLarge"),
+        (.xxLarge, "XXLarge"),
+    ]
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 32) {
-                // Sizes with Icon
-                sectionView(title: "Sizes (Icon)") {
-                    HStack(spacing: 16) {
-                        VStack(spacing: 8) {
-                            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: nil, size: .xSmall)
-                            Text("XSmall")
-                                .font(.caption)
-                        }
-
-                        VStack(spacing: 8) {
-                            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: nil, size: .small)
-                            Text("Small")
-                                .font(.caption)
-                        }
-
-                        VStack(spacing: 8) {
-                            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: nil, size: .medium)
-                            Text("Medium")
-                                .font(.caption)
-                        }
-
-                        VStack(spacing: 8) {
-                            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: nil, size: .large)
-                            Text("Large")
-                                .font(.caption)
-                        }
-
-                        VStack(spacing: 8) {
-                            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: nil, size: .xLarge)
-                            Text("XLarge")
-                                .font(.caption)
-                        }
-                    }
-                }
-
-                // Voices
-                sectionView(title: "Voices") {
-                    VStack(spacing: 16) {
-                        HStack(spacing: 16) {
-                            VStack(spacing: 8) {
-                                LemonadeUi.SymbolContainer(icon: .heart, contentDescription: nil, voice: .neutral, size: .medium)
-                                Text("Neutral")
-                                    .font(.caption)
-                            }
-
-                            VStack(spacing: 8) {
-                                LemonadeUi.SymbolContainer(icon: .circleX, contentDescription: nil, voice: .critical, size: .medium)
-                                Text("Critical")
-                                    .font(.caption)
-                            }
-
-                            VStack(spacing: 8) {
-                                LemonadeUi.SymbolContainer(icon: .triangleAlert, contentDescription: nil, voice: .warning, size: .medium)
-                                Text("Warning")
-                                    .font(.caption)
-                            }
-
-                            VStack(spacing: 8) {
-                                LemonadeUi.SymbolContainer(icon: .circleInfo, contentDescription: nil, voice: .info, size: .medium)
-                                Text("Info")
-                                    .font(.caption)
-                            }
-                        }
-
-                        HStack(spacing: 16) {
-                            VStack(spacing: 8) {
-                                LemonadeUi.SymbolContainer(icon: .circleCheck, contentDescription: nil, voice: .positive, size: .medium)
-                                Text("Positive")
-                                    .font(.caption)
-                            }
-
-                            VStack(spacing: 8) {
-                                LemonadeUi.SymbolContainer(icon: .star, contentDescription: nil, voice: .brand, size: .medium)
-                                Text("Brand")
-                                    .font(.caption)
-                            }
-
-                            VStack(spacing: 8) {
-                                LemonadeUi.SymbolContainer(icon: .star, contentDescription: nil, voice: .brandSubtle, size: .medium)
-                                Text("Brand Subtle")
-                                    .font(.caption)
-                            }
-                        }
-                    }
-                }
-
-                // Shapes
-                sectionView(title: "Shapes") {
-                    HStack(spacing: 16) {
-                        VStack(spacing: 8) {
-                            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: nil, size: .medium, shape: .circle)
-                            Text("Circle")
-                                .font(.caption)
-                        }
-
-                        VStack(spacing: 8) {
-                            LemonadeUi.SymbolContainer(icon: .heart, contentDescription: nil, size: .medium, shape: .rounded)
-                            Text("Rounded")
-                                .font(.caption)
-                        }
-                    }
-                }
-
-                // With Badge
-                sectionView(title: "With Badge") {
-                    HStack(spacing: 24) {
-                        VStack(spacing: 8) {
-                            LemonadeUi.SymbolContainer(
-                                icon: .heart,
-                                contentDescription: nil,
-                                size: .small
-                            ) {
-                                LemonadeUi.Badge(text: "3", size: .xSmall)
-                            }
-                            Text("Small")
-                                .font(.caption)
-                        }
-
-                        VStack(spacing: 8) {
-                            LemonadeUi.SymbolContainer(
-                                icon: .heart,
-                                contentDescription: nil,
-                                size: .medium
-                            ) {
-                                LemonadeUi.Badge(text: "3", size: .xSmall)
-                            }
-                            Text("Medium")
-                                .font(.caption)
-                        }
-
-                        VStack(spacing: 8) {
-                            LemonadeUi.SymbolContainer(
-                                icon: .heart,
-                                contentDescription: nil,
-                                size: .large
-                            ) {
-                                LemonadeUi.Badge(text: "3")
-                            }
-                            Text("Large")
-                                .font(.caption)
-                        }
-                    }
-                }
-
-                // Image Variant (fill = false)
-                sectionView(title: "Image (fill = false)") {
-                    HStack(spacing: 16) {
-                        VStack(spacing: 8) {
-                            LemonadeUi.SymbolContainer(
-                                image: Image(systemName: "star.fill"),
-                                contentDescription: "Star",
-                                fill: false,
-                                size: .small
-                            )
-                            Text("Small")
-                                .font(.caption)
-                        }
-
-                        VStack(spacing: 8) {
-                            LemonadeUi.SymbolContainer(
-                                image: Image(systemName: "star.fill"),
-                                contentDescription: "Star",
-                                fill: false,
-                                size: .medium
-                            )
-                            Text("Medium")
-                                .font(.caption)
-                        }
-
-                        VStack(spacing: 8) {
-                            LemonadeUi.SymbolContainer(
-                                image: Image(systemName: "star.fill"),
-                                contentDescription: "Star",
-                                fill: false,
-                                size: .large
-                            )
-                            Text("Large")
-                                .font(.caption)
-                        }
-                    }
-                }
-
-                // Image Variant (fill = true)
-                sectionView(title: "Image (fill = true)") {
-                    HStack(spacing: 16) {
-                        VStack(spacing: 8) {
-                            LemonadeUi.SymbolContainer(
-                                image: Image(systemName: "photo"),
-                                contentDescription: "Photo",
-                                fill: true,
-                                size: .small,
-                                shape: .circle
-                            )
-                            Text("Circle")
-                                .font(.caption)
-                        }
-
-                        VStack(spacing: 8) {
-                            LemonadeUi.SymbolContainer(
-                                image: Image(systemName: "photo"),
-                                contentDescription: "Photo",
-                                fill: true,
-                                size: .medium,
-                                shape: .rounded
-                            )
-                            Text("Rounded")
-                                .font(.caption)
-                        }
-                    }
-                }
-
-                // Text Variant
-                sectionView(title: "Text Variant") {
-                    HStack(spacing: 16) {
-                        LemonadeUi.SymbolContainer(text: "A", voice: .neutral, size: .small)
-                        LemonadeUi.SymbolContainer(text: "B", voice: .info, size: .medium)
-                        LemonadeUi.SymbolContainer(text: "C", voice: .positive, size: .large)
-                        LemonadeUi.SymbolContainer(text: "1", voice: .critical, size: .medium)
-                        LemonadeUi.SymbolContainer(text: "99", voice: .warning, size: .large)
-                    }
-                }
-
-                // Custom Content
-                sectionView(title: "Custom Content") {
-                    HStack(spacing: 16) {
-                        LemonadeUi.SymbolContainer(voice: .neutral, size: .large) {
-                            Image(systemName: "star.fill")
-                                .foregroundStyle(.yellow)
-                        }
-
-                        LemonadeUi.SymbolContainer(voice: .info, size: .large) {
-                            Image(systemName: "person.fill")
-                                .foregroundStyle(.content.contentInfo)
-                        }
-                    }
-                }
-
-                // Use Cases
-                sectionView(title: "Use Cases") {
-                    VStack(spacing: 16) {
-                        // User avatar
-                        HStack(spacing: 12) {
-                            LemonadeUi.SymbolContainer(text: "JD", voice: .brand, size: .large)
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("John Doe")
-                                    .font(.headline)
-                                Text("john@example.com")
-                                    .font(.subheadline)
-                                    .foregroundStyle(.content.contentSecondary)
-                            }
-                            Spacer()
-                        }
-                        .padding()
-                        .background(.bg.bgSubtle)
-                        .clipShape(.rect(cornerRadius: 12))
-
-                        // Status indicators
-                        HStack(spacing: 24) {
-                            VStack(spacing: 8) {
-                                LemonadeUi.SymbolContainer(icon: .circleCheck, contentDescription: nil, voice: .positive, size: .large)
-                                Text("Completed")
-                                    .font(.caption)
-                            }
-
-                            VStack(spacing: 8) {
-                                LemonadeUi.SymbolContainer(icon: .clock, contentDescription: nil, voice: .warning, size: .large)
-                                Text("Pending")
-                                    .font(.caption)
-                            }
-
-                            VStack(spacing: 8) {
-                                LemonadeUi.SymbolContainer(icon: .circleX, contentDescription: nil, voice: .critical, size: .large)
-                                Text("Failed")
-                                    .font(.caption)
-                            }
-                        }
-                    }
-                }
+                sizesSection
+                voicesSection
+                shapesSection
+                badgeSection
+                imageSection
+                textSection
+                customContentSection
             }
             .padding()
         }
         .navigationTitle("SymbolContainer")
     }
 
-    private func sectionView<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
+    // MARK: - Sizes
+
+    private var sizesSection: some View {
+        sectionView(title: "Sizes (Icon)") {
+            FlowLayout(spacing: 16) {
+                ForEach(allSizes, id: \.0) { size, label in
+                    VStack(spacing: 8) {
+                        LemonadeUi.SymbolContainer(
+                            icon: .heart,
+                            contentDescription: nil,
+                            size: size
+                        )
+                        Text(label).font(.caption)
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Voices
+
+    private var voicesSection: some View {
+        sectionView(title: "Voices") {
+            FlowLayout(spacing: 16) {
+                ForEach(allVoices, id: \.0) { voice, label, icon in
+                    VStack(spacing: 8) {
+                        LemonadeUi.SymbolContainer(
+                            icon: icon,
+                            contentDescription: nil,
+                            voice: voice,
+                            size: .medium
+                        )
+                        Text(label).font(.caption)
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Shapes
+
+    private var shapesSection: some View {
+        sectionView(title: "Shapes") {
+            HStack(spacing: 16) {
+                ForEach(allShapes, id: \.0) { shape, label in
+                    VStack(spacing: 8) {
+                        LemonadeUi.SymbolContainer(
+                            icon: .heart,
+                            contentDescription: nil,
+                            size: .medium,
+                            shape: shape
+                        )
+                        Text(label).font(.caption)
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Badge
+
+    private var badgeSection: some View {
+        sectionView(title: "With Badge") {
+            HStack(spacing: 24) {
+                ForEach(badgeSizes, id: \.0) { size, label in
+                    VStack(spacing: 8) {
+                        LemonadeUi.SymbolContainer(
+                            icon: .heart,
+                            contentDescription: nil,
+                            size: size
+                        ) {
+                            LemonadeUi.Badge(text: "3", size: .xSmall)
+                        }
+                        Text(label).font(.caption)
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Image
+
+    private var imageSection: some View {
+        sectionView(title: "Image Variants") {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("fill = false").font(.subheadline)
+                HStack(spacing: 16) {
+                    ForEach(imageSizes, id: \.0) { size, label in
+                        VStack(spacing: 8) {
+                            LemonadeUi.SymbolContainer(
+                                image: Image(systemName: "star.fill"),
+                                contentDescription: "Star",
+                                fill: false,
+                                size: size
+                            )
+                            Text(label).font(.caption)
+                        }
+                    }
+                }
+
+                Text("fill = true").font(.subheadline)
+                HStack(spacing: 16) {
+                    ForEach(allShapes, id: \.0) { shape, label in
+                        VStack(spacing: 8) {
+                            LemonadeUi.SymbolContainer(
+                                image: Image(systemName: "photo"),
+                                contentDescription: "Photo",
+                                fill: true,
+                                size: .medium,
+                                shape: shape
+                            )
+                            Text(label).font(.caption)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Text
+
+    private var textSection: some View {
+        sectionView(title: "Text Variant") {
+            FlowLayout(spacing: 16) {
+                ForEach(allVoices.filter { $0.0 != .brand && $0.0 != .brandSubtle }, id: \.0) { voice, label, _ in
+                    VStack(spacing: 8) {
+                        LemonadeUi.SymbolContainer(
+                            text: String(label.prefix(1)),
+                            voice: voice,
+                            size: .medium
+                        )
+                        Text(label).font(.caption)
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Custom Content
+
+    private var customContentSection: some View {
+        sectionView(title: "Custom Content") {
+            HStack(spacing: 16) {
+                LemonadeUi.SymbolContainer(voice: .neutral, size: .large) {
+                    Image(systemName: "star.fill")
+                        .foregroundStyle(.yellow)
+                }
+
+                LemonadeUi.SymbolContainer(voice: .info, size: .large) {
+                    Image(systemName: "person.fill")
+                        .foregroundStyle(.content.contentInfo)
+                }
+            }
+        }
+    }
+
+    // MARK: - Helpers
+
+    private func sectionView<Content: View>(
+        title: String,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
                 .foregroundStyle(.content.contentSecondary)
-
             content()
         }
+    }
+}
+
+// MARK: - Flow Layout
+
+private struct FlowLayout: Layout {
+    var spacing: CGFloat = 8
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let result = arrange(proposal: proposal, subviews: subviews)
+        return result.size
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let result = arrange(proposal: proposal, subviews: subviews)
+        for (index, position) in result.positions.enumerated() {
+            subviews[index].place(
+                at: CGPoint(x: bounds.minX + position.x, y: bounds.minY + position.y),
+                proposal: .unspecified
+            )
+        }
+    }
+
+    private func arrange(proposal: ProposedViewSize, subviews: Subviews) -> (positions: [CGPoint], size: CGSize) {
+        let maxWidth = proposal.width ?? .infinity
+        var positions: [CGPoint] = []
+        var x: CGFloat = 0
+        var y: CGFloat = 0
+        var rowHeight: CGFloat = 0
+        var totalSize: CGSize = .zero
+
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+            if x + size.width > maxWidth, x > 0 {
+                x = 0
+                y += rowHeight + spacing
+                rowHeight = 0
+            }
+            positions.append(CGPoint(x: x, y: y))
+            rowHeight = max(rowHeight, size.height)
+            x += size.width + spacing
+            totalSize.width = max(totalSize.width, x - spacing)
+            totalSize.height = max(totalSize.height, y + rowHeight)
+        }
+
+        return (positions, totalSize)
     }
 }
 

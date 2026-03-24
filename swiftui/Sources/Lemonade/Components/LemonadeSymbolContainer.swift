@@ -46,6 +46,7 @@ public enum SymbolContainerSize {
     case medium
     case large
     case xLarge
+    case xxLarge
 
     var containerSize: CGFloat {
         switch self {
@@ -54,6 +55,7 @@ public enum SymbolContainerSize {
         case .medium: return LemonadeTheme.sizes.size1000
         case .large: return LemonadeTheme.sizes.size1200
         case .xLarge: return LemonadeTheme.sizes.size1600
+        case .xxLarge: return LemonadeTheme.sizes.size2000
         }
     }
 
@@ -64,6 +66,7 @@ public enum SymbolContainerSize {
         case .medium: return LemonadeTheme.sizes.size500
         case .large: return LemonadeTheme.sizes.size600
         case .xLarge: return LemonadeTheme.sizes.size800
+        case .xxLarge: return LemonadeTheme.sizes.size1000
         }
     }
 
@@ -74,6 +77,7 @@ public enum SymbolContainerSize {
         case .medium: return .medium
         case .large: return .large
         case .xLarge: return .xLarge
+        case .xxLarge: return .xxLarge
         }
     }
 
@@ -84,6 +88,7 @@ public enum SymbolContainerSize {
         case .medium: return LemonadeTypography.shared.bodySmallSemiBold
         case .large: return LemonadeTypography.shared.bodyLargeSemiBold
         case .xLarge: return LemonadeTypography.shared.bodyXLargeSemiBold
+        case .xxLarge: return LemonadeTypography.shared.headingSmall
         }
     }
 }
@@ -369,6 +374,7 @@ struct LemonadeSymbolContainer_Previews: PreviewProvider {
                 LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .medium)
                 LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .large)
                 LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .xLarge)
+                LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .xxLarge)
             }
 
             // Text variant - all voices
