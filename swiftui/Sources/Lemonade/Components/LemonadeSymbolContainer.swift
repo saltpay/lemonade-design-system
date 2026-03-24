@@ -374,6 +374,7 @@ struct LemonadeSymbolContainer_Previews: PreviewProvider {
                 LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .medium)
                 LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .large)
                 LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .xLarge)
+                LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .xxLarge)
             }
 
             // Text variant - all voices
