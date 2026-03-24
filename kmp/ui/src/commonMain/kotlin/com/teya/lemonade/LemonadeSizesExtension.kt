@@ -9,8 +9,8 @@ import androidx.compose.runtime.Stable
  * Lemonade Design System Size tokens.
  * Provides a consistent and scalable way to manage spacing across interfaces.
  * These values can be used for margins, paddings, and gaps to create balanced layouts.
- * 
- * 
+ *
+ *
  * Auto-generated content.
  *
  * ⚠️ **DO NOT MODIFY THIS FILE MANUALLY** ⚠️
