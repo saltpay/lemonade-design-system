@@ -322,10 +322,9 @@ private fun SymbolContainerShape.resolveShape(size: SymbolContainerSize): Shape 
     when (this) {
         SymbolContainerShape.Circle -> LocalShapes.current.radiusFull
         SymbolContainerShape.Rounded -> when (size) {
-            SymbolContainerSize.XSmall,
-            SymbolContainerSize.Small,
-            SymbolContainerSize.Medium,
-            -> LocalShapes.current.radius300
+            SymbolContainerSize.XSmall -> LocalShapes.current.radius200
+            SymbolContainerSize.Small -> LocalShapes.current.radius250
+            SymbolContainerSize.Medium -> LocalShapes.current.radius300
             SymbolContainerSize.Large -> LocalShapes.current.radius400
             SymbolContainerSize.XLarge -> LocalShapes.current.radius500
             SymbolContainerSize.XXLarge -> LocalShapes.current.radius600
