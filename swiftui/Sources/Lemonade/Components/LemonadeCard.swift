@@ -151,7 +151,7 @@ private struct LemonadeCardView<Content: View, TrailingContent: View>: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(background.color)
-        .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
+        .clipShape(LemonadeTheme.shapes.semantic.radiusContainerDefault)
     }
 }
 
