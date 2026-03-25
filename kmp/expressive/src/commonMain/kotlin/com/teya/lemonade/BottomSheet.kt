@@ -27,6 +27,9 @@ import androidx.compose.ui.unit.dp
  * @param onDismissRequest Callback invoked when the user requests to dismiss the bottom sheet
  *   (e.g., by swiping down, tapping the scrim, or pressing back).
  * @param showDragHandle Whether to display the drag handle at the top of the sheet. Defaults to `true`.
+ * @param skipPartiallyExpanded Whether the partially expanded state should be skipped. If `true`,
+ *   the bottom sheet will always expand to the full height, skipping the intermediate (half-expanded)
+ *   state. Defaults to `false`.
  * @param content A composable lambda with [ColumnScope] receiver that defines the sheet's content.
  *
  * ## Usage Example
@@ -69,9 +72,10 @@ public fun LemonadeUi.BottomSheet(
     expanded: Boolean,
     onDismissRequest: () -> Unit,
     showDragHandle: Boolean = true,
+    skipPartiallyExpanded: Boolean = false,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpanded)
     LaunchedEffect(expanded) {
         if (!expanded && sheetState.isVisible) {
             sheetState.hide()
