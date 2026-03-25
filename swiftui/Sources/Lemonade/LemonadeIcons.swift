@@ -1,8 +1,6 @@
 import SwiftUI
 #if canImport(UIKit)
 import UIKit
-#elseif canImport(AppKit)
-import AppKit
 #endif
 
 /// Lemonade Design System Icons.
@@ -25,6 +23,8 @@ import AppKit
 /// Icon token enum
 public enum LemonadeIcon: String, CaseIterable {
     case airplane = "airplane"
+    case appearanceDarkMode = "appearance-dark-mode"
+    case appearanceLightMode = "appearance-light-mode"
     case arrowCornerDownLeft = "arrow-corner-down-left"
     case arrowCornerDownLeftSlash = "arrow-corner-down-left-slash"
     case arrowCornerDownRight = "arrow-corner-down-right"

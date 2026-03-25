@@ -16,6 +16,8 @@ package com.teya.lemonade.core
  */
 public enum class LemonadeIcons : LemonadeAsset {
     Airplane,
+    AppearanceDarkMode,
+    AppearanceLightMode,
     ArrowCornerDownLeft,
     ArrowCornerDownLeftSlash,
     ArrowCornerDownRight,
