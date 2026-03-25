@@ -45,7 +45,7 @@ public interface LemonadeOpacity {
 }
 
 @Stable
-public class InternalLemonadeOpacityTokens : LemonadeOpacity {
+internal class InternalLemonadeOpacityTokens : LemonadeOpacity {
     override val base: LemonadeOpacity.Base = object : LemonadeOpacity.Base {
         override val opacity0: Float = 0.0f
         override val opacity5: Float = 0.05f

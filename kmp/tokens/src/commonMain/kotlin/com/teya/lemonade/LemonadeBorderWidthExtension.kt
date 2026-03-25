@@ -40,7 +40,7 @@ public interface LemonadeBorderWidth {
     }
 }
 
-public class InternalLemonadeBorderWidth : LemonadeBorderWidth {
+internal class InternalLemonadeBorderWidth : LemonadeBorderWidth {
     override val base: LemonadeBorderWidth.Base = object : LemonadeBorderWidth.Base {
         override val border0: Dp = 0.0.dp
         override val border25: Dp = 1.0.dp

@@ -64,7 +64,7 @@ public interface LemonadeSpaceValues {
 }
 
 @Stable
-public data class InternalLemonadeSpaceValues(
+internal data class InternalLemonadeSpaceValues(
     override val spacing0: Dp = LemonadeSpaces.Spacing0.dp,
     override val spacing50: Dp = LemonadeSpaces.Spacing50.dp,
     override val spacing100: Dp = LemonadeSpaces.Spacing100.dp,
