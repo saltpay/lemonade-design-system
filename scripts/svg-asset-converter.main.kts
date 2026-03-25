@@ -346,8 +346,6 @@ private fun buildIconSwiftEnum(pack: PackConfig, svgFiles: List<File>): String {
         appendLine("import SwiftUI")
         appendLine("#if canImport(UIKit)")
         appendLine("import UIKit")
-        appendLine("#elseif canImport(AppKit)")
-        appendLine("import AppKit")
         appendLine("#endif")
         appendLine()
         appendLine("/// Lemonade Design System Icons.")
