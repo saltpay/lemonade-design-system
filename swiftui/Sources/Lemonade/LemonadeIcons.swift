@@ -1,5 +1,7 @@
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
 
 /// Lemonade Design System Icons.
 /// Icons are loaded from the asset catalog bundled with this module.
@@ -273,10 +275,14 @@ public enum LemonadeIcon: String, CaseIterable {
 
     /// Returns the Image for this icon from the Lemonade bundle's asset catalog
     public var image: Image {
+        #if canImport(UIKit)
         if let uiImage = UIImage(named: rawValue, in: .lemonade, compatibleWith: nil) {
             return Image(uiImage: uiImage).renderingMode(.template)
         }
         return Image(systemName: "questionmark.square")
+        #else
+        return Image(self.rawValue, bundle: .lemonade).renderingMode(.template)
+        #endif
     }
 }
 
