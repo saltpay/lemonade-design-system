@@ -60,7 +60,6 @@ kotlin {
             implementation(projects.ui)
             implementation(projects.expressive)
             implementation(projects.calendar)
-            implementation(projects.tokens)
             implementation(kotlin("script-runtime"))
         }
         commonTest.dependencies {
