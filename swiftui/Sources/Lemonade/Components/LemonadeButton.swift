@@ -59,6 +59,7 @@ public extension LemonadeUi {
         trailingIcon: LemonadeIcon? = nil,
         variant: LemonadeButtonVariant = .primary,
         size: LemonadeButtonSize = .large,
+        spacedContents: Bool = false,
         enabled: Bool = true,
         loading: Bool = false
     ) -> some View {
@@ -69,19 +70,120 @@ public extension LemonadeUi {
             trailingIcon: trailingIcon,
             variant: variant,
             size: size,
+            spacedContents: spacedContents,
             enabled: enabled,
             loading: loading
         )
     }
+
+    // MARK: - Slot-based Button overloads
+
+    /// Creates a button with custom leading and trailing slot content.
+    ///
+    /// The slot closures receive ``LemonadeButtonColors`` so custom content can
+    /// use variant-aware colors.
+    ///
+    /// ## Usage
+    /// ```swift
+    /// LemonadeUi.Button(
+    ///     label: "Custom",
+    ///     onClick: { },
+    ///     leadingSlot: { colors in
+    ///         Image(systemName: "star.fill")
+    ///             .foregroundColor(colors.contentColor)
+    ///     },
+    ///     trailingSlot: { colors in
+    ///         Image(systemName: "chevron.right")
+    ///             .foregroundColor(colors.contentColor)
+    ///     }
+    /// )
+    /// ```
+    @ViewBuilder
+    static func Button<LeadingContent: View, TrailingContent: View>(
+        label: String,
+        onClick: @escaping () -> Void,
+        variant: LemonadeButtonVariant = .primary,
+        size: LemonadeButtonSize = .large,
+        spacedContents: Bool = false,
+        enabled: Bool = true,
+        loading: Bool = false,
+        @ViewBuilder leadingSlot: @escaping (LemonadeButtonColors) -> LeadingContent,
+        @ViewBuilder trailingSlot: @escaping (LemonadeButtonColors) -> TrailingContent
+    ) -> some View {
+        LemonadeSlotButtonView(
+            label: label,
+            onClick: onClick,
+            variant: variant,
+            size: size,
+            spacedContents: spacedContents,
+            enabled: enabled,
+            loading: loading,
+            leadingSlot: leadingSlot,
+            trailingSlot: trailingSlot
+        )
+    }
+
+    /// Creates a button with only a custom leading slot.
+    @ViewBuilder
+    static func Button<LeadingContent: View>(
+        label: String,
+        onClick: @escaping () -> Void,
+        variant: LemonadeButtonVariant = .primary,
+        size: LemonadeButtonSize = .large,
+        spacedContents: Bool = false,
+        enabled: Bool = true,
+        loading: Bool = false,
+        @ViewBuilder leadingSlot: @escaping (LemonadeButtonColors) -> LeadingContent
+    ) -> some View {
+        Button(
+            label: label,
+            onClick: onClick,
+            variant: variant,
+            size: size,
+            spacedContents: spacedContents,
+            enabled: enabled,
+            loading: loading,
+            leadingSlot: leadingSlot,
+            trailingSlot: { _ in EmptyView() }
+        )
+    }
+
+    /// Creates a button with only a custom trailing slot.
+    @ViewBuilder
+    static func Button<TrailingContent: View>(
+        label: String,
+        onClick: @escaping () -> Void,
+        variant: LemonadeButtonVariant = .primary,
+        size: LemonadeButtonSize = .large,
+        spacedContents: Bool = false,
+        enabled: Bool = true,
+        loading: Bool = false,
+        @ViewBuilder trailingSlot: @escaping (LemonadeButtonColors) -> TrailingContent
+    ) -> some View {
+        Button(
+            label: label,
+            onClick: onClick,
+            variant: variant,
+            size: size,
+            spacedContents: spacedContents,
+            enabled: enabled,
+            loading: loading,
+            leadingSlot: { _ in EmptyView() },
+            trailingSlot: trailingSlot
+        )
+    }
 }
 
-// MARK: - Internal Button Colors
+// MARK: - Button Colors
 
-private struct LemonadeButtonColors {
-    let contentColor: Color
-    let solidBackgroundColor: Color
-    let pressedBackgroundColor: Color
-    let brushBackgroundColors: [Color]?
+/// Colors resolved for a specific ``LemonadeButtonVariant``.
+///
+/// Exposed so that custom slot content can use variant-aware colors.
+public struct LemonadeButtonColors {
+    public let contentColor: Color
+    public let solidBackgroundColor: Color
+    public let pressedBackgroundColor: Color
+    public let brushBackgroundColors: [Color]?
 
     init(
         contentColor: Color,
@@ -145,7 +247,7 @@ private extension LemonadeButtonSize {
 
 // MARK: - Button Variant Extension
 
-private extension LemonadeButtonVariant {
+extension LemonadeButtonVariant {
     var variantData: LemonadeButtonColors {
         switch self {
         case .primary:
@@ -201,6 +303,7 @@ private struct LemonadeButtonView: View {
     let trailingIcon: LemonadeIcon?
     let variant: LemonadeButtonVariant
     let size: LemonadeButtonSize
+    let spacedContents: Bool
     let enabled: Bool
     let loading: Bool
 
@@ -213,7 +316,9 @@ private struct LemonadeButtonView: View {
     var body: some View {
         SwiftUI.Button(action: onClick) {
             HStack(spacing: 0) {
-                Spacer(minLength: 0)
+                if !spacedContents {
+                    Spacer(minLength: 0)
+                }
 
                 if loading {
                     ProgressView()
@@ -228,12 +333,20 @@ private struct LemonadeButtonView: View {
                         )
                     }
 
+                    if spacedContents {
+                        Spacer(minLength: 0)
+                    }
+
                     LemonadeUi.Text(
                         label,
                         textStyle: size.contentData.textStyle,
                         color: variant.variantData.contentColor
                     )
                     .padding(.horizontal, LemonadeTheme.spaces.spacing200)
+
+                    if spacedContents {
+                        Spacer(minLength: 0)
+                    }
 
                     if let trailingIcon = trailingIcon {
                         LemonadeUi.Icon(
@@ -245,7 +358,9 @@ private struct LemonadeButtonView: View {
                     }
                 }
 
-                Spacer(minLength: 0)
+                if !spacedContents {
+                    Spacer(minLength: 0)
+                }
             }
             .padding(.horizontal, size.contentData.horizontalPadding)
             .frame(height: size.contentData.minHeight)
@@ -256,6 +371,90 @@ private struct LemonadeButtonView: View {
                         .fill(backgroundColor)
 
                     if let gradientColors = variant.variantData.brushBackgroundColors {
+                        RoundedRectangle(cornerRadius: size.contentData.cornerRadius)
+                            .fill(
+                                LinearGradient(
+                                    colors: gradientColors,
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                    }
+                }
+            )
+            .clipShape(RoundedRectangle(cornerRadius: size.contentData.cornerRadius))
+        }
+        .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
+        .disabled(!enabled || loading)
+        .opacity((enabled || loading) ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+    }
+}
+
+// MARK: - Internal Slot Button View
+
+private struct LemonadeSlotButtonView<LeadingContent: View, TrailingContent: View>: View {
+    let label: String
+    let onClick: () -> Void
+    let variant: LemonadeButtonVariant
+    let size: LemonadeButtonSize
+    let spacedContents: Bool
+    let enabled: Bool
+    let loading: Bool
+    @ViewBuilder let leadingSlot: (LemonadeButtonColors) -> LeadingContent
+    @ViewBuilder let trailingSlot: (LemonadeButtonColors) -> TrailingContent
+
+    @State private var isPressed = false
+
+    private var colors: LemonadeButtonColors { variant.variantData }
+
+    private var backgroundColor: Color {
+        isPressed ? colors.pressedBackgroundColor : colors.solidBackgroundColor
+    }
+
+    var body: some View {
+        SwiftUI.Button(action: onClick) {
+            HStack(spacing: 0) {
+                if !spacedContents {
+                    Spacer(minLength: 0)
+                }
+
+                if loading {
+                    ProgressView()
+                        .tint(colors.contentColor)
+                } else {
+                    leadingSlot(colors)
+
+                    if spacedContents {
+                        Spacer(minLength: 0)
+                    }
+
+                    LemonadeUi.Text(
+                        label,
+                        textStyle: size.contentData.textStyle,
+                        color: colors.contentColor
+                    )
+                    .padding(.horizontal, LemonadeTheme.spaces.spacing200)
+
+                    if spacedContents {
+                        Spacer(minLength: 0)
+                    }
+
+                    trailingSlot(colors)
+                }
+
+                if !spacedContents {
+                    Spacer(minLength: 0)
+                }
+            }
+            .padding(.horizontal, size.contentData.horizontalPadding)
+            .frame(height: size.contentData.minHeight)
+            .frame(minWidth: size.contentData.minWidth)
+            .background(
+                ZStack {
+                    RoundedRectangle(cornerRadius: size.contentData.cornerRadius)
+                        .fill(backgroundColor)
+
+                    if let gradientColors = colors.brushBackgroundColors {
                         RoundedRectangle(cornerRadius: size.contentData.cornerRadius)
                             .fill(
                                 LinearGradient(
