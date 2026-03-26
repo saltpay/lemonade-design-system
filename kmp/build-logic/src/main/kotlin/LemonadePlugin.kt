@@ -1,34 +1,88 @@
+import com.android.build.gradle.LibraryExtension
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import com.vanniktech.maven.publish.MavenPublishBasePlugin
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.configure
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
-class LemonadePublishPlugin : Plugin<Project> {
+class LemonadePlugin : Plugin<Project> {
 
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
     override fun apply(target: Project) {
         with(target) {
-            pluginManager.apply(MavenPublishBasePlugin::class.java)
-
-            extensions.configure<MavenPublishBaseExtension> {
-                @Suppress("UnstableApiUsage")
-                configureBasedOnAppliedPlugins(sourcesJar = true, javadocJar = true)
+            with(pluginManager) {
+                apply("org.jetbrains.kotlin.multiplatform")
+                apply("com.android.library")
             }
+
+            configureKotlinTargets()
+            configureAndroid()
+
+            pluginManager.apply(MavenPublishBasePlugin::class.java)
 
             val extension = extensions
                 .create("lemonadePublishing", LemonadePublishingPluginExtension::class.java)
 
             afterEvaluate {
-                val artifactId = extension.artifactId.orNull
-                    ?: error("You must set the 'artifactId' property in the 'lemonadePublishing' extension.")
-
-                configurePublication(artifactId)
+                val artifactId = extension.artifactId.orNull ?: return@afterEvaluate
+                configurePublishing(artifactId)
             }
         }
     }
 
-    private fun Project.configurePublication(artifactId: String) {
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    private fun Project.configureKotlinTargets() {
+        extensions.configure<KotlinMultiplatformExtension> {
+            jvmToolchain(17)
+            explicitApi()
+
+            androidTarget {
+                publishLibraryVariants("release")
+            }
+
+            iosArm64()
+            iosSimulatorArm64()
+
+            jvm("desktop")
+
+            applyDefaultHierarchyTemplate {
+                common {
+                    group("mobile") {
+                        withAndroidTarget()
+                        withIosArm64()
+                        withIosSimulatorArm64()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun Project.configureAndroid() {
+        extensions.configure<LibraryExtension> {
+            compileSdk = findVersionInt("android-compileSdk")
+
+            defaultConfig {
+                testOptions.targetSdk = findVersionInt("android-targetSdk")
+                minSdk = findVersionInt("android-minLibSdk")
+            }
+
+            compileOptions {
+                sourceCompatibility = JavaVersion.VERSION_17
+                targetCompatibility = JavaVersion.VERSION_17
+            }
+        }
+    }
+
+    private fun Project.configurePublishing(artifactId: String) {
+        extensions.configure<MavenPublishBaseExtension> {
+            @Suppress("UnstableApiUsage")
+            configureBasedOnAppliedPlugins(sourcesJar = true, javadocJar = true)
+        }
+
         extensions.configure<MavenPublishBaseExtension> {
             val version: String = findEnvironmentVariable("PUBLICATION_VERSION")
             coordinates(
@@ -39,7 +93,7 @@ class LemonadePublishPlugin : Plugin<Project> {
 
             publishToMavenCentral(true)
             if (hasSigningKey()) {
-              signAllPublications()
+                signAllPublications()
             }
 
             pom()
@@ -77,8 +131,8 @@ class LemonadePublishPlugin : Plugin<Project> {
 }
 
 private fun hasSigningKey(): Boolean {
-  val hasSigningKey = !System.getenv("ORG_GRADLE_PROJECT_signingInMemoryKey").isNullOrEmpty()
-  return hasSigningKey
+    val hasSigningKey = !System.getenv("ORG_GRADLE_PROJECT_signingInMemoryKey").isNullOrEmpty()
+    return hasSigningKey
 }
 
 private inline fun <reified T> Project.findEnvironmentVariable(variable: String): T {
@@ -93,6 +147,13 @@ private inline fun <reified T> Project.findEnvironmentVariable(variable: String)
     }
 
     error("$variable not found in environment variables or Gradle properties")
+}
+
+private fun Project.findVersionInt(name: String): Int {
+    val catalog = extensions.getByType(
+        org.gradle.api.artifacts.VersionCatalogsExtension::class.java
+    ).named("libs")
+    return catalog.findVersion(name).get().requiredVersion.toInt()
 }
 
 abstract class LemonadePublishingPluginExtension {

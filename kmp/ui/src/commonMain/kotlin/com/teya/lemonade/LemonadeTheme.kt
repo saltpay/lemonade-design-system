@@ -1,14 +1,8 @@
 package com.teya.lemonade
 
-import androidx.compose.foundation.Indication
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
-import com.teya.lemonade.core.LemonadeTextStyle
-import com.teya.lemonade.core.LemonadeTypography
 
 @Composable
 public fun LemonadeTheme(
@@ -102,57 +96,4 @@ public object LemonadeTheme {
         get() {
             return LocalEffects.current
         }
-}
-
-internal val LocalColors: ProvidableCompositionLocal<LemonadeSemanticColors> =
-    staticCompositionLocalOf {
-        LemonadeLightTheme
-    }
-
-internal val LocalTypographies: ProvidableCompositionLocal<LemonadeTypographyProvider> =
-    staticCompositionLocalOf {
-        LemonadeTypographyProvider()
-    }
-
-internal val LocalContentColors: ProvidableCompositionLocal<Color> = staticCompositionLocalOf {
-    error(message = "No default Content Colors set in the LocalContentColors for theme")
-}
-
-internal val LocalTextStyles: ProvidableCompositionLocal<LemonadeTextStyle> =
-    staticCompositionLocalOf {
-        LemonadeTypography.BodyMediumRegular.style
-    }
-
-internal val LocalRadius: ProvidableCompositionLocal<LemonadeRadiusValues> =
-    staticCompositionLocalOf {
-        InternalLemonadeRadiusValues()
-    }
-
-internal val LocalShapes: ProvidableCompositionLocal<LemonadeShapes> = staticCompositionLocalOf {
-    InternalLemonadeShapes()
-}
-
-internal val LocalSpaces: ProvidableCompositionLocal<LemonadeSpaceValues> =
-    staticCompositionLocalOf {
-        InternalLemonadeSpaceValues()
-    }
-
-internal val LocalOpacities: ProvidableCompositionLocal<LemonadeOpacity> =
-    staticCompositionLocalOf {
-        InternalLemonadeOpacityTokens()
-    }
-
-internal val LocalBorderWidths: ProvidableCompositionLocal<LemonadeBorderWidth> =
-    staticCompositionLocalOf {
-        InternalLemonadeBorderWidth()
-    }
-
-internal val LocalSizes: ProvidableCompositionLocal<LemonadeSizeValues> = staticCompositionLocalOf {
-    InternalLemonadeSizeValues()
-}
-
-internal val LocalEffects: ProvidableCompositionLocal<LemonadeEffects> = staticCompositionLocalOf {
-    object : LemonadeEffects {
-        override val interactionIndication: Indication? = null
-    }
 }
