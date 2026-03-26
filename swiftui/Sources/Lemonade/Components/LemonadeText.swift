@@ -167,8 +167,13 @@ private struct LemonadeTextView: View {
             return .body
         }
 
-        let size = fontSize ?? style.fontSize
-        return .custom(LemonadeTypography.fontFamily, size: size).weight(style.fontWeight)
+        if let fontSize = fontSize {
+            // Custom size override — still use correct font name and Dynamic Type
+            return .custom(style.fontName, size: fontSize, relativeTo: .body)
+        }
+
+        // Use the style's built-in font which already has Dynamic Type support
+        return style.font
     }
 }
 

@@ -59,6 +59,7 @@ private struct LemonadeBrandLogoView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: size.value, height: size.value)
+            .accessibilityLabel(logo.rawValue)
     }
 
     private var logoImage: Image {

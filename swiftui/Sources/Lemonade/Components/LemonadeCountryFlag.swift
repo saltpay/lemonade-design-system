@@ -70,6 +70,7 @@ private struct LemonadeCountryFlagView: View {
                         lineWidth: LemonadeTheme.borderWidth.base.border25
                     )
             )
+            .accessibilityLabel(flag.countryName)
     }
 
     private var flagImage: Image {

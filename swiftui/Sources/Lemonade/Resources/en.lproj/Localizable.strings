@@ -1,0 +1,31 @@
+/* Lemonade Design System – Base (English) localization */
+
+/* LemonadeCheckbox */
+"lemonade_checkbox" = "Checkbox";
+"lemonade_checkbox_checked" = "Checked";
+"lemonade_checkbox_unchecked" = "Unchecked";
+"lemonade_checkbox_indeterminate" = "Indeterminate";
+
+/* LemonadeRadioButton */
+"lemonade_radio_button" = "Radio button";
+
+/* LemonadeSearchField */
+"lemonade_clear_search" = "Clear search";
+
+/* LemonadeSelectField */
+"lemonade_select_field" = "Select field";
+"lemonade_double_tap_to_select" = "Double tap to select";
+
+/* LemonadeSelectListItem */
+"lemonade_selected" = "Selected";
+"lemonade_not_selected" = "Not selected";
+
+/* LemonadeSpinner */
+"lemonade_loading" = "Loading";
+
+/* LemonadeBadge */
+"lemonade_badge" = "Badge: %@";
+
+/* LemonadeDatePicker */
+"lemonade_select_end_date" = "Select an end date";
+"lemonade_select_start_date" = "Select a start date";

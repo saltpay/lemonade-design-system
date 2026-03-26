@@ -20,6 +20,7 @@ public extension LemonadeUi {
     ) -> some View {
         ProgressView()
             .tint(tint)
+            .accessibilityLabel(lemonadeLocalizedString("lemonade_loading"))
     }
 }
 
