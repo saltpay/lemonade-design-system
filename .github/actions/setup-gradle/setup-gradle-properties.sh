@@ -31,12 +31,6 @@ write_common_properties() {
     # Android properties common to all build environments
     write_property "android.nonTransitiveRClass=true"
     write_property "android.useAndroidX=true"
-    write_property "android.defaults.buildfeatures.viewbinding=false"
-    write_property "android.defaults.buildfeatures.resvalues=true"
-    write_property "android.defaults.buildfeatures.aidl=false"
-    write_property "android.defaults.buildfeatures.renderscript=false"
-    write_property "android.defaults.buildfeatures.shaders=false"
-    write_property "android.defaults.buildfeatures.buildconfig=true"
 
     # JDK path exposed by actions/setup-java
     write_property "org.gradle.java.installations.paths=$gha_jdk_path"
