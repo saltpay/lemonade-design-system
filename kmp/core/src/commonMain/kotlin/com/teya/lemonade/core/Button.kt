@@ -10,6 +10,7 @@ public enum class LemonadeButtonVariant {
 }
 
 public enum class LemonadeButtonSize {
+    XSmall,
     Small,
     Medium,
     Large,

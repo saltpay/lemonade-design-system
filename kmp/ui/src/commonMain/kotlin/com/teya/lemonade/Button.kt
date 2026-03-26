@@ -209,6 +209,15 @@ private class LemonadeButtonContentData(
 private val LemonadeButtonSize.contentData: LemonadeButtonContentData
     @Composable get() {
         return when (this) {
+            LemonadeButtonSize.XSmall -> LemonadeButtonContentData(
+                verticalPadding = LocalSpaces.current.spacing100,
+                horizontalPadding = LocalSpaces.current.spacing200,
+                minHeight = LocalSizes.current.size800,
+                minWidth = LocalSizes.current.size1400,
+                shape = LocalShapes.current.radius250,
+                textStyle = LocalTypographies.current.bodySmallSemiBold,
+            )
+
             LemonadeButtonSize.Small -> LemonadeButtonContentData(
                 verticalPadding = LocalSpaces.current.spacing200,
                 horizontalPadding = LocalSpaces.current.spacing300,
@@ -235,6 +244,7 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
                 shape = LocalShapes.current.radius400,
                 textStyle = LocalTypographies.current.bodyMediumSemiBold,
             )
+
         }
     }
 
