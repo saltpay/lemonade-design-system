@@ -16,6 +16,7 @@ public enum LemonadeButtonVariant {
 
 /// Button sizes following the Lemonade Design System.
 public enum LemonadeButtonSize {
+    case xSmall
     case small
     case medium
     case large
@@ -214,6 +215,15 @@ private struct LemonadeButtonContentData {
 private extension LemonadeButtonSize {
     var contentData: LemonadeButtonContentData {
         switch self {
+        case .xSmall:
+            return LemonadeButtonContentData(
+                verticalPadding: LemonadeTheme.spaces.spacing100,
+                horizontalPadding: LemonadeTheme.spaces.spacing200,
+                minHeight: LemonadeTheme.sizes.size800,
+                minWidth: LemonadeTheme.sizes.size1400,
+                cornerRadius: LemonadeTheme.radius.radius250,
+                textStyle: LemonadeTypography.shared.bodySmallSemiBold
+            )
         case .small:
             return LemonadeButtonContentData(
                 verticalPadding: LemonadeTheme.spaces.spacing200,

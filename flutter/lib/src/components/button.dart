@@ -26,6 +26,9 @@ enum LemonadeButtonVariant {
 
 /// Sizes available for [LemonadeButton].
 enum LemonadeButtonSize {
+  /// Extra small size
+  xSmall,
+
   /// Small size
   small,
 
@@ -333,6 +336,14 @@ class _LemonadeButtonState extends State<LemonadeButton> {
     LemonadeThemeData theme,
   ) {
     return switch (widget.size) {
+      LemonadeButtonSize.xSmall => _ButtonSizeData(
+        verticalPadding: theme.spaces.spacing100,
+        horizontalPadding: theme.spaces.spacing200,
+        minHeight: buttonTheme.xSmallHeight,
+        minWidth: buttonTheme.xSmallMinWidth,
+        borderRadius: theme.radius.radius250,
+        textStyle: theme.typography.bodySmallSemibold,
+      ),
       LemonadeButtonSize.small => _ButtonSizeData(
         verticalPadding: theme.spaces.spacing200,
         horizontalPadding: theme.spaces.spacing300,
