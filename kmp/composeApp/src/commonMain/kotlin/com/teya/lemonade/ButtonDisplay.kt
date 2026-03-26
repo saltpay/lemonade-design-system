@@ -70,6 +70,7 @@ internal fun ButtonDisplay() {
                                 onClick = {},
                                 variant = variant,
                                 size = size,
+                                leadingIcon = null,
                             )
                         }
                     }
@@ -97,6 +98,7 @@ internal fun ButtonDisplay() {
                             variant = variant,
                             size = LemonadeButtonSize.Medium,
                             loading = true,
+                            leadingIcon = null,
                         )
 
                         LemonadeUi.Button(
@@ -105,6 +107,7 @@ internal fun ButtonDisplay() {
                             variant = variant,
                             size = LemonadeButtonSize.Medium,
                             enabled = false,
+                            leadingIcon = null,
                         )
                     }
                 }

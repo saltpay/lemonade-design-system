@@ -244,7 +244,6 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
                 shape = LocalShapes.current.radius400,
                 textStyle = LocalTypographies.current.bodyMediumSemiBold,
             )
-
         }
     }
 
