@@ -175,12 +175,14 @@ internal fun DividerDisplay() {
                         label = "Continue with Email",
                         onClick = { },
                         modifier = Modifier.fillMaxWidth(),
+                        leadingIcon = null,
                     )
                     LemonadeUi.HorizontalDivider(label = "OR")
                     LemonadeUi.Button(
                         label = "Continue with Google",
                         onClick = { },
                         modifier = Modifier.fillMaxWidth(),
+                        leadingIcon = null,
                     )
                 }
 

@@ -102,6 +102,45 @@ internal fun ChipDisplay() {
             }
         }
 
+        // Label Only
+        ChipSection(title = "Label Only") {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+                ) {
+                    LemonadeUi.Chip(label = "Label", selected = false)
+                    LemonadeUi.Chip(label = "Label", selected = true)
+                }
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+                ) {
+                    LemonadeUi.Chip(
+                        label = "Dismiss",
+                        selected = false,
+                        trailingIcon = LemonadeIcons.CircleX,
+                    )
+                    LemonadeUi.Chip(
+                        label = "Dismiss",
+                        selected = true,
+                        trailingIcon = LemonadeIcons.CircleX,
+                    )
+                }
+            }
+        }
+
+        // Icon Only
+        ChipSection(title = "Icon Only") {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+            ) {
+                LemonadeUi.Chip(icon = LemonadeIcons.Heart, selected = false)
+                LemonadeUi.Chip(icon = LemonadeIcons.Heart, selected = true)
+            }
+        }
+
         // Interactive Selection
         ChipSection(title = "Interactive Selection") {
             Column(

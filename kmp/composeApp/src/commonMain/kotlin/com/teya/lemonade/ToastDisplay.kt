@@ -19,6 +19,7 @@ internal fun ToastDisplay() {
                         voice = ToastVoice.Success,
                     )
                 },
+                leadingIcon = null,
             )
             LemonadeUi.Button(
                 label = "Error Toast",
@@ -28,6 +29,7 @@ internal fun ToastDisplay() {
                         voice = ToastVoice.Error,
                     )
                 },
+                leadingIcon = null,
             )
             LemonadeUi.Button(
                 label = "Neutral Toast",
@@ -37,6 +39,7 @@ internal fun ToastDisplay() {
                         voice = ToastVoice.Neutral,
                     )
                 },
+                leadingIcon = null,
             )
             LemonadeUi.Button(
                 label = "Neutral with Icon",
@@ -47,6 +50,7 @@ internal fun ToastDisplay() {
                         icon = LemonadeIcons.Link,
                     )
                 },
+                leadingIcon = null,
             )
         }
 
@@ -60,6 +64,7 @@ internal fun ToastDisplay() {
                         duration = ToastDuration.Short,
                     )
                 },
+                leadingIcon = null,
             )
             LemonadeUi.Button(
                 label = "Medium (6s)",
@@ -70,6 +75,7 @@ internal fun ToastDisplay() {
                         duration = ToastDuration.Medium,
                     )
                 },
+                leadingIcon = null,
             )
             LemonadeUi.Button(
                 label = "Long (9s)",
@@ -80,6 +86,7 @@ internal fun ToastDisplay() {
                         duration = ToastDuration.Long,
                     )
                 },
+                leadingIcon = null,
             )
         }
 
@@ -94,6 +101,7 @@ internal fun ToastDisplay() {
                         duration = ToastDuration.Short,
                     )
                 },
+                leadingIcon = null,
             )
             LemonadeUi.Button(
                 label = "Tap while visible to replace",
@@ -103,6 +111,7 @@ internal fun ToastDisplay() {
                         voice = ToastVoice.Success,
                     )
                 },
+                leadingIcon = null,
             )
         }
     }

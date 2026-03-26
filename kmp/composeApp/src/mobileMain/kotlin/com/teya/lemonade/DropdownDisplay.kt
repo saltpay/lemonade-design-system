@@ -48,6 +48,7 @@ internal fun DropdownSampleDisplay() {
                 LemonadeUi.Button(
                     label = "Open Basic Menu",
                     onClick = { basicExpanded = true },
+                    leadingIcon = null,
                     variant = LemonadeButtonVariant.Secondary,
                     size = LemonadeButtonSize.Medium,
                 )
@@ -79,6 +80,7 @@ internal fun DropdownSampleDisplay() {
                 LemonadeUi.Button(
                     label = "Open Menu with Leading Icons",
                     onClick = { leadingIconsExpanded = true },
+                    leadingIcon = null,
                     variant = LemonadeButtonVariant.Secondary,
                     size = LemonadeButtonSize.Medium,
                 )
@@ -113,6 +115,7 @@ internal fun DropdownSampleDisplay() {
                 LemonadeUi.Button(
                     label = "Open Menu with Trailing Icons",
                     onClick = { trailingIconsExpanded = true },
+                    leadingIcon = null,
                     variant = LemonadeButtonVariant.Secondary,
                     size = LemonadeButtonSize.Medium,
                 )
@@ -147,6 +150,7 @@ internal fun DropdownSampleDisplay() {
                 LemonadeUi.Button(
                     label = "Open Menu with Disabled Items",
                     onClick = { disabledItemsExpanded = true },
+                    leadingIcon = null,
                     variant = LemonadeButtonVariant.Secondary,
                     size = LemonadeButtonSize.Medium,
                 )
@@ -184,6 +188,7 @@ internal fun DropdownSampleDisplay() {
                 LemonadeUi.Button(
                     label = "Open Non-Dismissable Menu",
                     onClick = { nonDismissableExpanded = true },
+                    leadingIcon = null,
                     variant = LemonadeButtonVariant.Secondary,
                     size = LemonadeButtonSize.Medium,
                 )

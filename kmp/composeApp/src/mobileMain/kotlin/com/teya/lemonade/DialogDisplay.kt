@@ -40,6 +40,7 @@ internal fun DialogSampleDisplay() {
             LemonadeUi.Button(
                 label = "Open Dialog",
                 onClick = { showBasicDialog = true },
+                leadingIcon = null,
                 variant = LemonadeButtonVariant.Secondary,
                 size = LemonadeButtonSize.Medium,
             )
@@ -56,6 +57,7 @@ internal fun DialogSampleDisplay() {
             LemonadeUi.Button(
                 label = "Open Non-Dismissable Dialog",
                 onClick = { showNonDismissableDialog = true },
+                leadingIcon = null,
                 variant = LemonadeButtonVariant.Secondary,
                 size = LemonadeButtonSize.Medium,
             )
@@ -92,6 +94,7 @@ internal fun DialogSampleDisplay() {
                 LemonadeUi.Button(
                     label = "Cancel",
                     onClick = { showBasicDialog = false },
+                    leadingIcon = null,
                     variant = LemonadeButtonVariant.Neutral,
                     size = LemonadeButtonSize.Small,
                 )
@@ -99,6 +102,7 @@ internal fun DialogSampleDisplay() {
                 LemonadeUi.Button(
                     label = "Confirm",
                     onClick = { showBasicDialog = false },
+                    leadingIcon = null,
                     variant = LemonadeButtonVariant.Primary,
                     size = LemonadeButtonSize.Small,
                 )
@@ -138,6 +142,7 @@ internal fun DialogSampleDisplay() {
                 LemonadeUi.Button(
                     label = "Close",
                     onClick = { showNonDismissableDialog = false },
+                    leadingIcon = null,
                     variant = LemonadeButtonVariant.Primary,
                     size = LemonadeButtonSize.Small,
                 )

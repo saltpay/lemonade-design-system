@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,13 +24,53 @@ internal fun ButtonDisplay() {
                     ),
                 ) {
                     ButtonCard {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            LemonadeButtonSize.entries.forEach { size ->
+                                LemonadeUi.Button(
+                                    label = size.toString(),
+                                    variant = variant,
+                                    size = size,
+                                    onClick = {},
+                                    trailingSlot = { colors ->
+                                        LemonadeUi.VerticalDivider()
+                                        LemonadeUi.Text(
+                                            text = "Action",
+                                            color = colors.contentColor,
+                                            modifier = Modifier.padding(start = LemonadeTheme.spaces.spacing300),
+                                        )
+                                    },
+                                )
+                            }
+
+                            LemonadeUi.Button(
+                                label = "Spaced",
+                                variant = variant,
+                                spacedContents = true,
+                                onClick = {},
+                                modifier = Modifier.fillMaxWidth(),
+                                trailingSlot = { colors ->
+                                    LemonadeUi.VerticalDivider()
+                                    LemonadeUi.Text(
+                                        text = "Action",
+                                        color = colors.contentColor,
+                                        modifier = Modifier.padding(start = LemonadeTheme.spaces.spacing300),
+                                    )
+                                },
+                            )
+                        }
+                    }
+
+                    ButtonCard {
                         LemonadeButtonSize.entries.forEach { size ->
-                            @OptIn(ExperimentalLemonadeComponent::class)
                             LemonadeUi.Button(
                                 label = size.toString(),
                                 onClick = {},
                                 variant = variant,
                                 size = size,
+                                leadingIcon = null,
                             )
                         }
                     }
@@ -51,22 +92,22 @@ internal fun ButtonDisplay() {
                     }
 
                     ButtonCard {
-                        @OptIn(ExperimentalLemonadeComponent::class)
                         LemonadeUi.Button(
                             label = "Loading",
                             onClick = {},
                             variant = variant,
                             size = LemonadeButtonSize.Medium,
                             loading = true,
+                            leadingIcon = null,
                         )
 
-                        @OptIn(ExperimentalLemonadeComponent::class)
                         LemonadeUi.Button(
                             label = "Disabled",
                             onClick = {},
                             variant = variant,
                             size = LemonadeButtonSize.Medium,
                             enabled = false,
+                            leadingIcon = null,
                         )
                     }
                 }

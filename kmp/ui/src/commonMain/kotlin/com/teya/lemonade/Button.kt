@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
@@ -55,11 +56,12 @@ import com.teya.lemonade.core.LemonadeTextStyle
 public fun LemonadeUi.Button(
     label: String,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     leadingIcon: LemonadeIcons? = null,
     trailingIcon: LemonadeIcons? = null,
     variant: LemonadeButtonVariant = LemonadeButtonVariant.Primary,
     size: LemonadeButtonSize = LemonadeButtonSize.Large,
-    modifier: Modifier = Modifier,
+    spacedContents: Boolean = false,
     enabled: Boolean = true,
     loading: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -72,6 +74,7 @@ public fun LemonadeUi.Button(
         interactionSource = interactionSource,
         onClick = onClick,
         loading = loading,
+        spacedContents = spacedContents,
         contentSlot = {
             if (loading) {
                 LemonadeUi.Spinner(
@@ -106,16 +109,95 @@ public fun LemonadeUi.Button(
     )
 }
 
+/**
+ * Lemonade labeled button component with composable slots. Used for simple click actions with a
+ * text and optional composable leading/trailing content, allowing full customization of the
+ * slot contents instead of predefined icon references.
+ * ## Usage
+ * ```kotlin
+ * LemonadeUi.Button(
+ *   label = "click me!",
+ *   onClick = { println("button clicked!") },
+ *   leadingSlot = { colors -> Icon(..., tint = colors.contentColor) },
+ * )
+ * ```
+ * @param label - [String] to be displayed as the Button's label.
+ * @param onClick - Callback to be invoked when the Button is clicked.
+ * @param modifier - [Modifier] to be applied to the Button.
+ * @param leadingSlot - Composable slot shown before the label. Receives [LemonadeButtonColors]
+ * to access variant-aware colors.
+ * @param trailingSlot - Composable slot shown after the label. Receives [LemonadeButtonColors]
+ * to access variant-aware colors.
+ * @param variant - [LemonadeButtonVariant] to style the Button accordingly.
+ * @param size - [LemonadeButtonSize] to size the Button accordingly.
+ * @param spacedContents - [Boolean] flag to space contents evenly across the Button's width.
+ * @param enabled - [Boolean] flag to enable or disable the Button.
+ * @param loading - [Boolean] flag to enable the loading state.
+ * @param interactionSource - [MutableInteractionSource] to be applied to the Button.
+ */
+@Composable
+public fun LemonadeUi.Button(
+    label: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    leadingSlot: (@Composable RowScope.(LemonadeButtonColors) -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.(LemonadeButtonColors) -> Unit)? = null,
+    variant: LemonadeButtonVariant = LemonadeButtonVariant.Primary,
+    size: LemonadeButtonSize = LemonadeButtonSize.Large,
+    spacedContents: Boolean = false,
+    enabled: Boolean = true,
+    loading: Boolean = false,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+) {
+    CoreButton(
+        variant = variant,
+        size = size,
+        modifier = modifier,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        onClick = onClick,
+        loading = loading,
+        spacedContents = spacedContents,
+        contentSlot = {
+            if (loading) {
+                LemonadeUi.Spinner(
+                    tint = variant.variantData.contentColor,
+                )
+            } else {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    leadingSlot?.invoke(this, variant.variantData)
+                }
+
+                LemonadeUi.Text(
+                    text = label,
+                    textStyle = size.contentData.textStyle,
+                    color = variant.variantData.contentColor,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .weight(
+                            weight = 1f,
+                            fill = spacedContents,
+                        ).padding(horizontal = LocalSpaces.current.spacing200),
+                )
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    trailingSlot?.invoke(this, variant.variantData)
+                }
+            }
+        },
+    )
+}
+
 @Stable
-private data class LemonadeButtonColors(
-    val contentColor: Color,
-    val solidBackgroundColor: Color,
-    val pressedBackgroundColor: Color,
-    val brushBackgroundColor: Brush? = null,
+public class LemonadeButtonColors internal constructor(
+    public val contentColor: Color,
+    public val solidBackgroundColor: Color,
+    public val pressedBackgroundColor: Color,
+    public val brushBackgroundColor: Brush? = null,
 )
 
 @Stable
-private data class LemonadeButtonContentData(
+private class LemonadeButtonContentData(
     val verticalPadding: Dp,
     val horizontalPadding: Dp,
     val minHeight: Dp,
@@ -127,6 +209,15 @@ private data class LemonadeButtonContentData(
 private val LemonadeButtonSize.contentData: LemonadeButtonContentData
     @Composable get() {
         return when (this) {
+            LemonadeButtonSize.XSmall -> LemonadeButtonContentData(
+                verticalPadding = LocalSpaces.current.spacing100,
+                horizontalPadding = LocalSpaces.current.spacing200,
+                minHeight = LocalSizes.current.size800,
+                minWidth = LocalSizes.current.size1400,
+                shape = LocalShapes.current.radius250,
+                textStyle = LocalTypographies.current.bodySmallSemiBold,
+            )
+
             LemonadeButtonSize.Small -> LemonadeButtonContentData(
                 verticalPadding = LocalSpaces.current.spacing200,
                 horizontalPadding = LocalSpaces.current.spacing300,
@@ -214,6 +305,7 @@ private fun CoreButton(
     size: LemonadeButtonSize,
     enabled: Boolean,
     loading: Boolean,
+    spacedContents: Boolean,
     interactionSource: MutableInteractionSource,
     modifier: Modifier = Modifier,
 ) {
@@ -230,7 +322,11 @@ private fun CoreButton(
     Row(
         content = contentSlot,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = if (spacedContents) {
+            Arrangement.SpaceBetween
+        } else {
+            Arrangement.Center
+        },
         modifier = modifier
             .defaultMinSize(
                 minWidth = size.contentData.minWidth,
@@ -312,6 +408,84 @@ private fun LemonadeLabeledRadioButtonPreview(
         onClick = { /* Nothing */ },
         leadingIcon = LemonadeIcons.Heart.takeIf { previewData.leadingIcon },
         trailingIcon = LemonadeIcons.Heart.takeIf { previewData.trailingIcon },
+        enabled = previewData.enabled,
+        loading = previewData.loading,
+        size = previewData.size,
+        variant = previewData.variant,
+    )
+}
+
+private data class SlotButtonPreviewData(
+    val leadingSlot: Boolean,
+    val trailingSlot: Boolean,
+    val enabled: Boolean,
+    val loading: Boolean,
+    val size: LemonadeButtonSize,
+    val variant: LemonadeButtonVariant,
+)
+
+private class SlotButtonPreviewProvider : PreviewParameterProvider<SlotButtonPreviewData> {
+    override val values: Sequence<SlotButtonPreviewData> = buildAllVariants()
+
+    private fun buildAllVariants(): Sequence<SlotButtonPreviewData> =
+        buildList {
+            LemonadeButtonSize.entries.forEach { size ->
+                LemonadeButtonVariant.entries.forEach { variant ->
+                    listOf(true, false).forEach { leadingSlot ->
+                        listOf(true, false).forEach { trailingSlot ->
+                            listOf(true, false).forEach { loading ->
+                                listOf(true, false).forEach { enabled ->
+                                    add(
+                                        SlotButtonPreviewData(
+                                            leadingSlot = leadingSlot,
+                                            trailingSlot = trailingSlot,
+                                            enabled = enabled,
+                                            loading = loading,
+                                            size = size,
+                                            variant = variant,
+                                        ),
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }.asSequence()
+}
+
+@LemonadePreview
+@Composable
+private fun LemonadeSlotButtonPreview(
+    @PreviewParameter(SlotButtonPreviewProvider::class)
+    previewData: SlotButtonPreviewData,
+) {
+    @OptIn(ExperimentalLemonadeComponent::class)
+    LemonadeUi.Button(
+        label = "Label",
+        onClick = { /* Nothing */ },
+        leadingSlot = if (previewData.leadingSlot) {
+            { colors ->
+                LemonadeUi.Icon(
+                    icon = LemonadeIcons.Heart,
+                    tint = colors.contentColor,
+                    contentDescription = null,
+                )
+            }
+        } else {
+            null
+        },
+        trailingSlot = if (previewData.trailingSlot) {
+            { colors ->
+                LemonadeUi.Icon(
+                    icon = LemonadeIcons.ChevronRight,
+                    tint = colors.contentColor,
+                    contentDescription = null,
+                )
+            }
+        } else {
+            null
+        },
         enabled = previewData.enabled,
         loading = previewData.loading,
         size = previewData.size,

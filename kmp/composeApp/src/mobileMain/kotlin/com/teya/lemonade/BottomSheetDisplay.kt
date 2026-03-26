@@ -41,6 +41,7 @@ internal fun BottomSheetSampleDisplay() {
             LemonadeUi.Button(
                 label = "Open Bottom Sheet",
                 onClick = { showBasicSheet = true },
+                leadingIcon = null,
                 variant = LemonadeButtonVariant.Secondary,
                 size = LemonadeButtonSize.Medium,
             )
@@ -57,6 +58,7 @@ internal fun BottomSheetSampleDisplay() {
             LemonadeUi.Button(
                 label = "Open Without Drag Handle",
                 onClick = { showNoDragHandleSheet = true },
+                leadingIcon = null,
                 variant = LemonadeButtonVariant.Secondary,
                 size = LemonadeButtonSize.Medium,
             )
@@ -86,6 +88,7 @@ internal fun BottomSheetSampleDisplay() {
             LemonadeUi.Button(
                 label = "Close",
                 onClick = { showBasicSheet = false },
+                leadingIcon = null,
                 variant = LemonadeButtonVariant.Primary,
                 size = LemonadeButtonSize.Medium,
             )
@@ -120,6 +123,7 @@ internal fun BottomSheetSampleDisplay() {
             LemonadeUi.Button(
                 label = "Close",
                 onClick = { showNoDragHandleSheet = false },
+                leadingIcon = null,
                 variant = LemonadeButtonVariant.Primary,
                 size = LemonadeButtonSize.Medium,
             )

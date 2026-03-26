@@ -26,6 +26,9 @@ enum LemonadeButtonVariant {
 
 /// Sizes available for [LemonadeButton].
 enum LemonadeButtonSize {
+  /// Extra small size
+  xSmall,
+
   /// Small size
   small,
 
@@ -65,6 +68,12 @@ enum LemonadeButtonSize {
 /// See also:
 /// - [LemonadeButtonTheme], for theme configuration
 /// {@endtemplate}
+/// Builder function that receives [LemonadeButtonColors] for variant-aware
+/// custom content inside button slots.
+typedef LemonadeButtonSlotBuilder = Widget Function(
+  LemonadeButtonColors colors,
+);
+
 class LemonadeButton extends StatefulWidget {
   /// {@macro LemonadeButton}
   const LemonadeButton({
@@ -74,12 +83,44 @@ class LemonadeButton extends StatefulWidget {
     this.trailingIcon,
     this.variant = LemonadeButtonVariant.primary,
     this.size = LemonadeButtonSize.large,
+    this.spacedContents = false,
     this.enabled = true,
     this.loading = false,
     this.semanticIdentifier,
     this.semanticLabel,
     super.key,
-  });
+  })  : leadingSlot = null,
+        trailingSlot = null;
+
+  /// Creates a [LemonadeButton] with custom slot builders for leading and
+  /// trailing content.
+  ///
+  /// The slot builders receive [LemonadeButtonColors] so custom content can
+  /// use variant-aware colors.
+  ///
+  /// ## Example
+  /// ```dart
+  /// LemonadeButton.slots(
+  ///   label: 'Custom',
+  ///   onPressed: () {},
+  ///   leadingSlot: (colors) => Icon(Icons.star, color: colors.contentColor),
+  /// )
+  /// ```
+  const LemonadeButton.slots({
+    required this.label,
+    required this.onPressed,
+    this.leadingSlot,
+    this.trailingSlot,
+    this.variant = LemonadeButtonVariant.primary,
+    this.size = LemonadeButtonSize.large,
+    this.spacedContents = false,
+    this.enabled = true,
+    this.loading = false,
+    this.semanticIdentifier,
+    this.semanticLabel,
+    super.key,
+  })  : leadingIcon = null,
+        trailingIcon = null;
 
   /// The label text displayed on the button.
   final String label;
@@ -93,11 +134,21 @@ class LemonadeButton extends StatefulWidget {
   /// Optional icon displayed after the label.
   final LemonadeIcons? trailingIcon;
 
+  /// Optional custom widget builder for leading content.
+  final LemonadeButtonSlotBuilder? leadingSlot;
+
+  /// Optional custom widget builder for trailing content.
+  final LemonadeButtonSlotBuilder? trailingSlot;
+
   /// The button variant. Defaults to [LemonadeButtonVariant.primary].
   final LemonadeButtonVariant variant;
 
   /// The button size. Defaults to [LemonadeButtonSize.large].
   final LemonadeButtonSize size;
+
+  /// When true, arranges content with space between (leading / label / trailing
+  /// spread across the full width). Defaults to false (centered).
+  final bool spacedContents;
 
   /// Whether the button is enabled. Defaults to true.
   final bool enabled;
@@ -178,31 +229,53 @@ class _LemonadeButtonState extends State<LemonadeButton> {
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: widget.spacedContents
+                  ? MainAxisAlignment.spaceBetween
+                  : MainAxisAlignment.center,
               children: [
                 if (widget.loading) ...[
                   LemonadeSpinner(
                     color: variantColors.contentColor,
                   ),
                 ] else ...[
-                  if (widget.leadingIcon != null) ...[
+                  if (widget.leadingSlot != null)
+                    widget.leadingSlot!(variantColors)
+                  else if (widget.leadingIcon != null) ...[
                     LemonadeIcon(
                       icon: widget.leadingIcon!,
                       color: variantColors.contentColor,
                     ),
                   ],
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: spaces.spacing200,
-                    ),
-                    child: Text(
-                      widget.label,
-                      style: sizeData.textStyle.copyWith(
-                        color: variantColors.contentColor,
+                  if (widget.spacedContents)
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: spaces.spacing200,
+                        ),
+                        child: Text(
+                          widget.label,
+                          style: sizeData.textStyle.copyWith(
+                            color: variantColors.contentColor,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    )
+                  else
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: spaces.spacing200,
+                      ),
+                      child: Text(
+                        widget.label,
+                        style: sizeData.textStyle.copyWith(
+                          color: variantColors.contentColor,
+                        ),
                       ),
                     ),
-                  ),
-                  if (widget.trailingIcon != null) ...[
+                  if (widget.trailingSlot != null)
+                    widget.trailingSlot!(variantColors)
+                  else if (widget.trailingIcon != null) ...[
                     LemonadeIcon(
                       icon: widget.trailingIcon!,
                       size: LemonadeIconSize.small,
@@ -218,39 +291,39 @@ class _LemonadeButtonState extends State<LemonadeButton> {
     );
   }
 
-  _ButtonVariantColors _getVariantColors(LemonadeSemanticColors colors) {
+  LemonadeButtonColors _getVariantColors(LemonadeSemanticColors colors) {
     return switch (widget.variant) {
-      LemonadeButtonVariant.primary => _ButtonVariantColors(
+      LemonadeButtonVariant.primary => LemonadeButtonColors(
         contentColor: colors.content.contentOnBrandHigh,
         backgroundColor: colors.background.bgBrand,
         pressedBackgroundColor: colors.interaction.bgBrandInteractive,
       ),
-      LemonadeButtonVariant.secondary => _ButtonVariantColors(
+      LemonadeButtonVariant.secondary => LemonadeButtonColors(
         contentColor: colors.content.contentPrimaryInverse,
         backgroundColor: colors.background.bgSubtleInverse,
         pressedBackgroundColor: colors.interaction.bgNeutralPressed,
       ),
-      LemonadeButtonVariant.neutralSubtle => _ButtonVariantColors(
+      LemonadeButtonVariant.neutralSubtle => LemonadeButtonColors(
         contentColor: colors.content.contentPrimary,
         backgroundColor: colors.background.bgElevated,
         pressedBackgroundColor: colors.interaction.bgElevatedPressed,
       ),
-      LemonadeButtonVariant.neutralGhost => _ButtonVariantColors(
+      LemonadeButtonVariant.neutralGhost => LemonadeButtonColors(
         contentColor: colors.content.contentPrimary,
         backgroundColor: const Color(0x00000000),
         pressedBackgroundColor: colors.interaction.bgSubtleInteractive,
       ),
-      LemonadeButtonVariant.criticalSubtle => _ButtonVariantColors(
+      LemonadeButtonVariant.criticalSubtle => LemonadeButtonColors(
         contentColor: colors.content.contentCritical,
         backgroundColor: colors.background.bgCriticalSubtle,
         pressedBackgroundColor: colors.interaction.bgCriticalSubtleInteractive,
       ),
-      LemonadeButtonVariant.criticalSolid => _ButtonVariantColors(
+      LemonadeButtonVariant.criticalSolid => LemonadeButtonColors(
         contentColor: colors.content.contentAlwaysLight,
         backgroundColor: colors.background.bgCritical,
         pressedBackgroundColor: colors.interaction.bgCriticalInteractive,
       ),
-      LemonadeButtonVariant.special => _ButtonVariantColors(
+      LemonadeButtonVariant.special => LemonadeButtonColors(
         contentColor: colors.content.contentOnBrandHigh,
         backgroundColor: colors.background.bgBrand,
         pressedBackgroundColor: colors.interaction.bgBrandPressed,
@@ -263,6 +336,14 @@ class _LemonadeButtonState extends State<LemonadeButton> {
     LemonadeThemeData theme,
   ) {
     return switch (widget.size) {
+      LemonadeButtonSize.xSmall => _ButtonSizeData(
+        verticalPadding: theme.spaces.spacing100,
+        horizontalPadding: theme.spaces.spacing200,
+        minHeight: buttonTheme.xSmallHeight,
+        minWidth: buttonTheme.xSmallMinWidth,
+        borderRadius: theme.radius.radius250,
+        textStyle: theme.typography.bodySmallSemibold,
+      ),
       LemonadeButtonSize.small => _ButtonSizeData(
         verticalPadding: theme.spaces.spacing200,
         horizontalPadding: theme.spaces.spacing300,
@@ -291,15 +372,24 @@ class _LemonadeButtonState extends State<LemonadeButton> {
   }
 }
 
-class _ButtonVariantColors {
-  const _ButtonVariantColors({
+/// Colors resolved for a specific [LemonadeButtonVariant].
+///
+/// Exposed so that custom slot content can use variant-aware colors.
+class LemonadeButtonColors {
+  /// Creates button variant colors.
+  const LemonadeButtonColors({
     required this.contentColor,
     required this.backgroundColor,
     required this.pressedBackgroundColor,
   });
 
+  /// The color used for text and icon content.
   final Color contentColor;
+
+  /// The default background color.
   final Color backgroundColor;
+
+  /// The background color when the button is pressed.
   final Color pressedBackgroundColor;
 }
 
