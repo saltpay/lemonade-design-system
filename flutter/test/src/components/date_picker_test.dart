@@ -277,32 +277,31 @@ void main() {
         expect(find.text('June 2025'), findsOneWidget);
       });
 
-      testWidgets(
-        'disables next month navigation when at maxDate month',
-        (tester) async {
-          final maxDate = DateTime(2025, 6, 15);
+      testWidgets('disables next month navigation when at maxDate month', (
+        tester,
+      ) async {
+        final maxDate = DateTime(2025, 6, 15);
 
-          await tester.pumpLemonadeWidget(
-            LemonadeDatePicker(
-              monthHeaderFormatter: monthHeaderFormatter,
-              weekdayAbbreviations: weekdayAbbreviations,
-              initialDate: DateTime(2025, 6, 10),
-              maxDate: maxDate,
-            ),
-          );
+        await tester.pumpLemonadeWidget(
+          LemonadeDatePicker(
+            monthHeaderFormatter: monthHeaderFormatter,
+            weekdayAbbreviations: weekdayAbbreviations,
+            initialDate: DateTime(2025, 6, 10),
+            maxDate: maxDate,
+          ),
+        );
 
-          // Capture current header before tapping
-          const headerBefore = 'June 2025';
-          expect(find.text(headerBefore), findsOneWidget);
+        // Capture current header before tapping
+        const headerBefore = 'June 2025';
+        expect(find.text(headerBefore), findsOneWidget);
 
-          // Try to navigate to next month
-          await tester.tap(find.bySemanticsIdentifier('next_month'));
-          await tester.pumpAndSettle();
+        // Try to navigate to next month
+        await tester.tap(find.bySemanticsIdentifier('next_month'));
+        await tester.pumpAndSettle();
 
-          // Header should remain unchanged (navigation disabled)
-          expect(find.text(headerBefore), findsOneWidget);
-        },
-      );
+        // Header should remain unchanged (navigation disabled)
+        expect(find.text(headerBefore), findsOneWidget);
+      });
     });
 
     group('minDate and maxDate combined', () {
@@ -353,14 +352,8 @@ void main() {
         ),
       );
 
-      expect(
-        find.bySemanticsIdentifier('previous_month'),
-        findsOneWidget,
-      );
-      expect(
-        find.bySemanticsIdentifier('next_month'),
-        findsOneWidget,
-      );
+      expect(find.bySemanticsIdentifier('previous_month'), findsOneWidget);
+      expect(find.bySemanticsIdentifier('next_month'), findsOneWidget);
     });
 
     testWidgets('uses PageView for month navigation', (tester) async {

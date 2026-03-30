@@ -111,10 +111,7 @@ class LemonadeIcon extends StatelessWidget {
           icon.assetPath,
           width: iconSize,
           height: iconSize,
-          colorFilter: ColorFilter.mode(
-            iconColor,
-            BlendMode.srcIn,
-          ),
+          colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
         ),
       ),
     );

@@ -40,15 +40,9 @@ class _SwitchExampleScreenState extends State<SwitchExampleScreen> {
             ExampleRow(
               label: 'Disabled',
               children: [
-                const LemonadeSwitch(
-                  checked: true,
-                  enabled: false,
-                ),
+                const LemonadeSwitch(checked: true, enabled: false),
                 SizedBox(height: theme.spaces.spacing500),
-                const LemonadeSwitch(
-                  checked: false,
-                  enabled: false,
-                ),
+                const LemonadeSwitch(checked: false, enabled: false),
               ],
             ),
           ],

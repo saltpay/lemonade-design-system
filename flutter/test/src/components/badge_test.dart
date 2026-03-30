@@ -6,11 +6,7 @@ import '../../helpers/widget_tester_extension.dart';
 void main() {
   group('LemonadeBadge', () {
     testWidgets('renders correctly with default configuration', (tester) async {
-      await tester.pumpLemonadeWidget(
-        const LemonadeBadge(
-          label: 'Test Badge',
-        ),
-      );
+      await tester.pumpLemonadeWidget(const LemonadeBadge(label: 'Test Badge'));
 
       expect(find.byType(LemonadeBadge), findsOneWidget);
 
@@ -24,10 +20,7 @@ void main() {
     testWidgets('renders correctly all badge sizes', (tester) async {
       for (final size in LemonadeBadgeSize.values) {
         await tester.pumpLemonadeWidget(
-          LemonadeBadge(
-            label: 'Size Test',
-            size: size,
-          ),
+          LemonadeBadge(label: 'Size Test', size: size),
         );
 
         final badgeWidget = tester.widget<LemonadeBadge>(

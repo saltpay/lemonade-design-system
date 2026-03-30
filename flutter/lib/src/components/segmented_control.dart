@@ -244,9 +244,7 @@ class LemonadeSegmentedControl<T> extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       // TODO(felipeemarcon): Remove support for deprecated icon in future major release.
-                                      if (item.icon != null) ...[
-                                        item.icon!,
-                                      ],
+                                      if (item.icon != null) ...[item.icon!],
                                       if (item.leadingIcon != null) ...[
                                         LemonadeIcon(
                                           icon: item.leadingIcon!,

@@ -151,10 +151,7 @@ class _LemonadeSpinnerState extends State<LemonadeSpinner>
 }
 
 class _SpinnerPainter extends CustomPainter {
-  _SpinnerPainter({
-    required this.color,
-    required this.strokeWidth,
-  });
+  _SpinnerPainter({required this.color, required this.strokeWidth});
 
   final Color color;
   final double strokeWidth;
@@ -170,13 +167,7 @@ class _SpinnerPainter extends CustomPainter {
     final rect = Rect.fromLTWH(0, 0, size.width, size.height);
 
     // Draw arc covering 285 degrees (same as KMP)
-    canvas.drawArc(
-      rect,
-      0,
-      285 * math.pi / 180,
-      false,
-      paint,
-    );
+    canvas.drawArc(rect, 0, 285 * math.pi / 180, false, paint);
   }
 
   @override

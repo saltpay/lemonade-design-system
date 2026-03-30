@@ -36,10 +36,7 @@ class LemonadeDisabled extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget view = AbsorbPointer(
-      absorbing: disabled,
-      child: child,
-    );
+    Widget view = AbsorbPointer(absorbing: disabled, child: child);
 
     if (showForbiddenCursor && disabled) {
       view = MouseRegion(cursor: SystemMouseCursors.forbidden, child: view);

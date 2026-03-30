@@ -20,15 +20,9 @@ class ToastExampleScreen extends StatelessWidget {
             const ExampleRow(
               label: 'Visual Components',
               children: [
-                LemonadeToast.success(
-                  label: 'Success message',
-                ),
-                LemonadeToast.error(
-                  label: 'Error message',
-                ),
-                LemonadeToast.neutral(
-                  label: 'Neutral message',
-                ),
+                LemonadeToast.success(label: 'Success message'),
+                LemonadeToast.error(label: 'Error message'),
+                LemonadeToast.neutral(label: 'Neutral message'),
                 LemonadeToast.neutral(
                   label:
                       // ignore: lines_longer_than_80_chars

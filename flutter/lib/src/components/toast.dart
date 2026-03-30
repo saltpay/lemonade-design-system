@@ -122,9 +122,7 @@ class LemonadeToast extends StatelessWidget {
       label: semanticLabel ?? label,
       identifier: semanticIdentifier,
       child: Container(
-        constraints: BoxConstraints(
-          minHeight: toastTheme.minHeight,
-        ),
+        constraints: BoxConstraints(minHeight: toastTheme.minHeight),
         padding: toastTheme.padding,
         decoration: BoxDecoration(
           color: toastTheme.backgroundColor,
@@ -136,12 +134,7 @@ class LemonadeToast extends StatelessWidget {
           children: [
             LemonadeIcon(icon: iconAsset, color: iconColor),
             SizedBox(width: toastTheme.iconLabelGap),
-            Flexible(
-              child: Text(
-                label,
-                style: toastTheme.labelStyle,
-              ),
-            ),
+            Flexible(child: Text(label, style: toastTheme.labelStyle)),
           ],
         ),
       ),

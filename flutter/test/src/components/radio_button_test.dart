@@ -19,11 +19,7 @@ void main() {
 
     testWidgets('renders with initial checked true', (tester) async {
       await tester.pumpLemonadeWidget(
-        LemonadeRadioButton(
-          checked: true,
-          onChanged: () {},
-          label: 'Option 1',
-        ),
+        LemonadeRadioButton(checked: true, onChanged: () {}, label: 'Option 1'),
       );
 
       expect(find.byType(LemonadeRadioButton), findsOneWidget);
@@ -69,9 +65,7 @@ void main() {
       expect(find.byType(Text), findsOneWidget);
     });
 
-    testWidgets('calls onChanged when tapped while unchecked', (
-      tester,
-    ) async {
+    testWidgets('calls onChanged when tapped while unchecked', (tester) async {
       var wasCalled = false;
 
       await tester.pumpLemonadeWidget(
@@ -88,9 +82,7 @@ void main() {
       expect(wasCalled, isTrue);
     });
 
-    testWidgets('does not call onChanged when already checked', (
-      tester,
-    ) async {
+    testWidgets('does not call onChanged when already checked', (tester) async {
       var wasCalled = false;
 
       await tester.pumpLemonadeWidget(
@@ -107,9 +99,7 @@ void main() {
       expect(wasCalled, isFalse);
     });
 
-    testWidgets('does not call onChanged when disabled', (
-      tester,
-    ) async {
+    testWidgets('does not call onChanged when disabled', (tester) async {
       var wasCalled = false;
 
       await tester.pumpLemonadeWidget(
@@ -239,11 +229,7 @@ void main() {
 
     testWidgets('has correct semantics', (tester) async {
       await tester.pumpLemonadeWidget(
-        LemonadeRadioButton(
-          checked: true,
-          onChanged: () {},
-          label: 'Option 1',
-        ),
+        LemonadeRadioButton(checked: true, onChanged: () {}, label: 'Option 1'),
       );
 
       // Verify semantics widget exists

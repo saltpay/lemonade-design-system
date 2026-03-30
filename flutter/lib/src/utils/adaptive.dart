@@ -17,10 +17,7 @@ TargetPlatform? forceAdaptivePlatform;
 ///   desktop: 12.0,
 /// );
 /// ```
-T adaptive<T>({
-  required T mobile,
-  required T desktop,
-}) {
+T adaptive<T>({required T mobile, required T desktop}) {
   final platform = forceAdaptivePlatform ?? defaultTargetPlatform;
   if (platform == TargetPlatform.android || platform == TargetPlatform.iOS) {
     return mobile;
