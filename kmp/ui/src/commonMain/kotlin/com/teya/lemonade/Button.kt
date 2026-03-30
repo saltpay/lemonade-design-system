@@ -285,6 +285,7 @@ private fun CoreButton(
     )
     Row(
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
         modifier = modifier
             .defaultMinSize(minWidth = size.contentData.minWidth)
             .requiredHeight(height = size.contentData.requiredHeight)
