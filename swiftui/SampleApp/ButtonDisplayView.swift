@@ -9,6 +9,7 @@ struct ButtonDisplayView: View {
                 sectionView(title: "Primary") {
                     VStack(spacing: 16) {
                         HStack(spacing: 12) {
+                            LemonadeUi.Button(label: "XSmall", onClick: {}, variant: .primary, size: .xSmall)
                             LemonadeUi.Button(label: "Small", onClick: {}, variant: .primary, size: .small)
                             LemonadeUi.Button(label: "Medium", onClick: {}, variant: .primary, size: .medium)
                             LemonadeUi.Button(label: "Large", onClick: {}, variant: .primary, size: .large)
@@ -29,6 +30,7 @@ struct ButtonDisplayView: View {
                 sectionView(title: "Secondary") {
                     VStack(spacing: 16) {
                         HStack(spacing: 12) {
+                            LemonadeUi.Button(label: "XSmall", onClick: {}, variant: .secondary, size: .xSmall)
                             LemonadeUi.Button(label: "Small", onClick: {}, variant: .secondary, size: .small)
                             LemonadeUi.Button(label: "Medium", onClick: {}, variant: .secondary, size: .medium)
                             LemonadeUi.Button(label: "Large", onClick: {}, variant: .secondary, size: .large)
@@ -49,6 +51,7 @@ struct ButtonDisplayView: View {
                 sectionView(title: "Neutral") {
                     VStack(spacing: 16) {
                         HStack(spacing: 12) {
+                            LemonadeUi.Button(label: "XSmall", onClick: {}, variant: .neutral, size: .xSmall)
                             LemonadeUi.Button(label: "Small", onClick: {}, variant: .neutral, size: .small)
                             LemonadeUi.Button(label: "Medium", onClick: {}, variant: .neutral, size: .medium)
                             LemonadeUi.Button(label: "Large", onClick: {}, variant: .neutral, size: .large)
@@ -64,6 +67,7 @@ struct ButtonDisplayView: View {
                 sectionView(title: "Critical") {
                     VStack(spacing: 16) {
                         HStack(spacing: 12) {
+                            LemonadeUi.Button(label: "XSmall", onClick: {}, variant: .critical, size: .xSmall)
                             LemonadeUi.Button(label: "Small", onClick: {}, variant: .critical, size: .small)
                             LemonadeUi.Button(label: "Medium", onClick: {}, variant: .critical, size: .medium)
                             LemonadeUi.Button(label: "Large", onClick: {}, variant: .critical, size: .large)
@@ -83,6 +87,7 @@ struct ButtonDisplayView: View {
                 sectionView(title: "Critical Solid") {
                     VStack(spacing: 16) {
                         HStack(spacing: 12) {
+                            LemonadeUi.Button(label: "XSmall", onClick: {}, variant: .criticalSolid, size: .xSmall)
                             LemonadeUi.Button(label: "Small", onClick: {}, variant: .criticalSolid, size: .small)
                             LemonadeUi.Button(label: "Medium", onClick: {}, variant: .criticalSolid, size: .medium)
                             LemonadeUi.Button(label: "Large", onClick: {}, variant: .criticalSolid, size: .large)
@@ -102,6 +107,7 @@ struct ButtonDisplayView: View {
                 sectionView(title: "Special") {
                     VStack(spacing: 16) {
                         HStack(spacing: 12) {
+                            LemonadeUi.Button(label: "XSmall", onClick: {}, variant: .special, size: .xSmall)
                             LemonadeUi.Button(label: "Small", onClick: {}, variant: .special, size: .small)
                             LemonadeUi.Button(label: "Medium", onClick: {}, variant: .special, size: .medium)
                             LemonadeUi.Button(label: "Large", onClick: {}, variant: .special, size: .large)
