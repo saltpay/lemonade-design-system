@@ -60,12 +60,13 @@ public fun Modifier.clickable(
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     role: Role? = null,
-): Modifier = composed {
-    clickable(
-        enabled = enabled,
-        onClick = onClick,
-        interactionSource = interactionSource,
-        role = role,
-        indication = LocalEffects.current.interactionIndication,
-    )
-}
+): Modifier =
+    composed {
+        clickable(
+            enabled = enabled,
+            onClick = onClick,
+            interactionSource = interactionSource,
+            role = role,
+            indication = LocalEffects.current.interactionIndication,
+        )
+    }

@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeButtonSize
@@ -87,7 +87,7 @@ internal fun ButtonDisplay() {
                                         colors.pressedBackgroundColor
                                     } else {
                                         colors.pressedBackgroundColor.copy(alpha = LemonadeTheme.opacities.base.opacity0)
-                                    }
+                                    },
                                 )
                                 LemonadeUi.Icon(
                                     icon = LemonadeIcons.EllipsisVertical,
@@ -97,10 +97,9 @@ internal fun ButtonDisplay() {
                                         .clickable(
                                             onClick = { /* Nothing */ },
                                             interactionSource = interactionSource,
-                                        )
-                                        .background(color = backgroundColor)
+                                        ).background(color = backgroundColor)
                                         .fillMaxHeight()
-                                        .padding(horizontal = LemonadeTheme.spaces.spacing400)
+                                        .padding(horizontal = LemonadeTheme.spaces.spacing400),
                                 )
                             },
                             variant = variant,
@@ -120,7 +119,7 @@ internal fun ButtonDisplay() {
                                         colors.pressedBackgroundColor
                                     } else {
                                         colors.pressedBackgroundColor.copy(alpha = LemonadeTheme.opacities.base.opacity0)
-                                    }
+                                    },
                                 )
                                 LemonadeUi.Icon(
                                     icon = LemonadeIcons.EllipsisVertical,
@@ -130,10 +129,9 @@ internal fun ButtonDisplay() {
                                         .clickable(
                                             onClick = { /* Nothing */ },
                                             interactionSource = interactionSource,
-                                        )
-                                        .background(color = backgroundColor)
+                                        ).background(color = backgroundColor)
                                         .fillMaxHeight()
-                                        .padding(horizontal = LemonadeTheme.spaces.spacing400)
+                                        .padding(horizontal = LemonadeTheme.spaces.spacing400),
                                 )
                             },
                             variant = variant,
@@ -187,9 +185,9 @@ private fun getButtonLeadingIcon(variant: LemonadeButtonVariant = LemonadeButton
         LemonadeButtonVariant.Secondary,
         LemonadeButtonVariant.Neutral,
         LemonadeButtonVariant.Special,
-            -> LemonadeIcons.Heart
+        -> LemonadeIcons.Heart
 
         LemonadeButtonVariant.CriticalSubtle,
         LemonadeButtonVariant.CriticalSolid,
-            -> LemonadeIcons.Trash
+        -> LemonadeIcons.Trash
     }

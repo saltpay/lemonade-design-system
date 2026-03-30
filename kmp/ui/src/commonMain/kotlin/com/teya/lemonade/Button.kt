@@ -269,7 +269,7 @@ private fun CoreButton(
     onClick: () -> Unit,
     variant: LemonadeButtonVariant,
     size: LemonadeButtonSize,
-    expandContents: Boolean ,
+    expandContents: Boolean,
     enabled: Boolean,
     loading: Boolean,
     interactionSource: MutableInteractionSource,
@@ -294,16 +294,14 @@ private fun CoreButton(
                 } else {
                     Modifier
                 },
-            )
-            .clip(shape = size.contentData.shape)
+            ).clip(shape = size.contentData.shape)
             .clickable(
                 enabled = enabled && !loading,
                 onClick = onClick,
                 interactionSource = interactionSource,
                 role = Role.Button,
                 indication = LocalEffects.current.interactionIndication,
-            )
-            .background(color = animatedBackgroundColor)
+            ).background(color = animatedBackgroundColor)
             .then(
                 other = variant.variantData.brushBackgroundColor
                     ?.let { brush -> Modifier.background(brush = brush) }
@@ -321,14 +319,13 @@ private fun CoreButton(
                         } else {
                             Modifier
                         },
-                    )
-                    .padding(
+                    ).padding(
                         vertical = size.contentData.verticalPadding,
                         horizontal = size.contentData.horizontalPadding,
                     ),
             )
             trailingSlot?.invoke(this, variant.variantData)
-        }
+        },
     )
 }
 
