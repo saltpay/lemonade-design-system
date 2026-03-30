@@ -75,6 +75,7 @@ public fun LemonadeUi.Button(
         loading = loading,
         leadingSlot = null,
         trailingSlot = null,
+        expandContents = false,
         contentSlot = {
             if (loading) {
                 LemonadeUi.Spinner(
@@ -133,6 +134,7 @@ public fun LemonadeUi.Button(
         modifier = modifier,
         leadingSlot = leadingSlot.takeIf { !loading },
         trailingSlot = trailingSlot.takeIf { !loading },
+        expandContents = expandContents,
         contentSlot = {
             if (loading) {
                 LemonadeUi.Spinner(
@@ -267,6 +269,7 @@ private fun CoreButton(
     onClick: () -> Unit,
     variant: LemonadeButtonVariant,
     size: LemonadeButtonSize,
+    expandContents: Boolean ,
     enabled: Boolean,
     loading: Boolean,
     interactionSource: MutableInteractionSource,
@@ -311,10 +314,18 @@ private fun CoreButton(
             Row(
                 horizontalArrangement = Arrangement.Center,
                 content = contentSlot,
-                modifier = Modifier.padding(
-                    vertical = size.contentData.verticalPadding,
-                    horizontal = size.contentData.horizontalPadding,
-                )
+                modifier = Modifier
+                    .then(
+                        other = if (expandContents) {
+                            Modifier.weight(1f)
+                        } else {
+                            Modifier
+                        },
+                    )
+                    .padding(
+                        vertical = size.contentData.verticalPadding,
+                        horizontal = size.contentData.horizontalPadding,
+                    ),
             )
             trailingSlot?.invoke(this, variant.variantData)
         }
