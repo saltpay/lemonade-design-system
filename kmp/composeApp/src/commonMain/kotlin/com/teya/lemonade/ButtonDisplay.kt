@@ -1,10 +1,19 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeButtonSize
@@ -24,7 +33,6 @@ internal fun ButtonDisplay() {
                 ) {
                     ButtonCard {
                         LemonadeButtonSize.entries.forEach { size ->
-                            @OptIn(ExperimentalLemonadeComponent::class)
                             LemonadeUi.Button(
                                 label = size.toString(),
                                 onClick = {},
@@ -37,8 +45,6 @@ internal fun ButtonDisplay() {
                     ButtonCard {
                         listOf("leading", "trailing").forEach { position ->
                             val leadingIcon = getButtonLeadingIcon(variant)
-
-                            @OptIn(ExperimentalLemonadeComponent::class)
                             LemonadeUi.Button(
                                 label = position.replaceFirstChar { it.uppercase() },
                                 onClick = {},
@@ -51,7 +57,6 @@ internal fun ButtonDisplay() {
                     }
 
                     ButtonCard {
-                        @OptIn(ExperimentalLemonadeComponent::class)
                         LemonadeUi.Button(
                             label = "Loading",
                             onClick = {},
@@ -60,13 +65,46 @@ internal fun ButtonDisplay() {
                             loading = true,
                         )
 
-                        @OptIn(ExperimentalLemonadeComponent::class)
                         LemonadeUi.Button(
                             label = "Disabled",
                             onClick = {},
                             variant = variant,
                             size = LemonadeButtonSize.Medium,
                             enabled = false,
+                        )
+                    }
+
+                    ButtonCard {
+                        LemonadeUi.Button(
+                            label = "Dual Action",
+                            onClick = {},
+                            trailingSlot = { colors ->
+                                LemonadeUi.VerticalDivider(modifier = Modifier.fillMaxHeight())
+                                val interactionSource = remember { MutableInteractionSource() }
+                                val isPressed by interactionSource.collectIsPressedAsState()
+                                val backgroundColor by animateColorAsState(
+                                    targetValue = if (isPressed) {
+                                        colors.pressedBackgroundColor
+                                    } else {
+                                        colors.pressedBackgroundColor.copy(alpha = LemonadeTheme.opacities.base.opacity0)
+                                    }
+                                )
+                                LemonadeUi.Icon(
+                                    icon = LemonadeIcons.EllipsisVertical,
+                                    contentDescription = null,
+                                    tint = colors.contentColor,
+                                    modifier = Modifier
+                                        .clickable(
+                                            onClick = { /* Nothing */ },
+                                            interactionSource = interactionSource,
+                                        )
+                                        .background(color = backgroundColor)
+                                        .fillMaxHeight()
+                                        .padding(horizontal = LemonadeTheme.spaces.spacing400)
+                                )
+                            },
+                            variant = variant,
+                            size = LemonadeButtonSize.Medium,
                         )
                     }
                 }
@@ -116,9 +154,9 @@ private fun getButtonLeadingIcon(variant: LemonadeButtonVariant = LemonadeButton
         LemonadeButtonVariant.Secondary,
         LemonadeButtonVariant.Neutral,
         LemonadeButtonVariant.Special,
-        -> LemonadeIcons.Heart
+            -> LemonadeIcons.Heart
 
         LemonadeButtonVariant.CriticalSubtle,
         LemonadeButtonVariant.CriticalSolid,
-        -> LemonadeIcons.Trash
+            -> LemonadeIcons.Trash
     }

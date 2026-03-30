@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -72,6 +72,8 @@ public fun LemonadeUi.Button(
         interactionSource = interactionSource,
         onClick = onClick,
         loading = loading,
+        leadingSlot = null,
+        trailingSlot = null,
         contentSlot = {
             if (loading) {
                 LemonadeUi.Spinner(
@@ -106,19 +108,60 @@ public fun LemonadeUi.Button(
     )
 }
 
+@Composable
+public fun LemonadeUi.Button(
+    label: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    variant: LemonadeButtonVariant = LemonadeButtonVariant.Primary,
+    size: LemonadeButtonSize = LemonadeButtonSize.Large,
+    leadingSlot: (@Composable RowScope.(colors: LemonadeButtonColors) -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.(colors: LemonadeButtonColors) -> Unit)? = null,
+    expandContents: Boolean = false,
+    enabled: Boolean = true,
+    loading: Boolean = false,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+) {
+    CoreButton(
+        variant = variant,
+        size = size,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        onClick = onClick,
+        loading = loading,
+        modifier = modifier,
+        leadingSlot = leadingSlot.takeIf { !loading },
+        trailingSlot = trailingSlot.takeIf { !loading },
+        contentSlot = {
+            if (loading) {
+                LemonadeUi.Spinner(
+                    tint = variant.variantData.contentColor,
+                )
+            } else {
+                LemonadeUi.Text(
+                    text = label,
+                    textStyle = size.contentData.textStyle,
+                    color = variant.variantData.contentColor,
+                    modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing200),
+                )
+            }
+        },
+    )
+}
+
 @Stable
-private data class LemonadeButtonColors(
-    val contentColor: Color,
-    val solidBackgroundColor: Color,
-    val pressedBackgroundColor: Color,
-    val brushBackgroundColor: Brush? = null,
+public class LemonadeButtonColors internal constructor(
+    public val contentColor: Color,
+    public val solidBackgroundColor: Color,
+    public val pressedBackgroundColor: Color,
+    public val brushBackgroundColor: Brush? = null,
 )
 
 @Stable
 private data class LemonadeButtonContentData(
     val verticalPadding: Dp,
     val horizontalPadding: Dp,
-    val minHeight: Dp,
+    val requiredHeight: Dp,
     val minWidth: Dp,
     val shape: Shape,
     val textStyle: LemonadeTextStyle,
@@ -130,7 +173,7 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
             LemonadeButtonSize.XSmall -> LemonadeButtonContentData(
                 verticalPadding = LocalSpaces.current.spacing100,
                 horizontalPadding = LocalSpaces.current.spacing200,
-                minHeight = LocalSizes.current.size1000,
+                requiredHeight = LocalSizes.current.size1000,
                 minWidth = LocalSizes.current.size1600,
                 shape = LocalShapes.current.radius200,
                 textStyle = LocalTypographies.current.bodySmallSemiBold,
@@ -139,7 +182,7 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
             LemonadeButtonSize.Small -> LemonadeButtonContentData(
                 verticalPadding = LocalSpaces.current.spacing200,
                 horizontalPadding = LocalSpaces.current.spacing300,
-                minHeight = LocalSizes.current.size1000,
+                requiredHeight = LocalSizes.current.size1000,
                 minWidth = LocalSizes.current.size1600,
                 shape = LocalShapes.current.radius300,
                 textStyle = LocalTypographies.current.bodySmallSemiBold,
@@ -148,7 +191,7 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
             LemonadeButtonSize.Medium -> LemonadeButtonContentData(
                 verticalPadding = LocalSpaces.current.spacing300,
                 horizontalPadding = LocalSpaces.current.spacing400,
-                minHeight = LocalSizes.current.size1200,
+                requiredHeight = LocalSizes.current.size1200,
                 minWidth = LocalSizes.current.size1600,
                 shape = LocalShapes.current.radius300,
                 textStyle = LocalTypographies.current.bodyMediumSemiBold,
@@ -157,7 +200,7 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
             LemonadeButtonSize.Large -> LemonadeButtonContentData(
                 verticalPadding = LocalSpaces.current.spacing300,
                 horizontalPadding = LocalSpaces.current.spacing400,
-                minHeight = LocalSizes.current.size1400,
+                requiredHeight = LocalSizes.current.size1400,
                 minWidth = LocalSizes.current.size1600,
                 shape = LocalShapes.current.radius400,
                 textStyle = LocalTypographies.current.bodyMediumSemiBold,
@@ -214,10 +257,11 @@ private val LemonadeButtonVariant.variantData: LemonadeButtonColors
         }
     }
 
-@Suppress("LongParameterList")
 @Composable
 private fun CoreButton(
     contentSlot: @Composable RowScope.() -> Unit,
+    leadingSlot: (@Composable RowScope.(LemonadeButtonColors) -> Unit)?,
+    trailingSlot: (@Composable RowScope.(LemonadeButtonColors) -> Unit)?,
     onClick: () -> Unit,
     variant: LemonadeButtonVariant,
     size: LemonadeButtonSize,
@@ -227,7 +271,6 @@ private fun CoreButton(
     modifier: Modifier = Modifier,
 ) {
     val isPressed by interactionSource.collectIsPressedAsState()
-
     val animatedBackgroundColor by animateColorAsState(
         targetValue = if (isPressed) {
             variant.variantData.pressedBackgroundColor
@@ -235,38 +278,45 @@ private fun CoreButton(
             variant.variantData.solidBackgroundColor
         },
     )
-
     Row(
-        content = contentSlot,
-        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .defaultMinSize(
-                minWidth = size.contentData.minWidth,
-            ).height(size.contentData.minHeight)
+            .defaultMinSize(minWidth = size.contentData.minWidth)
+            .requiredHeight(height = size.contentData.requiredHeight)
             .then(
                 other = if (!enabled) {
                     Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
                 } else {
                     Modifier
                 },
-            ).clip(shape = size.contentData.shape)
+            )
+            .clip(shape = size.contentData.shape)
             .clickable(
                 enabled = enabled && !loading,
                 onClick = onClick,
                 interactionSource = interactionSource,
                 role = Role.Button,
                 indication = LocalEffects.current.interactionIndication,
-            ).background(color = animatedBackgroundColor)
+            )
+            .background(color = animatedBackgroundColor)
             .then(
-                other = variant.variantData.brushBackgroundColor?.let { brush ->
-                    Modifier.background(brush = brush)
-                }
+                other = variant.variantData.brushBackgroundColor
+                    ?.let { brush -> Modifier.background(brush = brush) }
                     ?: Modifier,
-            ).padding(
-                vertical = size.contentData.verticalPadding,
-                horizontal = size.contentData.horizontalPadding,
             ),
+        content = {
+            leadingSlot?.invoke(this, variant.variantData)
+            Row(
+                content = contentSlot,
+                modifier = Modifier
+                    .padding(
+                        vertical = size.contentData.verticalPadding,
+                        horizontal = size.contentData.horizontalPadding,
+                    )
+            )
+            trailingSlot?.invoke(this, variant.variantData)
+        }
     )
 }
 
