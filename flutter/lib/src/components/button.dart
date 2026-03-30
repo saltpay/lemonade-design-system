@@ -73,6 +73,7 @@ enum LemonadeButtonSize {
 typedef LemonadeButtonSlotBuilder =
     Widget Function(LemonadeButtonColors colors);
 
+/// {@macro LemonadeButton}
 class LemonadeButton extends StatefulWidget {
   /// {@macro LemonadeButton}
   const LemonadeButton({
