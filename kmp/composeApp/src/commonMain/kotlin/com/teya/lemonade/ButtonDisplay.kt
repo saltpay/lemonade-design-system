@@ -108,6 +108,7 @@ internal fun ButtonDisplay() {
 
                         LemonadeUi.Button(
                             modifier = Modifier.fillMaxWidth(),
+                            expandContents = true,
                             label = "Dual Action",
                             onClick = {},
                             trailingSlot = { colors ->
