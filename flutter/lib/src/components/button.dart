@@ -70,9 +70,8 @@ enum LemonadeButtonSize {
 /// {@endtemplate}
 /// Builder function that receives [LemonadeButtonColors] for variant-aware
 /// custom content inside button slots.
-typedef LemonadeButtonSlotBuilder = Widget Function(
-  LemonadeButtonColors colors,
-);
+typedef LemonadeButtonSlotBuilder =
+    Widget Function(LemonadeButtonColors colors);
 
 class LemonadeButton extends StatefulWidget {
   /// {@macro LemonadeButton}
@@ -89,8 +88,8 @@ class LemonadeButton extends StatefulWidget {
     this.semanticIdentifier,
     this.semanticLabel,
     super.key,
-  })  : leadingSlot = null,
-        trailingSlot = null;
+  }) : leadingSlot = null,
+       trailingSlot = null;
 
   /// Creates a [LemonadeButton] with custom slot builders for leading and
   /// trailing content.
@@ -119,8 +118,8 @@ class LemonadeButton extends StatefulWidget {
     this.semanticIdentifier,
     this.semanticLabel,
     super.key,
-  })  : leadingIcon = null,
-        trailingIcon = null;
+  }) : leadingIcon = null,
+       trailingIcon = null;
 
   /// The label text displayed on the button.
   final String label;
@@ -234,9 +233,7 @@ class _LemonadeButtonState extends State<LemonadeButton> {
                   : MainAxisAlignment.center,
               children: [
                 if (widget.loading) ...[
-                  LemonadeSpinner(
-                    color: variantColors.contentColor,
-                  ),
+                  LemonadeSpinner(color: variantColors.contentColor),
                 ] else ...[
                   if (widget.leadingSlot != null)
                     widget.leadingSlot!(variantColors)
