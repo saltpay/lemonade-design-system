@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
@@ -92,8 +93,8 @@ public fun LemonadeUi.Button(
                     text = label,
                     textStyle = size.contentData.textStyle,
                     color = variant.variantData.contentColor,
-                    modifier = Modifier
-                        .padding(horizontal = LocalSpaces.current.spacing200),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing200),
                 )
 
                 if (trailingIcon != null) {
@@ -142,6 +143,7 @@ public fun LemonadeUi.Button(
                     text = label,
                     textStyle = size.contentData.textStyle,
                     color = variant.variantData.contentColor,
+                    textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing200),
                 )
             }
@@ -279,7 +281,6 @@ private fun CoreButton(
         },
     )
     Row(
-        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .defaultMinSize(minWidth = size.contentData.minWidth)
@@ -308,12 +309,12 @@ private fun CoreButton(
         content = {
             leadingSlot?.invoke(this, variant.variantData)
             Row(
+                horizontalArrangement = Arrangement.Center,
                 content = contentSlot,
-                modifier = Modifier
-                    .padding(
-                        vertical = size.contentData.verticalPadding,
-                        horizontal = size.contentData.horizontalPadding,
-                    )
+                modifier = Modifier.padding(
+                    vertical = size.contentData.verticalPadding,
+                    horizontal = size.contentData.horizontalPadding,
+                )
             )
             trailingSlot?.invoke(this, variant.variantData)
         }

@@ -106,6 +106,39 @@ internal fun ButtonDisplay() {
                             variant = variant,
                             size = LemonadeButtonSize.Medium,
                         )
+
+                        LemonadeUi.Button(
+                            modifier = Modifier.fillMaxWidth(),
+                            label = "Dual Action",
+                            onClick = {},
+                            trailingSlot = { colors ->
+                                LemonadeUi.VerticalDivider(modifier = Modifier.fillMaxHeight())
+                                val interactionSource = remember { MutableInteractionSource() }
+                                val isPressed by interactionSource.collectIsPressedAsState()
+                                val backgroundColor by animateColorAsState(
+                                    targetValue = if (isPressed) {
+                                        colors.pressedBackgroundColor
+                                    } else {
+                                        colors.pressedBackgroundColor.copy(alpha = LemonadeTheme.opacities.base.opacity0)
+                                    }
+                                )
+                                LemonadeUi.Icon(
+                                    icon = LemonadeIcons.EllipsisVertical,
+                                    contentDescription = null,
+                                    tint = colors.contentColor,
+                                    modifier = Modifier
+                                        .clickable(
+                                            onClick = { /* Nothing */ },
+                                            interactionSource = interactionSource,
+                                        )
+                                        .background(color = backgroundColor)
+                                        .fillMaxHeight()
+                                        .padding(horizontal = LemonadeTheme.spaces.spacing400)
+                                )
+                            },
+                            variant = variant,
+                            size = LemonadeButtonSize.Medium,
+                        )
                     }
                 }
             }
