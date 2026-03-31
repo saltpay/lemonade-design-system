@@ -1,7 +1,9 @@
 package com.teya.lemonade
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -133,22 +135,59 @@ internal fun CoreSegmentedControl(
     val pillShape = RoundedCornerShape(percent = 50)
     val tabWidths = remember { mutableStateMapOf<Int, Dp>() }
     val tabOffsets = remember { mutableStateMapOf<Int, Dp>() }
+    val pressedTabIndex = remember { mutableStateMapOf<Int, Boolean>() }
+    val stretchAmount = 8.dp
 
     val selectedIndex = (0 until tabCount()).firstOrNull { index ->
         selectedTab(index)
     }
         ?: 0
 
+    // Find which non-selected tab is being pressed (for sticky expand)
+    val pressedNonSelectedIndex = pressedTabIndex.entries.firstOrNull { entry ->
+        entry.value && entry.key != selectedIndex
+    }?.key
+
     val hasMeasurements = tabWidths.containsKey(selectedIndex) && tabOffsets.containsKey(selectedIndex)
+
+    // Indicator stretches toward the pressed tab
+    val baseWidth = tabWidths[selectedIndex]
+        ?: 0.dp
+    val baseOffset = tabOffsets[selectedIndex]
+        ?: 0.dp
+
+    val targetWidth: Dp
+    val targetOffset: Dp
+    if (pressedNonSelectedIndex != null) {
+        val pressedOffset = tabOffsets[pressedNonSelectedIndex]
+            ?: baseOffset
+        if (pressedOffset > baseOffset) {
+            // Pressed tab is to the right — stretch right edge
+            targetWidth = baseWidth + stretchAmount
+            targetOffset = baseOffset
+        } else {
+            // Pressed tab is to the left — stretch left edge
+            targetWidth = baseWidth + stretchAmount
+            targetOffset = baseOffset - stretchAmount
+        }
+    } else {
+        targetWidth = baseWidth
+        targetOffset = baseOffset
+    }
+
     val indicatorWidth by animateDpAsState(
-        targetValue = tabWidths[selectedIndex]
-            ?: 0.dp,
-        animationSpec = tween(durationMillis = 250),
+        targetValue = targetWidth,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioLowBouncy,
+            stiffness = Spring.StiffnessMediumLow,
+        ),
     )
     val indicatorOffset by animateDpAsState(
-        targetValue = tabOffsets[selectedIndex]
-            ?: 0.dp,
-        animationSpec = tween(durationMillis = 250),
+        targetValue = targetOffset,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioLowBouncy,
+            stiffness = Spring.StiffnessMediumLow,
+        ),
     )
 
     Box(
@@ -195,6 +234,10 @@ internal fun CoreSegmentedControl(
                 val tabInteractionSource = remember { MutableInteractionSource() }
                 val isHovering by tabInteractionSource.collectIsHoveredAsState()
                 val isPressed by tabInteractionSource.collectIsPressedAsState()
+
+                // Track pressed state for sticky expand effect
+                pressedTabIndex[tabIndex] = isPressed
+
                 val animatedBackgroundColor by animateColorAsState(
                     targetValue = when {
                         selectedTab(tabIndex) -> LocalColors.current.background.bgDefault.copy(
@@ -231,7 +274,7 @@ internal fun CoreSegmentedControl(
                             onClick = { onTabSelected(tabIndex) },
                             role = Role.Tab,
                             interactionSource = tabInteractionSource,
-                            indication = LocalEffects.current.interactionIndication,
+                            indication = null,
                         )
                         .background(color = animatedBackgroundColor)
                         .padding(
