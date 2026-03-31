@@ -4,7 +4,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -37,8 +36,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
-import com.teya.lemonade.core.LemonadeShadow
 import com.teya.lemonade.core.LemonadeSegmentedControlSize
+import com.teya.lemonade.core.LemonadeShadow
 import com.teya.lemonade.core.LemonadeTextStyle
 import com.teya.lemonade.core.TabButtonProperties
 
@@ -116,7 +115,7 @@ public fun LemonadeUi.SegmentedControl(
     )
 }
 
-@Suppress("LongMethod")
+@Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
 internal fun CoreSegmentedControl(
     content: @Composable BoxScope.(Int) -> Unit,
@@ -144,9 +143,10 @@ internal fun CoreSegmentedControl(
         ?: 0
 
     // Find which non-selected tab is being pressed (for sticky expand)
-    val pressedNonSelectedIndex = pressedTabIndex.entries.firstOrNull { entry ->
-        entry.value && entry.key != selectedIndex
-    }?.key
+    val pressedNonSelectedIndex = pressedTabIndex.entries
+        .firstOrNull { entry ->
+            entry.value && entry.key != selectedIndex
+        }?.key
 
     val hasMeasurements = tabWidths.containsKey(selectedIndex) && tabOffsets.containsKey(selectedIndex)
 
@@ -196,8 +196,7 @@ internal fun CoreSegmentedControl(
             .background(
                 color = LocalColors.current.background.bgElevated,
                 shape = pillShape,
-            )
-            .clip(shape = pillShape)
+            ).clip(shape = pillShape)
             .padding(all = size.containerPadding()),
     ) {
         // Sliding indicator
@@ -209,14 +208,12 @@ internal fun CoreSegmentedControl(
                             x = with(density) { indicatorOffset.roundToPx() },
                             y = 0,
                         )
-                    }
-                    .width(width = indicatorWidth)
+                    }.width(width = indicatorWidth)
                     .fillMaxHeight()
                     .animateLemonadeShadow(
                         shape = pillShape,
                         shadow = LemonadeShadow.Xsmall,
-                    )
-                    .background(
+                    ).background(
                         color = LocalColors.current.background.bgDefault,
                         shape = pillShape,
                     ),
@@ -268,15 +265,13 @@ internal fun CoreSegmentedControl(
                                     tabOffsets[tabIndex] = newOffset
                                 }
                             }
-                        }
-                        .clip(shape = pillShape)
+                        }.clip(shape = pillShape)
                         .clickable(
                             onClick = { onTabSelected(tabIndex) },
                             role = Role.Tab,
                             interactionSource = tabInteractionSource,
                             indication = null,
-                        )
-                        .background(color = animatedBackgroundColor)
+                        ).background(color = animatedBackgroundColor)
                         .padding(
                             horizontal = size.buttonHorizontalPadding(),
                         ),
