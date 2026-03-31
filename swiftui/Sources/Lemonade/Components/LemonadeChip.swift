@@ -205,17 +205,13 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
     private var backgroundColor: Color {
         selected
             ? LemonadeTheme.colors.background.bgBrandHigh
-            : LemonadeTheme.colors.background.bgDefault
+            : LemonadeTheme.colors.background.bgElevated
     }
 
     private var contentColor: Color {
         selected
             ? LemonadeTheme.colors.content.contentBrandInverse
             : LemonadeTheme.colors.content.contentPrimary
-    }
-
-    private var borderColor: Color {
-        LemonadeTheme.colors.border.borderNeutralMedium
     }
 
     var body: some View {
@@ -260,15 +256,10 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
                     .padding(.leading, LemonadeTheme.spaces.spacing50)
             }
         }
-        .padding(.horizontal, LemonadeTheme.spaces.spacing200)
-        .padding(.vertical, LemonadeTheme.spaces.spacing100)
+        .padding(LemonadeTheme.spaces.spacing200)
         .frame(minWidth: minWidth, minHeight: minHeight)
         .background(backgroundColor)
         .clipShape(Capsule())
-        .overlay(
-            Capsule()
-                .stroke(borderColor, lineWidth: 1)
-        )
         .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
         .contentShape(Capsule())
         .onTapGesture {
