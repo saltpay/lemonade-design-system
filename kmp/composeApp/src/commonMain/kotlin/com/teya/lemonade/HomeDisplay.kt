@@ -22,13 +22,13 @@ internal fun HomeDisplay(onNavigate: (Displays) -> Unit) {
             LemonadeUi.SegmentedControl(
                 selectedTab = selectedIndex,
                 onTabSelected = { index -> styleHandler.currentStyle = styles[index] },
-                properties = styles.map { style -> TabButtonProperties(label = style.label) },
+                properties = styles.map { style -> TabButtonProperties.label(label = style.label) },
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing200),
             )
             LemonadeUi.SegmentedControl(
                 selectedTab = selectedVariantIndex,
                 onTabSelected = { index -> styleHandler.currentVariant = variants[index] },
-                properties = variants.map { variant -> TabButtonProperties(label = variant.label) },
+                properties = variants.map { variant -> TabButtonProperties.label(label = variant.label) },
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing400),
             )
         }

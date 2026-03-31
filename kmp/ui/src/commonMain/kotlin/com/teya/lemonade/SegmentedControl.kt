@@ -52,9 +52,9 @@ import com.teya.lemonade.core.TabButtonProperties
  *     onTabSelected = { tabIndex -> /* ... */ },
  *     selectedTab = selectedTabIndex,
  *     properties = listOf(
- *         TabButtonProperties(label = "Tab 1", icon = LemonadeIcons.Heart),
- *         TabButtonProperties(label = "Tab 2", icon = LemonadeIcons.Laptop),
- *         TabButtonProperties(label = "Tab 3"),
+ *         TabButtonProperties.labelAndIcon(label = "Tab 1", icon = LemonadeIcons.Heart),
+ *         TabButtonProperties.labelAndIcon(label = "Tab 2", icon = LemonadeIcons.Laptop),
+ *         TabButtonProperties.label(label = "Tab 3"),
  *     ),
  * )
  * ```
@@ -345,9 +345,9 @@ private fun SegmentedControlPreview() {
         onTabSelected = { /* preview only */ },
         selectedTab = 1,
         properties = listOf(
-            TabButtonProperties(label = "Tab 1", icon = LemonadeIcons.Heart),
-            TabButtonProperties(label = "Tab 2", icon = LemonadeIcons.Laptop),
-            TabButtonProperties(label = "Tab 3"),
+            TabButtonProperties.labelAndIcon(label = "Tab 1", icon = LemonadeIcons.Heart),
+            TabButtonProperties.labelAndIcon(label = "Tab 2", icon = LemonadeIcons.Laptop),
+            TabButtonProperties.label(label = "Tab 3"),
         ),
     )
 }

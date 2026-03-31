@@ -17,9 +17,9 @@ struct SegmentedControlDisplayView: View {
                     VStack(spacing: 16) {
                         LemonadeUi.SegmentedControl(
                             properties: [
-                                LemonadeTabButtonProperties(label: "Tab 1"),
-                                LemonadeTabButtonProperties(label: "Tab 2"),
-                                LemonadeTabButtonProperties(label: "Tab 3"),
+                                .label("Tab 1"),
+                                .label("Tab 2"),
+                                .label("Tab 3"),
                             ],
                             selectedTab: selectedTab1,
                             onTabSelected: { selectedTab1 = $0 }
@@ -36,9 +36,9 @@ struct SegmentedControlDisplayView: View {
                     VStack(spacing: 16) {
                         LemonadeUi.SegmentedControl(
                             properties: [
-                                LemonadeTabButtonProperties(label: "Tab 1"),
-                                LemonadeTabButtonProperties(label: "Tab 2"),
-                                LemonadeTabButtonProperties(label: "Tab 3"),
+                                .label("Tab 1"),
+                                .label("Tab 2"),
+                                .label("Tab 3"),
                             ],
                             selectedTab: selectedTabMedium,
                             size: .medium,
@@ -56,9 +56,9 @@ struct SegmentedControlDisplayView: View {
                     VStack(spacing: 16) {
                         LemonadeUi.SegmentedControl(
                             properties: [
-                                LemonadeTabButtonProperties(label: "Tab 1"),
-                                LemonadeTabButtonProperties(label: "Tab 2"),
-                                LemonadeTabButtonProperties(label: "Tab 3"),
+                                .label("Tab 1"),
+                                .label("Tab 2"),
+                                .label("Tab 3"),
                             ],
                             selectedTab: selectedTabSmall,
                             size: .small,
@@ -76,9 +76,9 @@ struct SegmentedControlDisplayView: View {
                     VStack(spacing: 16) {
                         LemonadeUi.SegmentedControl(
                             properties: [
-                                LemonadeTabButtonProperties(label: "Favorites", icon: .heart),
-                                LemonadeTabButtonProperties(label: "Bookmarks", icon: .star),
-                                LemonadeTabButtonProperties(label: "Settings", icon: .gear),
+                                .labelAndIcon("Favorites", icon: .heart),
+                                .labelAndIcon("Bookmarks", icon: .star),
+                                .labelAndIcon("Settings", icon: .gear),
                             ],
                             selectedTab: selectedTab2,
                             onTabSelected: { selectedTab2 = $0 }
@@ -95,9 +95,9 @@ struct SegmentedControlDisplayView: View {
                     VStack(spacing: 16) {
                         LemonadeUi.SegmentedControl(
                             properties: [
-                                LemonadeTabButtonProperties(icon: .heart),
-                                LemonadeTabButtonProperties(icon: .star),
-                                LemonadeTabButtonProperties(icon: .gear),
+                                .icon(.heart),
+                                .icon(.star),
+                                .icon(.gear),
                             ],
                             selectedTab: selectedTabIconOnly,
                             size: .small,
@@ -111,8 +111,8 @@ struct SegmentedControlDisplayView: View {
                     VStack(spacing: 16) {
                         LemonadeUi.SegmentedControl(
                             properties: [
-                                LemonadeTabButtonProperties(label: "On"),
-                                LemonadeTabButtonProperties(label: "Off"),
+                                .label("On"),
+                                .label("Off"),
                             ],
                             selectedTab: selectedTab3,
                             onTabSelected: { selectedTab3 = $0 }

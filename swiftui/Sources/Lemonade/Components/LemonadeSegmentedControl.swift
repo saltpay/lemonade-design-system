@@ -10,10 +10,25 @@ public struct LemonadeTabButtonProperties: Identifiable, Hashable {
     /// Optional icon to display before the label.
     public let icon: LemonadeIcon?
 
-    public init(id: String? = nil, label: String? = nil, icon: LemonadeIcon? = nil) {
+    private init(id: String? = nil, label: String?, icon: LemonadeIcon?) {
         self.id = id ?? UUID().uuidString
         self.label = label
         self.icon = icon
+    }
+
+    /// Creates a tab with a text label.
+    public static func label(_ label: String) -> Self {
+        Self(label: label, icon: nil)
+    }
+
+    /// Creates a tab with a text label and an icon.
+    public static func labelAndIcon(_ label: String, icon: LemonadeIcon) -> Self {
+        Self(label: label, icon: icon)
+    }
+
+    /// Creates a tab with only an icon.
+    public static func icon(_ icon: LemonadeIcon) -> Self {
+        Self(label: nil, icon: icon)
     }
 }
 
@@ -58,9 +73,9 @@ public extension LemonadeUi {
     /// ```swift
     /// LemonadeUi.SegmentedControl(
     ///     properties: [
-    ///         LemonadeTabButtonProperties(label: "Tab 1", icon: .heart),
-    ///         LemonadeTabButtonProperties(label: "Tab 2", icon: .laptop),
-    ///         LemonadeTabButtonProperties(label: "Tab 3"),
+    ///         .labelAndIcon("Tab 1", icon: .heart),
+    ///         .labelAndIcon("Tab 2", icon: .laptop),
+    ///         .label("Tab 3"),
     ///     ],
     ///     selectedTab: selectedTabIndex,
     ///     onTabSelected: { tabIndex in /* ... */ }
@@ -237,9 +252,9 @@ struct LemonadeSegmentedControl_Previews: PreviewProvider {
             // Large (default)
             LemonadeUi.SegmentedControl(
                 properties: [
-                    LemonadeTabButtonProperties(label: "Tab 1"),
-                    LemonadeTabButtonProperties(label: "Tab 2"),
-                    LemonadeTabButtonProperties(label: "Tab 3"),
+                    .label("Tab 1"),
+                    .label("Tab 2"),
+                    .label("Tab 3"),
                 ],
                 selectedTab: 1,
                 onTabSelected: { _ in }
@@ -248,9 +263,9 @@ struct LemonadeSegmentedControl_Previews: PreviewProvider {
             // Medium
             LemonadeUi.SegmentedControl(
                 properties: [
-                    LemonadeTabButtonProperties(label: "Tab 1"),
-                    LemonadeTabButtonProperties(label: "Tab 2"),
-                    LemonadeTabButtonProperties(label: "Tab 3"),
+                    .label("Tab 1"),
+                    .label("Tab 2"),
+                    .label("Tab 3"),
                 ],
                 selectedTab: 0,
                 size: .medium,
@@ -260,8 +275,8 @@ struct LemonadeSegmentedControl_Previews: PreviewProvider {
             // Small
             LemonadeUi.SegmentedControl(
                 properties: [
-                    LemonadeTabButtonProperties(label: "Tab 1"),
-                    LemonadeTabButtonProperties(label: "Tab 2"),
+                    .label("Tab 1"),
+                    .label("Tab 2"),
                 ],
                 selectedTab: 0,
                 size: .small,
@@ -271,9 +286,9 @@ struct LemonadeSegmentedControl_Previews: PreviewProvider {
             // Icon only (small)
             LemonadeUi.SegmentedControl(
                 properties: [
-                    LemonadeTabButtonProperties(icon: .heart),
-                    LemonadeTabButtonProperties(icon: .star),
-                    LemonadeTabButtonProperties(icon: .gear),
+                    .icon(.heart),
+                    .icon(.star),
+                    .icon(.gear),
                 ],
                 selectedTab: 0,
                 size: .small,

@@ -122,7 +122,7 @@ struct HomeView: View {
         List {
             Section {
                 LemonadeUi.SegmentedControl(
-                    properties: LemonadeStyle.allCases.map { LemonadeTabButtonProperties(label: $0.label) },
+                    properties: LemonadeStyle.allCases.map { .label($0.label) },
                     selectedTab: selectedStyleIndex,
                     onTabSelected: { index in
                         styleHandler.currentStyle = LemonadeStyle.allCases[index]

@@ -34,9 +34,9 @@ internal fun SegmentedControlDisplay() {
                     },
                     selectedTab = selectedLarge,
                     properties = listOf(
-                        TabButtonProperties(label = "Tab 1"),
-                        TabButtonProperties(label = "Tab 2"),
-                        TabButtonProperties(label = "Tab 3"),
+                        TabButtonProperties.label(label = "Tab 1"),
+                        TabButtonProperties.label(label = "Tab 2"),
+                        TabButtonProperties.label(label = "Tab 3"),
                     ),
                 )
                 LemonadeUi.Text(
@@ -59,9 +59,9 @@ internal fun SegmentedControlDisplay() {
                     selectedTab = selectedMedium,
                     size = LemonadeSegmentedControlSize.Medium,
                     properties = listOf(
-                        TabButtonProperties(label = "Tab 1"),
-                        TabButtonProperties(label = "Tab 2"),
-                        TabButtonProperties(label = "Tab 3"),
+                        TabButtonProperties.label(label = "Tab 1"),
+                        TabButtonProperties.label(label = "Tab 2"),
+                        TabButtonProperties.label(label = "Tab 3"),
                     ),
                 )
                 LemonadeUi.Text(
@@ -84,9 +84,9 @@ internal fun SegmentedControlDisplay() {
                     selectedTab = selectedSmall,
                     size = LemonadeSegmentedControlSize.Small,
                     properties = listOf(
-                        TabButtonProperties(label = "Tab 1"),
-                        TabButtonProperties(label = "Tab 2"),
-                        TabButtonProperties(label = "Tab 3"),
+                        TabButtonProperties.label(label = "Tab 1"),
+                        TabButtonProperties.label(label = "Tab 2"),
+                        TabButtonProperties.label(label = "Tab 3"),
                     ),
                 )
                 LemonadeUi.Text(
@@ -108,9 +108,9 @@ internal fun SegmentedControlDisplay() {
                     },
                     selectedTab = selectedIcons,
                     properties = listOf(
-                        TabButtonProperties(label = "Home", icon = LemonadeIcons.Home),
-                        TabButtonProperties(label = "Profile", icon = LemonadeIcons.User),
-                        TabButtonProperties(label = "Settings", icon = LemonadeIcons.Gear),
+                        TabButtonProperties.labelAndIcon(label = "Home", icon = LemonadeIcons.Home),
+                        TabButtonProperties.labelAndIcon(label = "Profile", icon = LemonadeIcons.User),
+                        TabButtonProperties.labelAndIcon(label = "Settings", icon = LemonadeIcons.Gear),
                     ),
                 )
                 LemonadeUi.Text(
@@ -128,9 +128,9 @@ internal fun SegmentedControlDisplay() {
                 selectedTab = selectedIconOnly,
                 size = LemonadeSegmentedControlSize.Small,
                 properties = listOf(
-                    TabButtonProperties(icon = LemonadeIcons.Heart),
-                    TabButtonProperties(icon = LemonadeIcons.Star),
-                    TabButtonProperties(icon = LemonadeIcons.Gear),
+                    TabButtonProperties.icon(icon = LemonadeIcons.Heart),
+                    TabButtonProperties.icon(icon = LemonadeIcons.Star),
+                    TabButtonProperties.icon(icon = LemonadeIcons.Gear),
                 ),
             )
         }
