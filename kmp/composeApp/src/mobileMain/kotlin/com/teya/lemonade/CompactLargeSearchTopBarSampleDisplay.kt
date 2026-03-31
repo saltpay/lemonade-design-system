@@ -25,9 +25,21 @@ internal fun CompactLargeSearchTopBarSampleDisplay() {
 
     val items = remember {
         listOf(
-            "Apple", "Banana", "Cherry", "Date", "Elderberry",
-            "Fig", "Grape", "Honeydew", "Kiwi", "Lemon",
-            "Mango", "Nectarine", "Orange", "Papaya", "Quince",
+            "Apple",
+            "Banana",
+            "Cherry",
+            "Date",
+            "Elderberry",
+            "Fig",
+            "Grape",
+            "Honeydew",
+            "Kiwi",
+            "Lemon",
+            "Mango",
+            "Nectarine",
+            "Orange",
+            "Papaya",
+            "Quince",
         )
     }
 
