@@ -361,7 +361,6 @@ private data class ChipProps(
     val backgroundColor: Color,
     val pressedBackgroundColor: Color,
     val contentColor: Color,
-    val actionColor: Color,
 )
 
 @Composable
@@ -371,14 +370,12 @@ private fun getChipProps(selected: Boolean): ChipProps =
             backgroundColor = LocalColors.current.background.bgBrandHigh,
             pressedBackgroundColor = LocalColors.current.interaction.bgBrandHighInteractive,
             contentColor = LocalColors.current.content.contentBrandInverse,
-            actionColor = LocalColors.current.content.contentBrandInverse,
         )
     } else {
         ChipProps(
             backgroundColor = LocalColors.current.background.bgElevated,
             pressedBackgroundColor = LocalColors.current.interaction.bgSubtleInteractive,
             contentColor = LocalColors.current.content.contentPrimary,
-            actionColor = LocalColors.current.content.contentSecondary,
         )
     }
 
