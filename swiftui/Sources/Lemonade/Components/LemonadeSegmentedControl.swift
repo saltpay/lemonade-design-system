@@ -105,7 +105,7 @@ private struct LemonadeSegmentedControlView: View {
         #if canImport(UIKit)
         ZStack {
             LemonadeNativeSegmentedControl(
-                segmentLabels: properties.map { $0.label ?? "" },
+                segmentLabels: properties.map { $0.label ?? $0.icon?.rawValue ?? "" },
                 selectedIndex: clampedSelectedTab,
                 onSelectionChanged: onTabSelected
             )
@@ -196,6 +196,18 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
 
     func updateUIView(_ uiView: UISegmentedControl, context: Context) {
         context.coordinator.onSelectionChanged = onSelectionChanged
+
+        // Reconcile segment count if properties changed
+        if uiView.numberOfSegments != segmentLabels.count {
+            uiView.removeAllSegments()
+            for (index, label) in segmentLabels.enumerated() {
+                uiView.insertSegment(withTitle: label, at: index, animated: false)
+            }
+            let clearAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.clear]
+            uiView.setTitleTextAttributes(clearAttributes, for: .normal)
+            uiView.setTitleTextAttributes(clearAttributes, for: .selected)
+        }
+
         let clampedIndex = min(selectedIndex, segmentLabels.count - 1)
         if uiView.selectedSegmentIndex != clampedIndex {
             uiView.selectedSegmentIndex = clampedIndex
