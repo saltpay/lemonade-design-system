@@ -10,6 +10,7 @@ import com.teya.lemonade.CardDisplay
 import com.teya.lemonade.CheckboxDisplay
 import com.teya.lemonade.ChipDisplay
 import com.teya.lemonade.ColorsDisplay
+import com.teya.lemonade.ContentListItemDisplay
 import com.teya.lemonade.CountryFlagDisplay
 import com.teya.lemonade.DatePickerDisplay
 import com.teya.lemonade.Displays
@@ -22,7 +23,6 @@ import com.teya.lemonade.NoticeDisplay
 import com.teya.lemonade.OpacityDisplay
 import com.teya.lemonade.RadioButtonDisplay
 import com.teya.lemonade.RadiusDisplay
-import com.teya.lemonade.ContentListItemDisplay
 import com.teya.lemonade.ResourceListItemDisplay
 import com.teya.lemonade.SearchFieldDisplay
 import com.teya.lemonade.SegmentedControlDisplay
