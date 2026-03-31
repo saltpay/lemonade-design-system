@@ -10,7 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeContentListItemLayout
+import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.SymbolContainerSize
+import com.teya.lemonade.core.SymbolContainerVoice
 
 /**
  * A display-only list item for showing label-value pairs.
@@ -189,4 +195,82 @@ private fun VerticalContentListItem(
             }
         }
     }
+}
+
+private data class ContentListItemPreviewData(
+    val layout: LemonadeContentListItemLayout,
+    val hasLeading: Boolean,
+    val hasTrailing: Boolean,
+    val hasContentSlot: Boolean,
+)
+
+private class ContentListItemPreviewProvider :
+    PreviewParameterProvider<ContentListItemPreviewData> {
+    override val values: Sequence<ContentListItemPreviewData> =
+        buildList {
+            LemonadeContentListItemLayout.entries.forEach { layout ->
+                listOf(true, false).forEach { leading ->
+                    listOf(true, false).forEach { trailing ->
+                        listOf(true, false).forEach { contentSlot ->
+                            add(
+                                ContentListItemPreviewData(
+                                    layout = layout,
+                                    hasLeading = leading,
+                                    hasTrailing = trailing,
+                                    hasContentSlot = contentSlot,
+                                ),
+                            )
+                        }
+                    }
+                }
+            }
+        }.asSequence()
+}
+
+@LemonadePreview
+@Composable
+private fun ContentListItemPreview(
+    @PreviewParameter(ContentListItemPreviewProvider::class)
+    previewData: ContentListItemPreviewData,
+) {
+    LemonadeUi.ContentListItem(
+        label = "Label",
+        value = "Value",
+        layout = previewData.layout,
+        leadingSlot = if (previewData.hasLeading) {
+            {
+                LemonadeUi.SymbolContainer(
+                    icon = LemonadeIcons.Heart,
+                    voice = SymbolContainerVoice.Neutral,
+                    size = SymbolContainerSize.Medium,
+                    contentDescription = null,
+                )
+            }
+        } else {
+            null
+        },
+        trailingSlot = if (previewData.hasTrailing) {
+            {
+                LemonadeUi.Icon(
+                    icon = LemonadeIcons.PencilLine,
+                    tint = LocalColors.current.content.contentBrand,
+                    size = LemonadeAssetSize.Medium,
+                    contentDescription = "Edit",
+                )
+            }
+        } else {
+            null
+        },
+        contentSlot = if (previewData.hasContentSlot) {
+            {
+                LemonadeUi.Text(
+                    text = "Extra content",
+                    textStyle = LocalTypographies.current.bodySmallRegular,
+                    color = LocalColors.current.content.contentSecondary,
+                )
+            }
+        } else {
+            null
+        },
+    )
 }
