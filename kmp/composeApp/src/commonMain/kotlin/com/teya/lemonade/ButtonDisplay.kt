@@ -86,7 +86,9 @@ internal fun ButtonDisplay() {
                                     targetValue = if (isPressed) {
                                         colors.pressedBackgroundColor
                                     } else {
-                                        colors.pressedBackgroundColor.copy(alpha = LemonadeTheme.opacities.base.opacity0)
+                                        colors.pressedBackgroundColor.copy(
+                                            alpha = LemonadeTheme.opacities.base.opacity0,
+                                        )
                                     },
                                 )
                                 LemonadeUi.Icon(
@@ -119,7 +121,9 @@ internal fun ButtonDisplay() {
                                     targetValue = if (isPressed) {
                                         colors.pressedBackgroundColor
                                     } else {
-                                        colors.pressedBackgroundColor.copy(alpha = LemonadeTheme.opacities.base.opacity0)
+                                        colors.pressedBackgroundColor.copy(
+                                            alpha = LemonadeTheme.opacities.base.opacity0,
+                                        )
                                     },
                                 )
                                 LemonadeUi.Icon(
