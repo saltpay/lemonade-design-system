@@ -66,16 +66,14 @@ struct ChipDisplayView: View {
     }
     
     private var customLeadingSection: some View {
-        sectionView(title: "With Icons") {
+        sectionView(title: "With Custom Leading") {
             VStack(alignment: .leading, spacing: 12) {
                 HStack(spacing: 12) {
-                    LemonadeUi.Chip(label: "Favorites", selected: false, leadingImage: <#T##Image#>: .heart)
-                    LemonadeUi.Chip(label: "Favorites", selected: true, leadingIcon: .heart)
-                }
-                
-                HStack(spacing: 12) {
-                    LemonadeUi.Chip(label: "Remove", selected: false, trailingIcon: .circleX)
-                    LemonadeUi.Chip(label: "Remove", selected: true, trailingIcon: .circleX)
+                    LemonadeUi.Chip(label: "GBP", selected: false) {
+                        LemonadeUi.CountryFlag(flag: .gBUnitedKingdom)
+                    } trailingContent: {
+                        LemonadeUi.Icon(icon: .chevronDown, contentDescription: nil)
+                    }
                 }
             }
         }
