@@ -3,39 +3,43 @@ import Lemonade
 
 struct ChipDisplayView: View {
     @State private var selectedChips: Set<String> = ["Option 1"]
-
+    
     var body: some View {
-        ScrollView(.vertical) {
-            VStack(alignment: .leading, spacing: 32) {
-                statesSection
-                counterSection
-                iconsSection
-                interactiveSection
-                disabledSection
+        NavigationStack {
+            ScrollView(.vertical) {
+                VStack(alignment: .leading, spacing: .space.spacing800) {
+                    statesSection
+                    counterSection
+                    iconsSection
+                    customLeadingSection
+                    interactiveSection
+                    disabledSection
+                }
+                .frame(maxWidth: .infinity, alignment: .topLeading)
+                .padding()
+                .navigationTitle("Chip")
             }
-            .padding()
         }
-        .navigationTitle("Chip")
     }
-
+    
     private var statesSection: some View {
         sectionView(title: "States") {
             HStack(spacing: 12) {
                 VStack(spacing: 8) {
                     LemonadeUi.Chip(label: "Unselected", selected: false)
-                    Text("Unselected")
-                        .font(.caption)
+                    LemonadeUi.Text("Unselected", font: .bodyXSmallRegular)
+                        .foregroundStyle(.content.contentSecondary)
                 }
-
+                
                 VStack(spacing: 8) {
                     LemonadeUi.Chip(label: "Selected", selected: true)
-                    Text("Selected")
-                        .font(.caption)
+                    LemonadeUi.Text("Selected", font: .bodyXSmallRegular)
+                        .foregroundStyle(.content.contentSecondary)
                 }
             }
         }
     }
-
+    
     private var counterSection: some View {
         sectionView(title: "With Counter") {
             HStack(spacing: 12) {
@@ -44,15 +48,15 @@ struct ChipDisplayView: View {
             }
         }
     }
-
+    
     private var iconsSection: some View {
         sectionView(title: "With Icons") {
-            VStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 12) {
                 HStack(spacing: 12) {
                     LemonadeUi.Chip(label: "Favorites", selected: false, leadingIcon: .heart)
                     LemonadeUi.Chip(label: "Favorites", selected: true, leadingIcon: .heart)
                 }
-
+                
                 HStack(spacing: 12) {
                     LemonadeUi.Chip(label: "Remove", selected: false, trailingIcon: .circleX)
                     LemonadeUi.Chip(label: "Remove", selected: true, trailingIcon: .circleX)
@@ -60,26 +64,42 @@ struct ChipDisplayView: View {
             }
         }
     }
-
+    
+    private var customLeadingSection: some View {
+        sectionView(title: "With Icons") {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(spacing: 12) {
+                    LemonadeUi.Chip(label: "Favorites", selected: false, leadingImage: <#T##Image#>: .heart)
+                    LemonadeUi.Chip(label: "Favorites", selected: true, leadingIcon: .heart)
+                }
+                
+                HStack(spacing: 12) {
+                    LemonadeUi.Chip(label: "Remove", selected: false, trailingIcon: .circleX)
+                    LemonadeUi.Chip(label: "Remove", selected: true, trailingIcon: .circleX)
+                }
+            }
+        }
+    }
+    
     private var interactiveSection: some View {
         sectionView(title: "Interactive Selection") {
             VStack(alignment: .leading, spacing: 12) {
                 Text("Tap to select/deselect:")
                     .font(.subheadline)
-
+                
                 HStack(spacing: 8) {
                     chipButton(option: "Option 1")
                     chipButton(option: "Option 2")
                     chipButton(option: "Option 3")
                 }
-
+                
                 Text("Selected: \(selectedChips.sorted().joined(separator: ", "))")
                     .font(.caption)
                     .foregroundStyle(.content.contentSecondary)
             }
         }
     }
-
+    
     private func chipButton(option: String) -> some View {
         LemonadeUi.Chip(
             label: option,
@@ -93,7 +113,7 @@ struct ChipDisplayView: View {
             }
         )
     }
-
+    
     private var disabledSection: some View {
         sectionView(title: "Disabled") {
             HStack(spacing: 12) {
@@ -102,20 +122,17 @@ struct ChipDisplayView: View {
             }
         }
     }
-
+    
     private func sectionView<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(title)
-                .font(.headline)
+            LemonadeUi.Text(title, font: .headingXSmall)
                 .foregroundStyle(.content.contentSecondary)
-
+            
             content()
         }
     }
 }
 
 #Preview {
-    NavigationStack {
-        ChipDisplayView()
-    }
+    ChipDisplayView()
 }
