@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
@@ -96,6 +97,7 @@ internal fun CoreSearchField(
     enabled: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
+    val contentColor = LocalColors.current.content.contentPrimary
     BasicTextField(
         value = input,
         onValueChange = onInputChanged,
@@ -103,8 +105,9 @@ internal fun CoreSearchField(
         enabled = enabled,
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions,
+        cursorBrush = SolidColor(contentColor),
         textStyle = LocalTypographies.current.bodyMediumRegular.textStyle.copy(
-            color = LocalColors.current.content.contentPrimary,
+            color = contentColor,
         ),
         singleLine = true,
         modifier = modifier.then(
