@@ -9,61 +9,104 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.LemonadeSegmentedControlSize
 import com.teya.lemonade.core.TabButtonProperties
 
 @Suppress("LongMethod")
 @Composable
 internal fun SegmentedControlDisplay() {
-    var selectedTab1 by remember { mutableIntStateOf(0) }
-    var selectedTab2 by remember { mutableIntStateOf(1) }
+    var selectedLarge by remember { mutableIntStateOf(0) }
+    var selectedMedium by remember { mutableIntStateOf(0) }
+    var selectedSmall by remember { mutableIntStateOf(0) }
+    var selectedIcons by remember { mutableIntStateOf(1) }
+    var selectedIconOnly by remember { mutableIntStateOf(0) }
 
     SampleScreenDisplayColumn("SegmentedControl") {
-        SegmentedControlSection("Basic") {
-            LemonadeUi.SegmentedControl(
-                onTabSelected = { },
-                selectedTab = 0,
-                properties = listOf(
-                    TabButtonProperties(label = "Tab 1"),
-                    TabButtonProperties(label = "Tab 2"),
+        SegmentedControlSection("Large (Default)") {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(
+                    space = LemonadeTheme.spaces.spacing200,
                 ),
-            )
-        }
-
-        SegmentedControlSection("With Icons") {
-            LemonadeUi.SegmentedControl(
-                onTabSelected = { },
-                selectedTab = 1,
-                properties = listOf(
-                    TabButtonProperties(label = "Tab 1", icon = LemonadeIcons.Heart),
-                    TabButtonProperties(label = "Tab 2", icon = LemonadeIcons.Laptop),
-                    TabButtonProperties(label = "Tab 3", icon = LemonadeIcons.User),
-                ),
-            )
-        }
-
-        SegmentedControlSection("Interactive") {
-            Column(verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)) {
+            ) {
                 LemonadeUi.SegmentedControl(
-                    onTabSelected = { selectedTab1 = it },
-                    selectedTab = selectedTab1,
+                    onTabSelected = { index ->
+                        selectedLarge = index
+                    },
+                    selectedTab = selectedLarge,
                     properties = listOf(
-                        TabButtonProperties(label = "First"),
-                        TabButtonProperties(label = "Second"),
-                        TabButtonProperties(label = "Third"),
+                        TabButtonProperties(label = "Tab 1"),
+                        TabButtonProperties(label = "Tab 2"),
+                        TabButtonProperties(label = "Tab 3"),
                     ),
                 )
                 LemonadeUi.Text(
-                    text = "Selected tab index: $selectedTab1",
+                    text = "Selected: Tab ${selectedLarge + 1}",
                     textStyle = LemonadeTheme.typography.bodySmallRegular,
                 )
             }
         }
 
-        SegmentedControlSection("With Icons Interactive") {
-            Column(verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200)) {
+        SegmentedControlSection("Medium") {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(
+                    space = LemonadeTheme.spaces.spacing200,
+                ),
+            ) {
                 LemonadeUi.SegmentedControl(
-                    onTabSelected = { selectedTab2 = it },
-                    selectedTab = selectedTab2,
+                    onTabSelected = { index ->
+                        selectedMedium = index
+                    },
+                    selectedTab = selectedMedium,
+                    size = LemonadeSegmentedControlSize.Medium,
+                    properties = listOf(
+                        TabButtonProperties(label = "Tab 1"),
+                        TabButtonProperties(label = "Tab 2"),
+                        TabButtonProperties(label = "Tab 3"),
+                    ),
+                )
+                LemonadeUi.Text(
+                    text = "Selected: Tab ${selectedMedium + 1}",
+                    textStyle = LemonadeTheme.typography.bodySmallRegular,
+                )
+            }
+        }
+
+        SegmentedControlSection("Small") {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(
+                    space = LemonadeTheme.spaces.spacing200,
+                ),
+            ) {
+                LemonadeUi.SegmentedControl(
+                    onTabSelected = { index ->
+                        selectedSmall = index
+                    },
+                    selectedTab = selectedSmall,
+                    size = LemonadeSegmentedControlSize.Small,
+                    properties = listOf(
+                        TabButtonProperties(label = "Tab 1"),
+                        TabButtonProperties(label = "Tab 2"),
+                        TabButtonProperties(label = "Tab 3"),
+                    ),
+                )
+                LemonadeUi.Text(
+                    text = "Selected: Tab ${selectedSmall + 1}",
+                    textStyle = LemonadeTheme.typography.bodySmallRegular,
+                )
+            }
+        }
+
+        SegmentedControlSection("With Icons") {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(
+                    space = LemonadeTheme.spaces.spacing200,
+                ),
+            ) {
+                LemonadeUi.SegmentedControl(
+                    onTabSelected = { index ->
+                        selectedIcons = index
+                    },
+                    selectedTab = selectedIcons,
                     properties = listOf(
                         TabButtonProperties(label = "Home", icon = LemonadeIcons.Home),
                         TabButtonProperties(label = "Profile", icon = LemonadeIcons.User),
@@ -71,10 +114,25 @@ internal fun SegmentedControlDisplay() {
                     ),
                 )
                 LemonadeUi.Text(
-                    text = "Selected tab index: $selectedTab2",
+                    text = "Selected: ${listOf("Home", "Profile", "Settings")[selectedIcons]}",
                     textStyle = LemonadeTheme.typography.bodySmallRegular,
                 )
             }
+        }
+
+        SegmentedControlSection("Icon Only (Small)") {
+            LemonadeUi.SegmentedControl(
+                onTabSelected = { index ->
+                    selectedIconOnly = index
+                },
+                selectedTab = selectedIconOnly,
+                size = LemonadeSegmentedControlSize.Small,
+                properties = listOf(
+                    TabButtonProperties(icon = LemonadeIcons.Heart),
+                    TabButtonProperties(icon = LemonadeIcons.Star),
+                    TabButtonProperties(icon = LemonadeIcons.Gear),
+                ),
+            )
         }
     }
 }
@@ -87,7 +145,9 @@ private fun SegmentedControlSection(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+        verticalArrangement = Arrangement.spacedBy(
+            space = LemonadeTheme.spaces.spacing300,
+        ),
     ) {
         LemonadeUi.Text(
             text = title,

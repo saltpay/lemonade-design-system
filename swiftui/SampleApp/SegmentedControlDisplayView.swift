@@ -5,12 +5,15 @@ struct SegmentedControlDisplayView: View {
     @State private var selectedTab1 = 0
     @State private var selectedTab2 = 1
     @State private var selectedTab3 = 0
+    @State private var selectedTabMedium = 0
+    @State private var selectedTabSmall = 0
+    @State private var selectedTabIconOnly = 0
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 32) {
-                // Basic tabs
-                sectionView(title: "Basic Tabs") {
+                // Large (default)
+                sectionView(title: "Large (Default)") {
                     VStack(spacing: 16) {
                         LemonadeUi.SegmentedControl(
                             properties: [
@@ -28,7 +31,47 @@ struct SegmentedControlDisplayView: View {
                     }
                 }
 
-                // Tabs with icons
+                // Medium
+                sectionView(title: "Medium") {
+                    VStack(spacing: 16) {
+                        LemonadeUi.SegmentedControl(
+                            properties: [
+                                LemonadeTabButtonProperties(label: "Tab 1"),
+                                LemonadeTabButtonProperties(label: "Tab 2"),
+                                LemonadeTabButtonProperties(label: "Tab 3"),
+                            ],
+                            selectedTab: selectedTabMedium,
+                            size: .medium,
+                            onTabSelected: { selectedTabMedium = $0 }
+                        )
+
+                        Text("Selected: Tab \(selectedTabMedium + 1)")
+                            .font(.caption)
+                            .foregroundStyle(.content.contentSecondary)
+                    }
+                }
+
+                // Small
+                sectionView(title: "Small") {
+                    VStack(spacing: 16) {
+                        LemonadeUi.SegmentedControl(
+                            properties: [
+                                LemonadeTabButtonProperties(label: "Tab 1"),
+                                LemonadeTabButtonProperties(label: "Tab 2"),
+                                LemonadeTabButtonProperties(label: "Tab 3"),
+                            ],
+                            selectedTab: selectedTabSmall,
+                            size: .small,
+                            onTabSelected: { selectedTabSmall = $0 }
+                        )
+
+                        Text("Selected: Tab \(selectedTabSmall + 1)")
+                            .font(.caption)
+                            .foregroundStyle(.content.contentSecondary)
+                    }
+                }
+
+                // With Icons
                 sectionView(title: "With Icons") {
                     VStack(spacing: 16) {
                         LemonadeUi.SegmentedControl(
@@ -47,7 +90,23 @@ struct SegmentedControlDisplayView: View {
                     }
                 }
 
-                // Two tabs toggle
+                // Icon Only (Small)
+                sectionView(title: "Icon Only (Small)") {
+                    VStack(spacing: 16) {
+                        LemonadeUi.SegmentedControl(
+                            properties: [
+                                LemonadeTabButtonProperties(icon: .heart),
+                                LemonadeTabButtonProperties(icon: .star),
+                                LemonadeTabButtonProperties(icon: .gear),
+                            ],
+                            selectedTab: selectedTabIconOnly,
+                            size: .small,
+                            onTabSelected: { selectedTabIconOnly = $0 }
+                        )
+                    }
+                }
+
+                // Toggle
                 sectionView(title: "Toggle Style") {
                     VStack(spacing: 16) {
                         LemonadeUi.SegmentedControl(
@@ -62,21 +121,6 @@ struct SegmentedControlDisplayView: View {
                         Text("Status: \(selectedTab3 == 0 ? "On" : "Off")")
                             .font(.caption)
                             .foregroundStyle(.content.contentSecondary)
-                    }
-                }
-
-                // Use case example
-                sectionView(title: "Filter Example") {
-                    VStack(spacing: 16) {
-                        LemonadeUi.SegmentedControl(
-                            properties: [
-                                LemonadeTabButtonProperties(label: "All"),
-                                LemonadeTabButtonProperties(label: "Active"),
-                                LemonadeTabButtonProperties(label: "Completed"),
-                            ],
-                            selectedTab: 0,
-                            onTabSelected: { _ in }
-                        )
                     }
                 }
             }
