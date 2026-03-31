@@ -592,7 +592,7 @@ public fun LemonadeUi.TopBar(
 }
 
 /**
- * A non-collapsible top bar with a large left-aligned title, optional subheading,
+ * A top bar with a large left-aligned title, optional subheading,
  * and trailing action slot — designed for top-level screens without navigation.
  *
  * When [bottomSlot] is provided, the title row scrolls away on scroll and the
@@ -688,9 +688,10 @@ public fun LemonadeUi.TopBar(
 }
 
 /**
- * A non-collapsible top bar with a large left-aligned title, optional subheading,
+ * A top bar with a large left-aligned title, optional subheading,
  * trailing action slot, and an integrated search field — designed for top-level
- * screens with search capability.
+ * screens with search capability. The title remains fixed while the search area
+ * collapses on scroll.
  *
  * On scroll, the search field collapses away while the title remains fixed.
  * When the search field gains focus, the title animates out and only the search
