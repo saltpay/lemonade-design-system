@@ -198,7 +198,7 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
     @ViewBuilder let leadingContent: () -> LeadingContent
     @ViewBuilder let trailingContent: () -> TrailingContent
 
-    @GestureState private var isPressed = false
+    @State private var isPressed = false
 
     private let minWidth: CGFloat = 64
     private let minHeight: CGFloat = 32
@@ -221,7 +221,7 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
             : LemonadeTheme.colors.content.contentPrimary
     }
 
-    var body: some View {
+    private var chipContent: some View {
         HStack(spacing: 0) {
             // Leading slot
             leadingContent()
@@ -269,21 +269,20 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
         .clipShape(Capsule())
         .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
         .contentShape(Capsule())
-        .simultaneousGesture(
-            DragGesture(minimumDistance: 0)
-                .updating($isPressed) { value, state, _ in
-                    let translation = value.translation
-                    let distance = sqrt(translation.width * translation.width + translation.height * translation.height)
-                    state = distance <= 10 && enabled && onChipClicked != nil
-                }
-        )
-        .onTapGesture {
-            if let onChipClicked = onChipClicked, enabled {
-                onChipClicked()
-            }
-        }
         .animation(.easeInOut(duration: 0.15), value: selected)
         .animation(.easeInOut(duration: 0.15), value: isPressed)
+    }
+
+    var body: some View {
+        if let onChipClicked = onChipClicked {
+            SwiftUI.Button(action: onChipClicked) {
+                chipContent
+            }
+            .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
+            .disabled(!enabled)
+        } else {
+            chipContent
+        }
     }
 }
 
