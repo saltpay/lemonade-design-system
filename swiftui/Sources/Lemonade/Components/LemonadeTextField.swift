@@ -512,6 +512,7 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
                     SwiftUI.TextField("", text: $input)
                         .font(LemonadeTypography.shared.bodyMediumRegular.font)
                         .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
+                        .tint(LemonadeTheme.colors.content.contentPrimary)
                         .focused($isFocused)
                         .disabled(!enabled)
                         .onChange(of: input) { newValue in
@@ -595,6 +596,7 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
                         SwiftUI.TextField("", text: $input)
                             .font(LemonadeTypography.shared.bodyMediumRegular.font)
                             .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
+                            .tint(LemonadeTheme.colors.content.contentPrimary)
                             .focused($isFocused)
                             .disabled(!enabled)
                             .onChange(of: input) { newValue in

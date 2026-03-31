@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -473,6 +474,7 @@ internal fun CoreTextField(
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions,
         visualTransformation = visualTransformation,
+        cursorBrush = SolidColor(LocalColors.current.content.contentPrimary),
         textStyle = size.data.contentStyle.textStyle.copy(
             color = LocalColors.current.content.contentPrimary,
         ),
@@ -524,6 +526,7 @@ internal fun CoreTextField(
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions,
         visualTransformation = visualTransformation,
+        cursorBrush = SolidColor(LocalColors.current.content.contentPrimary),
         textStyle = size.data.contentStyle.textStyle.copy(
             color = LocalColors.current.content.contentPrimary,
         ),

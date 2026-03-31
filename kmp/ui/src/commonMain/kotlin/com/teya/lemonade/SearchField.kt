@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -103,6 +104,7 @@ internal fun CoreSearchField(
         enabled = enabled,
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions,
+        cursorBrush = SolidColor(LocalColors.current.content.contentPrimary),
         textStyle = LocalTypographies.current.bodyMediumRegular.textStyle.copy(
             color = LocalColors.current.content.contentPrimary,
         ),

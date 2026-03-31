@@ -31,6 +31,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.textColor = UIColor(textColor)
         textField.borderStyle = .none
         textField.backgroundColor = .clear
+        textField.tintColor = UIColor(textColor)
         textField.isEnabled = isEnabled
         textField.keyboardType = keyboardType
         textField.text = value.text
@@ -89,6 +90,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.isEnabled = isEnabled
         textField.font = textStyle.uiFont
         textField.textColor = UIColor(textColor)
+        textField.tintColor = UIColor(textColor)
 
         // Update keyboard type and reload if changed while focused
         if textField.keyboardType != keyboardType {
