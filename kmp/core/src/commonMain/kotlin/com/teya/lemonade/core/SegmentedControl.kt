@@ -7,33 +7,26 @@ public class TabButtonProperties private constructor(
     public val icon: LemonadeIcons?,
 ) {
     public companion object {
-        public fun label(
-            label: String,
-        ): TabButtonProperties {
-            return TabButtonProperties(
+        public fun label(label: String): TabButtonProperties =
+            TabButtonProperties(
                 label = label,
                 icon = null,
             )
-        }
 
         public fun labelAndIcon(
             label: String,
             icon: LemonadeIcons,
-        ): TabButtonProperties {
-            return TabButtonProperties(
+        ): TabButtonProperties =
+            TabButtonProperties(
                 label = label,
                 icon = icon,
             )
-        }
 
-        public fun icon(
-            icon: LemonadeIcons,
-        ): TabButtonProperties {
-            return TabButtonProperties(
+        public fun icon(icon: LemonadeIcons): TabButtonProperties =
+            TabButtonProperties(
                 label = null,
                 icon = icon,
             )
-        }
     }
 }
 
