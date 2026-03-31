@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
@@ -233,7 +234,9 @@ internal fun CoreSegmentedControl(
                 val isPressed by tabInteractionSource.collectIsPressedAsState()
 
                 // Track pressed state for sticky expand effect
-                pressedTabIndex[tabIndex] = isPressed
+                SideEffect {
+                    pressedTabIndex[tabIndex] = isPressed
+                }
 
                 val animatedBackgroundColor by animateColorAsState(
                     targetValue = when {

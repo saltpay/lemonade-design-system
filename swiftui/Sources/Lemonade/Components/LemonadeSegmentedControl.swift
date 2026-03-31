@@ -97,48 +97,65 @@ private struct LemonadeSegmentedControlView: View {
     let size: LemonadeSegmentedControlSize
     let onTabSelected: (Int) -> Void
 
+    private var clampedSelectedTab: Int {
+        min(max(selectedTab, 0), properties.count - 1)
+    }
+
     var body: some View {
+        #if canImport(UIKit)
         ZStack {
             LemonadeNativeSegmentedControl(
                 segmentLabels: properties.map { $0.label ?? "" },
-                selectedIndex: selectedTab,
+                selectedIndex: clampedSelectedTab,
                 onSelectionChanged: onTabSelected
             )
 
-            HStack(spacing: 0) {
-                ForEach(properties.indices, id: \.self) { index in
-                    let property = properties[index]
-                    let tintColor = index == selectedTab
-                        ? LemonadeTheme.colors.content.contentPrimary
-                        : LemonadeTheme.colors.content.contentSecondary
-
-                    HStack(spacing: size.buttonContentGap) {
-                        if let icon = property.icon {
-                            LemonadeUi.Icon(
-                                icon: icon,
-                                contentDescription: property.label,
-                                size: .small,
-                                tint: tintColor
-                            )
-                        }
-
-                        if let label = property.label {
-                            LemonadeUi.Text(
-                                label,
-                                textStyle: size.textStyle,
-                                textAlign: .center,
-                                color: tintColor,
-                                maxLines: 1
-                            )
-                        }
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .accessibilityHidden(true)
-                }
-            }
-            .allowsHitTesting(false)
+            labelsOverlay
         }
         .frame(height: size.containerHeight)
+        #else
+        labelsOverlay
+            .frame(height: size.containerHeight)
+            .background(
+                RoundedRectangle(cornerRadius: LemonadeTheme.radius.radiusFull)
+                    .fill(LemonadeTheme.colors.background.bgElevated)
+            )
+        #endif
+    }
+
+    private var labelsOverlay: some View {
+        HStack(spacing: 0) {
+            ForEach(properties.indices, id: \.self) { index in
+                let property = properties[index]
+                let tintColor = index == clampedSelectedTab
+                    ? LemonadeTheme.colors.content.contentPrimary
+                    : LemonadeTheme.colors.content.contentSecondary
+
+                HStack(spacing: size.buttonContentGap) {
+                    if let icon = property.icon {
+                        LemonadeUi.Icon(
+                            icon: icon,
+                            contentDescription: property.label,
+                            size: .small,
+                            tint: tintColor
+                        )
+                    }
+
+                    if let label = property.label {
+                        LemonadeUi.Text(
+                            label,
+                            textStyle: size.textStyle,
+                            textAlign: .center,
+                            color: tintColor,
+                            maxLines: 1
+                        )
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .accessibilityHidden(true)
+            }
+        }
+        .allowsHitTesting(false)
     }
 }
 
@@ -158,11 +175,16 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
 
     func makeUIView(context: Context) -> UISegmentedControl {
         let control = UISegmentedControl(items: segmentLabels)
-        control.selectedSegmentIndex = selectedIndex
+        control.selectedSegmentIndex = min(selectedIndex, segmentLabels.count - 1)
         control.backgroundColor = .clear
         control.setContentHuggingPriority(.defaultLow, for: .horizontal)
         control.setContentHuggingPriority(.defaultLow, for: .vertical)
         control.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+
+        // Hide native text — custom SwiftUI overlay handles visuals
+        let clearAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.clear]
+        control.setTitleTextAttributes(clearAttributes, for: .normal)
+        control.setTitleTextAttributes(clearAttributes, for: .selected)
 
         control.addTarget(
             context.coordinator,
@@ -174,8 +196,9 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
 
     func updateUIView(_ uiView: UISegmentedControl, context: Context) {
         context.coordinator.onSelectionChanged = onSelectionChanged
-        if uiView.selectedSegmentIndex != selectedIndex {
-            uiView.selectedSegmentIndex = selectedIndex
+        let clampedIndex = min(selectedIndex, segmentLabels.count - 1)
+        if uiView.selectedSegmentIndex != clampedIndex {
+            uiView.selectedSegmentIndex = clampedIndex
         }
     }
 
