@@ -32,6 +32,7 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -74,12 +75,10 @@ public fun LemonadeUi.SegmentedControl(
     modifier: Modifier = Modifier,
 ) {
     CoreSegmentedControl(
-        selectedTab = { tabIndex ->
-            tabIndex == selectedTab
-        },
+        selectedTab = selectedTab,
         onTabSelected = onTabSelected,
         modifier = modifier,
-        tabCount = { properties.size },
+        tabCount = properties.size,
         size = size,
         content = { index ->
             val property = properties[index]
@@ -116,18 +115,18 @@ public fun LemonadeUi.SegmentedControl(
     )
 }
 
-@Suppress("LongMethod", "CyclomaticComplexMethod")
+@Suppress("LongMethod")
 @Composable
 internal fun CoreSegmentedControl(
     content: @Composable BoxScope.(Int) -> Unit,
-    tabCount: () -> Int,
-    selectedTab: (Int) -> Boolean,
+    tabCount: Int,
+    selectedTab: Int,
     onTabSelected: (Int) -> Unit,
     size: LemonadeSegmentedControlSize = LemonadeSegmentedControlSize.Large,
     modifier: Modifier = Modifier,
 ) {
     require(
-        value = tabCount() > 0,
+        value = tabCount > 0,
         lazyMessage = { "Tab count should be greater than zero." },
     )
 
@@ -138,10 +137,10 @@ internal fun CoreSegmentedControl(
     val pressedTabIndex = remember { mutableStateMapOf<Int, Boolean>() }
     val stretchAmount = 8.dp
 
-    val selectedIndex = (0 until tabCount()).firstOrNull { index ->
-        selectedTab(index)
-    }
-        ?: 0
+    val selectedIndex = selectedTab.coerceIn(
+        minimumValue = 0,
+        maximumValue = tabCount - 1,
+    )
 
     // Find which non-selected tab is being pressed (for sticky expand)
     val pressedNonSelectedIndex = pressedTabIndex.entries
@@ -222,64 +221,90 @@ internal fun CoreSegmentedControl(
         }
 
         // Tab buttons
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(
-                space = LocalSpaces.current.spacing0,
-            ),
-        ) {
-            repeat(times = tabCount()) { tabIndex ->
-                val tabInteractionSource = remember { MutableInteractionSource() }
-                val isHovering by tabInteractionSource.collectIsHoveredAsState()
-                val isPressed by tabInteractionSource.collectIsPressedAsState()
+        SegmentedControlTabRow(
+            tabCount = tabCount,
+            selectedTab = selectedTab,
+            onTabSelected = onTabSelected,
+            size = size,
+            density = density,
+            pillShape = pillShape,
+            tabWidths = tabWidths,
+            tabOffsets = tabOffsets,
+            pressedTabIndex = pressedTabIndex,
+            content = content,
+        )
+    }
+}
 
-                // Track pressed state for sticky expand effect
-                SideEffect {
-                    pressedTabIndex[tabIndex] = isPressed
-                }
+@Composable
+private fun SegmentedControlTabRow(
+    tabCount: Int,
+    selectedTab: Int,
+    onTabSelected: (Int) -> Unit,
+    size: LemonadeSegmentedControlSize,
+    density: Density,
+    pillShape: RoundedCornerShape,
+    tabWidths: MutableMap<Int, Dp>,
+    tabOffsets: MutableMap<Int, Dp>,
+    pressedTabIndex: MutableMap<Int, Boolean>,
+    content: @Composable BoxScope.(Int) -> Unit,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(
+            space = LocalSpaces.current.spacing0,
+        ),
+    ) {
+        repeat(times = tabCount) { tabIndex ->
+            val tabInteractionSource = remember { MutableInteractionSource() }
+            val isHovering by tabInteractionSource.collectIsHoveredAsState()
+            val isPressed by tabInteractionSource.collectIsPressedAsState()
 
-                val animatedBackgroundColor by animateColorAsState(
-                    targetValue = when {
-                        selectedTab(tabIndex) -> LocalColors.current.background.bgDefault.copy(
-                            alpha = LocalOpacities.current.base.opacity0,
-                        )
-                        isPressed -> LocalColors.current.interaction.bgDefaultPressed
-                        isHovering -> LocalColors.current.interaction.bgDefaultInteractive
-                        else -> LocalColors.current.background.bgDefault.copy(
-                            alpha = LocalOpacities.current.base.opacity0,
-                        )
-                    },
-                )
-
-                Box(
-                    content = { content(tabIndex) },
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .weight(weight = 1f)
-                        .fillMaxHeight()
-                        .onGloballyPositioned { coordinates ->
-                            with(density) {
-                                val newWidth = coordinates.size.width.toDp()
-                                val newOffset = coordinates.positionInParent().x.toDp()
-                                if (tabWidths[tabIndex] != newWidth) {
-                                    tabWidths[tabIndex] = newWidth
-                                }
-                                if (tabOffsets[tabIndex] != newOffset) {
-                                    tabOffsets[tabIndex] = newOffset
-                                }
-                            }
-                        }.clip(shape = pillShape)
-                        .clickable(
-                            onClick = { onTabSelected(tabIndex) },
-                            role = Role.Tab,
-                            interactionSource = tabInteractionSource,
-                            indication = null,
-                        ).background(color = animatedBackgroundColor)
-                        .padding(
-                            horizontal = size.buttonHorizontalPadding(),
-                        ),
-                )
+            SideEffect {
+                pressedTabIndex[tabIndex] = isPressed
             }
+
+            val animatedBackgroundColor by animateColorAsState(
+                targetValue = when {
+                    tabIndex == selectedTab -> LocalColors.current.background.bgDefault.copy(
+                        alpha = LocalOpacities.current.base.opacity0,
+                    )
+                    isPressed -> LocalColors.current.interaction.bgDefaultPressed
+                    isHovering -> LocalColors.current.interaction.bgDefaultInteractive
+                    else -> LocalColors.current.background.bgDefault.copy(
+                        alpha = LocalOpacities.current.base.opacity0,
+                    )
+                },
+            )
+
+            Box(
+                content = { content(tabIndex) },
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .weight(weight = 1f)
+                    .fillMaxHeight()
+                    .onGloballyPositioned { coordinates ->
+                        with(density) {
+                            val newWidth = coordinates.size.width.toDp()
+                            val newOffset = coordinates.positionInParent().x.toDp()
+                            if (tabWidths[tabIndex] != newWidth) {
+                                tabWidths[tabIndex] = newWidth
+                            }
+                            if (tabOffsets[tabIndex] != newOffset) {
+                                tabOffsets[tabIndex] = newOffset
+                            }
+                        }
+                    }.clip(shape = pillShape)
+                    .clickable(
+                        onClick = { onTabSelected(tabIndex) },
+                        role = Role.Tab,
+                        interactionSource = tabInteractionSource,
+                        indication = null,
+                    ).background(color = animatedBackgroundColor)
+                    .padding(
+                        horizontal = size.buttonHorizontalPadding(),
+                    ),
+            )
         }
     }
 }
