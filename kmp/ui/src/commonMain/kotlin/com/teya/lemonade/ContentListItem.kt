@@ -98,9 +98,7 @@ private fun HorizontalContentListItem(
             ),
     ) {
         if (leadingSlot != null) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                leadingSlot()
-            }
+            leadingSlot()
         }
 
         Column(
@@ -144,8 +142,6 @@ private fun VerticalContentListItem(
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     contentSlot: (@Composable ColumnScope.() -> Unit)? = null,
 ) {
-    val isLarge = contentSlot != null
-
     Row(
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
@@ -156,9 +152,7 @@ private fun VerticalContentListItem(
             ),
     ) {
         if (leadingSlot != null) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                leadingSlot()
-            }
+            leadingSlot()
         }
 
         Column(
@@ -176,7 +170,7 @@ private fun VerticalContentListItem(
             ) {
                 LemonadeUi.Text(
                     text = value,
-                    textStyle = if (isLarge) {
+                    textStyle = if (contentSlot != null) {
                         LocalTypographies.current.bodyXLargeSemiBold
                     } else {
                         LocalTypographies.current.bodyMediumMedium
