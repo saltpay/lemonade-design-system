@@ -198,12 +198,19 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
     @ViewBuilder let leadingContent: () -> LeadingContent
     @ViewBuilder let trailingContent: () -> TrailingContent
 
+    @State private var isPressed = false
+
     private let minWidth: CGFloat = 64
     private let minHeight: CGFloat = 32
     private let actionsSize: CGFloat = LemonadeTheme.sizes.size400
 
     private var backgroundColor: Color {
-        selected
+        if isPressed {
+            return selected
+                ? LemonadeTheme.colors.interaction.bgBrandHighInteractive
+                : LemonadeTheme.colors.interaction.bgSubtleInteractive
+        }
+        return selected
             ? LemonadeTheme.colors.background.bgBrandHigh
             : LemonadeTheme.colors.background.bgElevated
     }
@@ -262,12 +269,24 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
         .clipShape(Capsule())
         .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
         .contentShape(Capsule())
-        .onTapGesture {
-            if let onChipClicked = onChipClicked, enabled {
-                onChipClicked()
-            }
-        }
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { _ in
+                    if enabled && onChipClicked != nil {
+                        isPressed = true
+                    }
+                }
+                .onEnded { _ in
+                    if isPressed {
+                        isPressed = false
+                        if enabled {
+                            onChipClicked?()
+                        }
+                    }
+                }
+        )
         .animation(.easeInOut(duration: 0.15), value: selected)
+        .animation(.easeInOut(duration: 0.15), value: isPressed)
     }
 }
 
