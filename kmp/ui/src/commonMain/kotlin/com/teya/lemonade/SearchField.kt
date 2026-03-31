@@ -97,6 +97,7 @@ internal fun CoreSearchField(
     enabled: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
+    val contentColor = LocalColors.current.content.contentPrimary
     BasicTextField(
         value = input,
         onValueChange = onInputChanged,
@@ -104,9 +105,9 @@ internal fun CoreSearchField(
         enabled = enabled,
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions,
-        cursorBrush = SolidColor(LocalColors.current.content.contentPrimary),
+        cursorBrush = SolidColor(contentColor),
         textStyle = LocalTypographies.current.bodyMediumRegular.textStyle.copy(
-            color = LocalColors.current.content.contentPrimary,
+            color = contentColor,
         ),
         singleLine = true,
         modifier = modifier.then(

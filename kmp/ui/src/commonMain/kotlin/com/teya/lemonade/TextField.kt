@@ -466,6 +466,7 @@ internal fun CoreTextField(
     textBoxContent: @Composable BoxScope.(@Composable () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val contentColor = LocalColors.current.content.contentPrimary
     BasicTextField(
         value = input,
         onValueChange = onInputChanged,
@@ -474,9 +475,9 @@ internal fun CoreTextField(
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions,
         visualTransformation = visualTransformation,
-        cursorBrush = SolidColor(LocalColors.current.content.contentPrimary),
+        cursorBrush = SolidColor(contentColor),
         textStyle = size.data.contentStyle.textStyle.copy(
-            color = LocalColors.current.content.contentPrimary,
+            color = contentColor,
         ),
         singleLine = true,
         modifier = modifier,
@@ -518,6 +519,7 @@ internal fun CoreTextField(
     textBoxContent: @Composable BoxScope.(@Composable () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val contentColor = LocalColors.current.content.contentPrimary
     BasicTextField(
         value = value,
         onValueChange = onValueChange,
@@ -526,9 +528,9 @@ internal fun CoreTextField(
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions,
         visualTransformation = visualTransformation,
-        cursorBrush = SolidColor(LocalColors.current.content.contentPrimary),
+        cursorBrush = SolidColor(contentColor),
         textStyle = size.data.contentStyle.textStyle.copy(
-            color = LocalColors.current.content.contentPrimary,
+            color = contentColor,
         ),
         singleLine = true,
         modifier = modifier,
