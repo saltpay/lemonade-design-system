@@ -126,6 +126,7 @@ internal object DisplayRegistry {
                 Displays.Chip,
                 Displays.SelectionListItem,
                 Displays.ResourceListItem,
+                Displays.ContentListItem,
                 Displays.SegmentedControl,
                 Displays.ActionListItem,
             ),
