@@ -591,6 +591,213 @@ public fun LemonadeUi.TopBar(
     )
 }
 
+/**
+ * A top bar with a large left-aligned title, optional subheading,
+ * and trailing action slot — designed for top-level screens without navigation.
+ *
+ * When [bottomSlot] is provided, the title row scrolls away on scroll and the
+ * bottom slot becomes sticky. When [bottomSlot] is `null`, the title is fixed
+ * and does not scroll.
+ *
+ * Use [rememberTopBarState] to create the state and apply its [TopBarState.nestedScrollConnection]
+ * to your scrollable content via
+ * [Modifier.nestedScroll][androidx.compose.ui.input.nestedscroll.nestedScroll].
+ *
+ * ## Usage
+ * ```kotlin
+ * // Fixed title (no scroll)
+ * LemonadeUi.TopBar(
+ *     label = "Home",
+ *     subheading = "Welcome back",
+ *     trailingSlot = {
+ *         LemonadeUi.IconButton(
+ *             icon = LemonadeIcons.Bell,
+ *             contentDescription = "Notifications",
+ *             onClick = { /* handle */ }
+ *         )
+ *     },
+ * )
+ *
+ * // Title scrolls away, slot sticks
+ * val state = rememberTopBarState()
+ * LemonadeUi.TopBar(
+ *     label = "Browse",
+ *     subheading = null,
+ *     state = state,
+ *     trailingSlot = { /* actions */ },
+ *     bottomSlot = {
+ *         // Sticky content (e.g. filters, tabs)
+ *     },
+ * )
+ * LazyColumn(
+ *     modifier = Modifier.nestedScroll(state.nestedScrollConnection)
+ * ) { /* content */ }
+ * ```
+ *
+ * @param label The large title text displayed in the heading.
+ * @param subheading Optional secondary text displayed below the title.
+ * @param modifier [Modifier] applied to the top bar container.
+ * @param state The [TopBarState] that manages scroll behavior. Create with [rememberTopBarState].
+ * @param backgroundColor The background color of the top bar.
+ * @param trailingSlot Optional composable displayed at the end of the title row (typically action buttons).
+ * @param bottomSlot Optional composable displayed below the title. When provided, the title scrolls
+ *        away and this slot becomes sticky. When `null`, the title is fixed.
+ */
+@Composable
+public fun LemonadeUi.TopBar(
+    label: String,
+    subheading: String?,
+    modifier: Modifier = Modifier,
+    state: TopBarState = rememberTopBarState(),
+    backgroundColor: Color = LocalColors.current.background.bgDefault,
+    trailingSlot: @Composable (RowScope.() -> Unit)? = null,
+    bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
+) {
+    CoreTopBar(
+        state = state,
+        backgroundColor = backgroundColor,
+        modifier = modifier,
+        fixedHeaderSlot = { fixedHeaderModifier ->
+            if (bottomSlot != null) {
+                Spacer(modifier = fixedHeaderModifier)
+            } else {
+                CompactLargeTopBarHeading(
+                    label = label,
+                    subheading = subheading,
+                    trailingSlot = trailingSlot,
+                    modifier = fixedHeaderModifier
+                        .background(color = backgroundColor)
+                        .zIndex(zIndex = 1f),
+                )
+            }
+        },
+        collapsableSlot = { collapsableSlotModifier ->
+            if (bottomSlot != null) {
+                CompactLargeTopBarHeading(
+                    label = label,
+                    subheading = subheading,
+                    trailingSlot = trailingSlot,
+                    modifier = collapsableSlotModifier,
+                )
+            } else {
+                Spacer(modifier = collapsableSlotModifier)
+            }
+        },
+        bottomSlot = bottomSlot,
+    )
+}
+
+/**
+ * A top bar with a large left-aligned title, optional subheading,
+ * trailing action slot, and an integrated search field — designed for top-level
+ * screens with search capability. The title remains fixed while the search area
+ * collapses on scroll.
+ *
+ * On scroll, the search field collapses away while the title remains fixed.
+ * When the search field gains focus, the title animates out and only the search
+ * field remains visible. Tapping the search leading icon clears focus and restores
+ * the title.
+ *
+ * Use [rememberTopBarState] to create the state and apply its [TopBarState.nestedScrollConnection]
+ * to your scrollable content via
+ * [Modifier.nestedScroll][androidx.compose.ui.input.nestedscroll.nestedScroll].
+ *
+ * ## Usage
+ * ```kotlin
+ * val state = rememberTopBarState()
+ * var query by remember { mutableStateOf("") }
+ *
+ * Column {
+ *     LemonadeUi.TopBar(
+ *         label = "Discover",
+ *         subheading = null,
+ *         searchInput = query,
+ *         onSearchChanged = { query = it },
+ *         state = state,
+ *     )
+ *
+ *     LazyColumn(
+ *         modifier = Modifier.nestedScroll(state.nestedScrollConnection)
+ *     ) {
+ *         // search results
+ *     }
+ * }
+ * ```
+ *
+ * @param label The large title text displayed in the fixed heading.
+ * @param subheading Optional secondary text displayed below the title.
+ * @param searchInput The current search query text.
+ * @param onSearchChanged Callback invoked when the search query changes.
+ * @param modifier [Modifier] applied to the top bar container.
+ * @param state The [TopBarState] that manages scroll behavior. Create with [rememberTopBarState].
+ * @param backgroundColor The background color of the top bar.
+ * @param trailingSlot Optional composable displayed at the end of the title row (typically action buttons).
+ */
+@Composable
+@OptIn(ExperimentalLemonadeComponent::class)
+public fun LemonadeUi.TopBar(
+    label: String,
+    subheading: String?,
+    searchInput: String,
+    onSearchChanged: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    state: TopBarState = rememberTopBarState(),
+    backgroundColor: Color = LocalColors.current.background.bgDefault,
+    trailingSlot: @Composable (RowScope.() -> Unit)? = null,
+) {
+    val focusManager = LocalFocusManager.current
+    var isSearchFocused by remember {
+        mutableStateOf(false)
+    }
+    CoreTopBar(
+        state = state,
+        backgroundColor = backgroundColor,
+        modifier = modifier,
+        fixedHeaderSlot = { fixedHeaderModifier ->
+            AnimatedContent(
+                modifier = fixedHeaderModifier
+                    .background(color = backgroundColor)
+                    .zIndex(zIndex = 1f),
+                targetState = isSearchFocused,
+                transitionSpec = { expandVertically() togetherWith shrinkVertically() },
+                content = { searchFocused ->
+                    if (!searchFocused) {
+                        CompactLargeTopBarHeading(
+                            label = label,
+                            subheading = subheading,
+                            trailingSlot = trailingSlot,
+                        )
+                    }
+                },
+            )
+        },
+        collapsableSlot = { collapsableSlotModifier ->
+            CoreSearchField(
+                input = searchInput,
+                onInputChanged = onSearchChanged,
+                leadingIcon = if (isSearchFocused) {
+                    LemonadeIcons.ArrowLeft
+                } else {
+                    LemonadeIcons.Search
+                },
+                onLeadingIconClicked = focusManager::clearFocus,
+                modifier = collapsableSlotModifier
+                    .fillMaxWidth()
+                    .padding(horizontal = LocalSpaces.current.spacing400)
+                    .padding(vertical = LocalSpaces.current.spacing300)
+                    .onFocusChanged { focusState ->
+                        isSearchFocused = focusState.isFocused
+                        state.setAnimationGesturesLock(locked = focusState.isFocused)
+                        if (focusState.isFocused) {
+                            state.expand()
+                        }
+                    },
+            )
+        },
+        bottomSlot = null,
+    )
+}
+
 @Composable
 private fun CoreTopBarActionContent(
     navigationAction: NavigationAction,
@@ -917,6 +1124,56 @@ private val TopBarAction.icon: LemonadeIcons
         }
     }
 
+@Composable
+private fun CompactLargeTopBarHeading(
+    label: String,
+    subheading: String?,
+    trailingSlot: @Composable (RowScope.() -> Unit)?,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = LocalSpaces.current.spacing400)
+            .padding(bottom = LocalSpaces.current.spacing200),
+        horizontalArrangement = Arrangement.spacedBy(
+            space = LocalSpaces.current.spacing200,
+        ),
+        verticalAlignment = Alignment.Top,
+    ) {
+        Column(
+            modifier = Modifier.weight(weight = 1f),
+        ) {
+            LemonadeUi.Text(
+                text = label,
+                textStyle = LocalTypographies.current.headingLarge,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 2,
+            )
+            if (subheading != null) {
+                LemonadeUi.Text(
+                    text = subheading,
+                    textStyle = LocalTypographies.current.bodySmallRegular,
+                    color = LocalColors.current.content.contentSecondary,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                )
+            }
+        }
+        if (trailingSlot != null) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+                content = { trailingSlot.invoke(this) },
+                modifier = Modifier.requiredSizeIn(
+                    minWidth = LocalSizes.current.size1000,
+                    maxHeight = LocalSizes.current.size1000,
+                ),
+            )
+        }
+    }
+}
+
 private data class TopBarPreviewData(
     val collapsed: Boolean,
     val action: NavigationAction?,
@@ -1030,4 +1287,49 @@ private fun Int.toPreviewTrailingSlot(): @Composable (RowScope.() -> Unit)? {
             )
         }
     }
+}
+
+@LemonadePreview
+@Composable
+private fun CompactLargeTopBarPreview() {
+    LemonadeUi.TopBar(
+        label = "Home",
+        subheading = "Welcome back",
+        trailingSlot = {
+            LemonadeUi.IconButton(
+                icon = LemonadeIcons.Bell,
+                contentDescription = null,
+                onClick = {},
+                variant = LemonadeIconButtonVariant.Ghost,
+            )
+        },
+    )
+}
+
+@LemonadePreview
+@Composable
+private fun CompactLargeTopBarNoSubheadingPreview() {
+    LemonadeUi.TopBar(
+        label = "Browse",
+        subheading = null,
+        trailingSlot = {
+            LemonadeUi.IconButton(
+                icon = LemonadeIcons.Bell,
+                contentDescription = null,
+                onClick = {},
+                variant = LemonadeIconButtonVariant.Ghost,
+            )
+        },
+    )
+}
+
+@LemonadePreview
+@Composable
+private fun CompactLargeTopBarSearchPreview() {
+    LemonadeUi.TopBar(
+        label = "Discover",
+        subheading = "Find what you need",
+        searchInput = "",
+        onSearchChanged = {},
+    )
 }

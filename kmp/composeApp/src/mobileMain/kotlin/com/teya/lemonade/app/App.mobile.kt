@@ -5,6 +5,10 @@ import com.teya.lemonade.BottomSheetDisplay
 import com.teya.lemonade.BottomSheetSampleDisplay
 import com.teya.lemonade.CollapsedTopBarDisplay
 import com.teya.lemonade.CollapsedTopBarSampleDisplay
+import com.teya.lemonade.CompactLargeSearchTopBarDisplay
+import com.teya.lemonade.CompactLargeSearchTopBarSampleDisplay
+import com.teya.lemonade.CompactLargeTopBarDisplay
+import com.teya.lemonade.CompactLargeTopBarSampleDisplay
 import com.teya.lemonade.DialogDisplay
 import com.teya.lemonade.DialogSampleDisplay
 import com.teya.lemonade.Displays
@@ -28,4 +32,6 @@ internal actual val platformScreens: Map<Displays, @Composable ((onNavigate: (Di
         SearchTopBarDisplay to { _ -> SearchTopBarSampleDisplay() },
         TopBarDisplay to { _ -> TopBarSampleDisplay() },
         CollapsedTopBarDisplay to { _ -> CollapsedTopBarSampleDisplay() },
+        CompactLargeTopBarDisplay to { _ -> CompactLargeTopBarSampleDisplay() },
+        CompactLargeSearchTopBarDisplay to { _ -> CompactLargeSearchTopBarSampleDisplay() },
     )
