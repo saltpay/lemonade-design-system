@@ -118,16 +118,21 @@ private struct LemonadeSegmentedControlView: View {
 
     var body: some View {
         #if canImport(UIKit)
-        ZStack {
-            LemonadeNativeSegmentedControl(
-                segmentLabels: properties.map { $0.label ?? $0.icon?.rawValue ?? "" },
-                selectedIndex: clampedSelectedTab,
-                onSelectionChanged: onTabSelected
-            )
-
-            labelsOverlay
+        if #available(iOS 26.0, *) {
+            ZStack {
+                LemonadeNativeSegmentedControl(
+                    segmentLabels: properties.map { $0.label ?? $0.icon?.rawValue ?? "" },
+                    selectedIndex: clampedSelectedTab,
+                    onSelectionChanged: onTabSelected
+                )
+                
+                labelsOverlay
+            }
+            .frame(height: size.containerHeight)
+//            .glassEffect(.regular.tint(.clear).interactive())
+        } else {
+            // Fallback on earlier versions
         }
-        .frame(height: size.containerHeight)
         #else
         labelsOverlay
             .frame(height: size.containerHeight)
@@ -146,31 +151,44 @@ private struct LemonadeSegmentedControlView: View {
                     ? LemonadeTheme.colors.content.contentPrimary
                     : LemonadeTheme.colors.content.contentSecondary
 
-                HStack(spacing: size.buttonContentGap) {
-                    if let icon = property.icon {
-                        LemonadeUi.Icon(
-                            icon: icon,
-                            contentDescription: property.label,
-                            size: .small,
-                            tint: tintColor
-                        )
-                    }
+                Button {
+                    onTabSelected(index)
+                } label: {
+                    HStack(spacing: size.buttonContentGap) {
+                        if let icon = property.icon {
+                            LemonadeUi.Icon(
+                                icon: icon,
+                                contentDescription: property.label,
+                                size: .small,
+                                tint: tintColor
+                            )
+                        }
 
-                    if let label = property.label {
-                        LemonadeUi.Text(
-                            label,
-                            textStyle: size.textStyle,
-                            textAlign: .center,
-                            color: tintColor,
-                            maxLines: 1
-                        )
+                        if let label = property.label {
+                            LemonadeUi.Text(
+                                label,
+                                textStyle: size.textStyle,
+                                textAlign: .center,
+                                color: tintColor,
+                                maxLines: 1
+                            )
+                        }
                     }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .accessibilityHidden(true)
+                .buttonStyle(SegmentPressStyle())
+                .frame(maxWidth: .infinity)
             }
         }
-        .allowsHitTesting(false)
+        .animation(.easeInOut(duration: 0.2), value: clampedSelectedTab)
+    }
+}
+
+private struct SegmentPressStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(configuration.isPressed ? 0.5 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
     }
 }
 
