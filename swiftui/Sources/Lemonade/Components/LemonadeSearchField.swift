@@ -114,6 +114,7 @@ private struct LemonadeSearchFieldView: View {
                     )
                 }
                 .buttonStyle(PlainButtonStyle())
+                .accessibilityLabel(lemonadeLocalizedString("lemonade_clear_search"))
             }
         }
         .padding(.horizontal, horizontalPadding)

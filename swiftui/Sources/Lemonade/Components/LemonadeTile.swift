@@ -190,6 +190,9 @@ private struct LemonadeTileView<AddonContent: View>: View {
                     onClick()
                 }
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(label)
+            .accessibilityAddTraits(onClick != nil ? .isButton : [])
 
             // Addon badge
             if let addon = addon {
