@@ -124,8 +124,6 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
                 }
             }
         }
-        .padding(.horizontal, LemonadeTheme.spaces.spacing400)
-        .padding(.vertical, LemonadeTheme.spaces.spacing200)
     }
 
     private var verticalLayout: some View {
@@ -161,8 +159,6 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
                 }
             }
         }
-        .padding(.horizontal, LemonadeTheme.spaces.spacing400)
-        .padding(.vertical, LemonadeTheme.spaces.spacing200)
     }
 }
 
