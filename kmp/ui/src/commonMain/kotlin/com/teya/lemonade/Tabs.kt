@@ -28,20 +28,22 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.CompositingStrategy
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
@@ -66,6 +68,7 @@ public data class TabItem(
 public enum class TabsItemSize {
     /** Each tab hugs its content. Scrollable when items overflow. */
     Hug,
+
     /** Tabs stretch to fill available width equally. */
     Stretch,
 }
@@ -113,7 +116,6 @@ public fun LemonadeUi.Tabs(
 private const val INDICATOR_ANIMATION_DURATION_MS = 250
 private const val FADE_WIDTH_FRACTION = 0.15f
 
-@Suppress("LongMethod")
 @Composable
 internal fun CoreTabs(
     tabs: List<TabItem>,
@@ -170,9 +172,10 @@ internal fun CoreTabs(
         ?: 0.dp
     val selectedContentWidth = contentWidths[selectedIndex]
         ?: selectedTabWidth
+    val selectedTabOffset = tabOffsets[selectedIndex]
+        ?: 0.dp
     val indicatorOffset by animateDpAsState(
-        targetValue = (tabOffsets[selectedIndex]
-            ?: 0.dp) + (selectedTabWidth - selectedContentWidth) / 2,
+        targetValue = selectedTabOffset + (selectedTabWidth - selectedContentWidth) / 2,
         animationSpec = animationSpec,
     )
 
@@ -186,165 +189,35 @@ internal fun CoreTabs(
     ) {
         when (itemsSize) {
             TabsItemSize.Hug -> {
-                val scrollState = rememberScrollState()
-
-                LaunchedEffect(key1 = selectedIndex) {
-                    val offset = tabOffsets[selectedIndex]
-                    val width = tabWidths[selectedIndex]
-                    if (offset != null && width != null) {
-                        val offsetPx = with(density) { offset.roundToPx() }
-                        val widthPx = with(density) { width.roundToPx() }
-                        val viewportWidth = scrollState.viewportSize
-                        val currentScroll = scrollState.value
-
-                        val tabEnd = offsetPx + widthPx
-                        val visibleEnd = currentScroll + viewportWidth
-
-                        if (offsetPx < currentScroll) {
-                            scrollState.animateScrollTo(value = offsetPx)
-                        } else if (tabEnd > visibleEnd) {
-                            scrollState.animateScrollTo(value = tabEnd - viewportWidth)
-                        }
-                    }
-                }
-
-                // Alpha-mask fade: only applied when content is meaningfully scrollable
-                val isScrollable = scrollState.maxValue > 0
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .then(
-                            other = if (isScrollable) {
-                                Modifier
-                                    .graphicsLayer {
-                                        compositingStrategy = CompositingStrategy.Offscreen
-                                    }
-                                    .drawWithContent {
-                                        drawContent()
-                                        if (scrollState.canScrollForward) {
-                                            val fadeWidthPx = size.width * FADE_WIDTH_FRACTION
-                                            drawRect(
-                                                brush = Brush.horizontalGradient(
-                                                    colors = listOf(
-                                                        Color.Black,
-                                                        Color.Transparent,
-                                                    ),
-                                                    startX = size.width - fadeWidthPx,
-                                                    endX = size.width,
-                                                ),
-                                                blendMode = BlendMode.DstIn,
-                                            )
-                                        }
-                                    }
-                            } else {
-                                Modifier
-                            },
-                        ),
-                ) {
-                    // Scrollable area — indicator is INSIDE so it scrolls with content
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .horizontalScroll(state = scrollState),
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.Bottom,
-                        ) {
-                            tabs.forEachIndexed { index, tab ->
-                                TabItemContent(
-                                    tab = tab,
-                                    isSelected = index == selectedIndex,
-                                    onClick = { onTabSelected(index) },
-                                    modifier = Modifier
-                                        .onGloballyPositioned { coordinates ->
-                                            tabWidths[index] = with(density) {
-                                                coordinates.size.width.toDp()
-                                            }
-                                            tabOffsets[index] = with(density) {
-                                                coordinates.positionInParent().x.toDp()
-                                            }
-                                        },
-                                    onContentPositioned = { coordinates ->
-                                        contentWidths[index] = with(density) {
-                                            coordinates.size.width.toDp()
-                                        }
-                                    },
-                                )
-                            }
-                        }
-
-                        // Animated indicator — scrolls with tabs
-                        if (tabWidths.containsKey(selectedIndex)) {
-                            Box(
-                                modifier = Modifier
-                                    .align(alignment = Alignment.BottomStart)
-                                    .offset(x = indicatorOffset)
-                                    .width(width = indicatorWidth)
-                                    .height(height = indicatorHeight)
-                                    .background(
-                                        color = indicatorColor,
-                                        shape = RoundedCornerShape(
-                                            topStart = 2.dp,
-                                            topEnd = 2.dp,
-                                        ),
-                                    ),
-                            )
-                        }
-                    }
-                }
+                HugModeTabs(
+                    tabs = tabs,
+                    selectedIndex = selectedIndex,
+                    onTabSelected = onTabSelected,
+                    density = density,
+                    tabWidths = tabWidths,
+                    tabOffsets = tabOffsets,
+                    contentWidths = contentWidths,
+                    indicatorWidth = indicatorWidth,
+                    indicatorOffset = indicatorOffset,
+                    indicatorHeight = indicatorHeight,
+                    indicatorColor = indicatorColor,
+                )
             }
 
             TabsItemSize.Stretch -> {
-                Box {
-                    Row(
-                        verticalAlignment = Alignment.Bottom,
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        tabs.forEachIndexed { index, tab ->
-                            Box(
-                                modifier = Modifier
-                                    .weight(weight = 1f)
-                                    .onGloballyPositioned { coordinates ->
-                                        tabWidths[index] = with(density) {
-                                            coordinates.size.width.toDp()
-                                        }
-                                        tabOffsets[index] = with(density) {
-                                            coordinates.positionInParent().x.toDp()
-                                        }
-                                    },
-                            ) {
-                                TabItemContent(
-                                    tab = tab,
-                                    isSelected = index == selectedIndex,
-                                    onClick = { onTabSelected(index) },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    onContentPositioned = { coordinates ->
-                                        contentWidths[index] = with(density) {
-                                            coordinates.size.width.toDp()
-                                        }
-                                    },
-                                )
-                            }
-                        }
-                    }
-
-                    if (tabWidths.containsKey(selectedIndex)) {
-                        Box(
-                            modifier = Modifier
-                                .align(alignment = Alignment.BottomStart)
-                                .offset(x = indicatorOffset)
-                                .width(width = indicatorWidth)
-                                .height(height = indicatorHeight)
-                                .background(
-                                    color = indicatorColor,
-                                    shape = RoundedCornerShape(
-                                        topStart = 2.dp,
-                                        topEnd = 2.dp,
-                                    ),
-                                ),
-                        )
-                    }
-                }
+                StretchModeTabs(
+                    tabs = tabs,
+                    selectedIndex = selectedIndex,
+                    onTabSelected = onTabSelected,
+                    density = density,
+                    tabWidths = tabWidths,
+                    tabOffsets = tabOffsets,
+                    contentWidths = contentWidths,
+                    indicatorWidth = indicatorWidth,
+                    indicatorOffset = indicatorOffset,
+                    indicatorHeight = indicatorHeight,
+                    indicatorColor = indicatorColor,
+                )
             }
         }
 
@@ -354,6 +227,193 @@ internal fun CoreTabs(
                 .height(height = separatorHeight)
                 .background(color = separatorColor),
         )
+    }
+}
+
+@Composable
+private fun HugModeTabs(
+    tabs: List<TabItem>,
+    selectedIndex: Int,
+    onTabSelected: (Int) -> Unit,
+    density: Density,
+    tabWidths: SnapshotStateMap<Int, Dp>,
+    tabOffsets: SnapshotStateMap<Int, Dp>,
+    contentWidths: SnapshotStateMap<Int, Dp>,
+    indicatorWidth: Dp,
+    indicatorOffset: Dp,
+    indicatorHeight: Dp,
+    indicatorColor: Color,
+) {
+    val scrollState = rememberScrollState()
+
+    LaunchedEffect(key1 = selectedIndex) {
+        val offset = tabOffsets[selectedIndex]
+        val width = tabWidths[selectedIndex]
+        if (offset != null && width != null) {
+            val offsetPx = with(density) { offset.roundToPx() }
+            val widthPx = with(density) { width.roundToPx() }
+            val viewportWidth = scrollState.viewportSize
+            val currentScroll = scrollState.value
+
+            val tabEnd = offsetPx + widthPx
+            val visibleEnd = currentScroll + viewportWidth
+
+            if (offsetPx < currentScroll) {
+                scrollState.animateScrollTo(value = offsetPx)
+            } else if (tabEnd > visibleEnd) {
+                scrollState.animateScrollTo(value = tabEnd - viewportWidth)
+            }
+        }
+    }
+
+    // Alpha-mask fade: only applied when content is meaningfully scrollable
+    val isScrollable = scrollState.maxValue > 0
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(
+                other = if (isScrollable) {
+                    Modifier
+                        .graphicsLayer {
+                            compositingStrategy = CompositingStrategy.Offscreen
+                        }.drawWithContent {
+                            drawContent()
+                            if (scrollState.canScrollForward) {
+                                val fadeWidthPx = size.width * FADE_WIDTH_FRACTION
+                                drawRect(
+                                    brush = Brush.horizontalGradient(
+                                        colors = listOf(
+                                            Color.Black,
+                                            Color.Transparent,
+                                        ),
+                                        startX = size.width - fadeWidthPx,
+                                        endX = size.width,
+                                    ),
+                                    blendMode = BlendMode.DstIn,
+                                )
+                            }
+                        }
+                } else {
+                    Modifier
+                },
+            ),
+    ) {
+        // Scrollable area — indicator is INSIDE so it scrolls with content
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(state = scrollState),
+        ) {
+            Row(
+                verticalAlignment = Alignment.Bottom,
+            ) {
+                tabs.forEachIndexed { index, tab ->
+                    TabItemContent(
+                        tab = tab,
+                        isSelected = index == selectedIndex,
+                        onClick = { onTabSelected(index) },
+                        modifier = Modifier
+                            .onGloballyPositioned { coordinates ->
+                                tabWidths[index] = with(density) {
+                                    coordinates.size.width.toDp()
+                                }
+                                tabOffsets[index] = with(density) {
+                                    coordinates.positionInParent().x.toDp()
+                                }
+                            },
+                        onContentPositioned = { coordinates ->
+                            contentWidths[index] = with(density) {
+                                coordinates.size.width.toDp()
+                            }
+                        },
+                    )
+                }
+            }
+
+            // Animated indicator — scrolls with tabs
+            if (tabWidths.containsKey(selectedIndex)) {
+                Box(
+                    modifier = Modifier
+                        .align(alignment = Alignment.BottomStart)
+                        .offset(x = indicatorOffset)
+                        .width(width = indicatorWidth)
+                        .height(height = indicatorHeight)
+                        .background(
+                            color = indicatorColor,
+                            shape = RoundedCornerShape(
+                                topStart = 2.dp,
+                                topEnd = 2.dp,
+                            ),
+                        ),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun StretchModeTabs(
+    tabs: List<TabItem>,
+    selectedIndex: Int,
+    onTabSelected: (Int) -> Unit,
+    density: Density,
+    tabWidths: SnapshotStateMap<Int, Dp>,
+    tabOffsets: SnapshotStateMap<Int, Dp>,
+    contentWidths: SnapshotStateMap<Int, Dp>,
+    indicatorWidth: Dp,
+    indicatorOffset: Dp,
+    indicatorHeight: Dp,
+    indicatorColor: Color,
+) {
+    Box {
+        Row(
+            verticalAlignment = Alignment.Bottom,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            tabs.forEachIndexed { index, tab ->
+                Box(
+                    modifier = Modifier
+                        .weight(weight = 1f)
+                        .onGloballyPositioned { coordinates ->
+                            tabWidths[index] = with(density) {
+                                coordinates.size.width.toDp()
+                            }
+                            tabOffsets[index] = with(density) {
+                                coordinates.positionInParent().x.toDp()
+                            }
+                        },
+                ) {
+                    TabItemContent(
+                        tab = tab,
+                        isSelected = index == selectedIndex,
+                        onClick = { onTabSelected(index) },
+                        modifier = Modifier.fillMaxWidth(),
+                        onContentPositioned = { coordinates ->
+                            contentWidths[index] = with(density) {
+                                coordinates.size.width.toDp()
+                            }
+                        },
+                    )
+                }
+            }
+        }
+
+        if (tabWidths.containsKey(selectedIndex)) {
+            Box(
+                modifier = Modifier
+                    .align(alignment = Alignment.BottomStart)
+                    .offset(x = indicatorOffset)
+                    .width(width = indicatorWidth)
+                    .height(height = indicatorHeight)
+                    .background(
+                        color = indicatorColor,
+                        shape = RoundedCornerShape(
+                            topStart = 2.dp,
+                            topEnd = 2.dp,
+                        ),
+                    ),
+            )
+        }
     }
 }
 
@@ -430,8 +490,7 @@ private fun TabItemContent(
                 enabled = !tab.isDisabled,
                 interactionSource = interactionSource,
                 indication = null,
-            )
-            .padding(horizontal = LocalSpaces.current.spacing200),
+            ).padding(horizontal = LocalSpaces.current.spacing200),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -441,12 +500,10 @@ private fun TabItemContent(
                 .background(
                     color = wrapperBackgroundColor,
                     shape = LocalShapes.current.radius150,
-                )
-                .padding(
+                ).padding(
                     horizontal = LocalSpaces.current.spacing200,
                     vertical = LocalSpaces.current.spacing100,
-                )
-                .then(
+                ).then(
                     other = if (onContentPositioned != null) {
                         Modifier.onGloballyPositioned(onContentPositioned)
                     } else {
