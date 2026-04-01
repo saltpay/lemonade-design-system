@@ -235,7 +235,6 @@ internal fun CoreChip(
     val isHover by interactionSource.collectIsHoveredAsState()
     val isPressed by interactionSource.collectIsPressedAsState()
 
-    val animatedBorderColor by animateColorAsState(targetValue = props.borderColor)
     val animatedContentColor by animateColorAsState(targetValue = props.contentColor)
     val animatedBackgroundColor by animateColorAsState(
         targetValue = if (isHover || isPressed) {
@@ -265,17 +264,10 @@ internal fun CoreChip(
                     onClick = { onChipClicked?.invoke() },
                     interactionSource = interactionSource,
                     indication = LocalEffects.current.interactionIndication,
-                ).border(
-                    color = animatedBorderColor,
-                    shape = LocalShapes.current.radiusFull,
-                    width = 1.dp,
                 ).background(
                     color = animatedBackgroundColor,
                     shape = LocalShapes.current.radiusFull,
-                ).padding(
-                    horizontal = LocalSpaces.current.spacing200,
-                    vertical = LocalSpaces.current.spacing100,
-                ),
+                ).padding(all = LocalSpaces.current.spacing200),
         ) {
             if (leadingSlot != null) {
                 Box(
@@ -369,8 +361,6 @@ private data class ChipProps(
     val backgroundColor: Color,
     val pressedBackgroundColor: Color,
     val contentColor: Color,
-    val actionColor: Color,
-    val borderColor: Color,
 )
 
 @Composable
@@ -380,16 +370,12 @@ private fun getChipProps(selected: Boolean): ChipProps =
             backgroundColor = LocalColors.current.background.bgBrandHigh,
             pressedBackgroundColor = LocalColors.current.interaction.bgBrandHighInteractive,
             contentColor = LocalColors.current.content.contentBrandInverse,
-            actionColor = LocalColors.current.content.contentBrandInverse,
-            borderColor = LocalColors.current.border.borderNeutralMedium,
         )
     } else {
         ChipProps(
-            backgroundColor = LocalColors.current.background.bgDefault,
+            backgroundColor = LocalColors.current.background.bgElevated,
             pressedBackgroundColor = LocalColors.current.interaction.bgSubtleInteractive,
             contentColor = LocalColors.current.content.contentPrimary,
-            actionColor = LocalColors.current.content.contentSecondary,
-            borderColor = LocalColors.current.border.borderNeutralMedium,
         )
     }
 
