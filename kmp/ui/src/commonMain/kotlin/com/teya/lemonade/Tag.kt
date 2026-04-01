@@ -63,7 +63,7 @@ private fun CoreTag(
         modifier = modifier
             .background(
                 color = voice.containerColor,
-                shape = LocalShapes.current.radius100,
+                shape = LocalShapes.current.radius150,
             ).padding(
                 vertical = LocalSpaces.current.spacing50,
                 horizontal = LocalSpaces.current.spacing100,
