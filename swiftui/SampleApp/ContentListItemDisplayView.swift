@@ -7,7 +7,7 @@ struct ContentListItemDisplayView: View {
             VStack(spacing: .space.spacing400) {
                 // MARK: - Horizontal Simple
                 LemonadeUi.Card(
-                    contentPadding: .none,
+                    contentPadding: .medium,
                     header: CardHeaderConfig(title: "Horizontal Simple")
                 ) {
                     LemonadeUi.ContentListItem(
@@ -23,7 +23,7 @@ struct ContentListItemDisplayView: View {
 
                 // MARK: - Horizontal with Leading + Trailing
                 LemonadeUi.Card(
-                    contentPadding: .none,
+                    contentPadding: .medium,
                     header: CardHeaderConfig(title: "Horizontal with Leading + Trailing")
                 ) {
                     LemonadeUi.ContentListItem(
@@ -49,7 +49,7 @@ struct ContentListItemDisplayView: View {
 
                 // MARK: - Horizontal with Content Slot
                 LemonadeUi.Card(
-                    contentPadding: .none,
+                    contentPadding: .medium,
                     header: CardHeaderConfig(title: "Horizontal with Content Slot")
                 ) {
                     LemonadeUi.ContentListItem(
@@ -63,7 +63,7 @@ struct ContentListItemDisplayView: View {
 
                 // MARK: - Vertical Small
                 LemonadeUi.Card(
-                    contentPadding: .none,
+                    contentPadding: .medium,
                     header: CardHeaderConfig(title: "Vertical Small")
                 ) {
                     LemonadeUi.ContentListItem(
@@ -75,7 +75,7 @@ struct ContentListItemDisplayView: View {
 
                 // MARK: - Vertical Small with Leading + Trailing
                 LemonadeUi.Card(
-                    contentPadding: .none,
+                    contentPadding: .medium,
                     header: CardHeaderConfig(title: "Vertical Small with Leading + Trailing")
                 ) {
                     LemonadeUi.ContentListItem(
@@ -102,7 +102,7 @@ struct ContentListItemDisplayView: View {
 
                 // MARK: - Vertical Large (with Content Slot)
                 LemonadeUi.Card(
-                    contentPadding: .none,
+                    contentPadding: .medium,
                     header: CardHeaderConfig(title: "Vertical Large")
                 ) {
                     LemonadeUi.ContentListItem(
@@ -117,7 +117,7 @@ struct ContentListItemDisplayView: View {
 
                 // MARK: - Vertical Large with All Slots
                 LemonadeUi.Card(
-                    contentPadding: .none,
+                    contentPadding: .medium,
                     header: CardHeaderConfig(title: "Vertical Large with All Slots")
                 ) {
                     LemonadeUi.ContentListItem(

@@ -12,6 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeAssetSize
+import com.teya.lemonade.core.LemonadeCardPadding
 import com.teya.lemonade.core.LemonadeContentListItemLayout
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.SymbolContainerSize
@@ -33,6 +34,7 @@ internal fun ContentListItemDisplay() {
     ) {
         // Horizontal simple
         LemonadeUi.Card(
+            contentPadding = LemonadeCardPadding.Medium,
             header = CardHeaderConfig(title = "Horizontal — Simple"),
         ) {
             LemonadeUi.ContentListItem(
@@ -44,6 +46,7 @@ internal fun ContentListItemDisplay() {
 
         // Horizontal with leading SymbolContainer + trailing icon
         LemonadeUi.Card(
+            contentPadding = LemonadeCardPadding.Medium,
             header = CardHeaderConfig(title = "Horizontal — Leading & Trailing"),
         ) {
             LemonadeUi.ContentListItem(
@@ -71,6 +74,7 @@ internal fun ContentListItemDisplay() {
 
         // Horizontal with content slot
         LemonadeUi.Card(
+            contentPadding = LemonadeCardPadding.Medium,
             header = CardHeaderConfig(title = "Horizontal — Content Slot"),
         ) {
             LemonadeUi.ContentListItem(
@@ -88,6 +92,7 @@ internal fun ContentListItemDisplay() {
 
         // Vertical small (no content slot)
         LemonadeUi.Card(
+            contentPadding = LemonadeCardPadding.Medium,
             header = CardHeaderConfig(title = "Vertical Small — Simple"),
         ) {
             LemonadeUi.ContentListItem(
@@ -99,6 +104,7 @@ internal fun ContentListItemDisplay() {
 
         // Vertical small with leading + trailing
         LemonadeUi.Card(
+            contentPadding = LemonadeCardPadding.Medium,
             header = CardHeaderConfig(title = "Vertical Small — Leading & Trailing"),
         ) {
             LemonadeUi.ContentListItem(
@@ -126,6 +132,7 @@ internal fun ContentListItemDisplay() {
 
         // Vertical large (with content slot)
         LemonadeUi.Card(
+            contentPadding = LemonadeCardPadding.Medium,
             header = CardHeaderConfig(title = "Vertical Large — Content Slot"),
         ) {
             LemonadeUi.ContentListItem(
@@ -143,6 +150,7 @@ internal fun ContentListItemDisplay() {
 
         // Vertical large with leading + trailing + content slot
         LemonadeUi.Card(
+            contentPadding = LemonadeCardPadding.Medium,
             header = CardHeaderConfig(title = "Vertical Large — Full"),
         ) {
             LemonadeUi.ContentListItem(
