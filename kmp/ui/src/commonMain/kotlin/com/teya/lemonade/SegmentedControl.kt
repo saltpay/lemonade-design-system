@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
@@ -143,12 +144,20 @@ internal fun CoreSegmentedControl(
     )
 
     // Find which non-selected tab is being pressed (for sticky expand)
-    val pressedNonSelectedIndex = pressedTabIndex.entries
-        .firstOrNull { entry ->
-            entry.value && entry.key != selectedIndex
-        }?.key
+    val pressedNonSelectedIndex by remember {
+        derivedStateOf {
+            pressedTabIndex.entries
+                .firstOrNull { entry ->
+                    entry.value && entry.key != selectedIndex
+                }?.key
+        }
+    }
 
-    val hasMeasurements = tabWidths.containsKey(selectedIndex) && tabOffsets.containsKey(selectedIndex)
+    val hasMeasurements by remember {
+        derivedStateOf {
+            tabWidths.containsKey(selectedIndex) && tabOffsets.containsKey(selectedIndex)
+        }
+    }
 
     // Indicator stretches toward the pressed tab
     val baseWidth = tabWidths[selectedIndex]
