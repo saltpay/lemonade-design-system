@@ -46,7 +46,7 @@ import com.teya.lemonade.core.SymbolContainerVoice
  * @param leadingSlot - Optional slot for a leading element (e.g. SymbolContainer).
  * @param trailingSlot - Optional slot for a trailing element (e.g. icon action).
  * @param contentSlot - Optional slot for additional content. In vertical layout, this also
- *   switches the value typography to [bodyXLargeSemiBold].
+ *   switches the value typography to bodyXLargeSemiBold.
  */
 @Composable
 public fun LemonadeUi.ContentListItem(
