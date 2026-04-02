@@ -1,17 +1,14 @@
+@file:OptIn(InternalResourceApi::class)
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package com.teya.lemonade
 
 import android.content.Context
 import android.graphics.Typeface
 import com.teya.lemonade.core.LemonadeTextStyle
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.FontResource
-import org.jetbrains.compose.resources.getFontResourceBytes
-import org.jetbrains.compose.resources.getSystemResourceEnvironment
-import java.io.File
-import java.util.concurrent.ConcurrentHashMap
-
-private val typefaceCache = ConcurrentHashMap<FontResource, Typeface>()
+import org.jetbrains.compose.resources.InternalResourceApi
+import org.jetbrains.compose.resources.getResourceItemByEnvironment
 
 /**
  * Returns the Android [Typeface] matching this text style's font weight.
@@ -23,11 +20,10 @@ private val typefaceCache = ConcurrentHashMap<FontResource, Typeface>()
  *
  * For Compose usage, prefer [lemonadeFontFamily] and [textStyle] instead.
  */
-public suspend fun LemonadeTextStyle.typeface(context: Context): Typeface {
+public fun LemonadeTextStyle.androidTypeface(context: Context): Typeface {
     val fontResource = fontWeight.toFontResource()
-    return typefaceCache.getOrPut(fontResource) {
-        loadTypeface(context, fontResource)
-    }
+    val resourceItem = fontResource.getResourceItemByEnvironment()
+    return Typeface.createFromAsset(context.assets, resourceItem.path)
 }
 
 private fun Int.toFontResource(): FontResource =
@@ -36,20 +32,3 @@ private fun Int.toFontResource(): FontResource =
         600, 700 -> LemonadeRes.font.Figtree_SemiBold
         else -> LemonadeRes.font.Figtree_Regular
     }
-
-private suspend fun loadTypeface(
-    context: Context,
-    resource: FontResource,
-): Typeface {
-    val environment = getSystemResourceEnvironment()
-    val bytes = getFontResourceBytes(environment, resource)
-    return withContext(Dispatchers.IO) {
-        val tempFile = File.createTempFile("lemonade_font", ".ttf", context.cacheDir)
-        try {
-            tempFile.writeBytes(bytes)
-            Typeface.createFromFile(tempFile)
-        } finally {
-            tempFile.delete()
-        }
-    }
-}
