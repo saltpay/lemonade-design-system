@@ -30,13 +30,17 @@ public fun LemonadeTextStyle.typeface(context: Context): Typeface {
     }
 }
 
-private fun Int.toFontResource(): FontResource = when (this) {
-    500 -> LemonadeRes.font.Figtree_Medium
-    600, 700 -> LemonadeRes.font.Figtree_SemiBold
-    else -> LemonadeRes.font.Figtree_Regular
-}
+private fun Int.toFontResource(): FontResource =
+    when (this) {
+        500 -> LemonadeRes.font.Figtree_Medium
+        600, 700 -> LemonadeRes.font.Figtree_SemiBold
+        else -> LemonadeRes.font.Figtree_Regular
+    }
 
-private fun loadTypeface(context: Context, resource: FontResource): Typeface {
+private fun loadTypeface(
+    context: Context,
+    resource: FontResource,
+): Typeface {
     val environment = getSystemResourceEnvironment()
     val bytes = runBlocking(Dispatchers.IO) { getFontResourceBytes(environment, resource) }
     val tempFile = File.createTempFile("lemonade_font", ".ttf", context.cacheDir)
