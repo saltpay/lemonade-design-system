@@ -8,13 +8,6 @@ FRAMEWORK_NAME="Lemonade"
 OUTPUT_DIR="build"
 XCFRAMEWORK_OUTPUT="$OUTPUT_DIR/$FRAMEWORK_NAME.xcframework"
 
-echo "🔧 Generating Xcode project from project.yml..."
-if ! command -v xcodegen &> /dev/null; then
-    echo "Installing XcodeGen..."
-    brew install xcodegen
-fi
-xcodegen generate
-
 echo "🧹 Cleaning previous builds..."
 rm -rf "$OUTPUT_DIR"
 mkdir -p "$OUTPUT_DIR"
