@@ -226,7 +226,7 @@ private struct TabItemView: View {
 
     private var contentColor: Color {
         isSelected
-            ? LemonadeTheme.colors.content.contentBrand
+            ? LemonadeTheme.colors.content.contentBrandHigh
             : LemonadeTheme.colors.content.contentSecondary
     }
 

@@ -429,7 +429,7 @@ private fun TabItemContent(
     val isHovered by interactionSource.collectIsHoveredAsState()
     val isPressed by interactionSource.collectIsPressedAsState()
 
-    val contentBrandColor = LocalColors.current.content.contentBrand
+    val contentBrandColor = LocalColors.current.content.contentBrandHigh
     val contentSecondaryColor = LocalColors.current.content.contentSecondary
     val contentPrimaryColor = LocalColors.current.content.contentPrimary
     val bgSubtleInteractive = LocalColors.current.interaction.bgSubtleInteractive
