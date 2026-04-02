@@ -37,11 +37,18 @@ internal fun ContentListItemDisplay() {
             contentPadding = LemonadeCardPadding.Medium,
             header = CardHeaderConfig(title = "Horizontal — Simple"),
         ) {
-            LemonadeUi.ContentListItem(
-                label = "Account holder",
-                value = "John Doe",
-                layout = LemonadeContentListItemLayout.Horizontal,
-            )
+            Column(verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)) {
+                LemonadeUi.ContentListItem(
+                    label = "Account holder",
+                    value = "John Doe",
+                    layout = LemonadeContentListItemLayout.Horizontal,
+                )
+                LemonadeUi.ContentListItem(
+                    label = "Account number",
+                    value = "123-456-789",
+                    layout = LemonadeContentListItemLayout.Horizontal,
+                )
+            }
         }
 
         // Horizontal with leading SymbolContainer + trailing icon
