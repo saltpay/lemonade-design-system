@@ -9,6 +9,7 @@ import com.teya.lemonade.core.LemonadeTextStyle
 import org.jetbrains.compose.resources.FontResource
 import org.jetbrains.compose.resources.InternalResourceApi
 import org.jetbrains.compose.resources.getResourceItemByEnvironment
+import org.jetbrains.compose.resources.getSystemResourceEnvironment
 
 /**
  * Returns the Android [Typeface] matching this text style's font weight.
@@ -22,7 +23,8 @@ import org.jetbrains.compose.resources.getResourceItemByEnvironment
  */
 public fun LemonadeTextStyle.androidTypeface(context: Context): Typeface {
     val fontResource = fontWeight.toFontResource()
-    val resourceItem = fontResource.getResourceItemByEnvironment()
+    val environment = getSystemResourceEnvironment()
+    val resourceItem = fontResource.getResourceItemByEnvironment(environment)
     return Typeface.createFromAsset(context.assets, resourceItem.path)
 }
 
