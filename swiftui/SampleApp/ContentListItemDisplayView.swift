@@ -10,15 +10,17 @@ struct ContentListItemDisplayView: View {
                     contentPadding: .medium,
                     header: CardHeaderConfig(title: "Horizontal Simple")
                 ) {
-                    LemonadeUi.ContentListItem(
-                        label: "Account holder",
-                        value: "John Doe"
-                    )
-
-                    LemonadeUi.ContentListItem(
-                        label: "Account number",
-                        value: "1234-5678"
-                    )
+                    VStack(spacing: .space.spacing400) {
+                        LemonadeUi.ContentListItem(
+                            label: "Account holder",
+                            value: "John Doe"
+                        )
+                        
+                        LemonadeUi.ContentListItem(
+                            label: "Account number",
+                            value: "1234-5678"
+                        )
+                    }
                 }
 
                 // MARK: - Horizontal with Leading + Trailing
