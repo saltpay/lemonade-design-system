@@ -96,7 +96,7 @@ private struct LemonadeTagView: View {
         .padding(.vertical, LemonadeTheme.spaces.spacing50)
         .padding(.horizontal, LemonadeTheme.spaces.spacing100)
         .background(voice.containerColor)
-        .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius100))
+        .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius150))
     }
 }
 

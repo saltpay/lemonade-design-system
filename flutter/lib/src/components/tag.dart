@@ -107,7 +107,7 @@ class LemonadeTag extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: containerColor,
-          borderRadius: BorderRadius.circular(radius.radius100),
+          borderRadius: BorderRadius.circular(radius.radius150),
         ),
         padding: EdgeInsets.symmetric(
           horizontal: spaces.spacing100,
