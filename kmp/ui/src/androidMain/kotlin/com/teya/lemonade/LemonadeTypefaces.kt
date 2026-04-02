@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Typeface
 import com.teya.lemonade.core.LemonadeTextStyle
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.FontResource
 import org.jetbrains.compose.resources.getFontResourceBytes
 import org.jetbrains.compose.resources.getSystemResourceEnvironment
@@ -23,7 +23,7 @@ private val typefaceCache = ConcurrentHashMap<FontResource, Typeface>()
  *
  * For Compose usage, prefer [lemonadeFontFamily] and [textStyle] instead.
  */
-public fun LemonadeTextStyle.typeface(context: Context): Typeface {
+public suspend fun LemonadeTextStyle.typeface(context: Context): Typeface {
     val fontResource = fontWeight.toFontResource()
     return typefaceCache.getOrPut(fontResource) {
         loadTypeface(context, fontResource)
@@ -37,17 +37,19 @@ private fun Int.toFontResource(): FontResource =
         else -> LemonadeRes.font.Figtree_Regular
     }
 
-private fun loadTypeface(
+private suspend fun loadTypeface(
     context: Context,
     resource: FontResource,
 ): Typeface {
     val environment = getSystemResourceEnvironment()
-    val bytes = runBlocking(Dispatchers.IO) { getFontResourceBytes(environment, resource) }
-    val tempFile = File.createTempFile("lemonade_font", ".ttf", context.cacheDir)
-    try {
-        tempFile.writeBytes(bytes)
-        return Typeface.createFromFile(tempFile)
-    } finally {
-        tempFile.delete()
+    val bytes = getFontResourceBytes(environment, resource)
+    return withContext(Dispatchers.IO) {
+        val tempFile = File.createTempFile("lemonade_font", ".ttf", context.cacheDir)
+        try {
+            tempFile.writeBytes(bytes)
+            Typeface.createFromFile(tempFile)
+        } finally {
+            tempFile.delete()
+        }
     }
 }
