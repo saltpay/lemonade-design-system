@@ -1,29 +1,21 @@
 package com.teya.lemonade
 
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.coerceAtLeast
-import androidx.compose.ui.unit.dp
 
 public enum class HistoryTimelineItemVoice {
     Positive,
@@ -59,6 +51,7 @@ private fun CoreHistoryTimeline(
             CoreHistoryTimelineItem(
                 item = item,
                 isLast = index == items.lastIndex,
+                isFirst = index == 0,
             )
         }
     }
@@ -68,23 +61,20 @@ private fun CoreHistoryTimeline(
 private fun CoreHistoryTimelineItem(
     item: HistoryTimelineItem,
     isLast: Boolean,
+    isFirst: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    var contentSize by remember {
-        mutableStateOf(IntSize.Zero)
-    }
     Row(
         modifier = modifier.defaultMinSize(minHeight = LocalSizes.current.size1600),
     ) {
         CoreHistoryTimelineIndicator(
             voice = item.voice,
             isLast = isLast,
-            contentSize = contentSize,
+            isFirst = isFirst,
+            modifier = Modifier,
         )
 
-        Column(
-            modifier = Modifier.onSizeChanged { contentSize = it },
-        ) {
+        Column {
             LemonadeUi.Text(
                 text = item.label,
                 textStyle = LocalTypographies.current.bodyMediumMedium,
@@ -104,29 +94,16 @@ private fun CoreHistoryTimelineItem(
 @Composable
 private fun CoreHistoryTimelineIndicator(
     voice: HistoryTimelineItemVoice,
-    contentSize: IntSize,
     isLast: Boolean,
+    isFirst: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val density = LocalDensity.current
-    val spacing = LocalSpaces.current
-    val indicatorHeight by animateDpAsState(
-        targetValue = with(density) {
-            contentSize.height.toDp() - spacing.spacing300
-        }
-            .coerceAtLeast(minimumValue = 0.dp)
-    )
-    LemonadeBadgeBox(
+    Column(
         modifier = modifier,
-        content = {
-            Box(
-                modifier = Modifier
-                    .clip(shape = LocalShapes.current.radiusFull)
-                    .background(color = voice.color(selected = isLast))
-                    .requiredSize(size = LocalSizes.current.size250)
-            )
-        },
-        badge = {
+        verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing50),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        if (!isFirst) {
             Box(
                 modifier = Modifier
                     .background(
@@ -134,18 +111,30 @@ private fun CoreHistoryTimelineIndicator(
                         shape = LocalShapes.current.radiusFull,
                     )
                     .width(width = LocalSizes.current.size50)
-                    .height(height = indicatorHeight),
+                    .height(height = LocalSizes.current.size150),
             )
-        },
-        badgeOffset = { contentSize ->
-            with(density) {
-                DpOffset(
-                    x = (contentSize.width / 2f).toDp(),
-                    y = contentSize.height.toDp() + spacing.spacing100,
-                )
-            }
         }
-    )
+
+        Box(
+            modifier = Modifier
+                .padding(all = LocalSpaces.current.spacing200)
+                .clip(shape = LocalShapes.current.radiusFull)
+                .background(color = voice.color(selected = isLast))
+                .requiredSize(size = LocalSizes.current.size250)
+        )
+
+        if (!isLast) {
+            Box(
+                modifier = Modifier
+                    .background(
+                        color = LocalColors.current.background.bgNeutralSubtle,
+                        shape = LocalShapes.current.radiusFull,
+                    )
+                    .width(width = LocalSizes.current.size50)
+                    .weight(weight = 1f),
+            )
+        }
+    }
 }
 
 @Composable
