@@ -5,11 +5,7 @@ import 'package:flutter/widgets.dart';
 /// The [focused] parameter indicates whether the widget currently has focus.
 /// The [child] parameter is an optional child widget passed to the builder.
 typedef FocusWidgetBuilder =
-    Widget Function(
-      BuildContext context,
-      bool focused,
-      Widget? child,
-    );
+    Widget Function(BuildContext context, bool focused, Widget? child);
 
 /// {@template LemonadeFocusable}
 /// A focusable widget from the Lemonade Design System.

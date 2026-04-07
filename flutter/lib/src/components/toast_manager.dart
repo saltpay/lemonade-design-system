@@ -261,10 +261,7 @@ class LemonadeToastManager {
       );
 
       // Wait 300ms before dismissing current toast
-      _pendingTimer = Timer(
-        _pendingDelay,
-        dismiss,
-      );
+      _pendingTimer = Timer(_pendingDelay, dismiss);
       return;
     }
 
@@ -373,27 +370,15 @@ class _ToastOverlayState extends State<_ToastOverlay>
       vsync: this,
     );
 
-    _slideAnimation =
-        Tween<Offset>(
-          begin: const Offset(0, 2),
-          end: Offset.zero,
-        ).animate(
-          CurvedAnimation(
-            parent: _controller,
-            curve: Curves.easeInOut,
-          ),
-        );
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 2),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
-    _fadeAnimation =
-        Tween<double>(
-          begin: 0,
-          end: 1,
-        ).animate(
-          CurvedAnimation(
-            parent: _controller,
-            curve: Curves.easeInOut,
-          ),
-        );
+    _fadeAnimation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
     _controller.forward();
 
@@ -415,27 +400,15 @@ class _ToastOverlayState extends State<_ToastOverlay>
   Future<void> _animateOut({bool hasPending = false}) async {
     if (hasPending) {
       // Animate sliding up and fading out
-      final slideUp =
-          Tween<Offset>(
-            begin: Offset.zero,
-            end: const Offset(0, -0.5),
-          ).animate(
-            CurvedAnimation(
-              parent: _controller,
-              curve: Curves.easeInOut,
-            ),
-          );
+      final slideUp = Tween<Offset>(
+        begin: Offset.zero,
+        end: const Offset(0, -0.5),
+      ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
-      final fadeOut =
-          Tween<double>(
-            begin: 1,
-            end: 0,
-          ).animate(
-            CurvedAnimation(
-              parent: _controller,
-              curve: Curves.easeInOut,
-            ),
-          );
+      final fadeOut = Tween<double>(
+        begin: 1,
+        end: 0,
+      ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
       // Update the animations
       if (mounted) {

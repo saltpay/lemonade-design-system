@@ -9,10 +9,7 @@ typedef MonthHeaderFormatter = String Function(int year, int month);
 ///
 /// Called when both start and end dates have been selected in range mode.
 typedef DateRangeChangedCallback =
-    void Function(
-      DateTime startDate,
-      DateTime endDate,
-    );
+    void Function(DateTime startDate, DateTime endDate);
 
 /// {@template LemonadeDatePicker}
 /// A date picker widget from the Lemonade Design System.
@@ -273,11 +270,7 @@ class _LemonadeDatePickerState extends State<LemonadeDatePicker> {
 
     // We only allow going to a month that has at least one day >= minDate
     final prevMonth = _monthFromPage(_currentPageIndex - 1);
-    final lastDayPrevMonth = DateTime(
-      prevMonth.year,
-      prevMonth.month + 1,
-      0,
-    );
+    final lastDayPrevMonth = DateTime(prevMonth.year, prevMonth.month + 1, 0);
 
     return !lastDayPrevMonth.isBefore(minDate);
   }
@@ -571,11 +564,7 @@ class _MonthGrid extends StatelessWidget {
             ),
           );
         } else {
-          final current = DateTime(
-            visibleMonth.year,
-            visibleMonth.month,
-            day,
-          );
+          final current = DateTime(visibleMonth.year, visibleMonth.month, day);
 
           // Determine selection state
           final isSelected =
@@ -717,10 +706,7 @@ class _DayCell extends StatelessWidget {
               ),
             ),
           ),
-        Text(
-          '${date.day}',
-          style: baseTextStyle.copyWith(color: textColor),
-        ),
+        Text('${date.day}', style: baseTextStyle.copyWith(color: textColor)),
         if (isToday)
           Positioned(
             bottom: spaces.spacing50, // 2
@@ -788,17 +774,9 @@ class _DayCell extends StatelessWidget {
       child: Row(
         children: [
           // Left half
-          Expanded(
-            child: Container(
-              color: showLeftBg ? bgColor : null,
-            ),
-          ),
+          Expanded(child: Container(color: showLeftBg ? bgColor : null)),
           // Right half
-          Expanded(
-            child: Container(
-              color: showRightBg ? bgColor : null,
-            ),
-          ),
+          Expanded(child: Container(color: showRightBg ? bgColor : null)),
         ],
       ),
     );

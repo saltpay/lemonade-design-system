@@ -11,16 +11,12 @@ import 'package:lemonade_design_system/lemonade_design_system.dart';
 @immutable
 class LemonadeCardTheme {
   /// {@macro LemonadeCardTheme}
-  const LemonadeCardTheme({
-    required this.borderRadius,
-  });
+  const LemonadeCardTheme({required this.borderRadius});
 
   /// Creates a [LemonadeCardTheme] with default values
   /// based on the provided [tokens].
   factory LemonadeCardTheme.from(LemonadeTokens tokens) {
-    return LemonadeCardTheme(
-      borderRadius: tokens.radius.radius400,
-    );
+    return LemonadeCardTheme(borderRadius: tokens.radius.radius400);
   }
 
   /// Linearly interpolates between two [LemonadeCardTheme] objects.
@@ -39,20 +35,14 @@ class LemonadeCardTheme {
   final double borderRadius;
 
   /// Creates a copy of this theme with the given fields replaced.
-  LemonadeCardTheme copyWith({
-    double? borderRadius,
-  }) {
-    return LemonadeCardTheme(
-      borderRadius: borderRadius ?? this.borderRadius,
-    );
+  LemonadeCardTheme copyWith({double? borderRadius}) {
+    return LemonadeCardTheme(borderRadius: borderRadius ?? this.borderRadius);
   }
 
   /// Merges this theme with another theme.
   LemonadeCardTheme mergeWith(LemonadeCardTheme? other) {
     if (other == null) return this;
-    return copyWith(
-      borderRadius: other.borderRadius,
-    );
+    return copyWith(borderRadius: other.borderRadius);
   }
 
   @override

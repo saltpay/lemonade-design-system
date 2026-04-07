@@ -37,9 +37,7 @@ class _SearchFieldExampleScreenState extends State<SearchFieldExampleScreen> {
                     ),
                   ),
                   SizedBox(height: theme.spaces.spacing300),
-                  const LemonadeSearchField(
-                    placeholder: 'Search...',
-                  ),
+                  const LemonadeSearchField(placeholder: 'Search...'),
                 ],
               ),
             ),

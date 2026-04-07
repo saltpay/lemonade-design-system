@@ -28,9 +28,7 @@ class SymbolContainerExampleScreen extends StatelessWidget {
                   icon: LemonadeIcons.heart,
                   size: LemonadeSymbolContainerSize.small,
                 ),
-                LemonadeSymbolContainer.icon(
-                  icon: LemonadeIcons.heart,
-                ),
+                LemonadeSymbolContainer.icon(icon: LemonadeIcons.heart),
                 LemonadeSymbolContainer.icon(
                   icon: LemonadeIcons.heart,
                   size: LemonadeSymbolContainerSize.large,
@@ -48,9 +46,7 @@ class SymbolContainerExampleScreen extends StatelessWidget {
                   text: 'A',
                   size: LemonadeSymbolContainerSize.small,
                 ),
-                LemonadeSymbolContainer.text(
-                  text: 'B',
-                ),
+                LemonadeSymbolContainer.text(text: 'B'),
                 LemonadeSymbolContainer.text(
                   text: 'C',
                   size: LemonadeSymbolContainerSize.large,
@@ -60,9 +56,7 @@ class SymbolContainerExampleScreen extends StatelessWidget {
             ExampleRow(
               label: 'Voice Variants',
               children: [
-                LemonadeSymbolContainer.icon(
-                  icon: LemonadeIcons.heart,
-                ),
+                LemonadeSymbolContainer.icon(icon: LemonadeIcons.heart),
                 LemonadeSymbolContainer.icon(
                   icon: LemonadeIcons.triangleAlert,
                   voice: LemonadeSymbolContainerVoice.critical,

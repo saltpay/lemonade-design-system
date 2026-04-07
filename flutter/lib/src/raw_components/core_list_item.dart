@@ -121,9 +121,7 @@ class _LemonadeCoreListItemState extends State<LemonadeCoreListItem> {
             color: background,
             borderRadius: BorderRadius.circular(spaces.spacing300),
           ),
-          constraints: BoxConstraints(
-            minHeight: theme.sizes.size1200,
-          ),
+          constraints: BoxConstraints(minHeight: theme.sizes.size1200),
           padding: EdgeInsets.only(
             left: spaces.spacing300,
             top: spaces.spacing200,

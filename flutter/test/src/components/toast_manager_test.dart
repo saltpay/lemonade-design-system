@@ -7,11 +7,7 @@ void main() {
   Future<void> pumpToastTest(WidgetTester tester, Widget child) async {
     await tester.pumpWidget(
       LemonadeUi(
-        builder: (context) => MaterialApp(
-          home: Scaffold(
-            body: child,
-          ),
-        ),
+        builder: (context) => MaterialApp(home: Scaffold(body: child)),
       ),
     );
   }

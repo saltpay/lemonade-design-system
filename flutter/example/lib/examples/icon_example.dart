@@ -21,10 +21,8 @@ class IconsExampleScreen extends StatelessWidget {
               label: 'Different sizes',
               children: List.of(
                 LemonadeIconSize.values.map(
-                  (size) => LemonadeIcon(
-                    icon: LemonadeIcons.search,
-                    size: size,
-                  ),
+                  (size) =>
+                      LemonadeIcon(icon: LemonadeIcons.search, size: size),
                 ),
               ),
             ),
@@ -79,10 +77,7 @@ class IconsExampleScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       spacing: theme.spaces.spacing200,
                       children: [
-                        LemonadeIcon(
-                          icon: icon,
-                          size: LemonadeIconSize.large,
-                        ),
+                        LemonadeIcon(icon: icon, size: LemonadeIconSize.large),
                         Text(
                           icon.name,
                           overflow: TextOverflow.ellipsis,

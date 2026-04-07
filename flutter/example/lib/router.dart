@@ -28,10 +28,7 @@ import 'package:lemonade_example/main.dart';
 final router = GoRouter(
   initialLocation: '/',
   routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const MainScreen(),
-    ),
+    GoRoute(path: '/', builder: (context, state) => const MainScreen()),
     GoRoute(
       path: '/action_list_item',
       builder: (context, state) => const ActionListItemExampleScreen(),

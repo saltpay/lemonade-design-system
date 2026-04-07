@@ -139,9 +139,7 @@ class _LemonadeChipState extends State<LemonadeChip> {
             decoration: BoxDecoration(
               color: backgroundColor,
               borderRadius: BorderRadius.circular(theme.radius.radiusFull),
-              border: Border.all(
-                color: chipColors.borderColor,
-              ),
+              border: Border.all(color: chipColors.borderColor),
             ),
             padding: EdgeInsets.symmetric(
               horizontal: spaces.spacing200,
@@ -179,9 +177,7 @@ class _LemonadeChipState extends State<LemonadeChip> {
                       minWidth: sizes.size450,
                       minHeight: sizes.size400,
                     ),
-                    margin: EdgeInsets.symmetric(
-                      horizontal: spaces.spacing100,
-                    ),
+                    margin: EdgeInsets.symmetric(horizontal: spaces.spacing100),
                     padding: EdgeInsets.symmetric(
                       horizontal: spaces.spacing100,
                     ),

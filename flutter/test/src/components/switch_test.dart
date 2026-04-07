@@ -7,10 +7,7 @@ void main() {
   group('LemonadeSwitch', () {
     testWidgets('renders with initial checked false', (tester) async {
       await tester.pumpLemonadeWidget(
-        LemonadeSwitch(
-          checked: false,
-          onCheckedChange: (_) {},
-        ),
+        LemonadeSwitch(checked: false, onCheckedChange: (_) {}),
       );
 
       expect(find.byType(LemonadeSwitch), findsOneWidget);
@@ -18,10 +15,7 @@ void main() {
 
     testWidgets('renders with initial checked true', (tester) async {
       await tester.pumpLemonadeWidget(
-        LemonadeSwitch(
-          checked: true,
-          onCheckedChange: (_) {},
-        ),
+        LemonadeSwitch(checked: true, onCheckedChange: (_) {}),
       );
 
       expect(find.byType(LemonadeSwitch), findsOneWidget);
@@ -94,10 +88,7 @@ void main() {
 
     testWidgets('is enabled when onCheckedChange is not null', (tester) async {
       await tester.pumpLemonadeWidget(
-        LemonadeSwitch(
-          checked: false,
-          onCheckedChange: (_) {},
-        ),
+        LemonadeSwitch(checked: false, onCheckedChange: (_) {}),
       );
 
       final switchWidget = tester.widget<LemonadeSwitch>(
@@ -108,10 +99,7 @@ void main() {
 
     testWidgets('is disabled when onCheckedChange is null', (tester) async {
       await tester.pumpLemonadeWidget(
-        const LemonadeSwitch(
-          checked: false,
-          enabled: false,
-        ),
+        const LemonadeSwitch(checked: false, enabled: false),
       );
 
       final switchWidget = tester.widget<LemonadeSwitch>(
@@ -122,10 +110,7 @@ void main() {
 
     testWidgets('has correct semantics', (tester) async {
       await tester.pumpLemonadeWidget(
-        LemonadeSwitch(
-          checked: true,
-          onCheckedChange: (_) {},
-        ),
+        LemonadeSwitch(checked: true, onCheckedChange: (_) {}),
       );
 
       // Verify semantics widget exists

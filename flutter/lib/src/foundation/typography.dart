@@ -220,11 +220,7 @@ class LemonadeTypography {
 
   /// Linearly interpolates between two [LemonadeTypography] objects.
   /// If they are identical, returns [a].
-  factory LemonadeTypography.lerp(
-    LemonadeTypography a,
-    LemonadeTypography b,
-    double t,
-  ) {
+  factory LemonadeTypography.lerp(LemonadeTypography a, LemonadeTypography b, double t) {
     if (identical(a, b)) return a;
 
     return LemonadeTypography(
@@ -349,10 +345,7 @@ class LemonadeTypography {
 
   /// Creates a copy of this text style replacing or altering the specified
   /// properties.
-  LemonadeTypography apply({
-    Color? color,
-    String? fontFamily,
-  }) {
+  LemonadeTypography apply({Color? color, String? fontFamily}) {
     return LemonadeTypography(
       bodyXSmallRegular: bodyXSmallRegular.apply(color: color, fontFamily: fontFamily),
       bodyXSmallMedium: bodyXSmallMedium.apply(color: color, fontFamily: fontFamily),

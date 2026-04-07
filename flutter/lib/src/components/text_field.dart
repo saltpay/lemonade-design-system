@@ -401,9 +401,7 @@ class _EditableText extends StatelessWidget {
       type: MaterialType.transparency,
       child: Localizations.override(
         context: context,
-        delegates: List.of([
-          DefaultMaterialLocalizations.delegate,
-        ]),
+        delegates: List.of([DefaultMaterialLocalizations.delegate]),
         child: TextField(
           controller: controller,
           focusNode: focusNode,

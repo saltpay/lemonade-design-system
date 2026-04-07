@@ -27,15 +27,8 @@ class _ChipExampleScreenState extends State<ChipExampleScreen> {
             ExampleRow(
               label: 'States',
               children: [
-                LemonadeChip(
-                  label: 'Unselected',
-                  onTap: () {},
-                ),
-                LemonadeChip(
-                  label: 'Selected',
-                  selected: true,
-                  onTap: () {},
-                ),
+                LemonadeChip(label: 'Unselected', onTap: () {}),
+                LemonadeChip(label: 'Selected', selected: true, onTap: () {}),
               ],
             ),
             ExampleRow(
@@ -77,12 +70,7 @@ class _ChipExampleScreenState extends State<ChipExampleScreen> {
             ),
             const ExampleRow(
               label: 'Disabled',
-              children: [
-                LemonadeChip(
-                  label: 'Disabled',
-                  enabled: false,
-                ),
-              ],
+              children: [LemonadeChip(label: 'Disabled', enabled: false)],
             ),
           ],
         ),

@@ -30,9 +30,7 @@ class LemonadeUi extends StatelessWidget {
 
     return LemonadeAnimatedTheme(
       data: effectiveTheme,
-      child: Builder(
-        builder: builder,
-      ),
+      child: Builder(builder: builder),
     );
   }
 

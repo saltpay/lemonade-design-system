@@ -29,10 +29,7 @@ enum LemonadeCardPadding {
 /// {@endtemplate}
 class LemonadeCardHeader {
   /// {@macro LemonadeCardHeader}
-  const LemonadeCardHeader({
-    required this.title,
-    this.trailing,
-  });
+  const LemonadeCardHeader({required this.title, this.trailing});
 
   /// The title displayed in the header.
   final String title;
@@ -158,10 +155,7 @@ class LemonadeCard extends StatelessWidget {
                 ),
               ),
             ],
-            Padding(
-              padding: EdgeInsets.all(contentPadding),
-              child: child,
-            ),
+            Padding(padding: EdgeInsets.all(contentPadding), child: child),
           ],
         ),
       ),
