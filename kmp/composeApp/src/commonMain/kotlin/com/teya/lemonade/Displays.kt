@@ -48,6 +48,7 @@ internal interface Displays {
             DatePicker,
             Notice,
             Toast,
+            HistoryTimeline,
         )
     }
 
@@ -244,5 +245,10 @@ internal interface Displays {
     @Serializable
     data object Toast : Displays {
         override val label: String = "Toast"
+    }
+
+    @Serializable
+    data object HistoryTimeline : Displays {
+        override val label: String = "HistoryTimeline"
     }
 }
