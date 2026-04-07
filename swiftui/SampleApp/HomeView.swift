@@ -80,6 +80,7 @@ struct HomeView: View {
                 items: [
                     DemoItem(title: "Chip", destination: AnyView(ChipDisplayView())),
                     DemoItem(title: "ListItem", destination: AnyView(ListItemDisplayView())),
+                    DemoItem(title: "ContentListItem", destination: AnyView(ContentListItemDisplayView())),
                     DemoItem(title: "SegmentedControl", destination: AnyView(SegmentedControlDisplayView()))
                 ]
             ),

@@ -21,6 +21,7 @@ internal interface Displays {
             SelectionListItem,
             ActionListItem,
             ResourceListItem,
+            ContentListItem,
             Chip,
             SegmentedControl,
             SymbolContainer,
@@ -108,6 +109,11 @@ internal interface Displays {
     @Serializable
     data object ResourceListItem : Displays {
         override val label: String = "ResourceListItem"
+    }
+
+    @Serializable
+    data object ContentListItem : Displays {
+        override val label: String = "ContentListItem"
     }
 
     @Serializable

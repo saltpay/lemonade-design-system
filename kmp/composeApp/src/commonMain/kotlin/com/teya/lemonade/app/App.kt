@@ -10,6 +10,7 @@ import com.teya.lemonade.CardDisplay
 import com.teya.lemonade.CheckboxDisplay
 import com.teya.lemonade.ChipDisplay
 import com.teya.lemonade.ColorsDisplay
+import com.teya.lemonade.ContentListItemDisplay
 import com.teya.lemonade.CountryFlagDisplay
 import com.teya.lemonade.DatePickerDisplay
 import com.teya.lemonade.Displays
@@ -59,6 +60,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.SelectionListItem to { _ -> SelectionListItemDisplay() },
     Displays.ActionListItem to { _ -> ActionListItemDisplay() },
     Displays.ResourceListItem to { _ -> ResourceListItemDisplay() },
+    Displays.ContentListItem to { _ -> ContentListItemDisplay() },
     Displays.Chip to { _ -> ChipDisplay() },
     Displays.SegmentedControl to { _ -> SegmentedControlDisplay() },
     Displays.Text to { _ -> TextDisplay() },
