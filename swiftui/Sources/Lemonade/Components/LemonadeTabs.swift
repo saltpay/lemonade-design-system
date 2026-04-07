@@ -1,0 +1,389 @@
+import SwiftUI
+
+// MARK: - Tab Item Model
+
+public struct LemonadeTabItem {
+    public let label: String
+    public let icon: LemonadeIcon?
+    public let isDisabled: Bool
+
+    public init(
+        label: String,
+        icon: LemonadeIcon? = nil,
+        isDisabled: Bool = false
+    ) {
+        self.label = label
+        self.icon = icon
+        self.isDisabled = isDisabled
+    }
+}
+
+// MARK: - Tab Items Size
+
+public enum TabItemsSize {
+    case hug
+    case stretch
+}
+
+// MARK: - Tabs Component
+
+public extension LemonadeUi {
+    /// A horizontal tab bar with selection indicator.
+    ///
+    /// ## Usage
+    /// ```swift
+    /// LemonadeUi.Tabs(
+    ///     tabs: [
+    ///         LemonadeTabItem(label: "Overview"),
+    ///         LemonadeTabItem(label: "Details"),
+    ///         LemonadeTabItem(label: "Reviews")
+    ///     ],
+    ///     selectedIndex: 0,
+    ///     onTabSelected: { index in }
+    /// )
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - tabs: List of tab items to display
+    ///   - selectedIndex: Index of the currently selected tab
+    ///   - onTabSelected: Callback invoked with the tab index when tapped
+    ///   - itemsSize: `.hug` for content-sized scrollable tabs, `.stretch` for equal-width tabs
+    /// - Returns: A styled tabs view
+    @ViewBuilder
+    static func Tabs(
+        tabs: [LemonadeTabItem],
+        selectedIndex: Int,
+        onTabSelected: @escaping (Int) -> Void,
+        itemsSize: TabItemsSize = .hug
+    ) -> some View {
+        LemonadeTabsView(
+            tabs: tabs,
+            selectedIndex: selectedIndex,
+            onTabSelected: onTabSelected,
+            itemsSize: itemsSize
+        )
+    }
+}
+
+// MARK: - Internal Tabs View
+
+private struct LemonadeTabsView: View {
+    let tabs: [LemonadeTabItem]
+    let selectedIndex: Int
+    let onTabSelected: (Int) -> Void
+    let itemsSize: TabItemsSize
+
+    @Namespace private var tabNamespace
+    @State private var contentWidth: CGFloat = 0
+    @State private var containerWidth: CGFloat = 0
+    @State private var showTrailingFade = false
+    @State private var contentWrapperWidths: [Int: CGFloat] = [:]
+
+    var body: some View {
+        VStack(spacing: 0) {
+            switch itemsSize {
+            case .hug:
+                ScrollViewReader { proxy in
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        tabRow
+                            .background(
+                                GeometryReader { geo in
+                                    Color.clear
+                                        .preference(
+                                            key: TabsScrollOffsetKey.self,
+                                            value: -geo.frame(in: .named("tabsScroll")).origin.x
+                                        )
+                                        .onAppear {
+                                            contentWidth = geo.size.width
+                                            showTrailingFade = geo.size.width > containerWidth && containerWidth > 0
+                                        }
+                                        .onChange(of: geo.size.width) { newWidth in
+                                            contentWidth = newWidth
+                                            showTrailingFade = newWidth > containerWidth && containerWidth > 0
+                                        }
+                                }
+                            )
+                    }
+                    .coordinateSpace(name: "tabsScroll")
+                    .onPreferenceChange(TabsScrollOffsetKey.self) { offset in
+                        let scrollThreshold: CGFloat = 1
+                        let newTrailing = contentWidth > containerWidth && offset + containerWidth < contentWidth - scrollThreshold
+                        if newTrailing != showTrailingFade { showTrailingFade = newTrailing }
+                    }
+                    .background(
+                        GeometryReader { geo in
+                            Color.clear.onAppear {
+                                containerWidth = geo.size.width
+                                showTrailingFade = contentWidth > geo.size.width
+                            }
+                            .onChange(of: geo.size.width) { newWidth in
+                                containerWidth = newWidth
+                                showTrailingFade = contentWidth > newWidth
+                            }
+                        }
+                    )
+                    .overlay(alignment: .trailing) {
+                        if showTrailingFade {
+                            LinearGradient(
+                                colors: [.clear, LemonadeTheme.colors.background.bgDefault],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                            .frame(width: max(containerWidth * 0.15, 0))
+                            .allowsHitTesting(false)
+                        }
+                    }
+                    .onChange(of: selectedIndex) { newIndex in
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            proxy.scrollTo(newIndex, anchor: .center)
+                        }
+                    }
+                }
+            case .stretch:
+                tabRow
+            }
+
+            Rectangle()
+                .fill(LemonadeTheme.colors.border.borderNeutralLow)
+                .frame(height: LemonadeTheme.borderWidth.base.border25)
+        }
+    }
+
+    private var tabRow: some View {
+        HStack(spacing: 0) {
+            ForEach(Array(tabs.enumerated()), id: \.offset) { index, tab in
+                VStack(spacing: 0) {
+                    TabItemView(
+                        tab: tab,
+                        isSelected: index == selectedIndex,
+                        stretch: itemsSize == .stretch,
+                        onClick: {
+                            withAnimation(.easeInOut(duration: 0.25)) {
+                                onTabSelected(index)
+                            }
+                        },
+                        onContentWidth: { width in
+                            contentWrapperWidths[index] = width
+                        }
+                    )
+
+                    if index == selectedIndex {
+                        Rectangle()
+                            .fill(LemonadeTheme.colors.background.bgBrandHigh)
+                            .frame(
+                                width: contentWrapperWidths[selectedIndex],
+                                height: LemonadeTheme.borderWidth.base.border75
+                            )
+                            .clipShape(TopRoundedRectangle(radius: 2))
+                            .matchedGeometryEffect(id: "indicator", in: tabNamespace)
+                            // TODO: Add .glassEffect(.regular.interactive()) when building with Xcode 26+ SDK
+                    } else {
+                        Color.clear
+                            .frame(height: LemonadeTheme.borderWidth.base.border75)
+                    }
+                }
+                .id(index)
+            }
+        }
+    }
+}
+
+// MARK: - Top Rounded Rectangle Shape
+
+private struct TopRoundedRectangle: Shape {
+    let radius: CGFloat
+
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(to: CGPoint(x: rect.minX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.minY + radius))
+        path.addQuadCurve(
+            to: CGPoint(x: rect.minX + radius, y: rect.minY),
+            control: CGPoint(x: rect.minX, y: rect.minY)
+        )
+        path.addLine(to: CGPoint(x: rect.maxX - radius, y: rect.minY))
+        path.addQuadCurve(
+            to: CGPoint(x: rect.maxX, y: rect.minY + radius),
+            control: CGPoint(x: rect.maxX, y: rect.minY)
+        )
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+        path.closeSubpath()
+        return path
+    }
+}
+
+// MARK: - Tab Item View
+
+private struct TabItemView: View {
+    let tab: LemonadeTabItem
+    let isSelected: Bool
+    let stretch: Bool
+    let onClick: () -> Void
+    var onContentWidth: ((CGFloat) -> Void)? = nil
+
+    @State private var isPressed = false
+    @State private var isHovering = false
+
+    private var contentColor: Color {
+        isSelected
+            ? LemonadeTheme.colors.content.contentBrandHigh
+            : LemonadeTheme.colors.content.contentSecondary
+    }
+
+    private var iconColor: Color {
+        isSelected
+            ? LemonadeTheme.colors.content.contentBrand
+            : LemonadeTheme.colors.content.contentPrimary
+    }
+
+    private var textStyle: LemonadeTextStyle {
+        isSelected
+            ? LemonadeTypography.shared.bodySmallSemiBold
+            : LemonadeTypography.shared.bodySmallMedium
+    }
+
+    private var wrapperBackground: Color {
+        (isHovering || isPressed) && !tab.isDisabled
+            ? LemonadeTheme.colors.interaction.bgSubtleInteractive
+            : .clear
+    }
+
+    var body: some View {
+        SwiftUI.Button(action: onClick) {
+            HStack(spacing: LemonadeTheme.spaces.spacing100) {
+                if let icon = tab.icon {
+                    LemonadeUi.Icon(
+                        icon: icon,
+                        contentDescription: nil,
+                        size: .small,
+                        tint: iconColor
+                    )
+                }
+                ZStack {
+                    LemonadeUi.Text(
+                        tab.label,
+                        textStyle: LemonadeTypography.shared.bodySmallSemiBold,
+                        color: .clear,
+                        overflow: .tail,
+                        maxLines: 1
+                    )
+                    LemonadeUi.Text(
+                        tab.label,
+                        textStyle: textStyle,
+                        color: contentColor,
+                        overflow: .tail,
+                        maxLines: 1
+                    )
+                }
+            }
+            .padding(.horizontal, LemonadeTheme.spaces.spacing200)
+            .padding(.vertical, LemonadeTheme.spaces.spacing100)
+            .background(
+                RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius150)
+                    .fill(wrapperBackground)
+            )
+            .background(
+                GeometryReader { geo in
+                    Color.clear.onAppear {
+                        onContentWidth?(geo.size.width)
+                    }
+                    .onChange(of: geo.size.width) { newWidth in
+                        onContentWidth?(newWidth)
+                    }
+                }
+            )
+            .padding(.horizontal, LemonadeTheme.spaces.spacing200)
+            .frame(minHeight: LemonadeTheme.sizes.size1100)
+            .frame(maxWidth: stretch ? .infinity : nil)
+        }
+        .buttonStyle(TabPressButtonStyle(isPressed: $isPressed))
+        .disabled(tab.isDisabled)
+        .opacity(tab.isDisabled ? LemonadeTheme.opacity.state.opacityDisabled : 1.0)
+        .onHover { hovering in isHovering = hovering }
+        .animation(.easeInOut(duration: 0.15), value: isHovering)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+}
+
+// MARK: - Tab Press Button Style
+
+private struct TabPressButtonStyle: ButtonStyle {
+    @Binding var isPressed: Bool
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .onChange(of: configuration.isPressed) { newValue in
+                withAnimation(.easeInOut(duration: 0.15)) {
+                    isPressed = newValue
+                }
+            }
+    }
+}
+
+// MARK: - Scroll Offset Preference Key
+
+private struct TabsScrollOffsetKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
+}
+
+// MARK: - Previews
+
+#if DEBUG
+struct LemonadeTabs_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack(spacing: LemonadeTheme.spaces.spacing800) {
+            // Basic
+            LemonadeUi.Tabs(
+                tabs: [
+                    LemonadeTabItem(label: "Overview"),
+                    LemonadeTabItem(label: "Details"),
+                    LemonadeTabItem(label: "Reviews")
+                ],
+                selectedIndex: 1,
+                onTabSelected: { _ in }
+            )
+
+            // With icons
+            LemonadeUi.Tabs(
+                tabs: [
+                    LemonadeTabItem(label: "Home", icon: .home),
+                    LemonadeTabItem(label: "Search", icon: .search),
+                    LemonadeTabItem(label: "Profile", icon: .user)
+                ],
+                selectedIndex: 0,
+                onTabSelected: { _ in }
+            )
+
+            // Many tabs (scrollable)
+            LemonadeUi.Tabs(
+                tabs: [
+                    LemonadeTabItem(label: "Dashboard"),
+                    LemonadeTabItem(label: "Analytics"),
+                    LemonadeTabItem(label: "Reports"),
+                    LemonadeTabItem(label: "Settings"),
+                    LemonadeTabItem(label: "Users"),
+                    LemonadeTabItem(label: "Activity")
+                ],
+                selectedIndex: 2,
+                onTabSelected: { _ in }
+            )
+
+            // Stretch mode
+            LemonadeUi.Tabs(
+                tabs: [
+                    LemonadeTabItem(label: "Tab A"),
+                    LemonadeTabItem(label: "Tab B"),
+                    LemonadeTabItem(label: "Tab C")
+                ],
+                selectedIndex: 0,
+                onTabSelected: { _ in },
+                itemsSize: .stretch
+            )
+        }
+        .previewLayout(.sizeThatFits)
+    }
+}
+#endif

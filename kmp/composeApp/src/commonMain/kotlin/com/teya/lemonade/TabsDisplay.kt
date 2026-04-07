@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.teya.lemonade.core.LemonadeIcons
 
 @Composable
 internal fun TabsDisplay() {
@@ -17,6 +18,9 @@ internal fun TabsDisplay() {
         title = "Tabs",
     ) {
         basicTabsSection()
+        tabsWithIconsSection()
+        stretchTabsSection()
+        disabledTabsSection()
         manyTabsSection()
         interactiveTabsSection()
         twoTabsSection()
@@ -41,7 +45,90 @@ private fun LazyListScope.basicTabsSection() {
         var selectedTab by remember { mutableStateOf(value = 0) }
 
         LemonadeUi.Tabs(
-            tabs = listOf("Overview", "Details", "Reviews"),
+            tabs = listOf(
+                TabItem(label = "Overview"),
+                TabItem(label = "Details"),
+                TabItem(label = "Reviews"),
+            ),
+            selectedIndex = selectedTab,
+            onTabSelected = { index -> selectedTab = index },
+        )
+    }
+}
+
+private fun LazyListScope.tabsWithIconsSection() {
+    item {
+        LemonadeUi.Text(
+            text = "Tabs with Icons",
+            textStyle = LemonadeTheme.typography.headingXSmall,
+            modifier = Modifier.padding(
+                top = LemonadeTheme.spaces.spacing500,
+                bottom = LemonadeTheme.spaces.spacing200,
+            ),
+        )
+    }
+    item {
+        var selectedTab by remember { mutableStateOf(value = 0) }
+
+        LemonadeUi.Tabs(
+            tabs = listOf(
+                TabItem(label = "Home", icon = LemonadeIcons.Home),
+                TabItem(label = "Analytics", icon = LemonadeIcons.Chart),
+                TabItem(label = "Settings", icon = LemonadeIcons.Gear),
+            ),
+            selectedIndex = selectedTab,
+            onTabSelected = { index -> selectedTab = index },
+        )
+    }
+}
+
+private fun LazyListScope.stretchTabsSection() {
+    item {
+        LemonadeUi.Text(
+            text = "Stretch Mode",
+            textStyle = LemonadeTheme.typography.headingXSmall,
+            modifier = Modifier.padding(
+                top = LemonadeTheme.spaces.spacing500,
+                bottom = LemonadeTheme.spaces.spacing200,
+            ),
+        )
+    }
+    item {
+        var selectedTab by remember { mutableStateOf(value = 0) }
+
+        LemonadeUi.Tabs(
+            tabs = listOf(
+                TabItem(label = "Tab A"),
+                TabItem(label = "Tab B"),
+                TabItem(label = "Tab C"),
+            ),
+            selectedIndex = selectedTab,
+            onTabSelected = { index -> selectedTab = index },
+            itemsSize = TabsItemSize.Stretch,
+        )
+    }
+}
+
+private fun LazyListScope.disabledTabsSection() {
+    item {
+        LemonadeUi.Text(
+            text = "Disabled Tab",
+            textStyle = LemonadeTheme.typography.headingXSmall,
+            modifier = Modifier.padding(
+                top = LemonadeTheme.spaces.spacing500,
+                bottom = LemonadeTheme.spaces.spacing200,
+            ),
+        )
+    }
+    item {
+        var selectedTab by remember { mutableStateOf(value = 0) }
+
+        LemonadeUi.Tabs(
+            tabs = listOf(
+                TabItem(label = "Active"),
+                TabItem(label = "Also Active"),
+                TabItem(label = "Disabled", isDisabled = true),
+            ),
             selectedIndex = selectedTab,
             onTabSelected = { index -> selectedTab = index },
         )
@@ -64,13 +151,13 @@ private fun LazyListScope.manyTabsSection() {
 
         LemonadeUi.Tabs(
             tabs = listOf(
-                "Dashboard",
-                "Analytics",
-                "Reports",
-                "Settings",
-                "Users",
-                "Activity",
-                "Notifications",
+                TabItem(label = "Dashboard"),
+                TabItem(label = "Analytics"),
+                TabItem(label = "Reports"),
+                TabItem(label = "Settings"),
+                TabItem(label = "Users"),
+                TabItem(label = "Activity"),
+                TabItem(label = "Notifications"),
             ),
             selectedIndex = selectedTab,
             onTabSelected = { index -> selectedTab = index },
@@ -92,7 +179,11 @@ private fun LazyListScope.interactiveTabsSection() {
     item {
         var selectedTab by remember { mutableStateOf(value = 0) }
 
-        val tabs = listOf("Account", "Privacy", "Notifications")
+        val tabs = listOf(
+            TabItem(label = "Account"),
+            TabItem(label = "Privacy"),
+            TabItem(label = "Notifications"),
+        )
         val content = listOf(
             "Manage your account settings and preferences.",
             "Control your privacy settings and data.",
@@ -133,7 +224,10 @@ private fun LazyListScope.twoTabsSection() {
         var selectedTab by remember { mutableStateOf(value = 0) }
 
         LemonadeUi.Tabs(
-            tabs = listOf("Login", "Sign Up"),
+            tabs = listOf(
+                TabItem(label = "Login"),
+                TabItem(label = "Sign Up"),
+            ),
             selectedIndex = selectedTab,
             onTabSelected = { index -> selectedTab = index },
         )
