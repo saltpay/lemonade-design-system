@@ -5,6 +5,10 @@ plugins {
     id("lemonade-lint")
 }
 
+lemonadePublishing {
+    artifactId = "lemonade-tokens"
+}
+
 android {
     namespace = "com.teya.lemonade.tokens"
 }
