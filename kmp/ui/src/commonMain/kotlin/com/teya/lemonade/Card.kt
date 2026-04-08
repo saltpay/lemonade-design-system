@@ -18,8 +18,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
+import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeCardBackground
+import com.teya.lemonade.core.LemonadeCardHeadingStyle
 import com.teya.lemonade.core.LemonadeCardPadding
+import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.LemonadeTextStyle
 import com.teya.lemonade.core.TagVoice
 
 @Composable
@@ -47,24 +51,14 @@ private fun CoreCard(
     header: CardHeaderConfig? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val hasHeader = header !== null
-    val headerConfig = if (hasHeader) {
-        CardHeaderConfig(
-            title = header.title,
-            trailingSlot = header.trailingSlot,
-        )
-    } else {
-        null
-    }
-
     Column(
         modifier = modifier
             .fillMaxWidth()
             .clip(shape = LocalShapes.current.semantic.radiusContainerDefault)
             .background(color = background.background),
     ) {
-        if (hasHeader) {
-            CardHeader(config = headerConfig)
+        if (header != null) {
+            CardHeader(config = header)
         }
 
         Column(
@@ -78,7 +72,10 @@ private fun CoreCard(
 
 public data class CardHeaderConfig(
     val title: String,
+    val headingStyle: LemonadeCardHeadingStyle = LemonadeCardHeadingStyle.Default,
+    val leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     val trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    val showNavigationIndicator: Boolean = false,
 )
 
 @Composable
@@ -88,7 +85,10 @@ private fun CardHeader(
 ) {
     if (config == null) return
 
-    val (title, trailingSlot) = config
+    val (title, headingStyle, leadingSlot, trailingSlot, showNavigationIndicator) = config
+
+    val titleTextStyle = headingStyle.textStyle
+    val titleColor = headingStyle.color
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(LocalSpaces.current.spacing200),
@@ -101,9 +101,14 @@ private fun CardHeader(
                 bottom = LocalSpaces.current.spacing0,
             ),
     ) {
+        if (leadingSlot !== null) {
+            leadingSlot()
+        }
+
         LemonadeUi.Text(
             text = title,
-            textStyle = LocalTypographies.current.headingXXSmall,
+            textStyle = titleTextStyle,
+            color = titleColor,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1F),
@@ -112,8 +117,33 @@ private fun CardHeader(
         if (trailingSlot !== null) {
             trailingSlot()
         }
+
+        if (showNavigationIndicator) {
+            LemonadeUi.Icon(
+                icon = LemonadeIcons.ChevronRight,
+                contentDescription = null,
+                size = LemonadeAssetSize.Medium,
+                tint = LocalColors.current.content.contentSecondary,
+            )
+        }
     }
 }
+
+private val LemonadeCardHeadingStyle.textStyle: LemonadeTextStyle
+    @Composable get() {
+        return when (this) {
+            LemonadeCardHeadingStyle.Default -> LocalTypographies.current.headingXXSmall
+            LemonadeCardHeadingStyle.Overline -> LocalTypographies.current.bodyXSmallOverline
+        }
+    }
+
+private val LemonadeCardHeadingStyle.color: Color
+    @Composable get() {
+        return when (this) {
+            LemonadeCardHeadingStyle.Default -> LocalColors.current.content.contentPrimary
+            LemonadeCardHeadingStyle.Overline -> LocalColors.current.content.contentSecondary
+        }
+    }
 
 private val LemonadeCardPadding.spacing: Dp
     @Composable get() {
@@ -130,6 +160,7 @@ private val LemonadeCardBackground.background: Color
         return when (this) {
             LemonadeCardBackground.Default -> LocalColors.current.background.bgDefault
             LemonadeCardBackground.Subtle -> LocalColors.current.background.bgSubtle
+            LemonadeCardBackground.SubtleHigh -> LocalColors.current.background.bgElevated
         }
     }
 

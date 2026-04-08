@@ -3,19 +3,17 @@ package com.teya.lemonade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeCardBackground
+import com.teya.lemonade.core.LemonadeCardHeadingStyle
 import com.teya.lemonade.core.LemonadeCardPadding
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TagVoice
@@ -33,54 +31,8 @@ internal fun CardDisplay() {
             .navigationBarsPadding()
             .padding(LemonadeTheme.spaces.spacing400),
     ) {
-        // Basic Card
-        CardSection(title = "Basic Card") {
-            LemonadeUi.Card(contentPadding = LemonadeCardPadding.Medium) {
-                LemonadeUi.Text(
-                    text = "This is a basic card with medium padding.",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                )
-            }
-        }
-
-        // Padding Variants
-        CardSection(title = "Padding Variants") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-            ) {
-                LemonadeUi.Card(contentPadding = LemonadeCardPadding.None) {
-                    LemonadeUi.Text(
-                        text = "No padding",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                        modifier = Modifier.padding(LemonadeTheme.spaces.spacing400),
-                    )
-                }
-
-                LemonadeUi.Card(contentPadding = LemonadeCardPadding.XSmall) {
-                    LemonadeUi.Text(
-                        text = "XSmall padding",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    )
-                }
-
-                LemonadeUi.Card(contentPadding = LemonadeCardPadding.Small) {
-                    LemonadeUi.Text(
-                        text = "Small padding",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    )
-                }
-
-                LemonadeUi.Card(contentPadding = LemonadeCardPadding.Medium) {
-                    LemonadeUi.Text(
-                        text = "Medium padding",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    )
-                }
-            }
-        }
-
         // Background Variants
-        CardSection(title = "Background Variants") {
+        CardSection(title = "Backgrounds") {
             Column(
                 verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
@@ -89,7 +41,7 @@ internal fun CardDisplay() {
                     background = LemonadeCardBackground.Default,
                 ) {
                     LemonadeUi.Text(
-                        text = "Default background",
+                        text = "Default",
                         textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                 }
@@ -99,24 +51,55 @@ internal fun CardDisplay() {
                     background = LemonadeCardBackground.Subtle,
                 ) {
                     LemonadeUi.Text(
-                        text = "Subtle background",
+                        text = "Subtle",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    )
+                }
+
+                LemonadeUi.Card(
+                    contentPadding = LemonadeCardPadding.Medium,
+                    background = LemonadeCardBackground.SubtleHigh,
+                ) {
+                    LemonadeUi.Text(
+                        text = "Subtle High",
                         textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                 }
             }
         }
 
-        // With Header
-        CardSection(title = "With Header") {
+        // Spacing Variants
+        CardSection(title = "Spacing") {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            ) {
+                LemonadeCardPadding.entries.forEach { padding ->
+                    LemonadeUi.Card(contentPadding = padding) {
+                        LemonadeUi.Text(
+                            text = padding.name,
+                            textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                        )
+                    }
+                }
+            }
+        }
+
+        // Heading Styles
+        CardSection(title = "Heading Styles") {
             Column(
                 verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 LemonadeUi.Card(
                     contentPadding = LemonadeCardPadding.Medium,
-                    header = CardHeaderConfig(title = "Card Title"),
+                    header = CardHeaderConfig(
+                        title = "Default Heading",
+                        trailingSlot = {
+                            LemonadeUi.Tag(label = "Tag", voice = TagVoice.Neutral)
+                        },
+                    ),
                 ) {
                     LemonadeUi.Text(
-                        text = "Card content goes here. This is an example of a card with a header.",
+                        text = "Card with default heading style.",
                         textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                 }
@@ -124,14 +107,41 @@ internal fun CardDisplay() {
                 LemonadeUi.Card(
                     contentPadding = LemonadeCardPadding.Medium,
                     header = CardHeaderConfig(
-                        title = "With Trailing Slot",
+                        title = "Overline Heading",
+                        headingStyle = LemonadeCardHeadingStyle.Overline,
                         trailingSlot = {
-                            LemonadeUi.Tag(label = "New", voice = TagVoice.Positive)
+                            LemonadeUi.Tag(label = "Tag", voice = TagVoice.Neutral)
                         },
                     ),
                 ) {
                     LemonadeUi.Text(
-                        text = "This card has a header with a trailing tag.",
+                        text = "Card with overline heading style.",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    )
+                }
+            }
+        }
+
+        // Header Slots
+        CardSection(title = "Header Slots") {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            ) {
+                LemonadeUi.Card(
+                    contentPadding = LemonadeCardPadding.Medium,
+                    header = CardHeaderConfig(
+                        title = "Leading Icon",
+                        leadingSlot = {
+                            LemonadeUi.Icon(
+                                icon = LemonadeIcons.Store,
+                                contentDescription = null,
+                                size = LemonadeAssetSize.Medium,
+                            )
+                        },
+                    ),
+                ) {
+                    LemonadeUi.Text(
+                        text = "Header with leading slot.",
                         textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                 }
@@ -139,152 +149,37 @@ internal fun CardDisplay() {
                 LemonadeUi.Card(
                     contentPadding = LemonadeCardPadding.Medium,
                     header = CardHeaderConfig(
-                        title = "Actions",
-                        trailingSlot = {
-                            LemonadeUi.Icon(
-                                icon = LemonadeIcons.EllipsisVertical,
-                                contentDescription = "More options",
-                                size = LemonadeAssetSize.Medium,
-                            )
-                        },
+                        title = "Navigation",
+                        showNavigationIndicator = true,
                     ),
                 ) {
                     LemonadeUi.Text(
-                        text = "Card with action icon in header.",
+                        text = "Header with navigation indicator.",
                         textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                 }
-            }
-        }
 
-        // Complex Content
-        CardSection(title = "Complex Content") {
-            LemonadeUi.Card(
-                contentPadding = LemonadeCardPadding.Medium,
-                header = CardHeaderConfig(
-                    title = "Order Summary",
-                    trailingSlot = {
-                        LemonadeUi.Tag(label = "Confirmed", voice = TagVoice.Positive)
-                    },
-                ),
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+                LemonadeUi.Card(
+                    contentPadding = LemonadeCardPadding.Medium,
+                    header = CardHeaderConfig(
+                        title = "All Slots",
+                        leadingSlot = {
+                            LemonadeUi.Icon(
+                                icon = LemonadeIcons.Store,
+                                contentDescription = null,
+                                size = LemonadeAssetSize.Medium,
+                            )
+                        },
+                        trailingSlot = {
+                            LemonadeUi.Tag(label = "Active", voice = TagVoice.Positive)
+                        },
+                        showNavigationIndicator = true,
+                    ),
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        LemonadeUi.Text(
-                            text = "Subtotal",
-                            textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                        )
-                        LemonadeUi.Text(
-                            text = "$99.00",
-                            textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                        )
-                    }
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        LemonadeUi.Text(
-                            text = "Shipping",
-                            textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                        )
-                        LemonadeUi.Text(
-                            text = "$5.00",
-                            textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                        )
-                    }
-
-                    LemonadeUi.HorizontalDivider(
-                        modifier = Modifier.fillMaxWidth(),
+                    LemonadeUi.Text(
+                        text = "Leading, trailing, and navigation combined.",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        LemonadeUi.Text(
-                            text = "Total",
-                            textStyle = LemonadeTheme.typography.bodyMediumSemiBold,
-                        )
-                        LemonadeUi.Text(
-                            text = "$104.00",
-                            textStyle = LemonadeTheme.typography.bodyMediumSemiBold,
-                        )
-                    }
-                }
-            }
-        }
-
-        // Nested Cards
-        CardSection(title = "Nested Cards") {
-            LemonadeUi.Card(
-                contentPadding = LemonadeCardPadding.Medium,
-                header = CardHeaderConfig(title = "Payment Methods"),
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-                ) {
-                    LemonadeUi.Card(
-                        contentPadding = LemonadeCardPadding.Small,
-                        background = LemonadeCardBackground.Subtle,
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            LemonadeUi.Icon(
-                                icon = LemonadeIcons.Card,
-                                contentDescription = null,
-                                size = LemonadeAssetSize.Medium,
-                            )
-                            Column(modifier = Modifier.weight(1f)) {
-                                LemonadeUi.Text(
-                                    text = "Visa ending in 4242",
-                                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                                )
-                                LemonadeUi.Text(
-                                    text = "Expires 12/25",
-                                    textStyle = LemonadeTheme.typography.bodySmallRegular,
-                                    color = LemonadeTheme.colors.content.contentSecondary,
-                                )
-                            }
-                            LemonadeUi.Tag(label = "Default", voice = TagVoice.Info)
-                        }
-                    }
-
-                    LemonadeUi.Card(
-                        contentPadding = LemonadeCardPadding.Small,
-                        background = LemonadeCardBackground.Subtle,
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            LemonadeUi.Icon(
-                                icon = LemonadeIcons.Card,
-                                contentDescription = null,
-                                size = LemonadeAssetSize.Medium,
-                            )
-                            Column(modifier = Modifier.weight(1f)) {
-                                LemonadeUi.Text(
-                                    text = "Mastercard ending in 1234",
-                                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                                )
-                                LemonadeUi.Text(
-                                    text = "Expires 06/24",
-                                    textStyle = LemonadeTheme.typography.bodySmallRegular,
-                                    color = LemonadeTheme.colors.content.contentSecondary,
-                                )
-                            }
-                        }
-                    }
                 }
             }
         }

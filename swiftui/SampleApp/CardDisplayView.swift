@@ -5,158 +5,121 @@ struct CardDisplayView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 32) {
-                // Basic Card
-                sectionView(title: "Basic Card") {
-                    LemonadeUi.Card(contentPadding: .medium) {
-                        LemonadeUi.Text("This is a basic card with medium padding.")
-                    }
-                }
-
-                // Padding Variants
-                sectionView(title: "Padding Variants") {
-                    VStack(spacing: 16) {
-                        LemonadeUi.Card(contentPadding: .none) {
-                            LemonadeUi.Text("No padding")
-                                .padding()
-                        }
-
-                        LemonadeUi.Card(contentPadding: .xSmall) {
-                            LemonadeUi.Text("XSmall padding")
-                        }
-
-                        LemonadeUi.Card(contentPadding: .small) {
-                            LemonadeUi.Text("Small padding")
-                        }
-
-                        LemonadeUi.Card(contentPadding: .medium) {
-                            LemonadeUi.Text("Medium padding")
-                        }
-                    }
-                }
-
                 // Background Variants
-                sectionView(title: "Background Variants") {
+                sectionView(title: "Backgrounds") {
                     VStack(spacing: 16) {
                         LemonadeUi.Card(contentPadding: .medium, background: .default) {
-                            LemonadeUi.Text("Default background")
+                            LemonadeUi.Text("Default")
                         }
 
                         LemonadeUi.Card(contentPadding: .medium, background: .subtle) {
-                            LemonadeUi.Text("Subtle background")
+                            LemonadeUi.Text("Subtle")
+                        }
+
+                        LemonadeUi.Card(contentPadding: .medium, background: .subtleHigh) {
+                            LemonadeUi.Text("Subtle High")
                         }
                     }
                 }
 
-                // With Header
-                sectionView(title: "With Header") {
+                // Spacing Variants
+                sectionView(title: "Spacing") {
+                    VStack(spacing: 16) {
+                        LemonadeUi.Card(contentPadding: .none) {
+                            LemonadeUi.Text("None")
+                        }
+
+                        LemonadeUi.Card(contentPadding: .xSmall) {
+                            LemonadeUi.Text("XSmall")
+                        }
+
+                        LemonadeUi.Card(contentPadding: .small) {
+                            LemonadeUi.Text("Small")
+                        }
+
+                        LemonadeUi.Card(contentPadding: .medium) {
+                            LemonadeUi.Text("Medium")
+                        }
+                    }
+                }
+
+                // Heading Styles
+                sectionView(title: "Heading Styles") {
                     VStack(spacing: 16) {
                         LemonadeUi.Card(
                             contentPadding: .medium,
-                            header: CardHeaderConfig(title: "Card Title")
-                        ) {
-                            LemonadeUi.Text("Card content goes here. This is an example of a card with a header.")
-                        }
-
-                        LemonadeUi.Card(
-                            contentPadding: .medium,
                             header: CardHeaderConfig(
-                                title: "With Trailing Slot",
+                                title: "Default Heading",
                                 trailingSlot: {
-                                    LemonadeUi.Tag(label: "New", voice: .positive)
+                                    LemonadeUi.Tag(label: "Tag", voice: .neutral)
                                 }
                             )
                         ) {
-                            LemonadeUi.Text("This card has a header with a trailing tag.")
+                            LemonadeUi.Text("Card with default heading style.")
                         }
 
                         LemonadeUi.Card(
                             contentPadding: .medium,
                             header: CardHeaderConfig(
-                                title: "Actions",
+                                title: "Overline Heading",
+                                headingStyle: .overline,
                                 trailingSlot: {
+                                    LemonadeUi.Tag(label: "Tag", voice: .neutral)
+                                }
+                            )
+                        ) {
+                            LemonadeUi.Text("Card with overline heading style.")
+                        }
+                    }
+                }
+
+                // Header Slots
+                sectionView(title: "Header Slots") {
+                    VStack(spacing: 16) {
+                        LemonadeUi.Card(
+                            contentPadding: .medium,
+                            header: CardHeaderConfig(
+                                title: "Leading Icon",
+                                leadingSlot: {
                                     LemonadeUi.Icon(
-                                        icon: .ellipsisVertical,
-                                        contentDescription: "More options",
+                                        icon: .store,
+                                        contentDescription: nil,
                                         size: .medium
                                     )
                                 }
                             )
                         ) {
-                            LemonadeUi.Text("Card with action icon in header.")
+                            LemonadeUi.Text("Header with leading slot.")
                         }
-                    }
-                }
 
-                // Complex Content
-                sectionView(title: "Complex Content") {
-                    LemonadeUi.Card(
-                        contentPadding: .medium,
-                        header: CardHeaderConfig(
-                            title: "Order Summary",
-                            trailingSlot: {
-                                LemonadeUi.Tag(label: "Confirmed", voice: .positive)
-                            }
-                        )
-                    ) {
-                        VStack(alignment: .leading, spacing: 12) {
-                            HStack {
-                                Text("Subtotal")
-                                Spacer()
-                                Text("$99.00")
-                            }
-
-                            HStack {
-                                Text("Shipping")
-                                Spacer()
-                                Text("$5.00")
-                            }
-
-                            Divider()
-
-                            HStack {
-                                Text("Total")
-                                    .fontWeight(.bold)
-                                Spacer()
-                                Text("$104.00")
-                                    .fontWeight(.bold)
-                            }
+                        LemonadeUi.Card(
+                            contentPadding: .medium,
+                            header: CardHeaderConfig(
+                                title: "Navigation",
+                                showNavigationIndicator: true
+                            )
+                        ) {
+                            LemonadeUi.Text("Header with navigation indicator.")
                         }
-                    }
-                }
 
-                // Nested Cards
-                sectionView(title: "Nested Cards") {
-                    LemonadeUi.Card(
-                        contentPadding: .medium,
-                        header: CardHeaderConfig(title: "Payment Methods")
-                    ) {
-                        VStack(spacing: 12) {
-                            LemonadeUi.Card(contentPadding: .small, background: .subtle) {
-                                HStack {
-                                    LemonadeUi.Icon(icon: .card, contentDescription: nil, size: .medium)
-                                    VStack(alignment: .leading) {
-                                        Text("Visa ending in 4242")
-                                        Text("Expires 12/25")
-                                            .font(.caption)
-                                            .foregroundStyle(.content.contentSecondary)
-                                    }
-                                    Spacer()
-                                    LemonadeUi.Tag(label: "Default", voice: .info)
-                                }
-                            }
-
-                            LemonadeUi.Card(contentPadding: .small, background: .subtle) {
-                                HStack {
-                                    LemonadeUi.Icon(icon: .card, contentDescription: nil, size: .medium)
-                                    VStack(alignment: .leading) {
-                                        Text("Mastercard ending in 1234")
-                                        Text("Expires 06/24")
-                                            .font(.caption)
-                                            .foregroundStyle(.content.contentSecondary)
-                                    }
-                                    Spacer()
-                                }
-                            }
+                        LemonadeUi.Card(
+                            contentPadding: .medium,
+                            header: CardHeaderConfig(
+                                title: "All Slots",
+                                leadingSlot: {
+                                    LemonadeUi.Icon(
+                                        icon: .store,
+                                        contentDescription: nil,
+                                        size: .medium
+                                    )
+                                },
+                                trailingSlot: {
+                                    LemonadeUi.Tag(label: "Active", voice: .positive)
+                                },
+                                showNavigationIndicator: true
+                            )
+                        ) {
+                            LemonadeUi.Text("Leading, trailing, and navigation combined.")
                         }
                     }
                 }

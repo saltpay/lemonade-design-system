@@ -8,7 +8,7 @@ public enum LemonadeCardPadding {
     case xSmall
     case small
     case medium
-    
+
     var spacing: CGFloat {
         switch self {
         case .none: return LemonadeTheme.spaces.spacing0
@@ -25,11 +25,35 @@ public enum LemonadeCardPadding {
 public enum LemonadeCardBackground {
     case `default`
     case subtle
-    
+    case subtleHigh
+
     var color: Color {
         switch self {
         case .default: return LemonadeTheme.colors.background.bgDefault
         case .subtle: return LemonadeTheme.colors.background.bgSubtle
+        case .subtleHigh: return LemonadeTheme.colors.background.bgElevated
+        }
+    }
+}
+
+// MARK: - Card Heading Style
+
+/// Heading style options for Card header.
+public enum LemonadeCardHeadingStyle {
+    case `default`
+    case overline
+
+    var textStyle: LemonadeTextStyle {
+        switch self {
+        case .default: return LemonadeTypography.shared.headingXXSmall
+        case .overline: return LemonadeTypography.shared.bodyXSmallOverline
+        }
+    }
+
+    var textColor: Color {
+        switch self {
+        case .default: return LemonadeTheme.colors.content.contentPrimary
+        case .overline: return LemonadeTheme.colors.content.contentSecondary
         }
     }
 }
@@ -37,21 +61,72 @@ public enum LemonadeCardBackground {
 // MARK: - Card Header Config
 
 /// Configuration for the Card header.
-public struct CardHeaderConfig<TrailingContent: View> {
+public struct CardHeaderConfig<LeadingContent: View, TrailingContent: View> {
     let title: String
+    let headingStyle: LemonadeCardHeadingStyle
+    let leadingSlot: (() -> LeadingContent)?
     let trailingSlot: (() -> TrailingContent)?
-    
-    public init(title: String, trailingSlot: (() -> TrailingContent)? = nil) {
+    let showNavigationIndicator: Bool
+
+    public init(
+        title: String,
+        headingStyle: LemonadeCardHeadingStyle = .default,
+        leadingSlot: (() -> LeadingContent)? = nil,
+        trailingSlot: (() -> TrailingContent)? = nil,
+        showNavigationIndicator: Bool = false
+    ) {
         self.title = title
+        self.headingStyle = headingStyle
+        self.leadingSlot = leadingSlot
         self.trailingSlot = trailingSlot
+        self.showNavigationIndicator = showNavigationIndicator
     }
 }
 
-// Convenience initializer without trailing content
-extension CardHeaderConfig where TrailingContent == EmptyView {
-    public init(title: String) {
+// Convenience initializer without leading or trailing content
+extension CardHeaderConfig where LeadingContent == EmptyView, TrailingContent == EmptyView {
+    public init(
+        title: String,
+        headingStyle: LemonadeCardHeadingStyle = .default,
+        showNavigationIndicator: Bool = false
+    ) {
         self.title = title
+        self.headingStyle = headingStyle
+        self.leadingSlot = nil
         self.trailingSlot = nil
+        self.showNavigationIndicator = showNavigationIndicator
+    }
+}
+
+// Convenience initializer with only trailing content
+extension CardHeaderConfig where LeadingContent == EmptyView {
+    public init(
+        title: String,
+        headingStyle: LemonadeCardHeadingStyle = .default,
+        trailingSlot: (() -> TrailingContent)? = nil,
+        showNavigationIndicator: Bool = false
+    ) {
+        self.title = title
+        self.headingStyle = headingStyle
+        self.leadingSlot = nil
+        self.trailingSlot = trailingSlot
+        self.showNavigationIndicator = showNavigationIndicator
+    }
+}
+
+// Convenience initializer with only leading content
+extension CardHeaderConfig where TrailingContent == EmptyView {
+    public init(
+        title: String,
+        headingStyle: LemonadeCardHeadingStyle = .default,
+        leadingSlot: (() -> LeadingContent)? = nil,
+        showNavigationIndicator: Bool = false
+    ) {
+        self.title = title
+        self.headingStyle = headingStyle
+        self.leadingSlot = leadingSlot
+        self.trailingSlot = nil
+        self.showNavigationIndicator = showNavigationIndicator
     }
 }
 
@@ -60,17 +135,6 @@ extension CardHeaderConfig where TrailingContent == EmptyView {
 public extension LemonadeUi {
     /// A card container component with optional header and configurable padding and background.
     ///
-    /// ## Usage
-    /// ```swift
-    /// LemonadeUi.Card(
-    ///     contentPadding: .medium,
-    ///     background: .default,
-    ///     header: CardHeaderConfig(title: "Card Title")
-    /// ) {
-    ///     Text("Card content goes here")
-    /// }
-    /// ```
-    ///
     /// - Parameters:
     ///   - contentPadding: LemonadeCardPadding for the content area. Defaults to .none
     ///   - background: LemonadeCardBackground style. Defaults to .default
@@ -78,10 +142,10 @@ public extension LemonadeUi {
     ///   - content: Content to display inside the card
     /// - Returns: A styled Card view
     @ViewBuilder
-    static func Card<Content: View, TrailingContent: View>(
+    static func Card<Content: View, LeadingContent: View, TrailingContent: View>(
         contentPadding: LemonadeCardPadding = .none,
         background: LemonadeCardBackground = .default,
-        header: CardHeaderConfig<TrailingContent>? = nil,
+        header: CardHeaderConfig<LeadingContent, TrailingContent>? = nil,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View {
         LemonadeCardView(
@@ -91,7 +155,7 @@ public extension LemonadeUi {
             content: content
         )
     }
-    
+
     /// A card container component without header.
     ///
     /// - Parameters:
@@ -105,7 +169,7 @@ public extension LemonadeUi {
         background: LemonadeCardBackground = .default,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View {
-        LemonadeCardView<Content, EmptyView>(
+        LemonadeCardView<Content, EmptyView, EmptyView>(
             contentPadding: contentPadding,
             background: background,
             header: nil,
@@ -116,34 +180,46 @@ public extension LemonadeUi {
 
 // MARK: - Internal Card View
 
-private struct LemonadeCardView<Content: View, TrailingContent: View>: View {
+private struct LemonadeCardView<Content: View, LeadingContent: View, TrailingContent: View>: View {
     let contentPadding: LemonadeCardPadding
     let background: LemonadeCardBackground
-    let header: CardHeaderConfig<TrailingContent>?
+    let header: CardHeaderConfig<LeadingContent, TrailingContent>?
     let content: () -> Content
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // Header
             if let header = header {
                 HStack(spacing: LemonadeTheme.spaces.spacing200) {
+                    if let leadingSlot = header.leadingSlot {
+                        leadingSlot()
+                    }
+
                     LemonadeUi.Text(
                         header.title,
-                        textStyle: LemonadeTypography.shared.headingXXSmall,
+                        textStyle: header.headingStyle.textStyle,
+                        color: header.headingStyle.textColor,
                         overflow: .tail,
                         maxLines: 1
                     )
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    
+
                     if let trailingSlot = header.trailingSlot {
                         trailingSlot()
+                    }
+
+                    if header.showNavigationIndicator {
+                        LemonadeUi.Icon(
+                            icon: .chevronRight,
+                            contentDescription: nil,
+                            size: .medium,
+                            tint: LemonadeTheme.colors.content.contentSecondary
+                        )
                     }
                 }
                 .padding(.horizontal, LemonadeTheme.spaces.spacing400)
                 .padding(.top, LemonadeTheme.spaces.spacing400)
             }
-            
-            // Content
+
             VStack(alignment: .leading, spacing: 0) {
                 content()
             }
@@ -165,7 +241,7 @@ struct LemonadeCard_Previews: PreviewProvider {
             LemonadeUi.Card(contentPadding: .medium) {
                 LemonadeUi.Text("This is card content")
             }
-            
+
             // Card with header
             LemonadeUi.Card(
                 contentPadding: .medium,
@@ -173,7 +249,7 @@ struct LemonadeCard_Previews: PreviewProvider {
             ) {
                 LemonadeUi.Text("Content with header")
             }
-            
+
             // Card with header and trailing slot
             LemonadeUi.Card(
                 contentPadding: .medium,
@@ -186,13 +262,35 @@ struct LemonadeCard_Previews: PreviewProvider {
             ) {
                 LemonadeUi.Text("Content with header and trailing tag")
             }
-            
-            // Subtle background
+
+            // Card with overline heading
             LemonadeUi.Card(
                 contentPadding: .medium,
-                background: .subtle
+                header: CardHeaderConfig(
+                    title: "Overline Title",
+                    headingStyle: .overline
+                )
             ) {
-                LemonadeUi.Text("Subtle background card")
+                LemonadeUi.Text("Content with overline heading")
+            }
+
+            // Card with navigation indicator
+            LemonadeUi.Card(
+                contentPadding: .medium,
+                header: CardHeaderConfig(
+                    title: "Navigable Card",
+                    showNavigationIndicator: true
+                )
+            ) {
+                LemonadeUi.Text("Card with navigation indicator")
+            }
+
+            // Subtle High background
+            LemonadeUi.Card(
+                contentPadding: .medium,
+                background: .subtleHigh
+            ) {
+                LemonadeUi.Text("Subtle High background card")
             }
         }
         .padding()
