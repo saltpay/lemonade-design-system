@@ -95,14 +95,14 @@ struct SegmentedControlDisplayView: View {
                     VStack(spacing: 16) {
                         LemonadeUi.SegmentedControl(
                             properties: [
-                                .icon(.heart),
-                                .icon(.star),
-                                .icon(.gear),
+                                .icon(.list),
+                                .icon(.stackThree),
                             ],
                             selectedTab: selectedTabIconOnly,
                             size: .small,
                             onTabSelected: { selectedTabIconOnly = $0 }
                         )
+                        .fixedSize(horizontal: true, vertical: false)
                     }
                 }
 
