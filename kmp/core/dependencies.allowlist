@@ -1,0 +1,10 @@
+# Allowed declared dependencies for :core.
+#
+# Adding a new dependency to this module ships it to every consumer of the
+# Lemonade design system. New entries require maintainer approval as part of
+# the same PR that edits build.gradle.kts.
+#
+# Format: one entry per line as `<configuration> <expression>`.
+# Lines starting with `#` and blank lines are ignored.
+#
+# (no declared dependencies — all configuration comes from the lemonade convention plugin)
