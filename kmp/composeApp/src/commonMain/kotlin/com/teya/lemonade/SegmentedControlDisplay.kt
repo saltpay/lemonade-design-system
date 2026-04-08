@@ -7,6 +7,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeSegmentedControlSize
@@ -127,10 +129,10 @@ internal fun SegmentedControlDisplay() {
                 },
                 selectedTab = selectedIconOnly,
                 size = LemonadeSegmentedControlSize.Small,
+                modifier = Modifier.width(IntrinsicSize.Min),
                 properties = listOf(
-                    TabButtonProperties.icon(icon = LemonadeIcons.Heart),
-                    TabButtonProperties.icon(icon = LemonadeIcons.Star),
-                    TabButtonProperties.icon(icon = LemonadeIcons.Gear),
+                    TabButtonProperties.icon(icon = LemonadeIcons.List),
+                    TabButtonProperties.icon(icon = LemonadeIcons.StackThree),
                 ),
             )
         }
