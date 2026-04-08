@@ -205,8 +205,7 @@ internal fun CoreSegmentedControl(
             .defaultMinSize(
                 minWidth = size.buttonMinWidth(),
                 minHeight = size.buttonMinHeight(),
-            )
-            .height(height = size.containerHeight())
+            ).height(height = size.containerHeight())
             .background(
                 color = LocalColors.current.background.bgElevated,
                 shape = pillShape,
