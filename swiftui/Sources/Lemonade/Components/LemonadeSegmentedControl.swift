@@ -164,7 +164,16 @@ private struct LemonadeSegmentedControlView: View {
             )
             .frame(height: size.containerHeight)
         } else {
-            // Fallback on earlier versions
+            labelsOverlay
+                .frame(
+                    minWidth: size.buttonMinWidth,
+                    minHeight: size.buttonMinHeight
+                )
+                .frame(height: size.containerHeight)
+                .background(
+                    RoundedRectangle(cornerRadius: LemonadeTheme.radius.radiusFull)
+                        .fill(LemonadeTheme.colors.background.bgElevated)
+                )
         }
         #else
         labelsOverlay
@@ -269,20 +278,30 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
         // Inset the control by containerPadding so its segments align with the overlay buttons
         control.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(control)
-        NSLayoutConstraint.activate([
-            control.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: containerPadding),
-            control.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -containerPadding),
-            control.topAnchor.constraint(equalTo: container.topAnchor, constant: containerPadding),
-            control.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -containerPadding),
-        ])
+
+        let leading = control.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: containerPadding)
+        let trailing = control.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -containerPadding)
+        let top = control.topAnchor.constraint(equalTo: container.topAnchor, constant: containerPadding)
+        let bottom = control.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -containerPadding)
+        NSLayoutConstraint.activate([leading, trailing, top, bottom])
 
         context.coordinator.control = control
+        context.coordinator.leadingConstraint = leading
+        context.coordinator.trailingConstraint = trailing
+        context.coordinator.topConstraint = top
+        context.coordinator.bottomConstraint = bottom
         return container
     }
 
     func updateUIView(_ uiView: UIView, context: Context) {
         guard let control = context.coordinator.control else { return }
         context.coordinator.onSelectionChanged = onSelectionChanged
+
+        // Update padding constraints if size changed
+        context.coordinator.leadingConstraint?.constant = containerPadding
+        context.coordinator.trailingConstraint?.constant = -containerPadding
+        context.coordinator.topConstraint?.constant = containerPadding
+        context.coordinator.bottomConstraint?.constant = -containerPadding
 
         // Reconcile segment count if properties changed
         if control.numberOfSegments != segmentLabels.count {
@@ -304,6 +323,10 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
     class Coordinator: NSObject {
         var onSelectionChanged: (Int) -> Void
         weak var control: UISegmentedControl?
+        var leadingConstraint: NSLayoutConstraint?
+        var trailingConstraint: NSLayoutConstraint?
+        var topConstraint: NSLayoutConstraint?
+        var bottomConstraint: NSLayoutConstraint?
 
         init(onSelectionChanged: @escaping (Int) -> Void) {
             self.onSelectionChanged = onSelectionChanged
