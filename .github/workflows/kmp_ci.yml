@@ -55,6 +55,23 @@ jobs:
         run: ./gradlew ktlintCheck --no-daemon -Dorg.gradle.jvmargs="-Xmx3g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
         working-directory: ./kmp
 
+  dependency-allowlist:
+    name: Dependency Allowlist
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GRADLE_OPTS: -Xmx3g
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Gradle
+        uses: ./.github/actions/setup-gradle
+
+      - name: Check dependency allowlist
+        run: ./gradlew checkDependencyAllowlist --no-daemon -Dorg.gradle.jvmargs="-Xmx3g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+        working-directory: ./kmp
+
   build:
     name: Build
     runs-on: macos-latest
@@ -88,7 +105,7 @@ jobs:
   ci-status:
     name: CI Status
     if: always()
-    needs: [ detekt, ktlint, build ]
+    needs: [ detekt, ktlint, dependency-allowlist, build ]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -96,8 +113,9 @@ jobs:
         run: |
           if [[ "${{ needs.detekt.result }}" != "success" || \
                 "${{ needs.ktlint.result }}" != "success" || \
+                "${{ needs['dependency-allowlist'].result }}" != "success" || \
                 "${{ needs.build.result }}" != "success" ]]; then
-            echo "CI did not succeed: detekt=${{ needs.detekt.result }}, ktlint=${{ needs.ktlint.result }}, build=${{ needs.build.result }}"
+            echo "CI did not succeed: detekt=${{ needs.detekt.result }}, ktlint=${{ needs.ktlint.result }}, dependency-allowlist=${{ needs['dependency-allowlist'].result }}, build=${{ needs.build.result }}"
             exit 1
           fi
           echo "All CI checks passed"

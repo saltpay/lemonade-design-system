@@ -1,0 +1,21 @@
+# Allowed declared dependencies for :ui.
+#
+# Adding a new dependency to this module ships it to every consumer of the
+# Lemonade design system. New entries require maintainer approval as part of
+# the same PR that edits build.gradle.kts.
+#
+# Format: one entry per line as `<configuration> <expression>`.
+# Lines starting with `#` and blank lines are ignored.
+
+api projects.core
+api projects.tokens
+debugImplementation libs.compose.ui.tooling
+implementation compose.components.resources
+implementation compose.desktop.currentOs
+implementation compose.foundation
+implementation compose.runtime
+implementation compose.ui
+implementation libs.androidx.lifecycle.runtimeCompose
+implementation libs.androidx.lifecycle.viewmodelCompose
+implementation libs.compose.ui.tooling.preview
+implementation libs.kotlin.test
