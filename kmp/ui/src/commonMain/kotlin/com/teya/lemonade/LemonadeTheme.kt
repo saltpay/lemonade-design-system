@@ -7,7 +7,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 
 @Composable
 public fun LemonadeTheme(
-    colors: LemonadeSemanticColors = if(isSystemInDarkTheme()) {
+    colors: LemonadeSemanticColors = if (isSystemInDarkTheme()) {
         LemonadeDarkTheme
     } else {
         LemonadeLightTheme
