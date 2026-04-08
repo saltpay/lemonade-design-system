@@ -189,35 +189,7 @@ private struct LemonadeCardView<Content: View, LeadingContent: View, TrailingCon
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let header = header {
-                HStack(spacing: LemonadeTheme.spaces.spacing200) {
-                    if let leadingSlot = header.leadingSlot {
-                        leadingSlot()
-                    }
-
-                    LemonadeUi.Text(
-                        header.title,
-                        textStyle: header.headingStyle.textStyle,
-                        color: header.headingStyle.textColor,
-                        overflow: .tail,
-                        maxLines: 1
-                    )
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                    if let trailingSlot = header.trailingSlot {
-                        trailingSlot()
-                    }
-
-                    if header.showNavigationIndicator {
-                        LemonadeUi.Icon(
-                            icon: .chevronRight,
-                            contentDescription: nil,
-                            size: .medium,
-                            tint: LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-                }
-                .padding(.horizontal, LemonadeTheme.spaces.spacing400)
-                .padding(.top, LemonadeTheme.spaces.spacing400)
+                LemonadeCardHeader(config: header)
             }
 
             VStack(alignment: .leading, spacing: 0) {
@@ -228,6 +200,42 @@ private struct LemonadeCardView<Content: View, LeadingContent: View, TrailingCon
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(background.color)
         .clipShape(LemonadeTheme.shapes.semantic.radiusContainerDefault)
+    }
+}
+
+private struct LemonadeCardHeader<LeadingContent: View, TrailingContent: View>: View {
+    let config: CardHeaderConfig<LeadingContent, TrailingContent>
+
+    var body: some View {
+        HStack(spacing: LemonadeTheme.spaces.spacing200) {
+            if let leadingSlot = config.leadingSlot {
+                leadingSlot()
+            }
+
+            LemonadeUi.Text(
+                config.title,
+                textStyle: config.headingStyle.textStyle,
+                color: config.headingStyle.textColor,
+                overflow: .tail,
+                maxLines: 1
+            )
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            if let trailingSlot = config.trailingSlot {
+                trailingSlot()
+            }
+
+            if config.showNavigationIndicator {
+                LemonadeUi.Icon(
+                    icon: .chevronRight,
+                    contentDescription: nil,
+                    size: .medium,
+                    tint: LemonadeTheme.colors.content.contentSecondary
+                )
+            }
+        }
+        .padding(.horizontal, LemonadeTheme.spaces.spacing400)
+        .padding(.top, LemonadeTheme.spaces.spacing400)
     }
 }
 

@@ -99,7 +99,7 @@ private fun CardHeader(
                 bottom = LocalSpaces.current.spacing0,
             ),
     ) {
-        if (config.leadingSlot !== null) {
+        if (config.leadingSlot != null) {
             config.leadingSlot.invoke(this)
         }
 
@@ -112,7 +112,7 @@ private fun CardHeader(
             modifier = Modifier.weight(1F),
         )
 
-        if (config.trailingSlot !== null) {
+        if (config.trailingSlot != null) {
             config.trailingSlot.invoke(this)
         }
 
