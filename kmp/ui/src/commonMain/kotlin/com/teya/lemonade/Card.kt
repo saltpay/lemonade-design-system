@@ -158,7 +158,7 @@ private val LemonadeCardBackground.background: Color
         return when (this) {
             LemonadeCardBackground.Default -> LocalColors.current.background.bgDefault
             LemonadeCardBackground.Subtle -> LocalColors.current.background.bgSubtle
-            LemonadeCardBackground.SubtleHigh -> LocalColors.current.background.bgElevated
+            LemonadeCardBackground.Elevated -> LocalColors.current.background.bgElevated
         }
     }
 

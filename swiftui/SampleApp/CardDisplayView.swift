@@ -16,8 +16,8 @@ struct CardDisplayView: View {
                             LemonadeUi.Text("Subtle")
                         }
 
-                        LemonadeUi.Card(contentPadding: .medium, background: .subtleHigh) {
-                            LemonadeUi.Text("Subtle High")
+                        LemonadeUi.Card(contentPadding: .medium, background: .elevated) {
+                            LemonadeUi.Text("Elevated")
                         }
                     }
                 }

@@ -58,10 +58,10 @@ internal fun CardDisplay() {
 
                 LemonadeUi.Card(
                     contentPadding = LemonadeCardPadding.Medium,
-                    background = LemonadeCardBackground.SubtleHigh,
+                    background = LemonadeCardBackground.Elevated,
                 ) {
                     LemonadeUi.Text(
-                        text = "Subtle High",
+                        text = "Elevated",
                         textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                 }

@@ -25,13 +25,13 @@ public enum LemonadeCardPadding {
 public enum LemonadeCardBackground {
     case `default`
     case subtle
-    case subtleHigh
+    case elevated
 
     var color: Color {
         switch self {
         case .default: return LemonadeTheme.colors.background.bgDefault
         case .subtle: return LemonadeTheme.colors.background.bgSubtle
-        case .subtleHigh: return LemonadeTheme.colors.background.bgElevated
+        case .elevated: return LemonadeTheme.colors.background.bgElevated
         }
     }
 }
@@ -293,12 +293,12 @@ struct LemonadeCard_Previews: PreviewProvider {
                 LemonadeUi.Text("Card with navigation indicator")
             }
 
-            // Subtle High background
+            // Elevated background
             LemonadeUi.Card(
                 contentPadding: .medium,
-                background: .subtleHigh
+                background: .elevated
             ) {
-                LemonadeUi.Text("Subtle High background card")
+                LemonadeUi.Text("Elevated background card")
             }
         }
         .padding()
