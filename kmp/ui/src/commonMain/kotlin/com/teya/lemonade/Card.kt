@@ -85,10 +85,8 @@ private fun CardHeader(
 ) {
     if (config == null) return
 
-    val (title, headingStyle, leadingSlot, trailingSlot, showNavigationIndicator) = config
-
-    val titleTextStyle = headingStyle.textStyle
-    val titleColor = headingStyle.color
+    val titleTextStyle = config.headingStyle.textStyle
+    val titleColor = config.headingStyle.color
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(LocalSpaces.current.spacing200),
@@ -101,12 +99,12 @@ private fun CardHeader(
                 bottom = LocalSpaces.current.spacing0,
             ),
     ) {
-        if (leadingSlot !== null) {
-            leadingSlot()
+        if (config.leadingSlot !== null) {
+            config.leadingSlot.invoke(this)
         }
 
         LemonadeUi.Text(
-            text = title,
+            text = config.title,
             textStyle = titleTextStyle,
             color = titleColor,
             maxLines = 1,
@@ -114,11 +112,11 @@ private fun CardHeader(
             modifier = Modifier.weight(1F),
         )
 
-        if (trailingSlot !== null) {
-            trailingSlot()
+        if (config.trailingSlot !== null) {
+            config.trailingSlot.invoke(this)
         }
 
-        if (showNavigationIndicator) {
+        if (config.showNavigationIndicator) {
             LemonadeUi.Icon(
                 icon = LemonadeIcons.ChevronRight,
                 contentDescription = null,
