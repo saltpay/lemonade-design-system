@@ -55,6 +55,34 @@ private extension LemonadeSegmentedControlSize {
         }
     }
 
+    var containerPadding: CGFloat {
+        switch self {
+        case .small: return LemonadeTheme.spaces.spacing50
+        case .medium, .large: return LemonadeTheme.spaces.spacing100
+        }
+    }
+
+    var buttonMinWidth: CGFloat {
+        switch self {
+        case .small: return LemonadeTheme.sizes.size800
+        case .medium, .large: return LemonadeTheme.sizes.size1200
+        }
+    }
+
+    var buttonMinHeight: CGFloat {
+        switch self {
+        case .small: return LemonadeTheme.sizes.size700
+        case .medium, .large: return LemonadeTheme.sizes.size800
+        }
+    }
+
+    var buttonHorizontalPadding: CGFloat {
+        switch self {
+        case .small: return LemonadeTheme.spaces.spacing200
+        case .medium, .large: return LemonadeTheme.spaces.spacing300
+        }
+    }
+
     var textStyle: LemonadeTextStyle {
         switch self {
         case .small: return LemonadeTypography.shared.bodyXSmallMedium
@@ -123,18 +151,27 @@ private struct LemonadeSegmentedControlView: View {
                 LemonadeNativeSegmentedControl(
                     segmentLabels: properties.map { $0.label ?? $0.icon?.rawValue ?? "" },
                     selectedIndex: clampedSelectedTab,
+                    containerPadding: size.containerPadding,
                     onSelectionChanged: onTabSelected
                 )
-                
+
                 labelsOverlay
+                    .allowsHitTesting(false)
             }
+            .frame(
+                minWidth: size.buttonMinWidth,
+                minHeight: size.buttonMinHeight
+            )
             .frame(height: size.containerHeight)
-//            .glassEffect(.regular.tint(.clear).interactive())
         } else {
             // Fallback on earlier versions
         }
         #else
         labelsOverlay
+            .frame(
+                minWidth: size.buttonMinWidth,
+                minHeight: size.buttonMinHeight
+            )
             .frame(height: size.containerHeight)
             .background(
                 RoundedRectangle(cornerRadius: LemonadeTheme.radius.radiusFull)
@@ -174,12 +211,14 @@ private struct LemonadeSegmentedControlView: View {
                             )
                         }
                     }
+                    .padding(.horizontal, size.buttonHorizontalPadding)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 .buttonStyle(SegmentPressStyle())
                 .frame(maxWidth: .infinity)
             }
         }
+        .padding(size.containerPadding)
         .animation(.easeInOut(duration: 0.2), value: clampedSelectedTab)
     }
 }
@@ -200,18 +239,20 @@ import UIKit
 private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
     let segmentLabels: [String]
     let selectedIndex: Int
+    let containerPadding: CGFloat
     let onSelectionChanged: (Int) -> Void
 
     func makeCoordinator() -> Coordinator {
         Coordinator(onSelectionChanged: onSelectionChanged)
     }
 
-    func makeUIView(context: Context) -> UISegmentedControl {
+    func makeUIView(context: Context) -> UIView {
+        let container = UIView()
+        container.backgroundColor = .clear
+
         let control = UISegmentedControl(items: segmentLabels)
         control.selectedSegmentIndex = min(selectedIndex, segmentLabels.count - 1)
         control.backgroundColor = .clear
-        control.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        control.setContentHuggingPriority(.defaultLow, for: .vertical)
         control.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
 
         // Hide native text — custom SwiftUI overlay handles visuals
@@ -224,31 +265,45 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
             action: #selector(Coordinator.segmentChanged(_:)),
             for: .valueChanged
         )
-        return control
+
+        // Inset the control by containerPadding so its segments align with the overlay buttons
+        control.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(control)
+        NSLayoutConstraint.activate([
+            control.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: containerPadding),
+            control.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -containerPadding),
+            control.topAnchor.constraint(equalTo: container.topAnchor, constant: containerPadding),
+            control.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -containerPadding),
+        ])
+
+        context.coordinator.control = control
+        return container
     }
 
-    func updateUIView(_ uiView: UISegmentedControl, context: Context) {
+    func updateUIView(_ uiView: UIView, context: Context) {
+        guard let control = context.coordinator.control else { return }
         context.coordinator.onSelectionChanged = onSelectionChanged
 
         // Reconcile segment count if properties changed
-        if uiView.numberOfSegments != segmentLabels.count {
-            uiView.removeAllSegments()
+        if control.numberOfSegments != segmentLabels.count {
+            control.removeAllSegments()
             for (index, label) in segmentLabels.enumerated() {
-                uiView.insertSegment(withTitle: label, at: index, animated: false)
+                control.insertSegment(withTitle: label, at: index, animated: false)
             }
             let clearAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.clear]
-            uiView.setTitleTextAttributes(clearAttributes, for: .normal)
-            uiView.setTitleTextAttributes(clearAttributes, for: .selected)
+            control.setTitleTextAttributes(clearAttributes, for: .normal)
+            control.setTitleTextAttributes(clearAttributes, for: .selected)
         }
 
         let clampedIndex = min(selectedIndex, segmentLabels.count - 1)
-        if uiView.selectedSegmentIndex != clampedIndex {
-            uiView.selectedSegmentIndex = clampedIndex
+        if control.selectedSegmentIndex != clampedIndex {
+            control.selectedSegmentIndex = clampedIndex
         }
     }
 
     class Coordinator: NSObject {
         var onSelectionChanged: (Int) -> Void
+        weak var control: UISegmentedControl?
 
         init(onSelectionChanged: @escaping (Int) -> Void) {
             self.onSelectionChanged = onSelectionChanged
@@ -312,6 +367,7 @@ struct LemonadeSegmentedControl_Previews: PreviewProvider {
                 size: .small,
                 onTabSelected: { _ in }
             )
+            .fixedSize(horizontal: true, vertical: false)
         }
         .padding()
         .previewLayout(.sizeThatFits)
