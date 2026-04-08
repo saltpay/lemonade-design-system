@@ -6,6 +6,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.register
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
@@ -21,6 +22,7 @@ class LemonadePlugin : Plugin<Project> {
 
             configureKotlinTargets()
             configureAndroid()
+            configureDependencyAllowlist()
 
             pluginManager.apply(MavenPublishBasePlugin::class.java)
 
@@ -74,6 +76,21 @@ class LemonadePlugin : Plugin<Project> {
                 sourceCompatibility = JavaVersion.VERSION_17
                 targetCompatibility = JavaVersion.VERSION_17
             }
+        }
+    }
+
+    private fun Project.configureDependencyAllowlist() {
+        val allowlist = file("dependencies.allowlist")
+        if (!allowlist.exists()) {
+            return
+        }
+        val task = tasks.register<CheckDependencyAllowlistTask>("checkDependencyAllowlist") {
+            buildScriptFile.set(file("build.gradle.kts"))
+            allowlistFile.set(allowlist)
+            markerFile.set(layout.buildDirectory.file("dep-allowlist/ok"))
+        }
+        tasks.named("check").configure {
+            dependsOn(task)
         }
     }
 
