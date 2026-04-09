@@ -94,11 +94,9 @@ public data class CardHeaderConfig(
 
 @Composable
 private fun CardHeader(
+    config: CardHeaderConfig,
     modifier: Modifier = Modifier,
-    config: CardHeaderConfig? = null,
 ) {
-    if (config == null) return
-
     val titleTextStyle = config.headingStyle.textStyle
     val titleColor = config.headingStyle.color
 

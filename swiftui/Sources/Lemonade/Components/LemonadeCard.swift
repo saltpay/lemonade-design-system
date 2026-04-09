@@ -205,20 +205,6 @@ private struct LemonadeCardView<Content: View, LeadingContent: View, TrailingCon
     let footerAction: CardFooterActionConfig?
     let content: () -> Content
 
-    init(
-        contentPadding: LemonadeCardPadding,
-        background: LemonadeCardBackground,
-        header: CardHeaderConfig<LeadingContent, TrailingContent>?,
-        footerAction: CardFooterActionConfig? = nil,
-        content: @escaping () -> Content
-    ) {
-        self.contentPadding = contentPadding
-        self.background = background
-        self.header = header
-        self.footerAction = footerAction
-        self.content = content
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let header = header {
@@ -288,8 +274,8 @@ private struct LemonadeCardFooterAction: View {
             )
             .frame(maxWidth: .infinity, alignment: .center)
             .padding(.horizontal, LemonadeTheme.spaces.spacing400)
-            .padding(.vertical, LemonadeTheme.spaces.spacing200)
-            .padding(.bottom, LemonadeTheme.spaces.spacing200)
+            .padding(.top, LemonadeTheme.spaces.spacing200)
+            .padding(.bottom, LemonadeTheme.spaces.spacing400)
         }
         .buttonStyle(.plain)
     }
