@@ -280,8 +280,6 @@ private struct LemonadeCardFooterAction: View {
     let config: CardFooterActionConfig
 
     var body: some View {
-        LemonadeUi.HorizontalDivider()
-
         Button(action: config.onClick) {
             LemonadeUi.Text(
                 config.label,
