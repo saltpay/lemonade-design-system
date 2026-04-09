@@ -66,6 +66,14 @@ public class InlineCalendarState internal constructor(
         internal set
 
     /**
+     * Programmatic navigation target. Written only by [navigateToMonth] and
+     * consumed (then cleared) by the composable. Keeping this separate from
+     * [displayedMonth] prevents the scroll-driven feedback loop where an
+     * internal header update triggers an unwanted scroll to the 1st.
+     */
+    internal var navigationTarget: YearMonth? by mutableStateOf(null)
+
+    /**
      * Select a date. The composable handles scrolling to make it visible.
      *
      * Does not update [displayedMonth] - the composable derives the
@@ -76,14 +84,6 @@ public class InlineCalendarState internal constructor(
         if (maxDate != null && date > maxDate) return
         selectedDate = date
     }
-
-    /**
-     * Programmatic navigation target. Written only by [navigateToMonth] and
-     * consumed (then cleared) by the composable. Keeping this separate from
-     * [displayedMonth] prevents the scroll-driven feedback loop where an
-     * internal header update triggers an unwanted scroll to the 1st.
-     */
-    internal var navigationTarget: YearMonth? by mutableStateOf(null)
 
     /**
      * Navigate to a specific month without changing the selection.

@@ -58,27 +58,22 @@ internal fun CalendarDayCell(
     val selectionShape = LocalShapes.current.radius300
     val resolvedSelectionBgColor = selectionBackgroundColor
         ?: LocalColors.current.interaction.bgBrandInteractive
-    val weekdayLabelColor = when {
-        isSelected && expandSelectionToLabel && selectionContentColor != null -> selectionContentColor
-        isSelected && expandSelectionToLabel -> LocalColors.current.content.contentOnBrandHigh
-        !isEnabled -> LocalColors.current.content.contentTertiary
-        else -> LocalColors.current.content.contentPrimary
-    }
+    val weekdayLabelColor = resolveWeekdayLabelColor(
+        isSelected = isSelected,
+        isEnabled = isEnabled,
+        expandSelectionToLabel = expandSelectionToLabel,
+        selectionContentColor = selectionContentColor,
+    )
 
     Column(
         modifier = modifier
             .then(
-                if (isSelected && expandSelectionToLabel) {
-                    Modifier
-                        .clip(selectionShape)
-                        .background(
-                            color = resolvedSelectionBgColor,
-                            shape = selectionShape,
-                        ).padding(vertical = LocalSpaces.current.spacing100)
-                } else {
-                    Modifier
-                        .padding(vertical = LocalSpaces.current.spacing100)
-                },
+                expandedSelectionModifier(
+                    isSelected = isSelected,
+                    expandSelectionToLabel = expandSelectionToLabel,
+                    selectionShape = selectionShape,
+                    selectionBgColor = resolvedSelectionBgColor,
+                ),
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -90,30 +85,13 @@ internal fun CalendarDayCell(
             )
         }
 
-        // When expandSelectionToLabel is false, wrap the day number + trailing
-        // content in their own selection background so the weekday label stays
-        // outside the highlight.
-        val compactSelectionModifier = if (isSelected && !expandSelectionToLabel) {
-            Modifier
-                .clip(selectionShape)
-                .background(
-                    color = resolvedSelectionBgColor,
-                    shape = selectionShape,
-                ).padding(
-                    horizontal = LocalSpaces.current.spacing100,
-                    vertical = LocalSpaces.current.spacing100,
-                )
-        } else if (!expandSelectionToLabel) {
-            Modifier.padding(
-                horizontal = LocalSpaces.current.spacing100,
-                vertical = LocalSpaces.current.spacing100,
-            )
-        } else {
-            Modifier
-        }
-
         Column(
-            modifier = compactSelectionModifier,
+            modifier = compactSelectionModifier(
+                isSelected = isSelected,
+                expandSelectionToLabel = expandSelectionToLabel,
+                selectionShape = selectionShape,
+                selectionBgColor = resolvedSelectionBgColor,
+            ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ContentCell(
@@ -137,3 +115,65 @@ internal fun CalendarDayCell(
         }
     }
 }
+
+@Composable
+private fun resolveWeekdayLabelColor(
+    isSelected: Boolean,
+    isEnabled: Boolean,
+    expandSelectionToLabel: Boolean,
+    selectionContentColor: Color?,
+): Color {
+    val hasExpandedSelection = isSelected && expandSelectionToLabel
+    return when {
+        hasExpandedSelection && selectionContentColor != null -> selectionContentColor
+        hasExpandedSelection -> LocalColors.current.content.contentOnBrandHigh
+        !isEnabled -> LocalColors.current.content.contentTertiary
+        else -> LocalColors.current.content.contentPrimary
+    }
+}
+
+@Composable
+private fun expandedSelectionModifier(
+    isSelected: Boolean,
+    expandSelectionToLabel: Boolean,
+    selectionShape: androidx.compose.ui.graphics.Shape,
+    selectionBgColor: Color,
+): Modifier =
+    if (isSelected && expandSelectionToLabel) {
+        Modifier
+            .clip(selectionShape)
+            .background(
+                color = selectionBgColor,
+                shape = selectionShape,
+            ).padding(vertical = LocalSpaces.current.spacing100)
+    } else {
+        Modifier
+            .padding(vertical = LocalSpaces.current.spacing100)
+    }
+
+@Composable
+private fun compactSelectionModifier(
+    isSelected: Boolean,
+    expandSelectionToLabel: Boolean,
+    selectionShape: androidx.compose.ui.graphics.Shape,
+    selectionBgColor: Color,
+): Modifier =
+    when {
+        isSelected && !expandSelectionToLabel ->
+            Modifier
+                .clip(selectionShape)
+                .background(
+                    color = selectionBgColor,
+                    shape = selectionShape,
+                ).padding(
+                    horizontal = LocalSpaces.current.spacing100,
+                    vertical = LocalSpaces.current.spacing100,
+                )
+        !expandSelectionToLabel ->
+            Modifier.padding(
+                horizontal = LocalSpaces.current.spacing100,
+                vertical = LocalSpaces.current.spacing100,
+            )
+        else ->
+            Modifier
+    }

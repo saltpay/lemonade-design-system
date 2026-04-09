@@ -28,7 +28,6 @@ import kotlinx.datetime.todayIn
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalLemonadeComponent::class)
 @Composable
 internal fun InlineCalendarDisplay() {
     val today = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) }
@@ -42,147 +41,158 @@ internal fun InlineCalendarDisplay() {
             .navigationBarsPadding()
             .padding(LemonadeTheme.spaces.spacing400),
     ) {
-        InlineCalendarSection(title = "Default (today selected)") {
-            val state = rememberInlineCalendarState(initialDate = today)
-            LemonadeUi.InlineCalendar(
-                state = state,
-                onDateSelected = { /* observe state.selectedDate */ },
-            )
-            LemonadeUi.Text(
-                text = "Selected: ${state.selectedDate?.let { formatInlineDate(it) } ?: "none"}",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
-            )
-        }
-
-        InlineCalendarSection(title = "With trailing content (dot on every 3rd day)") {
-            val state = rememberInlineCalendarState(initialDate = today)
-            LemonadeUi.InlineCalendar(
-                state = state,
-                onDateSelected = { /* observe state.selectedDate */ },
-                enabledDates = { date -> date.day % 3 == 0 },
-                trailingContent = { date, isSelected ->
-                    if (date.day % 3 == 0) {
-                        Box(
-                            modifier = Modifier
-                                .size(size = 6.dp)
-                                .background(
-                                    color = if (isSelected) {
-                                        LemonadeTheme.colors.content.contentOnBrandHigh
-                                    } else {
-                                        LemonadeTheme.colors.content.contentBrand
-                                    },
-                                    shape = CircleShape,
-                                ),
-                        )
-                    }
-                },
-            )
-            LemonadeUi.Text(
-                text = "Selected: ${state.selectedDate?.let { formatInlineDate(it) } ?: "none"}",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
-            )
-        }
-
-        InlineCalendarSection(title = "Short day labels (Mon, Tue, Wed...)") {
-            val state = rememberInlineCalendarState(initialDate = today)
-            LemonadeUi.InlineCalendar(
-                state = state,
-                dayLabelFormat = DayLabelFormat.Short,
-                onDateSelected = { /* observe state.selectedDate */ },
-            )
-            LemonadeUi.Text(
-                text = "Selected: ${state.selectedDate?.let { formatInlineDate(it) } ?: "none"}",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
-            )
-        }
-
-        InlineCalendarSection(title = "Constrained range (7 days before to 30 days after)") {
-            val minDate = remember { today.plus(-7, DateTimeUnit.DAY) }
-            val maxDate = remember { today.plus(30, DateTimeUnit.DAY) }
-            val state = rememberInlineCalendarState(
-                initialDate = today,
-                minDate = minDate,
-                maxDate = maxDate,
-            )
-            LemonadeUi.InlineCalendar(
-                state = state,
-                onDateSelected = { /* observe state.selectedDate */ },
-            )
-            LemonadeUi.Text(
-                text = "Range: ${formatInlineDate(minDate)} - ${formatInlineDate(maxDate)}",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
-            )
-            LemonadeUi.Text(
-                text = "Selected: ${state.selectedDate?.let { formatInlineDate(it) } ?: "none"}",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
-            )
-        }
-
-        InlineCalendarSection(title = "Compact selection (day number only)") {
-            val state = rememberInlineCalendarState(initialDate = today)
-            LemonadeUi.InlineCalendar(
-                state = state,
-                expandSelectionToLabel = false,
-                onDateSelected = { /* observe state.selectedDate */ },
-            )
-            LemonadeUi.Text(
-                text = "Selected: ${state.selectedDate?.let { formatInlineDate(it) } ?: "none"}",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
-            )
-        }
-
-        InlineCalendarSection(title = "Compact selection with trailing dots") {
-            val state = rememberInlineCalendarState(initialDate = today)
-            LemonadeUi.InlineCalendar(
-                state = state,
-                expandSelectionToLabel = false,
-                onDateSelected = { /* observe state.selectedDate */ },
-                enabledDates = { date -> date.day % 3 == 0 },
-                trailingContent = { date, isSelected ->
-                    if (date.day % 3 == 0) {
-                        Box(
-                            modifier = Modifier
-                                .size(size = 6.dp)
-                                .background(
-                                    color = if (isSelected) {
-                                        LemonadeTheme.colors.content.contentOnBrandHigh
-                                    } else {
-                                        LemonadeTheme.colors.content.contentBrand
-                                    },
-                                    shape = CircleShape,
-                                ),
-                        )
-                    }
-                },
-            )
-            LemonadeUi.Text(
-                text = "Selected: ${state.selectedDate?.let { formatInlineDate(it) } ?: "none"}",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
-            )
-        }
-
-        InlineCalendarSection(title = "Custom selection colors") {
-            val state = rememberInlineCalendarState(initialDate = today)
-            LemonadeUi.InlineCalendar(
-                state = state,
-                selectionBackgroundColor = LemonadeTheme.colors.interaction.bgInfoInteractive,
-                selectionContentColor = LemonadeTheme.colors.content.contentAlwaysLight,
-                onDateSelected = { /* observe state.selectedDate */ },
-            )
-            LemonadeUi.Text(
-                text = "Selected: ${state.selectedDate?.let { formatInlineDate(it) } ?: "none"}",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
-            )
-        }
+        DefaultSection(today = today)
+        TrailingDotsSection(today = today)
+        ShortLabelsSection(today = today)
+        ConstrainedRangeSection(today = today)
+        CompactSelectionSection(today = today)
+        CompactDotsSection(today = today)
+        CustomColorsSection(today = today)
     }
+}
+
+@OptIn(ExperimentalLemonadeComponent::class)
+@Composable
+private fun DefaultSection(today: LocalDate) {
+    InlineCalendarSection(title = "Default (today selected)") {
+        val state = rememberInlineCalendarState(initialDate = today)
+        LemonadeUi.InlineCalendar(
+            state = state,
+            onDateSelected = { /* observe state.selectedDate */ },
+        )
+        SelectedDateLabel(state = state)
+    }
+}
+
+@OptIn(ExperimentalLemonadeComponent::class)
+@Composable
+private fun TrailingDotsSection(today: LocalDate) {
+    InlineCalendarSection(title = "With trailing content (dot on every 3rd day)") {
+        val state = rememberInlineCalendarState(initialDate = today)
+        LemonadeUi.InlineCalendar(
+            state = state,
+            onDateSelected = { /* observe state.selectedDate */ },
+            enabledDates = { date -> date.day % 3 == 0 },
+            trailingContent = { date, isSelected ->
+                if (date.day % 3 == 0) {
+                    EventDot(isSelected = isSelected)
+                }
+            },
+        )
+        SelectedDateLabel(state = state)
+    }
+}
+
+@OptIn(ExperimentalLemonadeComponent::class)
+@Composable
+private fun ShortLabelsSection(today: LocalDate) {
+    InlineCalendarSection(title = "Short day labels (Mon, Tue, Wed...)") {
+        val state = rememberInlineCalendarState(initialDate = today)
+        LemonadeUi.InlineCalendar(
+            state = state,
+            dayLabelFormat = DayLabelFormat.Short,
+            onDateSelected = { /* observe state.selectedDate */ },
+        )
+        SelectedDateLabel(state = state)
+    }
+}
+
+@OptIn(ExperimentalLemonadeComponent::class)
+@Composable
+private fun ConstrainedRangeSection(today: LocalDate) {
+    InlineCalendarSection(title = "Constrained range (7 days before to 30 days after)") {
+        val minDate = remember { today.plus(-7, DateTimeUnit.DAY) }
+        val maxDate = remember { today.plus(30, DateTimeUnit.DAY) }
+        val state = rememberInlineCalendarState(
+            initialDate = today,
+            minDate = minDate,
+            maxDate = maxDate,
+        )
+        LemonadeUi.InlineCalendar(
+            state = state,
+            onDateSelected = { /* observe state.selectedDate */ },
+        )
+        LemonadeUi.Text(
+            text = "Range: ${formatInlineDate(minDate)} - ${formatInlineDate(maxDate)}",
+            textStyle = LemonadeTheme.typography.bodySmallRegular,
+            color = LemonadeTheme.colors.content.contentSecondary,
+        )
+        SelectedDateLabel(state = state)
+    }
+}
+
+@OptIn(ExperimentalLemonadeComponent::class)
+@Composable
+private fun CompactSelectionSection(today: LocalDate) {
+    InlineCalendarSection(title = "Compact selection (day number only)") {
+        val state = rememberInlineCalendarState(initialDate = today)
+        LemonadeUi.InlineCalendar(
+            state = state,
+            expandSelectionToLabel = false,
+            onDateSelected = { /* observe state.selectedDate */ },
+        )
+        SelectedDateLabel(state = state)
+    }
+}
+
+@OptIn(ExperimentalLemonadeComponent::class)
+@Composable
+private fun CompactDotsSection(today: LocalDate) {
+    InlineCalendarSection(title = "Compact selection with trailing dots") {
+        val state = rememberInlineCalendarState(initialDate = today)
+        LemonadeUi.InlineCalendar(
+            state = state,
+            expandSelectionToLabel = false,
+            onDateSelected = { /* observe state.selectedDate */ },
+            enabledDates = { date -> date.day % 3 == 0 },
+            trailingContent = { date, isSelected ->
+                if (date.day % 3 == 0) {
+                    EventDot(isSelected = isSelected)
+                }
+            },
+        )
+        SelectedDateLabel(state = state)
+    }
+}
+
+@OptIn(ExperimentalLemonadeComponent::class)
+@Composable
+private fun CustomColorsSection(today: LocalDate) {
+    InlineCalendarSection(title = "Custom selection colors") {
+        val state = rememberInlineCalendarState(initialDate = today)
+        LemonadeUi.InlineCalendar(
+            state = state,
+            selectionBackgroundColor = LemonadeTheme.colors.interaction.bgInfoInteractive,
+            selectionContentColor = LemonadeTheme.colors.content.contentAlwaysLight,
+            onDateSelected = { /* observe state.selectedDate */ },
+        )
+        SelectedDateLabel(state = state)
+    }
+}
+
+@Composable
+private fun EventDot(isSelected: Boolean) {
+    Box(
+        modifier = Modifier
+            .size(size = 6.dp)
+            .background(
+                color = if (isSelected) {
+                    LemonadeTheme.colors.content.contentOnBrandHigh
+                } else {
+                    LemonadeTheme.colors.content.contentBrand
+                },
+                shape = CircleShape,
+            ),
+    )
+}
+
+@Composable
+private fun SelectedDateLabel(state: InlineCalendarState) {
+    LemonadeUi.Text(
+        text = "Selected: ${state.selectedDate?.let { formatInlineDate(it) } ?: "none"}",
+        textStyle = LemonadeTheme.typography.bodySmallRegular,
+        color = LemonadeTheme.colors.content.contentSecondary,
+    )
 }
 
 @Composable
