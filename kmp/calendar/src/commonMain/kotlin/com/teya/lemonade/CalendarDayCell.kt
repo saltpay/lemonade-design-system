@@ -1,0 +1,139 @@
+package com.teya.lemonade
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+
+/**
+ * A single day cell that optionally displays a weekday label above the
+ * [ContentCell] and an optional trailing content slot below.
+ *
+ * Used by both the full-month grid (DatePicker) and the inline calendar strip.
+ *
+ * @param text Day-of-month text (e.g. "14").
+ * @param isCurrent Whether the date is today.
+ * @param isSelected Whether the date is currently selected.
+ * @param isEnabled Whether the cell is interactive.
+ * @param isOutsideVisibleRange Whether the date falls outside the displayed month.
+ * @param isInsideSelectedRange Whether the date is within a selected range.
+ * @param onClick Called when the cell is tapped.
+ * @param modifier Optional [Modifier] for the root container.
+ * @param contentDescription Optional accessibility description for the cell.
+ *   When provided, screen readers announce this instead of just the day number.
+ * @param showWeekdayLabel Whether to display the weekday label above the day number.
+ * @param weekdayLabel The short weekday text (e.g. "M", "Mon").
+ * @param expandSelectionToLabel When `true` (default), the selection background covers the
+ *   entire cell column including the weekday label and trailing content. When `false`, only
+ *   the day number circle carries the brand background (DatePicker style).
+ * @param selectionBackgroundColor When non-null, overrides the default brand background color
+ *   used for selected cells.
+ * @param selectionContentColor When non-null, overrides the default text color used on
+ *   selected cells. Also applied to the weekday label when [expandSelectionToLabel] is `true`.
+ * @param trailingContent Optional composable rendered below the day cell.
+ */
+@Composable
+internal fun CalendarDayCell(
+    text: String,
+    isCurrent: Boolean,
+    isSelected: Boolean,
+    isEnabled: Boolean,
+    isOutsideVisibleRange: Boolean,
+    isInsideSelectedRange: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    contentDescription: String? = null,
+    showWeekdayLabel: Boolean = true,
+    weekdayLabel: String = "",
+    expandSelectionToLabel: Boolean = true,
+    selectionBackgroundColor: Color? = null,
+    selectionContentColor: Color? = null,
+    trailingContent: (@Composable () -> Unit)? = null,
+) {
+    val selectionShape = LocalShapes.current.radius300
+    val resolvedSelectionBgColor = selectionBackgroundColor
+        ?: LocalColors.current.interaction.bgBrandInteractive
+    val weekdayLabelColor = when {
+        isSelected && expandSelectionToLabel && selectionContentColor != null -> selectionContentColor
+        isSelected && expandSelectionToLabel -> LocalColors.current.content.contentOnBrandHigh
+        !isEnabled -> LocalColors.current.content.contentTertiary
+        else -> LocalColors.current.content.contentPrimary
+    }
+
+    Column(
+        modifier = modifier
+            .then(
+                if (isSelected && expandSelectionToLabel) {
+                    Modifier
+                        .clip(selectionShape)
+                        .background(
+                            color = resolvedSelectionBgColor,
+                            shape = selectionShape,
+                        ).padding(vertical = LocalSpaces.current.spacing100)
+                } else {
+                    Modifier
+                        .padding(vertical = LocalSpaces.current.spacing100)
+                },
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        if (showWeekdayLabel && weekdayLabel.isNotEmpty()) {
+            LemonadeUi.Text(
+                text = weekdayLabel,
+                textStyle = LocalTypographies.current.bodyXSmallOverline,
+                color = weekdayLabelColor,
+            )
+        }
+
+        // When expandSelectionToLabel is false, wrap the day number + trailing
+        // content in their own selection background so the weekday label stays
+        // outside the highlight.
+        val compactSelectionModifier = if (isSelected && !expandSelectionToLabel) {
+            Modifier
+                .clip(selectionShape)
+                .background(
+                    color = resolvedSelectionBgColor,
+                    shape = selectionShape,
+                ).padding(
+                    horizontal = LocalSpaces.current.spacing100,
+                    vertical = LocalSpaces.current.spacing100,
+                )
+        } else if (!expandSelectionToLabel) {
+            Modifier.padding(
+                horizontal = LocalSpaces.current.spacing100,
+                vertical = LocalSpaces.current.spacing100,
+            )
+        } else {
+            Modifier
+        }
+
+        Column(
+            modifier = compactSelectionModifier,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            ContentCell(
+                text = text,
+                isCurrent = isCurrent,
+                isSelected = isSelected,
+                isEnabled = isEnabled,
+                isOutsideVisibleRange = isOutsideVisibleRange,
+                isInsideSelectedRange = isInsideSelectedRange,
+                onClick = onClick,
+                modifier = Modifier.fillMaxWidth(),
+                contentDescription = contentDescription,
+                showSelectionBackground = false,
+                showTodayIndicator = false,
+                selectionContentColor = selectionContentColor,
+            )
+
+            if (trailingContent != null) {
+                trailingContent()
+            }
+        }
+    }
+}
