@@ -1,8 +1,8 @@
 package com.teya.lemonade
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -141,9 +141,7 @@ public data class CardFooterActionConfig(
 )
 
 @Composable
-private fun CardFooterAction(
-    config: CardFooterActionConfig,
-) {
+private fun CardFooterAction(config: CardFooterActionConfig) {
     LemonadeUi.HorizontalDivider(
         modifier = Modifier.fillMaxWidth(),
     )
@@ -154,10 +152,11 @@ private fun CardFooterAction(
             .fillMaxWidth()
             .clickable(onClick = config.onClick)
             .padding(
-                horizontal = LocalSpaces.current.spacing400,
-                vertical = LocalSpaces.current.spacing200,
-            )
-            .padding(bottom = LocalSpaces.current.spacing200),
+                start = LocalSpaces.current.spacing400,
+                top = LocalSpaces.current.spacing200,
+                end = LocalSpaces.current.spacing400,
+                bottom = LocalSpaces.current.spacing400,
+            ),
     ) {
         LemonadeUi.Text(
             text = config.label,
