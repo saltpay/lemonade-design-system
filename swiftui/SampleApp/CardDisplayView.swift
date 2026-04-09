@@ -123,6 +123,20 @@ struct CardDisplayView: View {
                         }
                     }
                 }
+
+                // Footer Action
+                sectionView(title: "Footer Action") {
+                    LemonadeUi.Card(
+                        contentPadding: .medium,
+                        header: CardHeaderConfig(title: "Card with Footer"),
+                        footerAction: CardFooterActionConfig(
+                            label: "Action",
+                            onClick: {}
+                        )
+                    ) {
+                        LemonadeUi.Text("Card content with a footer action button.")
+                    }
+                }
             }
             .padding()
         }

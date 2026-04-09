@@ -130,6 +130,19 @@ extension CardHeaderConfig where TrailingContent == EmptyView {
     }
 }
 
+// MARK: - Card Footer Action Config
+
+/// Configuration for the Card footer action.
+public struct CardFooterActionConfig {
+    let label: String
+    let onClick: () -> Void
+
+    public init(label: String, onClick: @escaping () -> Void) {
+        self.label = label
+        self.onClick = onClick
+    }
+}
+
 // MARK: - Card Component
 
 public extension LemonadeUi {
@@ -146,12 +159,14 @@ public extension LemonadeUi {
         contentPadding: LemonadeCardPadding = .none,
         background: LemonadeCardBackground = .default,
         header: CardHeaderConfig<LeadingContent, TrailingContent>? = nil,
+        footerAction: CardFooterActionConfig? = nil,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View {
         LemonadeCardView(
             contentPadding: contentPadding,
             background: background,
             header: header,
+            footerAction: footerAction,
             content: content
         )
     }
@@ -161,18 +176,21 @@ public extension LemonadeUi {
     /// - Parameters:
     ///   - contentPadding: LemonadeCardPadding for the content area. Defaults to .none
     ///   - background: LemonadeCardBackground style. Defaults to .default
+    ///   - footerAction: Optional CardFooterActionConfig for the footer action
     ///   - content: Content to display inside the card
     /// - Returns: A styled Card view
     @ViewBuilder
     static func Card<Content: View>(
         contentPadding: LemonadeCardPadding = .none,
         background: LemonadeCardBackground = .default,
+        footerAction: CardFooterActionConfig? = nil,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View {
         LemonadeCardView<Content, EmptyView, EmptyView>(
             contentPadding: contentPadding,
             background: background,
             header: nil,
+            footerAction: footerAction,
             content: content
         )
     }
@@ -184,7 +202,22 @@ private struct LemonadeCardView<Content: View, LeadingContent: View, TrailingCon
     let contentPadding: LemonadeCardPadding
     let background: LemonadeCardBackground
     let header: CardHeaderConfig<LeadingContent, TrailingContent>?
+    let footerAction: CardFooterActionConfig?
     let content: () -> Content
+
+    init(
+        contentPadding: LemonadeCardPadding,
+        background: LemonadeCardBackground,
+        header: CardHeaderConfig<LeadingContent, TrailingContent>?,
+        footerAction: CardFooterActionConfig? = nil,
+        content: @escaping () -> Content
+    ) {
+        self.contentPadding = contentPadding
+        self.background = background
+        self.header = header
+        self.footerAction = footerAction
+        self.content = content
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -196,6 +229,10 @@ private struct LemonadeCardView<Content: View, LeadingContent: View, TrailingCon
                 content()
             }
             .padding(contentPadding.spacing)
+
+            if let footerAction = footerAction {
+                LemonadeCardFooterAction(config: footerAction)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(background.color)
@@ -236,6 +273,27 @@ private struct LemonadeCardHeader<LeadingContent: View, TrailingContent: View>: 
         }
         .padding(.horizontal, LemonadeTheme.spaces.spacing400)
         .padding(.top, LemonadeTheme.spaces.spacing400)
+    }
+}
+
+private struct LemonadeCardFooterAction: View {
+    let config: CardFooterActionConfig
+
+    var body: some View {
+        LemonadeUi.HorizontalDivider()
+
+        Button(action: config.onClick) {
+            LemonadeUi.Text(
+                config.label,
+                textStyle: LemonadeTypography.shared.bodySmallSemiBold,
+                color: LemonadeTheme.colors.content.contentPrimary
+            )
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.horizontal, LemonadeTheme.spaces.spacing400)
+            .padding(.vertical, LemonadeTheme.spaces.spacing200)
+            .padding(.bottom, LemonadeTheme.spaces.spacing200)
+        }
+        .buttonStyle(.plain)
     }
 }
 

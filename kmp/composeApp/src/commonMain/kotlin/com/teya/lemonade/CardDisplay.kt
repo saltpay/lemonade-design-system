@@ -183,6 +183,27 @@ internal fun CardDisplay() {
                 }
             }
         }
+
+        // Footer Action
+        CardSection(title = "Footer Action") {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            ) {
+                LemonadeUi.Card(
+                    contentPadding = LemonadeCardPadding.Medium,
+                    header = CardHeaderConfig(title = "Card with Footer"),
+                    footerAction = CardFooterActionConfig(
+                        label = "Action",
+                        onClick = {},
+                    ),
+                ) {
+                    LemonadeUi.Text(
+                        text = "Card content with a footer action button.",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    )
+                }
+            }
+        }
     }
 }
 

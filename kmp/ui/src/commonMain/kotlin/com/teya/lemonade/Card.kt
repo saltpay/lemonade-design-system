@@ -2,6 +2,7 @@ package com.teya.lemonade
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -32,6 +33,7 @@ public fun LemonadeUi.Card(
     contentPadding: LemonadeCardPadding = LemonadeCardPadding.None,
     background: LemonadeCardBackground = LemonadeCardBackground.Default,
     header: CardHeaderConfig? = null,
+    footerAction: CardFooterActionConfig? = null,
     content: (@Composable ColumnScope.() -> Unit),
 ) {
     CoreCard(
@@ -39,6 +41,7 @@ public fun LemonadeUi.Card(
         contentPadding = contentPadding,
         background = background,
         header = header,
+        footerAction = footerAction,
         content = content,
     )
 }
@@ -49,6 +52,7 @@ private fun CoreCard(
     contentPadding: LemonadeCardPadding,
     background: LemonadeCardBackground = LemonadeCardBackground.Default,
     header: CardHeaderConfig? = null,
+    footerAction: CardFooterActionConfig? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
@@ -66,6 +70,10 @@ private fun CoreCard(
                 .padding(contentPadding.spacing),
         ) {
             content()
+        }
+
+        if (footerAction != null) {
+            CardFooterAction(config = footerAction)
         }
     }
 }
@@ -124,6 +132,38 @@ private fun CardHeader(
                 tint = LocalColors.current.content.contentSecondary,
             )
         }
+    }
+}
+
+public data class CardFooterActionConfig(
+    val label: String,
+    val onClick: () -> Unit,
+)
+
+@Composable
+private fun CardFooterAction(
+    config: CardFooterActionConfig,
+) {
+    LemonadeUi.HorizontalDivider(
+        modifier = Modifier.fillMaxWidth(),
+    )
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = config.onClick)
+            .padding(
+                horizontal = LocalSpaces.current.spacing400,
+                vertical = LocalSpaces.current.spacing200,
+            )
+            .padding(bottom = LocalSpaces.current.spacing200),
+    ) {
+        LemonadeUi.Text(
+            text = config.label,
+            textStyle = LocalTypographies.current.bodySmallSemiBold,
+            color = LocalColors.current.content.contentPrimary,
+        )
     }
 }
 
