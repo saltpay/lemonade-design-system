@@ -96,6 +96,7 @@ internal object DisplayRegistry {
                 Displays.RadioButton,
                 Displays.Switch,
                 Displays.DatePicker,
+                Displays.InlineCalendar,
             ),
         ),
         DisplayData(

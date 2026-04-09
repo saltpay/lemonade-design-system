@@ -46,6 +46,7 @@ internal interface Displays {
             Divider,
             Tabs,
             DatePicker,
+            InlineCalendar,
             Notice,
             Toast,
         )
@@ -234,6 +235,11 @@ internal interface Displays {
     @Serializable
     data object DatePicker : Displays {
         override val label: String = "DatePicker"
+    }
+
+    @Serializable
+    data object InlineCalendar : Displays {
+        override val label: String = "InlineCalendar"
     }
 
     @Serializable
