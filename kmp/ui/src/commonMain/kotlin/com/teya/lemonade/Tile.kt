@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -48,6 +49,8 @@ import com.teya.lemonade.core.LemonadeTileVariant
  * @param icon - [LemonadeIcons] displayed above the label.
  * @param modifier - [Modifier] to be applied to the Tile.
  * @param enabled - [Boolean] flag to enable or disable the Tile.
+ * @param isSelected - [Boolean] flag to apply selected styling to the Tile.
+ * @param supportText - Optional [String] to be displayed below the label.
  * @param alignment - [Alignment.Horizontal] to align the Tile's content horizontally.
  * @param onClick - Callback to be invoked when the Tile is clicked.
  * @param interactionSource - [MutableInteractionSource] to be applied to the Tile.
@@ -60,10 +63,12 @@ public fun LemonadeUi.Tile(
     icon: LemonadeIcons,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    isSelected: Boolean = false,
+    supportText: String? = null,
     alignment: Alignment.Horizontal = Alignment.CenterHorizontally,
     onClick: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    variant: LemonadeTileVariant = LemonadeTileVariant.Neutral,
+    variant: LemonadeTileVariant = LemonadeTileVariant.Filled,
     addon: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     CoreTile(
@@ -72,14 +77,18 @@ public fun LemonadeUi.Tile(
         variant = variant,
         onClick = onClick,
         enabled = enabled,
+        isSelected = isSelected,
         interactionSource = interactionSource,
         content = {
             Column(
-                verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing400),
+                verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
                 horizontalAlignment = alignment,
                 modifier = Modifier
-                    .defaultMinSize(minWidth = 120.dp)
-                    .padding(all = LocalSpaces.current.spacing400),
+                    .defaultMinSize(
+                        minWidth = 120.dp,
+                        minHeight = 88.dp,
+                    )
+                    .padding(all = LocalSpaces.current.spacing300),
             ) {
                 LemonadeUi.Icon(
                     icon = icon,
@@ -87,13 +96,29 @@ public fun LemonadeUi.Tile(
                     contentDescription = null,
                 )
 
-                LemonadeUi.Text(
-                    text = label,
-                    textStyle = LocalTypographies.current.bodySmallSemiBold,
-                    color = LocalColors.current.content.contentPrimary,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                )
+                Spacer(modifier = Modifier.weight(weight = 1f))
+
+                Column(
+                    horizontalAlignment = alignment,
+                ) {
+                    LemonadeUi.Text(
+                        text = label,
+                        textStyle = LocalTypographies.current.bodySmallMedium,
+                        color = LocalColors.current.content.contentPrimary,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                    )
+
+                    if (supportText != null) {
+                        LemonadeUi.Text(
+                            text = supportText,
+                            textStyle = LocalTypographies.current.bodySmallRegular,
+                            color = LocalColors.current.content.contentSecondary,
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1,
+                        )
+                    }
+                }
             }
         },
     )
@@ -106,6 +131,7 @@ private fun CoreTile(
     addon: (@Composable BoxScope.() -> Unit)?,
     content: @Composable BoxScope.() -> Unit,
     enabled: Boolean,
+    isSelected: Boolean,
     onClick: (() -> Unit)?,
     interactionSource: MutableInteractionSource,
     modifier: Modifier = Modifier,
@@ -114,18 +140,29 @@ private fun CoreTile(
     val isFocused by interactionSource.collectIsFocusedAsState()
 
     val tileShape = LocalShapes.current.radius500
+    val baseTileData = variant.data
+    val tileData = if (isSelected) {
+        baseTileData.copy(
+            backgroundColor = LocalColors.current.background.bgBrandSubtle,
+            backgroundPressedColor = LocalColors.current.interaction.bgBrandElevatedPressed,
+            borderColor = LocalColors.current.border.borderSelected,
+            borderWidth = LocalBorderWidths.current.base.border50,
+        )
+    } else {
+        baseTileData
+    }
     val animatedBackgroundColor by animateColorAsState(
         targetValue = if (isPressed) {
-            variant.data.backgroundPressedColor
+            tileData.backgroundPressedColor
         } else {
-            variant.data.backgroundColor
+            tileData.backgroundColor
         },
     )
     val animatedBorderColor by animateColorAsState(
-        targetValue = variant.data.borderColor,
+        targetValue = tileData.borderColor,
     )
     val animatedBorderWidth by animateDpAsState(
-        targetValue = variant.data.borderWidth,
+        targetValue = tileData.borderWidth,
     )
 
     val spaces = LocalSpaces.current
@@ -161,7 +198,7 @@ private fun CoreTile(
                             Modifier
                         },
                     ).then(
-                        other = variant.data.shadow?.let { lemonadeShadow ->
+                        other = tileData.shadow?.let { lemonadeShadow ->
                             Modifier.lemonadeShadow(
                                 shadow = lemonadeShadow,
                                 shape = tileShape,
@@ -207,7 +244,10 @@ internal data class TileData(
 internal val LemonadeTileVariant.data: TileData
     @Composable get() {
         return when (this) {
-            LemonadeTileVariant.Neutral -> TileData(
+            LemonadeTileVariant.Filled,
+            @Suppress("DEPRECATION")
+            LemonadeTileVariant.Neutral,
+            -> TileData(
                 backgroundColor = LocalColors.current.background.bgElevated,
                 backgroundPressedColor = LocalColors.current.interaction.bgElevatedPressed,
                 borderColor = LocalColors.current.border.borderNeutralMedium,
@@ -215,7 +255,10 @@ internal val LemonadeTileVariant.data: TileData
                 shadow = null,
             )
 
-            LemonadeTileVariant.Muted -> TileData(
+            LemonadeTileVariant.Outlined,
+            @Suppress("DEPRECATION")
+            LemonadeTileVariant.Muted,
+            -> TileData(
                 backgroundColor = LocalColors.current.background.bgDefault,
                 backgroundPressedColor = LocalColors.current.interaction.bgDefaultPressed,
                 borderColor = LocalColors.current.border.borderNeutralMedium,
@@ -223,7 +266,9 @@ internal val LemonadeTileVariant.data: TileData
                 shadow = LemonadeShadow.Xsmall,
             )
 
-            LemonadeTileVariant.OnColor -> TileData(
+            @Suppress("DEPRECATION")
+            LemonadeTileVariant.OnColor,
+            -> TileData(
                 backgroundColor = LocalColors.current.background.bgBrandElevated,
                 backgroundPressedColor = LocalColors.current.interaction.bgBrandElevatedPressed,
                 borderColor = LocalColors.current.border.borderNeutralMediumInverse,
@@ -231,7 +276,9 @@ internal val LemonadeTileVariant.data: TileData
                 shadow = null,
             )
 
-            LemonadeTileVariant.Selected -> TileData(
+            @Suppress("DEPRECATION")
+            LemonadeTileVariant.Selected,
+            -> TileData(
                 backgroundColor = LocalColors.current.background.bgBrandSubtle,
                 backgroundPressedColor = LocalColors.current.interaction.bgBrandElevatedPressed,
                 borderColor = LocalColors.current.border.borderSelected,
@@ -246,34 +293,42 @@ private data class TilePreviewData(
     val withAddon: Boolean,
     val variant: LemonadeTileVariant,
     val alignment: Alignment.Horizontal,
+    val isSelected: Boolean,
 )
 
 private class TilePreviewProvider : PreviewParameterProvider<TilePreviewData> {
     override val values: Sequence<TilePreviewData> = buildAllVariants()
 
-    private fun buildAllVariants(): Sequence<TilePreviewData> =
-        buildList {
+    private fun buildAllVariants(): Sequence<TilePreviewData> {
+        return buildList {
             listOf(true, false).forEach { enabled ->
                 listOf(true, false).forEach { withAddon ->
-                    LemonadeTileVariant.entries.forEach { variant ->
+                    listOf(
+                        LemonadeTileVariant.Filled,
+                        LemonadeTileVariant.Outlined,
+                    ).forEach { variant ->
                         listOf(
                             Alignment.Start,
                             Alignment.CenterHorizontally,
                             Alignment.End,
                         ).forEach { alignment ->
-                            add(
-                                TilePreviewData(
-                                    enabled = enabled,
-                                    withAddon = withAddon,
-                                    variant = variant,
-                                    alignment = alignment,
-                                ),
-                            )
+                            listOf(true, false).forEach { selected ->
+                                add(
+                                    TilePreviewData(
+                                        enabled = enabled,
+                                        withAddon = withAddon,
+                                        variant = variant,
+                                        alignment = alignment,
+                                        isSelected = selected,
+                                    ),
+                                )
+                            }
                         }
                     }
                 }
             }
         }.asSequence()
+    }
 }
 
 @LemonadePreview
@@ -286,22 +341,16 @@ private fun LemonadeTilePreview(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .background(
-                color = if (
-                    previewData.variant == LemonadeTileVariant.OnColor ||
-                    previewData.variant == LemonadeTileVariant.Selected
-                ) {
-                    LocalColors.current.background.bgBrand
-                } else {
-                    LocalColors.current.background.bgBrand.copy(
-                        alpha = LocalOpacities.current.base.opacity0,
-                    )
-                },
-            ).padding(30.dp),
+                color = LocalColors.current.background.bgBrand.copy(
+                    alpha = LocalOpacities.current.base.opacity0,
+                ),
+            ).padding(all = 30.dp),
     ) {
         LemonadeUi.Tile(
             label = "Label",
             icon = LemonadeIcons.Heart,
             enabled = previewData.enabled,
+            isSelected = previewData.isSelected,
             alignment = previewData.alignment,
             variant = previewData.variant,
             addon = if (previewData.withAddon) {
