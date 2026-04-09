@@ -157,13 +157,12 @@ private fun CardFooterAction(config: CardFooterActionConfig) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
+            .alpha(alpha = alpha)
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
                 onClick = config.onClick,
-            )
-            .alpha(alpha = alpha)
-            .padding(
+            ).padding(
                 start = LocalSpaces.current.spacing400,
                 top = LocalSpaces.current.spacing200,
                 end = LocalSpaces.current.spacing400,
