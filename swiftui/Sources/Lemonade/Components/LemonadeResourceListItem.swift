@@ -10,7 +10,7 @@ public extension LemonadeUi {
     /// LemonadeUi.ResourceListItem(
     ///     label: "Label",
     ///     value: "Value",
-    ///     supportText: "Support Text",
+    ///     description: "Description",
     ///     showDivider: true
     /// ) {
     ///     LemonadeUi.SymbolContainer(icon: .heart, contentDescription: nil)
@@ -20,7 +20,8 @@ public extension LemonadeUi {
     /// - Parameters:
     ///   - label: Main String to be displayed
     ///   - value: Value String to be displayed in trailing position
-    ///   - supportText: String to be displayed as support text
+    ///   - description: String to be displayed as description
+    ///   - isLoading: Shows a skeleton loading placeholder instead of content
     ///   - enabled: Flag to define if component is enabled. Defaults to true
     ///   - showDivider: Flag to show a divider below the list item. Defaults to false
     ///   - onItemClicked: Callback called when component is tapped
@@ -31,7 +32,8 @@ public extension LemonadeUi {
     static func ResourceListItem<LeadingContent: View, AddonContent: View>(
         label: String,
         value: String,
-        supportText: String? = nil,
+        description: String? = nil,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil,
@@ -40,8 +42,9 @@ public extension LemonadeUi {
     ) -> some View {
         ListItem(
             label: label,
-            supportText: supportText,
+            description: description,
             voice: .neutral,
+            isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             onListItemClick: onItemClicked,
@@ -68,7 +71,8 @@ public extension LemonadeUi {
     static func ResourceListItem<LeadingContent: View>(
         label: String,
         value: String,
-        supportText: String? = nil,
+        description: String? = nil,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil,
@@ -77,7 +81,8 @@ public extension LemonadeUi {
         ResourceListItem(
             label: label,
             value: value,
-            supportText: supportText,
+            description: description,
+            isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             onItemClicked: onItemClicked,

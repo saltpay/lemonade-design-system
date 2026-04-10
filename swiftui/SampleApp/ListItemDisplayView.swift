@@ -21,7 +21,7 @@ struct ListItemDisplayView: View {
                             checked: singleSelection == index,
                             onItemClicked: { singleSelection = index },
                             showDivider: index < 2,
-                            supportText: index == 0 ? "With support text" : nil
+                            description: index == 0 ? "With support text" : nil
                         )
                     }
                 }
@@ -60,7 +60,7 @@ struct ListItemDisplayView: View {
                             checked: toggleStates[index],
                             onItemClicked: { toggleStates[index].toggle() },
                             showDivider: index < 2,
-                            supportText: index == 0 ? "With support text" : nil
+                            description: index == 0 ? "With support text" : nil
                         )
                     }
                 }
@@ -75,7 +75,7 @@ struct ListItemDisplayView: View {
                         type: .single,
                         checked: true,
                         onItemClicked: {},
-                        supportText: "Leading icon example",
+                        description: "Leading icon example",
                         leadingSlot: {
                             LemonadeUi.Icon(
                                 icon: .star,
@@ -108,7 +108,7 @@ struct ListItemDisplayView: View {
                     LemonadeUi.ResourceListItem(
                         label: "Account Balance",
                         value: "$1,234.56",
-                        supportText: "Updated today",
+                        description: "Updated today",
                         showDivider: true,
                         leadingSlot: {
                             LemonadeUi.SymbolContainer(
@@ -143,7 +143,7 @@ struct ListItemDisplayView: View {
                     LemonadeUi.ResourceListItem(
                         label: "Last Transaction",
                         value: "-$50.00",
-                        supportText: "Yesterday",
+                        description: "Yesterday",
                         showDivider: false,
                         addonSlot: {
                             LemonadeUi.Tag(label: "Pending", voice: .warning)
@@ -180,7 +180,7 @@ struct ListItemDisplayView: View {
 
                     LemonadeUi.ActionListItem(
                         label: "Notifications",
-                        supportText: "Manage your notifications",
+                        description: "Manage your notifications",
                         showNavigationIndicator: true,
                         showDivider: true,
                         onItemClicked: {},
@@ -270,7 +270,7 @@ struct ListItemDisplayView: View {
 
                     LemonadeUi.ActionListItem(
                         label: "Log Out",
-                        supportText: "You will need to sign in again",
+                        description: "You will need to sign in again",
                         voice: .critical,
                         showDivider: false,
                         onItemClicked: {},
@@ -302,6 +302,30 @@ struct ListItemDisplayView: View {
                                 size: .medium
                             )
                         }
+                    )
+                }
+
+                // MARK: - Loading State
+                LemonadeUi.Card(
+                    contentPadding: .none,
+                    header: CardHeaderConfig(title: "Loading State")
+                ) {
+                    LemonadeUi.ActionListItem(
+                        label: "",
+                        isLoading: true,
+                        showDivider: true
+                    )
+
+                    LemonadeUi.ActionListItem(
+                        label: "",
+                        isLoading: true,
+                        showDivider: true
+                    )
+
+                    LemonadeUi.ActionListItem(
+                        label: "",
+                        isLoading: true,
+                        showDivider: false
                     )
                 }
             }

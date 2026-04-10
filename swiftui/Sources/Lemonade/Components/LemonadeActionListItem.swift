@@ -9,7 +9,7 @@ public extension LemonadeUi {
     /// ```swift
     /// LemonadeUi.ActionListItem(
     ///     label: "Label",
-    ///     supportText: "Support Text",
+    ///     description: "Description",
     ///     showDivider: true,
     ///     onItemClicked: { /* action */ },
     ///     leadingSlot: { LemonadeUi.Icon(icon: .heart, contentDescription: nil) },
@@ -19,9 +19,10 @@ public extension LemonadeUi {
     ///
     /// - Parameters:
     ///   - label: Label String to be displayed
-    ///   - supportText: Text to be displayed as Support Text
+    ///   - description: Text to be displayed as description below the label
     ///   - voice: LemonadeListItemVoice to define tone of voice. Defaults to .neutral
     ///   - showNavigationIndicator: Indicates navigation visually
+    ///   - isLoading: Shows a skeleton loading placeholder instead of content
     ///   - enabled: Flag to define if component is enabled. Defaults to true
     ///   - showDivider: Flag to show a divider below the list item. Defaults to false
     ///   - onItemClicked: Callback called when component is tapped
@@ -31,9 +32,10 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ActionListItem<LeadingContent: View, TrailingContent: View>(
         label: String,
-        supportText: String? = nil,
+        description: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil,
@@ -42,26 +44,17 @@ public extension LemonadeUi {
     ) -> some View {
         ListItem(
             label: label,
-            supportText: supportText,
+            description: description,
             voice: voice,
+            navigationIndicator: showNavigationIndicator,
+            isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             onListItemClick: onItemClicked,
             leadingSlot: leadingSlot,
             trailingSlot: {
-                HStack {
-                    trailingSlot()
-
-                    if showNavigationIndicator {
-                        LemonadeUi.Icon(
-                            icon: .chevronRight,
-                            contentDescription: "Navigation indicator",
-                            size: .medium,
-                            tint: LemonadeTheme.colors.content.contentTertiary
-                        )
-                    }
-                }
-                .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+                trailingSlot()
+                    .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
             }
         )
     }
@@ -70,9 +63,10 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ActionListItem<LeadingContent: View>(
         label: String,
-        supportText: String? = nil,
+        description: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil,
@@ -80,9 +74,10 @@ public extension LemonadeUi {
     ) -> some View {
         ActionListItem(
             label: label,
-            supportText: supportText,
+            description: description,
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,
+            isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             onItemClicked: onItemClicked,
@@ -95,9 +90,10 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ActionListItem<TrailingContent: View>(
         label: String,
-        supportText: String? = nil,
+        description: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil,
@@ -105,9 +101,10 @@ public extension LemonadeUi {
     ) -> some View {
         ActionListItem(
             label: label,
-            supportText: supportText,
+            description: description,
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,
+            isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             onItemClicked: onItemClicked,
@@ -120,18 +117,20 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ActionListItem(
         label: String,
-        supportText: String? = nil,
+        description: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil
     ) -> some View {
         ActionListItem(
             label: label,
-            supportText: supportText,
+            description: description,
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,
+            isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             onItemClicked: onItemClicked,

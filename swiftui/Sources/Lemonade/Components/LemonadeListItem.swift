@@ -14,7 +14,7 @@ public enum SelectListItemType {
 
 // MARK: - LemonadeListItemVoice
 
-/// Defines the tone of voice for ActionListItem.
+/// Defines the tone of voice for ListItem.
 public enum LemonadeListItemVoice {
     case neutral
     case critical
@@ -37,52 +37,66 @@ public enum LemonadeListItemVoice {
 // MARK: - Internal ListItem Helpers
 
 extension LemonadeUi {
-    /// Convenience overload that composes standard label and support-text content from string
+    /// Convenience overload that composes standard label and description content from string
     /// parameters and delegates to the content-slot variant of ListItem.
     ///
     /// - Parameters:
     ///   - label: Label String to be displayed
-    ///   - supportText: Optional support text displayed below the label
+    ///   - description: Optional description text displayed below the label
     ///   - voice: LemonadeListItemVoice to define tone of voice
+    ///   - navigationIndicator: Shows a chevron-right navigation indicator
     ///   - enabled: Flag to define if component is enabled
     ///   - showDivider: Flag to show a divider below the list item
     ///   - onListItemClick: Optional callback triggered on click interaction
     ///   - leadingSlot: Slot content to be placed in leading position
     ///   - trailingSlot: Slot content to be placed in trailing position
+    ///   - slotContent: Optional slot content below the label and description
     @ViewBuilder
-    static func ListItem<LeadingContent: View, TrailingContent: View>(
+    static func ListItem<LeadingContent: View, TrailingContent: View, SlotContent: View>(
         label: String,
-        supportText: String? = nil,
+        description: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
+        navigationIndicator: Bool = false,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         onListItemClick: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
-        @ViewBuilder trailingSlot: @escaping () -> TrailingContent
+        @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
+        @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
     ) -> some View {
-        ListItem(
-            voice: voice,
-            enabled: enabled,
-            showDivider: showDivider,
-            onListItemClick: onListItemClick,
-            leadingSlot: leadingSlot,
-            trailingSlot: trailingSlot,
-            contentSlot: {
-                LemonadeUi.Text(
-                    label,
-                    textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                    color: voice.contentColor
-                )
-
-                if let supportText = supportText {
+        if isLoading {
+            ListItemSkeletonView(showDivider: showDivider)
+        } else {
+            ListItem(
+                voice: voice,
+                navigationIndicator: navigationIndicator,
+                enabled: enabled,
+                showDivider: showDivider,
+                onListItemClick: onListItemClick,
+                leadingSlot: leadingSlot,
+                trailingSlot: trailingSlot,
+                contentSlot: {
                     LemonadeUi.Text(
-                        supportText,
-                        textStyle: LemonadeTypography.shared.bodySmallRegular,
-                        color: LemonadeTheme.colors.content.contentSecondary
+                        label,
+                        textStyle: LemonadeTypography.shared.bodyMediumMedium,
+                        color: voice.contentColor
                     )
+
+                    if let description = description {
+                        LemonadeUi.Text(
+                            description,
+                            textStyle: LemonadeTypography.shared.bodySmallRegular,
+                            color: LemonadeTheme.colors.content.contentSecondary
+                        )
+                    }
+
+                    if SlotContent.self != EmptyView.self {
+                        slotContent()
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 
     /// Foundational list-item overload that accepts a generic content slot for custom content,
@@ -90,6 +104,7 @@ extension LemonadeUi {
     ///
     /// - Parameters:
     ///   - voice: LemonadeListItemVoice to define tone of voice
+    ///   - navigationIndicator: Shows a chevron-right navigation indicator
     ///   - enabled: Flag to define if component is enabled
     ///   - showDivider: Flag to show a divider below the list item
     ///   - onListItemClick: Optional callback triggered on click interaction
@@ -99,6 +114,7 @@ extension LemonadeUi {
     @ViewBuilder
     static func ListItem<ContentSlot: View, LeadingContent: View, TrailingContent: View>(
         voice: LemonadeListItemVoice = .neutral,
+        navigationIndicator: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         onListItemClick: (() -> Void)? = nil,
@@ -109,6 +125,7 @@ extension LemonadeUi {
         LemonadeCoreListItemView(
             contentSlot: contentSlot,
             voice: voice,
+            navigationIndicator: navigationIndicator,
             enabled: enabled,
             showDivider: showDivider,
             onListItemClick: onListItemClick,
@@ -123,11 +140,20 @@ extension LemonadeUi {
 struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, TrailingContent: View>: View {
     let contentSlot: () -> ContentSlot
     let voice: LemonadeListItemVoice
+    let navigationIndicator: Bool
     let enabled: Bool
     let showDivider: Bool
     let onListItemClick: (() -> Void)?
     let leadingSlot: () -> LeadingContent
     let trailingSlot: () -> TrailingContent
+
+    private var hasLeading: Bool {
+        LeadingContent.self != EmptyView.self
+    }
+
+    private var hasTrailing: Bool {
+        TrailingContent.self != EmptyView.self
+    }
 
     var body: some View {
         ListItemSafeArea(showDivider: showDivider) {
@@ -144,24 +170,42 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
     }
 
     private var listItemContent: some View {
-        HStack(spacing: LemonadeTheme.spaces.spacing300) {
-            // Leading slot
-            leadingSlot()
+        HStack(spacing: 0) {
+            if hasLeading {
+                leadingSlot()
+                    .frame(maxHeight: .infinity, alignment: .top)
+                    .padding(.trailing, LemonadeTheme.spaces.spacing300)
+                    .padding(.vertical, LemonadeTheme.spaces.spacing50)
+                    .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+            }
+
+            HStack(spacing: 0) {
+                VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing0) {
+                    contentSlot()
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
 
-            // Content column
-            VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
-                contentSlot()
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+                HStack(spacing: 0) {
+                    if hasTrailing {
+                        trailingSlot()
+                    }
 
-            // Trailing slot
-            trailingSlot()
+                    if navigationIndicator {
+                        LemonadeUi.Icon(
+                            icon: .chevronRight,
+                            contentDescription: "Navigation indicator",
+                            size: .medium,
+                            tint: LemonadeTheme.colors.content.contentTertiary
+                        )
+                        .opacity(0.5)
+                        .padding(.leading, LemonadeTheme.spaces.spacing100)
+                    }
+                }
+            }
         }
         .padding(.horizontal, LemonadeTheme.spaces.spacing300)
-        .padding(.vertical, LemonadeTheme.spaces.spacing200)
-        .frame(minHeight: LemonadeTheme.sizes.size1200)
+        .padding(.vertical, LemonadeTheme.spaces.spacing300)
     }
 }
 
@@ -197,9 +241,40 @@ struct ListItemButtonStyle: ButtonStyle {
                     ? voice.interactionBackground
                     : Color.clear
             )
-            .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius300))
-            .contentShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius300))
+            .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
+            .contentShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
             .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
+    }
+}
+
+// MARK: - ListItem Skeleton (Loading State)
+
+private struct ListItemSkeletonView: View {
+    let showDivider: Bool
+
+    var body: some View {
+        ListItemSafeArea(showDivider: showDivider) {
+            HStack(spacing: 0) {
+                LemonadeUi.CircleSkeleton(size: .xLarge)
+                    .padding(.trailing, LemonadeTheme.spaces.spacing300)
+
+                HStack(spacing: 0) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        LemonadeUi.LineSkeleton(size: .medium)
+                        LemonadeUi.LineSkeleton(size: .small)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                    Spacer()
+                        .frame(width: LemonadeTheme.spaces.spacing300)
+
+                    LemonadeUi.LineSkeleton(size: .medium)
+                        .frame(width: 54)
+                }
+            }
+            .padding(.horizontal, LemonadeTheme.spaces.spacing300)
+            .padding(.vertical, LemonadeTheme.spaces.spacing300)
+        }
     }
 }
 
@@ -216,7 +291,7 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 checked: true,
                 onItemClicked: {},
                 showDivider: true,
-                supportText: "Support text"
+                description: "Description"
             )
 
             // SelectListItem - Multiple with divider
@@ -226,7 +301,7 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 checked: false,
                 onItemClicked: {},
                 showDivider: true,
-                supportText: "Support text"
+                description: "Description"
             )
 
             LemonadeUi.HorizontalDivider()
@@ -236,7 +311,7 @@ struct LemonadeListItem_Previews: PreviewProvider {
             LemonadeUi.ResourceListItem(
                 label: "Resource Label",
                 value: "$100.00",
-                supportText: "Metadata",
+                description: "Metadata",
                 showDivider: true
             ) {
                 LemonadeUi.SymbolContainer(
@@ -269,7 +344,7 @@ struct LemonadeListItem_Previews: PreviewProvider {
             // ActionListItem with divider
             LemonadeUi.ActionListItem(
                 label: "Action Item",
-                supportText: "Support text",
+                description: "Description",
                 showNavigationIndicator: true,
                 showDivider: true,
                 onItemClicked: {},

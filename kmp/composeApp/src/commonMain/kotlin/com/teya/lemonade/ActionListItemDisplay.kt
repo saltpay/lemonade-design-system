@@ -50,7 +50,7 @@ internal fun ActionListItemDisplay() {
 
             LemonadeUi.ActionListItem(
                 label = "Notifications",
-                supportText = "Manage your notifications",
+                description = "Manage your notifications",
                 showNavigationIndicator = true,
                 onItemClicked = {},
                 showDivider = true,
@@ -136,7 +136,7 @@ internal fun ActionListItemDisplay() {
 
             LemonadeUi.ActionListItem(
                 label = "Log Out",
-                supportText = "You will need to sign in again",
+                description = "You will need to sign in again",
                 voice = LemonadeListItemVoice.Critical,
                 onItemClicked = {},
                 showDivider = true,
@@ -166,6 +166,27 @@ internal fun ActionListItemDisplay() {
                         size = LemonadeAssetSize.Medium,
                     )
                 },
+            )
+        }
+
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "Loading State"),
+        ) {
+            LemonadeUi.ActionListItem(
+                label = "",
+                isLoading = true,
+                showDivider = true,
+            )
+
+            LemonadeUi.ActionListItem(
+                label = "",
+                isLoading = true,
+                showDivider = true,
+            )
+
+            LemonadeUi.ActionListItem(
+                label = "",
+                isLoading = true,
             )
         }
     }
