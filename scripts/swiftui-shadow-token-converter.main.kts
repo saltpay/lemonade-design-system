@@ -130,17 +130,16 @@ private val swiftModifierCode = """
     |        return composited.background {
     |            GeometryReader { proxy in
     |                ForEach(Array(shadow.shadowLayers.enumerated()), id: \.offset) { _, layer in
-    |                    let spreadW = proxy.size.width + layer.spread * 2
-    |                    let spreadH = proxy.size.height + layer.spread * 2
+    |                    let spreadW = max(0, proxy.size.width + layer.spread * 2)
+    |                    let spreadH = max(0, proxy.size.height + layer.spread * 2)
+    |                    let scaleX = proxy.size.width == 0 ? 1 : spreadW / proxy.size.width
+    |                    let scaleY = proxy.size.height == 0 ? 1 : spreadH / proxy.size.height
     |                    Rectangle()
     |                        .fill(layer.color)
     |                        .frame(width: spreadW, height: spreadH)
     |                        .mask {
     |                            composited
-    |                                .scaleEffect(
-    |                                    x: spreadW / proxy.size.width,
-    |                                    y: spreadH / proxy.size.height
-    |                                )
+    |                                .scaleEffect(x: scaleX, y: scaleY)
     |                        }
     |                        .offset(x: layer.offsetX - layer.spread, y: layer.offsetY - layer.spread)
     |                        .blur(radius: layer.blur / 2)
@@ -162,7 +161,7 @@ private val swiftModifierCode = """
     |        modifier(LemonadeShadowModifier(shadow: shadow))
     |    }
     |}
-    """.trimMargin().drop(1)
+    """.trimMargin()
 
 private fun buildShadowCode(
     scriptFilePath: String,
