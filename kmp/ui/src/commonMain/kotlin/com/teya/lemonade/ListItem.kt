@@ -48,7 +48,7 @@ import com.teya.lemonade.core.TagVoice
  * ```kotlin
  * LemonadeUi.SelectListItem(
  *     label = "Label"
- *     description = "Description"
+ *     supportText = "Support Text"
  *     type = SelectListItemType.Single,
  *     checked = true,
  *     onItemClicked = { /* trigger an action */ }
@@ -68,7 +68,7 @@ import com.teya.lemonade.core.TagVoice
  *  and visual states are disabled.
  * @param interactionSource - Selection list item [MutableInteractionSource] for interaction events.
  * @param showDivider - Flag to show a divider below the list item.
- * @param description - Text to be displayed below the [label] as a description.
+ * @param supportText - Text to be displayed below the [label] as a support text.
  * @param leadingSlot - A Slot to be placed in the leading position of the list item.
  * @param trailingSlot - A Slot to be placed in the trailing position of the list item.
  */
@@ -83,14 +83,14 @@ public fun LemonadeUi.SelectListItem(
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     showDivider: Boolean = false,
-    description: String? = null,
+    supportText: String? = null,
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
 ) {
     LemonadeUi.ListItem(
         modifier = modifier,
         label = label,
-        description = description,
+        supportText = supportText,
         isLoading = isLoading,
         interactionSource = interactionSource,
         showDivider = showDivider,
@@ -170,7 +170,7 @@ public fun LemonadeUi.SelectListItem(
  * LemonadeUi.ResourceListItem(
  *     label = "Label"
  *     value = "Value",
- *     description = "Description"
+ *     supportText = "Support Text"
  *     onItemClicked = { /* trigger an action */ }
  *     enabled = true,
  *     showDivider = true,
@@ -187,7 +187,7 @@ public fun LemonadeUi.SelectListItem(
  * @param onItemClicked - callback called when component is tapped.
  * @param enabled - flag to define if the component is enabled or not. If disabled, click interactions
  *  and visual states are disabled.
- * @param description - [String] to be displayed as description.
+ * @param supportText - [String] to be displayed as support text.
  * @param showDivider - flag to show a divider below the list item.
  */
 @Composable
@@ -201,12 +201,12 @@ public fun LemonadeUi.ResourceListItem(
     onItemClicked: (() -> Unit)? = null,
     isLoading: Boolean = false,
     enabled: Boolean = true,
-    description: String? = null,
+    supportText: String? = null,
     showDivider: Boolean = false,
 ) {
     LemonadeUi.ListItem(
         label = label,
-        description = description,
+        supportText = supportText,
         isLoading = isLoading,
         leadingSlot = {
             Box(
@@ -256,7 +256,7 @@ public fun LemonadeUi.ResourceListItem(
  * ```kotlin
  * LemonadeUi.ActionListItem(
  *     label = "Label"
- *     description = "Description"
+ *     supportText = "Support Text"
  *     onItemClicked = { /* trigger an action */ }
  *     enabled = false,
  *     showDivider = true,
@@ -266,7 +266,7 @@ public fun LemonadeUi.ResourceListItem(
  * ```
  * @param label - label [String] to be displayed in the list item.
  * @param modifier - [Modifier] to be applied to the base container of component.
- * @param description - text [String] to be displayed as description.
+ * @param supportText - text [String] to be displayed as Support Text.
  * @param leadingSlot - slot content to be placed in the leading position of the component.
  * @param trailingSlot - slot content to be placed in the trailing position of the component.
  * @param voice - [LemonadeListItemVoice] to define the tone of voice. This will effectively
@@ -284,7 +284,7 @@ public fun LemonadeUi.ResourceListItem(
 public fun LemonadeUi.ActionListItem(
     label: String,
     modifier: Modifier = Modifier,
-    description: String? = null,
+    supportText: String? = null,
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
@@ -298,7 +298,7 @@ public fun LemonadeUi.ActionListItem(
 ) {
     LemonadeUi.ListItem(
         label = label,
-        description = description,
+        supportText = supportText,
         isLoading = isLoading,
         leadingSlot = leadingSlot,
         trailingSlot = if (trailingSlot != null) {
@@ -330,11 +330,11 @@ public fun LemonadeUi.ActionListItem(
 }
 
 /**
- * Convenience overload that composes standard label and description content from string parameters
+ * Convenience overload that composes standard label and support-text content from string parameters
  * and delegates to the content-slot variant of [ListItem].
  *
  * @param label - Label [String] to be displayed in the list item.
- * @param description - Optional description [String] displayed below the [label].
+ * @param supportText - Optional support text [String] displayed below the [label].
  * @param leadingSlot - A slot to be placed in the leading position of the list item.
  * @param trailingSlot - A slot to be placed in the trailing position of the list item.
  * @param voice - [LemonadeListItemVoice] that defines the visual voice of the list item.
@@ -346,13 +346,13 @@ public fun LemonadeUi.ActionListItem(
  * @param modifier - [Modifier] to be applied to the base container of the component.
  * @param showDivider - Flag to show a divider below the list item.
  * @param interactionSource - [MutableInteractionSource] for interaction events.
- * @param slotContent - Optional slot content below the label and description.
+ * @param slotContent - Optional slot content below the label and support text.
  */
 @Composable
 private fun LemonadeUi.ListItem(
     label: String,
     modifier: Modifier = Modifier,
-    description: String? = null,
+    supportText: String? = null,
     onListItemClick: (() -> Unit)? = null,
     voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
     navigationIndicator: Boolean = false,
@@ -389,9 +389,9 @@ private fun LemonadeUi.ListItem(
                     color = voice.contentColor,
                 )
 
-                if (description != null) {
+                if (supportText != null) {
                     LemonadeUi.Text(
-                        text = description,
+                        text = supportText,
                         textStyle = LocalTypographies.current.bodySmallRegular,
                         color = LocalColors.current.content.contentSecondary,
                     )
@@ -693,7 +693,7 @@ private fun SelectListItemPreview(
 ) {
     LemonadeUi.SelectListItem(
         label = "Label",
-        description = "Description".takeIf { previewData.supportText },
+        supportText = "Support Text".takeIf { previewData.supportText },
         type = previewData.type,
         checked = previewData.enabled,
         onItemClicked = { /* Nothing */ },
@@ -757,7 +757,7 @@ private fun ResourceListItemPreview(
     LemonadeUi.ResourceListItem(
         label = "Label",
         showDivider = true,
-        description = "Metadata 1 * Metadata 2\nDescription".takeIf { previewData.supportText },
+        supportText = "Metadata 1 * Metadata 2\nSupport text".takeIf { previewData.supportText },
         value = "Value",
         enabled = previewData.enabled,
         addonSlot = if (previewData.withAddonSlot) {
@@ -826,7 +826,7 @@ private fun ActionListItemPreview(
     LemonadeUi.ActionListItem(
         label = "Label",
         showDivider = true,
-        description = "Description".takeIf { previewData.supportText },
+        supportText = "Support Text".takeIf { previewData.supportText },
         enabled = previewData.enabled,
         voice = if (previewData.voice) LemonadeListItemVoice.Critical else LemonadeListItemVoice.Neutral,
         showNavigationIndicator = previewData.showNavigationIndicator,

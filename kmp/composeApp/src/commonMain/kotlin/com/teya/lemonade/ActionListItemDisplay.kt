@@ -50,7 +50,7 @@ internal fun ActionListItemDisplay() {
 
             LemonadeUi.ActionListItem(
                 label = "Notifications",
-                description = "Manage your notifications",
+                supportText = "Manage your notifications",
                 showNavigationIndicator = true,
                 onItemClicked = {},
                 showDivider = true,
@@ -136,7 +136,7 @@ internal fun ActionListItemDisplay() {
 
             LemonadeUi.ActionListItem(
                 label = "Log Out",
-                description = "You will need to sign in again",
+                supportText = "You will need to sign in again",
                 voice = LemonadeListItemVoice.Critical,
                 onItemClicked = {},
                 showDivider = true,

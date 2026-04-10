@@ -37,12 +37,12 @@ public enum LemonadeListItemVoice {
 // MARK: - Internal ListItem Helpers
 
 extension LemonadeUi {
-    /// Convenience overload that composes standard label and description content from string
+    /// Convenience overload that composes standard label and support-text content from string
     /// parameters and delegates to the content-slot variant of ListItem.
     ///
     /// - Parameters:
     ///   - label: Label String to be displayed
-    ///   - description: Optional description text displayed below the label
+    ///   - supportText: Optional support text displayed below the label
     ///   - voice: LemonadeListItemVoice to define tone of voice
     ///   - navigationIndicator: Shows a chevron-right navigation indicator
     ///   - enabled: Flag to define if component is enabled
@@ -50,11 +50,11 @@ extension LemonadeUi {
     ///   - onListItemClick: Optional callback triggered on click interaction
     ///   - leadingSlot: Slot content to be placed in leading position
     ///   - trailingSlot: Slot content to be placed in trailing position
-    ///   - slotContent: Optional slot content below the label and description
+    ///   - slotContent: Optional slot content below the label and support text
     @ViewBuilder
     static func ListItem<LeadingContent: View, TrailingContent: View, SlotContent: View>(
         label: String,
-        description: String? = nil,
+        supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         navigationIndicator: Bool = false,
         isLoading: Bool = false,
@@ -83,9 +83,9 @@ extension LemonadeUi {
                         color: voice.contentColor
                     )
 
-                    if let description = description {
+                    if let supportText = supportText {
                         LemonadeUi.Text(
-                            description,
+                            supportText,
                             textStyle: LemonadeTypography.shared.bodySmallRegular,
                             color: LemonadeTheme.colors.content.contentSecondary
                         )
@@ -291,7 +291,7 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 checked: true,
                 onItemClicked: {},
                 showDivider: true,
-                description: "Description"
+                supportText: "Support text"
             )
 
             // SelectListItem - Multiple with divider
@@ -301,7 +301,7 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 checked: false,
                 onItemClicked: {},
                 showDivider: true,
-                description: "Description"
+                supportText: "Support text"
             )
 
             LemonadeUi.HorizontalDivider()
@@ -311,7 +311,7 @@ struct LemonadeListItem_Previews: PreviewProvider {
             LemonadeUi.ResourceListItem(
                 label: "Resource Label",
                 value: "$100.00",
-                description: "Metadata",
+                supportText: "Metadata",
                 showDivider: true
             ) {
                 LemonadeUi.SymbolContainer(
@@ -344,7 +344,7 @@ struct LemonadeListItem_Previews: PreviewProvider {
             // ActionListItem with divider
             LemonadeUi.ActionListItem(
                 label: "Action Item",
-                description: "Description",
+                supportText: "Support text",
                 showNavigationIndicator: true,
                 showDivider: true,
                 onItemClicked: {},

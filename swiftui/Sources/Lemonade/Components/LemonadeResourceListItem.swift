@@ -10,7 +10,7 @@ public extension LemonadeUi {
     /// LemonadeUi.ResourceListItem(
     ///     label: "Label",
     ///     value: "Value",
-    ///     description: "Description",
+    ///     supportText: "Description",
     ///     showDivider: true
     /// ) {
     ///     LemonadeUi.SymbolContainer(icon: .heart, contentDescription: nil)
@@ -20,7 +20,7 @@ public extension LemonadeUi {
     /// - Parameters:
     ///   - label: Main String to be displayed
     ///   - value: Value String to be displayed in trailing position
-    ///   - description: String to be displayed as description
+    ///   - supportText: String to be displayed as supportText
     ///   - isLoading: Shows a skeleton loading placeholder instead of content
     ///   - enabled: Flag to define if component is enabled. Defaults to true
     ///   - showDivider: Flag to show a divider below the list item. Defaults to false
@@ -32,7 +32,7 @@ public extension LemonadeUi {
     static func ResourceListItem<LeadingContent: View, AddonContent: View>(
         label: String,
         value: String,
-        description: String? = nil,
+        supportText: String? = nil,
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
@@ -42,7 +42,7 @@ public extension LemonadeUi {
     ) -> some View {
         ListItem(
             label: label,
-            description: description,
+            supportText: supportText,
             voice: .neutral,
             isLoading: isLoading,
             enabled: enabled,
@@ -71,7 +71,7 @@ public extension LemonadeUi {
     static func ResourceListItem<LeadingContent: View>(
         label: String,
         value: String,
-        description: String? = nil,
+        supportText: String? = nil,
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
@@ -81,7 +81,7 @@ public extension LemonadeUi {
         ResourceListItem(
             label: label,
             value: value,
-            description: description,
+            supportText: supportText,
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,

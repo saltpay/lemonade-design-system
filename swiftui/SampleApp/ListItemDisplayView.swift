@@ -21,7 +21,7 @@ struct ListItemDisplayView: View {
                             checked: singleSelection == index,
                             onItemClicked: { singleSelection = index },
                             showDivider: index < 2,
-                            description: index == 0 ? "With support text" : nil
+                            supportText: index == 0 ? "With support text" : nil
                         )
                     }
                 }
@@ -60,7 +60,7 @@ struct ListItemDisplayView: View {
                             checked: toggleStates[index],
                             onItemClicked: { toggleStates[index].toggle() },
                             showDivider: index < 2,
-                            description: index == 0 ? "With support text" : nil
+                            supportText: index == 0 ? "With support text" : nil
                         )
                     }
                 }
@@ -75,7 +75,7 @@ struct ListItemDisplayView: View {
                         type: .single,
                         checked: true,
                         onItemClicked: {},
-                        description: "Leading icon example",
+                        supportText: "Leading icon example",
                         leadingSlot: {
                             LemonadeUi.Icon(
                                 icon: .star,
@@ -108,7 +108,7 @@ struct ListItemDisplayView: View {
                     LemonadeUi.ResourceListItem(
                         label: "Account Balance",
                         value: "$1,234.56",
-                        description: "Updated today",
+                        supportText: "Updated today",
                         showDivider: true,
                         leadingSlot: {
                             LemonadeUi.SymbolContainer(
@@ -143,7 +143,7 @@ struct ListItemDisplayView: View {
                     LemonadeUi.ResourceListItem(
                         label: "Last Transaction",
                         value: "-$50.00",
-                        description: "Yesterday",
+                        supportText: "Yesterday",
                         showDivider: false,
                         addonSlot: {
                             LemonadeUi.Tag(label: "Pending", voice: .warning)
@@ -180,7 +180,7 @@ struct ListItemDisplayView: View {
 
                     LemonadeUi.ActionListItem(
                         label: "Notifications",
-                        description: "Manage your notifications",
+                        supportText: "Manage your notifications",
                         showNavigationIndicator: true,
                         showDivider: true,
                         onItemClicked: {},
@@ -270,7 +270,7 @@ struct ListItemDisplayView: View {
 
                     LemonadeUi.ActionListItem(
                         label: "Log Out",
-                        description: "You will need to sign in again",
+                        supportText: "You will need to sign in again",
                         voice: .critical,
                         showDivider: false,
                         onItemClicked: {},

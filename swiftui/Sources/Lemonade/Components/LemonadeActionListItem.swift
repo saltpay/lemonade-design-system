@@ -9,7 +9,7 @@ public extension LemonadeUi {
     /// ```swift
     /// LemonadeUi.ActionListItem(
     ///     label: "Label",
-    ///     description: "Description",
+    ///     supportText: "Description",
     ///     showDivider: true,
     ///     onItemClicked: { /* action */ },
     ///     leadingSlot: { LemonadeUi.Icon(icon: .heart, contentDescription: nil) },
@@ -19,7 +19,7 @@ public extension LemonadeUi {
     ///
     /// - Parameters:
     ///   - label: Label String to be displayed
-    ///   - description: Text to be displayed as description below the label
+    ///   - supportText: Text to be displayed as supportText below the label
     ///   - voice: LemonadeListItemVoice to define tone of voice. Defaults to .neutral
     ///   - showNavigationIndicator: Indicates navigation visually
     ///   - isLoading: Shows a skeleton loading placeholder instead of content
@@ -32,7 +32,7 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ActionListItem<LeadingContent: View, TrailingContent: View>(
         label: String,
-        description: String? = nil,
+        supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
         isLoading: Bool = false,
@@ -44,7 +44,7 @@ public extension LemonadeUi {
     ) -> some View {
         ListItem(
             label: label,
-            description: description,
+            supportText: supportText,
             voice: voice,
             navigationIndicator: showNavigationIndicator,
             isLoading: isLoading,
@@ -63,7 +63,7 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ActionListItem<LeadingContent: View>(
         label: String,
-        description: String? = nil,
+        supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
         isLoading: Bool = false,
@@ -74,7 +74,7 @@ public extension LemonadeUi {
     ) -> some View {
         ActionListItem(
             label: label,
-            description: description,
+            supportText: supportText,
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,
             isLoading: isLoading,
@@ -90,7 +90,7 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ActionListItem<TrailingContent: View>(
         label: String,
-        description: String? = nil,
+        supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
         isLoading: Bool = false,
@@ -101,7 +101,7 @@ public extension LemonadeUi {
     ) -> some View {
         ActionListItem(
             label: label,
-            description: description,
+            supportText: supportText,
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,
             isLoading: isLoading,
@@ -117,7 +117,7 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ActionListItem(
         label: String,
-        description: String? = nil,
+        supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
         isLoading: Bool = false,
@@ -127,7 +127,7 @@ public extension LemonadeUi {
     ) -> some View {
         ActionListItem(
             label: label,
-            description: description,
+            supportText: supportText,
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,
             isLoading: isLoading,

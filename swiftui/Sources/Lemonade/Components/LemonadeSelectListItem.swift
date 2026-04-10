@@ -9,7 +9,7 @@ public extension LemonadeUi {
     /// ```swift
     /// LemonadeUi.SelectListItem(
     ///     label: "Label",
-    ///     description: "Description",
+    ///     supportText: "Description",
     ///     type: .single,
     ///     checked: true,
     ///     onItemClicked: { /* action */ },
@@ -25,7 +25,7 @@ public extension LemonadeUi {
     ///   - isLoading: Shows a skeleton loading placeholder instead of content
     ///   - enabled: Flag that defines if component is enabled. Defaults to true
     ///   - showDivider: Flag to show a divider below the list item. Defaults to false
-    ///   - description: Text to be displayed below the label
+    ///   - supportText: Text to be displayed below the label
     ///   - leadingSlot: Content to be placed in leading position
     ///   - trailingSlot: Content to be placed before the selection control
     /// - Returns: A styled SelectListItem view
@@ -38,13 +38,13 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
-        description: String? = nil,
+        supportText: String? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent
     ) -> some View {
         ListItem(
             label: label,
-            description: description,
+            supportText: supportText,
             voice: .neutral,
             isLoading: isLoading,
             enabled: enabled,
@@ -99,7 +99,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
-        description: String? = nil,
+        supportText: String? = nil,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent
     ) -> some View {
         SelectListItem(
@@ -110,7 +110,7 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
-            description: description,
+            supportText: supportText,
             leadingSlot: { EmptyView() },
             trailingSlot: trailingSlot
         )
@@ -126,7 +126,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
-        description: String? = nil,
+        supportText: String? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent
     ) -> some View {
         SelectListItem(
@@ -137,7 +137,7 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
-            description: description,
+            supportText: supportText,
             leadingSlot: leadingSlot,
             trailingSlot: { EmptyView() }
         )
@@ -153,7 +153,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
-        description: String? = nil
+        supportText: String? = nil
     ) -> some View {
         SelectListItem(
             label: label,
@@ -163,7 +163,7 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
-            description: description,
+            supportText: supportText,
             leadingSlot: { EmptyView() },
             trailingSlot: { EmptyView() }
         )

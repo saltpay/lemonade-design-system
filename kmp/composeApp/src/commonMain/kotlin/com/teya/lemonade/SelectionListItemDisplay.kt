@@ -48,7 +48,7 @@ internal fun SelectionListItemDisplay() {
                     type = SelectListItemType.Single,
                     checked = singleSelection == index,
                     onItemClicked = { singleSelection = index },
-                    description = if (index == 0) "With support text" else null,
+                    supportText = if (index == 0) "With support text" else null,
                     showDivider = true,
                 )
             }
@@ -103,7 +103,7 @@ internal fun SelectionListItemDisplay() {
                 type = SelectListItemType.Single,
                 checked = true,
                 onItemClicked = {},
-                description = "Leading icon example",
+                supportText = "Leading icon example",
                 leadingSlot = {
                     LemonadeUi.Icon(
                         icon = LemonadeIcons.Star,
