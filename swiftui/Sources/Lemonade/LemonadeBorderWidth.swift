@@ -19,7 +19,7 @@ import SwiftUI
 /// 
 
 /// Base border width values
-public protocol BaseBorderWidth: Sendable {
+public protocol BaseBorderWidth {
     var border0: CGFloat { get }
     var border25: CGFloat { get }
     var border40: CGFloat { get }
@@ -29,7 +29,7 @@ public protocol BaseBorderWidth: Sendable {
 }
 
 /// State border width values
-public protocol StateBorderWidth: Sendable {
+public protocol StateBorderWidth {
     var focusRing: CGFloat { get }
     var borderSelected: CGFloat { get }
 }
@@ -40,7 +40,7 @@ public protocol LemonadeBorderWidth {
     var state: StateBorderWidth { get }
 }
 
-internal struct BaseBorderWidthImpl: BaseBorderWidth, Sendable {
+internal struct BaseBorderWidthImpl: BaseBorderWidth {
     let border0: CGFloat = 0.0
     let border25: CGFloat = 1.0
     let border40: CGFloat = 1.5
@@ -49,13 +49,13 @@ internal struct BaseBorderWidthImpl: BaseBorderWidth, Sendable {
     let border100: CGFloat = 4.0
 }
 
-internal struct StateBorderWidthImpl: StateBorderWidth, Sendable {
+internal struct StateBorderWidthImpl: StateBorderWidth {
     let focusRing: CGFloat = 2.0
     let borderSelected: CGFloat = 2.0
 }
 
 /// Default border width implementation
-public struct LemonadeBorderWidthTokens: LemonadeBorderWidth, Sendable {
+public struct LemonadeBorderWidthTokens: LemonadeBorderWidth {
     public let base: BaseBorderWidth = BaseBorderWidthImpl()
     public let state: StateBorderWidth = StateBorderWidthImpl()
 

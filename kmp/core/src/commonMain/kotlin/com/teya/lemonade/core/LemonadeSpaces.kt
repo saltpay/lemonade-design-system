@@ -2,7 +2,7 @@ package com.teya.lemonade.core
 
 /**
  * Core definition of the LemonadeSpaces tokens.
- *
+ * 
  * Auto-generated content.
  *
  * ⚠️ **DO NOT MODIFY THIS FILE MANUALLY** ⚠️
