@@ -4,7 +4,7 @@ package com.teya.lemonade.core
  * Lemonade Design System Radius tokens.
  * Sets a small, clear set of predefined radius values for UI elements to ensure
  *  consistent, scalable rounding across the product.
- * 
+ *
  * Auto-generated content.
  *
  * ⚠️ **DO NOT MODIFY THIS FILE MANUALLY** ⚠️

@@ -1,16 +1,16 @@
 package com.teya.lemonade
 
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeSizes
-import androidx.compose.runtime.Stable
 
 /**
  * Lemonade Design System Size tokens.
  * Provides a consistent and scalable way to manage spacing across interfaces.
  * These values can be used for margins, paddings, and gaps to create balanced layouts.
- * 
- * 
+ *
+ *
  * Auto-generated content.
  *
  * ⚠️ **DO NOT MODIFY THIS FILE MANUALLY** ⚠️
@@ -114,4 +114,4 @@ internal data class InternalLemonadeSizeValues(
     override val size2200: Dp = LemonadeSizes.Size2200.dp,
     override val size2400: Dp = LemonadeSizes.Size2400.dp,
     override val size2500: Dp = LemonadeSizes.Size2500.dp,
-): LemonadeSizeValues
+) : LemonadeSizeValues

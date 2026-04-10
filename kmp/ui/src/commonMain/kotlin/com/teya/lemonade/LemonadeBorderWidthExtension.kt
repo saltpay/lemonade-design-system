@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.dp
  * Lemonade Design Border Width tokens.
  * Sets a small, clear set of predefined border width values for UI elements to ensure
  *  consistent, scalable rounding across the product.
- * 
+ *
  * Auto-generated content.
  *
  * ⚠️ **DO NOT MODIFY THIS FILE MANUALLY** ⚠️
@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 public interface LemonadeBorderWidth {
     public val base: Base
     public val state: State
+
     public interface Base {
         public val border0: Dp
         public val border25: Dp
@@ -32,14 +33,15 @@ public interface LemonadeBorderWidth {
         public val border75: Dp
         public val border100: Dp
     }
+
     public interface State {
         public val focusRing: Dp
         public val borderSelected: Dp
     }
 }
 
-internal class InternalLemonadeBorderWidth: LemonadeBorderWidth {
-    override val base = object: LemonadeBorderWidth.Base {
+internal class InternalLemonadeBorderWidth : LemonadeBorderWidth {
+    override val base = object : LemonadeBorderWidth.Base {
         override val border0: Dp = 0.0.dp
         override val border25: Dp = 1.0.dp
         override val border40: Dp = 1.5.dp
@@ -47,7 +49,7 @@ internal class InternalLemonadeBorderWidth: LemonadeBorderWidth {
         override val border75: Dp = 3.0.dp
         override val border100: Dp = 4.0.dp
     }
-    override val state = object: LemonadeBorderWidth.State {
+    override val state = object : LemonadeBorderWidth.State {
         override val focusRing: Dp = 2.0.dp
         override val borderSelected: Dp = 2.0.dp
     }
