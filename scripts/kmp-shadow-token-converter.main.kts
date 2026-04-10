@@ -128,7 +128,7 @@ private fun buildImplementationCode(
         append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
         appendLine(" */")
         appendLine("internal val LemonadeShadow.shadowDataSequence: Sequence<LemonadeShadowData>")
-        appendLine("    get() = when(this){")
+        appendLine("    get() = when (this) {")
         resources.forEach { resource ->
             appendLine("        LemonadeShadow.${resource.groupName} -> sequenceOf(")
             resource.levels.forEach { resourceLevel ->
@@ -150,7 +150,6 @@ private fun buildImplementationCode(
         appendLine("            ),")
         appendLine("        )")
         appendLine("    }")
-        appendLine()
     }
 }
 
