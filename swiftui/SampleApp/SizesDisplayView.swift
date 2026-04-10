@@ -17,7 +17,7 @@ struct SizesDisplayView: View {
                             .frame(width: 50)
 
                         Circle()
-                            .fill(LemonadePrimitiveColors.Solid.Purple.purple500)
+                            .fill(.content.contentBrand)
                             .frame(width: min(item.value, 100), height: min(item.value, 100))
 
                         Spacer()

@@ -10,13 +10,17 @@ import com.teya.lemonade.CardDisplay
 import com.teya.lemonade.CheckboxDisplay
 import com.teya.lemonade.ChipDisplay
 import com.teya.lemonade.ColorsDisplay
+import com.teya.lemonade.ContentListItemDisplay
 import com.teya.lemonade.CountryFlagDisplay
+import com.teya.lemonade.DatePickerDisplay
 import com.teya.lemonade.Displays
 import com.teya.lemonade.DividerDisplay
 import com.teya.lemonade.HomeDisplay
 import com.teya.lemonade.IconButtonDisplay
 import com.teya.lemonade.IconsDisplay
+import com.teya.lemonade.InlineCalendarDisplay
 import com.teya.lemonade.LinkDisplay
+import com.teya.lemonade.NoticeDisplay
 import com.teya.lemonade.NoticeRowDisplay
 import com.teya.lemonade.OpacityDisplay
 import com.teya.lemonade.RadioButtonDisplay
@@ -24,6 +28,7 @@ import com.teya.lemonade.RadiusDisplay
 import com.teya.lemonade.ResourceListItemDisplay
 import com.teya.lemonade.SearchFieldDisplay
 import com.teya.lemonade.SegmentedControlDisplay
+import com.teya.lemonade.SelectFieldDisplay
 import com.teya.lemonade.SelectionListItemDisplay
 import com.teya.lemonade.ShadowDisplay
 import com.teya.lemonade.SizesDisplay
@@ -37,6 +42,7 @@ import com.teya.lemonade.TagDisplay
 import com.teya.lemonade.TextDisplay
 import com.teya.lemonade.TextFieldDisplay
 import com.teya.lemonade.TileDisplay
+import com.teya.lemonade.ToastDisplay
 
 @Composable
 internal expect fun App()
@@ -56,6 +62,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.SelectionListItem to { _ -> SelectionListItemDisplay() },
     Displays.ActionListItem to { _ -> ActionListItemDisplay() },
     Displays.ResourceListItem to { _ -> ResourceListItemDisplay() },
+    Displays.ContentListItem to { _ -> ContentListItemDisplay() },
     Displays.Chip to { _ -> ChipDisplay() },
     Displays.SegmentedControl to { _ -> SegmentedControlDisplay() },
     Displays.Text to { _ -> TextDisplay() },
@@ -64,6 +71,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.NoticeRow to { _ -> NoticeRowDisplay() },
     Displays.TextField to { _ -> TextFieldDisplay() },
     Displays.SearchField to { _ -> SearchFieldDisplay() },
+    Displays.SelectField to { _ -> SelectFieldDisplay() },
     Displays.Card to { _ -> CardDisplay() },
     Displays.Button to { _ -> ButtonDisplay() },
     Displays.IconButton to { _ -> IconButtonDisplay() },
@@ -79,4 +87,8 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.Spinner to { _ -> SpinnerDisplay() },
     Displays.Divider to { _ -> DividerDisplay() },
     Displays.Tabs to { _ -> TabsDisplay() },
+    Displays.DatePicker to { _ -> DatePickerDisplay() },
+    Displays.InlineCalendar to { _ -> InlineCalendarDisplay() },
+    Displays.Notice to { _ -> NoticeDisplay() },
+    Displays.Toast to { _ -> ToastDisplay() },
 )

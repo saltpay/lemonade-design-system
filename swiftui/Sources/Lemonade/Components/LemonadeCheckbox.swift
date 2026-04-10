@@ -106,6 +106,7 @@ private struct LemonadeCheckboxWithLabel: View {
                     onCheckboxClicked: onCheckboxClicked,
                     enabled: enabled
                 )
+                .allowsHitTesting(false)
 
                 VStack(alignment: .leading, spacing: 0) {
                     LemonadeUi.Text(

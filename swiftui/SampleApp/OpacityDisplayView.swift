@@ -47,7 +47,7 @@ private struct OpacityRow: View {
                 .frame(width: 50)
 
             Rectangle()
-                .fill(LemonadePrimitiveColors.Solid.Green.green500.opacity(item.value))
+                .fill(.content.contentPositive.opacity(item.value))
                 .frame(height: 40)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
         }

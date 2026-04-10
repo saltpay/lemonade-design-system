@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -30,14 +31,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeCountryFlags
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTextStyle
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 /**
  * The Text Field component allows users to enter or edit text and adapts seamlessly across both
@@ -136,6 +140,98 @@ public fun LemonadeUi.TextField(
 }
 
 /**
+ * The Text Field component allows users to enter or edit text and adapts seamlessly across both
+ *  mobile and web platforms. It supports multiple interaction states, sizes, and configurations
+ *  to accommodate a wide range of design contexts. The component ensures consistency in form
+ *  design, maintaining clarity, accessibility, and usability across devices.
+ *
+ * This overload accepts a [TextFieldValue] for cursor position control.
+ *
+ * ## Usage
+ * ```kotlin
+ * var textFieldValue by remember { mutableStateOf(TextFieldValue("")) }
+ *
+ * LemonadeUi.TextField(
+ *     value = textFieldValue,
+ *     onValueChange = { textFieldValue = it },
+ *     enabled = true,
+ *     error = false,
+ *     label = "Label",
+ * )
+ * ```
+ * @param value - The [TextFieldValue] containing the text and selection state
+ * @param onValueChange - The callback called when the value changes (text or selection)
+ * @param label - Label to be displayed on the top left of the text field
+ * @param optionalIndicator - Optional text to be displayed on the top right of the text field
+ * @param supportText - Support text to be displayed below the text field
+ * @param placeholderText - Placeholder text to be displayed when the text field is empty
+ * @param errorMessage - Error message to be displayed when the text field has an error
+ * @param interactionSource - [MutableInteractionSource] to be applied to the text field
+ * @param keyboardActions - [KeyboardActions] to be applied to the text field
+ * @param keyboardOptions - [KeyboardOptions] to be applied to the text field
+ * @param visualTransformation - [VisualTransformation] to be applied to the text field
+ * @param error - Whether the text field has an error
+ * @param enabled - Whether the text field is enabled
+ * @param leadingContent - Content to be displayed on the top left of the text field
+ * @param trailingContent - Content to be displayed on the top right of the text field
+ * @param modifier - [Modifier] to be applied to the root container of the text field
+ */
+@Composable
+public fun LemonadeUi.TextField(
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
+    label: String? = null,
+    optionalIndicator: String? = null,
+    supportText: String? = null,
+    placeholderText: String? = null,
+    errorMessage: String? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    keyboardActions: KeyboardActions = KeyboardActions(),
+    keyboardOptions: KeyboardOptions = KeyboardOptions(),
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    error: Boolean = false,
+    enabled: Boolean = true,
+    leadingContent: (@Composable RowScope.() -> Unit)? = null,
+    trailingContent: (@Composable RowScope.() -> Unit)? = null,
+    modifier: Modifier = Modifier,
+) {
+    val animatedAlpha by animateFloatAsState(
+        targetValue = if (enabled) {
+            LocalOpacities.current.base.opacity100
+        } else {
+            LocalOpacities.current.state.opacityDisabled
+        },
+    )
+    CoreTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = label,
+        optionalIndicator = optionalIndicator,
+        supportText = supportText,
+        errorMessage = errorMessage,
+        size = null,
+        interactionSource = interactionSource,
+        keyboardActions = keyboardActions,
+        keyboardOptions = keyboardOptions,
+        visualTransformation = visualTransformation,
+        error = error,
+        enabled = enabled,
+        modifier = modifier,
+        textBoxContent = { innerTextField ->
+            DefaultTextBox(
+                placeholderText = placeholderText,
+                size = null,
+                showPlaceholder = value.text.isEmpty(),
+                leadingContent = leadingContent,
+                trailingContent = trailingContent,
+                innerTextField = innerTextField,
+                modifier = Modifier.alpha(alpha = animatedAlpha),
+            )
+        },
+    )
+}
+
+/**
  * A text input combined with a selectable element, allowing users to choose a prefix or
  *  category (e.g., country code) before entering text. Ideal for structured inputs like phone
  *  numbers or units.
@@ -151,7 +247,7 @@ public fun LemonadeUi.TextField(
  *     label = "Label",
  *     supportText = "Support Text",
  *     optionalIndicator = "Optional",
- *     leadingAction = { /* handle leadingContent clicked */ }
+ *     leadingAction = { /* handle leadingContent clicked */ },
  *     leadingContent = {
  *         Row(
  *             horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
@@ -237,6 +333,121 @@ public fun LemonadeUi.TextFieldWithSelector(
     )
 }
 
+/**
+ * A text input combined with a selectable element, allowing users to choose a prefix or
+ *  category (e.g., country code) before entering text. Ideal for structured inputs like phone
+ *  numbers or units.
+ *
+ * This overload accepts a [TextFieldValue] for cursor position control, which is useful when
+ * formatting text dynamically (e.g., phone numbers) and you need to control cursor placement.
+ *
+ * ## Usage
+ * ```kotlin
+ * var textFieldValue by remember {
+ *     mutableStateOf(TextFieldValue(displayText, TextRange(displayText.length)))
+ * }
+ *
+ * // When display changes, move cursor to end
+ * LaunchedEffect(displayText) {
+ *     textFieldValue = TextFieldValue(displayText, TextRange(displayText.length))
+ * }
+ *
+ * LemonadeUi.TextFieldWithSelector(
+ *     value = textFieldValue,
+ *     onValueChange = { newValue ->
+ *         textFieldValue = newValue
+ *         controller.onTextChanged(newValue.text)
+ *     },
+ *     leadingAction = { /* handle leadingContent clicked */ },
+ *     leadingContent = {
+ *         Row(
+ *             horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
+ *             verticalAlignment = Alignment.CenterVertically,
+ *             modifier = Modifier.padding(all = LemonadeTheme.spaces.spacing400),
+ *         ) {
+ *             LemonadeUi.CountryFlag(flag = LemonadeCountryFlags.BRBrazil)
+ *             LemonadeUi.Text(text = "Brazil")
+ *             LemonadeUi.Icon(
+ *                 icon = LemonadeIcons.ChevronDown,
+ *                 contentDescription = null,
+ *             )
+ *         }
+ *     },
+ * )
+ * ```
+ * @param value - The [TextFieldValue] containing the text and selection state
+ * @param onValueChange - The callback called when the value changes (text or selection)
+ * @param leadingAction - Action triggered when the leading [leadingContent] is clicked
+ * @param leadingContent - Content to be displayed on the top left of the text field
+ * @param label - Label to be displayed on the top left of the text field
+ * @param optionalIndicator - Optional text to be displayed on the top right of the text field
+ * @param supportText - Support text to be displayed below the text field
+ * @param placeholderText - Placeholder text to be displayed when the text field is empty
+ * @param errorMessage - Error message to be displayed when the text field has an error
+ * @param interactionSource - [MutableInteractionSource] to be applied to the text field
+ * @param keyboardActions - [KeyboardActions] to be applied to the text field
+ * @param keyboardOptions - [KeyboardOptions] to be applied to the text field
+ * @param visualTransformation - [VisualTransformation] to be applied to the text field
+ * @param error - Whether the text field has an error
+ * @param enabled - Whether the text field is enabled
+ * @param trailingContent - Content to be displayed on the top right of the text field
+ * @param modifier - [Modifier] to be applied to the root container of the text field
+ */
+@Composable
+public fun LemonadeUi.TextFieldWithSelector(
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
+    leadingAction: () -> Unit,
+    leadingContent: @Composable BoxScope.() -> Unit,
+    label: String? = null,
+    optionalIndicator: String? = null,
+    supportText: String? = null,
+    placeholderText: String? = null,
+    errorMessage: String? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    keyboardActions: KeyboardActions = KeyboardActions(),
+    keyboardOptions: KeyboardOptions = KeyboardOptions(),
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    error: Boolean = false,
+    enabled: Boolean = true,
+    trailingContent: (@Composable RowScope.() -> Unit)? = null,
+    modifier: Modifier = Modifier,
+) {
+    CoreTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = label,
+        optionalIndicator = optionalIndicator,
+        supportText = supportText,
+        errorMessage = errorMessage,
+        size = null,
+        interactionSource = interactionSource,
+        keyboardActions = keyboardActions,
+        keyboardOptions = keyboardOptions,
+        visualTransformation = visualTransformation,
+        error = error,
+        enabled = enabled,
+        modifier = modifier.clearFocusOnKeyboardDismiss(),
+        textBoxContent = { innerTextField ->
+            DefaultTextFieldWithSelector(
+                placeholderText = placeholderText,
+                size = null,
+                showPlaceholder = value.text.isEmpty(),
+                leadingContent = leadingContent,
+                trailingContent = trailingContent,
+                innerTextField = innerTextField,
+                leadingAction = leadingAction,
+                interactionSource = interactionSource,
+                enabled = enabled,
+            )
+        },
+    )
+}
+
+/**
+ * String-based CoreTextField using BasicTextField's String API directly.
+ * This preserves cursor position and selection state managed internally by BasicTextField.
+ */
 @Composable
 internal fun CoreTextField(
     input: String,
@@ -255,6 +466,7 @@ internal fun CoreTextField(
     textBoxContent: @Composable BoxScope.(@Composable () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val contentColor = LocalColors.current.content.contentPrimary
     BasicTextField(
         value = input,
         onValueChange = onInputChanged,
@@ -263,7 +475,63 @@ internal fun CoreTextField(
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions,
         visualTransformation = visualTransformation,
-        textStyle = size.data.contentStyle.textStyle,
+        cursorBrush = SolidColor(contentColor),
+        textStyle = size.data.contentStyle.textStyle.copy(
+            color = contentColor,
+        ),
+        singleLine = true,
+        modifier = modifier,
+        decorationBox = { innerTextField ->
+            CoreTextFieldDecorator(
+                label = label,
+                optionalIndicator = optionalIndicator,
+                supportText = supportText,
+                errorMessage = errorMessage,
+                size = size,
+                interactionSource = interactionSource,
+                error = error,
+                enabled = enabled,
+                textBoxContent = { textBoxContent(innerTextField) },
+            )
+        },
+    )
+}
+
+/**
+ * TextFieldValue-based CoreTextField for cursor position control.
+ * Use this when you need to control cursor position or selection externally.
+ */
+@Composable
+internal fun CoreTextField(
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
+    label: String? = null,
+    optionalIndicator: String? = null,
+    supportText: String? = null,
+    errorMessage: String? = null,
+    size: TextFieldSize? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    keyboardActions: KeyboardActions = KeyboardActions(),
+    keyboardOptions: KeyboardOptions = KeyboardOptions(),
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    error: Boolean = false,
+    enabled: Boolean = true,
+    textBoxContent: @Composable BoxScope.(@Composable () -> Unit) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val contentColor = LocalColors.current.content.contentPrimary
+    BasicTextField(
+        value = value,
+        onValueChange = onValueChange,
+        interactionSource = interactionSource,
+        enabled = enabled,
+        keyboardActions = keyboardActions,
+        keyboardOptions = keyboardOptions,
+        visualTransformation = visualTransformation,
+        cursorBrush = SolidColor(contentColor),
+        textStyle = size.data.contentStyle.textStyle.copy(
+            color = contentColor,
+        ),
         singleLine = true,
         modifier = modifier,
         decorationBox = { innerTextField ->
@@ -284,7 +552,7 @@ internal fun CoreTextField(
 
 @Suppress("LongMethod", "CyclomaticComplexMethod", "LongParameterList")
 @Composable
-private fun CoreTextFieldDecorator(
+internal fun CoreTextFieldDecorator(
     label: String?,
     optionalIndicator: String?,
     supportText: String?,
@@ -296,6 +564,7 @@ private fun CoreTextFieldDecorator(
     modifier: Modifier = Modifier,
     textBoxContent: @Composable BoxScope.() -> Unit,
 ) {
+    val isPressed by interactionSource.collectIsPressedAsState()
     val isHovering by interactionSource.collectIsHoveredAsState()
     val isFocused by interactionSource.collectIsFocusedAsState()
 
@@ -303,7 +572,7 @@ private fun CoreTextFieldDecorator(
         targetValue = when {
             !enabled -> LocalColors.current.background.bgElevated
             error && !isFocused -> LocalColors.current.background.bgCriticalSubtle
-            isHovering -> LocalColors.current.interaction.bgSubtleInteractive
+            isHovering || isPressed -> LocalColors.current.interaction.bgSubtleInteractive
             else -> LocalColors.current.background.bgSubtle.copy(
                 alpha = LocalOpacities.current.base.opacity0,
             )
@@ -444,7 +713,7 @@ internal fun BoxScope.DefaultTextFieldWithSelector(
                     enabled = enabled,
                     interactionSource = interactionSource,
                     onClick = leadingAction,
-                    indication = null,
+                    indication = LocalEffects.current.interactionIndication,
                 ).defaultMinSize(
                     minHeight = size.data.minHeight
                         ?: Dp.Unspecified,
@@ -701,6 +970,47 @@ private fun TextInputWithSelectorPreview(
                 ) {
                     LemonadeUi.CountryFlag(flag = LemonadeCountryFlags.BRBrazil)
                     LemonadeUi.Text(text = "Brazil")
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.ChevronDown,
+                        contentDescription = null,
+                    )
+                }
+            },
+        )
+    }
+}
+
+@Composable
+@LemonadePreview
+private fun TextInputWithTextFieldValuePreview() {
+    Column(verticalArrangement = Arrangement.spacedBy(space = 4.dp)) {
+        LemonadeUi.TextField(
+            value = TextFieldValue(text = "Sample text", selection = TextRange(11)),
+            onValueChange = { /* Nothing */ },
+            label = "TextField with TextFieldValue",
+            supportText = "Cursor position control enabled",
+        )
+    }
+}
+
+@Composable
+@LemonadePreview
+private fun TextInputWithSelectorTextFieldValuePreview() {
+    Column(verticalArrangement = Arrangement.spacedBy(space = 4.dp)) {
+        LemonadeUi.TextFieldWithSelector(
+            value = TextFieldValue(text = "912 345 678", selection = TextRange(11)),
+            onValueChange = { /* Nothing */ },
+            label = "TextFieldWithSelector with TextFieldValue",
+            supportText = "Cursor position control enabled",
+            leadingAction = { /**/ },
+            leadingContent = {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(all = LocalSpaces.current.spacing400),
+                ) {
+                    LemonadeUi.CountryFlag(flag = LemonadeCountryFlags.PTPortugal)
+                    LemonadeUi.Text(text = "+351")
                     LemonadeUi.Icon(
                         icon = LemonadeIcons.ChevronDown,
                         contentDescription = null,

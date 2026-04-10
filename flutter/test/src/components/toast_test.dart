@@ -8,9 +8,7 @@ void main() {
   group('LemonadeToast', () {
     testWidgets('renders correctly with default configuration', (tester) async {
       await tester.pumpLemonadeWidget(
-        const LemonadeToast(
-          label: 'Test message',
-        ),
+        const LemonadeToast(label: 'Test message'),
       );
 
       expect(find.byType(LemonadeToast), findsOneWidget);
@@ -27,10 +25,7 @@ void main() {
     testWidgets('renders all voice variants', (tester) async {
       for (final voice in LemonadeToastVoice.values) {
         await tester.pumpLemonadeWidget(
-          LemonadeToast(
-            label: 'Test message',
-            voice: voice,
-          ),
+          LemonadeToast(label: 'Test message', voice: voice),
         );
 
         final toastWidget = tester.widget<LemonadeToast>(
@@ -80,9 +75,7 @@ void main() {
 
     testWidgets('renders neutral voice with correct icon', (tester) async {
       await tester.pumpLemonadeWidget(
-        const LemonadeToast(
-          label: 'Neutral message',
-        ),
+        const LemonadeToast(label: 'Neutral message'),
       );
 
       expect(find.byType(LemonadeToast), findsOneWidget);
@@ -220,9 +213,7 @@ void main() {
       final toastTheme = theme.components.toastTheme;
 
       await tester.pumpLemonadeWidget(
-        const LemonadeToast(
-          label: 'Themed toast',
-        ),
+        const LemonadeToast(label: 'Themed toast'),
         lightTheme: theme,
       );
 
@@ -247,9 +238,7 @@ void main() {
       final toastTheme = theme.components.toastTheme;
 
       await tester.pumpLemonadeWidget(
-        const LemonadeToast(
-          label: 'Test message',
-        ),
+        const LemonadeToast(label: 'Test message'),
         lightTheme: theme,
       );
 
@@ -262,9 +251,7 @@ void main() {
       tester,
     ) async {
       await tester.pumpLemonadeWidget(
-        const LemonadeToast(
-          label: 'Accessible message',
-        ),
+        const LemonadeToast(label: 'Accessible message'),
       );
 
       final semantics = tester.widget<Semantics>(
@@ -283,9 +270,7 @@ void main() {
       final toastTheme = theme.components.toastTheme;
 
       await tester.pumpLemonadeWidget(
-        const LemonadeToast(
-          label: 'Short',
-        ),
+        const LemonadeToast(label: 'Short'),
         lightTheme: theme,
       );
 
@@ -296,10 +281,7 @@ void main() {
         ),
       );
 
-      expect(
-        container.constraints?.minHeight,
-        equals(toastTheme.minHeight),
-      );
+      expect(container.constraints?.minHeight, equals(toastTheme.minHeight));
     });
   });
 
@@ -387,9 +369,7 @@ void main() {
     test('mergeWith merges values from other theme', () {
       final themeData = LemonadeThemeData();
       final themeA = themeData.components.toastTheme;
-      final themeB = themeA.copyWith(
-        backgroundColor: const Color(0xFFFF0000),
-      );
+      final themeB = themeA.copyWith(backgroundColor: const Color(0xFFFF0000));
 
       final merged = themeA.mergeWith(themeB);
 

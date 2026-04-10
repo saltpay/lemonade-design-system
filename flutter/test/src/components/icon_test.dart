@@ -8,17 +8,13 @@ void main() {
   group('LemonadeIcon', () {
     testWidgets('renders correctly with default configuration', (tester) async {
       await tester.pumpLemonadeWidget(
-        const LemonadeIcon(
-          icon: LemonadeIcons.search,
-        ),
+        const LemonadeIcon(icon: LemonadeIcons.search),
       );
 
       expect(find.byType(LemonadeIcon), findsOneWidget);
       expect(find.byType(SvgPicture), findsOneWidget);
 
-      final iconWidget = tester.widget<LemonadeIcon>(
-        find.byType(LemonadeIcon),
-      );
+      final iconWidget = tester.widget<LemonadeIcon>(find.byType(LemonadeIcon));
       expect(iconWidget.size, equals(LemonadeIconSize.medium));
       expect(iconWidget.icon, equals(LemonadeIcons.search));
     });
@@ -26,10 +22,7 @@ void main() {
     testWidgets('accepts all icon sizes', (tester) async {
       for (final size in LemonadeIconSize.values) {
         await tester.pumpLemonadeWidget(
-          LemonadeIcon(
-            icon: LemonadeIcons.search,
-            size: size,
-          ),
+          LemonadeIcon(icon: LemonadeIcons.search, size: size),
         );
 
         final iconWidget = tester.widget<LemonadeIcon>(
@@ -53,9 +46,7 @@ void main() {
         ),
       );
 
-      final iconWidget = tester.widget<LemonadeIcon>(
-        find.byType(LemonadeIcon),
-      );
+      final iconWidget = tester.widget<LemonadeIcon>(find.byType(LemonadeIcon));
       expect(iconWidget.icon, equals(LemonadeIcons.home));
       expect(iconWidget.color, equals(customColor));
       expect(iconWidget.semanticLabel, equals(semanticLabel));
@@ -75,16 +66,11 @@ void main() {
 
       for (final entry in sizeMappings.entries) {
         await tester.pumpLemonadeWidget(
-          LemonadeIcon(
-            icon: LemonadeIcons.search,
-            size: entry.key,
-          ),
+          LemonadeIcon(icon: LemonadeIcons.search, size: entry.key),
           lightTheme: theme,
         );
 
-        final svgPicture = tester.widget<SvgPicture>(
-          find.byType(SvgPicture),
-        );
+        final svgPicture = tester.widget<SvgPicture>(find.byType(SvgPicture));
         expect(svgPicture.width, equals(entry.value));
         expect(svgPicture.height, equals(entry.value));
       }
@@ -94,14 +80,10 @@ void main() {
       'applies color filter from theme when no custom color provided',
       (tester) async {
         await tester.pumpLemonadeWidget(
-          const LemonadeIcon(
-            icon: LemonadeIcons.search,
-          ),
+          const LemonadeIcon(icon: LemonadeIcons.search),
         );
 
-        final svgPicture = tester.widget<SvgPicture>(
-          find.byType(SvgPicture),
-        );
+        final svgPicture = tester.widget<SvgPicture>(find.byType(SvgPicture));
         expect(svgPicture.colorFilter, isNotNull);
       },
     );

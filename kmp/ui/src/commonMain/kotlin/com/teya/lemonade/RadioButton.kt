@@ -29,11 +29,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeTextStyle
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 /**
  * A form control that allows users to select a single option from a group.
@@ -69,7 +69,7 @@ public fun LemonadeUi.RadioButton(
     supportText: String? = null,
     enabled: Boolean = true,
 ) {
-    val props = platformRadioButtonPropertiesProperties
+    val props = defaultPlatformRadioButtonProps()
     Row(
         horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),
         modifier = modifier
@@ -163,7 +163,7 @@ private fun CoreRadioButton(
     onRadioButtonClicked: () -> Unit,
     enabled: Boolean,
     modifier: Modifier = Modifier,
-    platformProperties: RadioButtonPlatformProps = platformRadioButtonPropertiesProperties,
+    platformProperties: RadioButtonPlatformProps = defaultPlatformRadioButtonProps(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val isHovered by interactionSource.collectIsHoveredAsState()
@@ -271,8 +271,6 @@ internal data class RadioButtonPlatformProps(
     val supportTextStyle: LemonadeTextStyle,
     val focusVisible: Boolean,
 )
-
-internal expect val platformRadioButtonPropertiesProperties: RadioButtonPlatformProps
 
 @Composable
 internal fun defaultPlatformRadioButtonProps(): RadioButtonPlatformProps =

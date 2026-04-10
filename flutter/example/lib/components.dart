@@ -4,11 +4,7 @@ import 'package:lemonade_design_system/lemonade_design_system.dart';
 /// A scaffold widget for example screens.
 class ExampleScaffold extends StatelessWidget {
   /// Creates a new instance of [ExampleScaffold].
-  const ExampleScaffold({
-    required this.title,
-    required this.body,
-    super.key,
-  });
+  const ExampleScaffold({required this.title, required this.body, super.key});
 
   /// The title of the scaffold.
   final String title;
@@ -28,9 +24,7 @@ class ExampleScaffold extends StatelessWidget {
         color: theme.colors.background.bgDefault,
         child: Column(
           children: [
-            ExampleNavigationBar(
-              title: title,
-            ),
+            ExampleNavigationBar(title: title),
             Expanded(
               child: MediaQuery.removePadding(
                 context: context,
@@ -48,10 +42,7 @@ class ExampleScaffold extends StatelessWidget {
 /// A simple navigation bar for example screens.
 class ExampleNavigationBar extends StatelessWidget {
   /// Creates a new instance of [ExampleNavigationBar].
-  const ExampleNavigationBar({
-    this.title,
-    super.key,
-  });
+  const ExampleNavigationBar({this.title, super.key});
 
   /// The title of the navigation bar.
   final String? title;
@@ -94,9 +85,7 @@ class ExampleNavigationBar extends StatelessWidget {
                     height: 40,
                     width: 44,
                     alignment: Alignment.center,
-                    child: const LemonadeIcon(
-                      icon: LemonadeIcons.arrowLeft,
-                    ),
+                    child: const LemonadeIcon(icon: LemonadeIcons.arrowLeft),
                   ),
                 ),
               if (title != null)
@@ -110,9 +99,7 @@ class ExampleNavigationBar extends StatelessWidget {
                   ),
                 ),
               if (onBackPressed != null)
-                SizedBox(
-                  width: theme.spaces.spacing800,
-                ),
+                SizedBox(width: theme.spaces.spacing800),
             ],
           ),
         ),
@@ -124,11 +111,7 @@ class ExampleNavigationBar extends StatelessWidget {
 /// A list tile widget for example actions.
 class ExampleListTile extends StatelessWidget {
   /// Creates a new instance of [ExampleListTile].
-  const ExampleListTile({
-    required this.title,
-    this.onPressed,
-    super.key,
-  });
+  const ExampleListTile({required this.title, this.onPressed, super.key});
 
   /// The label of the action.
   final String title;
@@ -155,9 +138,7 @@ class ExampleListTile extends StatelessWidget {
         child: Row(
           spacing: theme.spaces.spacing200,
           children: [
-            const LemonadeIcon(
-              icon: LemonadeIcons.package,
-            ),
+            const LemonadeIcon(icon: LemonadeIcons.package),
             Text(
               title,
               style: theme.typography.bodyMediumMedium.apply(
@@ -209,11 +190,7 @@ class ExampleSection extends StatelessWidget {
 /// A row widget for displaying example items.
 class ExampleRow extends StatelessWidget {
   /// Creates a new instance of [ExampleRow].
-  const ExampleRow({
-    required this.label,
-    required this.children,
-    super.key,
-  });
+  const ExampleRow({required this.label, required this.children, super.key});
 
   /// The label of the row.
   final String label;
@@ -248,11 +225,7 @@ class ExampleRow extends StatelessWidget {
 /// A column widget for displaying example items.
 class ExampleColumn extends StatelessWidget {
   /// Creates a new instance of [ExampleColumn].
-  const ExampleColumn({
-    required this.label,
-    required this.children,
-    super.key,
-  });
+  const ExampleColumn({required this.label, required this.children, super.key});
 
   /// The label of the column.
   final String label;

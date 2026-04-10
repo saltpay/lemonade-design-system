@@ -11,12 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TagVoice
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 /**
  * A compact label used to categorise, organise, or annotate content.
@@ -63,7 +63,7 @@ private fun CoreTag(
         modifier = modifier
             .background(
                 color = voice.containerColor,
-                shape = LocalShapes.current.radius100,
+                shape = LocalShapes.current.radius150,
             ).padding(
                 vertical = LocalSpaces.current.spacing50,
                 horizontal = LocalSpaces.current.spacing100,

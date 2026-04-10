@@ -7,9 +7,7 @@ import '../../helpers/widget_tester_extension.dart';
 void main() {
   group('LemonadeDivider', () {
     testWidgets('renders correctly with default configuration', (tester) async {
-      await tester.pumpLemonadeWidget(
-        const LemonadeDivider(),
-      );
+      await tester.pumpLemonadeWidget(const LemonadeDivider());
 
       expect(find.byType(LemonadeDivider), findsOneWidget);
 
@@ -22,9 +20,7 @@ void main() {
     });
 
     testWidgets('renders solid variant', (tester) async {
-      await tester.pumpLemonadeWidget(
-        const LemonadeDivider(),
-      );
+      await tester.pumpLemonadeWidget(const LemonadeDivider());
 
       final dividerWidget = tester.widget<LemonadeDivider>(
         find.byType(LemonadeDivider),
@@ -35,9 +31,7 @@ void main() {
 
     testWidgets('renders dashed variant', (tester) async {
       await tester.pumpLemonadeWidget(
-        const LemonadeDivider(
-          variant: LemonadeDividerVariant.dashed,
-        ),
+        const LemonadeDivider(variant: LemonadeDividerVariant.dashed),
       );
 
       final dividerWidget = tester.widget<LemonadeDivider>(
@@ -48,9 +42,7 @@ void main() {
     });
 
     testWidgets('renders horizontal orientation by default', (tester) async {
-      await tester.pumpLemonadeWidget(
-        const LemonadeDivider(),
-      );
+      await tester.pumpLemonadeWidget(const LemonadeDivider());
 
       expect(find.byType(Divider), findsOneWidget);
       expect(find.byType(VerticalDivider), findsNothing);
@@ -58,9 +50,7 @@ void main() {
 
     testWidgets('renders vertical orientation', (tester) async {
       await tester.pumpLemonadeWidget(
-        const LemonadeDivider(
-          orientation: LemonadeDividerOrientation.vertical,
-        ),
+        const LemonadeDivider(orientation: LemonadeDividerOrientation.vertical),
       );
 
       expect(find.byType(VerticalDivider), findsOneWidget);
@@ -70,11 +60,7 @@ void main() {
     testWidgets('renders with label', (tester) async {
       const label = 'Section Title';
 
-      await tester.pumpLemonadeWidget(
-        const LemonadeDivider(
-          label: label,
-        ),
-      );
+      await tester.pumpLemonadeWidget(const LemonadeDivider(label: label));
 
       final dividerWidget = tester.widget<LemonadeDivider>(
         find.byType(LemonadeDivider),
@@ -140,11 +126,7 @@ void main() {
       (tester) async {
         const label = 'Section';
 
-        await tester.pumpLemonadeWidget(
-          const LemonadeDivider(
-            label: label,
-          ),
-        );
+        await tester.pumpLemonadeWidget(const LemonadeDivider(label: label));
 
         final semantics = tester.getSemantics(find.byType(Semantics).first);
         expect(semantics.label, contains(label));
@@ -153,11 +135,7 @@ void main() {
 
     testWidgets('renders all variant types', (tester) async {
       for (final variant in LemonadeDividerVariant.values) {
-        await tester.pumpLemonadeWidget(
-          LemonadeDivider(
-            variant: variant,
-          ),
-        );
+        await tester.pumpLemonadeWidget(LemonadeDivider(variant: variant));
 
         final dividerWidget = tester.widget<LemonadeDivider>(
           find.byType(LemonadeDivider),
@@ -169,9 +147,7 @@ void main() {
     testWidgets('renders all orientation types', (tester) async {
       for (final orientation in LemonadeDividerOrientation.values) {
         await tester.pumpLemonadeWidget(
-          LemonadeDivider(
-            orientation: orientation,
-          ),
+          LemonadeDivider(orientation: orientation),
         );
 
         final dividerWidget = tester.widget<LemonadeDivider>(
@@ -183,9 +159,7 @@ void main() {
 
     testWidgets('vertical solid divider renders correctly', (tester) async {
       await tester.pumpLemonadeWidget(
-        const LemonadeDivider(
-          orientation: LemonadeDividerOrientation.vertical,
-        ),
+        const LemonadeDivider(orientation: LemonadeDividerOrientation.vertical),
       );
 
       expect(find.byType(VerticalDivider), findsOneWidget);
@@ -216,11 +190,7 @@ void main() {
     testWidgets('divider with label has correct structure', (tester) async {
       const label = 'Test Label';
 
-      await tester.pumpLemonadeWidget(
-        const LemonadeDivider(
-          label: label,
-        ),
-      );
+      await tester.pumpLemonadeWidget(const LemonadeDivider(label: label));
 
       // Should have a Row with expanded dividers on both sides
       expect(find.byType(Row), findsOneWidget);

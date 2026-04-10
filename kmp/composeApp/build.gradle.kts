@@ -43,7 +43,7 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
-            implementation(compose.preview)
+            implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.navigation3.runtime)
             implementation(libs.androidx.navigation3.ui)
@@ -58,6 +58,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.kotlinx.serializer)
             implementation(projects.ui)
+            implementation(projects.expressive)
+            implementation(projects.calendar)
             implementation(kotlin("script-runtime"))
         }
         commonTest.dependencies {
@@ -99,7 +101,7 @@ kotlin {
     }
 }
 dependencies {
-    debugImplementation(compose.uiTooling)
+    debugImplementation(libs.compose.ui.tooling)
 }
 
 compose.desktop {

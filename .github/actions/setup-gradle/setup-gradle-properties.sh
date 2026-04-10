@@ -17,6 +17,7 @@ write_common_properties() {
     write_property "org.gradle.parallel=true"
     write_property "org.gradle.configureondemand=false"
     write_property "org.gradle.caching=true"
+    write_property "org.gradle.configuration-cache.parallel=true"
     write_property "org.gradle.daemon=false"
     write_property "org.gradle.logging.stacktrace=all"
 
@@ -30,12 +31,8 @@ write_common_properties() {
     # Android properties common to all build environments
     write_property "android.nonTransitiveRClass=true"
     write_property "android.useAndroidX=true"
-    write_property "android.defaults.buildfeatures.viewbinding=false"
-    write_property "android.defaults.buildfeatures.resvalues=true"
-    write_property "android.defaults.buildfeatures.aidl=false"
-    write_property "android.defaults.buildfeatures.renderscript=false"
-    write_property "android.defaults.buildfeatures.shaders=false"
-    write_property "android.defaults.buildfeatures.buildconfig=true"
+    write_property "android.builtInKotlin=false"
+    write_property "android.newDsl=false"
 
     # JDK path exposed by actions/setup-java
     write_property "org.gradle.java.installations.paths=$gha_jdk_path"
@@ -52,8 +49,8 @@ write_macos_properties() {
 
 write_linux_properties() {
     echo "🔥 Fine tuning Gradle properties for Linux GHA runner"
-    write_property "org.gradle.jvmargs=-Xmx6g -Xms1g -XX:MaxMetaspaceSize=1g -XX:+UseParallelGC -Dfile.encoding=UTF-8"
-    write_property "kotlin.daemon.jvmargs=-Xmx6g -Xms1g -XX:+UseParallelGC -Dfile.encoding=UTF-8"
+    write_property "org.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=1g -XX:+UseParallelGC -Dfile.encoding=UTF-8"
+    write_property "kotlin.daemon.jvmargs=-Xmx3g -XX:+UseParallelGC -Dfile.encoding=UTF-8"
     write_property "org.gradle.parallel.threads=4"
     echo "✅ Fine tuning complete"
 }

@@ -10,7 +10,11 @@ internal fun main() {
             onCloseRequest = ::exitApplication,
             title = "Lemonade",
         ) {
-            App()
+            LemonadeStyledTheme {
+                LemonadeToastHost {
+                    App()
+                }
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ import SwiftUI
 import Lemonade
 
 struct HomeView: View {
+    @EnvironmentObject private var styleHandler: LemonadeStyleHandler
     @State private var searchText: String = ""
 
     private struct DemoItem: Identifiable {
@@ -51,14 +52,16 @@ struct HomeView: View {
                     DemoItem(title: "IconButton", destination: AnyView(IconButtonDisplayView())),
                     DemoItem(title: "Checkbox", destination: AnyView(CheckboxDisplayView())),
                     DemoItem(title: "RadioButton", destination: AnyView(RadioButtonDisplayView())),
-                    DemoItem(title: "Switch", destination: AnyView(SwitchDisplayView()))
+                    DemoItem(title: "Switch", destination: AnyView(SwitchDisplayView())),
+                    DemoItem(title: "DatePicker", destination: AnyView(DatePickerDisplayView()))
                 ]
             ),
             DemoSection(
                 title: "Input Fields",
                 items: [
                     DemoItem(title: "TextField", destination: AnyView(TextFieldDisplayView())),
-                    DemoItem(title: "SearchField", destination: AnyView(SearchFieldDisplayView()))
+                    DemoItem(title: "SearchField", destination: AnyView(SearchFieldDisplayView())),
+                    DemoItem(title: "SelectField", destination: AnyView(SelectFieldDisplayView()))
                 ]
             ),
             DemoSection(
@@ -68,7 +71,8 @@ struct HomeView: View {
                     DemoItem(title: "Badge", destination: AnyView(BadgeDisplayView())),
                     DemoItem(title: "SymbolContainer", destination: AnyView(SymbolContainerDisplayView())),
                     DemoItem(title: "Card", destination: AnyView(CardDisplayView())),
-                    DemoItem(title: "Divider", destination: AnyView(DividerDisplayView()))
+                    DemoItem(title: "Divider", destination: AnyView(DividerDisplayView())),
+                    DemoItem(title: "Notice", destination: AnyView(NoticeDisplayView()))
                 ]
             ),
             DemoSection(
@@ -76,18 +80,23 @@ struct HomeView: View {
                 items: [
                     DemoItem(title: "Chip", destination: AnyView(ChipDisplayView())),
                     DemoItem(title: "ListItem", destination: AnyView(ListItemDisplayView())),
+                    DemoItem(title: "ContentListItem", destination: AnyView(ContentListItemDisplayView())),
                     DemoItem(title: "SegmentedControl", destination: AnyView(SegmentedControlDisplayView()))
                 ]
             ),
             DemoSection(
                 title: "Navigation",
                 items: [
+                    DemoItem(title: "Link", destination: AnyView(LinkDisplayView())),
+                    DemoItem(title: "Tabs", destination: AnyView(TabsDisplayView())),
                     DemoItem(title: "Tile", destination: AnyView(TileDisplayView()))
                 ]
             ),
             DemoSection(
                 title: "Feedback",
                 items: [
+                    DemoItem(title: "Skeleton", destination: AnyView(SkeletonDisplayView())),
+                    DemoItem(title: "Spinner", destination: AnyView(SpinnerDisplayView())),
                     DemoItem(title: "Toast", destination: AnyView(ToastDisplayView()))
                 ]
             )
@@ -108,8 +117,22 @@ struct HomeView: View {
         }
     }
 
+    private var selectedStyleIndex: Int {
+        LemonadeStyle.allCases.firstIndex(of: styleHandler.currentStyle) ?? 0
+    }
+
     var body: some View {
         List {
+            Section {
+                LemonadeUi.SegmentedControl(
+                    properties: LemonadeStyle.allCases.map { .label($0.label) },
+                    selectedTab: selectedStyleIndex,
+                    onTabSelected: { index in
+                        styleHandler.currentStyle = LemonadeStyle.allCases[index]
+                    }
+                )
+            }
+
             ForEach(filteredSections) { section in
                 Section(section.title) {
                     ForEach(section.items) { item in
@@ -129,4 +152,5 @@ struct HomeView: View {
     NavigationStack {
         HomeView()
     }
+    .environmentObject(LemonadeStyleHandler())
 }

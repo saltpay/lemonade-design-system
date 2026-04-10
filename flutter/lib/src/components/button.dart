@@ -26,6 +26,9 @@ enum LemonadeButtonVariant {
 
 /// Sizes available for [LemonadeButton].
 enum LemonadeButtonSize {
+  /// Extra small size
+  xSmall,
+
   /// Small size
   small,
 
@@ -35,6 +38,29 @@ enum LemonadeButtonSize {
   /// Large size
   large,
 }
+
+/// Colors exposed by [LemonadeButton] for slot builders.
+class LemonadeButtonColors {
+  /// Creates a [LemonadeButtonColors] instance.
+  const LemonadeButtonColors({
+    required this.contentColor,
+    required this.backgroundColor,
+    required this.pressedBackgroundColor,
+  });
+
+  /// The color used for button content (text, icons).
+  final Color contentColor;
+
+  /// The default background color.
+  final Color backgroundColor;
+
+  /// The background color when pressed.
+  final Color pressedBackgroundColor;
+}
+
+/// Builder function for custom button slots that receives the button's colors.
+typedef LemonadeButtonSlotBuilder =
+    Widget Function(LemonadeButtonColors colors);
 
 /// {@template LemonadeButton}
 /// A button widget from the Lemonade Design System.
@@ -79,7 +105,45 @@ class LemonadeButton extends StatefulWidget {
     this.semanticIdentifier,
     this.semanticLabel,
     super.key,
-  });
+  }) : leadingSlot = null,
+       trailingSlot = null,
+       expandContents = false;
+
+  /// Creates a [LemonadeButton] with custom leading and trailing slots.
+  ///
+  /// Used for advanced button layouts such as "Dual Action" buttons.
+  ///
+  /// ## Example
+  /// ```dart
+  /// LemonadeButton.custom(
+  ///   label: 'Dual Action',
+  ///   onPressed: () {},
+  ///   trailingSlot: (colors) => Row(
+  ///     mainAxisSize: MainAxisSize.min,
+  ///     children: [
+  ///       LemonadeDivider(orientation: LemonadeDividerOrientation.vertical),
+  ///       Icon(Icons.more_vert, color: colors.contentColor),
+  ///     ],
+  ///   ),
+  ///   expandContents: true,
+  ///   size: LemonadeButtonSize.medium,
+  /// )
+  /// ```
+  const LemonadeButton.custom({
+    required this.label,
+    required this.onPressed,
+    this.leadingSlot,
+    this.trailingSlot,
+    this.expandContents = false,
+    this.variant = LemonadeButtonVariant.primary,
+    this.size = LemonadeButtonSize.large,
+    this.enabled = true,
+    this.loading = false,
+    this.semanticIdentifier,
+    this.semanticLabel,
+    super.key,
+  }) : leadingIcon = null,
+       trailingIcon = null;
 
   /// The label text displayed on the button.
   final String label;
@@ -92,6 +156,15 @@ class LemonadeButton extends StatefulWidget {
 
   /// Optional icon displayed after the label.
   final LemonadeIcons? trailingIcon;
+
+  /// Optional custom widget builder for the leading area.
+  final LemonadeButtonSlotBuilder? leadingSlot;
+
+  /// Optional custom widget builder for the trailing area.
+  final LemonadeButtonSlotBuilder? trailingSlot;
+
+  /// When true, the content area expands to fill available space between slots.
+  final bool expandContents;
 
   /// The button variant. Defaults to [LemonadeButtonVariant.primary].
   final LemonadeButtonVariant variant;
@@ -151,6 +224,48 @@ class _LemonadeButtonState extends State<LemonadeButton> {
         ? variantColors.pressedBackgroundColor
         : variantColors.backgroundColor;
 
+    final contentRow = Row(
+      mainAxisSize: widget.expandContents ? MainAxisSize.max : MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (widget.loading) ...[
+          LemonadeSpinner(color: variantColors.contentColor),
+        ] else ...[
+          if (widget.leadingIcon != null) ...[
+            LemonadeIcon(
+              icon: widget.leadingIcon!,
+              color: variantColors.contentColor,
+            ),
+          ],
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: spaces.spacing200),
+            child: Text(
+              widget.label,
+              textAlign: TextAlign.center,
+              style: sizeData.textStyle.copyWith(
+                color: variantColors.contentColor,
+              ),
+            ),
+          ),
+          if (widget.trailingIcon != null) ...[
+            LemonadeIcon(
+              icon: widget.trailingIcon!,
+              size: LemonadeIconSize.small,
+              color: variantColors.contentColor,
+            ),
+          ],
+        ],
+      ],
+    );
+
+    final innerContent = Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: sizeData.horizontalPadding,
+        vertical: sizeData.verticalPadding,
+      ),
+      child: contentRow,
+    );
+
     return Semantics(
       label: widget.semanticLabel ?? widget.label,
       identifier: widget.semanticIdentifier,
@@ -166,50 +281,24 @@ class _LemonadeButtonState extends State<LemonadeButton> {
             duration: const Duration(milliseconds: 150),
             constraints: BoxConstraints(
               minWidth: sizeData.minWidth,
-              minHeight: sizeData.minHeight,
+              minHeight: sizeData.requiredHeight,
+              maxHeight: sizeData.requiredHeight,
             ),
             decoration: BoxDecoration(
               color: backgroundColor,
               borderRadius: BorderRadius.circular(sizeData.borderRadius),
             ),
-            padding: EdgeInsets.symmetric(
-              horizontal: sizeData.horizontalPadding,
-              vertical: sizeData.verticalPadding,
-            ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (widget.loading) ...[
-                  LemonadeSpinner(
-                    color: variantColors.contentColor,
-                  ),
-                ] else ...[
-                  if (widget.leadingIcon != null) ...[
-                    LemonadeIcon(
-                      icon: widget.leadingIcon!,
-                      color: variantColors.contentColor,
-                    ),
-                  ],
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: spaces.spacing200,
-                    ),
-                    child: Text(
-                      widget.label,
-                      style: sizeData.textStyle.copyWith(
-                        color: variantColors.contentColor,
-                      ),
-                    ),
-                  ),
-                  if (widget.trailingIcon != null) ...[
-                    LemonadeIcon(
-                      icon: widget.trailingIcon!,
-                      size: LemonadeIconSize.small,
-                      color: variantColors.contentColor,
-                    ),
-                  ],
-                ],
+                if (!widget.loading && widget.leadingSlot != null)
+                  widget.leadingSlot!(variantColors),
+                if (widget.expandContents)
+                  Expanded(child: innerContent)
+                else
+                  innerContent,
+                if (!widget.loading && widget.trailingSlot != null)
+                  widget.trailingSlot!(variantColors),
               ],
             ),
           ),
@@ -218,39 +307,39 @@ class _LemonadeButtonState extends State<LemonadeButton> {
     );
   }
 
-  _ButtonVariantColors _getVariantColors(LemonadeSemanticColors colors) {
+  LemonadeButtonColors _getVariantColors(LemonadeSemanticColors colors) {
     return switch (widget.variant) {
-      LemonadeButtonVariant.primary => _ButtonVariantColors(
+      LemonadeButtonVariant.primary => LemonadeButtonColors(
         contentColor: colors.content.contentOnBrandHigh,
         backgroundColor: colors.background.bgBrand,
         pressedBackgroundColor: colors.interaction.bgBrandInteractive,
       ),
-      LemonadeButtonVariant.secondary => _ButtonVariantColors(
+      LemonadeButtonVariant.secondary => LemonadeButtonColors(
         contentColor: colors.content.contentPrimaryInverse,
         backgroundColor: colors.background.bgSubtleInverse,
         pressedBackgroundColor: colors.interaction.bgNeutralPressed,
       ),
-      LemonadeButtonVariant.neutralSubtle => _ButtonVariantColors(
+      LemonadeButtonVariant.neutralSubtle => LemonadeButtonColors(
         contentColor: colors.content.contentPrimary,
         backgroundColor: colors.background.bgElevated,
         pressedBackgroundColor: colors.interaction.bgElevatedPressed,
       ),
-      LemonadeButtonVariant.neutralGhost => _ButtonVariantColors(
+      LemonadeButtonVariant.neutralGhost => LemonadeButtonColors(
         contentColor: colors.content.contentPrimary,
         backgroundColor: const Color(0x00000000),
         pressedBackgroundColor: colors.interaction.bgSubtleInteractive,
       ),
-      LemonadeButtonVariant.criticalSubtle => _ButtonVariantColors(
+      LemonadeButtonVariant.criticalSubtle => LemonadeButtonColors(
         contentColor: colors.content.contentCritical,
         backgroundColor: colors.background.bgCriticalSubtle,
         pressedBackgroundColor: colors.interaction.bgCriticalSubtleInteractive,
       ),
-      LemonadeButtonVariant.criticalSolid => _ButtonVariantColors(
+      LemonadeButtonVariant.criticalSolid => LemonadeButtonColors(
         contentColor: colors.content.contentAlwaysLight,
         backgroundColor: colors.background.bgCritical,
         pressedBackgroundColor: colors.interaction.bgCriticalInteractive,
       ),
-      LemonadeButtonVariant.special => _ButtonVariantColors(
+      LemonadeButtonVariant.special => LemonadeButtonColors(
         contentColor: colors.content.contentOnBrandHigh,
         backgroundColor: colors.background.bgBrand,
         pressedBackgroundColor: colors.interaction.bgBrandPressed,
@@ -263,10 +352,18 @@ class _LemonadeButtonState extends State<LemonadeButton> {
     LemonadeThemeData theme,
   ) {
     return switch (widget.size) {
+      LemonadeButtonSize.xSmall => _ButtonSizeData(
+        verticalPadding: theme.spaces.spacing100,
+        horizontalPadding: theme.spaces.spacing200,
+        requiredHeight: buttonTheme.xSmallHeight,
+        minWidth: buttonTheme.xSmallMinWidth,
+        borderRadius: theme.radius.radius200,
+        textStyle: theme.typography.bodySmallSemibold,
+      ),
       LemonadeButtonSize.small => _ButtonSizeData(
         verticalPadding: theme.spaces.spacing200,
         horizontalPadding: theme.spaces.spacing300,
-        minHeight: buttonTheme.smallHeight,
+        requiredHeight: buttonTheme.smallHeight,
         minWidth: buttonTheme.smallMinWidth,
         borderRadius: theme.radius.radius300,
         textStyle: theme.typography.bodySmallSemibold,
@@ -274,7 +371,7 @@ class _LemonadeButtonState extends State<LemonadeButton> {
       LemonadeButtonSize.medium => _ButtonSizeData(
         verticalPadding: theme.spaces.spacing300,
         horizontalPadding: theme.spaces.spacing400,
-        minHeight: buttonTheme.mediumHeight,
+        requiredHeight: buttonTheme.mediumHeight,
         minWidth: buttonTheme.mediumMinWidth,
         borderRadius: theme.radius.radius300,
         textStyle: theme.typography.bodyMediumSemibold,
@@ -282,7 +379,7 @@ class _LemonadeButtonState extends State<LemonadeButton> {
       LemonadeButtonSize.large => _ButtonSizeData(
         verticalPadding: theme.spaces.spacing300,
         horizontalPadding: theme.spaces.spacing400,
-        minHeight: buttonTheme.largeHeight,
+        requiredHeight: buttonTheme.largeHeight,
         minWidth: buttonTheme.largeMinWidth,
         borderRadius: theme.radius.radius400,
         textStyle: theme.typography.bodyMediumSemibold,
@@ -291,23 +388,11 @@ class _LemonadeButtonState extends State<LemonadeButton> {
   }
 }
 
-class _ButtonVariantColors {
-  const _ButtonVariantColors({
-    required this.contentColor,
-    required this.backgroundColor,
-    required this.pressedBackgroundColor,
-  });
-
-  final Color contentColor;
-  final Color backgroundColor;
-  final Color pressedBackgroundColor;
-}
-
 class _ButtonSizeData {
   const _ButtonSizeData({
     required this.verticalPadding,
     required this.horizontalPadding,
-    required this.minHeight,
+    required this.requiredHeight,
     required this.minWidth,
     required this.borderRadius,
     required this.textStyle,
@@ -315,7 +400,7 @@ class _ButtonSizeData {
 
   final double verticalPadding;
   final double horizontalPadding;
-  final double minHeight;
+  final double requiredHeight;
   final double minWidth;
   final double borderRadius;
   final TextStyle textStyle;

@@ -1,6 +1,10 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -9,19 +13,25 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
+import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeCardBackground
+import com.teya.lemonade.core.LemonadeCardHeadingStyle
 import com.teya.lemonade.core.LemonadeCardPadding
+import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.LemonadeTextStyle
 import com.teya.lemonade.core.TagVoice
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 @Composable
 public fun LemonadeUi.Card(
@@ -29,6 +39,7 @@ public fun LemonadeUi.Card(
     contentPadding: LemonadeCardPadding = LemonadeCardPadding.None,
     background: LemonadeCardBackground = LemonadeCardBackground.Default,
     header: CardHeaderConfig? = null,
+    footerAction: CardFooterActionConfig? = null,
     content: (@Composable ColumnScope.() -> Unit),
 ) {
     CoreCard(
@@ -36,6 +47,7 @@ public fun LemonadeUi.Card(
         contentPadding = contentPadding,
         background = background,
         header = header,
+        footerAction = footerAction,
         content = content,
     )
 }
@@ -46,26 +58,17 @@ private fun CoreCard(
     contentPadding: LemonadeCardPadding,
     background: LemonadeCardBackground = LemonadeCardBackground.Default,
     header: CardHeaderConfig? = null,
+    footerAction: CardFooterActionConfig? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val hasHeader = header !== null
-    val headerConfig = if (hasHeader) {
-        CardHeaderConfig(
-            title = header.title,
-            trailingSlot = header.trailingSlot,
-        )
-    } else {
-        null
-    }
-
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(LocalRadius.current.radius400))
+            .clip(shape = LocalShapes.current.semantic.radiusContainerDefault)
             .background(color = background.background),
     ) {
-        if (hasHeader) {
-            CardHeader(config = headerConfig)
+        if (header != null) {
+            CardHeader(config = header)
         }
 
         Column(
@@ -74,22 +77,28 @@ private fun CoreCard(
         ) {
             content()
         }
+
+        if (footerAction != null) {
+            CardFooterAction(config = footerAction)
+        }
     }
 }
 
 public data class CardHeaderConfig(
     val title: String,
+    val headingStyle: LemonadeCardHeadingStyle = LemonadeCardHeadingStyle.Default,
+    val leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     val trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    val showNavigationIndicator: Boolean = false,
 )
 
 @Composable
 private fun CardHeader(
+    config: CardHeaderConfig,
     modifier: Modifier = Modifier,
-    config: CardHeaderConfig? = null,
 ) {
-    if (config == null) return
-
-    val (title, trailingSlot) = config
+    val titleTextStyle = config.headingStyle.textStyle
+    val titleColor = config.headingStyle.color
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(LocalSpaces.current.spacing200),
@@ -102,19 +111,87 @@ private fun CardHeader(
                 bottom = LocalSpaces.current.spacing0,
             ),
     ) {
+        if (config.leadingSlot != null) {
+            config.leadingSlot.invoke(this)
+        }
+
         LemonadeUi.Text(
-            text = title,
-            textStyle = LocalTypographies.current.headingXXSmall,
+            text = config.title,
+            textStyle = titleTextStyle,
+            color = titleColor,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1F),
         )
 
-        if (trailingSlot !== null) {
-            trailingSlot()
+        if (config.trailingSlot != null) {
+            config.trailingSlot.invoke(this)
+        }
+
+        if (config.showNavigationIndicator) {
+            LemonadeUi.Icon(
+                icon = LemonadeIcons.ChevronRight,
+                contentDescription = null,
+                size = LemonadeAssetSize.Medium,
+                tint = LocalColors.current.content.contentSecondary,
+            )
         }
     }
 }
+
+public data class CardFooterActionConfig(
+    val label: String,
+    val onClick: () -> Unit,
+)
+
+@Composable
+private fun CardFooterAction(config: CardFooterActionConfig) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val alpha by animateFloatAsState(
+        targetValue = if (isPressed) 0.5f else 1f,
+        label = "CardFooterActionAlpha",
+    )
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxWidth()
+            .alpha(alpha = alpha)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = config.onClick,
+            ).padding(
+                start = LocalSpaces.current.spacing400,
+                top = LocalSpaces.current.spacing200,
+                end = LocalSpaces.current.spacing400,
+                bottom = LocalSpaces.current.spacing400,
+            ),
+    ) {
+        LemonadeUi.Text(
+            text = config.label,
+            textStyle = LocalTypographies.current.bodySmallSemiBold,
+            color = LocalColors.current.content.contentPrimary,
+        )
+    }
+}
+
+private val LemonadeCardHeadingStyle.textStyle: LemonadeTextStyle
+    @Composable get() {
+        return when (this) {
+            LemonadeCardHeadingStyle.Default -> LocalTypographies.current.headingXXSmall
+            LemonadeCardHeadingStyle.Overline -> LocalTypographies.current.bodyXSmallOverline
+        }
+    }
+
+private val LemonadeCardHeadingStyle.color: Color
+    @Composable get() {
+        return when (this) {
+            LemonadeCardHeadingStyle.Default -> LocalColors.current.content.contentPrimary
+            LemonadeCardHeadingStyle.Overline -> LocalColors.current.content.contentSecondary
+        }
+    }
 
 private val LemonadeCardPadding.spacing: Dp
     @Composable get() {
@@ -131,6 +208,7 @@ private val LemonadeCardBackground.background: Color
         return when (this) {
             LemonadeCardBackground.Default -> LocalColors.current.background.bgDefault
             LemonadeCardBackground.Subtle -> LocalColors.current.background.bgSubtle
+            LemonadeCardBackground.Elevated -> LocalColors.current.background.bgElevated
         }
     }
 

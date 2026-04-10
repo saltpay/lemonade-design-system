@@ -117,10 +117,7 @@ class LemonadeRadioButton extends StatelessWidget {
               width: theme.sizes.size550,
               height: theme.sizes.size600,
               alignment: Alignment.center,
-              child: _RadioControl(
-                checked: checked,
-                enabled: enabled,
-              ),
+              child: _RadioControl(checked: checked, enabled: enabled),
             ),
             if (label != null) ...[
               SizedBox(width: spaces.spacing200),
@@ -159,10 +156,7 @@ class LemonadeRadioButton extends StatelessWidget {
 
 /// Internal radio control widget that renders the circular selection indicator.
 class _RadioControl extends StatelessWidget {
-  const _RadioControl({
-    required this.checked,
-    required this.enabled,
-  });
+  const _RadioControl({required this.checked, required this.enabled});
 
   final bool checked;
   final bool enabled;
@@ -210,10 +204,7 @@ class _RadioControl extends StatelessWidget {
           shape: BoxShape.circle,
           color: backgroundColor,
           border: showBorder
-              ? Border.all(
-                  color: borderColor,
-                  width: borderWidth,
-                )
+              ? Border.all(color: borderColor, width: borderWidth)
               : null,
         ),
         child: Center(

@@ -3,9 +3,13 @@ import SwiftUI
 // MARK: - SelectListItemType
 
 /// Defines the selection behavior type for SelectListItem.
+/// - `single`: Radio button selection (only one item can be selected)
+/// - `multiple`: Checkbox selection (multiple items can be selected)
+/// - `toggle`: Switch control in trailing slot (toggles on each tap)
 public enum SelectListItemType {
     case single
     case multiple
+    case toggle
 }
 
 // MARK: - LemonadeListItemVoice
@@ -30,394 +34,94 @@ public enum LemonadeListItemVoice {
     }
 }
 
-// MARK: - SelectListItem Component
+// MARK: - Internal ListItem Helpers
 
-public extension LemonadeUi {
-    /// A list item with the sole purpose of selection of a single or multiple items.
-    ///
-    /// ## Usage
-    /// ```swift
-    /// LemonadeUi.SelectListItem(
-    ///     label: "Label",
-    ///     supportText: "Support Text",
-    ///     type: .single,
-    ///     checked: true,
-    ///     onItemClicked: { /* action */ },
-    ///     showDivider: true
-    /// )
-    /// ```
-    ///
-    /// - Parameters:
-    ///   - label: Label to be displayed in the selection item
-    ///   - type: SelectListItemType, defines selection behavior and component
-    ///   - checked: Flag defining if item is selected or not
-    ///   - onItemClicked: Callback triggered on click interaction
-    ///   - enabled: Flag that defines if component is enabled. Defaults to true
-    ///   - showDivider: Flag to show a divider below the list item. Defaults to false
-    ///   - supportText: Text to be displayed below the label
-    ///   - leadingSlot: Content to be placed in leading position
-    ///   - trailingSlot: Content to be placed before the selection control
-    /// - Returns: A styled SelectListItem view
-    @ViewBuilder
-    static func SelectListItem<LeadingContent: View, TrailingContent: View>(
-        label: String,
-        type: SelectListItemType,
-        checked: Bool,
-        onItemClicked: @escaping () -> Void,
-        enabled: Bool = true,
-        showDivider: Bool = false,
-        supportText: String? = nil,
-        @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
-        @ViewBuilder trailingSlot: @escaping () -> TrailingContent
-    ) -> some View {
-        LemonadeCoreListItemView(
-            label: label,
-            supportText: supportText,
-            voice: .neutral,
-            enabled: enabled,
-            showDivider: showDivider,
-            onListItemClick: {
-                switch type {
-                case .single:
-                    if !checked {
-                        onItemClicked()
-                    }
-                case .multiple:
-                    onItemClicked()
-                }
-            },
-            leadingSlot: { leadingSlot() },
-            trailingSlot: {
-                HStack(spacing: LemonadeTheme.spaces.spacing200) {
-                    trailingSlot()
-
-                    switch type {
-                    case .single:
-                        LemonadeUi.RadioButton(
-                            checked: checked,
-                            onRadioButtonClicked: onItemClicked,
-                            enabled: enabled
-                        )
-                    case .multiple:
-                        LemonadeUi.Checkbox(
-                            status: checked ? .checked : .unchecked,
-                            onCheckboxClicked: onItemClicked,
-                            enabled: enabled
-                        )
-                    }
-                }
-            }
-        )
-    }
-
-    /// A list item with the sole purpose of selection without leading slot.
-    @ViewBuilder
-    static func SelectListItem<TrailingContent: View>(
-        label: String,
-        type: SelectListItemType,
-        checked: Bool,
-        onItemClicked: @escaping () -> Void,
-        enabled: Bool = true,
-        showDivider: Bool = false,
-        supportText: String? = nil,
-        @ViewBuilder trailingSlot: @escaping () -> TrailingContent
-    ) -> some View {
-        SelectListItem(
-            label: label,
-            type: type,
-            checked: checked,
-            onItemClicked: onItemClicked,
-            enabled: enabled,
-            showDivider: showDivider,
-            supportText: supportText,
-            leadingSlot: { EmptyView() },
-            trailingSlot: trailingSlot
-        )
-    }
-
-    /// A list item with the sole purpose of selection without trailing slot.
-    @ViewBuilder
-    static func SelectListItem<LeadingContent: View>(
-        label: String,
-        type: SelectListItemType,
-        checked: Bool,
-        onItemClicked: @escaping () -> Void,
-        enabled: Bool = true,
-        showDivider: Bool = false,
-        supportText: String? = nil,
-        @ViewBuilder leadingSlot: @escaping () -> LeadingContent
-    ) -> some View {
-        SelectListItem(
-            label: label,
-            type: type,
-            checked: checked,
-            onItemClicked: onItemClicked,
-            enabled: enabled,
-            showDivider: showDivider,
-            supportText: supportText,
-            leadingSlot: leadingSlot,
-            trailingSlot: { EmptyView() }
-        )
-    }
-
-    /// A list item with the sole purpose of selection without slots.
-    @ViewBuilder
-    static func SelectListItem(
-        label: String,
-        type: SelectListItemType,
-        checked: Bool,
-        onItemClicked: @escaping () -> Void,
-        enabled: Bool = true,
-        showDivider: Bool = false,
-        supportText: String? = nil
-    ) -> some View {
-        SelectListItem(
-            label: label,
-            type: type,
-            checked: checked,
-            onItemClicked: onItemClicked,
-            enabled: enabled,
-            showDivider: showDivider,
-            supportText: supportText,
-            leadingSlot: { EmptyView() },
-            trailingSlot: { EmptyView() }
-        )
-    }
-}
-
-// MARK: - ResourceListItem Component
-
-public extension LemonadeUi {
-    /// A list item for resource info display.
-    ///
-    /// ## Usage
-    /// ```swift
-    /// LemonadeUi.ResourceListItem(
-    ///     label: "Label",
-    ///     value: "Value",
-    ///     supportText: "Support Text",
-    ///     showDivider: true
-    /// ) {
-    ///     LemonadeUi.SymbolContainer(icon: .heart, contentDescription: nil)
-    /// }
-    /// ```
-    ///
-    /// - Parameters:
-    ///   - label: Main String to be displayed
-    ///   - value: Value String to be displayed in trailing position
-    ///   - supportText: String to be displayed as support text
-    ///   - enabled: Flag to define if component is enabled. Defaults to true
-    ///   - showDivider: Flag to show a divider below the list item. Defaults to false
-    ///   - onItemClicked: Callback called when component is tapped
-    ///   - addonSlot: Slot to be displayed below the value
-    ///   - leadingSlot: Slot component to be placed in leading position
-    /// - Returns: A styled ResourceListItem view
-    @ViewBuilder
-    static func ResourceListItem<LeadingContent: View, AddonContent: View>(
-        label: String,
-        value: String,
-        supportText: String? = nil,
-        enabled: Bool = true,
-        showDivider: Bool = false,
-        onItemClicked: (() -> Void)? = nil,
-        @ViewBuilder addonSlot: @escaping () -> AddonContent,
-        @ViewBuilder leadingSlot: @escaping () -> LeadingContent
-    ) -> some View {
-        LemonadeCoreListItemView(
-            label: label,
-            supportText: supportText,
-            voice: .neutral,
-            enabled: enabled,
-            showDivider: showDivider,
-            onListItemClick: onItemClicked,
-            leadingSlot: {
-                leadingSlot()
-                    .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-            },
-            trailingSlot: {
-                VStack(alignment: .trailing, spacing: LemonadeTheme.spaces.spacing50) {
-                    LemonadeUi.Text(
-                        value,
-                        textStyle: LemonadeTypography.shared.bodyMediumMedium
-                    )
-
-                    addonSlot()
-                }
-                .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-            }
-        )
-    }
-
-    /// A list item for resource info display without addon slot.
-    @ViewBuilder
-    static func ResourceListItem<LeadingContent: View>(
-        label: String,
-        value: String,
-        supportText: String? = nil,
-        enabled: Bool = true,
-        showDivider: Bool = false,
-        onItemClicked: (() -> Void)? = nil,
-        @ViewBuilder leadingSlot: @escaping () -> LeadingContent
-    ) -> some View {
-        ResourceListItem(
-            label: label,
-            value: value,
-            supportText: supportText,
-            enabled: enabled,
-            showDivider: showDivider,
-            onItemClicked: onItemClicked,
-            addonSlot: { EmptyView() },
-            leadingSlot: leadingSlot
-        )
-    }
-}
-
-// MARK: - ActionListItem Component
-
-public extension LemonadeUi {
-    /// Basic building block for list items.
-    ///
-    /// ## Usage
-    /// ```swift
-    /// LemonadeUi.ActionListItem(
-    ///     label: "Label",
-    ///     supportText: "Support Text",
-    ///     showDivider: true,
-    ///     onItemClicked: { /* action */ },
-    ///     leadingSlot: { LemonadeUi.Icon(icon: .heart, contentDescription: nil) },
-    ///     trailingSlot: { LemonadeUi.Tag(label: "New", voice: .warning) }
-    /// )
-    /// ```
+extension LemonadeUi {
+    /// Convenience overload that composes standard label and support-text content from string
+    /// parameters and delegates to the content-slot variant of ListItem.
     ///
     /// - Parameters:
     ///   - label: Label String to be displayed
-    ///   - supportText: Text to be displayed as Support Text
-    ///   - voice: LemonadeListItemVoice to define tone of voice. Defaults to .neutral
-    ///   - showNavigationIndicator: Indicates navigation visually
-    ///   - enabled: Flag to define if component is enabled. Defaults to true
-    ///   - showDivider: Flag to show a divider below the list item. Defaults to false
-    ///   - onItemClicked: Callback called when component is tapped
+    ///   - supportText: Optional support text displayed below the label
+    ///   - voice: LemonadeListItemVoice to define tone of voice
+    ///   - enabled: Flag to define if component is enabled
+    ///   - showDivider: Flag to show a divider below the list item
+    ///   - onListItemClick: Optional callback triggered on click interaction
     ///   - leadingSlot: Slot content to be placed in leading position
     ///   - trailingSlot: Slot content to be placed in trailing position
-    /// - Returns: A styled ActionListItem view
     @ViewBuilder
-    static func ActionListItem<LeadingContent: View, TrailingContent: View>(
+    static func ListItem<LeadingContent: View, TrailingContent: View>(
         label: String,
         supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
-        showNavigationIndicator: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
-        onItemClicked: (() -> Void)? = nil,
+        onListItemClick: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent
     ) -> some View {
-        LemonadeCoreListItemView(
-            label: label,
-            supportText: supportText,
+        ListItem(
             voice: voice,
             enabled: enabled,
             showDivider: showDivider,
-            onListItemClick: onItemClicked,
+            onListItemClick: onListItemClick,
             leadingSlot: leadingSlot,
-            trailingSlot: {
-                HStack {
-                    trailingSlot()
+            trailingSlot: trailingSlot,
+            contentSlot: {
+                LemonadeUi.Text(
+                    label,
+                    textStyle: LemonadeTypography.shared.bodyMediumMedium,
+                    color: voice.contentColor
+                )
 
-                    if showNavigationIndicator {
-                        LemonadeUi.Icon(
-                            icon: .chevronRight,
-                            contentDescription: "Navigation indicator",
-                            size: .medium,
-                            tint: LemonadeTheme.colors.content.contentTertiary
-                        )
-                    }
+                if let supportText = supportText {
+                    LemonadeUi.Text(
+                        supportText,
+                        textStyle: LemonadeTypography.shared.bodySmallRegular,
+                        color: LemonadeTheme.colors.content.contentSecondary
+                    )
                 }
-                .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
             }
         )
     }
 
-    /// ActionListItem without trailing slot.
+    /// Foundational list-item overload that accepts a generic content slot for custom content,
+    /// delegating layout and interaction handling to LemonadeCoreListItemView.
+    ///
+    /// - Parameters:
+    ///   - voice: LemonadeListItemVoice to define tone of voice
+    ///   - enabled: Flag to define if component is enabled
+    ///   - showDivider: Flag to show a divider below the list item
+    ///   - onListItemClick: Optional callback triggered on click interaction
+    ///   - leadingSlot: Slot content to be placed in leading position
+    ///   - trailingSlot: Slot content to be placed in trailing position
+    ///   - contentSlot: Content slot for the main body of the list item
     @ViewBuilder
-    static func ActionListItem<LeadingContent: View>(
-        label: String,
-        supportText: String? = nil,
+    static func ListItem<ContentSlot: View, LeadingContent: View, TrailingContent: View>(
         voice: LemonadeListItemVoice = .neutral,
-        showNavigationIndicator: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
-        onItemClicked: (() -> Void)? = nil,
-        @ViewBuilder leadingSlot: @escaping () -> LeadingContent
+        onListItemClick: (() -> Void)? = nil,
+        @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
+        @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
+        @ViewBuilder contentSlot: @escaping () -> ContentSlot
     ) -> some View {
-        ActionListItem(
-            label: label,
-            supportText: supportText,
+        LemonadeCoreListItemView(
+            contentSlot: contentSlot,
             voice: voice,
-            showNavigationIndicator: showNavigationIndicator,
             enabled: enabled,
             showDivider: showDivider,
-            onItemClicked: onItemClicked,
+            onListItemClick: onListItemClick,
             leadingSlot: leadingSlot,
-            trailingSlot: { EmptyView() }
-        )
-    }
-
-    /// ActionListItem without leading slot.
-    @ViewBuilder
-    static func ActionListItem<TrailingContent: View>(
-        label: String,
-        supportText: String? = nil,
-        voice: LemonadeListItemVoice = .neutral,
-        showNavigationIndicator: Bool = false,
-        enabled: Bool = true,
-        showDivider: Bool = false,
-        onItemClicked: (() -> Void)? = nil,
-        @ViewBuilder trailingSlot: @escaping () -> TrailingContent
-    ) -> some View {
-        ActionListItem(
-            label: label,
-            supportText: supportText,
-            voice: voice,
-            showNavigationIndicator: showNavigationIndicator,
-            enabled: enabled,
-            showDivider: showDivider,
-            onItemClicked: onItemClicked,
-            leadingSlot: { EmptyView() },
             trailingSlot: trailingSlot
-        )
-    }
-
-    /// ActionListItem without slots.
-    @ViewBuilder
-    static func ActionListItem(
-        label: String,
-        supportText: String? = nil,
-        voice: LemonadeListItemVoice = .neutral,
-        showNavigationIndicator: Bool = false,
-        enabled: Bool = true,
-        showDivider: Bool = false,
-        onItemClicked: (() -> Void)? = nil
-    ) -> some View {
-        ActionListItem(
-            label: label,
-            supportText: supportText,
-            voice: voice,
-            showNavigationIndicator: showNavigationIndicator,
-            enabled: enabled,
-            showDivider: showDivider,
-            onItemClicked: onItemClicked,
-            leadingSlot: { EmptyView() },
-            trailingSlot: { EmptyView() }
         )
     }
 }
 
 // MARK: - Core ListItem View
 
-private struct LemonadeCoreListItemView<LeadingContent: View, TrailingContent: View>: View {
-    let label: String
-    let supportText: String?
+struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, TrailingContent: View>: View {
+    let contentSlot: () -> ContentSlot
     let voice: LemonadeListItemVoice
     let enabled: Bool
     let showDivider: Bool
@@ -447,19 +151,7 @@ private struct LemonadeCoreListItemView<LeadingContent: View, TrailingContent: V
 
             // Content column
             VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
-                LemonadeUi.Text(
-                    label,
-                    textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                    color: voice.contentColor
-                )
-
-                if let supportText = supportText {
-                    LemonadeUi.Text(
-                        supportText,
-                        textStyle: LemonadeTypography.shared.bodySmallRegular,
-                        color: LemonadeTheme.colors.content.contentSecondary
-                    )
-                }
+                contentSlot()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
@@ -475,7 +167,7 @@ private struct LemonadeCoreListItemView<LeadingContent: View, TrailingContent: V
 
 // MARK: - SafeArea Wrapper
 
-private struct ListItemSafeArea<Content: View>: View {
+struct ListItemSafeArea<Content: View>: View {
     let showDivider: Bool
     @ViewBuilder let content: () -> Content
 
@@ -495,7 +187,7 @@ private struct ListItemSafeArea<Content: View>: View {
 
 // MARK: - ListItem Button Style
 
-private struct ListItemButtonStyle: ButtonStyle {
+struct ListItemButtonStyle: ButtonStyle {
     let voice: LemonadeListItemVoice
 
     func makeBody(configuration: Configuration) -> some View {

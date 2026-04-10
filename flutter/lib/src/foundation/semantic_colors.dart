@@ -75,6 +75,7 @@ interface class LemonadeInteractionColors {
   final Color bgElevatedInteractive;
   final Color bgCriticalSubtleInteractive;
   final Color bgDefaultPressed;
+  final Color bgSubtlePressed;
   final Color bgElevatedPressed;
   final Color bgBrandPressed;
   final Color bgBrandHighPressed;
@@ -83,6 +84,7 @@ interface class LemonadeInteractionColors {
   final Color bgInfoPressed;
   final Color bgPositivePressed;
   final Color bgNeutralPressed;
+  final Color bgCriticalSubtlePressed;
   final Color bgCautionSubtlePressed;
   final Color bgInfoSubtlePressed;
   final Color bgPositiveSubtlePressed;
@@ -108,6 +110,7 @@ interface class LemonadeInteractionColors {
     required this.bgElevatedInteractive,
     required this.bgCriticalSubtleInteractive,
     required this.bgDefaultPressed,
+    required this.bgSubtlePressed,
     required this.bgElevatedPressed,
     required this.bgBrandPressed,
     required this.bgBrandHighPressed,
@@ -116,6 +119,7 @@ interface class LemonadeInteractionColors {
     required this.bgInfoPressed,
     required this.bgPositivePressed,
     required this.bgNeutralPressed,
+    required this.bgCriticalSubtlePressed,
     required this.bgCautionSubtlePressed,
     required this.bgInfoSubtlePressed,
     required this.bgPositiveSubtlePressed,
@@ -149,6 +153,7 @@ interface class LemonadeInteractionColors {
       bgElevatedInteractive: Color.lerp(a.bgElevatedInteractive, b.bgElevatedInteractive, t)!,
       bgCriticalSubtleInteractive: Color.lerp(a.bgCriticalSubtleInteractive, b.bgCriticalSubtleInteractive, t)!,
       bgDefaultPressed: Color.lerp(a.bgDefaultPressed, b.bgDefaultPressed, t)!,
+      bgSubtlePressed: Color.lerp(a.bgSubtlePressed, b.bgSubtlePressed, t)!,
       bgElevatedPressed: Color.lerp(a.bgElevatedPressed, b.bgElevatedPressed, t)!,
       bgBrandPressed: Color.lerp(a.bgBrandPressed, b.bgBrandPressed, t)!,
       bgBrandHighPressed: Color.lerp(a.bgBrandHighPressed, b.bgBrandHighPressed, t)!,
@@ -157,6 +162,7 @@ interface class LemonadeInteractionColors {
       bgInfoPressed: Color.lerp(a.bgInfoPressed, b.bgInfoPressed, t)!,
       bgPositivePressed: Color.lerp(a.bgPositivePressed, b.bgPositivePressed, t)!,
       bgNeutralPressed: Color.lerp(a.bgNeutralPressed, b.bgNeutralPressed, t)!,
+      bgCriticalSubtlePressed: Color.lerp(a.bgCriticalSubtlePressed, b.bgCriticalSubtlePressed, t)!,
       bgCautionSubtlePressed: Color.lerp(a.bgCautionSubtlePressed, b.bgCautionSubtlePressed, t)!,
       bgInfoSubtlePressed: Color.lerp(a.bgInfoSubtlePressed, b.bgInfoSubtlePressed, t)!,
       bgPositiveSubtlePressed: Color.lerp(a.bgPositiveSubtlePressed, b.bgPositiveSubtlePressed, t)!,
@@ -192,6 +198,12 @@ interface class LemonadeBorderColors {
   final Color borderAlwaysLight;
   final Color borderNeutralHigh;
   final Color borderNeutralHighInverse;
+  final Color borderAlwaysLightLow;
+  final Color borderAlwaysLightMedium;
+  final Color borderAlwaysLightHigh;
+  final Color borderAlwaysDarkLow;
+  final Color borderAlwaysDarkMedium;
+  final Color borderAlwaysDarkHigh;
 
   const LemonadeBorderColors({
     required this.borderBrandInverse,
@@ -217,6 +229,12 @@ interface class LemonadeBorderColors {
     required this.borderAlwaysLight,
     required this.borderNeutralHigh,
     required this.borderNeutralHighInverse,
+    required this.borderAlwaysLightLow,
+    required this.borderAlwaysLightMedium,
+    required this.borderAlwaysLightHigh,
+    required this.borderAlwaysDarkLow,
+    required this.borderAlwaysDarkMedium,
+    required this.borderAlwaysDarkHigh,
   });
 
   /// Linearly interpolates between two [LemonadeBorderColors] objects.
@@ -250,6 +268,12 @@ interface class LemonadeBorderColors {
       borderAlwaysLight: Color.lerp(a.borderAlwaysLight, b.borderAlwaysLight, t)!,
       borderNeutralHigh: Color.lerp(a.borderNeutralHigh, b.borderNeutralHigh, t)!,
       borderNeutralHighInverse: Color.lerp(a.borderNeutralHighInverse, b.borderNeutralHighInverse, t)!,
+      borderAlwaysLightLow: Color.lerp(a.borderAlwaysLightLow, b.borderAlwaysLightLow, t)!,
+      borderAlwaysLightMedium: Color.lerp(a.borderAlwaysLightMedium, b.borderAlwaysLightMedium, t)!,
+      borderAlwaysLightHigh: Color.lerp(a.borderAlwaysLightHigh, b.borderAlwaysLightHigh, t)!,
+      borderAlwaysDarkLow: Color.lerp(a.borderAlwaysDarkLow, b.borderAlwaysDarkLow, t)!,
+      borderAlwaysDarkMedium: Color.lerp(a.borderAlwaysDarkMedium, b.borderAlwaysDarkMedium, t)!,
+      borderAlwaysDarkHigh: Color.lerp(a.borderAlwaysDarkHigh, b.borderAlwaysDarkHigh, t)!,
     );
   }
 }
@@ -272,6 +296,7 @@ interface class LemonadeContentColors {
   final Color contentCritical;
   final Color contentOnBrandHigh;
   final Color contentPrimary;
+  final Color contentCriticalOnColor;
   final Color contentCautionOnColor;
   final Color contentInfoOnColor;
   final Color contentPositiveOnColor;
@@ -296,6 +321,7 @@ interface class LemonadeContentColors {
     required this.contentCritical,
     required this.contentOnBrandHigh,
     required this.contentPrimary,
+    required this.contentCriticalOnColor,
     required this.contentCautionOnColor,
     required this.contentInfoOnColor,
     required this.contentPositiveOnColor,
@@ -328,6 +354,7 @@ interface class LemonadeContentColors {
       contentCritical: Color.lerp(a.contentCritical, b.contentCritical, t)!,
       contentOnBrandHigh: Color.lerp(a.contentOnBrandHigh, b.contentOnBrandHigh, t)!,
       contentPrimary: Color.lerp(a.contentPrimary, b.contentPrimary, t)!,
+      contentCriticalOnColor: Color.lerp(a.contentCriticalOnColor, b.contentCriticalOnColor, t)!,
       contentCautionOnColor: Color.lerp(a.contentCautionOnColor, b.contentCautionOnColor, t)!,
       contentInfoOnColor: Color.lerp(a.contentInfoOnColor, b.contentInfoOnColor, t)!,
       contentPositiveOnColor: Color.lerp(a.contentPositiveOnColor, b.contentPositiveOnColor, t)!,

@@ -12,16 +12,17 @@ struct ColorsDisplayView: View {
                             .foregroundStyle(.content.contentSecondary)
                             .textCase(.uppercase)
 
-                        HStack(spacing: 0) {
+                        VStack(spacing: 0) {
                             ForEach(group.colors, id: \.name) { colorItem in
-                                VStack {
+                                HStack {
                                     Text(colorItem.name)
                                         .font(.caption2)
                                         .fontWeight(.semibold)
                                         .foregroundStyle(textColor(for: colorItem.color))
+                                    Spacer()
                                 }
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 60)
+                                .padding(.horizontal, 12)
+                                .frame(height: 40)
                                 .background(colorItem.color)
                             }
                         }
@@ -31,11 +32,10 @@ struct ColorsDisplayView: View {
             }
             .padding()
         }
-        .navigationTitle("Colors")
+        .navigationTitle("Semantic Colors")
     }
 
     private func textColor(for backgroundColor: Color) -> Color {
-        // Simple luminance check
         return .primary
     }
 }
@@ -55,65 +55,47 @@ struct ColorGroup: Identifiable {
 }
 
 private let colorGroups: [ColorGroup] = [
-    ColorGroup(title: "Yellow", colors: [
-        ColorItem(name: "50", color: LemonadePrimitiveColors.Solid.Yellow.yellow50),
-        ColorItem(name: "100", color: LemonadePrimitiveColors.Solid.Yellow.yellow100),
-        ColorItem(name: "200", color: LemonadePrimitiveColors.Solid.Yellow.yellow200),
-        ColorItem(name: "300", color: LemonadePrimitiveColors.Solid.Yellow.yellow300),
-        ColorItem(name: "400", color: LemonadePrimitiveColors.Solid.Yellow.yellow400),
-        ColorItem(name: "500", color: LemonadePrimitiveColors.Solid.Yellow.yellow500),
-        ColorItem(name: "600", color: LemonadePrimitiveColors.Solid.Yellow.yellow600),
-        ColorItem(name: "700", color: LemonadePrimitiveColors.Solid.Yellow.yellow700),
-        ColorItem(name: "800", color: LemonadePrimitiveColors.Solid.Yellow.yellow800),
-        ColorItem(name: "900", color: LemonadePrimitiveColors.Solid.Yellow.yellow900),
+    ColorGroup(title: "Background", colors: [
+        ColorItem(name: "bgDefault", color: .bg.bgDefault),
+        ColorItem(name: "bgSubtle", color: .bg.bgSubtle),
+        ColorItem(name: "bgElevated", color: .bg.bgElevated),
+        ColorItem(name: "bgElevatedHigh", color: .bg.bgElevatedHigh),
+        ColorItem(name: "bgBrand", color: .bg.bgBrand),
+        ColorItem(name: "bgBrandHigh", color: .bg.bgBrandHigh),
+        ColorItem(name: "bgBrandSubtle", color: .bg.bgBrandSubtle),
+        ColorItem(name: "bgPositive", color: .bg.bgPositive),
+        ColorItem(name: "bgPositiveSubtle", color: .bg.bgPositiveSubtle),
+        ColorItem(name: "bgCritical", color: .bg.bgCritical),
+        ColorItem(name: "bgCriticalSubtle", color: .bg.bgCriticalSubtle),
+        ColorItem(name: "bgCaution", color: .bg.bgCaution),
+        ColorItem(name: "bgCautionSubtle", color: .bg.bgCautionSubtle),
+        ColorItem(name: "bgInfo", color: .bg.bgInfo),
+        ColorItem(name: "bgInfoSubtle", color: .bg.bgInfoSubtle),
+        ColorItem(name: "bgNeutral", color: .bg.bgNeutral),
+        ColorItem(name: "bgNeutralSubtle", color: .bg.bgNeutralSubtle),
     ]),
-    ColorGroup(title: "Green", colors: [
-        ColorItem(name: "50", color: LemonadePrimitiveColors.Solid.Green.green50),
-        ColorItem(name: "100", color: LemonadePrimitiveColors.Solid.Green.green100),
-        ColorItem(name: "200", color: LemonadePrimitiveColors.Solid.Green.green200),
-        ColorItem(name: "300", color: LemonadePrimitiveColors.Solid.Green.green300),
-        ColorItem(name: "400", color: LemonadePrimitiveColors.Solid.Green.green400),
-        ColorItem(name: "500", color: LemonadePrimitiveColors.Solid.Green.green500),
-        ColorItem(name: "600", color: LemonadePrimitiveColors.Solid.Green.green600),
-        ColorItem(name: "700", color: LemonadePrimitiveColors.Solid.Green.green700),
-        ColorItem(name: "800", color: LemonadePrimitiveColors.Solid.Green.green800),
-        ColorItem(name: "900", color: LemonadePrimitiveColors.Solid.Green.green900),
+    ColorGroup(title: "Content", colors: [
+        ColorItem(name: "contentPrimary", color: .content.contentPrimary),
+        ColorItem(name: "contentSecondary", color: .content.contentSecondary),
+        ColorItem(name: "contentTertiary", color: .content.contentTertiary),
+        ColorItem(name: "contentBrand", color: .content.contentBrand),
+        ColorItem(name: "contentBrandHigh", color: .content.contentBrandHigh),
+        ColorItem(name: "contentPositive", color: .content.contentPositive),
+        ColorItem(name: "contentCritical", color: .content.contentCritical),
+        ColorItem(name: "contentCaution", color: .content.contentCaution),
+        ColorItem(name: "contentInfo", color: .content.contentInfo),
+        ColorItem(name: "contentNeutral", color: .content.contentNeutral),
     ]),
-    ColorGroup(title: "Blue", colors: [
-        ColorItem(name: "50", color: LemonadePrimitiveColors.Solid.Blue.blue50),
-        ColorItem(name: "100", color: LemonadePrimitiveColors.Solid.Blue.blue100),
-        ColorItem(name: "200", color: LemonadePrimitiveColors.Solid.Blue.blue200),
-        ColorItem(name: "300", color: LemonadePrimitiveColors.Solid.Blue.blue300),
-        ColorItem(name: "400", color: LemonadePrimitiveColors.Solid.Blue.blue400),
-        ColorItem(name: "500", color: LemonadePrimitiveColors.Solid.Blue.blue500),
-        ColorItem(name: "600", color: LemonadePrimitiveColors.Solid.Blue.blue600),
-        ColorItem(name: "700", color: LemonadePrimitiveColors.Solid.Blue.blue700),
-        ColorItem(name: "800", color: LemonadePrimitiveColors.Solid.Blue.blue800),
-        ColorItem(name: "900", color: LemonadePrimitiveColors.Solid.Blue.blue900),
-    ]),
-    ColorGroup(title: "Red", colors: [
-        ColorItem(name: "50", color: LemonadePrimitiveColors.Solid.Red.red50),
-        ColorItem(name: "100", color: LemonadePrimitiveColors.Solid.Red.red100),
-        ColorItem(name: "200", color: LemonadePrimitiveColors.Solid.Red.red200),
-        ColorItem(name: "300", color: LemonadePrimitiveColors.Solid.Red.red300),
-        ColorItem(name: "400", color: LemonadePrimitiveColors.Solid.Red.red400),
-        ColorItem(name: "500", color: LemonadePrimitiveColors.Solid.Red.red500),
-        ColorItem(name: "600", color: LemonadePrimitiveColors.Solid.Red.red600),
-        ColorItem(name: "700", color: LemonadePrimitiveColors.Solid.Red.red700),
-        ColorItem(name: "800", color: LemonadePrimitiveColors.Solid.Red.red800),
-        ColorItem(name: "900", color: LemonadePrimitiveColors.Solid.Red.red900),
-    ]),
-    ColorGroup(title: "Neutral", colors: [
-        ColorItem(name: "50", color: LemonadePrimitiveColors.Solid.Neutral.neutral50),
-        ColorItem(name: "100", color: LemonadePrimitiveColors.Solid.Neutral.neutral100),
-        ColorItem(name: "200", color: LemonadePrimitiveColors.Solid.Neutral.neutral200),
-        ColorItem(name: "300", color: LemonadePrimitiveColors.Solid.Neutral.neutral300),
-        ColorItem(name: "400", color: LemonadePrimitiveColors.Solid.Neutral.neutral400),
-        ColorItem(name: "500", color: LemonadePrimitiveColors.Solid.Neutral.neutral500),
-        ColorItem(name: "600", color: LemonadePrimitiveColors.Solid.Neutral.neutral600),
-        ColorItem(name: "700", color: LemonadePrimitiveColors.Solid.Neutral.neutral700),
-        ColorItem(name: "800", color: LemonadePrimitiveColors.Solid.Neutral.neutral800),
-        ColorItem(name: "900", color: LemonadePrimitiveColors.Solid.Neutral.neutral900),
+    ColorGroup(title: "Border", colors: [
+        ColorItem(name: "borderNeutralLow", color: .border.borderNeutralLow),
+        ColorItem(name: "borderNeutralMedium", color: .border.borderNeutralMedium),
+        ColorItem(name: "borderNeutralHigh", color: .border.borderNeutralHigh),
+        ColorItem(name: "borderBrand", color: .border.borderBrand),
+        ColorItem(name: "borderSelected", color: .border.borderSelected),
+        ColorItem(name: "borderPositive", color: .border.borderPositive),
+        ColorItem(name: "borderCritical", color: .border.borderCritical),
+        ColorItem(name: "borderCaution", color: .border.borderCaution),
+        ColorItem(name: "borderInfo", color: .border.borderInfo),
     ]),
 ]
 

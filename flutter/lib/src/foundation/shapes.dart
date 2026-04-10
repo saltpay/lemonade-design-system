@@ -11,6 +11,43 @@
 
 import 'package:lemonade_design_system/lemonade_design_system.dart';
 
+/// Semantic shape values
+@immutable
+class LemonadeSemanticShapes {
+  /// Creates a [LemonadeSemanticShapes] configuration.
+  const LemonadeSemanticShapes({
+    this.radiusContainerDefault = const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(24.0)),
+    ),
+  });
+
+  /// Linearly interpolates between two [LemonadeSemanticShapes] objects.
+  factory LemonadeSemanticShapes.lerp(
+    LemonadeSemanticShapes a,
+    LemonadeSemanticShapes b,
+    double t,
+  ) {
+    if (identical(a, b)) return a;
+
+    return LemonadeSemanticShapes(
+      radiusContainerDefault: ShapeBorder.lerp(a.radiusContainerDefault, b.radiusContainerDefault, t)!,
+    );
+  }
+
+  /// Radius value of 24px from token `radiusContainerDefault`
+  final ShapeBorder radiusContainerDefault;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LemonadeSemanticShapes &&
+          runtimeType == other.runtimeType &&
+          radiusContainerDefault == other.radiusContainerDefault;
+
+  @override
+  int get hashCode => radiusContainerDefault.hashCode;
+}
+
 /// Shape configuration for the Lemonade Design System.
 ///
 /// Provides predefined shape values based on radius tokens for consistent
@@ -34,6 +71,9 @@ class LemonadeShapes {
     this.radius200 = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(8.0)),
     ),
+    this.radius250 = const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    ),
     this.radius300 = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(12.0)),
     ),
@@ -52,6 +92,7 @@ class LemonadeShapes {
     this.radiusFull = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(999.0)),
     ),
+    this.semantic = const LemonadeSemanticShapes(),
   });
 
   /// Linearly interpolates between two [LemonadeShapes] objects.
@@ -69,12 +110,14 @@ class LemonadeShapes {
       radius100: ShapeBorder.lerp(a.radius100, b.radius100, t)!,
       radius150: ShapeBorder.lerp(a.radius150, b.radius150, t)!,
       radius200: ShapeBorder.lerp(a.radius200, b.radius200, t)!,
+      radius250: ShapeBorder.lerp(a.radius250, b.radius250, t)!,
       radius300: ShapeBorder.lerp(a.radius300, b.radius300, t)!,
       radius400: ShapeBorder.lerp(a.radius400, b.radius400, t)!,
       radius500: ShapeBorder.lerp(a.radius500, b.radius500, t)!,
       radius600: ShapeBorder.lerp(a.radius600, b.radius600, t)!,
       radius800: ShapeBorder.lerp(a.radius800, b.radius800, t)!,
       radiusFull: ShapeBorder.lerp(a.radiusFull, b.radiusFull, t)!,
+      semantic: LemonadeSemanticShapes.lerp(a.semantic, b.semantic, t),
     );
   }
 
@@ -92,6 +135,9 @@ class LemonadeShapes {
 
   /// Radius value of 8px from token `radius200`
   final ShapeBorder radius200;
+
+  /// Radius value of 10px from token `radius250`
+  final ShapeBorder radius250;
 
   /// Radius value of 12px from token `radius300`
   final ShapeBorder radius300;
@@ -111,6 +157,9 @@ class LemonadeShapes {
   /// Radius value of 999px from token `radiusFull`
   final ShapeBorder radiusFull;
 
+  /// Semantic shape values
+  final LemonadeSemanticShapes semantic;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -121,12 +170,14 @@ class LemonadeShapes {
           radius100 == other.radius100 &&
           radius150 == other.radius150 &&
           radius200 == other.radius200 &&
+          radius250 == other.radius250 &&
           radius300 == other.radius300 &&
           radius400 == other.radius400 &&
           radius500 == other.radius500 &&
           radius600 == other.radius600 &&
           radius800 == other.radius800 &&
-          radiusFull == other.radiusFull;
+          radiusFull == other.radiusFull &&
+          semantic == other.semantic;
 
   @override
   int get hashCode => Object.hash(
@@ -135,12 +186,14 @@ class LemonadeShapes {
     radius100,
     radius150,
     radius200,
+    radius250,
     radius300,
     radius400,
     radius500,
     radius600,
     radius800,
     radiusFull,
+    semantic,
   );
 
   /// Helper method to access [LemonadeShapes] from the closest

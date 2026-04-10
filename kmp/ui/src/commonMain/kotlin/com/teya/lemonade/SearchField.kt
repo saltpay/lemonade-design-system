@@ -29,10 +29,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import com.teya.lemonade.core.LemonadeIcons
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 /**
  * Input field designated to use for search and querying.
@@ -96,6 +97,7 @@ internal fun CoreSearchField(
     enabled: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
+    val contentColor = LocalColors.current.content.contentPrimary
     BasicTextField(
         value = input,
         onValueChange = onInputChanged,
@@ -103,7 +105,10 @@ internal fun CoreSearchField(
         enabled = enabled,
         keyboardActions = keyboardActions,
         keyboardOptions = keyboardOptions,
-        textStyle = LocalTypographies.current.bodyMediumRegular.textStyle,
+        cursorBrush = SolidColor(contentColor),
+        textStyle = LocalTypographies.current.bodyMediumRegular.textStyle.copy(
+            color = contentColor,
+        ),
         singleLine = true,
         modifier = modifier.then(
             other = if (enabled) {
@@ -215,7 +220,7 @@ private fun CoreSearchFieldDecorationBox(
                             Modifier.clickable(
                                 onClick = onLeadingIconClicked,
                                 interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
+                                indication = LocalEffects.current.interactionIndication,
                             )
                         } else {
                             Modifier
@@ -253,7 +258,7 @@ private fun CoreSearchFieldDecorationBox(
                     .clickable(
                         onClick = onInputClear,
                         interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
+                        indication = LocalEffects.current.interactionIndication,
                     ),
             )
         }

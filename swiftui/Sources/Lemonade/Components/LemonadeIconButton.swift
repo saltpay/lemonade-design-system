@@ -161,27 +161,12 @@ private struct LemonadeIconButtonView: View {
             )
             .clipShape(RoundedRectangle(cornerRadius: size.sizeData.cornerRadius))
         }
-        .buttonStyle(LemonadeIconButtonStyle(isPressed: $isPressed))
+        .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
         .onHover { hovering in
             isHovering = hovering
         }
         .disabled(!enabled)
         .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-    }
-}
-
-// MARK: - Icon Button Style
-
-private struct LemonadeIconButtonStyle: ButtonStyle {
-    @Binding var isPressed: Bool
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .onChange(of: configuration.isPressed) { newValue in
-                withAnimation(.easeInOut(duration: 0.1)) {
-                    isPressed = newValue
-                }
-            }
     }
 }
 

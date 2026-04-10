@@ -42,6 +42,11 @@ class LemonadeSizes {
     this.size1200 = 48.0,
     this.size1400 = 56.0,
     this.size1600 = 64.0,
+    this.size1800 = 72.0,
+    this.size2000 = 80.0,
+    this.size2200 = 88.0,
+    this.size2400 = 96.0,
+    this.size2500 = 100.0,
   });
 
   /// Linearly interpolates between two [LemonadeSizes] objects.
@@ -76,6 +81,11 @@ class LemonadeSizes {
       size1200: lerpDouble(a.size1200, b.size1200, t)!,
       size1400: lerpDouble(a.size1400, b.size1400, t)!,
       size1600: lerpDouble(a.size1600, b.size1600, t)!,
+      size1800: lerpDouble(a.size1800, b.size1800, t)!,
+      size2000: lerpDouble(a.size2000, b.size2000, t)!,
+      size2200: lerpDouble(a.size2200, b.size2200, t)!,
+      size2400: lerpDouble(a.size2400, b.size2400, t)!,
+      size2500: lerpDouble(a.size2500, b.size2500, t)!,
     );
   }
 
@@ -145,6 +155,21 @@ class LemonadeSizes {
   /// Size value of 64px from token `size1600`
   final double size1600;
 
+  /// Size value of 72px from token `size1800`
+  final double size1800;
+
+  /// Size value of 80px from token `size2000`
+  final double size2000;
+
+  /// Size value of 88px from token `size2200`
+  final double size2200;
+
+  /// Size value of 96px from token `size2400`
+  final double size2400;
+
+  /// Size value of 100px from token `size2500`
+  final double size2500;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -171,7 +196,12 @@ class LemonadeSizes {
           size1100 == other.size1100 &&
           size1200 == other.size1200 &&
           size1400 == other.size1400 &&
-          size1600 == other.size1600;
+          size1600 == other.size1600 &&
+          size1800 == other.size1800 &&
+          size2000 == other.size2000 &&
+          size2200 == other.size2200 &&
+          size2400 == other.size2400 &&
+          size2500 == other.size2500;
 
   @override
   int get hashCode => Object.hashAll([
@@ -197,6 +227,11 @@ class LemonadeSizes {
     size1200,
     size1400,
     size1600,
+    size1800,
+    size2000,
+    size2200,
+    size2400,
+    size2500,
   ]);
 
   /// Helper method to access [LemonadeSizes] from the closest

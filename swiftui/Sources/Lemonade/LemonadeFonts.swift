@@ -4,16 +4,17 @@ import CoreText
 /// Handles font registration for the Lemonade Design System.
 /// Call `LemonadeFonts.registerFonts()` at app startup to ensure fonts are available.
 public enum LemonadeFonts {
-    private static var fontsRegistered = false
+    private static let _registerFontsOnce: Void = {
+        let fontNames = [
+            "Figtree-Regular",
+            "Figtree-Medium",
+            "Figtree-SemiBold"
+        ]
 
-    /// The bundle containing Lemonade resources
-    private static var lemonadeBundle: Bundle {
-        #if SWIFT_PACKAGE
-        return Bundle.module
-        #else
-        return Bundle(for: LemonadeBundleClass.self)
-        #endif
-    }
+        for fontName in fontNames {
+            registerFont(named: fontName)
+        }
+    }()
 
     /// Registers all Lemonade custom fonts from the bundle.
     /// This should be called once at app startup, typically in the App's init.
@@ -29,19 +30,7 @@ public enum LemonadeFonts {
     /// }
     /// ```
     public static func registerFonts() {
-        guard !fontsRegistered else { return }
-
-        let fontNames = [
-            "Figtree-Regular",
-            "Figtree-Medium",
-            "Figtree-SemiBold"
-        ]
-
-        for fontName in fontNames {
-            registerFont(named: fontName)
-        }
-
-        fontsRegistered = true
+        _ = _registerFontsOnce
     }
 
     private static func registerFont(named fontName: String) {
@@ -49,25 +38,31 @@ public enum LemonadeFonts {
         var fontURL: URL?
 
         // Try with Fonts subdirectory (SPM structure)
-        fontURL = lemonadeBundle.url(forResource: fontName, withExtension: "ttf", subdirectory: "Fonts")
+        fontURL = Bundle.lemonade.url(forResource: fontName, withExtension: "ttf", subdirectory: "Fonts")
 
         // Try without subdirectory (Xcode project structure)
         if fontURL == nil {
-            fontURL = lemonadeBundle.url(forResource: fontName, withExtension: "ttf")
+            fontURL = Bundle.lemonade.url(forResource: fontName, withExtension: "ttf")
         }
 
         guard let url = fontURL else {
+            #if DEBUG
             print("Lemonade: Could not find font file: \(fontName).ttf")
+            #endif
             return
         }
 
         guard let fontDataProvider = CGDataProvider(url: url as CFURL) else {
+            #if DEBUG
             print("Lemonade: Could not create data provider for font: \(fontName)")
+            #endif
             return
         }
 
         guard let font = CGFont(fontDataProvider) else {
+            #if DEBUG
             print("Lemonade: Could not create CGFont for: \(fontName)")
+            #endif
             return
         }
 
@@ -78,12 +73,11 @@ public enum LemonadeFonts {
                 let errorDescription = CFErrorCopyDescription(error)
                 // Only print if it's not "already registered" error
                 if let desc = errorDescription as String?, !desc.contains("already registered") {
+                    #if DEBUG
                     print("Lemonade: Error registering font \(fontName): \(desc)")
+                    #endif
                 }
             }
         }
     }
 }
-
-// Helper class to get the framework bundle
-private class LemonadeBundleClass {}

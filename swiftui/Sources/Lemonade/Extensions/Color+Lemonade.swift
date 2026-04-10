@@ -81,6 +81,12 @@ public struct LemonadeBorderColorsShorthand {
     public var borderAlwaysLight: Color { Color("lemonade-border-fixed-border-always-light", bundle: .lemonade) }
     public var borderNeutralHigh: Color { Color("lemonade-border-border-neutral-high", bundle: .lemonade) }
     public var borderNeutralHighInverse: Color { Color("lemonade-border-inverse-border-neutral-high-inverse", bundle: .lemonade) }
+    public var borderAlwaysLightLow: Color { Color("lemonade-border-fixed-border-always-light-low", bundle: .lemonade) }
+    public var borderAlwaysLightMedium: Color { Color("lemonade-border-fixed-border-always-light-medium", bundle: .lemonade) }
+    public var borderAlwaysLightHigh: Color { Color("lemonade-border-fixed-border-always-light-high", bundle: .lemonade) }
+    public var borderAlwaysDarkLow: Color { Color("lemonade-border-fixed-border-always-dark-low", bundle: .lemonade) }
+    public var borderAlwaysDarkMedium: Color { Color("lemonade-border-fixed-border-always-dark-medium", bundle: .lemonade) }
+    public var borderAlwaysDarkHigh: Color { Color("lemonade-border-fixed-border-always-dark-high", bundle: .lemonade) }
 }
 
 // MARK: - Content Colors Namespace

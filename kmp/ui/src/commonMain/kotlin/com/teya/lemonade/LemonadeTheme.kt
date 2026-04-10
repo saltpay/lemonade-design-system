@@ -1,17 +1,17 @@
 package com.teya.lemonade
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
-import com.teya.lemonade.core.LemonadeTextStyle
-import com.teya.lemonade.core.LemonadeTypography
 
 @Composable
 public fun LemonadeTheme(
-    colors: LemonadeSemanticColors = LemonadeTheme.colors,
+    colors: LemonadeSemanticColors = if (isSystemInDarkTheme()) {
+        LemonadeDarkTheme
+    } else {
+        LemonadeLightTheme
+    },
     typography: LemonadeTypographyProvider = LemonadeTheme.typography,
     radius: LemonadeRadiusValues = LemonadeTheme.radius,
     shapes: LemonadeShapes = LemonadeTheme.shapes,
@@ -19,6 +19,7 @@ public fun LemonadeTheme(
     spaces: LemonadeSpaceValues = LemonadeTheme.spaces,
     borderWidths: LemonadeBorderWidth = LemonadeTheme.borderWidths,
     sizes: LemonadeSizeValues = LemonadeTheme.sizes,
+    effects: LemonadeEffects = LemonadeTheme.effects,
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
@@ -32,6 +33,7 @@ public fun LemonadeTheme(
         LocalSpaces provides spaces,
         LocalBorderWidths provides borderWidths,
         LocalSizes provides sizes,
+        LocalEffects provides effects,
         content = content,
     )
 }
@@ -92,51 +94,11 @@ public object LemonadeTheme {
         get() {
             return LocalSizes.current
         }
-}
 
-internal val LocalColors: ProvidableCompositionLocal<LemonadeSemanticColors> =
-    staticCompositionLocalOf {
-        LemonadeLightTheme
-    }
-
-internal val LocalTypographies: ProvidableCompositionLocal<LemonadeTypographyProvider> =
-    staticCompositionLocalOf {
-        LemonadeTypographyProvider()
-    }
-
-internal val LocalContentColors: ProvidableCompositionLocal<Color> = staticCompositionLocalOf {
-    LemonadeLightTheme.content.contentNeutral
-}
-
-internal val LocalTextStyles: ProvidableCompositionLocal<LemonadeTextStyle> =
-    staticCompositionLocalOf {
-        LemonadeTypography.BodyMediumRegular.style
-    }
-
-internal val LocalRadius: ProvidableCompositionLocal<LemonadeRadiusValues> =
-    staticCompositionLocalOf {
-        InternalLemonadeRadiusValues()
-    }
-
-internal val LocalShapes: ProvidableCompositionLocal<LemonadeShapes> = staticCompositionLocalOf {
-    InternalLemonadeShapes()
-}
-
-internal val LocalSpaces: ProvidableCompositionLocal<LemonadeSpaceValues> =
-    staticCompositionLocalOf {
-        InternalLemonadeSpaceValues()
-    }
-
-internal val LocalOpacities: ProvidableCompositionLocal<LemonadeOpacity> =
-    staticCompositionLocalOf {
-        InternalLemonadeOpacityTokens()
-    }
-
-internal val LocalBorderWidths: ProvidableCompositionLocal<LemonadeBorderWidth> =
-    staticCompositionLocalOf {
-        InternalLemonadeBorderWidth()
-    }
-
-internal val LocalSizes: ProvidableCompositionLocal<LemonadeSizeValues> = staticCompositionLocalOf {
-    InternalLemonadeSizeValues()
+    public val effects: LemonadeEffects
+        @Composable
+        @ReadOnlyComposable
+        get() {
+            return LocalEffects.current
+        }
 }

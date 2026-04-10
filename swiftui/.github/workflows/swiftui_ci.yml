@@ -1,0 +1,45 @@
+name: SwiftUI Compilation Check
+
+on:
+  push:
+    branches: [ "master", "main" ]
+    paths:
+      - 'swiftui/**'
+  pull_request:
+    branches: [ "master", "main" ]
+    paths:
+      - 'swiftui/**'
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Select Xcode version
+        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Build Lemonade Framework
+        run: |
+          xcodebuild build \
+            -project Lemonade.xcodeproj \
+            -scheme Lemonade \
+            -destination 'generic/platform=iOS Simulator' \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO
+        working-directory: ./swiftui
+
+      - name: Build Sample App
+        run: |
+          xcodebuild build \
+            -project Lemonade.xcodeproj \
+            -scheme LemonadeSampleApp \
+            -destination 'generic/platform=iOS Simulator' \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO
+        working-directory: ./swiftui

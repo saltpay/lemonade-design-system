@@ -114,6 +114,123 @@ public extension LemonadeUi {
     }
 }
 
+// MARK: - TextField with TextFieldValue (Cursor Control)
+
+#if canImport(UIKit)
+import UIKit
+
+public extension LemonadeUi {
+    /// Text Field component with TextFieldValue for cursor position control.
+    /// Use this overload when you need to programmatically control cursor position,
+    /// such as when formatting phone numbers or other structured input.
+    ///
+    /// - Note: Cursor position control is fully supported on iOS. On macOS, the text field
+    ///   functions normally but cursor position changes are not applied (no-op).
+    ///
+    /// ## Usage
+    /// ```swift
+    /// @State var textFieldValue = LemonadeTextFieldValue(text: "")
+    ///
+    /// LemonadeUi.TextField(
+    ///     value: $textFieldValue,
+    ///     onValueChange: { newValue in
+    ///         // Format and move cursor to end
+    ///         let formatted = formatPhoneNumber(newValue.text)
+    ///         textFieldValue = LemonadeTextFieldValue(text: formatted)
+    ///     },
+    ///     label: "Phone Number",
+    ///     placeholderText: "Enter phone number"
+    /// )
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - value: The text field value including text and cursor position (Binding)
+    ///   - onValueChange: Callback when the value changes
+    ///   - label: Label displayed above the text field
+    ///   - optionalIndicator: Optional text displayed on the right of the label
+    ///   - supportText: Support text displayed below the text field
+    ///   - placeholderText: Placeholder text when the field is empty
+    ///   - errorMessage: Error message displayed when error is true
+    ///   - error: Whether the text field has an error
+    ///   - enabled: Whether the text field is enabled
+    /// - Returns: A styled TextField view with cursor control
+    @ViewBuilder
+    static func TextField(
+        value: Binding<LemonadeTextFieldValue>,
+        onValueChange: ((LemonadeTextFieldValue) -> Void)? = nil,
+        label: String? = nil,
+        optionalIndicator: String? = nil,
+        supportText: String? = nil,
+        placeholderText: String? = nil,
+        errorMessage: String? = nil,
+        error: Bool = false,
+        enabled: Bool = true,
+        keyboardType: UIKeyboardType = .default
+    ) -> some View {
+        LemonadeTextFieldValueView<EmptyView, EmptyView>(
+            value: value,
+            onValueChange: onValueChange,
+            label: label,
+            optionalIndicator: optionalIndicator,
+            supportText: supportText,
+            placeholderText: placeholderText,
+            errorMessage: errorMessage,
+            error: error,
+            enabled: enabled,
+            keyboardType: keyboardType,
+            leadingContent: nil,
+            trailingContent: nil
+        )
+    }
+
+    /// Text Field component with TextFieldValue and custom leading/trailing content.
+    ///
+    /// - Parameters:
+    ///   - value: The text field value including text and cursor position (Binding)
+    ///   - onValueChange: Callback when the value changes
+    ///   - label: Label displayed above the text field
+    ///   - optionalIndicator: Optional text displayed on the right of the label
+    ///   - supportText: Support text displayed below the text field
+    ///   - placeholderText: Placeholder text when the field is empty
+    ///   - errorMessage: Error message displayed when error is true
+    ///   - error: Whether the text field has an error
+    ///   - enabled: Whether the text field is enabled
+    ///   - leadingContent: Content displayed on the left inside the text field
+    ///   - trailingContent: Content displayed on the right inside the text field
+    /// - Returns: A styled TextField view with cursor control
+    @ViewBuilder
+    static func TextField<LeadingContent: View, TrailingContent: View>(
+        value: Binding<LemonadeTextFieldValue>,
+        onValueChange: ((LemonadeTextFieldValue) -> Void)? = nil,
+        label: String? = nil,
+        optionalIndicator: String? = nil,
+        supportText: String? = nil,
+        placeholderText: String? = nil,
+        errorMessage: String? = nil,
+        error: Bool = false,
+        enabled: Bool = true,
+        keyboardType: UIKeyboardType = .default,
+        @ViewBuilder leadingContent: @escaping () -> LeadingContent,
+        @ViewBuilder trailingContent: @escaping () -> TrailingContent
+    ) -> some View {
+        LemonadeTextFieldValueView(
+            value: value,
+            onValueChange: onValueChange,
+            label: label,
+            optionalIndicator: optionalIndicator,
+            supportText: supportText,
+            placeholderText: placeholderText,
+            errorMessage: errorMessage,
+            error: error,
+            enabled: enabled,
+            keyboardType: keyboardType,
+            leadingContent: leadingContent,
+            trailingContent: trailingContent
+        )
+    }
+}
+#endif
+
 // MARK: - TextFieldWithSelector Component
 
 public extension LemonadeUi {
@@ -226,6 +343,135 @@ public extension LemonadeUi {
     }
 }
 
+// MARK: - TextFieldWithSelector with TextFieldValue (Cursor Control)
+
+#if canImport(UIKit)
+public extension LemonadeUi {
+    /// A text input with selector using TextFieldValue for cursor position control.
+    /// Use this for structured input like phone numbers where you need to format
+    /// the input while maintaining correct cursor position.
+    ///
+    /// - Note: Cursor position control is fully supported on iOS. On macOS, the text field
+    ///   functions normally but cursor position changes are not applied (no-op).
+    ///
+    /// ## Usage
+    /// ```swift
+    /// @State var phoneValue = LemonadeTextFieldValue(text: "")
+    ///
+    /// LemonadeUi.TextFieldWithSelector(
+    ///     value: $phoneValue,
+    ///     onValueChange: { newValue in
+    ///         let formatted = formatPhoneNumber(newValue.text)
+    ///         phoneValue = LemonadeTextFieldValue(text: formatted)
+    ///     },
+    ///     leadingAction: { showCountryPicker() },
+    ///     leadingContent: {
+    ///         HStack {
+    ///             Text("+1")
+    ///             Image(systemName: "chevron.down")
+    ///         }
+    ///     },
+    ///     label: "Phone Number",
+    ///     placeholderText: "Enter phone number"
+    /// )
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - value: The text field value including text and cursor position (Binding)
+    ///   - onValueChange: Callback when the value changes
+    ///   - leadingAction: Action triggered when the leading content is clicked
+    ///   - leadingContent: Content displayed on the left as selector
+    ///   - label: Label displayed above the text field
+    ///   - optionalIndicator: Optional text displayed on the right of the label
+    ///   - supportText: Support text displayed below the text field
+    ///   - placeholderText: Placeholder text when the field is empty
+    ///   - errorMessage: Error message displayed when error is true
+    ///   - error: Whether the text field has an error
+    ///   - enabled: Whether the text field is enabled
+    /// - Returns: A styled TextFieldWithSelector view with cursor control
+    @ViewBuilder
+    static func TextFieldWithSelector<LeadingContent: View>(
+        value: Binding<LemonadeTextFieldValue>,
+        onValueChange: ((LemonadeTextFieldValue) -> Void)? = nil,
+        leadingAction: @escaping () -> Void,
+        @ViewBuilder leadingContent: @escaping () -> LeadingContent,
+        label: String? = nil,
+        optionalIndicator: String? = nil,
+        supportText: String? = nil,
+        placeholderText: String? = nil,
+        errorMessage: String? = nil,
+        error: Bool = false,
+        enabled: Bool = true,
+        keyboardType: UIKeyboardType = .default
+    ) -> some View {
+        LemonadeTextFieldWithSelectorValueView<LeadingContent, EmptyView>(
+            value: value,
+            onValueChange: onValueChange,
+            leadingAction: leadingAction,
+            leadingContent: leadingContent,
+            label: label,
+            optionalIndicator: optionalIndicator,
+            supportText: supportText,
+            placeholderText: placeholderText,
+            errorMessage: errorMessage,
+            error: error,
+            enabled: enabled,
+            keyboardType: keyboardType,
+            trailingContent: nil
+        )
+    }
+
+    /// A text input with selector and trailing content using TextFieldValue for cursor control.
+    ///
+    /// - Parameters:
+    ///   - value: The text field value including text and cursor position (Binding)
+    ///   - onValueChange: Callback when the value changes
+    ///   - leadingAction: Action triggered when the leading content is clicked
+    ///   - leadingContent: Content displayed on the left as selector
+    ///   - label: Label displayed above the text field
+    ///   - optionalIndicator: Optional text displayed on the right of the label
+    ///   - supportText: Support text displayed below the text field
+    ///   - placeholderText: Placeholder text when the field is empty
+    ///   - errorMessage: Error message displayed when error is true
+    ///   - error: Whether the text field has an error
+    ///   - enabled: Whether the text field is enabled
+    ///   - trailingContent: Content displayed on the right inside the text field
+    /// - Returns: A styled TextFieldWithSelector view with cursor control
+    @ViewBuilder
+    static func TextFieldWithSelector<LeadingContent: View, TrailingContent: View>(
+        value: Binding<LemonadeTextFieldValue>,
+        onValueChange: ((LemonadeTextFieldValue) -> Void)? = nil,
+        leadingAction: @escaping () -> Void,
+        @ViewBuilder leadingContent: @escaping () -> LeadingContent,
+        label: String? = nil,
+        optionalIndicator: String? = nil,
+        supportText: String? = nil,
+        placeholderText: String? = nil,
+        errorMessage: String? = nil,
+        error: Bool = false,
+        enabled: Bool = true,
+        keyboardType: UIKeyboardType = .default,
+        @ViewBuilder trailingContent: @escaping () -> TrailingContent
+    ) -> some View {
+        LemonadeTextFieldWithSelectorValueView(
+            value: value,
+            onValueChange: onValueChange,
+            leadingAction: leadingAction,
+            leadingContent: leadingContent,
+            label: label,
+            optionalIndicator: optionalIndicator,
+            supportText: supportText,
+            placeholderText: placeholderText,
+            errorMessage: errorMessage,
+            error: error,
+            enabled: enabled,
+            keyboardType: keyboardType,
+            trailingContent: trailingContent
+        )
+    }
+}
+#endif
+
 // MARK: - Internal TextField View
 
 private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View>: View {
@@ -244,64 +490,9 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
     @FocusState private var isFocused: Bool
     @State private var isHovered = false
 
-    private let minHeight: CGFloat = 56 // size1400
-    private let cornerRadius: CGFloat = 12 // radius300
-    private let horizontalPadding: CGFloat = 12 // spacing300
-    private let verticalPadding: CGFloat = 12 // spacing300
-
-    private var backgroundColor: Color {
-        switch (enabled, error, isFocused, isHovered) {
-        case (false, _, _, _):
-            return LemonadeTheme.colors.background.bgElevated
-        case (true, true, false, _):
-            return LemonadeTheme.colors.background.bgCriticalSubtle
-        case (true, _, _, true):
-            return LemonadeTheme.colors.interaction.bgSubtleInteractive
-        default:
-            return .clear
-        }
-    }
-
-    private var borderColor: Color {
-        switch (enabled, isFocused, error) {
-        case (false, _, _):
-            return .clear
-        case (true, true, _):
-            return LemonadeTheme.colors.border.borderSelected
-        case (true, false, true):
-            return LemonadeTheme.colors.border.borderCritical
-        default:
-            return LemonadeTheme.colors.border.borderNeutralMedium
-        }
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
-            // Label row
-            if label != nil || optionalIndicator != nil {
-                HStack {
-                    if let label = label {
-                        LemonadeUi.Text(
-                            label,
-                            textStyle: LemonadeTypography.shared.bodySmallMedium,
-                            color: enabled
-                                ? LemonadeTheme.colors.content.contentPrimary
-                                : LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-
-                    Spacer()
-
-                    if let optionalIndicator = optionalIndicator {
-                        LemonadeUi.Text(
-                            optionalIndicator,
-                            textStyle: LemonadeTypography.shared.bodySmallRegular,
-                            color: LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-                }
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            }
+            TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
 
             // Text field container
             HStack(spacing: LemonadeTheme.spaces.spacing300) {
@@ -321,6 +512,7 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
                     SwiftUI.TextField("", text: $input)
                         .font(LemonadeTypography.shared.bodyMediumRegular.font)
                         .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
+                        .tint(LemonadeTheme.colors.content.contentPrimary)
                         .focused($isFocused)
                         .disabled(!enabled)
                         .onChange(of: input) { newValue in
@@ -332,45 +524,18 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
                     trailingContent()
                 }
             }
-            .padding(.horizontal, horizontalPadding)
-            .padding(.vertical, verticalPadding)
-            .frame(minHeight: minHeight)
-            .background(LemonadeTheme.colors.background.bgDefault)
-            .background(backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius + 2)
-                    .stroke(
-                        isFocused ? LemonadeTheme.colors.background.bgElevated : .clear,
-                        lineWidth: LemonadeTheme.borderWidth.base.border50
-                    )
-                    .padding(-2)
-            )
-            .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-            .onHover { hovering in
-                isHovered = hovering
-            }
+            .padding(.horizontal, TextFieldConstants.horizontalPadding)
+            .padding(.vertical, TextFieldConstants.verticalPadding)
+            .modifier(TextFieldContainerModifier(
+                backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
+                borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
+                enabled: enabled,
+                isFocused: isFocused,
+                cornerRadius: TextFieldConstants.cornerRadius,
+                isHovered: $isHovered
+            ))
 
-            // Support/Error text
-            if enabled && error, let errorMessage = errorMessage {
-                LemonadeUi.Text(
-                    errorMessage,
-                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                    color: LemonadeTheme.colors.content.contentCritical
-                )
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            } else if let supportText = supportText {
-                LemonadeUi.Text(
-                    supportText,
-                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                    color: LemonadeTheme.colors.content.contentSecondary
-                )
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            }
+            TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }
         .animation(.easeInOut(duration: 0.15), value: isFocused)
         .animation(.easeInOut(duration: 0.15), value: error)
@@ -396,64 +561,9 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
     @FocusState private var isFocused: Bool
     @State private var isHovered = false
 
-    private let minHeight: CGFloat = 56 // size1400
-    private let cornerRadius: CGFloat = 12 // radius300
-    private let horizontalPadding: CGFloat = 12 // spacing300
-    private let verticalPadding: CGFloat = 12 // spacing300
-
-    private var backgroundColor: Color {
-        switch (enabled, error, isFocused, isHovered) {
-        case (false, _, _, _):
-            return LemonadeTheme.colors.background.bgElevated
-        case (true, true, false, _):
-            return LemonadeTheme.colors.background.bgCriticalSubtle
-        case (true, _, _, true):
-            return LemonadeTheme.colors.interaction.bgSubtleInteractive
-        default:
-            return .clear
-        }
-    }
-
-    private var borderColor: Color {
-        switch (enabled, isFocused, error) {
-        case (false, _, _):
-            return .clear
-        case (true, true, _):
-            return LemonadeTheme.colors.border.borderSelected
-        case (true, false, true):
-            return LemonadeTheme.colors.border.borderCritical
-        default:
-            return LemonadeTheme.colors.border.borderNeutralMedium
-        }
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
-            // Label row
-            if label != nil || optionalIndicator != nil {
-                HStack {
-                    if let label = label {
-                        LemonadeUi.Text(
-                            label,
-                            textStyle: LemonadeTypography.shared.bodySmallMedium,
-                            color: enabled
-                                ? LemonadeTheme.colors.content.contentPrimary
-                                : LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-
-                    Spacer()
-
-                    if let optionalIndicator = optionalIndicator {
-                        LemonadeUi.Text(
-                            optionalIndicator,
-                            textStyle: LemonadeTypography.shared.bodySmallRegular,
-                            color: LemonadeTheme.colors.content.contentSecondary
-                        )
-                    }
-                }
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            }
+            TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
 
             // Text field container with selector
             HStack(spacing: 0) {
@@ -470,7 +580,7 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
                 Rectangle()
                     .fill(LemonadeTheme.colors.border.borderNeutralMedium)
                     .frame(width: LemonadeTheme.borderWidth.base.border25)
-                    .frame(minHeight: minHeight)
+                    .frame(minHeight: TextFieldConstants.minHeight)
 
                 // Text input area
                 HStack(spacing: LemonadeTheme.spaces.spacing300) {
@@ -486,6 +596,7 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
                         SwiftUI.TextField("", text: $input)
                             .font(LemonadeTypography.shared.bodyMediumRegular.font)
                             .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
+                            .tint(LemonadeTheme.colors.content.contentPrimary)
                             .focused($isFocused)
                             .disabled(!enabled)
                             .onChange(of: input) { newValue in
@@ -497,51 +608,279 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
                         trailingContent()
                     }
                 }
-                .padding(.horizontal, horizontalPadding)
-                .padding(.vertical, verticalPadding)
+                .padding(.horizontal, TextFieldConstants.horizontalPadding)
+                .padding(.vertical, TextFieldConstants.verticalPadding)
                 .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
             }
-            .frame(minHeight: minHeight)
-            .background(LemonadeTheme.colors.background.bgDefault)
-            .background(backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius + 2)
-                    .stroke(
-                        isFocused ? LemonadeTheme.colors.background.bgElevated : .clear,
-                        lineWidth: LemonadeTheme.borderWidth.base.border50
-                    )
-                    .padding(-2)
-            )
-            .onHover { hovering in
-                isHovered = hovering
-            }
+            .modifier(TextFieldContainerModifier(
+                backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
+                borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
+                enabled: enabled,
+                isFocused: isFocused,
+                cornerRadius: TextFieldConstants.cornerRadius,
+                applyOpacity: false,
+                isHovered: $isHovered
+            ))
 
-            // Support/Error text
-            if enabled && error, let errorMessage = errorMessage {
-                LemonadeUi.Text(
-                    errorMessage,
-                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                    color: LemonadeTheme.colors.content.contentCritical
-                )
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            } else if let supportText = supportText {
-                LemonadeUi.Text(
-                    supportText,
-                    textStyle: LemonadeTypography.shared.bodyXSmallRegular,
-                    color: LemonadeTheme.colors.content.contentSecondary
-                )
-                .padding(.horizontal, LemonadeTheme.spaces.spacing50)
-            }
+            TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
         }
         .animation(.easeInOut(duration: 0.15), value: isFocused)
         .animation(.easeInOut(duration: 0.15), value: error)
     }
 }
+
+// MARK: - Internal TextField Value View (Platform-specific)
+
+#if canImport(UIKit)
+// iOS: Full cursor position control via UITextField
+private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent: View>: View {
+    @Binding var value: LemonadeTextFieldValue
+    let onValueChange: ((LemonadeTextFieldValue) -> Void)?
+    let label: String?
+    let optionalIndicator: String?
+    let supportText: String?
+    let placeholderText: String?
+    let errorMessage: String?
+    let error: Bool
+    let enabled: Bool
+    let keyboardType: UIKeyboardType
+    let leadingContent: (() -> LeadingContent)?
+    let trailingContent: (() -> TrailingContent)?
+
+    @State private var isFocused = false
+    @State private var isHovered = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
+            TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
+
+            // Text field container
+            HStack(spacing: LemonadeTheme.spaces.spacing300) {
+                if let leadingContent = leadingContent {
+                    leadingContent()
+                }
+
+                ZStack(alignment: .leading) {
+                    if value.text.isEmpty, let placeholderText = placeholderText {
+                        LemonadeUi.Text(
+                            placeholderText,
+                            textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                            color: LemonadeTheme.colors.content.contentSecondary
+                        )
+                    }
+
+                    LemonadeUITextField(
+                        value: $value,
+                        isFocused: $isFocused,
+                        isEnabled: enabled,
+                        textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                        textColor: LemonadeTheme.colors.content.contentPrimary,
+                        keyboardType: keyboardType,
+                        onValueChange: onValueChange
+                    )
+                }
+
+                if let trailingContent = trailingContent {
+                    trailingContent()
+                }
+            }
+            .padding(.horizontal, TextFieldConstants.horizontalPadding)
+            .padding(.vertical, TextFieldConstants.verticalPadding)
+            .modifier(TextFieldContainerModifier(
+                backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
+                borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
+                enabled: enabled,
+                isFocused: isFocused,
+                cornerRadius: TextFieldConstants.cornerRadius,
+                isHovered: $isHovered
+            ))
+
+            TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
+        }
+        .animation(.easeInOut(duration: 0.15), value: isFocused)
+        .animation(.easeInOut(duration: 0.15), value: error)
+    }
+}
+#else
+// MARK: - macOS Fallback (cursor control is no-op)
+private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent: View>: View {
+    @Binding var value: LemonadeTextFieldValue
+    let onValueChange: ((LemonadeTextFieldValue) -> Void)?
+    let label: String?
+    let optionalIndicator: String?
+    let supportText: String?
+    let placeholderText: String?
+    let errorMessage: String?
+    let error: Bool
+    let enabled: Bool
+    let leadingContent: (() -> LeadingContent)?
+    let trailingContent: (() -> TrailingContent)?
+
+    private var textBinding: Binding<String> {
+        Binding(
+            get: { value.text },
+            set: { newText in
+                let newValue = LemonadeTextFieldValue(text: newText)
+                value = newValue
+                onValueChange?(newValue)
+            }
+        )
+    }
+
+    var body: some View {
+        LemonadeTextFieldView(
+            input: textBinding,
+            onInputChanged: nil,
+            label: label,
+            optionalIndicator: optionalIndicator,
+            supportText: supportText,
+            placeholderText: placeholderText,
+            errorMessage: errorMessage,
+            error: error,
+            enabled: enabled,
+            leadingContent: leadingContent,
+            trailingContent: trailingContent
+        )
+    }
+}
+#endif
+
+// MARK: - Internal TextField With Selector Value View (Platform-specific)
+
+#if canImport(UIKit)
+import UIKit
+
+// iOS: Full cursor position control via UITextField
+private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, TrailingContent: View>: View {
+    @Binding var value: LemonadeTextFieldValue
+    let onValueChange: ((LemonadeTextFieldValue) -> Void)?
+    let leadingAction: () -> Void
+    let leadingContent: () -> LeadingContent
+    let label: String?
+    let optionalIndicator: String?
+    let supportText: String?
+    let placeholderText: String?
+    let errorMessage: String?
+    let error: Bool
+    let enabled: Bool
+    let keyboardType: UIKeyboardType
+    let trailingContent: (() -> TrailingContent)?
+
+    @State private var isFocused = false
+    @State private var isHovered = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
+            TextFieldLabelRow(label: label, optionalIndicator: optionalIndicator, enabled: enabled)
+
+            // Text field container with selector
+            HStack(spacing: 0) {
+                // Selector button
+                SwiftUI.Button(action: leadingAction) {
+                    leadingContent()
+                        .padding(LemonadeTheme.spaces.spacing400)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .disabled(!enabled)
+                .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+
+                // Divider
+                Rectangle()
+                    .fill(LemonadeTheme.colors.border.borderNeutralMedium)
+                    .frame(width: LemonadeTheme.borderWidth.base.border25)
+                    .frame(minHeight: TextFieldConstants.minHeight)
+
+                // Text input area
+                HStack(spacing: LemonadeTheme.spaces.spacing300) {
+                    ZStack(alignment: .leading) {
+                        if value.text.isEmpty, let placeholderText = placeholderText {
+                            LemonadeUi.Text(
+                                placeholderText,
+                                textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                                color: LemonadeTheme.colors.content.contentSecondary
+                            )
+                        }
+
+                        LemonadeUITextField(
+                            value: $value,
+                            isFocused: $isFocused,
+                            isEnabled: enabled,
+                            textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                            textColor: LemonadeTheme.colors.content.contentPrimary,
+                            keyboardType: keyboardType,
+                            onValueChange: onValueChange
+                        )
+                    }
+
+                    if let trailingContent = trailingContent {
+                        trailingContent()
+                    }
+                }
+                .padding(.horizontal, TextFieldConstants.horizontalPadding)
+                .padding(.vertical, TextFieldConstants.verticalPadding)
+                .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+            }
+            .modifier(TextFieldContainerModifier(
+                backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isFocused, isHovered: isHovered),
+                borderColor: textFieldBorderColor(enabled: enabled, isFocused: isFocused, error: error),
+                enabled: enabled,
+                isFocused: isFocused,
+                cornerRadius: TextFieldConstants.cornerRadius,
+                applyOpacity: false,
+                isHovered: $isHovered
+            ))
+
+            TextFieldSupportText(supportText: supportText, errorMessage: errorMessage, error: error, enabled: enabled)
+        }
+        .animation(.easeInOut(duration: 0.15), value: isFocused)
+        .animation(.easeInOut(duration: 0.15), value: error)
+    }
+}
+#else
+// MARK: - macOS Fallback (cursor control is no-op)
+private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, TrailingContent: View>: View {
+    @Binding var value: LemonadeTextFieldValue
+    let onValueChange: ((LemonadeTextFieldValue) -> Void)?
+    let leadingAction: () -> Void
+    let leadingContent: () -> LeadingContent
+    let label: String?
+    let optionalIndicator: String?
+    let supportText: String?
+    let placeholderText: String?
+    let errorMessage: String?
+    let error: Bool
+    let enabled: Bool
+    let trailingContent: (() -> TrailingContent)?
+
+    private var textBinding: Binding<String> {
+        Binding(
+            get: { value.text },
+            set: { newText in
+                let newValue = LemonadeTextFieldValue(text: newText)
+                value = newValue
+                onValueChange?(newValue)
+            }
+        )
+    }
+
+    var body: some View {
+        LemonadeTextFieldWithSelectorView(
+            input: textBinding,
+            onInputChanged: nil,
+            leadingAction: leadingAction,
+            leadingContent: leadingContent,
+            label: label,
+            optionalIndicator: optionalIndicator,
+            supportText: supportText,
+            placeholderText: placeholderText,
+            errorMessage: errorMessage,
+            error: error,
+            enabled: enabled,
+            trailingContent: trailingContent
+        )
+    }
+}
+#endif
 
 // MARK: - Previews
 
@@ -632,18 +971,4 @@ struct LemonadeTextField_Previews: PreviewProvider {
     }
 }
 
-// Helper for stateful previews
-private struct StatefulPreviewWrapper<Value, Content: View>: View {
-    @State private var value: Value
-    let content: (Binding<Value>) -> Content
-
-    init(_ value: Value, @ViewBuilder content: @escaping (Binding<Value>) -> Content) {
-        _value = State(initialValue: value)
-        self.content = content
-    }
-
-    var body: some View {
-        content($value)
-    }
-}
 #endif

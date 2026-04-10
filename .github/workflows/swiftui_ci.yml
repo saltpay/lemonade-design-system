@@ -5,10 +5,12 @@ on:
     branches: [ "master", "main" ]
     paths:
       - 'swiftui/**'
+      - '.github/workflows/swiftui_ci.yml'
   pull_request:
     branches: [ "master", "main" ]
     paths:
       - 'swiftui/**'
+      - '.github/workflows/swiftui_ci.yml'
 
 jobs:
   build:
@@ -23,6 +25,13 @@ jobs:
 
       - name: Show Xcode version
         run: xcodebuild -version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+        working-directory: ./swiftui
 
       - name: Build Lemonade Framework
         run: |

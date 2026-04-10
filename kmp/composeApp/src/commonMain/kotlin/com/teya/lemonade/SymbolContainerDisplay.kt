@@ -17,9 +17,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import com.teya.lemonade.core.LemonadeBadgeSize
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.SymbolContainerShape
 import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.SymbolContainerVoice
+import lemonade.composeapp.generated.resources.Res
+import lemonade.composeapp.generated.resources.netflix_logo
+import org.jetbrains.compose.resources.painterResource
 
 @Suppress("LongMethod")
 @Composable
@@ -109,6 +114,114 @@ internal fun SymbolContainerDisplay() {
                     )
                     LemonadeUi.Text(
                         text = "XLarge",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+            }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.XXLarge,
+                    )
+                    LemonadeUi.Text(
+                        text = "XXLarge",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+            }
+        }
+
+        // Shapes
+        SymbolContainerSection(title = "Shapes") {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.Medium,
+                        shape = SymbolContainerShape.Circle,
+                    )
+                    LemonadeUi.Text(
+                        text = "Circle",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.Medium,
+                        shape = SymbolContainerShape.Rounded,
+                    )
+                    LemonadeUi.Text(
+                        text = "Rounded",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+            }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.Large,
+                        shape = SymbolContainerShape.Rounded,
+                    )
+                    LemonadeUi.Text(
+                        text = "Rounded L",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.XLarge,
+                        shape = SymbolContainerShape.Rounded,
+                    )
+                    LemonadeUi.Text(
+                        text = "Rounded XL",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.XXLarge,
+                        shape = SymbolContainerShape.Rounded,
+                    )
+                    LemonadeUi.Text(
+                        text = "Rounded XXL",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
@@ -275,6 +388,70 @@ internal fun SymbolContainerDisplay() {
             }
         }
 
+        // With Badge
+        SymbolContainerSection(title = "With Badge") {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing600),
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.Small,
+                        badgeSlot = {
+                            LemonadeUi.Badge(
+                                text = "3",
+                                size = LemonadeBadgeSize.XSmall,
+                            )
+                        },
+                    )
+                    LemonadeUi.Text(
+                        text = "Small",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.Medium,
+                        badgeSlot = {
+                            LemonadeUi.Badge(text = "3")
+                        },
+                    )
+                    LemonadeUi.Text(
+                        text = "Medium",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        size = SymbolContainerSize.Large,
+                        badgeSlot = {
+                            LemonadeUi.Badge(text = "3")
+                        },
+                    )
+                    LemonadeUi.Text(
+                        text = "Large",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+            }
+        }
+
         // Use Cases
         SymbolContainerSection(title = "Use Cases") {
             Column(
@@ -362,6 +539,151 @@ internal fun SymbolContainerDisplay() {
                             textStyle = LemonadeTheme.typography.bodySmallRegular,
                         )
                     }
+                }
+            }
+        }
+
+        // Painter Variant (fill = false)
+        SymbolContainerSection(title = "Painter (fill = false)") {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        painter = painterResource(Res.drawable.netflix_logo),
+                        contentDescription = "Netflix logo",
+                        fill = false,
+                        size = SymbolContainerSize.Small,
+                    )
+                    LemonadeUi.Text(
+                        text = "Small",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        painter = painterResource(Res.drawable.netflix_logo),
+                        contentDescription = "Netflix logo",
+                        fill = false,
+                        size = SymbolContainerSize.Medium,
+                    )
+                    LemonadeUi.Text(
+                        text = "Medium",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        painter = painterResource(Res.drawable.netflix_logo),
+                        contentDescription = "Netflix logo",
+                        fill = false,
+                        size = SymbolContainerSize.Large,
+                    )
+                    LemonadeUi.Text(
+                        text = "Large",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        painter = painterResource(Res.drawable.netflix_logo),
+                        contentDescription = "Netflix logo",
+                        fill = false,
+                        size = SymbolContainerSize.XLarge,
+                    )
+                    LemonadeUi.Text(
+                        text = "XLarge",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        painter = painterResource(Res.drawable.netflix_logo),
+                        contentDescription = "Netflix logo",
+                        fill = false,
+                        size = SymbolContainerSize.XXLarge,
+                    )
+                    LemonadeUi.Text(
+                        text = "XXLarge",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+            }
+        }
+
+        // Painter Variant (fill = true)
+        SymbolContainerSection(title = "Painter (fill = true)") {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        painter = painterResource(Res.drawable.netflix_logo),
+                        contentDescription = "Netflix logo",
+                        fill = true,
+                        size = SymbolContainerSize.Small,
+                        shape = SymbolContainerShape.Circle,
+                    )
+                    LemonadeUi.Text(
+                        text = "Circle",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        painter = painterResource(Res.drawable.netflix_logo),
+                        contentDescription = "Netflix logo",
+                        fill = true,
+                        size = SymbolContainerSize.Medium,
+                        shape = SymbolContainerShape.Rounded,
+                    )
+                    LemonadeUi.Text(
+                        text = "Rounded",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.SymbolContainer(
+                        painter = painterResource(Res.drawable.netflix_logo),
+                        contentDescription = "Netflix logo",
+                        fill = true,
+                        size = SymbolContainerSize.Large,
+                        shape = SymbolContainerShape.Circle,
+                    )
+                    LemonadeUi.Text(
+                        text = "Large",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
                 }
             }
         }

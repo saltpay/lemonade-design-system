@@ -136,9 +136,7 @@ class _DividerWithLabel extends StatelessWidget {
           child: Text(
             label,
             style: LemonadeTheme.of(context).typography.bodySmallRegular
-                .copyWith(
-                  color: theme.colors.content.contentSecondary,
-                ),
+                .copyWith(color: theme.colors.content.contentSecondary),
           ),
         ),
         Expanded(
@@ -181,11 +179,7 @@ class _CoreDivider extends StatelessWidget {
             color: color,
           );
         }
-        return Divider(
-          height: thickness,
-          thickness: thickness,
-          color: color,
-        );
+        return Divider(height: thickness, thickness: thickness, color: color);
       case LemonadeDividerVariant.dashed:
         if (dividerOrientation == LemonadeDividerOrientation.vertical) {
           return SizedBox(

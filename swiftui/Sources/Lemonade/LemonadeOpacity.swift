@@ -19,7 +19,7 @@ import SwiftUI
 /// 
 
 /// Base opacity values
-public protocol BaseOpacity {
+public protocol BaseOpacity: Sendable {
     var opacity0: Double { get }
     var opacity5: Double { get }
     var opacity10: Double { get }
@@ -35,7 +35,7 @@ public protocol BaseOpacity {
 }
 
 /// State opacity values
-public protocol StateOpacity {
+public protocol StateOpacity: Sendable {
     var opacityPressed: Double { get }
     var opacityDisabled: Double { get }
 }
@@ -46,7 +46,7 @@ public protocol LemonadeOpacity {
     var state: StateOpacity { get }
 }
 
-internal struct BaseOpacityImpl: BaseOpacity {
+internal struct BaseOpacityImpl: BaseOpacity, Sendable {
     let opacity0: Double = 0.0
     let opacity5: Double = 0.05
     let opacity10: Double = 0.1
@@ -61,13 +61,13 @@ internal struct BaseOpacityImpl: BaseOpacity {
     let opacity100: Double = 1.0
 }
 
-internal struct StateOpacityImpl: StateOpacity {
+internal struct StateOpacityImpl: StateOpacity, Sendable {
     let opacityPressed: Double = 0.2
     let opacityDisabled: Double = 0.4
 }
 
 /// Default opacity implementation
-public struct LemonadeOpacityTokens: LemonadeOpacity {
+public struct LemonadeOpacityTokens: LemonadeOpacity, Sendable {
     public let base: BaseOpacity = BaseOpacityImpl()
     public let state: StateOpacity = StateOpacityImpl()
 

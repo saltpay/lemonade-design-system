@@ -6,11 +6,7 @@ import 'package:lemonade_design_system/lemonade_design_system.dart';
 /// {@endtemplate}
 class LemonadeTheme extends InheritedWidget {
   /// {@macro LemonadeTheme}
-  const LemonadeTheme({
-    required this.data,
-    required super.child,
-    super.key,
-  });
+  const LemonadeTheme({required this.data, required super.child, super.key});
 
   /// The theme data configuration.
   final LemonadeThemeData data;
@@ -35,10 +31,7 @@ class LemonadeTheme extends InheritedWidget {
     return Builder(
       builder: (BuildContext context) {
         final parent = LemonadeTheme.of(context);
-        return LemonadeTheme(
-          data: parent.merge(data),
-          child: child,
-        );
+        return LemonadeTheme(data: parent.merge(data), child: child);
       },
     );
   }
@@ -107,18 +100,14 @@ class _LemonadeAnimatedThemeState
         visitor(
               _data,
               widget.data,
-              (dynamic value) => LemonadeThemeDataTween(
-                begin: value as LemonadeThemeData,
-              ),
+              (dynamic value) =>
+                  LemonadeThemeDataTween(begin: value as LemonadeThemeData),
             )!
             as LemonadeThemeDataTween;
   }
 
   @override
   Widget build(BuildContext context) {
-    return LemonadeTheme(
-      data: _data!.evaluate(animation),
-      child: widget.child,
-    );
+    return LemonadeTheme(data: _data!.evaluate(animation), child: widget.child);
   }
 }

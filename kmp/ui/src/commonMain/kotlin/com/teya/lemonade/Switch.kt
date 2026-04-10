@@ -26,12 +26,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeShadow
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 /**
  * This composable provides the fundamental visual and interactive elements of a toggle switch,
@@ -266,17 +266,20 @@ internal enum class SwitchState {
     Pressed,
 }
 
-internal expect fun SwitchState.getSwitchProps(): SwitchSizeProps
-
-internal fun SwitchState.defaultSwitchProps(): SwitchSizeProps =
+internal fun SwitchState.getSwitchProps(): SwitchSizeProps =
     when (this) {
-        SwitchState.Default,
-        SwitchState.Hover,
-        -> SwitchSizeProps(
+        SwitchState.Default -> SwitchSizeProps(
             minHeight = 28.dp,
             minWidth = 48.dp,
             minIndicatorHeight = 22.dp,
             minIndicatorWidth = 22.dp,
+        )
+
+        SwitchState.Hover -> SwitchSizeProps(
+            minHeight = 28.dp,
+            minWidth = 48.dp,
+            minIndicatorHeight = 22.dp,
+            minIndicatorWidth = 24.dp,
         )
 
         SwitchState.Pressed -> SwitchSizeProps(

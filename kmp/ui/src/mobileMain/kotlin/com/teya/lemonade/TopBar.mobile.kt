@@ -9,6 +9,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
@@ -18,9 +19,11 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -53,6 +56,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.zIndex
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIconButtonVariant
@@ -60,8 +65,6 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TopBarAction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
-import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 import kotlin.math.roundToInt
 
 /**
@@ -84,6 +87,10 @@ public class TopBarState internal constructor(
 ) {
     private var lockGestureAnimation by mutableStateOf(lockGestureAnimation)
 
+    internal val isPermanentlyCollapsed: Boolean by derivedStateOf {
+        startCollapsed && lockGestureAnimation
+    }
+
     private val scrollOffsetAnimatable by derivedStateOf {
         Animatable(
             initialValue = if (startCollapsed) {
@@ -98,6 +105,14 @@ public class TopBarState internal constructor(
         get() = scrollOffsetAnimatable.value
     internal var maxScrollOffset: Float by mutableFloatStateOf(0f)
 
+    /** Whether the top bar is fully collapsed (`collapseProgress == 1f`). */
+    public val isCollapsed: Boolean by derivedStateOf {
+        collapseProgress == 1f
+    }
+
+    /**
+     * The current collapse progress as a value between `0f` (fully expanded) and `1f` (fully collapsed).
+     */
     public val collapseProgress: Float by derivedStateOf {
         if (maxScrollOffset > 0f) {
             (scrollOffset / maxScrollOffset).coerceIn(
@@ -147,6 +162,14 @@ public class TopBarState internal constructor(
         }
     }
 
+    /**
+     * Locks or unlocks scroll-gesture–driven collapse/expand animations.
+     *
+     * When [locked] is `true`, nested-scroll gestures will not change the collapse state;
+     * only programmatic calls to [collapse] and [expand] will have effect.
+     *
+     * @param locked `true` to lock gesture animations, `false` to unlock.
+     */
     public fun setAnimationGesturesLock(locked: Boolean) {
         lockGestureAnimation = locked
     }
@@ -280,6 +303,19 @@ public fun rememberTopBarState(
     }
 
 /**
+ * Holds the configuration for the navigation action displayed in the leading slot of a [TopBar][LemonadeUi.TopBar].
+ *
+ * @property navigationAction The visual action type (e.g. [TopBarAction.Back] or [TopBarAction.Close]).
+ * @property onNavigationActionClicked Callback invoked when the navigation action button is clicked.
+ * @property filled Whether the action button uses a filled background style. Defaults to `false`.
+ */
+public data class NavigationAction(
+    val navigationAction: TopBarAction,
+    val onNavigationActionClicked: (() -> Unit),
+    val filled: Boolean = false,
+)
+
+/**
  * A collapsible top bar component that displays a large title which collapses
  * into a smaller inline title as the user scrolls through content.
  *
@@ -296,13 +332,10 @@ public fun rememberTopBarState(
  *     LemonadeUi.TopBar(
  *         label = "Screen Title",
  *         state = topBarState,
- *         leadingSlot = {
- *             LemonadeUi.IconButton(
- *                 icon = LemonadeIcons.ChevronLeft,
- *                 contentDescription = "Back",
- *                 onClick = { /* handle back */ }
- *             )
- *         },
+ *         navigationAction = NavigationAction(
+ *             navigationAction = TopBarAction.Back,
+ *             onNavigationActionClicked = { /* handle back */ },
+ *         ),
  *         trailingSlot = {
  *             LemonadeUi.IconButton(
  *                 icon = LemonadeIcons.Settings,
@@ -326,9 +359,8 @@ public fun rememberTopBarState(
  * @param collapsedLabel The title text displayed in collapsed (small) state. If not set it will display [label] instead.
  * @param state The [TopBarState] that manages collapse behavior. Create with [rememberTopBarState].
  * @param backgroundColor The background color of the top bar.
- * @param navigationAction Visual variant of the top bar's action. See [TopBarAction].
- * @param onNavigationActionClicked Callback triggered when the [navigationAction] visual representation is clicked.
  * @param modifier [Modifier] applied to the top bar container.
+ * @param navigationAction Optional [NavigationAction] displayed in the leading slot (e.g. back or close button).
  * @param trailingSlot Optional composable displayed at the end of the fixed header (typically action buttons).
  * @param bottomSlot Optional composable displayed below the expanded title. This content remains
  *        visible and acts as a sticky area when fully collapsed.
@@ -340,8 +372,7 @@ public fun LemonadeUi.TopBar(
     state: TopBarState = rememberTopBarState(),
     backgroundColor: Color = LocalColors.current.background.bgDefault,
     collapsedLabel: String? = null,
-    navigationAction: TopBarAction? = null,
-    onNavigationActionClicked: (() -> Unit)? = null,
+    navigationAction: NavigationAction? = null,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
@@ -350,21 +381,20 @@ public fun LemonadeUi.TopBar(
         backgroundColor = backgroundColor,
         modifier = modifier,
         bottomSlot = bottomSlot,
-        fixedHeaderSlot = { headerModifier ->
+        fixedHeaderSlot = { fixedHeaderModifier ->
             CoreTopBarContent(
                 leadingSlot = {
-                    if (navigationAction != null && onNavigationActionClicked != null) {
+                    if (navigationAction != null) {
                         CoreTopBarActionContent(
                             navigationAction = navigationAction,
-                            onNavigationActionClicked = onNavigationActionClicked,
                             modifier = Modifier.matchParentSize(),
                         )
                     }
                 },
                 trailingSlot = trailingSlot,
                 label = collapsedLabel ?: label,
-                labelAlpha = state.collapseProgress,
-                modifier = headerModifier
+                isCollapsed = state.isCollapsed,
+                modifier = fixedHeaderModifier
                     .background(color = backgroundColor)
                     .zIndex(zIndex = 1f)
                     .padding(
@@ -373,9 +403,9 @@ public fun LemonadeUi.TopBar(
                     ),
             )
         },
-        collapsableSlot = { expandedModifier ->
+        collapsableSlot = { collapsableSlotModifier ->
             Box(
-                modifier = expandedModifier
+                modifier = collapsableSlotModifier
                     .fillMaxWidth()
                     .padding(horizontal = LocalSpaces.current.spacing400)
                     .padding(
@@ -412,13 +442,16 @@ public fun LemonadeUi.TopBar(
  * var query by remember { mutableStateOf("") }
  *
  * Column {
- *     LemonadeUi.SearchTopBar(
+ *     LemonadeUi.TopBar(
  *         label = "Search",
  *         state = topBarState,
  *         searchInput = query,
  *         onSearchChanged = { query = it },
- *         navigationAction = TopBarAction.Back,
- *         onNavigationActionClicked = { /* handle back */ },
+ *         expandedLabel = "Discover",
+ *         navigationAction = NavigationAction(
+ *             navigationAction = TopBarAction.Back,
+ *             onNavigationActionClicked = { /* handle back */ },
+ *         ),
  *     )
  *
  *     LazyColumn(
@@ -435,8 +468,8 @@ public fun LemonadeUi.TopBar(
  * @param modifier [Modifier] applied to the top bar container.
  * @param state The [TopBarState] that manages collapse behavior. Create with [rememberTopBarState].
  * @param backgroundColor The background color of the top bar.
- * @param navigationAction Optional action icon displayed in the header. See [TopBarAction].
- * @param onNavigationActionClicked Callback triggered when [navigationAction] is clicked.
+ * @param expandedLabel Optional large title displayed above the search field in the collapsable area.
+ * @param navigationAction Optional [NavigationAction] displayed in the leading slot (e.g. back or close button).
  * @param trailingSlot Optional composable displayed at the end of the fixed header.
  * @param bottomSlot Optional composable shown below the search field when focused
  *        (e.g. search suggestions or filters).
@@ -450,8 +483,8 @@ public fun LemonadeUi.TopBar(
     modifier: Modifier = Modifier,
     state: TopBarState = rememberTopBarState(),
     backgroundColor: Color = LocalColors.current.background.bgDefault,
-    navigationAction: TopBarAction? = null,
-    onNavigationActionClicked: (() -> Unit)? = null,
+    expandedLabel: String? = null,
+    navigationAction: NavigationAction? = null,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
@@ -462,9 +495,9 @@ public fun LemonadeUi.TopBar(
     CoreTopBar(
         state = state,
         backgroundColor = backgroundColor,
-        fixedHeaderSlot = { headerModifier ->
+        fixedHeaderSlot = { fixedHeaderModifier ->
             AnimatedContent(
-                modifier = headerModifier
+                modifier = fixedHeaderModifier
                     .background(color = backgroundColor)
                     .zIndex(zIndex = 1f)
                     .padding(
@@ -477,14 +510,14 @@ public fun LemonadeUi.TopBar(
                     if (!searchFocused) {
                         CoreTopBarContent(
                             leadingSlot = {
-                                if (navigationAction != null && onNavigationActionClicked != null) {
+                                if (navigationAction != null) {
                                     CoreTopBarActionContent(
                                         navigationAction = navigationAction,
-                                        onNavigationActionClicked = onNavigationActionClicked,
                                         modifier = Modifier.matchParentSize(),
                                     )
                                 }
                             },
+                            isCollapsed = state.isCollapsed,
                             trailingSlot = trailingSlot,
                             label = label,
                         )
@@ -492,29 +525,54 @@ public fun LemonadeUi.TopBar(
                 },
             )
         },
-        collapsableSlot = { collapsableModifier ->
-            CoreSearchField(
-                input = searchInput,
-                onInputChanged = onSearchChanged,
-                leadingIcon = if (isSearchFocused) {
-                    LemonadeIcons.ArrowLeft
-                } else {
-                    LemonadeIcons.Search
-                },
-                onLeadingIconClicked = focusManager::clearFocus,
-                modifier = collapsableModifier
+        collapsableSlot = { collapsableSlotModifier ->
+            Column(
+                modifier = Modifier
+                    .clipToBounds()
+                    .then(other = collapsableSlotModifier)
+                    .fillMaxWidth()
                     .padding(horizontal = LocalSpaces.current.spacing400)
                     .padding(
                         top = LocalSpaces.current.spacing50,
                         bottom = LocalSpaces.current.spacing200,
-                    ).onFocusChanged { focusState ->
+                    ),
+            ) {
+                AnimatedContent(
+                    targetState = expandedLabel != null && !isSearchFocused,
+                    transitionSpec = { expandVertically() togetherWith shrinkVertically() + fadeOut() },
+                    content = { shouldShow ->
+                        if (shouldShow) {
+                            LemonadeUi.Text(
+                                text = expandedLabel.orEmpty(),
+                                textStyle = LocalTypographies.current.headingLarge,
+                                overflow = TextOverflow.Ellipsis,
+                                maxLines = 2,
+                                modifier = Modifier.padding(bottom = LocalSpaces.current.spacing100),
+                            )
+                        } else {
+                            Spacer(modifier = Modifier.fillMaxWidth())
+                        }
+                    },
+                )
+
+                CoreSearchField(
+                    input = searchInput,
+                    onInputChanged = onSearchChanged,
+                    leadingIcon = if (isSearchFocused) {
+                        LemonadeIcons.ArrowLeft
+                    } else {
+                        LemonadeIcons.Search
+                    },
+                    onLeadingIconClicked = focusManager::clearFocus,
+                    modifier = Modifier.onFocusChanged { focusState ->
                         isSearchFocused = focusState.isFocused
                         state.setAnimationGesturesLock(locked = focusState.isFocused)
                         if (focusState.isFocused) {
                             state.expand()
                         }
                     },
-            )
+                )
+            }
         },
         bottomSlot = bottomSlot?.let {
             {
@@ -533,10 +591,216 @@ public fun LemonadeUi.TopBar(
     )
 }
 
+/**
+ * A top bar with a large left-aligned title, optional subheading,
+ * and trailing action slot — designed for top-level screens without navigation.
+ *
+ * When [bottomSlot] is provided, the title row scrolls away on scroll and the
+ * bottom slot becomes sticky. When [bottomSlot] is `null`, the title is fixed
+ * and does not scroll.
+ *
+ * Use [rememberTopBarState] to create the state and apply its [TopBarState.nestedScrollConnection]
+ * to your scrollable content via
+ * [Modifier.nestedScroll][androidx.compose.ui.input.nestedscroll.nestedScroll].
+ *
+ * ## Usage
+ * ```kotlin
+ * // Fixed title (no scroll)
+ * LemonadeUi.TopBar(
+ *     label = "Home",
+ *     subheading = "Welcome back",
+ *     trailingSlot = {
+ *         LemonadeUi.IconButton(
+ *             icon = LemonadeIcons.Bell,
+ *             contentDescription = "Notifications",
+ *             onClick = { /* handle */ }
+ *         )
+ *     },
+ * )
+ *
+ * // Title scrolls away, slot sticks
+ * val state = rememberTopBarState()
+ * LemonadeUi.TopBar(
+ *     label = "Browse",
+ *     subheading = null,
+ *     state = state,
+ *     trailingSlot = { /* actions */ },
+ *     bottomSlot = {
+ *         // Sticky content (e.g. filters, tabs)
+ *     },
+ * )
+ * LazyColumn(
+ *     modifier = Modifier.nestedScroll(state.nestedScrollConnection)
+ * ) { /* content */ }
+ * ```
+ *
+ * @param label The large title text displayed in the heading.
+ * @param subheading Optional secondary text displayed below the title.
+ * @param modifier [Modifier] applied to the top bar container.
+ * @param state The [TopBarState] that manages scroll behavior. Create with [rememberTopBarState].
+ * @param backgroundColor The background color of the top bar.
+ * @param trailingSlot Optional composable displayed at the end of the title row (typically action buttons).
+ * @param bottomSlot Optional composable displayed below the title. When provided, the title scrolls
+ *        away and this slot becomes sticky. When `null`, the title is fixed.
+ */
+@Composable
+public fun LemonadeUi.TopBar(
+    label: String,
+    subheading: String?,
+    modifier: Modifier = Modifier,
+    state: TopBarState = rememberTopBarState(),
+    backgroundColor: Color = LocalColors.current.background.bgDefault,
+    trailingSlot: @Composable (RowScope.() -> Unit)? = null,
+    bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
+) {
+    CoreTopBar(
+        state = state,
+        backgroundColor = backgroundColor,
+        modifier = modifier,
+        fixedHeaderSlot = { fixedHeaderModifier ->
+            if (bottomSlot != null) {
+                Spacer(modifier = fixedHeaderModifier)
+            } else {
+                CompactLargeTopBarHeading(
+                    label = label,
+                    subheading = subheading,
+                    trailingSlot = trailingSlot,
+                    modifier = fixedHeaderModifier
+                        .background(color = backgroundColor)
+                        .zIndex(zIndex = 1f),
+                )
+            }
+        },
+        collapsableSlot = { collapsableSlotModifier ->
+            if (bottomSlot != null) {
+                CompactLargeTopBarHeading(
+                    label = label,
+                    subheading = subheading,
+                    trailingSlot = trailingSlot,
+                    modifier = collapsableSlotModifier,
+                )
+            } else {
+                Spacer(modifier = collapsableSlotModifier)
+            }
+        },
+        bottomSlot = bottomSlot,
+    )
+}
+
+/**
+ * A top bar with a large left-aligned title, optional subheading,
+ * trailing action slot, and an integrated search field — designed for top-level
+ * screens with search capability. The title remains fixed while the search area
+ * collapses on scroll.
+ *
+ * On scroll, the search field collapses away while the title remains fixed.
+ * When the search field gains focus, the title animates out and only the search
+ * field remains visible. Tapping the search leading icon clears focus and restores
+ * the title.
+ *
+ * Use [rememberTopBarState] to create the state and apply its [TopBarState.nestedScrollConnection]
+ * to your scrollable content via
+ * [Modifier.nestedScroll][androidx.compose.ui.input.nestedscroll.nestedScroll].
+ *
+ * ## Usage
+ * ```kotlin
+ * val state = rememberTopBarState()
+ * var query by remember { mutableStateOf("") }
+ *
+ * Column {
+ *     LemonadeUi.TopBar(
+ *         label = "Discover",
+ *         subheading = null,
+ *         searchInput = query,
+ *         onSearchChanged = { query = it },
+ *         state = state,
+ *     )
+ *
+ *     LazyColumn(
+ *         modifier = Modifier.nestedScroll(state.nestedScrollConnection)
+ *     ) {
+ *         // search results
+ *     }
+ * }
+ * ```
+ *
+ * @param label The large title text displayed in the fixed heading.
+ * @param subheading Optional secondary text displayed below the title.
+ * @param searchInput The current search query text.
+ * @param onSearchChanged Callback invoked when the search query changes.
+ * @param modifier [Modifier] applied to the top bar container.
+ * @param state The [TopBarState] that manages scroll behavior. Create with [rememberTopBarState].
+ * @param backgroundColor The background color of the top bar.
+ * @param trailingSlot Optional composable displayed at the end of the title row (typically action buttons).
+ */
+@Composable
+@OptIn(ExperimentalLemonadeComponent::class)
+public fun LemonadeUi.TopBar(
+    label: String,
+    subheading: String?,
+    searchInput: String,
+    onSearchChanged: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    state: TopBarState = rememberTopBarState(),
+    backgroundColor: Color = LocalColors.current.background.bgDefault,
+    trailingSlot: @Composable (RowScope.() -> Unit)? = null,
+) {
+    val focusManager = LocalFocusManager.current
+    var isSearchFocused by remember {
+        mutableStateOf(false)
+    }
+    CoreTopBar(
+        state = state,
+        backgroundColor = backgroundColor,
+        modifier = modifier,
+        fixedHeaderSlot = { fixedHeaderModifier ->
+            AnimatedContent(
+                modifier = fixedHeaderModifier
+                    .background(color = backgroundColor)
+                    .zIndex(zIndex = 1f),
+                targetState = isSearchFocused,
+                transitionSpec = { expandVertically() togetherWith shrinkVertically() },
+                content = { searchFocused ->
+                    if (!searchFocused) {
+                        CompactLargeTopBarHeading(
+                            label = label,
+                            subheading = subheading,
+                            trailingSlot = trailingSlot,
+                        )
+                    }
+                },
+            )
+        },
+        collapsableSlot = { collapsableSlotModifier ->
+            CoreSearchField(
+                input = searchInput,
+                onInputChanged = onSearchChanged,
+                leadingIcon = if (isSearchFocused) {
+                    LemonadeIcons.ArrowLeft
+                } else {
+                    LemonadeIcons.Search
+                },
+                onLeadingIconClicked = focusManager::clearFocus,
+                modifier = collapsableSlotModifier
+                    .fillMaxWidth()
+                    .padding(horizontal = LocalSpaces.current.spacing400)
+                    .padding(vertical = LocalSpaces.current.spacing300)
+                    .onFocusChanged { focusState ->
+                        isSearchFocused = focusState.isFocused
+                        state.setAnimationGesturesLock(locked = focusState.isFocused)
+                        if (focusState.isFocused) {
+                            state.expand()
+                        }
+                    },
+            )
+        },
+        bottomSlot = null,
+    )
+}
+
 @Composable
 private fun CoreTopBarActionContent(
-    navigationAction: TopBarAction,
-    onNavigationActionClicked: () -> Unit,
+    navigationAction: NavigationAction,
     modifier: Modifier = Modifier,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -544,7 +808,8 @@ private fun CoreTopBarActionContent(
     val backgroundColor by animateColorAsState(
         targetValue = when {
             isPressed -> LocalColors.current.interaction.bgNeutralSubtlePressed
-            else -> LocalColors.current.interaction.bgNeutralSubtlePressed.copy(
+            navigationAction.filled -> LocalColors.current.background.bgNeutralSubtle
+            else -> LocalColors.current.background.bgNeutralSubtle.copy(
                 alpha = LocalOpacities.current.base.opacity0,
             )
         },
@@ -557,14 +822,14 @@ private fun CoreTopBarActionContent(
                 shape = LocalShapes.current.radius300,
             ).clickable(
                 role = Role.Button,
-                onClick = onNavigationActionClicked,
+                onClick = navigationAction.onNavigationActionClicked,
                 interactionSource = interactionSource,
                 indication = null,
             ),
     ) {
         LemonadeUi.Icon(
-            icon = navigationAction.icon,
-            contentDescription = navigationAction.name,
+            icon = navigationAction.navigationAction.icon,
+            contentDescription = navigationAction.navigationAction.name,
             size = LemonadeAssetSize.Medium,
         )
     }
@@ -581,9 +846,11 @@ private fun CoreTopBar(
 ) {
     TopBarLayout(
         state = state,
-        modifier = modifier
+        modifier = Modifier
             .clipToBounds()
+            .then(other = modifier)
             .background(color = backgroundColor)
+            .displayCutoutPadding()
             .statusBarsPadding(),
         fixedHeaderSlot = fixedHeaderSlot,
         collapsableSlot = collapsableSlot,
@@ -597,7 +864,7 @@ private fun CoreTopBar(
         },
         dividerSlot = { dividerModifier ->
             val dividerAlpha by animateFloatAsState(
-                targetValue = if (state.collapseProgress == 1f) {
+                targetValue = if (state.collapseProgress == 1f && !state.isPermanentlyCollapsed) {
                     LocalOpacities.current.base.opacity100
                 } else {
                     LocalOpacities.current.base.opacity0
@@ -731,10 +998,10 @@ internal fun CoreTopBarContent(
     trailingSlot: @Composable (RowScope.() -> Unit)?,
     label: String,
     modifier: Modifier = Modifier,
-    labelAlpha: Float = LocalOpacities.current.base.opacity100,
+    isCollapsed: Boolean,
 ) {
     val animatedLabelOffsetY by animateDpAsState(
-        targetValue = if (labelAlpha == LocalOpacities.current.base.opacity100) {
+        targetValue = if (isCollapsed) {
             LocalSpaces.current.spacing0
         } else {
             LocalSpaces.current.spacing200
@@ -746,7 +1013,7 @@ internal fun CoreTopBarContent(
     )
 
     val animatedLabelAlpha by animateFloatAsState(
-        targetValue = if (labelAlpha == LocalOpacities.current.base.opacity100) {
+        targetValue = if (isCollapsed) {
             LocalOpacities.current.base.opacity100
         } else {
             LocalOpacities.current.base.opacity0
@@ -857,9 +1124,59 @@ private val TopBarAction.icon: LemonadeIcons
         }
     }
 
+@Composable
+private fun CompactLargeTopBarHeading(
+    label: String,
+    subheading: String?,
+    trailingSlot: @Composable (RowScope.() -> Unit)?,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = LocalSpaces.current.spacing400)
+            .padding(bottom = LocalSpaces.current.spacing200),
+        horizontalArrangement = Arrangement.spacedBy(
+            space = LocalSpaces.current.spacing200,
+        ),
+        verticalAlignment = Alignment.Top,
+    ) {
+        Column(
+            modifier = Modifier.weight(weight = 1f),
+        ) {
+            LemonadeUi.Text(
+                text = label,
+                textStyle = LocalTypographies.current.headingLarge,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 2,
+            )
+            if (subheading != null) {
+                LemonadeUi.Text(
+                    text = subheading,
+                    textStyle = LocalTypographies.current.bodySmallRegular,
+                    color = LocalColors.current.content.contentSecondary,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                )
+            }
+        }
+        if (trailingSlot != null) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+                content = { trailingSlot.invoke(this) },
+                modifier = Modifier.requiredSizeIn(
+                    minWidth = LocalSizes.current.size1000,
+                    maxHeight = LocalSizes.current.size1000,
+                ),
+            )
+        }
+    }
+}
+
 private data class TopBarPreviewData(
     val collapsed: Boolean,
-    val action: TopBarAction?,
+    val action: NavigationAction?,
     val trailingIconCount: Int,
     val longLabel: Boolean = false,
 )
@@ -869,18 +1186,24 @@ private class TopBarPreviewProvider : PreviewParameterProvider<TopBarPreviewData
 
     private fun buildAllVariants(): Sequence<TopBarPreviewData> =
         buildList {
-            listOf(true, false).forEach { collapsed ->
-                (TopBarAction.entries + listOf(null)).forEach { action ->
-                    listOf(0, 1, 2).forEach { trailingIconCount ->
-                        listOf(false, true).forEach { longLabel ->
-                            add(
-                                element = TopBarPreviewData(
-                                    collapsed = collapsed,
-                                    action = action,
-                                    trailingIconCount = trailingIconCount,
-                                    longLabel = longLabel,
-                                ),
-                            )
+            listOf(true, false).forEach { filled ->
+                listOf(true, false).forEach { collapsed ->
+                    (TopBarAction.entries).forEach { action ->
+                        listOf(0, 1, 2).forEach { trailingIconCount ->
+                            listOf(false, true).forEach { longLabel ->
+                                add(
+                                    element = TopBarPreviewData(
+                                        collapsed = collapsed,
+                                        action = NavigationAction(
+                                            navigationAction = action,
+                                            onNavigationActionClicked = { /* nothing */ },
+                                            filled = filled,
+                                        ),
+                                        trailingIconCount = trailingIconCount,
+                                        longLabel = longLabel,
+                                    ),
+                                )
+                            }
                         }
                     }
                 }
@@ -933,6 +1256,22 @@ private fun SearchableTopBarPreview(
     )
 }
 
+@LemonadePreview
+@Composable
+private fun SearchableTopBarWithExpandedTitlePreview() {
+    LemonadeUi.TopBar(
+        label = "Search",
+        searchInput = "",
+        onSearchChanged = {},
+        expandedLabel = "Discover",
+        navigationAction = NavigationAction(
+            navigationAction = TopBarAction.Back,
+            onNavigationActionClicked = {},
+        ),
+        state = rememberTopBarState(),
+    )
+}
+
 private fun Int.toPreviewTrailingSlot(): @Composable (RowScope.() -> Unit)? {
     if (this == 0) {
         return null
@@ -948,4 +1287,49 @@ private fun Int.toPreviewTrailingSlot(): @Composable (RowScope.() -> Unit)? {
             )
         }
     }
+}
+
+@LemonadePreview
+@Composable
+private fun CompactLargeTopBarPreview() {
+    LemonadeUi.TopBar(
+        label = "Home",
+        subheading = "Welcome back",
+        trailingSlot = {
+            LemonadeUi.IconButton(
+                icon = LemonadeIcons.Bell,
+                contentDescription = null,
+                onClick = {},
+                variant = LemonadeIconButtonVariant.Ghost,
+            )
+        },
+    )
+}
+
+@LemonadePreview
+@Composable
+private fun CompactLargeTopBarNoSubheadingPreview() {
+    LemonadeUi.TopBar(
+        label = "Browse",
+        subheading = null,
+        trailingSlot = {
+            LemonadeUi.IconButton(
+                icon = LemonadeIcons.Bell,
+                contentDescription = null,
+                onClick = {},
+                variant = LemonadeIconButtonVariant.Ghost,
+            )
+        },
+    )
+}
+
+@LemonadePreview
+@Composable
+private fun CompactLargeTopBarSearchPreview() {
+    LemonadeUi.TopBar(
+        label = "Discover",
+        subheading = "Find what you need",
+        searchInput = "",
+        onSearchChanged = {},
+    )
 }
