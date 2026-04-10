@@ -17,7 +17,7 @@ public enum TopBarAction {
 /// Configuration for the navigation action in the leading slot of a top bar.
 /// Mirrors the KMP `NavigationAction` data class.
 public struct NavigationAction {
-    let action: TopBarAction
+    public let action: TopBarAction
     let onAction: () -> Void
 
     public init(action: TopBarAction, onAction: @escaping () -> Void) {
@@ -26,22 +26,16 @@ public struct NavigationAction {
     }
 }
 
-// MARK: - Basic TopBar Modifier
+// MARK: - Shared Toolbar Slots
 
-/// A modifier that applies a native iOS navigation bar styled with Lemonade tokens.
-/// Displays a large title that collapses inline on scroll, with optional navigation
-/// action, trailing slot, and bottom slot.
-private struct BasicTopBarModifier<TrailingContent: View, BottomContent: View>: ViewModifier {
-    let label: String
-    let collapsedLabel: String?
-    let navigationAction: NavigationAction?
-    let trailingSlot: (() -> TrailingContent)?
-    let bottomSlot: (() -> BottomContent)?
-
-    func body(content: Content) -> some View {
-        content
-            .navigationTitle(collapsedLabel ?? label)
-            .navigationBarTitleDisplayMode(.large)
+private extension View {
+    @ViewBuilder
+    func topBarToolbarSlots<TrailingContent: View, BottomContent: View>(
+        navigationAction: NavigationAction?,
+        trailingSlot: (() -> TrailingContent)?,
+        bottomSlot: (() -> BottomContent)?
+    ) -> some View {
+        self
             .navigationBarBackButtonHidden(navigationAction?.action == .close)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -66,6 +60,30 @@ private struct BasicTopBarModifier<TrailingContent: View, BottomContent: View>: 
                     bottomSlot()
                 }
             }
+    }
+}
+
+// MARK: - Basic TopBar Modifier
+
+/// A modifier that applies a native iOS navigation bar styled with Lemonade tokens.
+/// Displays a large title that collapses inline on scroll, with optional navigation
+/// action, trailing slot, and bottom slot.
+private struct BasicTopBarModifier<TrailingContent: View, BottomContent: View>: ViewModifier {
+    let label: String
+    let collapsedLabel: String?
+    let navigationAction: NavigationAction?
+    let trailingSlot: (() -> TrailingContent)?
+    let bottomSlot: (() -> BottomContent)?
+
+    func body(content: Content) -> some View {
+        content
+            .navigationTitle(collapsedLabel ?? label)
+            .navigationBarTitleDisplayMode(.large)
+            .topBarToolbarSlots(
+                navigationAction: navigationAction,
+                trailingSlot: trailingSlot,
+                bottomSlot: bottomSlot
+            )
     }
 }
 
@@ -86,35 +104,16 @@ private struct SearchTopBarModifier<TrailingContent: View, BottomContent: View>:
         content
             .navigationTitle(expandedLabel ?? label)
             .navigationBarTitleDisplayMode(.large)
-            .navigationBarBackButtonHidden(navigationAction?.action == .close)
             .searchable(
                 text: $searchInput,
                 placement: .navigationBarDrawer(displayMode: .automatic),
                 prompt: searchPrompt
             )
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    if let navigationAction, navigationAction.action == .close {
-                        Button(action: navigationAction.onAction) {
-                            LemonadeUi.Icon(
-                                icon: .times,
-                                contentDescription: "Close"
-                            )
-                        }
-                    }
-                }
-
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    if let trailingSlot {
-                        trailingSlot()
-                    }
-                }
-            }
-            .safeAreaInset(edge: .top, spacing: 0) {
-                if let bottomSlot {
-                    bottomSlot()
-                }
-            }
+            .topBarToolbarSlots(
+                navigationAction: navigationAction,
+                trailingSlot: trailingSlot,
+                bottomSlot: bottomSlot
+            )
     }
 }
 
@@ -137,8 +136,8 @@ private enum VariableBlurDirection {
 }
 
 private struct VariableBlurView: UIViewRepresentable {
-    var maxBlurRadius: CGFloat = 20
-    var direction: VariableBlurDirection = .blurredTopClearBottom
+    let maxBlurRadius: CGFloat
+    let direction: VariableBlurDirection
 
     func makeUIView(context: Context) -> VariableBlurUIView {
         VariableBlurUIView(maxBlurRadius: maxBlurRadius, direction: direction)
@@ -148,17 +147,19 @@ private struct VariableBlurView: UIViewRepresentable {
 }
 
 private class VariableBlurUIView: UIVisualEffectView {
+    private static let ciContext = CIContext()
+
     init(maxBlurRadius: CGFloat, direction: VariableBlurDirection) {
+        // Falls back to standard .regular blur if the private API is unavailable
         super.init(effect: UIBlurEffect(style: .regular))
 
-        // Access private CAFilter API (same API Apple uses internally)
         let clsName = String("retliFAC".reversed())
         guard let Cls = NSClassFromString(clsName) as? NSObject.Type else { return }
         let selName = String(":epyThtiWretlif".reversed())
         guard let variableBlur = Cls.perform(NSSelectorFromString(selName), with: "variableBlur")
             .takeUnretainedValue() as? NSObject else { return }
 
-        let gradientImage = makeGradientImage(direction: direction)
+        guard let gradientImage = Self.makeGradientImage(direction: direction) else { return }
         variableBlur.setValue(maxBlurRadius, forKey: "inputRadius")
         variableBlur.setValue(gradientImage, forKey: "inputMaskImage")
         variableBlur.setValue(true, forKey: "inputNormalizeEdges")
@@ -178,13 +179,15 @@ private class VariableBlurUIView: UIVisualEffectView {
         backdropLayer.setValue(window.traitCollection.displayScale, forKey: "scale")
     }
 
+    // Intentionally empty — suppresses crash in super on trait changes.
+    // Deprecated in iOS 17; the blur filter does not need trait-driven updates.
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {}
 
-    private func makeGradientImage(
+    private static func makeGradientImage(
         width: CGFloat = 100,
         height: CGFloat = 100,
         direction: VariableBlurDirection
-    ) -> CGImage {
+    ) -> CGImage? {
         let gradientFilter = CIFilter.linearGradient()
         gradientFilter.color0 = CIColor.black
         gradientFilter.color1 = CIColor.clear
@@ -194,10 +197,11 @@ private class VariableBlurUIView: UIVisualEffectView {
             gradientFilter.point0 = .init(x: 0, y: 0)
             gradientFilter.point1 = .init(x: 0, y: height)
         }
-        return CIContext().createCGImage(
-            gradientFilter.outputImage!,
+        guard let outputImage = gradientFilter.outputImage else { return nil }
+        return ciContext.createCGImage(
+            outputImage,
             from: CGRect(x: 0, y: 0, width: width, height: height)
-        )!
+        )
     }
 }
 
@@ -251,32 +255,26 @@ private struct CompactLargeHeader<TrailingContent: View>: View {
     }
 }
 
-// MARK: - Compact Large TopBar Modifier
+// MARK: - Compact Large Blur Layout
 
-/// A modifier that applies a large left-aligned title with optional subheading.
-/// Designed for top-level screens without navigation actions.
-/// The trailing slot sits on the same row as the title (not in the navigation bar).
-/// Content scrolls behind the header with a native material blur effect.
-private struct CompactLargeTopBarModifier<TrailingContent: View, BottomContent: View>: ViewModifier {
-    let label: String
-    let subheading: String?
-    let trailingSlot: (() -> TrailingContent)?
-    let bottomSlot: (() -> BottomContent)?
+/// Shared layout for compact-large variants: ZStack with scrollable content,
+/// progressive blur layer, and a measured header slot.
+private struct CompactLargeBlurLayout<HeaderContent: View>: View {
+    let scrollableContent: AnyView
+    @ViewBuilder let headerContent: () -> HeaderContent
 
     private let fadeExtension: CGFloat = 64
     @State private var headerHeight: CGFloat = 76
     @Environment(\.colorScheme) private var colorScheme
 
-    func body(content: Content) -> some View {
+    var body: some View {
         ZStack(alignment: .top) {
-            // Layer 1: Scrollable content — never clipped
-            content
+            scrollableContent
                 .navigationBarHidden(true)
                 .safeAreaInset(edge: .top, spacing: 0) {
                     Color.clear.frame(height: headerHeight)
                 }
 
-            // Layer 2: Progressive blur + tint fade
             let totalHeight = headerHeight + fadeExtension
             VariableBlurView(maxBlurRadius: 5, direction: .blurredTopClearBottom)
                 .overlay {
@@ -290,7 +288,36 @@ private struct CompactLargeTopBarModifier<TrailingContent: View, BottomContent: 
                 .ignoresSafeArea(edges: .top)
                 .allowsHitTesting(false)
 
-            // Layer 3: Header — floats above blur, NO opaque background
+            headerContent()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .overlay(
+                    GeometryReader { geo in
+                        Color.clear.preference(key: HeaderHeightKey.self, value: geo.size.height)
+                    }
+                )
+        }
+        .onPreferenceChange(HeaderHeightKey.self) { headerHeight = $0 }
+    }
+
+    private var fadeTint: Color {
+        colorScheme == .dark ? .black : .white
+    }
+}
+
+// MARK: - Compact Large TopBar Modifier
+
+/// A modifier that applies a large left-aligned title with optional subheading.
+/// Designed for top-level screens without navigation actions.
+/// The trailing slot sits on the same row as the title (not in the navigation bar).
+/// Content scrolls behind the header with a progressive blur effect.
+private struct CompactLargeTopBarModifier<TrailingContent: View, BottomContent: View>: ViewModifier {
+    let label: String
+    let subheading: String?
+    let trailingSlot: (() -> TrailingContent)?
+    let bottomSlot: (() -> BottomContent)?
+
+    func body(content: Content) -> some View {
+        CompactLargeBlurLayout(scrollableContent: AnyView(content)) {
             VStack(alignment: .leading, spacing: 0) {
                 CompactLargeHeader(
                     label: label,
@@ -303,18 +330,7 @@ private struct CompactLargeTopBarModifier<TrailingContent: View, BottomContent: 
                     bottomSlot()
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .overlay(
-                GeometryReader { geo in
-                    Color.clear.preference(key: HeaderHeightKey.self, value: geo.size.height)
-                }
-            )
         }
-        .onPreferenceChange(HeaderHeightKey.self) { headerHeight = $0 }
-    }
-
-    private var fadeTint: Color {
-        colorScheme == .dark ? .black : .white
     }
 }
 
@@ -332,36 +348,11 @@ private struct CompactLargeSearchTopBarModifier<TrailingContent: View>: ViewModi
     let searchPrompt: String
     let trailingSlot: (() -> TrailingContent)?
 
-    private let fadeExtension: CGFloat = 64
-    @State private var headerHeight: CGFloat = 120
     @State private var isSearchFocused: Bool = false
     @FocusState private var searchFieldFocused: Bool
-    @Environment(\.colorScheme) private var colorScheme
 
     func body(content: Content) -> some View {
-        ZStack(alignment: .top) {
-            // Layer 1: Scrollable content — never clipped
-            content
-                .navigationBarHidden(true)
-                .safeAreaInset(edge: .top, spacing: 0) {
-                    Color.clear.frame(height: headerHeight)
-                }
-
-            // Layer 2: Progressive blur + tint fade
-            let totalHeight = headerHeight + fadeExtension
-            VariableBlurView(maxBlurRadius: 5, direction: .blurredTopClearBottom)
-                .overlay {
-                    LinearGradient(stops: [
-                        .init(color: fadeTint.opacity(0.7), location: 0),
-                        .init(color: fadeTint.opacity(0.5), location: 90 / totalHeight),
-                        .init(color: fadeTint.opacity(0), location: 1),
-                    ], startPoint: .top, endPoint: .bottom)
-                }
-                .frame(height: totalHeight)
-                .ignoresSafeArea(edges: .top)
-                .allowsHitTesting(false)
-
-            // Layer 3: Header — title hides when search is focused (matches KMP)
+        CompactLargeBlurLayout(scrollableContent: AnyView(content)) {
             VStack(alignment: .leading, spacing: 0) {
                 if !isSearchFocused {
                     CompactLargeHeader(
@@ -381,22 +372,11 @@ private struct CompactLargeSearchTopBarModifier<TrailingContent: View>: ViewModi
                 .padding(.horizontal, LemonadeSpacing.spacing400.value)
                 .padding(.vertical, LemonadeSpacing.spacing300.value)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
             .animation(.easeInOut(duration: 0.25), value: isSearchFocused)
-            .overlay(
-                GeometryReader { geo in
-                    Color.clear.preference(key: HeaderHeightKey.self, value: geo.size.height)
-                }
-            )
         }
-        .onPreferenceChange(HeaderHeightKey.self) { headerHeight = $0 }
         .onChange(of: searchFieldFocused) { focused in
             isSearchFocused = focused
         }
-    }
-
-    private var fadeTint: Color {
-        colorScheme == .dark ? .black : .white
     }
 }
 
