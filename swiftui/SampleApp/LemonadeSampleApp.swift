@@ -3,6 +3,8 @@ import Lemonade
 
 @main
 struct LemonadeSampleApp: App {
+    @StateObject private var styleHandler = LemonadeStyleHandler()
+
     init() {
         // Register Lemonade fonts at app startup
         LemonadeFonts.registerFonts()
@@ -24,6 +26,9 @@ struct LemonadeSampleApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(styleHandler)
+                .id(styleHandler.currentStyle)
+                .preferredColorScheme(styleHandler.currentStyle.colorScheme)
                 .environment(\.font, Font.custom("Figtree", size: LemonadeTypography.shared.bodyMediumMedium.fontSize))
         }
     }

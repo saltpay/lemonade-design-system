@@ -1,7 +1,5 @@
 package com.teya.lemonade.core
 
-import kotlinx.serialization.Serializable
-
 /**
  * Represents a text style with typographic properties.
  *
@@ -10,7 +8,6 @@ import kotlinx.serialization.Serializable
  * @property fontWeight The font weight (400 = Normal, 500 = Medium, 600 = SemiBold, 700 = Bold)
  * @property letterSpacing The letter spacing in sp, null if default
  */
-@Serializable
 public data class LemonadeTextStyle(
     val fontSize: Float,
     val lineHeight: Float,

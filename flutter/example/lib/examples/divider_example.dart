@@ -24,13 +24,8 @@ class DividerExampleScreen extends StatelessWidget {
                 (variant) => ExampleRow(
                   label: '${variant.name} Divider'.capitalize,
                   children: [
-                    LemonadeDivider(
-                      variant: variant,
-                    ),
-                    LemonadeDivider(
-                      variant: variant,
-                      label: 'With label',
-                    ),
+                    LemonadeDivider(variant: variant),
+                    LemonadeDivider(variant: variant, label: 'With label'),
                     SizedBox(
                       height: 200,
                       child: LemonadeDivider(

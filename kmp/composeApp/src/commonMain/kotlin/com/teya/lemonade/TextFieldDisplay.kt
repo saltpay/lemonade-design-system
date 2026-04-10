@@ -10,12 +10,15 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 
@@ -29,6 +32,18 @@ internal fun TextFieldDisplay() {
     var leadingText by remember { mutableStateOf("") }
     var trailingText by remember { mutableStateOf("") }
     var selectorText by remember { mutableStateOf("") }
+
+    // Example of TextFieldValue-based usage for cursor control
+    var phoneDisplayText by remember { mutableStateOf("") }
+    var phoneTextFieldValue by remember { mutableStateOf(TextFieldValue("")) }
+
+    // Format phone number and move cursor to end when text changes externally
+    LaunchedEffect(phoneDisplayText) {
+        phoneTextFieldValue = TextFieldValue(
+            text = phoneDisplayText,
+            selection = TextRange(phoneDisplayText.length),
+        )
+    }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
@@ -115,7 +130,7 @@ internal fun TextFieldDisplay() {
             )
         }
 
-        // TextField With Selector
+        // TextField With Selector (String-based)
         TextFieldSection(title = "TextField With Selector") {
             LemonadeUi.TextFieldWithSelector(
                 input = selectorText,
@@ -139,6 +154,40 @@ internal fun TextFieldDisplay() {
                 },
                 label = "Phone Number",
                 placeholderText = "Enter phone number",
+            )
+        }
+
+        // TextField With Selector (TextFieldValue-based for cursor control)
+        TextFieldSection(title = "TextField With Selector (Cursor Control)") {
+            LemonadeUi.TextFieldWithSelector(
+                value = phoneTextFieldValue,
+                onValueChange = { newValue ->
+                    // Update internal state
+                    phoneTextFieldValue = newValue
+                    // Simulate formatting: add spaces after every 3 digits
+                    val rawDigits = newValue.text.filter { it.isDigit() }
+                    phoneDisplayText = rawDigits.chunked(3).joinToString(" ")
+                },
+                leadingAction = { println("Show country code picker") },
+                leadingContent = {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing100),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        LemonadeUi.Text(
+                            text = "+351",
+                            textStyle = LemonadeTheme.typography.bodyMediumMedium,
+                        )
+                        LemonadeUi.Icon(
+                            icon = LemonadeIcons.ChevronDown,
+                            contentDescription = null,
+                            size = LemonadeAssetSize.Small,
+                        )
+                    }
+                },
+                label = "Phone (with cursor control)",
+                placeholderText = "Enter phone number",
+                supportText = "Try typing - cursor stays at end after formatting",
             )
         }
 

@@ -21,6 +21,7 @@ internal interface Displays {
             SelectionListItem,
             ActionListItem,
             ResourceListItem,
+            ContentListItem,
             Chip,
             SegmentedControl,
             SymbolContainer,
@@ -44,6 +45,10 @@ internal interface Displays {
             Spinner,
             Divider,
             Tabs,
+            DatePicker,
+            InlineCalendar,
+            Notice,
+            Toast,
         )
     }
 
@@ -105,6 +110,11 @@ internal interface Displays {
     @Serializable
     data object ResourceListItem : Displays {
         override val label: String = "ResourceListItem"
+    }
+
+    @Serializable
+    data object ContentListItem : Displays {
+        override val label: String = "ContentListItem"
     }
 
     @Serializable
@@ -220,5 +230,25 @@ internal interface Displays {
     @Serializable
     data object Tabs : Displays {
         override val label: String = "Tabs"
+    }
+
+    @Serializable
+    data object DatePicker : Displays {
+        override val label: String = "DatePicker"
+    }
+
+    @Serializable
+    data object InlineCalendar : Displays {
+        override val label: String = "InlineCalendar"
+    }
+
+    @Serializable
+    data object Notice : Displays {
+        override val label: String = "Notice"
+    }
+
+    @Serializable
+    data object Toast : Displays {
+        override val label: String = "Toast"
     }
 }

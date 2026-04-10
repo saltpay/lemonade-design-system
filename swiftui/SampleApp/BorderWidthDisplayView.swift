@@ -19,7 +19,7 @@ struct BorderWidthDisplayView: View {
                             .frame(width: 50)
 
                         RoundedRectangle(cornerRadius: 8)
-                            .stroke(LemonadePrimitiveColors.Solid.Blue.blue500, lineWidth: item.value)
+                            .stroke(.content.contentInfo, lineWidth: item.value)
                             .frame(width: 80, height: 60)
 
                         Spacer()

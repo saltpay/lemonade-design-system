@@ -93,6 +93,7 @@ private struct LemonadeRadioButtonWithLabel: View {
                     onRadioButtonClicked: onRadioButtonClicked,
                     enabled: enabled
                 )
+                .allowsHitTesting(false)
 
                 VStack(alignment: .leading, spacing: 0) {
                     LemonadeUi.Text(

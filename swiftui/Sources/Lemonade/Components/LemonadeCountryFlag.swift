@@ -14,12 +14,12 @@ public enum LemonadeCountryFlagSize {
     /// Returns the CGFloat value for this size
     public var value: CGFloat {
         switch self {
-        case .small: return LemonadeSizes.size400.value      // 16
-        case .medium: return LemonadeSizes.size500.value     // 20
-        case .large: return LemonadeSizes.size600.value      // 24
-        case .xLarge: return LemonadeSizes.size800.value     // 32
-        case .xxLarge: return LemonadeSizes.size1000.value   // 40
-        case .xxxLarge: return LemonadeSizes.size1200.value  // 48
+        case .small: return LemonadeTheme.sizes.size400      // 16
+        case .medium: return LemonadeTheme.sizes.size500     // 20
+        case .large: return LemonadeTheme.sizes.size600      // 24
+        case .xLarge: return LemonadeTheme.sizes.size800     // 32
+        case .xxLarge: return LemonadeTheme.sizes.size1000   // 40
+        case .xxxLarge: return LemonadeTheme.sizes.size1200  // 48
         }
     }
 }
@@ -53,7 +53,7 @@ public extension LemonadeUi {
 
 // MARK: - Internal View
 
-internal struct LemonadeCountryFlagView: View {
+private struct LemonadeCountryFlagView: View {
     let flag: LemonadeCountryFlag
     let size: LemonadeCountryFlagSize
 
@@ -67,7 +67,7 @@ internal struct LemonadeCountryFlagView: View {
                 Circle()
                     .stroke(
                         LemonadeTheme.colors.border.borderNeutralMedium,
-                        lineWidth: LemonadeBorderWidthTokens().base.border25
+                        lineWidth: LemonadeTheme.borderWidth.base.border25
                     )
             )
     }

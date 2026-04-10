@@ -21,10 +21,7 @@ class TextFieldExampleScreen extends StatelessWidget {
             const ExampleColumn(
               label: 'Basic',
               children: [
-                LemonadeTextField(
-                  label: 'Label',
-                  placeholder: 'Enter text...',
-                ),
+                LemonadeTextField(label: 'Label', placeholder: 'Enter text...'),
               ],
             ),
             SizedBox(height: theme.spaces.spacing400),

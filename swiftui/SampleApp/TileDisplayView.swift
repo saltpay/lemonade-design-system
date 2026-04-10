@@ -5,7 +5,7 @@ struct TileDisplayView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing600) {
-                // Variants
+                // MARK: - Variants
                 sectionView(title: "Variants") {
                     HStack(spacing: LemonadeTheme.spaces.spacing400) {
                         VStack(spacing: LemonadeTheme.spaces.spacing200) {
@@ -31,10 +31,21 @@ struct TileDisplayView: View {
                                 textStyle: LemonadeTypography.shared.bodySmallRegular
                             )
                         }
+
+                        VStack(spacing: LemonadeTheme.spaces.spacing200) {
+                            LemonadeUi.Tile(
+                                label: "Selected",
+                                icon: .circleCheck,
+                                variant: .selected
+                            )
+                            LemonadeUi.Text(
+                                "Selected",
+                                textStyle: LemonadeTypography.shared.bodySmallRegular
+                            )
+                        }
                     }
                 }
 
-                // OnColor Variant
                 sectionView(title: "OnColor Variant") {
                     VStack(spacing: LemonadeTheme.spaces.spacing200) {
                         LemonadeUi.Tile(
@@ -54,7 +65,32 @@ struct TileDisplayView: View {
                     .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius300))
                 }
 
-                // With Addon
+                sectionView(title: "Alignment") {
+                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
+                        LemonadeUi.Tile(
+                            label: "Start",
+                            icon: .arrowLeft,
+                            variant: .neutral,
+                            alignment: .leading
+                        )
+
+                        LemonadeUi.Tile(
+                            label: "Center",
+                            icon: .arrowLeftRight,
+                            variant: .neutral,
+                            alignment: .center
+                        )
+
+                        LemonadeUi.Tile(
+                            label: "End",
+                            icon: .arrowRight,
+                            variant: .neutral,
+                            alignment: .trailing
+                        )
+                    }
+                }
+
+                // MARK: - Features
                 sectionView(title: "With Addon (Badge)") {
                     HStack(spacing: LemonadeTheme.spaces.spacing400) {
                         LemonadeUi.Tile(
@@ -75,7 +111,6 @@ struct TileDisplayView: View {
                     }
                 }
 
-                // Interactive
                 sectionView(title: "Interactive") {
                     HStack(spacing: LemonadeTheme.spaces.spacing400) {
                         LemonadeUi.Tile(
@@ -98,7 +133,6 @@ struct TileDisplayView: View {
                     }
                 }
 
-                // Disabled
                 sectionView(title: "Disabled") {
                     HStack(spacing: LemonadeTheme.spaces.spacing400) {
                         LemonadeUi.Tile(
@@ -117,36 +151,75 @@ struct TileDisplayView: View {
                     }
                 }
 
-                // Constrained HStack — tiles shrink below default 120pt
-                sectionView(title: "Constrained HStack (3 tiles, padded)") {
+                // MARK: - Layout Behavior
+                sectionView(title: "Default Size (min 120pt)") {
+                    LemonadeUi.Tile(
+                        label: "Default",
+                        icon: .heart,
+                        variant: .neutral
+                    )
+                }
+
+                sectionView(title: "Stretched (stretched: true)") {
+                    LemonadeUi.Tile(
+                        label: "Single Stretched",
+                        icon: .heart,
+                        onClick: {},
+                        variant: .neutral,
+                        stretched: true
+                    )
+
                     HStack(spacing: LemonadeTheme.spaces.spacing400) {
                         LemonadeUi.Tile(
                             label: "Transfer",
                             icon: .arrowLeftRight,
                             onClick: {},
-                            variant: .neutral
+                            variant: .neutral,
+                            stretched: true
                         )
-                        .frame(maxWidth: .infinity)
 
                         LemonadeUi.Tile(
                             label: "Pay",
                             icon: .card,
                             onClick: {},
-                            variant: .neutral
+                            variant: .neutral,
+                            stretched: true
                         )
-                        .frame(maxWidth: .infinity)
 
                         LemonadeUi.Tile(
                             label: "Request",
                             icon: .download,
                             onClick: {},
-                            variant: .neutral
+                            variant: .neutral,
+                            stretched: true
                         )
-                        .frame(maxWidth: .infinity)
                     }
                 }
 
-                // Use Case: Quick Actions
+                sectionView(title: "Tight Container (200pt for 3 tiles)") {
+                    HStack(spacing: LemonadeTheme.spaces.spacing200) {
+                        LemonadeUi.Tile(
+                            label: "One",
+                            icon: .heart,
+                            variant: .neutral
+                        )
+
+                        LemonadeUi.Tile(
+                            label: "Two",
+                            icon: .star,
+                            variant: .neutral
+                        )
+
+                        LemonadeUi.Tile(
+                            label: "Three",
+                            icon: .check,
+                            variant: .neutral
+                        )
+                    }
+                    .frame(width: 200)
+                }
+
+                // MARK: - Use Cases
                 sectionView(title: "Use Case: Quick Actions") {
                     LazyVGrid(columns: [
                         GridItem(.flexible()),
@@ -197,7 +270,6 @@ struct TileDisplayView: View {
                     }
                 }
 
-                // Use Case: Dashboard
                 sectionView(title: "Use Case: Dashboard") {
                     VStack(spacing: LemonadeTheme.spaces.spacing400) {
                         HStack(spacing: LemonadeTheme.spaces.spacing400) {

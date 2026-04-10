@@ -85,9 +85,9 @@ class _Solid {
 class _YellowLimeSolid {
   final Color yellowLime900 = const Color(0xFF28310B);
 
-  final Color yellowLime600 = const Color(0xFFB6BC14);
+  final Color yellowLime600 = const Color(0xFFC6C916);
 
-  final Color yellowLime400 = const Color(0xFFEBEB5A);
+  final Color yellowLime400 = const Color(0xFFE9E948);
 
   final Color yellowLime300 = const Color(0xFFF1F187);
 
@@ -203,27 +203,27 @@ class _PinkSolid {
 }
 
 class _NeutralSolid {
-  final Color neutral600 = const Color(0xFF535B51);
+  final Color neutral600 = const Color(0xFF555450);
 
-  final Color neutral100 = const Color(0xFFF1F3F1);
+  final Color neutral100 = const Color(0xFFF5F4F3);
 
-  final Color neutral400 = const Color(0xFFA3A9A2);
+  final Color neutral400 = const Color(0xFFA5A3A0);
 
-  final Color neutral300 = const Color(0xFFD2D9D2);
+  final Color neutral300 = const Color(0xFFD6D3D0);
 
-  final Color neutral200 = const Color(0xFFE6E9E6);
+  final Color neutral200 = const Color(0xFFE9E7E3);
 
-  final Color neutral500 = const Color(0xFF707970);
+  final Color neutral500 = const Color(0xFF807E78);
 
-  final Color neutral700 = const Color(0xFF414A3F);
+  final Color neutral700 = const Color(0xFF42413E);
 
-  final Color neutral800 = const Color(0xFF282F27);
+  final Color neutral800 = const Color(0xFF282725);
 
-  final Color neutral900 = const Color(0xFF1A1E19);
+  final Color neutral900 = const Color(0xFF1A1918);
 
-  final Color neutral50 = const Color(0xFFF6F7F6);
+  final Color neutral50 = const Color(0xFFF8F7F6);
 
-  final Color neutral950 = const Color(0xFF10140F);
+  final Color neutral950 = const Color(0xFF0B0A0A);
 }
 
 class _RedSolid {
@@ -565,27 +565,27 @@ class _Alpha {
 }
 
 class _NeutralAlpha {
-  final Color neutral900 = const Color(0xEB070D07);
+  final Color neutral900 = const Color(0xE51B1A18);
 
-  final Color neutral700 = const Color(0xC1031103);
+  final Color neutral700 = const Color(0xB21B1A18);
 
-  final Color neutral600 = const Color(0xAE031103);
+  final Color neutral600 = const Color(0x991B1A18);
 
-  final Color neutral300 = const Color(0x2D0A280A);
+  final Color neutral300 = const Color(0x4C1B1A18);
 
-  final Color neutral200 = const Color(0x190D300D);
+  final Color neutral200 = const Color(0x331B1A18);
 
-  final Color neutral500 = const Color(0x90051405);
+  final Color neutral500 = const Color(0x7F1B1A18);
 
-  final Color neutral800 = const Color(0xDB050E05);
+  final Color neutral800 = const Color(0xCC1B1A18);
 
-  final Color neutral100 = const Color(0x0F313931);
+  final Color neutral100 = const Color(0x191B1A18);
 
-  final Color neutral400 = const Color(0x5D011201);
+  final Color neutral400 = const Color(0x661B1A18);
 
-  final Color neutral50 = const Color(0x0B485548);
+  final Color neutral50 = const Color(0x0C1B1A18);
 
-  final Color neutral950 = const Color(0xF9090F09);
+  final Color neutral950 = const Color(0xF21B1A18);
 }
 
 class _YellowAlpha {

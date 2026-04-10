@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.gradle.agp)
     implementation(libs.gradle.vanniktech.publish)
     implementation(libs.gradle.kmp)
     implementation(libs.detekt.gradlePlugin)
@@ -11,9 +12,9 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        register("LemonadePublishPlugin") {
+        register("LemonadePlugin") {
             id = "lemonade"
-            implementationClass = "LemonadePublishPlugin"
+            implementationClass = "LemonadePlugin"
         }
         register("LemonadeLintPlugin") {
             id = "lemonade-lint"

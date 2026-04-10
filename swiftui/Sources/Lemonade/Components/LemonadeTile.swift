@@ -7,12 +7,14 @@ public enum LemonadeTileVariant {
     case neutral
     case muted
     case onColor
+    case selected
 
     var backgroundColor: Color {
         switch self {
         case .neutral: return LemonadeTheme.colors.background.bgElevated
         case .muted: return LemonadeTheme.colors.background.bgDefault
         case .onColor: return LemonadeTheme.colors.background.bgBrandElevated
+        case .selected: return LemonadeTheme.colors.background.bgBrandSubtle
         }
     }
 
@@ -20,7 +22,7 @@ public enum LemonadeTileVariant {
         switch self {
         case .neutral: return LemonadeTheme.colors.interaction.bgElevatedPressed
         case .muted: return LemonadeTheme.colors.interaction.bgDefaultPressed
-        case .onColor: return LemonadeTheme.colors.interaction.bgBrandElevatedPressed
+        case .onColor, .selected: return LemonadeTheme.colors.interaction.bgBrandElevatedPressed
         }
     }
 
@@ -28,6 +30,14 @@ public enum LemonadeTileVariant {
         switch self {
         case .neutral, .muted: return LemonadeTheme.colors.border.borderNeutralMedium
         case .onColor: return LemonadeTheme.colors.border.borderNeutralMediumInverse
+        case .selected: return LemonadeTheme.colors.border.borderSelected
+        }
+    }
+
+    var borderWidth: CGFloat {
+        switch self {
+        case .neutral, .muted, .onColor: return LemonadeTheme.borderWidth.base.border25
+        case .selected: return LemonadeTheme.borderWidth.base.border50
         }
     }
 
@@ -35,7 +45,7 @@ public enum LemonadeTileVariant {
         switch self {
         case .neutral: return nil
         case .muted: return .xsmall
-        case .onColor: return nil
+        case .onColor, .selected: return nil
         }
     }
 }
@@ -61,6 +71,8 @@ public extension LemonadeUi {
     ///   - enabled: Flag to define if component is enabled. Defaults to true
     ///   - onClick: Callback called when component is tapped
     ///   - variant: LemonadeTileVariant to define visual style. Defaults to .neutral
+    ///   - stretched: Whether the tile should stretch to fill available width. Defaults to false
+    ///   - alignment: Horizontal alignment of the tile content. Defaults to .center
     ///   - addon: Optional content to be displayed as a badge overlay
     /// - Returns: A styled Tile view
     @ViewBuilder
@@ -70,6 +82,8 @@ public extension LemonadeUi {
         enabled: Bool = true,
         onClick: (() -> Void)? = nil,
         variant: LemonadeTileVariant = .neutral,
+        stretched: Bool = false,
+        alignment: HorizontalAlignment = .center,
         @ViewBuilder addon: @escaping () -> AddonContent
     ) -> some View {
         LemonadeTileView(
@@ -78,6 +92,8 @@ public extension LemonadeUi {
             enabled: enabled,
             onClick: onClick,
             variant: variant,
+            stretched: stretched,
+            alignment: alignment,
             addon: addon
         )
     }
@@ -89,7 +105,9 @@ public extension LemonadeUi {
         icon: LemonadeIcon,
         enabled: Bool = true,
         onClick: (() -> Void)? = nil,
-        variant: LemonadeTileVariant = .neutral
+        variant: LemonadeTileVariant = .neutral,
+        stretched: Bool = false,
+        alignment: HorizontalAlignment = .center
     ) -> some View {
         LemonadeTileView<EmptyView>(
             label: label,
@@ -97,6 +115,8 @@ public extension LemonadeUi {
             enabled: enabled,
             onClick: onClick,
             variant: variant,
+            stretched: stretched,
+            alignment: alignment,
             addon: nil
         )
     }
@@ -110,18 +130,18 @@ private struct LemonadeTileView<AddonContent: View>: View {
     let enabled: Bool
     let onClick: (() -> Void)?
     let variant: LemonadeTileVariant
+    let stretched: Bool
+    let alignment: HorizontalAlignment
     let addon: (() -> AddonContent)?
-
-    @State private var isPressed = false
 
     private let minWidth: CGFloat = 120
 
     private var backgroundColor: Color {
-        isPressed ? variant.backgroundPressedColor : variant.backgroundColor
+        variant.backgroundColor
     }
 
     private var tileContent: some View {
-        VStack(spacing: LemonadeTheme.spaces.spacing200) {
+        VStack(alignment: alignment, spacing: LemonadeTheme.spaces.spacing400) {
             LemonadeUi.Icon(
                 icon: icon,
                 contentDescription: nil,
@@ -130,12 +150,14 @@ private struct LemonadeTileView<AddonContent: View>: View {
 
             LemonadeUi.Text(
                 label,
-                textStyle: LemonadeTypography.shared.bodyMediumMedium,
+                textStyle: LemonadeTypography.shared.bodySmallSemiBold,
                 color: LemonadeTheme.colors.content.contentPrimary,
                 overflow: .tail,
                 maxLines: 1
             )
         }
+        .frame(maxWidth: .infinity, alignment: Alignment(horizontal: alignment, vertical: .center))
+        .padding(LemonadeTheme.spaces.spacing400)
     }
 
     var body: some View {
@@ -151,30 +173,23 @@ private struct LemonadeTileView<AddonContent: View>: View {
                         .frame(minWidth: minWidth)
                 }
             }
-            .padding(.horizontal, LemonadeTheme.spaces.spacing100)
-            .padding(.vertical, LemonadeTheme.spaces.spacing400)
+            .applyIf(stretched) { $0.frame(maxWidth: .infinity) }
             .background(backgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
             .overlay(
                 RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
-                    .stroke(variant.borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
+                    .stroke(variant.borderColor, lineWidth: variant.borderWidth)
             )
             .applyIf(variant.shadow != nil) { view in
                 view.lemonadeShadow(variant.shadow!)
             }
             .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
             .contentShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
-            .simultaneousGesture(
-                onClick != nil && enabled
-                    ? DragGesture(minimumDistance: 0)
-                        .onChanged { _ in isPressed = true }
-                        .onEnded { _ in
-                            isPressed = false
-                            onClick?()
-                        }
-                    : nil
-            )
-            .animation(.easeInOut(duration: 0.15), value: isPressed)
+            .onTapGesture {
+                if let onClick = onClick, enabled {
+                    onClick()
+                }
+            }
 
             // Addon badge
             if let addon = addon {
@@ -184,19 +199,6 @@ private struct LemonadeTileView<AddonContent: View>: View {
                         y: -LemonadeTheme.spaces.spacing200
                     )
             }
-        }
-    }
-}
-
-// MARK: - View Extension Helper
-
-private extension View {
-    @ViewBuilder
-    func applyIf<T: View>(_ condition: Bool, transform: (Self) -> T) -> some View {
-        if condition {
-            transform(self)
-        } else {
-            self
         }
     }
 }
@@ -220,6 +222,12 @@ struct LemonadeTile_Previews: PreviewProvider {
                     icon: .star,
                     variant: .muted
                 )
+
+                LemonadeUi.Tile(
+                    label: "Selected",
+                    icon: .circleCheck,
+                    variant: .selected
+                )
             }
 
             // OnColor variant (needs brand background)
@@ -230,6 +238,30 @@ struct LemonadeTile_Previews: PreviewProvider {
             )
             .padding()
             .background(LemonadeTheme.colors.background.bgBrand)
+
+            // Alignment
+            HStack(spacing: 16) {
+                LemonadeUi.Tile(
+                    label: "Leading",
+                    icon: .arrowLeft,
+                    variant: .neutral,
+                    alignment: .leading
+                )
+
+                LemonadeUi.Tile(
+                    label: "Center",
+                    icon: .arrowLeftRight,
+                    variant: .neutral,
+                    alignment: .center
+                )
+
+                LemonadeUi.Tile(
+                    label: "Trailing",
+                    icon: .arrowRight,
+                    variant: .neutral,
+                    alignment: .trailing
+                )
+            }
 
             // With addon
             LemonadeUi.Tile(

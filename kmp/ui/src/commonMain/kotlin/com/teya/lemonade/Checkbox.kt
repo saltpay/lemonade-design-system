@@ -74,7 +74,7 @@ public fun LemonadeUi.Checkbox(
     supportText: String? = null,
     enabled: Boolean = true,
 ) {
-    val props = platformCheckboxPropertiesProperties.copy(focusVisible = true)
+    val props = defaultPlatformCheckboxProps().copy(focusVisible = true)
     Row(
         horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),
         modifier = modifier
@@ -161,10 +161,10 @@ private fun CoreCheckbox(
     onCheckboxClicked: () -> Unit,
     enabled: Boolean,
     modifier: Modifier = Modifier,
-    checkboxPlatformProps: CheckboxPlatformProps = platformCheckboxPropertiesProperties,
+    checkboxPlatformProps: CheckboxPlatformProps = defaultPlatformCheckboxProps(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
-    val platformProps = platformCheckboxPropertiesProperties
+    val platformProps = checkboxPlatformProps
     val isHovering by interactionSource.collectIsHoveredAsState()
     val isFocused by interactionSource.collectIsFocusedAsState()
 
@@ -266,8 +266,6 @@ internal data class CheckboxPlatformProps(
     val supportTextStyle: LemonadeTextStyle,
     val focusVisible: Boolean,
 )
-
-internal expect val platformCheckboxPropertiesProperties: CheckboxPlatformProps
 
 @Composable
 internal fun defaultPlatformCheckboxProps(): CheckboxPlatformProps =

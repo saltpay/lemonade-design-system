@@ -24,5 +24,9 @@ let package = Package(
                 .process("Resources")
             ]
         ),
+        .testTarget(
+            name: "LemonadeTests",
+            dependencies: ["Lemonade"]
+        ),
     ]
 )

@@ -19,12 +19,13 @@ import SwiftUI
 /// 
 
 /// Radius token enum
-public enum LemonadeRadius {
+public enum LemonadeRadius: Sendable {
     case radius0
     case radius50
     case radius100
     case radius150
     case radius200
+    case radius250
     case radius300
     case radius400
     case radius500
@@ -40,6 +41,7 @@ public enum LemonadeRadius {
         case .radius100: return 4
         case .radius150: return 6
         case .radius200: return 8
+        case .radius250: return 10
         case .radius300: return 12
         case .radius400: return 16
         case .radius500: return 20
@@ -55,6 +57,16 @@ public enum LemonadeRadius {
     }
 }
 
+/// Semantic radius values
+public protocol SemanticRadiusValues {
+    var radiusContainerDefault: CGFloat { get }
+}
+
+/// Semantic shape values
+public protocol SemanticShapes {
+    var radiusContainerDefault: RoundedRectangle { get }
+}
+
 /// Protocol for radius values
 public protocol LemonadeRadiusValues {
     var radius0: CGFloat { get }
@@ -62,12 +74,14 @@ public protocol LemonadeRadiusValues {
     var radius100: CGFloat { get }
     var radius150: CGFloat { get }
     var radius200: CGFloat { get }
+    var radius250: CGFloat { get }
     var radius300: CGFloat { get }
     var radius400: CGFloat { get }
     var radius500: CGFloat { get }
     var radius600: CGFloat { get }
     var radius800: CGFloat { get }
     var radiusFull: CGFloat { get }
+    var semantic: SemanticRadiusValues { get }
 }
 
 /// Protocol for shape values
@@ -77,44 +91,58 @@ public protocol LemonadeShapes {
     var radius100: RoundedRectangle { get }
     var radius150: RoundedRectangle { get }
     var radius200: RoundedRectangle { get }
+    var radius250: RoundedRectangle { get }
     var radius300: RoundedRectangle { get }
     var radius400: RoundedRectangle { get }
     var radius500: RoundedRectangle { get }
     var radius600: RoundedRectangle { get }
     var radius800: RoundedRectangle { get }
     var radiusFull: RoundedRectangle { get }
+    var semantic: SemanticShapes { get }
+}
+
+internal struct SemanticRadiusValuesImpl: SemanticRadiusValues {
+    let radiusContainerDefault: CGFloat = LemonadeRadius.radius600.value
+}
+
+internal struct SemanticShapesImpl: SemanticShapes {
+    var radiusContainerDefault: RoundedRectangle { LemonadeRadius.radius600.shape }
 }
 
 /// Default radius values implementation
-public struct LemonadeRadiusValuesImpl: LemonadeRadiusValues {
+public struct LemonadeRadiusValuesImpl: LemonadeRadiusValues, Sendable {
     public let radius0: CGFloat = LemonadeRadius.radius0.value
     public let radius50: CGFloat = LemonadeRadius.radius50.value
     public let radius100: CGFloat = LemonadeRadius.radius100.value
     public let radius150: CGFloat = LemonadeRadius.radius150.value
     public let radius200: CGFloat = LemonadeRadius.radius200.value
+    public let radius250: CGFloat = LemonadeRadius.radius250.value
     public let radius300: CGFloat = LemonadeRadius.radius300.value
     public let radius400: CGFloat = LemonadeRadius.radius400.value
     public let radius500: CGFloat = LemonadeRadius.radius500.value
     public let radius600: CGFloat = LemonadeRadius.radius600.value
     public let radius800: CGFloat = LemonadeRadius.radius800.value
     public let radiusFull: CGFloat = LemonadeRadius.radiusFull.value
+    public let semantic: SemanticRadiusValues = SemanticRadiusValuesImpl()
 
     public init() {}
 }
 
 /// Default shapes implementation
-public struct LemonadeShapesImpl: LemonadeShapes {
+public struct LemonadeShapesImpl: LemonadeShapes, Sendable {
     public var radius0: RoundedRectangle { LemonadeRadius.radius0.shape }
     public var radius50: RoundedRectangle { LemonadeRadius.radius50.shape }
     public var radius100: RoundedRectangle { LemonadeRadius.radius100.shape }
     public var radius150: RoundedRectangle { LemonadeRadius.radius150.shape }
     public var radius200: RoundedRectangle { LemonadeRadius.radius200.shape }
+    public var radius250: RoundedRectangle { LemonadeRadius.radius250.shape }
     public var radius300: RoundedRectangle { LemonadeRadius.radius300.shape }
     public var radius400: RoundedRectangle { LemonadeRadius.radius400.shape }
     public var radius500: RoundedRectangle { LemonadeRadius.radius500.shape }
     public var radius600: RoundedRectangle { LemonadeRadius.radius600.shape }
     public var radius800: RoundedRectangle { LemonadeRadius.radius800.shape }
     public var radiusFull: RoundedRectangle { LemonadeRadius.radiusFull.shape }
+    public let semantic: SemanticShapes = SemanticShapesImpl()
 
     public init() {}
 }

@@ -121,10 +121,7 @@ class LemonadeCheckbox extends StatelessWidget {
               width: theme.sizes.size550,
               height: theme.sizes.size600,
               alignment: Alignment.center,
-              child: _CheckboxControl(
-                status: status,
-                enabled: enabled,
-              ),
+              child: _CheckboxControl(status: status, enabled: enabled),
             ),
             if (label != null) ...[
               SizedBox(width: spaces.spacing200),
@@ -163,10 +160,7 @@ class LemonadeCheckbox extends StatelessWidget {
 
 /// Internal checkbox control widget that renders the square selection indicator
 class _CheckboxControl extends StatelessWidget {
-  const _CheckboxControl({
-    required this.status,
-    required this.enabled,
-  });
+  const _CheckboxControl({required this.status, required this.enabled});
 
   final CheckboxStatus status;
   final bool enabled;
@@ -213,10 +207,7 @@ class _CheckboxControl extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
           color: backgroundColor,
           border: showBorder
-              ? Border.all(
-                  color: borderColor,
-                  width: borderWidth,
-                )
+              ? Border.all(color: borderColor, width: borderWidth)
               : null,
         ),
         child: AnimatedSwitcher(
@@ -226,10 +217,7 @@ class _CheckboxControl extends StatelessWidget {
           transitionBuilder: (child, animation) {
             return FadeTransition(
               opacity: animation,
-              child: ScaleTransition(
-                scale: animation,
-                child: child,
-              ),
+              child: ScaleTransition(scale: animation, child: child),
             );
           },
           child: status != CheckboxStatus.unchecked
@@ -242,9 +230,7 @@ class _CheckboxControl extends StatelessWidget {
                     color: iconColor,
                   ),
                 )
-              : const SizedBox.shrink(
-                  key: ValueKey('empty'),
-                ),
+              : const SizedBox.shrink(key: ValueKey('empty')),
         ),
       ),
     );

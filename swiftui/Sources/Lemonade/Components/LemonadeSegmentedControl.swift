@@ -3,15 +3,91 @@ import SwiftUI
 // MARK: - Tab Button Properties
 
 /// Properties for a single tab button in a segmented control.
-public struct LemonadeTabButtonProperties {
-    /// The label text for the tab.
-    public let label: String
+public struct LemonadeTabButtonProperties: Identifiable, Hashable {
+    public let id: String
+    /// The label text for the tab. When nil, only the icon is shown.
+    public let label: String?
     /// Optional icon to display before the label.
     public let icon: LemonadeIcon?
 
-    public init(label: String, icon: LemonadeIcon? = nil) {
+    private init(id: String? = nil, label: String?, icon: LemonadeIcon?) {
+        self.id = id ?? UUID().uuidString
         self.label = label
         self.icon = icon
+    }
+
+    /// Creates a tab with a text label.
+    public static func label(_ label: String) -> Self {
+        Self(label: label, icon: nil)
+    }
+
+    /// Creates a tab with a text label and an icon.
+    public static func labelAndIcon(_ label: String, icon: LemonadeIcon) -> Self {
+        Self(label: label, icon: icon)
+    }
+
+    /// Creates a tab with only an icon.
+    public static func icon(_ icon: LemonadeIcon) -> Self {
+        Self(label: nil, icon: icon)
+    }
+}
+
+/// Size variants for the segmented control.
+public enum LemonadeSegmentedControlSize {
+    case small
+    case medium
+    case large
+}
+
+private extension LemonadeSegmentedControlSize {
+    var containerHeight: CGFloat {
+        switch self {
+        case .small: return LemonadeTheme.sizes.size800   // 32
+        case .medium: return LemonadeTheme.sizes.size1000  // 40
+        case .large: return LemonadeTheme.sizes.size1200   // 48
+        }
+    }
+
+    var buttonContentGap: CGFloat {
+        switch self {
+        case .small: return LemonadeTheme.spaces.spacing50   // 2
+        case .medium, .large: return LemonadeTheme.spaces.spacing100  // 4
+        }
+    }
+
+    var containerPadding: CGFloat {
+        switch self {
+        case .small: return LemonadeTheme.spaces.spacing50
+        case .medium, .large: return LemonadeTheme.spaces.spacing100
+        }
+    }
+
+    var buttonMinWidth: CGFloat {
+        switch self {
+        case .small: return LemonadeTheme.sizes.size800
+        case .medium, .large: return LemonadeTheme.sizes.size1200
+        }
+    }
+
+    var buttonMinHeight: CGFloat {
+        switch self {
+        case .small: return LemonadeTheme.sizes.size700
+        case .medium, .large: return LemonadeTheme.sizes.size800
+        }
+    }
+
+    var buttonHorizontalPadding: CGFloat {
+        switch self {
+        case .small: return LemonadeTheme.spaces.spacing200
+        case .medium, .large: return LemonadeTheme.spaces.spacing300
+        }
+    }
+
+    var textStyle: LemonadeTextStyle {
+        switch self {
+        case .small: return LemonadeTypography.shared.bodyXSmallMedium
+        case .medium, .large: return LemonadeTypography.shared.bodySmallMedium
+        }
     }
 }
 
@@ -25,9 +101,9 @@ public extension LemonadeUi {
     /// ```swift
     /// LemonadeUi.SegmentedControl(
     ///     properties: [
-    ///         LemonadeTabButtonProperties(label: "Tab 1", icon: .heart),
-    ///         LemonadeTabButtonProperties(label: "Tab 2", icon: .laptop),
-    ///         LemonadeTabButtonProperties(label: "Tab 3"),
+    ///         .labelAndIcon("Tab 1", icon: .heart),
+    ///         .labelAndIcon("Tab 2", icon: .laptop),
+    ///         .label("Tab 3"),
     ///     ],
     ///     selectedTab: selectedTabIndex,
     ///     onTabSelected: { tabIndex in /* ... */ }
@@ -37,17 +113,20 @@ public extension LemonadeUi {
     /// - Parameters:
     ///   - properties: A list of `LemonadeTabButtonProperties` that represent the tab buttons' information.
     ///   - selectedTab: Int that indicates what is the index of the selected tab.
+    ///   - size: The size of the segmented control. Defaults to `.large`.
     ///   - onTabSelected: A callback invoked when a tab is selected.
     /// - Returns: A styled SegmentedControl view
     @ViewBuilder
     static func SegmentedControl(
         properties: [LemonadeTabButtonProperties],
         selectedTab: Int,
+        size: LemonadeSegmentedControlSize = .large,
         onTabSelected: @escaping (Int) -> Void
     ) -> some View {
         LemonadeSegmentedControlView(
             properties: properties,
             selectedTab: selectedTab,
+            size: size,
             onTabSelected: onTabSelected
         )
     }
@@ -58,105 +137,207 @@ public extension LemonadeUi {
 private struct LemonadeSegmentedControlView: View {
     let properties: [LemonadeTabButtonProperties]
     let selectedTab: Int
+    let size: LemonadeSegmentedControlSize
     let onTabSelected: (Int) -> Void
 
-    var body: some View {
-        HStack(spacing: 0) {
-            ForEach(Array(properties.enumerated()), id: \.offset) { index, property in
-                LemonadeSegmentedTabButton(
-                    property: property,
-                    isSelected: index == selectedTab,
-                    onTap: { onTabSelected(index) }
-                )
-            }
-        }
-        .padding(LemonadeTheme.spaces.spacing50)
-        .background(
-            RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius200)
-                .fill(LemonadeTheme.colors.background.bgElevated)
-        )
-    }
-}
-
-// MARK: - Internal Tab Button
-
-private struct LemonadeSegmentedTabButton: View {
-    let property: LemonadeTabButtonProperties
-    let isSelected: Bool
-    let onTap: () -> Void
-
-    @State private var isPressed = false
-    @State private var isHovering = false
-
-    private var backgroundColor: Color {
-        if isSelected {
-            return LemonadeTheme.colors.background.bgDefault
-        } else if isPressed {
-            return LemonadeTheme.colors.interaction.bgDefaultPressed
-        } else if isHovering {
-            return LemonadeTheme.colors.interaction.bgDefaultInteractive
-        } else {
-            return LemonadeTheme.colors.background.bgDefault.opacity(LemonadeTheme.opacity.base.opacity0)
-        }
-    }
-
-    private var shadow: LemonadeShadow {
-        isSelected ? .xsmall : .none
+    private var clampedSelectedTab: Int {
+        min(max(selectedTab, 0), properties.count - 1)
     }
 
     var body: some View {
-        SwiftUI.Button(action: onTap) {
-            HStack(spacing: LemonadeTheme.spaces.spacing200) {
-                if let icon = property.icon {
-                    LemonadeUi.Icon(
-                        icon: icon,
-                        contentDescription: property.label,
-                        size: .small
-                    )
-                }
-
-                LemonadeUi.Text(
-                    property.label,
-                    textStyle: LemonadeTypography.shared.bodySmallMedium
+        #if canImport(UIKit)
+        if #available(iOS 26.0, *) {
+            ZStack {
+                LemonadeNativeSegmentedControl(
+                    segmentLabels: properties.map { $0.label ?? $0.icon?.rawValue ?? "" },
+                    selectedIndex: clampedSelectedTab,
+                    containerPadding: size.containerPadding,
+                    onSelectionChanged: onTabSelected
                 )
-                .lineLimit(1)
+
+                labelsOverlay
+                    .allowsHitTesting(false)
             }
-            .frame(maxWidth: .infinity)
-            .frame(minHeight: LemonadeTheme.sizes.size800)
-            .frame(minWidth: LemonadeTheme.sizes.size1600)
-            .padding(.vertical, LemonadeTheme.spaces.spacing100)
-            .padding(.horizontal, LemonadeTheme.spaces.spacing200)
-            .background(
-                RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius200)
-                    .fill(backgroundColor)
-                    .animation(.easeInOut(duration: 0.1), value: backgroundColor)
+            .frame(
+                minWidth: size.buttonMinWidth,
+                minHeight: size.buttonMinHeight
             )
-            .lemonadeShadow(shadow)
-            .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius200))
+            .frame(height: size.containerHeight)
+        } else {
+            labelsOverlay
+                .frame(
+                    minWidth: size.buttonMinWidth,
+                    minHeight: size.buttonMinHeight
+                )
+                .frame(height: size.containerHeight)
+                .background(
+                    RoundedRectangle(cornerRadius: LemonadeTheme.radius.radiusFull)
+                        .fill(LemonadeTheme.colors.background.bgElevated)
+                )
         }
-        .buttonStyle(LemonadeSegmentedButtonStyle(isPressed: $isPressed))
-        .onHover { hovering in
-            isHovering = hovering
+        #else
+        labelsOverlay
+            .frame(
+                minWidth: size.buttonMinWidth,
+                minHeight: size.buttonMinHeight
+            )
+            .frame(height: size.containerHeight)
+            .background(
+                RoundedRectangle(cornerRadius: LemonadeTheme.radius.radiusFull)
+                    .fill(LemonadeTheme.colors.background.bgElevated)
+            )
+        #endif
+    }
+
+    private var labelsOverlay: some View {
+        HStack(spacing: 0) {
+            ForEach(properties.indices, id: \.self) { index in
+                let property = properties[index]
+                let tintColor = index == clampedSelectedTab
+                    ? LemonadeTheme.colors.content.contentPrimary
+                    : LemonadeTheme.colors.content.contentSecondary
+
+                Button {
+                    onTabSelected(index)
+                } label: {
+                    HStack(spacing: size.buttonContentGap) {
+                        if let icon = property.icon {
+                            LemonadeUi.Icon(
+                                icon: icon,
+                                contentDescription: property.label,
+                                size: .small,
+                                tint: tintColor
+                            )
+                        }
+
+                        if let label = property.label {
+                            LemonadeUi.Text(
+                                label,
+                                textStyle: size.textStyle,
+                                textAlign: .center,
+                                color: tintColor,
+                                maxLines: 1
+                            )
+                        }
+                    }
+                    .padding(.horizontal, size.buttonHorizontalPadding)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+                .buttonStyle(SegmentPressStyle())
+                .frame(maxWidth: .infinity)
+            }
         }
-        .accessibilityAddTraits(.isButton)
-        .accessibilityAddTraits(isSelected ? .isSelected : [])
+        .padding(size.containerPadding)
+        .animation(.easeInOut(duration: 0.2), value: clampedSelectedTab)
     }
 }
 
-// MARK: - Button Style
-
-private struct LemonadeSegmentedButtonStyle: ButtonStyle {
-    @Binding var isPressed: Bool
-
+private struct SegmentPressStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .onChange(of: configuration.isPressed) { newValue in
-                withAnimation(.easeInOut(duration: 0.1)) {
-                    isPressed = newValue
-                }
-            }
+            .opacity(configuration.isPressed ? 0.5 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
     }
 }
+
+// MARK: - Native UISegmentedControl (provides Liquid Glass on iOS 26)
+
+#if canImport(UIKit)
+import UIKit
+
+private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
+    let segmentLabels: [String]
+    let selectedIndex: Int
+    let containerPadding: CGFloat
+    let onSelectionChanged: (Int) -> Void
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(onSelectionChanged: onSelectionChanged)
+    }
+
+    func makeUIView(context: Context) -> UIView {
+        let container = UIView()
+        container.backgroundColor = .clear
+
+        let control = UISegmentedControl(items: segmentLabels)
+        control.selectedSegmentIndex = min(selectedIndex, segmentLabels.count - 1)
+        control.backgroundColor = .clear
+        control.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+
+        // Hide native text — custom SwiftUI overlay handles visuals
+        let clearAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.clear]
+        control.setTitleTextAttributes(clearAttributes, for: .normal)
+        control.setTitleTextAttributes(clearAttributes, for: .selected)
+
+        control.addTarget(
+            context.coordinator,
+            action: #selector(Coordinator.segmentChanged(_:)),
+            for: .valueChanged
+        )
+
+        // Inset the control by containerPadding so its segments align with the overlay buttons
+        control.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(control)
+
+        let leading = control.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: containerPadding)
+        let trailing = control.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -containerPadding)
+        let top = control.topAnchor.constraint(equalTo: container.topAnchor, constant: containerPadding)
+        let bottom = control.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -containerPadding)
+        NSLayoutConstraint.activate([leading, trailing, top, bottom])
+
+        context.coordinator.control = control
+        context.coordinator.leadingConstraint = leading
+        context.coordinator.trailingConstraint = trailing
+        context.coordinator.topConstraint = top
+        context.coordinator.bottomConstraint = bottom
+        return container
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {
+        guard let control = context.coordinator.control else { return }
+        context.coordinator.onSelectionChanged = onSelectionChanged
+
+        // Update padding constraints if size changed
+        context.coordinator.leadingConstraint?.constant = containerPadding
+        context.coordinator.trailingConstraint?.constant = -containerPadding
+        context.coordinator.topConstraint?.constant = containerPadding
+        context.coordinator.bottomConstraint?.constant = -containerPadding
+
+        // Reconcile segment count if properties changed
+        if control.numberOfSegments != segmentLabels.count {
+            control.removeAllSegments()
+            for (index, label) in segmentLabels.enumerated() {
+                control.insertSegment(withTitle: label, at: index, animated: false)
+            }
+            let clearAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.clear]
+            control.setTitleTextAttributes(clearAttributes, for: .normal)
+            control.setTitleTextAttributes(clearAttributes, for: .selected)
+        }
+
+        let clampedIndex = min(selectedIndex, segmentLabels.count - 1)
+        if control.selectedSegmentIndex != clampedIndex {
+            control.selectedSegmentIndex = clampedIndex
+        }
+    }
+
+    class Coordinator: NSObject {
+        var onSelectionChanged: (Int) -> Void
+        weak var control: UISegmentedControl?
+        var leadingConstraint: NSLayoutConstraint?
+        var trailingConstraint: NSLayoutConstraint?
+        var topConstraint: NSLayoutConstraint?
+        var bottomConstraint: NSLayoutConstraint?
+
+        init(onSelectionChanged: @escaping (Int) -> Void) {
+            self.onSelectionChanged = onSelectionChanged
+        }
+
+        @MainActor @objc func segmentChanged(_ control: UISegmentedControl) {
+            onSelectionChanged(control.selectedSegmentIndex)
+        }
+    }
+}
+#endif
 
 // MARK: - Previews
 
@@ -164,37 +345,52 @@ private struct LemonadeSegmentedButtonStyle: ButtonStyle {
 struct LemonadeSegmentedControl_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 24) {
-            // Basic tabs
+            // Large (default)
             LemonadeUi.SegmentedControl(
                 properties: [
-                    LemonadeTabButtonProperties(label: "Tab 1"),
-                    LemonadeTabButtonProperties(label: "Tab 2"),
-                    LemonadeTabButtonProperties(label: "Tab 3"),
+                    .label("Tab 1"),
+                    .label("Tab 2"),
+                    .label("Tab 3"),
                 ],
                 selectedTab: 1,
                 onTabSelected: { _ in }
             )
 
-            // Tabs with icons
+            // Medium
             LemonadeUi.SegmentedControl(
                 properties: [
-                    LemonadeTabButtonProperties(label: "Tab 1", icon: .heart),
-                    LemonadeTabButtonProperties(label: "Tab 2", icon: .star),
-                    LemonadeTabButtonProperties(label: "Tab 3", icon: .gear),
+                    .label("Tab 1"),
+                    .label("Tab 2"),
+                    .label("Tab 3"),
                 ],
                 selectedTab: 0,
+                size: .medium,
                 onTabSelected: { _ in }
             )
 
-            // Two tabs
+            // Small
             LemonadeUi.SegmentedControl(
                 properties: [
-                    LemonadeTabButtonProperties(label: "On"),
-                    LemonadeTabButtonProperties(label: "Off"),
+                    .label("Tab 1"),
+                    .label("Tab 2"),
                 ],
                 selectedTab: 0,
+                size: .small,
                 onTabSelected: { _ in }
             )
+
+            // Icon only (small)
+            LemonadeUi.SegmentedControl(
+                properties: [
+                    .icon(.heart),
+                    .icon(.star),
+                    .icon(.gear),
+                ],
+                selectedTab: 0,
+                size: .small,
+                onTabSelected: { _ in }
+            )
+            .fixedSize(horizontal: true, vertical: false)
         }
         .padding()
         .previewLayout(.sizeThatFits)

@@ -31,10 +31,7 @@ class TagExampleScreen extends StatelessWidget {
             ExampleRow(
               label: 'Voice Variants',
               children: LemonadeTagVoice.values.map((voice) {
-                return LemonadeTag(
-                  label: voice.name.capitalize,
-                  voice: voice,
-                );
+                return LemonadeTag(label: voice.name.capitalize, voice: voice);
               }).toList(),
             ),
             ExampleRow(

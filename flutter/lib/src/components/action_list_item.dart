@@ -121,10 +121,7 @@ class _LemonadeActionListItemState extends State<LemonadeActionListItem> {
           ),
         );
 
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: children,
-        );
+        return Row(mainAxisSize: MainAxisSize.min, children: children);
       };
     } else {
       finalTrailingSlot = widget.trailingSlot;

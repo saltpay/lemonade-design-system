@@ -75,12 +75,13 @@ fun main() {
         appendLine("         * @param alpha2 the ISO 3166-1 alpha-2 country code.")
         appendLine("         * @return the matching [LemonadeCountryFlags] entry, or `null` if the code is not recognized.")
         appendLine("         */")
+        appendLine("        @Suppress(\"LongMethod\", \"CyclomaticComplexMethod\")")
         appendLine("        public fun getOrNull(alpha2: String): LemonadeCountryFlags? =")
         appendLine("            when (alpha2.uppercase()) {")
         appendLine(whenEntries)
         appendLine("                else -> null")
         appendLine("            }")
-        appendLine("    }")
+        append("    }")
     }
 
     val content = flagsFile.readText()
@@ -99,10 +100,10 @@ fun main() {
         return
     }
 
-    // Add semicolon to the last enum entry if it doesn't already have one
+    // Add trailing comma + semicolon to the last enum entry if it doesn't already have one
     val lastEntry = lines[lastEntryIndex].trimEnd()
     if (!lastEntry.endsWith(";")) {
-        lines[lastEntryIndex] = lastEntry.removeSuffix(",") + ";"
+        lines[lastEntryIndex] = lastEntry.removeSuffix(",") + ", ;"
     }
 
     // Insert the companion object before the closing brace

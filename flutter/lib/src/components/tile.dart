@@ -134,15 +134,9 @@ class _LemonadeTileState extends State<LemonadeTile> {
 
     return switch (widget.variant) {
       LemonadeTileVariants.neutral => Border(
-        bottom: BorderSide(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        bottom: BorderSide(color: borderColor, width: borderWidth),
       ),
-      _ => Border.all(
-        color: borderColor,
-        width: borderWidth,
-      ),
+      _ => Border.all(color: borderColor, width: borderWidth),
     };
   }
 

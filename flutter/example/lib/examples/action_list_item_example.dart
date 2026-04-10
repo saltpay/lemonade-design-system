@@ -159,9 +159,8 @@ class _ActionListItemExampleScreenState
                           description: 'Enjoy exclusive benefits',
                           withNavigation: true,
                           onPressed: () => debugPrint('Click'),
-                          leadingSlot: (_) => const LemonadeIcon(
-                            icon: LemonadeIcons.star,
-                          ),
+                          leadingSlot: (_) =>
+                              const LemonadeIcon(icon: LemonadeIcons.star),
                           trailingSlot: (_) => const LemonadeTag(
                             label: 'PRO',
                             voice: LemonadeTagVoice.info,
@@ -224,9 +223,8 @@ class _ActionListItemExampleScreenState
                           label: 'Disabled with leading',
                           description: 'Locked for this user',
                           onPressed: () => {},
-                          leadingSlot: (_) => const LemonadeIcon(
-                            icon: LemonadeIcons.padlock,
-                          ),
+                          leadingSlot: (_) =>
+                              const LemonadeIcon(icon: LemonadeIcons.padlock),
                           withNavigation: true,
                           enabled: false,
                         ),

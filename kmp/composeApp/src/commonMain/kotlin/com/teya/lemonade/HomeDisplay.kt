@@ -5,12 +5,33 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.TabButtonProperties
 
 @Composable
 internal fun HomeDisplay(onNavigate: (Displays) -> Unit) {
+    val styleHandler = LocalLemonadeStyleHandler.current
+    val styles = LemonadeStyle.entries
+    val selectedIndex = styles.indexOf(styleHandler.currentStyle)
+    val variants = LemonadeThemeVariant.entries
+    val selectedVariantIndex = variants.indexOf(styleHandler.currentVariant)
+
     SampleScreenDisplayLazyColumn(
         title = "Lemonade Design System",
     ) {
+        item {
+            LemonadeUi.SegmentedControl(
+                selectedTab = selectedIndex,
+                onTabSelected = { index -> styleHandler.currentStyle = styles[index] },
+                properties = styles.map { style -> TabButtonProperties.label(label = style.label) },
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing200),
+            )
+            LemonadeUi.SegmentedControl(
+                selectedTab = selectedVariantIndex,
+                onTabSelected = { index -> styleHandler.currentVariant = variants[index] },
+                properties = variants.map { variant -> TabButtonProperties.label(label = variant.label) },
+                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing400),
+            )
+        }
         item {
             DisplayRegistry.homeItems.forEach { display ->
                 LemonadeUi.Card(
@@ -74,6 +95,8 @@ internal object DisplayRegistry {
                 Displays.Checkbox,
                 Displays.RadioButton,
                 Displays.Switch,
+                Displays.DatePicker,
+                Displays.InlineCalendar,
             ),
         ),
         DisplayData(
@@ -94,6 +117,8 @@ internal object DisplayRegistry {
                 Displays.Spinner,
                 Displays.Skeleton,
                 Displays.Divider,
+                Displays.Notice,
+                Displays.Toast,
             ),
         ),
         DisplayData(
@@ -102,6 +127,7 @@ internal object DisplayRegistry {
                 Displays.Chip,
                 Displays.SelectionListItem,
                 Displays.ResourceListItem,
+                Displays.ContentListItem,
                 Displays.SegmentedControl,
                 Displays.ActionListItem,
             ),

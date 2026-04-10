@@ -12,6 +12,8 @@ import 'package:lemonade_design_system/lemonade_design_system.dart';
 class LemonadeButtonTheme {
   /// {@macro LemonadeButtonTheme}
   const LemonadeButtonTheme({
+    required this.xSmallHeight,
+    required this.xSmallMinWidth,
     required this.smallHeight,
     required this.smallMinWidth,
     required this.mediumHeight,
@@ -24,6 +26,8 @@ class LemonadeButtonTheme {
   /// based on the provided [tokens].
   factory LemonadeButtonTheme.from(LemonadeTokens tokens) {
     return LemonadeButtonTheme(
+      xSmallHeight: tokens.sizes.size1000,
+      xSmallMinWidth: tokens.sizes.size1600,
       smallHeight: tokens.sizes.size1000,
       smallMinWidth: tokens.sizes.size1600,
       mediumHeight: tokens.sizes.size1200,
@@ -41,6 +45,8 @@ class LemonadeButtonTheme {
   ) {
     if (identical(a, b)) return a;
     return LemonadeButtonTheme(
+      xSmallHeight: lerpDouble(a.xSmallHeight, b.xSmallHeight, t)!,
+      xSmallMinWidth: lerpDouble(a.xSmallMinWidth, b.xSmallMinWidth, t)!,
       smallHeight: lerpDouble(a.smallHeight, b.smallHeight, t)!,
       smallMinWidth: lerpDouble(a.smallMinWidth, b.smallMinWidth, t)!,
       mediumHeight: lerpDouble(a.mediumHeight, b.mediumHeight, t)!,
@@ -49,6 +55,12 @@ class LemonadeButtonTheme {
       largeMinWidth: lerpDouble(a.largeMinWidth, b.largeMinWidth, t)!,
     );
   }
+
+  /// The height of an extra small button.
+  final double xSmallHeight;
+
+  /// The minimum width of an extra small button.
+  final double xSmallMinWidth;
 
   /// The height of a small button.
   final double smallHeight;
@@ -70,6 +82,8 @@ class LemonadeButtonTheme {
 
   /// Creates a copy of this theme with the given fields replaced.
   LemonadeButtonTheme copyWith({
+    double? xSmallHeight,
+    double? xSmallMinWidth,
     double? smallHeight,
     double? smallMinWidth,
     double? mediumHeight,
@@ -78,6 +92,8 @@ class LemonadeButtonTheme {
     double? largeMinWidth,
   }) {
     return LemonadeButtonTheme(
+      xSmallHeight: xSmallHeight ?? this.xSmallHeight,
+      xSmallMinWidth: xSmallMinWidth ?? this.xSmallMinWidth,
       smallHeight: smallHeight ?? this.smallHeight,
       smallMinWidth: smallMinWidth ?? this.smallMinWidth,
       mediumHeight: mediumHeight ?? this.mediumHeight,
@@ -91,6 +107,8 @@ class LemonadeButtonTheme {
   LemonadeButtonTheme mergeWith(LemonadeButtonTheme? other) {
     if (other == null) return this;
     return copyWith(
+      xSmallHeight: other.xSmallHeight,
+      xSmallMinWidth: other.xSmallMinWidth,
       smallHeight: other.smallHeight,
       smallMinWidth: other.smallMinWidth,
       mediumHeight: other.mediumHeight,
@@ -104,6 +122,8 @@ class LemonadeButtonTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     return other is LemonadeButtonTheme &&
+        other.xSmallHeight == xSmallHeight &&
+        other.xSmallMinWidth == xSmallMinWidth &&
         other.smallHeight == smallHeight &&
         other.smallMinWidth == smallMinWidth &&
         other.mediumHeight == mediumHeight &&
@@ -114,6 +134,8 @@ class LemonadeButtonTheme {
 
   @override
   int get hashCode => Object.hash(
+    xSmallHeight,
+    xSmallMinWidth,
     smallHeight,
     smallMinWidth,
     mediumHeight,

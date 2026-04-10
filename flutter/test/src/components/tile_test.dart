@@ -16,9 +16,7 @@ void main() {
       expect(find.byType(LemonadeTile), findsOneWidget);
       expect(find.byType(LemonadeBadge), findsNothing);
 
-      final tileWidget = tester.widget<LemonadeTile>(
-        find.byType(LemonadeTile),
-      );
+      final tileWidget = tester.widget<LemonadeTile>(find.byType(LemonadeTile));
       expect(find.text('Label'), findsOneWidget);
       expect(tileWidget.leadingIcon, LemonadeIcons.heartSolid);
       expect(tileWidget.variant, LemonadeTileVariants.neutral);
@@ -35,9 +33,7 @@ void main() {
 
       expect(find.byType(LemonadeBadge), findsOneWidget);
 
-      final tileWidget = tester.widget<LemonadeTile>(
-        find.byType(LemonadeTile),
-      );
+      final tileWidget = tester.widget<LemonadeTile>(find.byType(LemonadeTile));
 
       expect(find.text('Badge'), findsOneWidget);
       expect(tileWidget.addOnSlot, isA<LemonadeBadge>());
@@ -57,9 +53,7 @@ void main() {
         ),
       );
 
-      final tileWidget = tester.widget<LemonadeTile>(
-        find.byType(LemonadeTile),
-      );
+      final tileWidget = tester.widget<LemonadeTile>(find.byType(LemonadeTile));
 
       expect(find.byType(Semantics), findsWidgets);
       expect(tileWidget.variant, equals(LemonadeTileVariants.onBrand));

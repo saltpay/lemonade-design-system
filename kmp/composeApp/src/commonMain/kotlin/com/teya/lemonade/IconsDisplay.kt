@@ -13,6 +13,11 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,12 +29,44 @@ import com.teya.lemonade.core.LemonadeIcons
 
 @Composable
 internal fun IconsDisplay() {
+    var searchQuery by remember { mutableStateOf("") }
+    val allIcons = remember { LemonadeIcons.entries }
+    val filteredIcons by remember {
+        derivedStateOf {
+            if (searchQuery.isBlank()) {
+                allIcons
+            } else {
+                allIcons.filter { it.name.contains(searchQuery, ignoreCase = true) }
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .systemBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        @OptIn(ExperimentalLemonadeComponent::class)
+        LemonadeUi.SearchField(
+            input = searchQuery,
+            onInputChanged = { searchQuery = it },
+            placeholder = "Search icons...",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = LemonadeTheme.spaces.spacing400)
+                .padding(top = LemonadeTheme.spaces.spacing400),
+        )
+
+        LemonadeUi.Text(
+            text = "${filteredIcons.size} icons",
+            textStyle = LemonadeTheme.typography.bodySmallRegular,
+            color = LemonadeTheme.colors.content.contentSecondary,
+            modifier = Modifier
+                .padding(horizontal = LemonadeTheme.spaces.spacing400)
+                .padding(top = LemonadeTheme.spaces.spacing200, bottom = LemonadeTheme.spaces.spacing100),
+        )
+
         LazyVerticalGrid(
             modifier = Modifier.fillMaxWidth(),
             columns = GridCells.Adaptive(minSize = 80.dp),
@@ -38,7 +75,7 @@ internal fun IconsDisplay() {
             contentPadding = PaddingValues(LemonadeTheme.spaces.spacing400),
         ) {
             items(
-                items = LemonadeIcons.entries,
+                items = filteredIcons,
                 key = { it.ordinal },
             ) { icon ->
                 Column(

@@ -17,7 +17,7 @@ struct RadiusDisplayView: View {
                             .frame(width: 50)
 
                         RoundedRectangle(cornerRadius: item.value)
-                            .fill(LemonadePrimitiveColors.Solid.Blue.blue500)
+                            .fill(.content.contentInfo)
                             .frame(width: 80, height: 80)
 
                         Spacer()

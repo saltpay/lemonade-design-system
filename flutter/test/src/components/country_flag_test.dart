@@ -8,9 +8,7 @@ void main() {
   group('LemonadeCountryFlag', () {
     testWidgets('renders correctly with default configuration', (tester) async {
       await tester.pumpLemonadeWidget(
-        const LemonadeCountryFlag(
-          flag: LemonadeFlags.gbUnitedKingdom,
-        ),
+        const LemonadeCountryFlag(flag: LemonadeFlags.gbUnitedKingdom),
       );
 
       expect(find.byType(LemonadeCountryFlag), findsOneWidget);
@@ -28,10 +26,7 @@ void main() {
     testWidgets('accepts all flag sizes', (tester) async {
       for (final size in LemonadeFlagSize.values) {
         await tester.pumpLemonadeWidget(
-          LemonadeCountryFlag(
-            flag: LemonadeFlags.adAndorra,
-            size: size,
-          ),
+          LemonadeCountryFlag(flag: LemonadeFlags.adAndorra, size: size),
         );
 
         final flagWidget = tester.widget<LemonadeCountryFlag>(
@@ -76,16 +71,11 @@ void main() {
 
       for (final entry in sizeMappings.entries) {
         await tester.pumpLemonadeWidget(
-          LemonadeCountryFlag(
-            flag: LemonadeFlags.brBrazil,
-            size: entry.key,
-          ),
+          LemonadeCountryFlag(flag: LemonadeFlags.brBrazil, size: entry.key),
           lightTheme: theme,
         );
 
-        final container = tester.widget<Container>(
-          find.byType(Container),
-        );
+        final container = tester.widget<Container>(find.byType(Container));
         expect(container.constraints!.maxWidth, equals(entry.value));
         expect(container.constraints!.maxHeight, equals(entry.value));
       }
@@ -95,15 +85,11 @@ void main() {
       final theme = LemonadeThemeData();
 
       await tester.pumpLemonadeWidget(
-        const LemonadeCountryFlag(
-          flag: LemonadeFlags.adAndorra,
-        ),
+        const LemonadeCountryFlag(flag: LemonadeFlags.adAndorra),
         lightTheme: theme,
       );
 
-      final container = tester.widget<Container>(
-        find.byType(Container),
-      );
+      final container = tester.widget<Container>(find.byType(Container));
 
       final decoration = container.decoration! as BoxDecoration;
       expect(decoration.shape, equals(BoxShape.circle));

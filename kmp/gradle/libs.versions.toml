@@ -1,24 +1,32 @@
 [versions]
-agp = "8.13.2"
+agp = "9.0.0"
 android-compileSdk = "36"
 android-minSdk = "23"
 android-minLibSdk = "21"
 android-targetSdk = "36"
 androidx-activity = "1.10.1"
 androidx-lifecycle = "2.9.2"
+componentsResources = "1.10.3"
 composeHotReload = "1.0.0"
-composeMultiplatform = "1.9.3"
-kotlin = "2.2.21"
+composeMultiplatform = "1.10.3"
+foundation = "1.10.3"
+kotlin = "2.3.20"
+kotlinx-datetime = "0.7.1"
 kotlinx-serialization = "1.9.0"
+material3 = "1.11.0-alpha02"
 nav3 = "1.0.0"
-mavenPublish = "0.35.0"
+mavenPublish = "0.36.0"
 detekt = "1.23.8"
 ktlint = "14.0.1"
 compose-rules = "0.5.6"
+runtime = "1.10.3"
 
 [libraries]
-gradle-vanniktech-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "mavenPublish"}
-gradle-kmp = { module = "org.jetbrains.kotlin.multiplatform:org.jetbrains.kotlin.multiplatform.gradle.plugin", version.ref = "kotlin"}
+components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "componentsResources" }
+compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "foundation" }
+gradle-vanniktech-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "mavenPublish" }
+gradle-agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+gradle-kmp = { module = "org.jetbrains.kotlin.multiplatform:org.jetbrains.kotlin.multiplatform.gradle.plugin", version.ref = "kotlin" }
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 detekt-gradlePlugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
@@ -31,9 +39,14 @@ androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle
 androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3" }
 androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3" }
 
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serializer = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
+compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
+compose-ui-tooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "composeMultiplatform" }
+compose-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "composeMultiplatform" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "runtime" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -43,5 +56,6 @@ composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMul
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }

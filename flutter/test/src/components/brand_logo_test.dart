@@ -8,9 +8,7 @@ void main() {
   group('LemonadeBrandLogo', () {
     testWidgets('renders correctly with default configuration', (tester) async {
       await tester.pumpLemonadeWidget(
-        const LemonadeBrandLogo(
-          logo: LemonadeBrandLogos.visa,
-        ),
+        const LemonadeBrandLogo(logo: LemonadeBrandLogos.visa),
       );
 
       expect(find.byType(LemonadeBrandLogo), findsOneWidget);
@@ -26,10 +24,7 @@ void main() {
     testWidgets('accepts all brand logo sizes', (tester) async {
       for (final size in LemonadeBrandLogoSize.values) {
         await tester.pumpLemonadeWidget(
-          LemonadeBrandLogo(
-            logo: LemonadeBrandLogos.visa,
-            size: size,
-          ),
+          LemonadeBrandLogo(logo: LemonadeBrandLogos.visa, size: size),
         );
 
         final logoWidget = tester.widget<LemonadeBrandLogo>(
@@ -75,16 +70,11 @@ void main() {
 
       for (final entry in sizeMappings.entries) {
         await tester.pumpLemonadeWidget(
-          LemonadeBrandLogo(
-            logo: LemonadeBrandLogos.visa,
-            size: entry.key,
-          ),
+          LemonadeBrandLogo(logo: LemonadeBrandLogos.visa, size: entry.key),
           lightTheme: theme,
         );
 
-        final svgPicture = tester.widget<SvgPicture>(
-          find.byType(SvgPicture),
-        );
+        final svgPicture = tester.widget<SvgPicture>(find.byType(SvgPicture));
         expect(svgPicture.width, equals(entry.value));
         expect(svgPicture.height, equals(entry.value));
       }
