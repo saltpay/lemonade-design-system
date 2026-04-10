@@ -89,9 +89,12 @@ public enum LemonadeShadow: CaseIterable, Sendable {
 /// View modifier for applying Lemonade shadows
 public struct LemonadeShadowModifier: ViewModifier {
     let shadow: LemonadeShadow
+    /// When non-nil, overrides the per-layer token color for all layers.
+    let color: Color?
 
-    public init(shadow: LemonadeShadow) {
+    public init(shadow: LemonadeShadow, color: Color? = nil) {
         self.shadow = shadow
+        self.color = color
     }
 
     public func body(content: Content) -> some View {
@@ -104,7 +107,7 @@ public struct LemonadeShadowModifier: ViewModifier {
                     let scaleX = proxy.size.width == 0 ? 1 : spreadW / proxy.size.width
                     let scaleY = proxy.size.height == 0 ? 1 : spreadH / proxy.size.height
                     Rectangle()
-                        .fill(layer.color)
+                        .fill(color ?? layer.color)
                         .frame(width: spreadW, height: spreadH)
                         .mask {
                             composited
@@ -125,8 +128,12 @@ public struct LemonadeShadowModifier: ViewModifier {
 }
 
 public extension View {
-    /// Applies a Lemonade shadow to the view
-    func lemonadeShadow(_ shadow: LemonadeShadow) -> some View {
-        modifier(LemonadeShadowModifier(shadow: shadow))
+    /// Applies a Lemonade shadow to the view.
+    /// - Parameters:
+    ///   - shadow: The shadow token to apply.
+    ///   - color: Optional color override applied to all shadow layers.
+    ///            Defaults to `nil`, which uses each layer's token color.
+    func lemonadeShadow(_ shadow: LemonadeShadow, color: Color? = nil) -> some View {
+        modifier(LemonadeShadowModifier(shadow: shadow, color: color))
     }
 }
