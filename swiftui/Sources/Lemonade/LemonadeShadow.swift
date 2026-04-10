@@ -17,58 +17,71 @@ import SwiftUI
 /// 
 
 /// Shadow data structure
-public struct LemonadeShadowData: Sendable {
+public struct LemonadeShadowData {
     public let blur: CGFloat
-    /// Spread value from the design token. Note: SwiftUI's `.shadow()` modifier
-    /// does not support spread, so this value is stored for reference but not
-    /// rendered. Consider overlay-based techniques if spread fidelity is required.
     public let spread: CGFloat
     public let offsetX: CGFloat
     public let offsetY: CGFloat
+    public let color: Color
 
-    public init(blur: CGFloat, spread: CGFloat, offsetX: CGFloat, offsetY: CGFloat) {
+    public init(blur: CGFloat, spread: CGFloat, offsetX: CGFloat, offsetY: CGFloat, color: Color) {
         self.blur = blur
         self.spread = spread
         self.offsetX = offsetX
         self.offsetY = offsetY
+        self.color = color
     }
 }
 
 /// Shadow token enum
-public enum LemonadeShadow: Sendable {
-    case large
-    case medium
-    case small
+public enum LemonadeShadow: CaseIterable {
     case xsmall
+    case small
+    case medium
+    case large
+    case xlarge
     case none
+
+    public var displayName: String {
+        switch self {
+        case .xsmall: return "X-Small"
+        case .small: return "Small"
+        case .medium: return "Medium"
+        case .large: return "Large"
+        case .xlarge: return "X-Large"
+        case .none: return "None"
+        }
+    }
 
     /// Returns the shadow data layers for this shadow token
     public var shadowLayers: [LemonadeShadowData] {
         switch self {
-        case .large:
+        case .xsmall:
             return [
-                LemonadeShadowData(blur: 1.0, spread: 0.0, offsetX: 0.0, offsetY: 1.0),
-                LemonadeShadowData(blur: 8.0, spread: -8.0, offsetX: 0.0, offsetY: 8.0),
-                LemonadeShadowData(blur: 28.0, spread: -12.0, offsetX: 0.0, offsetY: 24.0),
-                LemonadeShadowData(blur: 48.0, spread: -8.0, offsetX: 0.0, offsetY: 32.0),
-            ]
-        case .medium:
-            return [
-                LemonadeShadowData(blur: 1.0, spread: 0.0, offsetX: 0.0, offsetY: 1.0),
-                LemonadeShadowData(blur: 32.0, spread: -6.0, offsetX: 0.0, offsetY: 16.0),
+                LemonadeShadowData(blur: 2.0, spread: 0.0, offsetX: 0.0, offsetY: 1.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
             ]
         case .small:
             return [
-                LemonadeShadowData(blur: 1.0, spread: 0.0, offsetX: 0.0, offsetY: 1.0),
-                LemonadeShadowData(blur: 6.0, spread: -3.0, offsetX: 0.0, offsetY: 4.0),
+                LemonadeShadowData(blur: 3.0, spread: 0.0, offsetX: 0.0, offsetY: 1.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
+                LemonadeShadowData(blur: 2.0, spread: -1.0, offsetX: 0.0, offsetY: 1.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
             ]
-        case .xsmall:
+        case .medium:
             return [
-                LemonadeShadowData(blur: 1.0, spread: 0.0, offsetX: 0.0, offsetY: 1.0),
-                LemonadeShadowData(blur: 3.0, spread: -3.0, offsetX: 0.0, offsetY: 3.0),
+                LemonadeShadowData(blur: 3.0, spread: -2.0, offsetX: 0.0, offsetY: 2.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
+                LemonadeShadowData(blur: 6.0, spread: -2.0, offsetX: 0.0, offsetY: 4.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
+            ]
+        case .large:
+            return [
+                LemonadeShadowData(blur: 6.0, spread: -4.0, offsetX: 0.0, offsetY: 4.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
+                LemonadeShadowData(blur: 15.0, spread: -3.0, offsetX: 0.0, offsetY: 10.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
+            ]
+        case .xlarge:
+            return [
+                LemonadeShadowData(blur: 10.0, spread: -6.0, offsetX: 0.0, offsetY: 8.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
+                LemonadeShadowData(blur: 25.0, spread: -5.0, offsetX: 0.0, offsetY: 20.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
             ]
         case .none:
-            return [LemonadeShadowData(blur: 0, spread: 0, offsetX: 0, offsetY: 0)]
+            return [LemonadeShadowData(blur: 0, spread: 0, offsetX: 0, offsetY: 0, color: .clear)]
         }
     }
 }
@@ -76,38 +89,61 @@ public enum LemonadeShadow: Sendable {
 /// View modifier for applying Lemonade shadows
 public struct LemonadeShadowModifier: ViewModifier {
     let shadow: LemonadeShadow
-    let color: Color
 
-    public init(shadow: LemonadeShadow, color: Color = Color(red: 21/255, green: 34/255, blue: 21/255).opacity(0.18)) {
+    public init(shadow: LemonadeShadow) {
         self.shadow = shadow
-        self.color = color
     }
 
     public func body(content: Content) -> some View {
-        let layers = shadow.shadowLayers
-        switch layers.count {
-        case 1:
-            content
-                .shadow(color: color, radius: layers[0].blur / 2, x: layers[0].offsetX, y: layers[0].offsetY)
-        case 2:
-            content
-                .shadow(color: color, radius: layers[0].blur / 2, x: layers[0].offsetX, y: layers[0].offsetY)
-                .shadow(color: color, radius: layers[1].blur / 2, x: layers[1].offsetX, y: layers[1].offsetY)
-        case 4:
-            content
-                .shadow(color: color, radius: layers[0].blur / 2, x: layers[0].offsetX, y: layers[0].offsetY)
-                .shadow(color: color, radius: layers[1].blur / 2, x: layers[1].offsetX, y: layers[1].offsetY)
-                .shadow(color: color, radius: layers[2].blur / 2, x: layers[2].offsetX, y: layers[2].offsetY)
-                .shadow(color: color, radius: layers[3].blur / 2, x: layers[3].offsetX, y: layers[3].offsetY)
-        default:
-            content
+        // Flatten content into a single composited layer so the mask and cut-out
+        // always reflect the original shape, regardless of how many layers are added.
+        let composited = content.compositingGroup()
+
+        // Each shadow layer is added as an independent background so layers don't
+        // compound on each other. Within each background a GeometryReader measures
+        // the content and drives the spread simulation:
+        //   1. A solid rectangle (token color) is sized to content + spread on all sides.
+        //   2. The composited content (scaled to match spread size) masks the rectangle,
+        //      so the shadow inherits the exact content shape.
+        //   3. Gaussian blur softens the edges (blur / 2 ≈ CSS blur-radius → σ mapping).
+        //   4. A destinationOut overlay punches the original content silhouette out of the
+        //      shadow, preventing bleed-through on views with transparent areas.
+        return shadow.shadowLayers.reduce(AnyView(composited)) { view, layer in
+            AnyView(
+                view.background {
+                    GeometryReader { proxy in
+                        let spreadW = proxy.size.width + layer.spread * 2
+                        let spreadH = proxy.size.height + layer.spread * 2
+
+                        Rectangle()
+                            .fill(layer.color)
+                            .frame(width: spreadW, height: spreadH)
+                            .mask {
+                                composited
+                                    .drawingGroup()
+                                    .scaleEffect(
+                                        x: spreadW / proxy.size.width,
+                                        y: spreadH / proxy.size.height
+                                    )
+                            }
+                            .offset(x: layer.offsetX - layer.spread, y: layer.offsetY - layer.spread)
+                            .blur(radius: layer.blur / 2)
+                            .overlay(alignment: .topLeading) {
+                                composited
+                                    .frame(width: proxy.size.width, height: proxy.size.height)
+                                    .blendMode(.destinationOut)
+                            }
+                            .compositingGroup()
+                    }
+                }
+            )
         }
     }
 }
 
 public extension View {
     /// Applies a Lemonade shadow to the view
-    func lemonadeShadow(_ shadow: LemonadeShadow, color: Color = Color(red: 21/255, green: 34/255, blue: 21/255).opacity(0.18)) -> some View {
-        modifier(LemonadeShadowModifier(shadow: shadow, color: color))
+    func lemonadeShadow(_ shadow: LemonadeShadow) -> some View {
+        modifier(LemonadeShadowModifier(shadow: shadow))
     }
 }

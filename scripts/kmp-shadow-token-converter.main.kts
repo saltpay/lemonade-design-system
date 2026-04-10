@@ -1,6 +1,7 @@
 #!/usr/bin/env kotlin
 
 @file:Import("kmp-resource-file-loading.main.kts")
+@file:Import("shadow-token-commons.main.kts")
 
 import java.io.File
 
@@ -41,13 +42,10 @@ fun main() {
         val shadowResources = readFileResourceFile(
             file = shadowTokensFile,
             resourceMap = { jsonObject ->
-                ShadowResourceValue(
-                    floatValue = jsonObject.optInt("resolvedValue")
-                        ?.toFloat()
-                        ?: jsonObject.getFloat("resolvedValue"),
-                )
+                val resolvedValue = jsonObject.get("resolvedValue")
+                if (resolvedValue is Number) ShadowResourceValue(floatValue = resolvedValue.toFloat()) else null
             },
-        ).toShadowResource()
+        ).filterNull().toShadowResource()
         println("✓ Loaded shadow resources")
 
         val definitionCode = buildDefinitionCode(
@@ -66,7 +64,6 @@ fun main() {
         implementationOutputFile.writeText(implementationCode)
         println("✓ Shadows sequence implementation file created")
 
-        println("✓ Implementation generated")
     } catch (error: Throwable) {
         println("✗ Failed to convert ${shadowTokensFile.name}: ${error.message}")
     }
@@ -74,26 +71,29 @@ fun main() {
 
 private fun List<ResourceData<ShadowResourceValue>>.toShadowResource(): List<ShadowResourceGroup> {
     val groups = groupBy { resourceData -> resourceData.groups[1] }
-    return groups.map { (groupName, resources) ->
-        val groupLevels = resources.groupBy { groupResource -> groupResource.groups[2] }
-        val levels = groupLevels.map { (_, levelResources) ->
-            var levelResource = ShadowResource()
-            levelResources.forEach { resourceValue ->
-                levelResource = when {
-                    resourceValue.name.contains("Blur") -> levelResource.copy(blur = resourceValue.value.floatValue)
-                    resourceValue.name.contains("Spread") -> levelResource.copy(spread = resourceValue.value.floatValue)
-                    resourceValue.name.contains("OffsetX") -> levelResource.copy(offsetX = resourceValue.value.floatValue)
-                    resourceValue.name.contains("OffsetY") -> levelResource.copy(offsetY = resourceValue.value.floatValue)
-                    else -> levelResource
+    return groups
+        .entries
+        .sortedBy { (groupName, _) -> shadowGroupOrder.indexOf(groupName).takeIf { it >= 0 } ?: Int.MAX_VALUE }
+        .map { (groupName, resources) ->
+            val groupLevels = resources.groupBy { groupResource -> groupResource.groups[2] }
+            val levels = groupLevels.map { (_, levelResources) ->
+                var levelResource = ShadowResource()
+                levelResources.forEach { resourceValue ->
+                    levelResource = when {
+                        resourceValue.name.contains("Blur") -> levelResource.copy(blur = resourceValue.value.floatValue)
+                        resourceValue.name.contains("Spread") -> levelResource.copy(spread = resourceValue.value.floatValue)
+                        resourceValue.name.contains("OffsetX") -> levelResource.copy(offsetX = resourceValue.value.floatValue)
+                        resourceValue.name.contains("OffsetY") -> levelResource.copy(offsetY = resourceValue.value.floatValue)
+                        else -> levelResource
+                    }
                 }
+                levelResource
             }
-            levelResource
+            ShadowResourceGroup(
+                groupName = groupName,
+                levels = levels,
+            )
         }
-        ShadowResourceGroup(
-            groupName = groupName,
-            levels = levels,
-        )
-    }
 }
 
 private fun buildDefinitionCode(
