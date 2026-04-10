@@ -17,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.teya.lemonade.core.LemonadeIconButtonSize
-import com.teya.lemonade.core.LemonadeIconButtonVariant
+import com.teya.lemonade.core.LemonadeIconButtonType
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TopBarAction
 import kotlinx.coroutines.launch
@@ -76,7 +76,7 @@ internal fun SearchTopBarSampleDisplay() {
             trailingSlot = {
                 LemonadeUi.IconButton(
                     icon = LemonadeIcons.ChevronDown,
-                    variant = LemonadeIconButtonVariant.Ghost,
+                    type = LemonadeIconButtonType.Ghost,
                     contentDescription = "Expand",
                     size = LemonadeIconButtonSize.Medium,
                     onClick = {
@@ -87,7 +87,7 @@ internal fun SearchTopBarSampleDisplay() {
                 )
                 LemonadeUi.IconButton(
                     icon = LemonadeIcons.ChevronTop,
-                    variant = LemonadeIconButtonVariant.Ghost,
+                    type = LemonadeIconButtonType.Ghost,
                     contentDescription = "Collapse",
                     size = LemonadeIconButtonSize.Medium,
                     onClick = {

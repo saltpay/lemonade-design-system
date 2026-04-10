@@ -10,7 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import com.teya.lemonade.core.LemonadeIconButtonVariant
+import com.teya.lemonade.core.LemonadeIconButtonType
 import com.teya.lemonade.core.LemonadeIcons
 
 @Composable
@@ -32,7 +32,7 @@ internal fun CompactLargeTopBarSampleDisplay() {
                     icon = LemonadeIcons.Bell,
                     contentDescription = "Notifications",
                     onClick = {},
-                    variant = LemonadeIconButtonVariant.Ghost,
+                    type = LemonadeIconButtonType.Ghost,
                 )
             },
             bottomSlot = {

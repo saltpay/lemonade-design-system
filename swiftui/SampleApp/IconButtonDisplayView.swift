@@ -5,83 +5,123 @@ struct IconButtonDisplayView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 32) {
-                // Subtle Variant
-                sectionView(title: "Subtle") {
-                    VStack(spacing: 16) {
-                        HStack(spacing: 12) {
-                            LemonadeUi.IconButton(
-                                icon: .heart,
-                                contentDescription: "Small",
-                                onClick: {},
-                                variant: .subtle,
-                                size: .small
-                            )
-                            LemonadeUi.IconButton(
-                                icon: .heart,
-                                contentDescription: "Medium",
-                                onClick: {},
-                                variant: .subtle,
-                                size: .medium
-                            )
-                            LemonadeUi.IconButton(
-                                icon: .heart,
-                                contentDescription: "Large",
-                                onClick: {},
-                                variant: .subtle,
-                                size: .large
-                            )
-                        }
+                // Primary Solid
+                sectionView(title: "Primary Solid") {
+                    sizesRow(icon: .heart, variant: .primary, type: .solid)
+                }
 
-                        HStack(spacing: 12) {
-                            LemonadeUi.IconButton(
-                                icon: .heart,
-                                contentDescription: "Disabled",
-                                onClick: {},
-                                enabled: false,
-                                variant: .subtle,
-                                size: .medium
-                            )
-                        }
+                // Secondary Solid
+                sectionView(title: "Secondary Solid") {
+                    sizesRow(icon: .heart, variant: .secondary, type: .solid)
+                }
+
+                // Neutral Subtle (default)
+                sectionView(title: "Neutral Subtle") {
+                    sizesRow(icon: .heart, variant: .neutral, type: .subtle)
+                }
+
+                // Neutral Ghost
+                sectionView(title: "Neutral Ghost") {
+                    sizesRow(icon: .circleX, variant: .neutral, type: .ghost)
+                }
+
+                // Critical Subtle
+                sectionView(title: "Critical Subtle") {
+                    sizesRow(icon: .trash, variant: .critical, type: .subtle)
+                }
+
+                // Critical Solid
+                sectionView(title: "Critical Solid") {
+                    sizesRow(icon: .trash, variant: .critical, type: .solid)
+                }
+
+                // Loading
+                sectionView(title: "Loading") {
+                    HStack(spacing: 12) {
+                        LemonadeUi.IconButton(
+                            icon: .heart,
+                            contentDescription: "Loading",
+                            onClick: {},
+                            variant: .primary,
+                            type: .solid,
+                            loading: true
+                        )
+                        LemonadeUi.IconButton(
+                            icon: .heart,
+                            contentDescription: "Loading",
+                            onClick: {},
+                            variant: .neutral,
+                            type: .subtle,
+                            loading: true
+                        )
+                        LemonadeUi.IconButton(
+                            icon: .heart,
+                            contentDescription: "Loading",
+                            onClick: {},
+                            variant: .critical,
+                            type: .solid,
+                            loading: true
+                        )
                     }
                 }
 
-                // Ghost Variant
-                sectionView(title: "Ghost") {
-                    VStack(spacing: 16) {
-                        HStack(spacing: 12) {
-                            LemonadeUi.IconButton(
-                                icon: .circleX,
-                                contentDescription: "Small",
-                                onClick: {},
-                                variant: .ghost,
-                                size: .small
-                            )
-                            LemonadeUi.IconButton(
-                                icon: .circleX,
-                                contentDescription: "Medium",
-                                onClick: {},
-                                variant: .ghost,
-                                size: .medium
-                            )
-                            LemonadeUi.IconButton(
-                                icon: .circleX,
-                                contentDescription: "Large",
-                                onClick: {},
-                                variant: .ghost,
-                                size: .large
-                            )
-                        }
+                // Circular Shape
+                sectionView(title: "Circular") {
+                    HStack(spacing: 12) {
+                        LemonadeUi.IconButton(
+                            icon: .heart,
+                            contentDescription: "Circular",
+                            onClick: {},
+                            variant: .primary,
+                            type: .solid,
+                            shape: .circular
+                        )
+                        LemonadeUi.IconButton(
+                            icon: .heart,
+                            contentDescription: "Circular",
+                            onClick: {},
+                            variant: .neutral,
+                            type: .subtle,
+                            shape: .circular
+                        )
+                        LemonadeUi.IconButton(
+                            icon: .heart,
+                            contentDescription: "Circular",
+                            onClick: {},
+                            variant: .critical,
+                            type: .solid,
+                            shape: .circular
+                        )
+                    }
+                }
 
-                        HStack(spacing: 12) {
-                            LemonadeUi.IconButton(
-                                icon: .circleX,
-                                contentDescription: "Disabled",
-                                onClick: {},
-                                enabled: false,
-                                variant: .ghost,
-                                size: .medium
-                            )
-                        }
+                // Disabled
+                sectionView(title: "Disabled") {
+                    HStack(spacing: 12) {
+                        LemonadeUi.IconButton(
+                            icon: .heart,
+                            contentDescription: "Disabled",
+                            onClick: {},
+                            enabled: false,
+                            variant: .primary,
+                            type: .solid
+                        )
+                        LemonadeUi.IconButton(
+                            icon: .heart,
+                            contentDescription: "Disabled",
+                            onClick: {},
+                            enabled: false,
+                            variant: .neutral,
+                            type: .subtle
+                        )
+                        LemonadeUi.IconButton(
+                            icon: .heart,
+                            contentDescription: "Disabled",
+                            onClick: {},
+                            enabled: false,
+                            variant: .neutral,
+                            type: .ghost
+                        )
                     }
                 }
 
@@ -91,30 +131,24 @@ struct IconButtonDisplayView: View {
                         LemonadeUi.IconButton(
                             icon: .bell,
                             contentDescription: "Notifications",
-                            onClick: {},
-                            variant: .subtle,
-                            size: .medium
+                            onClick: {}
                         )
                         LemonadeUi.IconButton(
                             icon: .gear,
                             contentDescription: "Settings",
-                            onClick: {},
-                            variant: .subtle,
-                            size: .medium
+                            onClick: {}
                         )
                         LemonadeUi.IconButton(
                             icon: .trash,
                             contentDescription: "Delete",
                             onClick: {},
-                            variant: .subtle,
-                            size: .medium
+                            variant: .critical,
+                            type: .subtle
                         )
                         LemonadeUi.IconButton(
                             icon: .star,
                             contentDescription: "Bookmark",
-                            onClick: {},
-                            variant: .subtle,
-                            size: .medium
+                            onClick: {}
                         )
                     }
                 }
@@ -122,6 +156,53 @@ struct IconButtonDisplayView: View {
             .padding()
         }
         .navigationTitle("IconButton")
+    }
+
+    private func sizesRow(
+        icon: LemonadeIcon,
+        variant: LemonadeIconButtonVariant,
+        type: LemonadeIconButtonType
+    ) -> some View {
+        VStack(spacing: 16) {
+            HStack(spacing: 12) {
+                LemonadeUi.IconButton(
+                    icon: icon,
+                    contentDescription: "Small",
+                    onClick: {},
+                    variant: variant,
+                    type: type,
+                    size: .small
+                )
+                LemonadeUi.IconButton(
+                    icon: icon,
+                    contentDescription: "Medium",
+                    onClick: {},
+                    variant: variant,
+                    type: type,
+                    size: .medium
+                )
+                LemonadeUi.IconButton(
+                    icon: icon,
+                    contentDescription: "Large",
+                    onClick: {},
+                    variant: variant,
+                    type: type,
+                    size: .large
+                )
+            }
+
+            HStack(spacing: 12) {
+                LemonadeUi.IconButton(
+                    icon: icon,
+                    contentDescription: "Disabled",
+                    onClick: {},
+                    enabled: false,
+                    variant: variant,
+                    type: type,
+                    size: .medium
+                )
+            }
+        }
     }
 
     private func sectionView<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
