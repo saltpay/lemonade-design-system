@@ -105,8 +105,10 @@ private fun String.toDisplayName(): String = when (lowercase()) {
     else -> replaceFirstChar { it.uppercase() }
 }
 
-private fun ShadowColorValue.toSwiftColor(): String =
-    "Color(red: ${"%.2f".format(r)}, green: ${"%.2f".format(g)}, blue: ${"%.2f".format(b)}, opacity: ${"%.2f".format(a)})"
+private fun ShadowColorValue.toSwiftColor(): String {
+    fun fmt(v: Float) = String.format(java.util.Locale.US, "%.2f", v)
+    return "Color(red: ${fmt(r)}, green: ${fmt(g)}, blue: ${fmt(b)}, opacity: ${fmt(a)})"
+}
 
 // The modifier body is static — no token data is interpolated — so it is kept
 // as a single string rather than per-line appendLine() calls.
@@ -176,7 +178,7 @@ private fun buildShadowCode(
         }
         appendLine()
         appendLine("/// Shadow data structure")
-        appendLine("public struct LemonadeShadowData {")
+        appendLine("public struct LemonadeShadowData: Sendable {")
         appendLine("    public let blur: CGFloat")
         appendLine("    public let spread: CGFloat")
         appendLine("    public let offsetX: CGFloat")
@@ -193,7 +195,7 @@ private fun buildShadowCode(
         appendLine("}")
         appendLine()
         appendLine("/// Shadow token enum")
-        appendLine("public enum LemonadeShadow: CaseIterable {")
+        appendLine("public enum LemonadeShadow: CaseIterable, Sendable {")
         resources.forEach { resource ->
             appendLine("    case ${resource.groupName.replaceFirstChar { it.lowercase() }}")
         }

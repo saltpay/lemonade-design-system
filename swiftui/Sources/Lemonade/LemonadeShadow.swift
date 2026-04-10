@@ -17,7 +17,7 @@ import SwiftUI
 /// 
 
 /// Shadow data structure
-public struct LemonadeShadowData {
+public struct LemonadeShadowData: Sendable {
     public let blur: CGFloat
     public let spread: CGFloat
     public let offsetX: CGFloat
@@ -34,7 +34,7 @@ public struct LemonadeShadowData {
 }
 
 /// Shadow token enum
-public enum LemonadeShadow: CaseIterable {
+public enum LemonadeShadow: CaseIterable, Sendable {
     case xsmall
     case small
     case medium
@@ -86,7 +86,7 @@ public enum LemonadeShadow: CaseIterable {
     }
 }
 
-/// View modifier for applying Lemonade shadows
+// View modifier for applying Lemonade shadows
 public struct LemonadeShadowModifier: ViewModifier {
     let shadow: LemonadeShadow
 
@@ -95,48 +95,32 @@ public struct LemonadeShadowModifier: ViewModifier {
     }
 
     public func body(content: Content) -> some View {
-        // Flatten content into a single composited layer so the mask and cut-out
-        // always reflect the original shape, regardless of how many layers are added.
         let composited = content.compositingGroup()
-
-        // Each shadow layer is added as an independent background so layers don't
-        // compound on each other. Within each background a GeometryReader measures
-        // the content and drives the spread simulation:
-        //   1. A solid rectangle (token color) is sized to content + spread on all sides.
-        //   2. The composited content (scaled to match spread size) masks the rectangle,
-        //      so the shadow inherits the exact content shape.
-        //   3. Gaussian blur softens the edges (blur / 2 ≈ CSS blur-radius → σ mapping).
-        //   4. A destinationOut overlay punches the original content silhouette out of the
-        //      shadow, preventing bleed-through on views with transparent areas.
-        return shadow.shadowLayers.reduce(AnyView(composited)) { view, layer in
-            AnyView(
-                view.background {
-                    GeometryReader { proxy in
-                        let spreadW = proxy.size.width + layer.spread * 2
-                        let spreadH = proxy.size.height + layer.spread * 2
-
-                        Rectangle()
-                            .fill(layer.color)
-                            .frame(width: spreadW, height: spreadH)
-                            .mask {
-                                composited
-                                    .drawingGroup()
-                                    .scaleEffect(
-                                        x: spreadW / proxy.size.width,
-                                        y: spreadH / proxy.size.height
-                                    )
-                            }
-                            .offset(x: layer.offsetX - layer.spread, y: layer.offsetY - layer.spread)
-                            .blur(radius: layer.blur / 2)
-                            .overlay(alignment: .topLeading) {
-                                composited
-                                    .frame(width: proxy.size.width, height: proxy.size.height)
-                                    .blendMode(.destinationOut)
-                            }
-                            .compositingGroup()
-                    }
+        return composited.background {
+            GeometryReader { proxy in
+                ForEach(Array(shadow.shadowLayers.enumerated()), id: \.offset) { _, layer in
+                    let spreadW = proxy.size.width + layer.spread * 2
+                    let spreadH = proxy.size.height + layer.spread * 2
+                    Rectangle()
+                        .fill(layer.color)
+                        .frame(width: spreadW, height: spreadH)
+                        .mask {
+                            composited
+                                .scaleEffect(
+                                    x: spreadW / proxy.size.width,
+                                    y: spreadH / proxy.size.height
+                                )
+                        }
+                        .offset(x: layer.offsetX - layer.spread, y: layer.offsetY - layer.spread)
+                        .blur(radius: layer.blur / 2)
+                        .overlay(alignment: .topLeading) {
+                            composited
+                                .frame(width: proxy.size.width, height: proxy.size.height)
+                                .blendMode(.destinationOut)
+                        }
+                        .compositingGroup()
                 }
-            )
+            }
         }
     }
 }

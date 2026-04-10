@@ -101,6 +101,8 @@ private fun buildDefinitionCode(
     resources: List<ShadowResourceGroup>,
 ): String {
     return buildString {
+        appendLine("@file:Suppress(\"MatchingDeclarationName\")")
+        appendLine()
         appendLine("package com.teya.lemonade.core")
         appendLine()
         appendLine("/**")
