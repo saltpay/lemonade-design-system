@@ -259,9 +259,10 @@ private struct ListItemSkeletonView: View {
                     .padding(.trailing, LemonadeTheme.spaces.spacing300)
 
                 HStack(spacing: 0) {
-                    VStack(alignment: .leading, spacing: 0) {
+                    VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing100) {
                         LemonadeUi.LineSkeleton(size: .medium)
                         LemonadeUi.LineSkeleton(size: .small)
+                            .mask(Rectangle().scaleEffect(x: 0.6, y: 1, anchor: .leading))
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
 
