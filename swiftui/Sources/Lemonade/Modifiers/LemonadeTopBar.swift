@@ -299,6 +299,12 @@ private struct NativeSearchBar: UIViewRepresentable {
         searchBar.searchBarStyle = .minimal
         searchBar.autocapitalizationType = .none
         searchBar.autocorrectionType = .no
+        searchBar.backgroundImage = UIImage()
+        // Remove shadow from the internal text field
+        if let textField = searchBar.searchTextField as? UITextField {
+            textField.layer.shadowOpacity = 0
+            textField.layer.borderWidth = 0
+        }
         return searchBar
     }
 
@@ -343,6 +349,21 @@ private struct NativeSearchBar: UIViewRepresentable {
     }
 }
 
+// MARK: - Hide Navigation Bar Helper
+
+private extension View {
+    /// Hides the navigation bar. Uses `.toolbar(.hidden)` on iOS 16+ (preserves
+    /// swipe-back gesture) with fallback to `.navigationBarHidden(true)` on iOS 15.
+    @ViewBuilder
+    func lemonadeHideNavigationBar() -> some View {
+        if #available(iOS 16.0, *) {
+            self.toolbar(.hidden, for: .navigationBar)
+        } else {
+            self.navigationBarHidden(true)
+        }
+    }
+}
+
 // MARK: - Compact Large TopBar Header
 
 /// Custom header row matching KMP `CompactLargeTopBarHeading` — title left, trailing slot right,
@@ -377,7 +398,7 @@ private struct CompactLargeHeader<TrailingContent: View>: View {
                 let content = HStack(spacing: LemonadeSpacing.spacing100.value) {
                     trailingSlot()
                 }
-                .padding(.horizontal, LemonadeSpacing.spacing100.value)
+                .padding(LemonadeSpacing.spacing100.value)
 
                 if #available(iOS 26, *) {
                     content
@@ -405,6 +426,9 @@ private struct CompactLargeBlurLayout<HeaderContent: View>: View {
 
     private let fadeExtension: CGFloat = 64
     @State private var headerHeight: CGFloat = 76
+    /// Tracks the maximum header height ever seen, used for the safeAreaInset
+    /// spacer so it doesn't shrink when the search bar collapses (avoids feedback loop).
+    @State private var maxHeaderHeight: CGFloat = 76
     @Environment(\.colorScheme) private var colorScheme
 
     init(
@@ -426,12 +450,11 @@ private struct CompactLargeBlurLayout<HeaderContent: View>: View {
                             .frame(width: 0, height: 0)
                     }
                 }
-                .navigationBarHidden(true)
                 .safeAreaInset(edge: .top, spacing: 0) {
-                    Color.clear.frame(height: headerHeight)
+                    Color.clear.frame(height: maxHeaderHeight)
                 }
 
-            let totalHeight = headerHeight + fadeExtension
+            let totalHeight = maxHeaderHeight + fadeExtension
             VariableBlurView(maxBlurRadius: 5, direction: .blurredTopClearBottom)
                 .overlay {
                     LinearGradient(stops: [
@@ -452,7 +475,13 @@ private struct CompactLargeBlurLayout<HeaderContent: View>: View {
                     }
                 )
         }
-        .onPreferenceChange(HeaderHeightKey.self) { headerHeight = $0 }
+        .onPreferenceChange(HeaderHeightKey.self) { newHeight in
+            headerHeight = newHeight
+            if newHeight > maxHeaderHeight {
+                maxHeaderHeight = newHeight
+            }
+        }
+        .lemonadeHideNavigationBar()
     }
 
     private var fadeTint: Color {
