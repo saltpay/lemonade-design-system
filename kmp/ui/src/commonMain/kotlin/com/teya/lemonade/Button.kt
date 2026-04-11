@@ -246,85 +246,98 @@ private fun resolveButtonColors(
     type: LemonadeButtonType,
 ): LemonadeButtonColors =
     when (variant) {
-        LemonadeButtonVariant.Primary -> when (type) {
-            LemonadeButtonType.Solid -> LemonadeButtonColors(
-                contentColor = LocalColors.current.content.contentOnBrandHigh,
-                solidBackgroundColor = LocalColors.current.background.bgBrand,
-                pressedBackgroundColor = LocalColors.current.interaction.bgBrandInteractive,
-            )
+        LemonadeButtonVariant.Primary -> resolvePrimaryButtonColors(type = type)
+        LemonadeButtonVariant.Secondary -> resolveSecondaryButtonColors(type = type)
+        LemonadeButtonVariant.Neutral -> resolveNeutralButtonColors(type = type)
+        LemonadeButtonVariant.Critical -> resolveCriticalButtonColors(type = type)
+    }
 
-            LemonadeButtonType.Subtle -> LemonadeButtonColors(
-                contentColor = LocalColors.current.content.contentBrandHigh,
-                solidBackgroundColor = LocalColors.current.background.bgBrandSubtle,
-                pressedBackgroundColor = LocalColors.current.interaction.bgSubtlePressed,
-            )
+@Composable
+private fun resolvePrimaryButtonColors(type: LemonadeButtonType): LemonadeButtonColors =
+    when (type) {
+        LemonadeButtonType.Solid -> LemonadeButtonColors(
+            contentColor = LocalColors.current.content.contentOnBrandHigh,
+            solidBackgroundColor = LocalColors.current.background.bgBrand,
+            pressedBackgroundColor = LocalColors.current.interaction.bgBrandInteractive,
+        )
 
-            LemonadeButtonType.Ghost -> LemonadeButtonColors(
-                contentColor = LocalColors.current.content.contentBrandHigh,
-                solidBackgroundColor = Color.Transparent,
-                pressedBackgroundColor = LocalColors.current.interaction.bgSubtlePressed,
-            )
-        }
+        LemonadeButtonType.Subtle -> LemonadeButtonColors(
+            contentColor = LocalColors.current.content.contentBrandHigh,
+            solidBackgroundColor = LocalColors.current.background.bgBrandSubtle,
+            pressedBackgroundColor = LocalColors.current.interaction.bgSubtlePressed,
+        )
 
-        LemonadeButtonVariant.Secondary -> when (type) {
-            LemonadeButtonType.Solid -> LemonadeButtonColors(
-                contentColor = LocalColors.current.content.contentPrimaryInverse,
-                solidBackgroundColor = LocalColors.current.background.bgSubtleInverse,
-                pressedBackgroundColor = LocalColors.current.interaction.bgNeutralPressed,
-            )
+        LemonadeButtonType.Ghost -> LemonadeButtonColors(
+            contentColor = LocalColors.current.content.contentBrandHigh,
+            solidBackgroundColor = Color.Transparent,
+            pressedBackgroundColor = LocalColors.current.interaction.bgSubtlePressed,
+        )
+    }
 
-            LemonadeButtonType.Subtle -> LemonadeButtonColors(
-                contentColor = LocalColors.current.content.contentPrimary,
-                solidBackgroundColor = LocalColors.current.background.bgNeutralSubtle,
-                pressedBackgroundColor = LocalColors.current.interaction.bgNeutralSubtlePressed,
-            )
+@Composable
+private fun resolveSecondaryButtonColors(type: LemonadeButtonType): LemonadeButtonColors =
+    when (type) {
+        LemonadeButtonType.Solid -> LemonadeButtonColors(
+            contentColor = LocalColors.current.content.contentPrimaryInverse,
+            solidBackgroundColor = LocalColors.current.background.bgSubtleInverse,
+            pressedBackgroundColor = LocalColors.current.interaction.bgNeutralPressed,
+        )
 
-            LemonadeButtonType.Ghost -> LemonadeButtonColors(
-                contentColor = LocalColors.current.content.contentPrimary,
-                solidBackgroundColor = Color.Transparent,
-                pressedBackgroundColor = LocalColors.current.interaction.bgNeutralSubtlePressed,
-            )
-        }
+        LemonadeButtonType.Subtle -> LemonadeButtonColors(
+            contentColor = LocalColors.current.content.contentPrimary,
+            solidBackgroundColor = LocalColors.current.background.bgNeutralSubtle,
+            pressedBackgroundColor = LocalColors.current.interaction.bgNeutralSubtlePressed,
+        )
 
-        LemonadeButtonVariant.Neutral -> when (type) {
-            LemonadeButtonType.Solid -> LemonadeButtonColors(
-                contentColor = LocalColors.current.content.contentPrimary,
-                solidBackgroundColor = LocalColors.current.background.bgElevated,
-                pressedBackgroundColor = LocalColors.current.interaction.bgElevatedPressed,
-            )
+        LemonadeButtonType.Ghost -> LemonadeButtonColors(
+            contentColor = LocalColors.current.content.contentPrimary,
+            solidBackgroundColor = Color.Transparent,
+            pressedBackgroundColor = LocalColors.current.interaction.bgNeutralSubtlePressed,
+        )
+    }
 
-            LemonadeButtonType.Subtle -> LemonadeButtonColors(
-                contentColor = LocalColors.current.content.contentPrimary,
-                solidBackgroundColor = LocalColors.current.background.bgNeutralSubtle,
-                pressedBackgroundColor = LocalColors.current.interaction.bgNeutralSubtlePressed,
-            )
+@Composable
+private fun resolveNeutralButtonColors(type: LemonadeButtonType): LemonadeButtonColors =
+    when (type) {
+        LemonadeButtonType.Solid -> LemonadeButtonColors(
+            contentColor = LocalColors.current.content.contentPrimary,
+            solidBackgroundColor = LocalColors.current.background.bgElevated,
+            pressedBackgroundColor = LocalColors.current.interaction.bgElevatedPressed,
+        )
 
-            LemonadeButtonType.Ghost -> LemonadeButtonColors(
-                contentColor = LocalColors.current.content.contentPrimary,
-                solidBackgroundColor = Color.Transparent,
-                pressedBackgroundColor = LocalColors.current.interaction.bgNeutralSubtlePressed,
-            )
-        }
+        LemonadeButtonType.Subtle -> LemonadeButtonColors(
+            contentColor = LocalColors.current.content.contentPrimary,
+            solidBackgroundColor = LocalColors.current.background.bgNeutralSubtle,
+            pressedBackgroundColor = LocalColors.current.interaction.bgNeutralSubtlePressed,
+        )
 
-        LemonadeButtonVariant.Critical -> when (type) {
-            LemonadeButtonType.Solid -> LemonadeButtonColors(
-                contentColor = LocalColors.current.content.contentAlwaysLight,
-                solidBackgroundColor = LocalColors.current.background.bgCritical,
-                pressedBackgroundColor = LocalColors.current.interaction.bgCriticalInteractive,
-            )
+        LemonadeButtonType.Ghost -> LemonadeButtonColors(
+            contentColor = LocalColors.current.content.contentPrimary,
+            solidBackgroundColor = Color.Transparent,
+            pressedBackgroundColor = LocalColors.current.interaction.bgNeutralSubtlePressed,
+        )
+    }
 
-            LemonadeButtonType.Subtle -> LemonadeButtonColors(
-                contentColor = LocalColors.current.content.contentCritical,
-                solidBackgroundColor = LocalColors.current.background.bgCriticalSubtle,
-                pressedBackgroundColor = LocalColors.current.interaction.bgCriticalSubtleInteractive,
-            )
+@Composable
+private fun resolveCriticalButtonColors(type: LemonadeButtonType): LemonadeButtonColors =
+    when (type) {
+        LemonadeButtonType.Solid -> LemonadeButtonColors(
+            contentColor = LocalColors.current.content.contentAlwaysLight,
+            solidBackgroundColor = LocalColors.current.background.bgCritical,
+            pressedBackgroundColor = LocalColors.current.interaction.bgCriticalInteractive,
+        )
 
-            LemonadeButtonType.Ghost -> LemonadeButtonColors(
-                contentColor = LocalColors.current.content.contentCritical,
-                solidBackgroundColor = Color.Transparent,
-                pressedBackgroundColor = LocalColors.current.interaction.bgCriticalSubtlePressed,
-            )
-        }
+        LemonadeButtonType.Subtle -> LemonadeButtonColors(
+            contentColor = LocalColors.current.content.contentCritical,
+            solidBackgroundColor = LocalColors.current.background.bgCriticalSubtle,
+            pressedBackgroundColor = LocalColors.current.interaction.bgCriticalSubtleInteractive,
+        )
+
+        LemonadeButtonType.Ghost -> LemonadeButtonColors(
+            contentColor = LocalColors.current.content.contentCritical,
+            solidBackgroundColor = Color.Transparent,
+            pressedBackgroundColor = LocalColors.current.interaction.bgCriticalSubtlePressed,
+        )
     }
 
 @Composable
