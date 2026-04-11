@@ -507,17 +507,24 @@ private struct CompactLargeSearchTopBarModifier<TrailingContent: View>: ViewModi
     private let searchBarHeight: CGFloat = 56
     @State private var isSearchFocused: Bool = false
     @State private var scrollOffset: CGFloat = 0
+    @State private var initialOffset: CGFloat?
 
     /// 0 (fully expanded) to 1 (fully collapsed)
     private var collapseProgress: CGFloat {
         guard !isSearchFocused else { return 0 }
-        return min(1, max(0, scrollOffset / searchBarHeight))
+        let delta = scrollOffset - (initialOffset ?? 0)
+        return min(1, max(0, delta / searchBarHeight))
     }
 
     func body(content: Content) -> some View {
         CompactLargeBlurLayout(
             scrollableContent: AnyView(content),
-            onScrollOffsetChange: { scrollOffset = $0 }
+            onScrollOffsetChange: { offset in
+                if initialOffset == nil {
+                    initialOffset = offset
+                }
+                scrollOffset = offset
+            }
         ) {
             VStack(alignment: .leading, spacing: 0) {
                 if !isSearchFocused {
