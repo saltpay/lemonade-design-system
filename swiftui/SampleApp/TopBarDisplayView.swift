@@ -279,6 +279,9 @@ private struct CompactLargeSearchDemo: View {
         "Electronics", "Clothing", "Books", "Home & Garden",
         "Sports", "Toys", "Beauty", "Automotive",
         "Food & Beverages", "Health", "Music", "Movies",
+        "Pets", "Office", "Travel", "Jewelry",
+        "Baby", "Garden Tools", "Fitness", "Photography",
+        "Gaming", "Art Supplies", "Kitchen", "Furniture",
     ]
 
     private var filteredCategories: [String] {
@@ -287,17 +290,23 @@ private struct CompactLargeSearchDemo: View {
     }
 
     var body: some View {
-        List {
-            ForEach(filteredCategories, id: \.self) { category in
-                HStack {
-                    SwiftUI.Text(category)
-                    Spacer()
-                    LemonadeUi.Icon(
-                        icon: .chevronRight,
-                        contentDescription: nil,
-                        size: .small,
-                        tint: LemonadeTheme.colors.content.contentTertiary
-                    )
+        ScrollView {
+            LazyVStack(spacing: 0) {
+                ForEach(filteredCategories, id: \.self) { category in
+                    HStack {
+                        SwiftUI.Text(category)
+                        Spacer()
+                        LemonadeUi.Icon(
+                            icon: .chevronRight,
+                            contentDescription: nil,
+                            size: .small,
+                            tint: LemonadeTheme.colors.content.contentTertiary
+                        )
+                    }
+                    .padding(.horizontal, LemonadeSpacing.spacing400.value)
+                    .padding(.vertical, LemonadeSpacing.spacing300.value)
+
+                    LemonadeUi.HorizontalDivider()
                 }
             }
         }

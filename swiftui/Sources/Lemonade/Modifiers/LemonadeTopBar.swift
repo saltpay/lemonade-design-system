@@ -117,12 +117,85 @@ private struct SearchTopBarModifier<TrailingContent: View, BottomContent: View>:
     }
 }
 
-// MARK: - Header Height PreferenceKey
+// MARK: - PreferenceKeys
 
 private struct HeaderHeightKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
         value = nextValue()
+    }
+}
+
+// MARK: - Scroll Offset Observer
+
+/// Invisible UIKit view that finds the nearest `UIScrollView` ancestor
+/// and observes its `contentOffset` via KVO. Reports changes to SwiftUI.
+private struct ScrollOffsetObserver: UIViewRepresentable {
+    let onChange: (CGFloat) -> Void
+
+    func makeUIView(context: Context) -> ScrollOffsetObserverUIView {
+        ScrollOffsetObserverUIView(onChange: onChange)
+    }
+
+    func updateUIView(_ uiView: ScrollOffsetObserverUIView, context: Context) {}
+
+    class ScrollOffsetObserverUIView: UIView {
+        let onChange: (CGFloat) -> Void
+        private var observation: NSKeyValueObservation?
+
+        init(onChange: @escaping (CGFloat) -> Void) {
+            self.onChange = onChange
+            super.init(frame: .zero)
+            isUserInteractionEnabled = false
+        }
+
+        required init?(coder: NSCoder) { fatalError() }
+
+        override func didMoveToWindow() {
+            super.didMoveToWindow()
+            guard observation == nil, window != nil else { return }
+            // Delay slightly to let SwiftUI finish building the view hierarchy
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                self?.attachToScrollView()
+            }
+        }
+
+        private func attachToScrollView() {
+            guard observation == nil else { return }
+            // Walk up ancestors; at each level search that subtree for a UIScrollView.
+            // This finds sibling scroll views that aren't direct ancestors.
+            var current: UIView? = superview
+            while let ancestor = current {
+                if let scrollView = findScrollView(in: ancestor) {
+                    observation = scrollView.observe(\.contentOffset, options: .new) { [weak self] _, change in
+                        guard let offset = change.newValue else { return }
+                        self?.onChange(offset.y)
+                    }
+                    return
+                }
+                current = ancestor.superview
+            }
+        }
+
+        /// BFS to find the first UIScrollView in the subtree, skipping self.
+        private func findScrollView(in root: UIView) -> UIScrollView? {
+            var queue = root.subviews
+            while !queue.isEmpty {
+                let view = queue.removeFirst()
+                if view === self { continue }
+                if let scrollView = view as? UIScrollView {
+                    return scrollView
+                }
+                queue.append(contentsOf: view.subviews)
+            }
+            return nil
+        }
+
+        override func removeFromSuperview() {
+            observation?.invalidate()
+            observation = nil
+            super.removeFromSuperview()
+        }
     }
 }
 
@@ -205,6 +278,71 @@ private class VariableBlurUIView: UIVisualEffectView {
     }
 }
 
+// MARK: - Native Search Bar
+
+/// Wraps `UISearchBar` so we get the exact native iOS search appearance
+/// (capsule field, magnifying glass, cancel button) while placing it
+/// anywhere in our view hierarchy — not locked to the navigation bar.
+private struct NativeSearchBar: UIViewRepresentable {
+    @Binding var text: String
+    let placeholder: String
+    let onFocusChange: (Bool) -> Void
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(text: $text, onFocusChange: onFocusChange)
+    }
+
+    func makeUIView(context: Context) -> UISearchBar {
+        let searchBar = UISearchBar()
+        searchBar.delegate = context.coordinator
+        searchBar.placeholder = placeholder
+        searchBar.searchBarStyle = .minimal
+        searchBar.autocapitalizationType = .none
+        searchBar.autocorrectionType = .no
+        return searchBar
+    }
+
+    func updateUIView(_ uiView: UISearchBar, context: Context) {
+        if uiView.text != text {
+            uiView.text = text
+        }
+    }
+
+    class Coordinator: NSObject, UISearchBarDelegate {
+        @Binding var text: String
+        let onFocusChange: (Bool) -> Void
+
+        init(text: Binding<String>, onFocusChange: @escaping (Bool) -> Void) {
+            _text = text
+            self.onFocusChange = onFocusChange
+        }
+
+        func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+            text = searchText
+        }
+
+        func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+            searchBar.setShowsCancelButton(true, animated: true)
+            onFocusChange(true)
+        }
+
+        func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+            searchBar.setShowsCancelButton(false, animated: true)
+            onFocusChange(false)
+        }
+
+        func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+            searchBar.text = ""
+            text = ""
+            searchBar.resignFirstResponder()
+        }
+
+        func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+            searchBar.resignFirstResponder()
+        }
+    }
+}
+
 // MARK: - Compact Large TopBar Header
 
 /// Custom header row matching KMP `CompactLargeTopBarHeading` — title left, trailing slot right,
@@ -259,17 +397,35 @@ private struct CompactLargeHeader<TrailingContent: View>: View {
 
 /// Shared layout for compact-large variants: ZStack with scrollable content,
 /// progressive blur layer, and a measured header slot.
+///
 private struct CompactLargeBlurLayout<HeaderContent: View>: View {
     let scrollableContent: AnyView
+    let onScrollOffsetChange: ((CGFloat) -> Void)?
     @ViewBuilder let headerContent: () -> HeaderContent
 
     private let fadeExtension: CGFloat = 64
     @State private var headerHeight: CGFloat = 76
     @Environment(\.colorScheme) private var colorScheme
 
+    init(
+        scrollableContent: AnyView,
+        onScrollOffsetChange: ((CGFloat) -> Void)? = nil,
+        @ViewBuilder headerContent: @escaping () -> HeaderContent
+    ) {
+        self.scrollableContent = scrollableContent
+        self.onScrollOffsetChange = onScrollOffsetChange
+        self.headerContent = headerContent
+    }
+
     var body: some View {
         ZStack(alignment: .top) {
             scrollableContent
+                .overlay(alignment: .top) {
+                    if let onScrollOffsetChange {
+                        ScrollOffsetObserver(onChange: onScrollOffsetChange)
+                            .frame(width: 0, height: 0)
+                    }
+                }
                 .navigationBarHidden(true)
                 .safeAreaInset(edge: .top, spacing: 0) {
                     Color.clear.frame(height: headerHeight)
@@ -348,11 +504,21 @@ private struct CompactLargeSearchTopBarModifier<TrailingContent: View>: ViewModi
     let searchPrompt: String
     let trailingSlot: (() -> TrailingContent)?
 
+    private let searchBarHeight: CGFloat = 56
     @State private var isSearchFocused: Bool = false
-    @FocusState private var searchFieldFocused: Bool
+    @State private var scrollOffset: CGFloat = 0
+
+    /// 0 (fully expanded) to 1 (fully collapsed)
+    private var collapseProgress: CGFloat {
+        guard !isSearchFocused else { return 0 }
+        return min(1, max(0, scrollOffset / searchBarHeight))
+    }
 
     func body(content: Content) -> some View {
-        CompactLargeBlurLayout(scrollableContent: AnyView(content)) {
+        CompactLargeBlurLayout(
+            scrollableContent: AnyView(content),
+            onScrollOffsetChange: { scrollOffset = $0 }
+        ) {
             VStack(alignment: .leading, spacing: 0) {
                 if !isSearchFocused {
                     CompactLargeHeader(
@@ -364,18 +530,20 @@ private struct CompactLargeSearchTopBarModifier<TrailingContent: View>: ViewModi
                     .transition(.move(edge: .top).combined(with: .opacity))
                 }
 
-                LemonadeUi.SearchField(
-                    input: $searchInput,
-                    placeholder: searchPrompt
+                NativeSearchBar(
+                    text: $searchInput,
+                    placeholder: searchPrompt,
+                    onFocusChange: { focused in
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            isSearchFocused = focused
+                        }
+                    }
                 )
-                .focused($searchFieldFocused)
-                .padding(.horizontal, LemonadeSpacing.spacing400.value)
-                .padding(.vertical, LemonadeSpacing.spacing300.value)
+                .padding(.horizontal, LemonadeSpacing.spacing200.value)
+                .frame(height: searchBarHeight * (1 - collapseProgress))
+                .clipped()
+                .opacity(1 - collapseProgress)
             }
-            .animation(.easeInOut(duration: 0.25), value: isSearchFocused)
-        }
-        .onChange(of: searchFieldFocused) { focused in
-            isSearchFocused = focused
         }
     }
 }
