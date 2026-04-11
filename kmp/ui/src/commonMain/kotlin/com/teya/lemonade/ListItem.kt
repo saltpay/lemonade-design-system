@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -63,6 +64,7 @@ import com.teya.lemonade.core.TagVoice
  * @param checked - Flag defining if item is selected or not.
  * @param onItemClicked - Callback that is triggered on click interaction with list item.
  * @param modifier - [Modifier] to be applied to the base container of component.
+ * @param isLoading - Shows a skeleton loading placeholder instead of content.
  * @param enabled - Flag that defines if the component is enabled or not. If disabled, click interactions
  *  and visual states are disabled.
  * @param interactionSource - Selection list item [MutableInteractionSource] for interaction events.
@@ -184,6 +186,7 @@ public fun LemonadeUi.SelectListItem(
  * @param addonSlot - slot to be displayed below the [value] parameter.
  * @param interactionSource - [MutableInteractionSource] of the component.
  * @param onItemClicked - callback called when component is tapped.
+ * @param isLoading - shows a skeleton loading placeholder instead of content.
  * @param enabled - flag to define if the component is enabled or not. If disabled, click interactions
  *  and visual states are disabled.
  * @param supportText - [String] to be displayed as support text.
@@ -494,6 +497,7 @@ private fun CoreListItem(
                         Modifier
                     },
                 ).background(color = animatedBackgroundColor)
+                .defaultMinSize(minHeight = LocalSizes.current.size1200)
                 .padding(
                     horizontal = LocalSpaces.current.spacing300,
                     vertical = LocalSpaces.current.spacing300,
@@ -545,9 +549,12 @@ private fun CoreListItem(
                             icon = LemonadeIcons.ChevronRight,
                             tint = LocalColors.current.content.contentTertiary,
                             size = LemonadeAssetSize.Medium,
-                            contentDescription = "Navigation indicator",
+                            contentDescription = null,
                             modifier = Modifier
-                                .alpha(alpha = 0.5f)
+                                .alpha(
+                                    alpha = if (enabled) 0.5f
+                                    else 0.5f * LocalOpacities.current.state.opacityDisabled,
+                                )
                                 .padding(start = LocalSpaces.current.spacing100),
                         )
                     }

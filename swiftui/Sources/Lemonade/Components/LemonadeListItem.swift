@@ -45,6 +45,7 @@ extension LemonadeUi {
     ///   - supportText: Optional support text displayed below the label
     ///   - voice: LemonadeListItemVoice to define tone of voice
     ///   - navigationIndicator: Shows a chevron-right navigation indicator
+    ///   - isLoading: Shows a skeleton loading placeholder instead of content
     ///   - enabled: Flag to define if component is enabled
     ///   - showDivider: Flag to show a divider below the list item
     ///   - onListItemClick: Optional callback triggered on click interaction
@@ -194,11 +195,11 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
                     if navigationIndicator {
                         LemonadeUi.Icon(
                             icon: .chevronRight,
-                            contentDescription: "Navigation indicator",
+                            contentDescription: nil,
                             size: .medium,
                             tint: LemonadeTheme.colors.content.contentTertiary
                         )
-                        .opacity(0.5)
+                        .opacity(enabled ? 0.5 : 0.5 * LemonadeTheme.opacity.state.opacityDisabled)
                         .padding(.leading, LemonadeTheme.spaces.spacing100)
                     }
                 }
@@ -206,6 +207,7 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
         }
         .padding(.horizontal, LemonadeTheme.spaces.spacing300)
         .padding(.vertical, LemonadeTheme.spaces.spacing300)
+        .frame(minHeight: LemonadeTheme.sizes.size1200)
     }
 }
 
