@@ -444,7 +444,6 @@ private fun LemonadeLabeledRadioButtonPreview(
     @PreviewParameter(ButtonPreviewProvider::class)
     previewData: ButtonPreviewData,
 ) {
-    @OptIn(ExperimentalLemonadeComponent::class)
     LemonadeUi.Button(
         label = "Label",
         onClick = { /* Nothing */ },
