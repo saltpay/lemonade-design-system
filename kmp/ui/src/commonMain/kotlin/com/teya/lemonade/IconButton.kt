@@ -22,10 +22,10 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import com.teya.lemonade.core.LemonadeAssetSize
-import com.teya.lemonade.core.LemonadeIconButtonShape
-import com.teya.lemonade.core.LemonadeIconButtonSize
 import com.teya.lemonade.core.LemonadeButtonType
 import com.teya.lemonade.core.LemonadeButtonVariant
+import com.teya.lemonade.core.LemonadeIconButtonShape
+import com.teya.lemonade.core.LemonadeIconButtonSize
 import com.teya.lemonade.core.LemonadeIcons
 
 /**
@@ -120,16 +120,14 @@ private fun CoreIconButton(
                 } else {
                     Modifier
                 },
-            )
-            .clip(shape = sizeData.shape)
+            ).clip(shape = sizeData.shape)
             .clickable(
                 onClick = onClick,
                 role = Role.Button,
                 interactionSource = interactionSource,
                 indication = LocalEffects.current.interactionIndication,
                 enabled = enabled && !loading,
-            )
-            .background(color = animatedBackgroundColor)
+            ).background(color = animatedBackgroundColor)
             .padding(all = sizeData.innerPaddings),
     ) {
         if (loading) {
@@ -161,8 +159,8 @@ private data class IconButtonColorData(
 private fun resolveColors(
     variant: LemonadeButtonVariant,
     type: LemonadeButtonType,
-): IconButtonColorData {
-    return when (variant) {
+): IconButtonColorData =
+    when (variant) {
         LemonadeButtonVariant.Primary -> when (type) {
             LemonadeButtonType.Solid -> IconButtonColorData(
                 backgroundColor = LocalColors.current.background.bgBrand,
@@ -247,7 +245,6 @@ private fun resolveColors(
             )
         }
     }
-}
 
 // MARK: - Size Data
 
@@ -259,10 +256,8 @@ private data class IconButtonSizeData(
 )
 
 @Composable
-private fun LemonadeIconButtonSize.toSizeData(
-    shape: LemonadeIconButtonShape,
-): IconButtonSizeData {
-    return when (this) {
+private fun LemonadeIconButtonSize.toSizeData(shape: LemonadeIconButtonShape): IconButtonSizeData =
+    when (this) {
         LemonadeIconButtonSize.Large -> IconButtonSizeData(
             iconSize = LemonadeAssetSize.Large,
             spinnerSize = LemonadeAssetSize.Small,
@@ -284,15 +279,13 @@ private fun LemonadeIconButtonSize.toSizeData(
             shape = shape.resolveShape(roundedShape = LocalShapes.current.radius300),
         )
     }
-}
 
 @Composable
-private fun LemonadeIconButtonShape.resolveShape(roundedShape: Shape): Shape {
-    return when (this) {
+private fun LemonadeIconButtonShape.resolveShape(roundedShape: Shape): Shape =
+    when (this) {
         LemonadeIconButtonShape.Rounded -> roundedShape
         LemonadeIconButtonShape.Circular -> LocalShapes.current.radiusFull
     }
-}
 
 // MARK: - Previews
 
@@ -306,8 +299,8 @@ private data class IconButtonPreviewData(
 private class IconButtonPreviewProvider : PreviewParameterProvider<IconButtonPreviewData> {
     override val values: Sequence<IconButtonPreviewData> = buildAllVariants()
 
-    private fun buildAllVariants(): Sequence<IconButtonPreviewData> {
-        return buildList {
+    private fun buildAllVariants(): Sequence<IconButtonPreviewData> =
+        buildList {
             listOf(true, false).forEach { enabled ->
                 LemonadeIconButtonSize.entries.forEach { size ->
                     LemonadeButtonVariant.entries.forEach { variant ->
@@ -325,7 +318,6 @@ private class IconButtonPreviewProvider : PreviewParameterProvider<IconButtonPre
                 }
             }
         }.asSequence()
-    }
 }
 
 @Composable

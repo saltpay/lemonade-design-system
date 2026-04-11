@@ -244,8 +244,8 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
 private fun resolveButtonColors(
     variant: LemonadeButtonVariant,
     type: LemonadeButtonType,
-): LemonadeButtonColors {
-    return when (variant) {
+): LemonadeButtonColors =
+    when (variant) {
         LemonadeButtonVariant.Primary -> when (type) {
             LemonadeButtonType.Solid -> LemonadeButtonColors(
                 contentColor = LocalColors.current.content.contentOnBrandHigh,
@@ -326,7 +326,6 @@ private fun resolveButtonColors(
             )
         }
     }
-}
 
 @Composable
 private fun CoreButton(
@@ -407,8 +406,8 @@ private data class ButtonPreviewData(
 private class ButtonPreviewProvider : PreviewParameterProvider<ButtonPreviewData> {
     override val values: Sequence<ButtonPreviewData> = buildAllVariants()
 
-    private fun buildAllVariants(): Sequence<ButtonPreviewData> {
-        return buildList {
+    private fun buildAllVariants(): Sequence<ButtonPreviewData> =
+        buildList {
             LemonadeButtonSize.entries.forEach { size ->
                 LemonadeButtonVariant.entries.forEach { variant ->
                     LemonadeButtonType.entries.forEach { type ->
@@ -435,7 +434,6 @@ private class ButtonPreviewProvider : PreviewParameterProvider<ButtonPreviewData
                 }
             }
         }.asSequence()
-    }
 }
 
 @LemonadePreview

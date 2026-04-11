@@ -27,7 +27,7 @@ internal fun ButtonDisplay() {
     SampleScreenDisplayColumn("Button", itemsSpacing = LemonadeTheme.spaces.spacing600) {
         LemonadeButtonVariant.entries.forEach { variant ->
             LemonadeButtonType.entries.forEach { type ->
-                ButtonSection(title = "${variant}+${type}") {
+                ButtonSection(title = "$variant+$type") {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(
                             space = LemonadeTheme.spaces.spacing300,
@@ -193,8 +193,8 @@ private fun ButtonSection(
     }
 }
 
-private fun getButtonLeadingIcon(variant: LemonadeButtonVariant = LemonadeButtonVariant.Primary): LemonadeIcons {
-    return when (variant) {
+private fun getButtonLeadingIcon(variant: LemonadeButtonVariant = LemonadeButtonVariant.Primary): LemonadeIcons =
+    when (variant) {
         LemonadeButtonVariant.Primary,
         LemonadeButtonVariant.Secondary,
         LemonadeButtonVariant.Neutral,
@@ -202,4 +202,3 @@ private fun getButtonLeadingIcon(variant: LemonadeButtonVariant = LemonadeButton
 
         LemonadeButtonVariant.Critical -> LemonadeIcons.Trash
     }
-}
