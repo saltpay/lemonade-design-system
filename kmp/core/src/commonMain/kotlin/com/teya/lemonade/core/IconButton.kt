@@ -13,6 +13,13 @@ public enum class LemonadeButtonType {
     Ghost,
 }
 
+public enum class LemonadeButtonSize {
+    XSmall,
+    Small,
+    Medium,
+    Large,
+}
+
 public enum class LemonadeIconButtonShape {
     Rounded,
     Circular,
