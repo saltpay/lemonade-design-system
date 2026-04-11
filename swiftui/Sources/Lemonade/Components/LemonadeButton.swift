@@ -186,16 +186,16 @@ public extension LemonadeUi {
 
 public struct LemonadeButtonColors {
     public let contentColor: Color
-    public let solidBackgroundColor: Color
+    public let backgroundColor: Color
     public let pressedBackgroundColor: Color
 
     internal init(
         contentColor: Color,
-        solidBackgroundColor: Color,
+        backgroundColor: Color,
         pressedBackgroundColor: Color
     ) {
         self.contentColor = contentColor
-        self.solidBackgroundColor = solidBackgroundColor
+        self.backgroundColor = backgroundColor
         self.pressedBackgroundColor = pressedBackgroundColor
     }
 }
@@ -267,19 +267,19 @@ private func resolveButtonColors(
     case (.primary, .solid):
         return LemonadeButtonColors(
             contentColor: LemonadeTheme.colors.content.contentOnBrandHigh,
-            solidBackgroundColor: LemonadeTheme.colors.background.bgBrand,
+            backgroundColor: LemonadeTheme.colors.background.bgBrand,
             pressedBackgroundColor: LemonadeTheme.colors.interaction.bgBrandInteractive
         )
     case (.primary, .subtle):
         return LemonadeButtonColors(
             contentColor: LemonadeTheme.colors.content.contentBrandHigh,
-            solidBackgroundColor: LemonadeTheme.colors.background.bgBrandSubtle,
+            backgroundColor: LemonadeTheme.colors.background.bgBrandSubtle,
             pressedBackgroundColor: LemonadeTheme.colors.interaction.bgSubtlePressed
         )
     case (.primary, .ghost):
         return LemonadeButtonColors(
             contentColor: LemonadeTheme.colors.content.contentBrandHigh,
-            solidBackgroundColor: Color.clear,
+            backgroundColor: Color.clear,
             pressedBackgroundColor: LemonadeTheme.colors.interaction.bgSubtlePressed
         )
 
@@ -287,19 +287,19 @@ private func resolveButtonColors(
     case (.secondary, .solid):
         return LemonadeButtonColors(
             contentColor: LemonadeTheme.colors.content.contentPrimaryInverse,
-            solidBackgroundColor: LemonadeTheme.colors.background.bgSubtleInverse,
+            backgroundColor: LemonadeTheme.colors.background.bgSubtleInverse,
             pressedBackgroundColor: LemonadeTheme.colors.interaction.bgNeutralPressed
         )
     case (.secondary, .subtle):
         return LemonadeButtonColors(
             contentColor: LemonadeTheme.colors.content.contentPrimary,
-            solidBackgroundColor: LemonadeTheme.colors.background.bgNeutralSubtle,
+            backgroundColor: LemonadeTheme.colors.background.bgNeutralSubtle,
             pressedBackgroundColor: LemonadeTheme.colors.interaction.bgNeutralSubtlePressed
         )
     case (.secondary, .ghost):
         return LemonadeButtonColors(
             contentColor: LemonadeTheme.colors.content.contentPrimary,
-            solidBackgroundColor: Color.clear,
+            backgroundColor: Color.clear,
             pressedBackgroundColor: LemonadeTheme.colors.interaction.bgNeutralSubtlePressed
         )
 
@@ -307,19 +307,19 @@ private func resolveButtonColors(
     case (.neutral, .solid):
         return LemonadeButtonColors(
             contentColor: LemonadeTheme.colors.content.contentPrimary,
-            solidBackgroundColor: LemonadeTheme.colors.background.bgElevated,
+            backgroundColor: LemonadeTheme.colors.background.bgElevated,
             pressedBackgroundColor: LemonadeTheme.colors.interaction.bgElevatedPressed
         )
     case (.neutral, .subtle):
         return LemonadeButtonColors(
             contentColor: LemonadeTheme.colors.content.contentPrimary,
-            solidBackgroundColor: LemonadeTheme.colors.background.bgNeutralSubtle,
+            backgroundColor: LemonadeTheme.colors.background.bgNeutralSubtle,
             pressedBackgroundColor: LemonadeTheme.colors.interaction.bgNeutralSubtlePressed
         )
     case (.neutral, .ghost):
         return LemonadeButtonColors(
             contentColor: LemonadeTheme.colors.content.contentPrimary,
-            solidBackgroundColor: Color.clear,
+            backgroundColor: Color.clear,
             pressedBackgroundColor: LemonadeTheme.colors.interaction.bgNeutralSubtlePressed
         )
 
@@ -327,19 +327,19 @@ private func resolveButtonColors(
     case (.critical, .solid):
         return LemonadeButtonColors(
             contentColor: LemonadeTheme.colors.content.contentAlwaysLight,
-            solidBackgroundColor: LemonadeTheme.colors.background.bgCritical,
+            backgroundColor: LemonadeTheme.colors.background.bgCritical,
             pressedBackgroundColor: LemonadeTheme.colors.interaction.bgCriticalInteractive
         )
     case (.critical, .subtle):
         return LemonadeButtonColors(
             contentColor: LemonadeTheme.colors.content.contentCritical,
-            solidBackgroundColor: LemonadeTheme.colors.background.bgCriticalSubtle,
+            backgroundColor: LemonadeTheme.colors.background.bgCriticalSubtle,
             pressedBackgroundColor: LemonadeTheme.colors.interaction.bgCriticalSubtleInteractive
         )
     case (.critical, .ghost):
         return LemonadeButtonColors(
             contentColor: LemonadeTheme.colors.content.contentCritical,
-            solidBackgroundColor: Color.clear,
+            backgroundColor: Color.clear,
             pressedBackgroundColor: LemonadeTheme.colors.interaction.bgCriticalSubtlePressed
         )
     }
@@ -362,15 +362,10 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
 
     @State private var isPressed = false
 
-    private var colors: LemonadeButtonColors {
-        resolveButtonColors(variant: variant, type: type)
-    }
-
-    private var backgroundColor: Color {
-        isPressed ? colors.pressedBackgroundColor : colors.solidBackgroundColor
-    }
-
     var body: some View {
+        let colors = resolveButtonColors(variant: variant, type: type)
+        let bgColor: Color = isPressed ? colors.pressedBackgroundColor : colors.backgroundColor
+
         SwiftUI.Button(action: onClick) {
             HStack(spacing: 0) {
                 if !loading, let leadingSlot = leadingSlot {
@@ -396,7 +391,7 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
             .frame(minWidth: size.contentData.minWidth)
             .background(
                 RoundedRectangle(cornerRadius: size.contentData.cornerRadius)
-                    .fill(backgroundColor)
+                    .fill(bgColor)
             )
             .clipShape(RoundedRectangle(cornerRadius: size.contentData.cornerRadius))
         }
