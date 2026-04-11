@@ -552,10 +552,12 @@ private fun CoreListItem(
                             contentDescription = null,
                             modifier = Modifier
                                 .alpha(
-                                    alpha = if (enabled) 0.5f
-                                    else 0.5f * LocalOpacities.current.state.opacityDisabled,
-                                )
-                                .padding(start = LocalSpaces.current.spacing100),
+                                    alpha = if (enabled) {
+                                        0.5f
+                                    } else {
+                                        0.5f * LocalOpacities.current.state.opacityDisabled
+                                    },
+                                ).padding(start = LocalSpaces.current.spacing100),
                         )
                     }
                 }
