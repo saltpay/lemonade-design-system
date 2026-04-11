@@ -1,17 +1,5 @@
 import SwiftUI
 
-// MARK: - Button Variant
-
-/// Button variants following the Lemonade Design System.
-public enum LemonadeButtonVariant {
-    case primary
-    case secondary
-    case neutral
-    case critical
-    case criticalSolid
-    case special
-}
-
 // MARK: - Button Size
 
 /// Button sizes following the Lemonade Design System.
@@ -48,6 +36,7 @@ public extension LemonadeUi {
     ///   - leadingIcon: LemonadeIcon shown before the label
     ///   - trailingIcon: LemonadeIcon shown after the label
     ///   - variant: LemonadeButtonVariant to style the Button accordingly
+    ///   - type: LemonadeButtonType for the fill treatment (solid, subtle, ghost)
     ///   - size: LemonadeButtonSize to size the Button accordingly
     ///   - enabled: Boolean flag to enable or disable the Button
     ///   - loading: Boolean flag to show a loading spinner and disable interaction. Unlike `enabled`, loading keeps full opacity.
@@ -59,6 +48,7 @@ public extension LemonadeUi {
         leadingIcon: LemonadeIcon? = nil,
         trailingIcon: LemonadeIcon? = nil,
         variant: LemonadeButtonVariant = .primary,
+        type: LemonadeButtonType = .solid,
         size: LemonadeButtonSize = .large,
         enabled: Bool = true,
         loading: Bool = false
@@ -69,6 +59,7 @@ public extension LemonadeUi {
             leadingIcon: leadingIcon,
             trailingIcon: trailingIcon,
             variant: variant,
+            type: type,
             size: size,
             enabled: enabled,
             loading: loading
@@ -104,6 +95,7 @@ public extension LemonadeUi {
     ///   - trailingSlot: Custom view builder for the trailing area, receives LemonadeButtonColors
     ///   - expandContents: When true, the content area expands to fill available space between slots
     ///   - variant: LemonadeButtonVariant to style the Button accordingly
+    ///   - type: LemonadeButtonType for the fill treatment (solid, subtle, ghost)
     ///   - size: LemonadeButtonSize to size the Button accordingly
     ///   - enabled: Boolean flag to enable or disable the Button
     ///   - loading: Boolean flag to show a loading spinner and disable interaction
@@ -116,6 +108,7 @@ public extension LemonadeUi {
         @ViewBuilder trailingSlot: @escaping (LemonadeButtonColors) -> TrailingSlot,
         expandContents: Bool = false,
         variant: LemonadeButtonVariant = .primary,
+        type: LemonadeButtonType = .solid,
         size: LemonadeButtonSize = .large,
         enabled: Bool = true,
         loading: Bool = false
@@ -124,6 +117,7 @@ public extension LemonadeUi {
             label: label,
             onClick: onClick,
             variant: variant,
+            type: type,
             size: size,
             enabled: enabled,
             loading: loading,
@@ -141,6 +135,7 @@ public extension LemonadeUi {
         @ViewBuilder trailingSlot: @escaping (LemonadeButtonColors) -> TrailingSlot,
         expandContents: Bool = false,
         variant: LemonadeButtonVariant = .primary,
+        type: LemonadeButtonType = .solid,
         size: LemonadeButtonSize = .large,
         enabled: Bool = true,
         loading: Bool = false
@@ -149,6 +144,7 @@ public extension LemonadeUi {
             label: label,
             onClick: onClick,
             variant: variant,
+            type: type,
             size: size,
             enabled: enabled,
             loading: loading,
@@ -166,6 +162,7 @@ public extension LemonadeUi {
         @ViewBuilder leadingSlot: @escaping (LemonadeButtonColors) -> LeadingSlot,
         expandContents: Bool = false,
         variant: LemonadeButtonVariant = .primary,
+        type: LemonadeButtonType = .solid,
         size: LemonadeButtonSize = .large,
         enabled: Bool = true,
         loading: Bool = false
@@ -174,6 +171,7 @@ public extension LemonadeUi {
             label: label,
             onClick: onClick,
             variant: variant,
+            type: type,
             size: size,
             enabled: enabled,
             loading: loading,
@@ -190,18 +188,15 @@ public struct LemonadeButtonColors {
     public let contentColor: Color
     public let solidBackgroundColor: Color
     public let pressedBackgroundColor: Color
-    public let brushBackgroundColors: [Color]?
 
     internal init(
         contentColor: Color,
         solidBackgroundColor: Color,
-        pressedBackgroundColor: Color,
-        brushBackgroundColors: [Color]? = nil
+        pressedBackgroundColor: Color
     ) {
         self.contentColor = contentColor
         self.solidBackgroundColor = solidBackgroundColor
         self.pressedBackgroundColor = pressedBackgroundColor
-        self.brushBackgroundColors = brushBackgroundColors
     }
 }
 
@@ -261,52 +256,92 @@ private extension LemonadeButtonSize {
     }
 }
 
-// MARK: - Button Variant Extension
+// MARK: - Button Color Resolution (Variant x Type)
 
-private extension LemonadeButtonVariant {
-    var variantData: LemonadeButtonColors {
-        switch self {
-        case .primary:
-            return LemonadeButtonColors(
-                contentColor: LemonadeTheme.colors.content.contentOnBrandHigh,
-                solidBackgroundColor: LemonadeTheme.colors.background.bgBrand,
-                pressedBackgroundColor: LemonadeTheme.colors.interaction.bgBrandInteractive
-            )
-        case .secondary:
-            return LemonadeButtonColors(
-                contentColor: LemonadeTheme.colors.content.contentPrimaryInverse,
-                solidBackgroundColor: LemonadeTheme.colors.background.bgSubtleInverse,
-                pressedBackgroundColor: LemonadeTheme.colors.interaction.bgNeutralPressed
-            )
-        case .neutral:
-            return LemonadeButtonColors(
-                contentColor: LemonadeTheme.colors.content.contentPrimary,
-                solidBackgroundColor: LemonadeTheme.colors.background.bgElevated,
-                pressedBackgroundColor: LemonadeTheme.colors.interaction.bgElevatedPressed
-            )
-        case .critical:
-            return LemonadeButtonColors(
-                contentColor: LemonadeTheme.colors.content.contentCritical,
-                solidBackgroundColor: LemonadeTheme.colors.background.bgCriticalSubtle,
-                pressedBackgroundColor: LemonadeTheme.colors.interaction.bgCriticalSubtleInteractive
-            )
-        case .criticalSolid:
-            return LemonadeButtonColors(
-                contentColor: LemonadeTheme.colors.content.contentAlwaysLight,
-                solidBackgroundColor: LemonadeTheme.colors.background.bgCritical,
-                pressedBackgroundColor: LemonadeTheme.colors.interaction.bgCriticalInteractive
-            )
-        case .special:
-            return LemonadeButtonColors(
-                contentColor: LemonadeTheme.colors.content.contentOnBrandHigh,
-                solidBackgroundColor: LemonadeTheme.colors.background.bgBrand,
-                pressedBackgroundColor: LemonadeTheme.colors.interaction.bgBrandInteractive,
-                brushBackgroundColors: [
-                    LemonadeTheme.colors.background.bgBrandElevated,
-                    LemonadeTheme.colors.background.bgBrandElevated.opacity(0)
-                ]
-            )
-        }
+private func resolveButtonColors(
+    variant: LemonadeButtonVariant,
+    type: LemonadeButtonType
+) -> LemonadeButtonColors {
+    switch (variant, type) {
+    // MARK: Primary
+    case (.primary, .solid):
+        return LemonadeButtonColors(
+            contentColor: LemonadeTheme.colors.content.contentOnBrandHigh,
+            solidBackgroundColor: LemonadeTheme.colors.background.bgBrand,
+            pressedBackgroundColor: LemonadeTheme.colors.interaction.bgBrandInteractive
+        )
+    case (.primary, .subtle):
+        return LemonadeButtonColors(
+            contentColor: LemonadeTheme.colors.content.contentBrandHigh,
+            solidBackgroundColor: LemonadeTheme.colors.background.bgBrandSubtle,
+            pressedBackgroundColor: LemonadeTheme.colors.interaction.bgSubtlePressed
+        )
+    case (.primary, .ghost):
+        return LemonadeButtonColors(
+            contentColor: LemonadeTheme.colors.content.contentBrandHigh,
+            solidBackgroundColor: Color.clear,
+            pressedBackgroundColor: LemonadeTheme.colors.interaction.bgSubtlePressed
+        )
+
+    // MARK: Secondary
+    case (.secondary, .solid):
+        return LemonadeButtonColors(
+            contentColor: LemonadeTheme.colors.content.contentPrimaryInverse,
+            solidBackgroundColor: LemonadeTheme.colors.background.bgSubtleInverse,
+            pressedBackgroundColor: LemonadeTheme.colors.interaction.bgNeutralPressed
+        )
+    case (.secondary, .subtle):
+        return LemonadeButtonColors(
+            contentColor: LemonadeTheme.colors.content.contentPrimary,
+            solidBackgroundColor: LemonadeTheme.colors.background.bgNeutralSubtle,
+            pressedBackgroundColor: LemonadeTheme.colors.interaction.bgNeutralSubtlePressed
+        )
+    case (.secondary, .ghost):
+        return LemonadeButtonColors(
+            contentColor: LemonadeTheme.colors.content.contentPrimary,
+            solidBackgroundColor: Color.clear,
+            pressedBackgroundColor: LemonadeTheme.colors.interaction.bgNeutralSubtlePressed
+        )
+
+    // MARK: Neutral
+    case (.neutral, .solid):
+        return LemonadeButtonColors(
+            contentColor: LemonadeTheme.colors.content.contentPrimary,
+            solidBackgroundColor: LemonadeTheme.colors.background.bgElevated,
+            pressedBackgroundColor: LemonadeTheme.colors.interaction.bgElevatedPressed
+        )
+    case (.neutral, .subtle):
+        return LemonadeButtonColors(
+            contentColor: LemonadeTheme.colors.content.contentPrimary,
+            solidBackgroundColor: LemonadeTheme.colors.background.bgNeutralSubtle,
+            pressedBackgroundColor: LemonadeTheme.colors.interaction.bgNeutralSubtlePressed
+        )
+    case (.neutral, .ghost):
+        return LemonadeButtonColors(
+            contentColor: LemonadeTheme.colors.content.contentPrimary,
+            solidBackgroundColor: Color.clear,
+            pressedBackgroundColor: LemonadeTheme.colors.interaction.bgNeutralSubtlePressed
+        )
+
+    // MARK: Critical
+    case (.critical, .solid):
+        return LemonadeButtonColors(
+            contentColor: LemonadeTheme.colors.content.contentAlwaysLight,
+            solidBackgroundColor: LemonadeTheme.colors.background.bgCritical,
+            pressedBackgroundColor: LemonadeTheme.colors.interaction.bgCriticalInteractive
+        )
+    case (.critical, .subtle):
+        return LemonadeButtonColors(
+            contentColor: LemonadeTheme.colors.content.contentCritical,
+            solidBackgroundColor: LemonadeTheme.colors.background.bgCriticalSubtle,
+            pressedBackgroundColor: LemonadeTheme.colors.interaction.bgCriticalSubtleInteractive
+        )
+    case (.critical, .ghost):
+        return LemonadeButtonColors(
+            contentColor: LemonadeTheme.colors.content.contentCritical,
+            solidBackgroundColor: Color.clear,
+            pressedBackgroundColor: LemonadeTheme.colors.interaction.bgCriticalSubtlePressed
+        )
     }
 }
 
@@ -316,6 +351,7 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
     let label: String
     let onClick: () -> Void
     let variant: LemonadeButtonVariant
+    let type: LemonadeButtonType
     let size: LemonadeButtonSize
     let enabled: Bool
     let loading: Bool
@@ -327,7 +363,7 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
     @State private var isPressed = false
 
     private var colors: LemonadeButtonColors {
-        variant.variantData
+        resolveButtonColors(variant: variant, type: type)
     }
 
     private var backgroundColor: Color {
@@ -359,21 +395,8 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
             .frame(height: size.contentData.requiredHeight)
             .frame(minWidth: size.contentData.minWidth)
             .background(
-                ZStack {
-                    RoundedRectangle(cornerRadius: size.contentData.cornerRadius)
-                        .fill(backgroundColor)
-
-                    if let gradientColors = colors.brushBackgroundColors {
-                        RoundedRectangle(cornerRadius: size.contentData.cornerRadius)
-                            .fill(
-                                LinearGradient(
-                                    colors: gradientColors,
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
-                    }
-                }
+                RoundedRectangle(cornerRadius: size.contentData.cornerRadius)
+                    .fill(backgroundColor)
             )
             .clipShape(RoundedRectangle(cornerRadius: size.contentData.cornerRadius))
         }
@@ -404,6 +427,7 @@ private struct LemonadeButtonView: View {
     let leadingIcon: LemonadeIcon?
     let trailingIcon: LemonadeIcon?
     let variant: LemonadeButtonVariant
+    let type: LemonadeButtonType
     let size: LemonadeButtonSize
     let enabled: Bool
     let loading: Bool
@@ -413,6 +437,7 @@ private struct LemonadeButtonView: View {
             label: label,
             onClick: onClick,
             variant: variant,
+            type: type,
             size: size,
             enabled: enabled,
             loading: loading,
@@ -463,6 +488,7 @@ private struct LemonadeSlotButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
     let label: String
     let onClick: () -> Void
     let variant: LemonadeButtonVariant
+    let type: LemonadeButtonType
     let size: LemonadeButtonSize
     let enabled: Bool
     let loading: Bool
@@ -475,6 +501,7 @@ private struct LemonadeSlotButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
             label: label,
             onClick: onClick,
             variant: variant,
+            type: type,
             size: size,
             enabled: enabled,
             loading: loading,
@@ -529,12 +556,6 @@ struct LemonadeButton_Previews: PreviewProvider {
                 label: "Critical",
                 onClick: {},
                 variant: .critical
-            )
-
-            LemonadeUi.Button(
-                label: "Special",
-                onClick: {},
-                variant: .special
             )
 
             // With icons

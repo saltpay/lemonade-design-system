@@ -1,19 +1,19 @@
 import SwiftUI
 
-// MARK: - Icon Button Variant
+// MARK: - Button Variant (shared)
 
-/// Color variants for the icon button, determining the color palette.
-public enum LemonadeIconButtonVariant {
+/// Color variants for buttons, determining the color palette.
+public enum LemonadeButtonVariant {
     case primary
     case secondary
     case neutral
     case critical
 }
 
-// MARK: - Icon Button Type
+// MARK: - Button Type (shared)
 
-/// Fill treatment for the icon button.
-public enum LemonadeIconButtonType {
+/// Fill treatment for buttons.
+public enum LemonadeButtonType {
     case solid
     case subtle
     case ghost
@@ -55,8 +55,8 @@ public extension LemonadeUi {
     ///   - contentDescription: String content description for accessibility
     ///   - onClick: Callback to be invoked when the Button is clicked
     ///   - enabled: Boolean flag to enable or disable the Button
-    ///   - variant: LemonadeIconButtonVariant for the color palette (primary, secondary, neutral, critical)
-    ///   - type: LemonadeIconButtonType for the fill treatment (solid, subtle, ghost)
+    ///   - variant: LemonadeButtonVariant for the color palette (primary, secondary, neutral, critical)
+    ///   - type: LemonadeButtonType for the fill treatment (solid, subtle, ghost)
     ///   - size: LemonadeIconButtonSize to size the Button accordingly
     ///   - loading: Boolean flag to show a loading spinner
     ///   - shape: LemonadeIconButtonShape for the button shape (rounded, circular)
@@ -67,8 +67,8 @@ public extension LemonadeUi {
         contentDescription: String?,
         onClick: @escaping () -> Void,
         enabled: Bool = true,
-        variant: LemonadeIconButtonVariant = .neutral,
-        type: LemonadeIconButtonType = .subtle,
+        variant: LemonadeButtonVariant = .neutral,
+        type: LemonadeButtonType = .subtle,
         size: LemonadeIconButtonSize = .medium,
         loading: Bool = false,
         shape: LemonadeIconButtonShape = .rounded
@@ -134,8 +134,8 @@ private extension LemonadeIconButtonSize {
 // MARK: - Color Resolution (Variant x Type)
 
 private func resolveColors(
-    variant: LemonadeIconButtonVariant,
-    type: LemonadeIconButtonType
+    variant: LemonadeButtonVariant,
+    type: LemonadeButtonType
 ) -> LemonadeIconButtonColors {
     switch (variant, type) {
     // MARK: Primary
@@ -239,8 +239,8 @@ private struct LemonadeIconButtonView: View {
     let contentDescription: String?
     let onClick: () -> Void
     let enabled: Bool
-    let variant: LemonadeIconButtonVariant
-    let type: LemonadeIconButtonType
+    let variant: LemonadeButtonVariant
+    let type: LemonadeButtonType
     let size: LemonadeIconButtonSize
     let loading: Bool
     let shape: LemonadeIconButtonShape
@@ -407,8 +407,8 @@ struct LemonadeIconButton_Previews: PreviewProvider {
 
     private static func previewSection(
         title: String,
-        variant: LemonadeIconButtonVariant,
-        type: LemonadeIconButtonType
+        variant: LemonadeButtonVariant,
+        type: LemonadeButtonType
     ) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             SwiftUI.Text(title).font(.caption).foregroundColor(.secondary)

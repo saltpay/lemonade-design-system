@@ -73,14 +73,6 @@ struct SpinnerDisplayView: View {
                             loading: true
                         )
                         .frame(maxWidth: .infinity)
-
-                        LemonadeUi.Button(
-                            label: "Special",
-                            onClick: { },
-                            variant: .special,
-                            loading: true
-                        )
-                        .frame(maxWidth: .infinity)
                     }
                 }
             }

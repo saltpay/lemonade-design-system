@@ -160,8 +160,8 @@ struct IconButtonDisplayView: View {
 
     private func sizesRow(
         icon: LemonadeIcon,
-        variant: LemonadeIconButtonVariant,
-        type: LemonadeIconButtonType
+        variant: LemonadeButtonVariant,
+        type: LemonadeButtonType
     ) -> some View {
         VStack(spacing: 16) {
             HStack(spacing: 12) {
