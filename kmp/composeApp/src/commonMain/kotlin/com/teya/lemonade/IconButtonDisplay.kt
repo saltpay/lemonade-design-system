@@ -12,10 +12,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonType
 import com.teya.lemonade.core.LemonadeButtonVariant
 import com.teya.lemonade.core.LemonadeIconButtonShape
-import com.teya.lemonade.core.LemonadeIconButtonSize
 import com.teya.lemonade.core.LemonadeIcons
 
 @Suppress("LongMethod")
@@ -206,7 +206,7 @@ private fun SizesRow(
         horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing400),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        LemonadeIconButtonSize.entries.forEach { size ->
+        LemonadeButtonSize.entries.forEach { size ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),

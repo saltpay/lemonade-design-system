@@ -22,10 +22,10 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import com.teya.lemonade.core.LemonadeAssetSize
+import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonType
 import com.teya.lemonade.core.LemonadeButtonVariant
 import com.teya.lemonade.core.LemonadeIconButtonShape
-import com.teya.lemonade.core.LemonadeIconButtonSize
 import com.teya.lemonade.core.LemonadeIcons
 
 /**
@@ -48,7 +48,7 @@ import com.teya.lemonade.core.LemonadeIcons
  * @param enabled - [Boolean] flag to enable or disable the Button.
  * @param variant - [LemonadeButtonVariant] for the color palette (Primary, Secondary, Neutral, Critical).
  * @param type - [LemonadeButtonType] for the fill treatment (Solid, Subtle, Ghost).
- * @param size - [LemonadeIconButtonSize] to size the Button accordingly.
+ * @param size - [LemonadeButtonSize] to size the Button accordingly.
  * @param loading - [Boolean] flag to show a loading spinner.
  * @param shape - [LemonadeIconButtonShape] for the button shape (Rounded, Circular).
  */
@@ -62,7 +62,7 @@ public fun LemonadeUi.IconButton(
     enabled: Boolean = true,
     variant: LemonadeButtonVariant = LemonadeButtonVariant.Neutral,
     type: LemonadeButtonType = LemonadeButtonType.Subtle,
-    size: LemonadeIconButtonSize = LemonadeIconButtonSize.Medium,
+    size: LemonadeButtonSize = LemonadeButtonSize.Medium,
     loading: Boolean = false,
     shape: LemonadeIconButtonShape = LemonadeIconButtonShape.Rounded,
 ) {
@@ -90,7 +90,7 @@ private fun CoreIconButton(
     enabled: Boolean,
     variant: LemonadeButtonVariant,
     type: LemonadeButtonType,
-    size: LemonadeIconButtonSize,
+    size: LemonadeButtonSize,
     loading: Boolean,
     shape: LemonadeIconButtonShape,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -269,23 +269,30 @@ private data class IconButtonSizeData(
 )
 
 @Composable
-private fun LemonadeIconButtonSize.toSizeData(shape: LemonadeIconButtonShape): IconButtonSizeData =
+private fun LemonadeButtonSize.toSizeData(shape: LemonadeIconButtonShape): IconButtonSizeData =
     when (this) {
-        LemonadeIconButtonSize.Large -> IconButtonSizeData(
+        LemonadeButtonSize.Large -> IconButtonSizeData(
             iconSize = LemonadeAssetSize.Large,
             spinnerSize = LemonadeAssetSize.Small,
             innerPaddings = LocalSpaces.current.spacing400,
             shape = shape.resolveShape(roundedShape = LocalShapes.current.radius400),
         )
 
-        LemonadeIconButtonSize.Medium -> IconButtonSizeData(
+        LemonadeButtonSize.Medium -> IconButtonSizeData(
             iconSize = LemonadeAssetSize.Large,
             spinnerSize = LemonadeAssetSize.Small,
             innerPaddings = LocalSpaces.current.spacing200,
             shape = shape.resolveShape(roundedShape = LocalShapes.current.radius300),
         )
 
-        LemonadeIconButtonSize.Small -> IconButtonSizeData(
+        LemonadeButtonSize.Small -> IconButtonSizeData(
+            iconSize = LemonadeAssetSize.Small,
+            spinnerSize = LemonadeAssetSize.XSmall,
+            innerPaddings = LocalSpaces.current.spacing200,
+            shape = shape.resolveShape(roundedShape = LocalShapes.current.radius300),
+        )
+
+        LemonadeButtonSize.XSmall -> IconButtonSizeData(
             iconSize = LemonadeAssetSize.Small,
             spinnerSize = LemonadeAssetSize.XSmall,
             innerPaddings = LocalSpaces.current.spacing200,
@@ -303,7 +310,7 @@ private fun LemonadeIconButtonShape.resolveShape(roundedShape: Shape): Shape =
 // MARK: - Previews
 
 private data class IconButtonPreviewData(
-    val size: LemonadeIconButtonSize,
+    val size: LemonadeButtonSize,
     val variant: LemonadeButtonVariant,
     val type: LemonadeButtonType,
     val enabled: Boolean,
@@ -315,7 +322,7 @@ private class IconButtonPreviewProvider : PreviewParameterProvider<IconButtonPre
     private fun buildAllVariants(): Sequence<IconButtonPreviewData> =
         buildList {
             listOf(true, false).forEach { enabled ->
-                LemonadeIconButtonSize.entries.forEach { size ->
+                LemonadeButtonSize.entries.forEach { size ->
                     LemonadeButtonVariant.entries.forEach { variant ->
                         LemonadeButtonType.entries.forEach { type ->
                             add(

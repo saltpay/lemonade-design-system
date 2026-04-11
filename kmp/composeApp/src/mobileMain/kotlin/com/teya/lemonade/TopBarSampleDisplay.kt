@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonType
-import com.teya.lemonade.core.LemonadeIconButtonSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TopBarAction
 import kotlinx.coroutines.launch
@@ -44,7 +44,7 @@ internal fun TopBarSampleDisplay() {
                     icon = LemonadeIcons.ChevronDown,
                     type = LemonadeButtonType.Ghost,
                     contentDescription = "Expand",
-                    size = LemonadeIconButtonSize.Medium,
+                    size = LemonadeButtonSize.Medium,
                     onClick = {
                         coroutineScope.launch {
                             topBarState.expand()
@@ -55,7 +55,7 @@ internal fun TopBarSampleDisplay() {
                     icon = LemonadeIcons.ChevronTop,
                     type = LemonadeButtonType.Ghost,
                     contentDescription = "Collapse",
-                    size = LemonadeIconButtonSize.Medium,
+                    size = LemonadeButtonSize.Medium,
                     onClick = {
                         coroutineScope.launch {
                             topBarState.collapse()

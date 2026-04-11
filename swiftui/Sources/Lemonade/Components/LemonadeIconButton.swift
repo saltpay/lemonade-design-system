@@ -27,15 +27,6 @@ public enum LemonadeIconButtonShape {
     case circular
 }
 
-// MARK: - Icon Button Size
-
-/// Icon button sizes following the Lemonade Design System.
-public enum LemonadeIconButtonSize {
-    case small
-    case medium
-    case large
-}
-
 // MARK: - Icon Button Component
 
 public extension LemonadeUi {
@@ -57,7 +48,7 @@ public extension LemonadeUi {
     ///   - enabled: Boolean flag to enable or disable the Button
     ///   - variant: LemonadeButtonVariant for the color palette (primary, secondary, neutral, critical)
     ///   - type: LemonadeButtonType for the fill treatment (solid, subtle, ghost)
-    ///   - size: LemonadeIconButtonSize to size the Button accordingly
+    ///   - size: LemonadeButtonSize to size the Button accordingly
     ///   - loading: Boolean flag to show a loading spinner
     ///   - shape: LemonadeIconButtonShape for the button shape (rounded, circular)
     /// - Returns: A styled IconButton view
@@ -69,7 +60,7 @@ public extension LemonadeUi {
         enabled: Bool = true,
         variant: LemonadeButtonVariant = .neutral,
         type: LemonadeButtonType = .subtle,
-        size: LemonadeIconButtonSize = .medium,
+        size: LemonadeButtonSize = .medium,
         loading: Bool = false,
         shape: LemonadeIconButtonShape = .rounded
     ) -> some View {
@@ -106,8 +97,8 @@ private struct LemonadeIconButtonSizeData {
 
 // MARK: - Icon Button Size Extension
 
-private extension LemonadeIconButtonSize {
-    var sizeData: LemonadeIconButtonSizeData {
+private extension LemonadeButtonSize {
+    var iconButtonSizeData: LemonadeIconButtonSizeData {
         switch self {
         case .large:
             return LemonadeIconButtonSizeData(
@@ -121,7 +112,7 @@ private extension LemonadeIconButtonSize {
                 innerPadding: LemonadeTheme.spaces.spacing200,
                 cornerRadius: LemonadeTheme.radius.radius300
             )
-        case .small:
+        case .small, .xSmall:
             return LemonadeIconButtonSizeData(
                 iconSize: .small,
                 innerPadding: LemonadeTheme.spaces.spacing200,
@@ -241,7 +232,7 @@ private struct LemonadeIconButtonView: View {
     let enabled: Bool
     let variant: LemonadeButtonVariant
     let type: LemonadeButtonType
-    let size: LemonadeIconButtonSize
+    let size: LemonadeButtonSize
     let loading: Bool
     let shape: LemonadeIconButtonShape
 
@@ -251,7 +242,7 @@ private struct LemonadeIconButtonView: View {
     private var cornerRadius: CGFloat {
         shape == .circular
             ? .infinity
-            : size.sizeData.cornerRadius
+            : size.iconButtonSizeData.cornerRadius
     }
 
     var body: some View {
@@ -269,12 +260,12 @@ private struct LemonadeIconButtonView: View {
                     LemonadeUi.Icon(
                         icon: icon,
                         contentDescription: contentDescription,
-                        size: size.sizeData.iconSize,
+                        size: size.iconButtonSizeData.iconSize,
                         tint: colors.contentColor
                     )
                 }
             }
-            .padding(size.sizeData.innerPadding)
+            .padding(size.iconButtonSizeData.innerPadding)
             .background(
                 buttonShape
                     .fill(bgColor)
