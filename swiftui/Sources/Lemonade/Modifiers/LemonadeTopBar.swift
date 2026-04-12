@@ -106,7 +106,7 @@ private struct SearchTopBarModifier<TrailingContent: View, BottomContent: View>:
             .navigationBarTitleDisplayMode(.large)
             .searchable(
                 text: $searchInput,
-                placement: .navigationBarDrawer(displayMode: .automatic),
+                placement: .navigationBarDrawer(displayMode: .always),
                 prompt: searchPrompt
             )
             .topBarToolbarSlots(
@@ -300,11 +300,7 @@ private struct NativeSearchBar: UIViewRepresentable {
         searchBar.autocapitalizationType = .none
         searchBar.autocorrectionType = .no
         searchBar.backgroundImage = UIImage()
-        // Remove shadow from the internal text field
-        if let textField = searchBar.searchTextField as? UITextField {
-            textField.layer.shadowOpacity = 0
-            textField.layer.borderWidth = 0
-        }
+        searchBar.searchTextField.backgroundColor = UIColor.systemGray6
         return searchBar
     }
 
@@ -329,11 +325,19 @@ private struct NativeSearchBar: UIViewRepresentable {
 
         func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
             searchBar.setShowsCancelButton(true, animated: true)
+            // Remove custom background — lets UIKit render default glass-like style
+            UIView.animate(withDuration: 0.2) {
+                searchBar.searchTextField.backgroundColor = nil
+            }
             onFocusChange(true)
         }
 
         func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
             searchBar.setShowsCancelButton(false, animated: true)
+            // Restore gray background to match native .searchable unfocused
+            UIView.animate(withDuration: 0.2) {
+                searchBar.searchTextField.backgroundColor = UIColor.systemGray6
+            }
             onFocusChange(false)
         }
 
@@ -349,18 +353,41 @@ private struct NativeSearchBar: UIViewRepresentable {
     }
 }
 
-// MARK: - Hide Navigation Bar Helper
+// MARK: - Hide Navigation Bar + Preserve Swipe Back
 
 private extension View {
-    /// Hides the navigation bar. Uses `.toolbar(.hidden)` on iOS 16+ (preserves
-    /// swipe-back gesture) with fallback to `.navigationBarHidden(true)` on iOS 15.
+    /// Hides the navigation bar and re-enables the swipe-back gesture.
     @ViewBuilder
     func lemonadeHideNavigationBar() -> some View {
         if #available(iOS 16.0, *) {
             self.toolbar(.hidden, for: .navigationBar)
+                .onAppear { Self.enableSwipeBack() }
         } else {
             self.navigationBarHidden(true)
+                .onAppear { Self.enableSwipeBack() }
         }
+    }
+
+    /// Finds the UINavigationController from the window hierarchy and
+    /// re-enables the interactive pop gesture recognizer.
+    static func enableSwipeBack() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first,
+              let nav = findNavigationController(in: window.rootViewController) else { return }
+        nav.interactivePopGestureRecognizer?.isEnabled = true
+        nav.interactivePopGestureRecognizer?.delegate = nil
+    }
+
+    private static func findNavigationController(in vc: UIViewController?) -> UINavigationController? {
+        guard let vc else { return nil }
+        if let nav = vc as? UINavigationController { return nav }
+        for child in vc.children {
+            if let found = findNavigationController(in: child) { return found }
+        }
+        if let presented = vc.presentedViewController {
+            return findNavigationController(in: presented)
+        }
+        return nil
     }
 }
 
