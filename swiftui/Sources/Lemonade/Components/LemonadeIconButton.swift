@@ -247,9 +247,7 @@ private struct LemonadeIconButtonView: View {
 
     var body: some View {
         let colors = resolveColors(variant: variant, type: type)
-        let bgColor: Color = isPressed
-            ? colors.backgroundPressedColor
-            : isHovering ? colors.backgroundHoverColor : colors.backgroundColor
+        let bgColor: Color = isHovering ? colors.backgroundHoverColor : colors.backgroundColor
         let buttonShape = RoundedRectangle(cornerRadius: cornerRadius)
 
         SwiftUI.Button(action: onClick) {
@@ -274,6 +272,8 @@ private struct LemonadeIconButtonView: View {
             .clipShape(buttonShape)
         }
         .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
+        .opacity(isPressed ? 0.85 : 1.0)
+        .animation(.easeInOut(duration: 0.1), value: isPressed)
         .onHover { hovering in
             isHovering = hovering
         }
