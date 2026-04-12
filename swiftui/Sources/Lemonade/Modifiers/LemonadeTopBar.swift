@@ -427,6 +427,7 @@ private struct CompactLargeHeader<TrailingContent: View>: View {
                 }
                 .padding(LemonadeSpacing.spacing100.value)
 
+                #if compiler(>=6.2)
                 if #available(iOS 26, *) {
                     content
                         .glassEffect(.regular.interactive(), in: .capsule)
@@ -434,6 +435,10 @@ private struct CompactLargeHeader<TrailingContent: View>: View {
                     content
                         .background(.ultraThinMaterial, in: Capsule())
                 }
+                #else
+                content
+                    .background(.ultraThinMaterial, in: Capsule())
+                #endif
             }
         }
         .padding(.horizontal, LemonadeSpacing.spacing400.value)
