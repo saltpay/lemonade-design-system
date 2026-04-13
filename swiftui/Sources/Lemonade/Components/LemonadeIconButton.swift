@@ -272,7 +272,7 @@ private struct LemonadeIconButtonView: View {
             .clipShape(buttonShape)
         }
         .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
-        .opacity(isPressed ? 0.85 : 1.0)
+        .opacity(isPressed ? 1.0 - LemonadeTheme.opacity.state.opacityPressed : LemonadeTheme.opacity.base.opacity100)
         .animation(.easeInOut(duration: 0.1), value: isPressed)
         .onHover { hovering in
             isHovering = hovering
