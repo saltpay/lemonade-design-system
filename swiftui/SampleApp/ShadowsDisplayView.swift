@@ -4,39 +4,26 @@ import Lemonade
 struct ShadowsDisplayView: View {
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 48) {
-                ForEach(shadowItems, id: \.name) { item in
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(item.name)
+            VStack(alignment: .leading, spacing: .space.spacing1200) {
+                ForEach(LemonadeShadow.allCases, id: \.self) { shadow in
+                    VStack(alignment: .leading, spacing: .space.spacing100) {
+                        Text(shadow.displayName)
                             .font(.caption)
                             .foregroundStyle(.content.contentSecondary)
 
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(.bg.bgElevated)
+                        RoundedRectangle(cornerRadius: .radius.radius600)
+                            .fill(.bg.bgDefault)
                             .frame(height: 100)
-                            .lemonadeShadow(item.shadow)
+                            .lemonadeShadow(shadow)
                     }
                 }
             }
-            .padding(32)
+            .padding(.space.spacing400)
         }
         .background(.bg.bgSubtle)
         .navigationTitle("Shadows")
     }
 }
-
-private struct ShadowItem {
-    let name: String
-    let shadow: LemonadeShadow
-}
-
-private let shadowItems: [ShadowItem] = [
-    ShadowItem(name: "None", shadow: .none),
-    ShadowItem(name: "X-Small", shadow: .xsmall),
-    ShadowItem(name: "Small", shadow: .small),
-    ShadowItem(name: "Medium", shadow: .medium),
-    ShadowItem(name: "Large", shadow: .large),
-]
 
 #Preview {
     NavigationStack {

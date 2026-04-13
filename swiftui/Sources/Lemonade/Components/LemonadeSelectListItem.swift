@@ -9,7 +9,7 @@ public extension LemonadeUi {
     /// ```swift
     /// LemonadeUi.SelectListItem(
     ///     label: "Label",
-    ///     supportText: "Support Text",
+    ///     supportText: "Description",
     ///     type: .single,
     ///     checked: true,
     ///     onItemClicked: { /* action */ },
@@ -22,6 +22,7 @@ public extension LemonadeUi {
     ///   - type: SelectListItemType, defines selection behavior and component
     ///   - checked: Flag defining if item is selected or not
     ///   - onItemClicked: Callback triggered on click interaction
+    ///   - isLoading: Shows a skeleton loading placeholder instead of content
     ///   - enabled: Flag that defines if component is enabled. Defaults to true
     ///   - showDivider: Flag to show a divider below the list item. Defaults to false
     ///   - supportText: Text to be displayed below the label
@@ -34,6 +35,7 @@ public extension LemonadeUi {
         type: SelectListItemType,
         checked: Bool,
         onItemClicked: @escaping () -> Void,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         supportText: String? = nil,
@@ -44,6 +46,7 @@ public extension LemonadeUi {
             label: label,
             supportText: supportText,
             voice: .neutral,
+            isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             onListItemClick: {
@@ -93,6 +96,7 @@ public extension LemonadeUi {
         type: SelectListItemType,
         checked: Bool,
         onItemClicked: @escaping () -> Void,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         supportText: String? = nil,
@@ -103,6 +107,7 @@ public extension LemonadeUi {
             type: type,
             checked: checked,
             onItemClicked: onItemClicked,
+            isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             supportText: supportText,
@@ -118,6 +123,7 @@ public extension LemonadeUi {
         type: SelectListItemType,
         checked: Bool,
         onItemClicked: @escaping () -> Void,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         supportText: String? = nil,
@@ -128,6 +134,7 @@ public extension LemonadeUi {
             type: type,
             checked: checked,
             onItemClicked: onItemClicked,
+            isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             supportText: supportText,
@@ -143,6 +150,7 @@ public extension LemonadeUi {
         type: SelectListItemType,
         checked: Bool,
         onItemClicked: @escaping () -> Void,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         supportText: String? = nil
@@ -152,6 +160,7 @@ public extension LemonadeUi {
             type: type,
             checked: checked,
             onItemClicked: onItemClicked,
+            isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             supportText: supportText,

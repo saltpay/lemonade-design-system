@@ -10,7 +10,7 @@ public extension LemonadeUi {
     /// LemonadeUi.ResourceListItem(
     ///     label: "Label",
     ///     value: "Value",
-    ///     supportText: "Support Text",
+    ///     supportText: "Description",
     ///     showDivider: true
     /// ) {
     ///     LemonadeUi.SymbolContainer(icon: .heart, contentDescription: nil)
@@ -20,7 +20,8 @@ public extension LemonadeUi {
     /// - Parameters:
     ///   - label: Main String to be displayed
     ///   - value: Value String to be displayed in trailing position
-    ///   - supportText: String to be displayed as support text
+    ///   - supportText: String to be displayed as supportText
+    ///   - isLoading: Shows a skeleton loading placeholder instead of content
     ///   - enabled: Flag to define if component is enabled. Defaults to true
     ///   - showDivider: Flag to show a divider below the list item. Defaults to false
     ///   - onItemClicked: Callback called when component is tapped
@@ -32,6 +33,7 @@ public extension LemonadeUi {
         label: String,
         value: String,
         supportText: String? = nil,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil,
@@ -42,6 +44,7 @@ public extension LemonadeUi {
             label: label,
             supportText: supportText,
             voice: .neutral,
+            isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             onListItemClick: onItemClicked,
@@ -69,6 +72,7 @@ public extension LemonadeUi {
         label: String,
         value: String,
         supportText: String? = nil,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil,
@@ -78,6 +82,7 @@ public extension LemonadeUi {
             label: label,
             value: value,
             supportText: supportText,
+            isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             onItemClicked: onItemClicked,
