@@ -511,10 +511,6 @@ private struct CompactLargeBlurLayout<HeaderContent: View>: View {
 
 // MARK: - Compact Large TopBar Modifier
 
-/// A modifier that applies a large left-aligned title with optional subheading.
-/// Designed for top-level screens without navigation actions.
-/// The trailing slot sits on the same row as the title (not in the navigation bar).
-/// Content scrolls behind the header with a progressive blur effect.
 private struct CompactLargeTopBarModifier<TrailingContent: View, BottomContent: View>: ViewModifier {
     let label: String
     let subheading: String?
