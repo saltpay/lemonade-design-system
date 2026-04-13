@@ -76,7 +76,7 @@ private fun buildBorderWidthDefinitionCode(
         appendLine(" * Lemonade Design Border Width tokens.")
         appendLine(" * Sets a small, clear set of predefined border width values for UI elements to ensure")
         appendLine(" *  consistent, scalable rounding across the product.")
-        appendLine(" * ")
+        appendLine(" *")
         append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
         appendLine(" */")
         appendLine("public interface LemonadeBorderWidth {")

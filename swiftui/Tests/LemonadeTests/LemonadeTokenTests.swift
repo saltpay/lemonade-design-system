@@ -25,4 +25,38 @@ final class LemonadeTokenTests: XCTestCase {
     func testTypographyFontFamily() {
         XCTAssertEqual(LemonadeTypography.fontFamily, "Figtree")
     }
+
+    func testShadowCaseIterableOrder() {
+        let expected: [LemonadeShadow] = [.xsmall, .small, .medium, .large, .xlarge, .none]
+        XCTAssertEqual(LemonadeShadow.allCases, expected)
+    }
+
+    func testShadowLayerCounts() {
+        XCTAssertEqual(LemonadeShadow.xsmall.shadowLayers.count, 1)
+        XCTAssertEqual(LemonadeShadow.small.shadowLayers.count, 2)
+        XCTAssertEqual(LemonadeShadow.medium.shadowLayers.count, 2)
+        XCTAssertEqual(LemonadeShadow.large.shadowLayers.count, 2)
+        XCTAssertEqual(LemonadeShadow.xlarge.shadowLayers.count, 2)
+        XCTAssertEqual(LemonadeShadow.none.shadowLayers.count, 1)
+    }
+
+    func testShadowLayerValues() {
+        let xsmall = LemonadeShadow.xsmall.shadowLayers[0]
+        XCTAssertEqual(xsmall.blur, 2)
+        XCTAssertEqual(xsmall.spread, 0)
+        XCTAssertEqual(xsmall.offsetX, 0)
+        XCTAssertEqual(xsmall.offsetY, 1)
+
+        let xlarge0 = LemonadeShadow.xlarge.shadowLayers[0]
+        XCTAssertEqual(xlarge0.blur, 10)
+        XCTAssertEqual(xlarge0.spread, -6)
+        XCTAssertEqual(xlarge0.offsetX, 0)
+        XCTAssertEqual(xlarge0.offsetY, 8)
+
+        let xlarge1 = LemonadeShadow.xlarge.shadowLayers[1]
+        XCTAssertEqual(xlarge1.blur, 25)
+        XCTAssertEqual(xlarge1.spread, -5)
+        XCTAssertEqual(xlarge1.offsetX, 0)
+        XCTAssertEqual(xlarge1.offsetY, 20)
+    }
 }
