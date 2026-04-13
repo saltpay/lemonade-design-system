@@ -81,6 +81,7 @@ private fun generateOpacityInterfaceCode(
             .groupBy { resource -> resource.groupFullName }
             .forEach { (groupName, groupOpacities) ->
                 if (groupName != null) {
+                    appendLine()
                     appendLine("    public interface $groupName {")
                     groupOpacities.forEach { opacity ->
                         appendLine("        public val ${opacity.name}: Float")
@@ -97,12 +98,12 @@ private fun generateOpacityValuesCode(
 ): String {
     return buildString {
         appendLine("@Stable")
-        appendLine("internal class InternalLemonadeOpacityTokens: LemonadeOpacity {")
+        appendLine("internal class InternalLemonadeOpacityTokens : LemonadeOpacity {")
         opacitiesResource
             .groupBy { resource -> resource.groupFullName }
             .forEach { (groupName, groupOpacities) ->
                 if (groupName != null) {
-                    appendLine("    override val ${groupName.replaceFirstChar { char -> char.lowercase() }}: LemonadeOpacity.$groupName = object: LemonadeOpacity.$groupName {")
+                    appendLine("    override val ${groupName.replaceFirstChar { char -> char.lowercase() }}: LemonadeOpacity.$groupName = object : LemonadeOpacity.$groupName {")
                     groupOpacities.forEach { opacity ->
                         appendLine("        override val ${opacity.name}: Float = ${opacity.value.opacityValue / 100f}f")
                     }
