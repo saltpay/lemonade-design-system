@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -27,10 +29,12 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.CheckboxStatus
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeListItemVoice
+import com.teya.lemonade.core.LemonadeSkeletonSize
 import com.teya.lemonade.core.SelectListItemType
 import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.SymbolContainerVoice
@@ -60,6 +64,7 @@ import com.teya.lemonade.core.TagVoice
  * @param checked - Flag defining if item is selected or not.
  * @param onItemClicked - Callback that is triggered on click interaction with list item.
  * @param modifier - [Modifier] to be applied to the base container of component.
+ * @param isLoading - Shows a skeleton loading placeholder instead of content.
  * @param enabled - Flag that defines if the component is enabled or not. If disabled, click interactions
  *  and visual states are disabled.
  * @param interactionSource - Selection list item [MutableInteractionSource] for interaction events.
@@ -75,6 +80,7 @@ public fun LemonadeUi.SelectListItem(
     checked: Boolean,
     onItemClicked: () -> Unit,
     modifier: Modifier = Modifier,
+    isLoading: Boolean = false,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     showDivider: Boolean = false,
@@ -86,6 +92,7 @@ public fun LemonadeUi.SelectListItem(
         modifier = modifier,
         label = label,
         supportText = supportText,
+        isLoading = isLoading,
         interactionSource = interactionSource,
         showDivider = showDivider,
         role = when (type) {
@@ -179,6 +186,7 @@ public fun LemonadeUi.SelectListItem(
  * @param addonSlot - slot to be displayed below the [value] parameter.
  * @param interactionSource - [MutableInteractionSource] of the component.
  * @param onItemClicked - callback called when component is tapped.
+ * @param isLoading - shows a skeleton loading placeholder instead of content.
  * @param enabled - flag to define if the component is enabled or not. If disabled, click interactions
  *  and visual states are disabled.
  * @param supportText - [String] to be displayed as support text.
@@ -193,6 +201,7 @@ public fun LemonadeUi.ResourceListItem(
     addonSlot: (@Composable ColumnScope.() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onItemClicked: (() -> Unit)? = null,
+    isLoading: Boolean = false,
     enabled: Boolean = true,
     supportText: String? = null,
     showDivider: Boolean = false,
@@ -200,6 +209,7 @@ public fun LemonadeUi.ResourceListItem(
     LemonadeUi.ListItem(
         label = label,
         supportText = supportText,
+        isLoading = isLoading,
         leadingSlot = {
             Box(
                 content = leadingSlot,
@@ -280,6 +290,7 @@ public fun LemonadeUi.ActionListItem(
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    isLoading: Boolean = false,
     enabled: Boolean = true,
     onItemClicked: (() -> Unit)? = null,
     role: Role? = null,
@@ -290,31 +301,26 @@ public fun LemonadeUi.ActionListItem(
     LemonadeUi.ListItem(
         label = label,
         supportText = supportText,
+        isLoading = isLoading,
         leadingSlot = leadingSlot,
-        trailingSlot = {
-            Row(
-                modifier = Modifier.then(
-                    other = if (enabled) {
-                        Modifier
-                    } else {
-                        Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                    },
-                ),
-            ) {
-                if (trailingSlot !== null) {
+        trailingSlot = if (trailingSlot != null) {
+            {
+                Row(
+                    modifier = Modifier.then(
+                        other = if (enabled) {
+                            Modifier
+                        } else {
+                            Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+                        },
+                    ),
+                ) {
                     trailingSlot()
                 }
-
-                if (showNavigationIndicator) {
-                    LemonadeUi.Icon(
-                        icon = LemonadeIcons.ChevronRight,
-                        tint = LocalColors.current.content.contentTertiary,
-                        size = LemonadeAssetSize.Medium,
-                        contentDescription = "Navigation indicator",
-                    )
-                }
             }
+        } else {
+            null
         },
+        navigationIndicator = showNavigationIndicator,
         voice = voice,
         onListItemClick = onItemClicked,
         role = role,
@@ -334,6 +340,7 @@ public fun LemonadeUi.ActionListItem(
  * @param leadingSlot - A slot to be placed in the leading position of the list item.
  * @param trailingSlot - A slot to be placed in the trailing position of the list item.
  * @param voice - [LemonadeListItemVoice] that defines the visual voice of the list item.
+ * @param navigationIndicator - Shows a chevron-right navigation indicator.
  * @param onListItemClick - Optional callback triggered on click interaction with the list item.
  * @param role - Optional semantic [Role] applied to the list item for accessibility.
  * @param enabled - Flag that defines if the component is enabled or not. If disabled, click
@@ -341,47 +348,63 @@ public fun LemonadeUi.ActionListItem(
  * @param modifier - [Modifier] to be applied to the base container of the component.
  * @param showDivider - Flag to show a divider below the list item.
  * @param interactionSource - [MutableInteractionSource] for interaction events.
+ * @param slotContent - Optional slot content below the label and support text.
  */
 @Composable
 private fun LemonadeUi.ListItem(
     label: String,
     modifier: Modifier = Modifier,
+    supportText: String? = null,
     onListItemClick: (() -> Unit)? = null,
     voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    navigationIndicator: Boolean = false,
+    isLoading: Boolean = false,
     role: Role? = null,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     showDivider: Boolean = false,
-    supportText: String? = null,
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
 ) {
-    LemonadeUi.ListItem(
-        leadingSlot = leadingSlot,
-        trailingSlot = trailingSlot,
-        voice = voice,
-        onListItemClick = onListItemClick,
-        role = role,
-        enabled = enabled,
-        modifier = modifier,
-        showDivider = showDivider,
-        interactionSource = interactionSource,
-        contentSlot = {
-            LemonadeUi.Text(
-                text = label,
-                textStyle = LocalTypographies.current.bodyMediumMedium,
-                color = voice.contentColor,
-            )
-
-            if (supportText != null) {
+    if (isLoading) {
+        ListItemSkeleton(
+            modifier = modifier,
+            showDivider = showDivider,
+        )
+    } else {
+        LemonadeUi.ListItem(
+            leadingSlot = leadingSlot,
+            trailingSlot = trailingSlot,
+            voice = voice,
+            navigationIndicator = navigationIndicator,
+            onListItemClick = onListItemClick,
+            role = role,
+            enabled = enabled,
+            modifier = modifier,
+            showDivider = showDivider,
+            interactionSource = interactionSource,
+            contentSlot = {
                 LemonadeUi.Text(
-                    text = supportText,
-                    textStyle = LocalTypographies.current.bodySmallRegular,
-                    color = LocalColors.current.content.contentSecondary,
+                    text = label,
+                    textStyle = LocalTypographies.current.bodyMediumMedium,
+                    color = voice.contentColor,
                 )
-            }
-        },
-    )
+
+                if (supportText != null) {
+                    LemonadeUi.Text(
+                        text = supportText,
+                        textStyle = LocalTypographies.current.bodySmallRegular,
+                        color = LocalColors.current.content.contentSecondary,
+                    )
+                }
+
+                if (slotContent != null) {
+                    slotContent()
+                }
+            },
+        )
+    }
 }
 
 /**
@@ -392,6 +415,7 @@ private fun LemonadeUi.ListItem(
  * @param leadingSlot - A slot to be placed in the leading position of the list item.
  * @param trailingSlot - A slot to be placed in the trailing position of the list item.
  * @param voice - [LemonadeListItemVoice] that defines the visual voice of the list item.
+ * @param navigationIndicator - Shows a chevron-right navigation indicator.
  * @param onListItemClick - Optional callback triggered on click interaction with the list item.
  * @param role - Optional semantic [Role] applied to the list item for accessibility.
  * @param enabled - Flag that defines if the component is enabled or not. If disabled, click
@@ -406,6 +430,7 @@ private fun LemonadeUi.ListItem(
     modifier: Modifier = Modifier,
     onListItemClick: (() -> Unit)? = null,
     voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    navigationIndicator: Boolean = false,
     role: Role? = null,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -418,6 +443,7 @@ private fun LemonadeUi.ListItem(
         leadingSlot = leadingSlot,
         trailingSlot = trailingSlot,
         voice = voice,
+        navigationIndicator = navigationIndicator,
         onListItemClick = onListItemClick,
         role = role,
         enabled = enabled,
@@ -433,6 +459,7 @@ private fun CoreListItem(
     leadingSlot: (@Composable RowScope.() -> Unit)?,
     trailingSlot: (@Composable RowScope.() -> Unit)?,
     voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    navigationIndicator: Boolean = false,
     onListItemClick: (() -> Unit)?,
     role: Role?,
     enabled: Boolean,
@@ -455,9 +482,8 @@ private fun CoreListItem(
     SafeArea(modifier = modifier, showDivider = showDivider) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
             modifier = Modifier
-                .clip(shape = LocalShapes.current.radius300)
+                .clip(shape = LocalShapes.current.radius500)
                 .then(
                     other = if (onListItemClick != null) {
                         Modifier.clickable(
@@ -480,6 +506,9 @@ private fun CoreListItem(
             if (leadingSlot != null) {
                 Row(
                     modifier = Modifier
+                        .align(Alignment.Top)
+                        .padding(end = LocalSpaces.current.spacing300)
+                        .padding(vertical = LocalSpaces.current.spacing50)
                         .then(
                             other = if (!enabled) {
                                 Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
@@ -492,21 +521,46 @@ private fun CoreListItem(
                 }
             }
 
-            Column(
-                content = contentSlot,
-                modifier = Modifier
-                    .weight(weight = 1f)
-                    .then(
-                        other = if (!enabled) {
-                            Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                        } else {
-                            Modifier
-                        },
-                    ),
-            )
+            Row(
+                modifier = Modifier.weight(weight = 1f),
+            ) {
+                Column(
+                    content = contentSlot,
+                    modifier = Modifier
+                        .weight(weight = 1f)
+                        .then(
+                            other = if (!enabled) {
+                                Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+                            } else {
+                                Modifier
+                            },
+                        ),
+                )
 
-            if (trailingSlot != null) {
-                trailingSlot()
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    if (trailingSlot != null) {
+                        trailingSlot()
+                    }
+
+                    if (navigationIndicator) {
+                        LemonadeUi.Icon(
+                            icon = LemonadeIcons.ChevronRight,
+                            tint = LocalColors.current.content.contentTertiary,
+                            size = LemonadeAssetSize.Medium,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .alpha(
+                                    alpha = if (enabled) {
+                                        0.5f
+                                    } else {
+                                        0.5f * LocalOpacities.current.state.opacityDisabled
+                                    },
+                                ).padding(start = LocalSpaces.current.spacing100),
+                        )
+                    }
+                }
             }
         }
     }
@@ -555,6 +609,54 @@ private val LemonadeListItemVoice.contentColor: Color
         }
     }
 
+@Composable
+private fun ListItemSkeleton(
+    modifier: Modifier = Modifier,
+    showDivider: Boolean = false,
+) {
+    SafeArea(modifier = modifier, showDivider = showDivider) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(
+                    horizontal = LocalSpaces.current.spacing300,
+                    vertical = LocalSpaces.current.spacing300,
+                ),
+        ) {
+            LemonadeUi.CircleSkeleton(
+                size = LemonadeSkeletonSize.XLarge,
+                modifier = Modifier.padding(end = LocalSpaces.current.spacing300),
+            )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.weight(weight = 1f),
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing100),
+                    modifier = Modifier.weight(weight = 1f),
+                ) {
+                    LemonadeUi.LineSkeleton(
+                        size = LemonadeSkeletonSize.Medium,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    LemonadeUi.LineSkeleton(
+                        size = LemonadeSkeletonSize.Small,
+                        modifier = Modifier.fillMaxWidth(fraction = 0.6f),
+                    )
+                }
+
+                LemonadeUi.LineSkeleton(
+                    size = LemonadeSkeletonSize.Medium,
+                    modifier = Modifier
+                        .padding(start = LocalSpaces.current.spacing300)
+                        .width(width = 54.dp),
+                )
+            }
+        }
+    }
+}
+
 private data class SelectionListItemPreviewData(
     val type: SelectListItemType,
     val supportText: Boolean,
@@ -599,7 +701,7 @@ private fun SelectListItemPreview(
 ) {
     LemonadeUi.SelectListItem(
         label = "Label",
-        supportText = "Support text".takeIf { previewData.supportText },
+        supportText = "Support Text".takeIf { previewData.supportText },
         type = previewData.type,
         checked = previewData.enabled,
         onItemClicked = { /* Nothing */ },
@@ -732,7 +834,7 @@ private fun ActionListItemPreview(
     LemonadeUi.ActionListItem(
         label = "Label",
         showDivider = true,
-        supportText = "Support text".takeIf { previewData.supportText },
+        supportText = "Support Text".takeIf { previewData.supportText },
         enabled = previewData.enabled,
         voice = if (previewData.voice) LemonadeListItemVoice.Critical else LemonadeListItemVoice.Neutral,
         showNavigationIndicator = previewData.showNavigationIndicator,

@@ -9,7 +9,7 @@ public extension LemonadeUi {
     /// ```swift
     /// LemonadeUi.ActionListItem(
     ///     label: "Label",
-    ///     supportText: "Support Text",
+    ///     supportText: "Description",
     ///     showDivider: true,
     ///     onItemClicked: { /* action */ },
     ///     leadingSlot: { LemonadeUi.Icon(icon: .heart, contentDescription: nil) },
@@ -19,9 +19,10 @@ public extension LemonadeUi {
     ///
     /// - Parameters:
     ///   - label: Label String to be displayed
-    ///   - supportText: Text to be displayed as Support Text
+    ///   - supportText: Text to be displayed as supportText below the label
     ///   - voice: LemonadeListItemVoice to define tone of voice. Defaults to .neutral
     ///   - showNavigationIndicator: Indicates navigation visually
+    ///   - isLoading: Shows a skeleton loading placeholder instead of content
     ///   - enabled: Flag to define if component is enabled. Defaults to true
     ///   - showDivider: Flag to show a divider below the list item. Defaults to false
     ///   - onItemClicked: Callback called when component is tapped
@@ -34,6 +35,7 @@ public extension LemonadeUi {
         supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil,
@@ -44,24 +46,15 @@ public extension LemonadeUi {
             label: label,
             supportText: supportText,
             voice: voice,
+            navigationIndicator: showNavigationIndicator,
+            isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             onListItemClick: onItemClicked,
             leadingSlot: leadingSlot,
             trailingSlot: {
-                HStack {
-                    trailingSlot()
-
-                    if showNavigationIndicator {
-                        LemonadeUi.Icon(
-                            icon: .chevronRight,
-                            contentDescription: "Navigation indicator",
-                            size: .medium,
-                            tint: LemonadeTheme.colors.content.contentTertiary
-                        )
-                    }
-                }
-                .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+                trailingSlot()
+                    .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
             }
         )
     }
@@ -73,6 +66,7 @@ public extension LemonadeUi {
         supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil,
@@ -83,6 +77,7 @@ public extension LemonadeUi {
             supportText: supportText,
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,
+            isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             onItemClicked: onItemClicked,
@@ -98,6 +93,7 @@ public extension LemonadeUi {
         supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil,
@@ -108,6 +104,7 @@ public extension LemonadeUi {
             supportText: supportText,
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,
+            isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             onItemClicked: onItemClicked,
@@ -123,6 +120,7 @@ public extension LemonadeUi {
         supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
+        isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
         onItemClicked: (() -> Void)? = nil
@@ -132,6 +130,7 @@ public extension LemonadeUi {
             supportText: supportText,
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,
+            isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
             onItemClicked: onItemClicked,
