@@ -364,7 +364,6 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
 
     var body: some View {
         let colors = resolveButtonColors(variant: variant, type: type)
-        let bgColor: Color = isPressed ? colors.pressedBackgroundColor : colors.backgroundColor
 
         SwiftUI.Button(action: onClick) {
             HStack(spacing: 0) {
@@ -391,11 +390,13 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
             .frame(minWidth: size.contentData.minWidth)
             .background(
                 RoundedRectangle(cornerRadius: size.contentData.cornerRadius)
-                    .fill(bgColor)
+                    .fill(colors.backgroundColor)
             )
             .clipShape(RoundedRectangle(cornerRadius: size.contentData.cornerRadius))
         }
         .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
+        .opacity(isPressed ? 1.0 - LemonadeTheme.opacity.state.opacityPressed : LemonadeTheme.opacity.base.opacity100)
+        .animation(.easeInOut(duration: 0.1), value: isPressed)
         .disabled(!enabled || loading)
         .opacity((enabled || loading) ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
     }
