@@ -36,8 +36,8 @@ public protocol BaseOpacity {
 
 /// State opacity values
 public protocol StateOpacity {
-    var opacityPressed: Double { get }
     var opacityDisabled: Double { get }
+    var opacityPressed: Double { get }
 }
 
 /// Protocol defining opacity categories
@@ -62,8 +62,8 @@ internal struct BaseOpacityImpl: BaseOpacity {
 }
 
 internal struct StateOpacityImpl: StateOpacity {
-    let opacityPressed: Double = 0.2
-    let opacityDisabled: Double = 0.4
+    let opacityDisabled: Double = 0.5
+    let opacityPressed: Double = 0.8
 }
 
 /// Default opacity implementation

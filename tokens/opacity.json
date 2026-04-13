@@ -75,14 +75,14 @@
       "valuesByMode": {
         "236:2": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:3056:5"
+          "id": "VariableID:3056:6"
         }
       },
       "resolvedValuesByMode": {
         "236:2": {
-          "resolvedValue": 40,
-          "alias": "VariableID:3056:5",
-          "aliasName": "base/opacity-40"
+          "resolvedValue": 50,
+          "alias": "VariableID:3056:6",
+          "aliasName": "base/opacity-50"
         }
       },
       "scopes": [
@@ -332,14 +332,14 @@
       "valuesByMode": {
         "236:2": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:236:17466"
+          "id": "VariableID:3056:8"
         }
       },
       "resolvedValuesByMode": {
         "236:2": {
-          "resolvedValue": 20,
-          "alias": "VariableID:236:17466",
-          "aliasName": "base/opacity-20"
+          "resolvedValue": 80,
+          "alias": "VariableID:3056:8",
+          "aliasName": "base/opacity-80"
         }
       },
       "scopes": [

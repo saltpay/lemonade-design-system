@@ -39,8 +39,8 @@ public interface LemonadeOpacity {
     }
 
     public interface State {
-        public val opacityPressed: Float
         public val opacityDisabled: Float
+        public val opacityPressed: Float
     }
 }
 
@@ -61,7 +61,7 @@ internal class InternalLemonadeOpacityTokens : LemonadeOpacity {
         override val opacity100: Float = 1.0f
     }
     override val state: LemonadeOpacity.State = object : LemonadeOpacity.State {
-        override val opacityPressed: Float = 0.2f
-        override val opacityDisabled: Float = 0.4f
+        override val opacityDisabled: Float = 0.5f
+        override val opacityPressed: Float = 0.8f
     }
 }
