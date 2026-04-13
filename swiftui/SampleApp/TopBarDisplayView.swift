@@ -18,6 +18,7 @@ struct TopBarDisplayView: View {
         DemoItem(title: "Basic with Bottom Slot", destination: AnyView(BasicBottomSlotDemo())),
         DemoItem(title: "Search", destination: AnyView(SearchTopBarDemo())),
         DemoItem(title: "Search with Expanded Label", destination: AnyView(SearchExpandedLabelDemo())),
+        DemoItem(title: "Compact Large (pill)", destination: AnyView(CompactLargePillDemo())),
         DemoItem(title: "Compact Large", destination: AnyView(CompactLargeDemo())),
         DemoItem(title: "Compact Large with Subheading", destination: AnyView(CompactLargeSubheadingDemo())),
         DemoItem(title: "Compact Large + Search", destination: AnyView(CompactLargeSearchDemo())),
@@ -114,19 +115,20 @@ private struct BasicTrailingSlotDemo: View {
             label: "Notifications",
             navigationAction: NavigationAction(action: .back, onAction: {})
         ) {
-            HStack(spacing: 0) {
-                LemonadeUi.IconButton(
-                    icon: .bell,
-                    contentDescription: "Notifications",
-                    onClick: {},
-                    variant: .ghost
-                )
-                LemonadeUi.IconButton(
-                    icon: .ellipsisVertical,
-                    contentDescription: "More",
-                    onClick: {},
-                    variant: .ghost
-                )
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {}) {
+                    Image(systemName: "bell")
+                }
+            }
+            #if compiler(>=6.2)
+            if #available(iOS 26, *) {
+                ToolbarSpacer(.fixed, placement: .navigationBarTrailing)
+            }
+            #endif
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {}) {
+                    Image(systemName: "ellipsis")
+                }
             }
         }
     }
@@ -141,18 +143,22 @@ private struct BasicBottomSlotDemo: View {
         }
         .lemonadeTopBar(
             label: "Browse",
-            navigationAction: NavigationAction(action: .back, onAction: {})
-        ) {
-            EmptyView()
-        } bottomSlot: {
-            LemonadeUi.SegmentedControl(
-                properties: [.label("All"), .label("Recent"), .label("Favorites")],
-                selectedTab: selectedTab,
-                onTabSelected: { selectedTab = $0 }
-            )
-            .padding(.horizontal, LemonadeSpacing.spacing400.value)
-            .padding(.bottom, LemonadeSpacing.spacing200.value)
-        }
+            navigationAction: NavigationAction(action: .back, onAction: {}),
+            bottomSlot: {
+                LemonadeUi.SegmentedControl(
+                    properties: [.label("All"), .label("Recent"), .label("Favorites")],
+                    selectedTab: selectedTab,
+                    onTabSelected: { selectedTab = $0 }
+                )
+                .padding(.horizontal, LemonadeSpacing.spacing400.value)
+                .padding(.bottom, LemonadeSpacing.spacing200.value)
+            },
+            toolbar: {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    EmptyView()
+                }
+            }
+        )
     }
 }
 
@@ -218,17 +224,75 @@ private struct SearchExpandedLabelDemo: View {
             expandedLabel: "Discover",
             navigationAction: NavigationAction(action: .back, onAction: {})
         ) {
-            LemonadeUi.IconButton(
-                icon: .filter,
-                contentDescription: "Filter",
-                onClick: {},
-                variant: .ghost
-            )
+            ToolbarItem(placement: .navigationBarTrailing) {
+                LemonadeUi.IconButton(
+                    icon: .filter,
+                    contentDescription: "Filter",
+                    onClick: {},
+                    variant: .ghost
+                )
+            }
         }
     }
 }
 
 // MARK: - 3. Compact Large Demos
+
+/// Helper: groups buttons in a pill (capsule) with glass effect.
+private struct GlassPill<Content: View>: View {
+    @ViewBuilder let content: () -> Content
+
+    var body: some View {
+        HStack(spacing: 4) {
+            content()
+        }
+        .modifier(GlassCapsuleModifier())
+    }
+}
+
+private struct GlassCapsuleModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        #if compiler(>=6.2)
+        if #available(iOS 26, *) {
+            content.glassEffect(.regular.interactive(), in: .capsule)
+        } else {
+            content
+                .padding(.horizontal, 4)
+                .background(.ultraThinMaterial, in: Capsule())
+        }
+        #else
+        content
+            .padding(.horizontal, 4)
+            .background(.ultraThinMaterial, in: Capsule())
+        #endif
+    }
+}
+
+private struct CompactLargePillDemo: View {
+    var body: some View {
+        ScrollView {
+            SampleListContent()
+        }
+        .lemonadeTopBar(label: "Home", subheading: "Pill trailing") {
+            GlassPill {
+                Button(action: {}) {
+                    Image(systemName: "bell")
+                        .font(.system(size: 17, weight: .medium))
+                        .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
+                        .frame(width: 44, height: 44)
+                }
+                .buttonStyle(.plain)
+                Button(action: {}) {
+                    Image(systemName: "gearshape")
+                        .font(.system(size: 17, weight: .medium))
+                        .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
+                        .frame(width: 44, height: 44)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+}
 
 private struct CompactLargeDemo: View {
     var body: some View {
@@ -236,20 +300,8 @@ private struct CompactLargeDemo: View {
             SampleListContent()
         }
         .lemonadeTopBar(label: "Home", subheading: nil) {
-            HStack(spacing: 0) {
-                LemonadeUi.IconButton(
-                    icon: .bell,
-                    contentDescription: "Notifications",
-                    onClick: {},
-                    variant: .ghost
-                )
-                LemonadeUi.IconButton(
-                    icon: .gear,
-                    contentDescription: "Settings",
-                    onClick: {},
-                    variant: .ghost
-                )
-            }
+            GlassIconButton(systemName: "bell", action: {})
+            GlassIconButton(systemName: "gearshape", action: {})
         }
     }
 }
@@ -260,12 +312,7 @@ private struct CompactLargeSubheadingDemo: View {
             SampleListContent()
         }
         .lemonadeTopBar(label: "Home", subheading: "Welcome back, John") {
-            LemonadeUi.IconButton(
-                icon: .bell,
-                contentDescription: "Notifications",
-                onClick: {},
-                variant: .ghost
-            )
+            GlassIconButton(systemName: "bell", action: {})
         }
     }
 }
@@ -316,13 +363,41 @@ private struct CompactLargeSearchDemo: View {
             searchInput: $searchQuery,
             searchPrompt: "Search categories..."
         ) {
-            LemonadeUi.IconButton(
-                icon: .ellipsisVertical,
-                contentDescription: "More",
-                onClick: {},
-                variant: .ghost
-            )
+            GlassIconButton(systemName: "ellipsis", action: {})
         }
+    }
+}
+
+// MARK: - Glass Icon Button Helper
+
+/// A circular icon button with glass effect for Compact Large trailing slots.
+private struct GlassIconButton: View {
+    let systemName: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: systemName)
+                .font(.system(size: 17, weight: .medium))
+                .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
+                .frame(width: 44, height: 44)
+        }
+        .buttonStyle(.plain)
+        .modifier(GlassCircleModifier())
+    }
+}
+
+private struct GlassCircleModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        #if compiler(>=6.2)
+        if #available(iOS 26, *) {
+            content.glassEffect(.regular.interactive(), in: .circle)
+        } else {
+            content.background(.ultraThinMaterial, in: Circle())
+        }
+        #else
+        content.background(.ultraThinMaterial, in: Circle())
+        #endif
     }
 }
 

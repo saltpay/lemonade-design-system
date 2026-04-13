@@ -26,16 +26,33 @@ public struct NavigationAction {
     }
 }
 
-// MARK: - Shared Toolbar Slots
+// MARK: - Empty Toolbar Content
 
-private extension View {
-    @ViewBuilder
-    func topBarToolbarSlots<TrailingContent: View, BottomContent: View>(
-        navigationAction: NavigationAction?,
-        trailingSlot: (() -> TrailingContent)?,
-        bottomSlot: (() -> BottomContent)?
-    ) -> some View {
-        self
+/// Empty toolbar content for overloads that don't need toolbar items.
+private struct LemonadeEmptyToolbarContent: ToolbarContent {
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            EmptyView()
+        }
+    }
+}
+
+// MARK: - Basic TopBar Modifier
+
+/// A modifier that applies a native iOS navigation bar styled with Lemonade tokens.
+/// Uses `@ToolbarContentBuilder` so consumers interact with the toolbar the
+/// same way as the native `.toolbar` modifier.
+private struct BasicTopBarModifier<Toolbar: ToolbarContent, BottomContent: View>: ViewModifier {
+    let label: String
+    let collapsedLabel: String?
+    let navigationAction: NavigationAction?
+    let toolbarContent: Toolbar
+    let bottomSlot: (() -> BottomContent)?
+
+    func body(content: Content) -> some View {
+        content
+            .navigationTitle(collapsedLabel ?? label)
+            .navigationBarTitleDisplayMode(.large)
             .navigationBarBackButtonHidden(navigationAction?.action == .close)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -48,12 +65,7 @@ private extension View {
                         }
                     }
                 }
-
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    if let trailingSlot {
-                        trailingSlot()
-                    }
-                }
+                toolbarContent
             }
             .safeAreaInset(edge: .top, spacing: 0) {
                 if let bottomSlot {
@@ -63,41 +75,17 @@ private extension View {
     }
 }
 
-// MARK: - Basic TopBar Modifier
-
-/// A modifier that applies a native iOS navigation bar styled with Lemonade tokens.
-/// Displays a large title that collapses inline on scroll, with optional navigation
-/// action, trailing slot, and bottom slot.
-private struct BasicTopBarModifier<TrailingContent: View, BottomContent: View>: ViewModifier {
-    let label: String
-    let collapsedLabel: String?
-    let navigationAction: NavigationAction?
-    let trailingSlot: (() -> TrailingContent)?
-    let bottomSlot: (() -> BottomContent)?
-
-    func body(content: Content) -> some View {
-        content
-            .navigationTitle(collapsedLabel ?? label)
-            .navigationBarTitleDisplayMode(.large)
-            .topBarToolbarSlots(
-                navigationAction: navigationAction,
-                trailingSlot: trailingSlot,
-                bottomSlot: bottomSlot
-            )
-    }
-}
-
 // MARK: - Search TopBar Modifier
 
 /// A modifier that applies a native iOS navigation bar with an integrated search field.
 /// Uses `.searchable` with `.navigationBarDrawer` placement for native collapse behavior.
-private struct SearchTopBarModifier<TrailingContent: View, BottomContent: View>: ViewModifier {
+private struct SearchTopBarModifier<Toolbar: ToolbarContent, BottomContent: View>: ViewModifier {
     let label: String
     @Binding var searchInput: String
     let searchPrompt: String
     let expandedLabel: String?
     let navigationAction: NavigationAction?
-    let trailingSlot: (() -> TrailingContent)?
+    let toolbarContent: Toolbar
     let bottomSlot: (() -> BottomContent)?
 
     func body(content: Content) -> some View {
@@ -109,11 +97,25 @@ private struct SearchTopBarModifier<TrailingContent: View, BottomContent: View>:
                 placement: .navigationBarDrawer(displayMode: .always),
                 prompt: searchPrompt
             )
-            .topBarToolbarSlots(
-                navigationAction: navigationAction,
-                trailingSlot: trailingSlot,
-                bottomSlot: bottomSlot
-            )
+            .navigationBarBackButtonHidden(navigationAction?.action == .close)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    if let navigationAction, navigationAction.action == .close {
+                        Button(action: navigationAction.onAction) {
+                            LemonadeUi.Icon(
+                                icon: .times,
+                                contentDescription: "Close"
+                            )
+                        }
+                    }
+                }
+                toolbarContent
+            }
+            .safeAreaInset(edge: .top, spacing: 0) {
+                if let bottomSlot {
+                    bottomSlot()
+                }
+            }
     }
 }
 
@@ -422,23 +424,9 @@ private struct CompactLargeHeader<TrailingContent: View>: View {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             if let trailingSlot {
-                let content = HStack(spacing: LemonadeSpacing.spacing100.value) {
+                HStack(spacing: LemonadeSpacing.spacing200.value) {
                     trailingSlot()
                 }
-                .padding(LemonadeSpacing.spacing100.value)
-
-                #if compiler(>=6.2)
-                if #available(iOS 26, *) {
-                    content
-                        .glassEffect(.regular.interactive(), in: .capsule)
-                } else {
-                    content
-                        .background(.ultraThinMaterial, in: Capsule())
-                }
-                #else
-                content
-                    .background(.ultraThinMaterial, in: Capsule())
-                #endif
             }
         }
         .padding(.horizontal, LemonadeSpacing.spacing400.value)
@@ -626,64 +614,64 @@ public extension View {
     ///
     /// Uses native iOS `.navigationTitle` and `.toolbar` under the hood,
     /// preserving all native navigation interactions (swipe-to-go-back, title morphing, etc.).
-    ///
-    /// Mirrors KMP `LemonadeUi.TopBar(label, collapsedLabel, navigationAction, trailingSlot, bottomSlot)`.
+    /// The `toolbar` parameter uses `@ToolbarContentBuilder` — same API as native `.toolbar`.
     ///
     /// ## Usage
     /// ```swift
     /// ScrollView { content }
     ///     .lemonadeTopBar(
     ///         label: "Settings",
-    ///         navigationAction: NavigationAction(action: .back, onAction: { dismiss() }),
-    ///         trailingSlot: {
+    ///         navigationAction: NavigationAction(action: .back, onAction: { dismiss() })
+    ///     ) {
+    ///         ToolbarItem(placement: .navigationBarTrailing) {
     ///             LemonadeUi.IconButton(icon: .bell, contentDescription: "Notifications", onClick: {})
     ///         }
-    ///     )
+    ///     }
     /// ```
-    func lemonadeTopBar<TrailingContent: View, BottomContent: View>(
+    func lemonadeTopBar<Toolbar: ToolbarContent, BottomContent: View>(
         label: String,
         collapsedLabel: String? = nil,
         navigationAction: NavigationAction? = nil,
-        @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
-        @ViewBuilder bottomSlot: @escaping () -> BottomContent
+        @ViewBuilder bottomSlot: @escaping () -> BottomContent,
+        @ToolbarContentBuilder toolbar: () -> Toolbar
     ) -> some View {
         modifier(BasicTopBarModifier(
             label: label,
             collapsedLabel: collapsedLabel,
             navigationAction: navigationAction,
-            trailingSlot: trailingSlot,
+            toolbarContent: toolbar(),
             bottomSlot: bottomSlot
         ))
     }
 
-    /// Applies a Lemonade-styled navigation bar with a collapsible large title (no bottom slot).
-    func lemonadeTopBar<TrailingContent: View>(
+    /// Applies a Lemonade-styled navigation bar with toolbar content (no bottom slot).
+    func lemonadeTopBar<Toolbar: ToolbarContent>(
         label: String,
         collapsedLabel: String? = nil,
         navigationAction: NavigationAction? = nil,
-        @ViewBuilder trailingSlot: @escaping () -> TrailingContent
+        @ToolbarContentBuilder toolbar: () -> Toolbar
     ) -> some View {
         modifier(BasicTopBarModifier(
             label: label,
             collapsedLabel: collapsedLabel,
             navigationAction: navigationAction,
-            trailingSlot: trailingSlot,
+            toolbarContent: toolbar(),
             bottomSlot: nil as (() -> EmptyView)?
         ))
     }
 
-    /// Applies a Lemonade-styled navigation bar with a collapsible large title (no trailing or bottom slot).
+    /// Applies a Lemonade-styled navigation bar with a collapsible large title (no toolbar or bottom slot).
     func lemonadeTopBar(
         label: String,
         collapsedLabel: String? = nil,
         navigationAction: NavigationAction? = nil
     ) -> some View {
-        modifier(BasicTopBarModifier<EmptyView, EmptyView>(
+        modifier(BasicTopBarModifier(
             label: label,
             collapsedLabel: collapsedLabel,
             navigationAction: navigationAction,
-            trailingSlot: nil,
-            bottomSlot: nil
+            toolbarContent: LemonadeEmptyToolbarContent(),
+            bottomSlot: nil as (() -> EmptyView)?
         ))
     }
 
@@ -692,9 +680,7 @@ public extension View {
     /// Applies a Lemonade-styled navigation bar with an integrated search field.
     ///
     /// Uses native `.searchable` with `.navigationBarDrawer` placement.
-    /// The search field collapses automatically on scroll.
-    ///
-    /// Mirrors KMP `LemonadeUi.TopBar(label, searchInput, onSearchChanged, expandedLabel, navigationAction, trailingSlot, bottomSlot)`.
+    /// The `toolbar` parameter uses `@ToolbarContentBuilder` — same API as native `.toolbar`.
     ///
     /// ## Usage
     /// ```swift
@@ -702,18 +688,21 @@ public extension View {
     ///     .lemonadeTopBar(
     ///         label: "Search",
     ///         searchInput: $query,
-    ///         expandedLabel: "Discover",
     ///         navigationAction: NavigationAction(action: .back, onAction: { dismiss() })
-    ///     )
+    ///     ) {
+    ///         ToolbarItem(placement: .navigationBarTrailing) {
+    ///             LemonadeUi.IconButton(icon: .filter, contentDescription: "Filter", onClick: {})
+    ///         }
+    ///     }
     /// ```
-    func lemonadeTopBar<TrailingContent: View, BottomContent: View>(
+    func lemonadeTopBar<Toolbar: ToolbarContent, BottomContent: View>(
         label: String,
         searchInput: Binding<String>,
         searchPrompt: String = "Search...",
         expandedLabel: String? = nil,
         navigationAction: NavigationAction? = nil,
-        @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
-        @ViewBuilder bottomSlot: @escaping () -> BottomContent
+        @ViewBuilder bottomSlot: @escaping () -> BottomContent,
+        @ToolbarContentBuilder toolbar: () -> Toolbar
     ) -> some View {
         modifier(SearchTopBarModifier(
             label: label,
@@ -721,19 +710,19 @@ public extension View {
             searchPrompt: searchPrompt,
             expandedLabel: expandedLabel,
             navigationAction: navigationAction,
-            trailingSlot: trailingSlot,
+            toolbarContent: toolbar(),
             bottomSlot: bottomSlot
         ))
     }
 
-    /// Applies a Lemonade-styled navigation bar with search (no bottom slot).
-    func lemonadeTopBar<TrailingContent: View>(
+    /// Applies a Lemonade-styled navigation bar with search + toolbar (no bottom slot).
+    func lemonadeTopBar<Toolbar: ToolbarContent>(
         label: String,
         searchInput: Binding<String>,
         searchPrompt: String = "Search...",
         expandedLabel: String? = nil,
         navigationAction: NavigationAction? = nil,
-        @ViewBuilder trailingSlot: @escaping () -> TrailingContent
+        @ToolbarContentBuilder toolbar: () -> Toolbar
     ) -> some View {
         modifier(SearchTopBarModifier(
             label: label,
@@ -741,12 +730,12 @@ public extension View {
             searchPrompt: searchPrompt,
             expandedLabel: expandedLabel,
             navigationAction: navigationAction,
-            trailingSlot: trailingSlot,
+            toolbarContent: toolbar(),
             bottomSlot: nil as (() -> EmptyView)?
         ))
     }
 
-    /// Applies a Lemonade-styled navigation bar with search (no trailing or bottom slot).
+    /// Applies a Lemonade-styled navigation bar with search (no toolbar or bottom slot).
     func lemonadeTopBar(
         label: String,
         searchInput: Binding<String>,
@@ -754,14 +743,14 @@ public extension View {
         expandedLabel: String? = nil,
         navigationAction: NavigationAction? = nil
     ) -> some View {
-        modifier(SearchTopBarModifier<EmptyView, EmptyView>(
+        modifier(SearchTopBarModifier(
             label: label,
             searchInput: searchInput,
             searchPrompt: searchPrompt,
             expandedLabel: expandedLabel,
             navigationAction: navigationAction,
-            trailingSlot: nil,
-            bottomSlot: nil
+            toolbarContent: LemonadeEmptyToolbarContent(),
+            bottomSlot: nil as (() -> EmptyView)?
         ))
     }
 
