@@ -22,7 +22,6 @@ import androidx.compose.runtime.Stable
 public interface LemonadeOpacity {
     public val base: Base
     public val state: State
-
     public interface Base {
         public val opacity0: Float
         public val opacity5: Float
@@ -37,16 +36,15 @@ public interface LemonadeOpacity {
         public val opacity90: Float
         public val opacity100: Float
     }
-
     public interface State {
-        public val opacityPressed: Float
         public val opacityDisabled: Float
+        public val opacityPressed: Float
     }
 }
 
 @Stable
-internal class InternalLemonadeOpacityTokens : LemonadeOpacity {
-    override val base: LemonadeOpacity.Base = object : LemonadeOpacity.Base {
+internal class InternalLemonadeOpacityTokens: LemonadeOpacity {
+    override val base: LemonadeOpacity.Base = object: LemonadeOpacity.Base {
         override val opacity0: Float = 0.0f
         override val opacity5: Float = 0.05f
         override val opacity10: Float = 0.1f
@@ -60,8 +58,8 @@ internal class InternalLemonadeOpacityTokens : LemonadeOpacity {
         override val opacity90: Float = 0.9f
         override val opacity100: Float = 1.0f
     }
-    override val state: LemonadeOpacity.State = object : LemonadeOpacity.State {
-        override val opacityPressed: Float = 0.2f
-        override val opacityDisabled: Float = 0.4f
+    override val state: LemonadeOpacity.State = object: LemonadeOpacity.State {
+        override val opacityDisabled: Float = 0.5f
+        override val opacityPressed: Float = 0.8f
     }
 }

@@ -188,8 +188,8 @@ class LemonadeBaseOpacity {
 class LemonadeStateOpacity {
   /// Creates a [LemonadeStateOpacity] configuration.
   const LemonadeStateOpacity({
-    this.opacityPressed = 0.2,
-    this.opacityDisabled = 0.4,
+    this.opacityDisabled = 0.5,
+    this.opacityPressed = 0.8,
   });
 
   /// Linearly interpolates between two [LemonadeStateOpacity] objects.
@@ -202,28 +202,28 @@ class LemonadeStateOpacity {
     if (identical(a, b)) return a;
 
     return LemonadeStateOpacity(
-      opacityPressed: lerpDouble(a.opacityPressed, b.opacityPressed, t)!,
       opacityDisabled: lerpDouble(a.opacityDisabled, b.opacityDisabled, t)!,
+      opacityPressed: lerpDouble(a.opacityPressed, b.opacityPressed, t)!,
     );
   }
 
-  /// Opacity value of 20% from token `opacityPressed`
-  final double opacityPressed;
-
-  /// Opacity value of 40% from token `opacityDisabled`
+  /// Opacity value of 50% from token `opacityDisabled`
   final double opacityDisabled;
+
+  /// Opacity value of 80% from token `opacityPressed`
+  final double opacityPressed;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is LemonadeStateOpacity &&
           runtimeType == other.runtimeType &&
-          opacityPressed == other.opacityPressed &&
-          opacityDisabled == other.opacityDisabled;
+          opacityDisabled == other.opacityDisabled &&
+          opacityPressed == other.opacityPressed;
 
   @override
   int get hashCode => Object.hash(
-    opacityPressed,
     opacityDisabled,
+    opacityPressed,
   );
 }
