@@ -11,15 +11,16 @@ private data class OpacityResource(
 
 fun main() {
     val inputFile = File("tokens/opacity.json")
-    val outputDir = File("kmp/ui/src/commonMain/kotlin/com/teya/lemonade")
+    val outputDirs = listOf(
+        File("kmp/ui/src/commonMain/kotlin/com/teya/lemonade"),
+        File("kmp/tokens/src/commonMain/kotlin/com/teya/lemonade"),
+    )
     try {
         if (!inputFile.exists() || !inputFile.isFile) {
             error(message = "File $inputFile does not exist in system.")
         }
 
-        if (!outputDir.exists()) {
-            outputDir.mkdirs()
-        }
+        outputDirs.forEach { if (!it.exists()) it.mkdirs() }
 
         val opacityResources = readFileResourceFile(
             file = inputFile,
@@ -35,10 +36,11 @@ fun main() {
             scriptFilePath = "scripts/kmp-opacity-token-converter.main.kts",
             opacitiesResource = opacityResources,
         )
-        val outputTokenFile = File(outputDir, "LemonadeOpacity.kt")
-        outputTokenFile.writeText(fullOpacityCode)
+        outputDirs.forEach { dir ->
+            File(dir, "LemonadeOpacity.kt").writeText(fullOpacityCode)
+        }
 
-        println("✓ Converted ${inputFile.name} -> ${outputTokenFile.name}")
+        println("✓ Converted ${inputFile.name} -> LemonadeOpacity.kt")
     } catch (error: Throwable) {
         println("✗ Failed to convert ${inputFile.name}: ${error.message}")
     }
