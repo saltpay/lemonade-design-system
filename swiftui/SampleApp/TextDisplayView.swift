@@ -81,32 +81,40 @@ struct TextDisplayView: View {
                     }
                 }
 
-                // Rich Text (tag-based)
+                // Rich Text (overrideStyle)
                 sectionView(title: "Rich Text") {
                     VStack(alignment: .leading, spacing: 12) {
                         LemonadeUi.Text(
-                            "It should arrive by <bold>15 June</bold>",
+                            "It should arrive by 15 June",
                             textStyle: LemonadeTypography.shared.bodyMediumRegular,
-                            tags: ["bold": LemonadeTypography.shared.bodyMediumSemiBold],
+                            overrideStyle: [
+                                "15 June": LemonadeTextOverride(textStyle: LemonadeTypography.shared.bodyMediumSemiBold)
+                            ],
                             color: LemonadeTheme.colors.content.contentSecondary
                         )
 
                         LemonadeUi.Text(
-                            "Total: <price>€129.99</price> (incl. tax)",
+                            "Total: €129.99 (incl. tax)",
                             textStyle: LemonadeTypography.shared.bodyMediumRegular,
-                            tags: ["price": LemonadeTypography.shared.bodyLargeSemiBold],
-                            color: LemonadeTheme.colors.content.contentSecondary,
-                            tagColors: ["price": LemonadeTheme.colors.content.contentPrimary]
+                            overrideStyle: [
+                                "€129.99": LemonadeTextOverride(
+                                    textStyle: LemonadeTypography.shared.bodyLargeSemiBold,
+                                    color: LemonadeTheme.colors.content.contentPrimary
+                                )
+                            ],
+                            color: LemonadeTheme.colors.content.contentSecondary
                         )
 
                         LemonadeUi.Text(
-                            "<count>3 items</count> in your cart, <alert>1 item</alert> is out of stock",
+                            "3 items in your cart, 1 item is out of stock",
                             textStyle: LemonadeTypography.shared.bodySmallRegular,
-                            tags: [
-                                "count": LemonadeTypography.shared.bodySmallSemiBold,
-                                "alert": LemonadeTypography.shared.bodySmallSemiBold
-                            ],
-                            tagColors: ["alert": LemonadeTheme.colors.content.contentCritical]
+                            overrideStyle: [
+                                "3 items": LemonadeTextOverride(textStyle: LemonadeTypography.shared.bodySmallSemiBold),
+                                "1 item": LemonadeTextOverride(
+                                    textStyle: LemonadeTypography.shared.bodySmallSemiBold,
+                                    color: LemonadeTheme.colors.content.contentCritical
+                                )
+                            ]
                         )
                     }
                 }

@@ -8,7 +8,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -79,22 +78,16 @@ public fun LemonadeUi.Text(
 }
 
 /**
- * Rich text component that parses inline tags and applies the corresponding [SpanStyle]
- * from the [tags] map. Untagged text inherits the base [textStyle] and [color].
- *
- * Tags use the format `<name>content</name>`. This is localization-friendly because
- * translators can reorder the tags freely within the translated string.
- *
- * **Note:** Overline auto-uppercasing is not applied in this overload. If using the overline
- * text style, the caller must uppercase the string content before passing it.
+ * Text component with substring style overrides. Matches each key in [overrideStyle]
+ * within [text] and applies the corresponding [SpanStyle] to that substring.
+ * The rest of the text uses the base [textStyle] and [color].
  *
  * ## Usage
  * ```kotlin
- * // The string can come from string resources — tag order is language-dependent
  * LemonadeUi.Text(
- *     text = "It should arrive by <bold>15 June</bold>",
+ *     text = "It should arrive by 15 June",
  *     textStyle = LemonadeTheme.typography.bodyMediumRegular,
- *     tags = mapOf("bold" to LemonadeTheme.typography.bodyMediumSemiBold.spanStyle),
+ *     overrideStyle = mapOf("15 June" to LemonadeTheme.typography.bodyMediumSemiBold.spanStyle),
  * )
  * ```
  */
@@ -103,7 +96,7 @@ public fun LemonadeUi.Text(
     text: String,
     modifier: Modifier = Modifier,
     textStyle: LemonadeTextStyle = LocalTextStyles.current,
-    tags: Map<String, SpanStyle>,
+    overrideStyle: Map<String, SpanStyle>,
     textAlign: TextAlign = TextAlign.Unspecified,
     color: Color = LocalColors.current.content.contentPrimary,
     overflow: TextOverflow = TextOverflow.Clip,
@@ -114,17 +107,12 @@ public fun LemonadeUi.Text(
     val finalColor = if (color != Color.Unspecified) color else baseStyle.color
 
     val annotatedString = buildAnnotatedString {
-        val segments = parseTaggedText(text)
-        for ((content, tag) in segments) {
-            if (tag != null) {
-                val spanStyle = tags[tag]
-                if (spanStyle != null) {
-                    withStyle(spanStyle) { append(content) }
-                } else {
-                    append(content)
-                }
-            } else {
-                append(content)
+        append(text)
+        for ((substring, spanStyle) in overrideStyle) {
+            var startIndex = text.indexOf(substring)
+            while (startIndex >= 0) {
+                addStyle(spanStyle, startIndex, startIndex + substring.length)
+                startIndex = text.indexOf(substring, startIndex + substring.length)
             }
         }
     }
@@ -144,22 +132,4 @@ public fun LemonadeUi.Text(
             textAlign = textAlign,
         ),
     )
-}
-
-private val tagPattern = Regex("<(\\w+)>(.*?)</\\1>")
-
-private fun parseTaggedText(text: String): List<Pair<String, String?>> {
-    val segments = mutableListOf<Pair<String, String?>>()
-    var lastIndex = 0
-    for (match in tagPattern.findAll(text)) {
-        if (match.range.first > lastIndex) {
-            segments.add(Pair(text.substring(lastIndex, match.range.first), null))
-        }
-        segments.add(Pair(match.groupValues[2], match.groupValues[1]))
-        lastIndex = match.range.last + 1
-    }
-    if (lastIndex < text.length) {
-        segments.add(Pair(text.substring(lastIndex), null))
-    }
-    return segments
 }

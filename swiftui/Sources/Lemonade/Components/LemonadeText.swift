@@ -1,5 +1,21 @@
 import SwiftUI
 
+// MARK: - Text Override
+
+/// Describes style overrides for a substring within rich text.
+/// All properties are optional — only specified values override the base style.
+public struct LemonadeTextOverride {
+    /// The text style to apply to the matched substring.
+    public let textStyle: LemonadeTextStyle?
+    /// The color to apply to the matched substring.
+    public let color: Color?
+
+    public init(textStyle: LemonadeTextStyle? = nil, color: Color? = nil) {
+        self.textStyle = textStyle
+        self.color = color
+    }
+}
+
 // MARK: - Text Component
 
 public extension LemonadeUi {
@@ -46,40 +62,40 @@ public extension LemonadeUi {
         )
     }
 
-    /// Rich text component that parses inline tags and applies the corresponding style
-    /// from the `tags` map. Untagged text inherits the base `textStyle` and `color`.
-    ///
-    /// Tags use the format `<name>content</name>`. This is localization-friendly because
-    /// translators can reorder the tags freely within the translated string.
+    /// Text component with substring style overrides. Matches each key in `overrideStyle`
+    /// within the text and applies the corresponding overrides to that substring.
+    /// The rest of the text uses the base `textStyle` and `color`.
     ///
     /// ## Usage
     /// ```swift
-    /// // The string can come from NSLocalizedString — tag order is language-dependent
     /// LemonadeUi.Text(
-    ///     "It should arrive by <bold>15 June</bold>",
+    ///     "Total: €129.99 (incl. tax)",
     ///     textStyle: LemonadeTypography.shared.bodyMediumRegular,
-    ///     tags: ["bold": LemonadeTypography.shared.bodyMediumSemiBold]
+    ///     overrideStyle: [
+    ///         "€129.99": LemonadeTextOverride(
+    ///             textStyle: LemonadeTypography.shared.bodyLargeSemiBold,
+    ///             color: LemonadeTheme.colors.content.contentPrimary
+    ///         )
+    ///     ]
     /// )
     /// ```
     @ViewBuilder
     static func Text(
         _ text: String,
         textStyle: LemonadeTextStyle = LemonadeTypography.shared.bodyMediumRegular,
-        tags: [String: LemonadeTextStyle],
+        overrideStyle: [String: LemonadeTextOverride],
         textAlign: TextAlignment = .leading,
         color: Color = LemonadeTheme.colors.content.contentPrimary,
-        tagColors: [String: Color] = [:],
         overflow: Text.TruncationMode = .tail,
         maxLines: Int? = nil,
         minLines: Int = 1
     ) -> some View {
-        LemonadeTaggedTextView(
+        LemonadeOverrideTextView(
             text: text,
             baseTextStyle: textStyle,
-            tags: tags,
+            overrideStyle: overrideStyle,
             textAlign: textAlign,
             baseColor: color,
-            tagColors: tagColors,
             overflow: overflow,
             maxLines: maxLines,
             minLines: minLines
@@ -212,24 +228,23 @@ private struct LemonadeTextView: View {
     }
 }
 
-// MARK: - Tagged Text View
+// MARK: - Override Text View
 
-private struct LemonadeTaggedTextView: View {
+private struct LemonadeOverrideTextView: View {
     let text: String
     let baseTextStyle: LemonadeTextStyle
-    let tags: [String: LemonadeTextStyle]
+    let overrideStyle: [String: LemonadeTextOverride]
     let textAlign: TextAlignment
     let baseColor: Color
-    let tagColors: [String: Color]
     let overflow: Text.TruncationMode
     let maxLines: Int?
     let minLines: Int
 
     var body: some View {
-        let segments = Self.parseTaggedText(text)
+        let segments = buildSegments()
         let combined = segments.reduce(SwiftUI.Text("")) { result, segment in
-            let style = segment.tag.flatMap { tags[$0] } ?? baseTextStyle
-            let color = segment.tag.flatMap { tagColors[$0] } ?? baseColor
+            let style = segment.override?.textStyle ?? baseTextStyle
+            let color = segment.override?.color ?? baseColor
             let font: Font = .custom(LemonadeTypography.fontFamily, size: style.fontSize)
                 .weight(style.fontWeight)
             var piece = SwiftUI.Text(segment.content)
@@ -251,33 +266,32 @@ private struct LemonadeTaggedTextView: View {
 
     private struct Segment {
         let content: String
-        let tag: String?
+        let override: LemonadeTextOverride?
     }
 
-    private static func parseTaggedText(_ text: String) -> [Segment] {
-        var segments: [Segment] = []
-        let pattern = try! NSRegularExpression(pattern: "<(\\w+)>(.*?)</\\1>", options: [])
-        let nsText = text as NSString
-        var lastIndex = 0
-
-        let matches = pattern.matches(in: text, range: NSRange(location: 0, length: nsText.length))
-        for match in matches {
-            let matchRange = match.range
-            if matchRange.location > lastIndex {
-                let plain = nsText.substring(with: NSRange(location: lastIndex, length: matchRange.location - lastIndex))
-                segments.append(Segment(content: plain, tag: nil))
+    private func buildSegments() -> [Segment] {
+        var ranges: [(range: Range<String.Index>, key: String)] = []
+        for key in overrideStyle.keys {
+            var searchStart = text.startIndex
+            while let foundRange = text.range(of: key, range: searchStart..<text.endIndex) {
+                ranges.append((range: foundRange, key: key))
+                searchStart = foundRange.upperBound
             }
-            let tag = nsText.substring(with: match.range(at: 1))
-            let content = nsText.substring(with: match.range(at: 2))
-            segments.append(Segment(content: content, tag: tag))
-            lastIndex = matchRange.location + matchRange.length
         }
+        ranges.sort { $0.range.lowerBound < $1.range.lowerBound }
 
-        if lastIndex < nsText.length {
-            let remaining = nsText.substring(from: lastIndex)
-            segments.append(Segment(content: remaining, tag: nil))
+        var segments: [Segment] = []
+        var currentIndex = text.startIndex
+        for entry in ranges {
+            if entry.range.lowerBound > currentIndex {
+                segments.append(Segment(content: String(text[currentIndex..<entry.range.lowerBound]), override: nil))
+            }
+            segments.append(Segment(content: String(text[entry.range]), override: overrideStyle[entry.key]))
+            currentIndex = entry.range.upperBound
         }
-
+        if currentIndex < text.endIndex {
+            segments.append(Segment(content: String(text[currentIndex...]), override: nil))
+        }
         return segments
     }
 }

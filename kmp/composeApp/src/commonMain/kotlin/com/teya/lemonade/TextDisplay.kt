@@ -200,25 +200,25 @@ internal fun TextDisplay() {
             }
         }
 
-        // Rich Text (tag-based)
+        // Rich Text (overrideStyle)
         TextSection(title = "Rich Text") {
             Column(
                 verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
             ) {
                 LemonadeUi.Text(
-                    text = "It should arrive by <bold>15 June</bold>",
+                    text = "It should arrive by 15 June",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    tags = mapOf(
-                        "bold" to LemonadeTheme.typography.bodyMediumSemiBold.spanStyle,
+                    overrideStyle = mapOf(
+                        "15 June" to LemonadeTheme.typography.bodyMediumSemiBold.spanStyle,
                     ),
                     color = LemonadeTheme.colors.content.contentSecondary,
                 )
 
                 LemonadeUi.Text(
-                    text = "Total: <price>€129.99</price> (incl. tax)",
+                    text = "Total: €129.99 (incl. tax)",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    tags = mapOf(
-                        "price" to LemonadeTheme.typography.bodyLargeSemiBold.spanStyle.merge(
+                    overrideStyle = mapOf(
+                        "€129.99" to LemonadeTheme.typography.bodyLargeSemiBold.spanStyle.merge(
                             SpanStyle(color = LemonadeTheme.colors.content.contentPrimary),
                         ),
                     ),
@@ -226,11 +226,11 @@ internal fun TextDisplay() {
                 )
 
                 LemonadeUi.Text(
-                    text = "<count>3 items</count> in your cart, <alert>1 item</alert> is out of stock",
+                    text = "3 items in your cart, 1 item is out of stock",
                     textStyle = LemonadeTheme.typography.bodySmallRegular,
-                    tags = mapOf(
-                        "count" to LemonadeTheme.typography.bodySmallSemiBold.spanStyle,
-                        "alert" to LemonadeTheme.typography.bodySmallSemiBold.spanStyle.merge(
+                    overrideStyle = mapOf(
+                        "3 items" to LemonadeTheme.typography.bodySmallSemiBold.spanStyle,
+                        "1 item" to LemonadeTheme.typography.bodySmallSemiBold.spanStyle.merge(
                             SpanStyle(color = LemonadeTheme.colors.content.contentCritical),
                         ),
                     ),
