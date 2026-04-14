@@ -1,12 +1,17 @@
 package com.teya.lemonade
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 
 @Composable
 public fun LemonadeTheme(
-    colors: LemonadeSemanticColors = LemonadeTheme.colors,
+    colors: LemonadeSemanticColors = if (isSystemInDarkTheme()) {
+        LemonadeDarkTheme
+    } else {
+        LemonadeLightTheme
+    },
     typography: LemonadeTypographyProvider = LemonadeTheme.typography,
     radius: LemonadeRadiusValues = LemonadeTheme.radius,
     shapes: LemonadeShapes = LemonadeTheme.shapes,

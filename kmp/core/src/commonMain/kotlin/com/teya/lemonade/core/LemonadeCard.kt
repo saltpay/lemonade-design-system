@@ -10,4 +10,10 @@ public enum class LemonadeCardPadding {
 public enum class LemonadeCardBackground {
     Default,
     Subtle,
+    Elevated,
+}
+
+public enum class LemonadeCardHeadingStyle {
+    Default,
+    Overline,
 }

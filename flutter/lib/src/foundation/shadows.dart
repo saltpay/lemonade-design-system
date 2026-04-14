@@ -20,66 +20,64 @@ class LemonadeShadows {
   const LemonadeShadows({
     this.xsmall = const <BoxShadow>[
       BoxShadow(
-        color: Color(0x0C313931),
-        blurRadius: 1,
+        color: Color(0x19000000),
+        blurRadius: 2,
         offset: Offset(0, 1),
-      ),
-      BoxShadow(
-        color: Color(0x2D0A280A),
-        blurRadius: 3,
-        offset: Offset(0, 3),
-        spreadRadius: -3,
       ),
     ],
     this.small = const <BoxShadow>[
       BoxShadow(
-        color: Color(0x0C313931),
-        blurRadius: 1,
+        color: Color(0x19000000),
+        blurRadius: 3,
         offset: Offset(0, 1),
       ),
       BoxShadow(
-        color: Color(0x190D300D),
-        blurRadius: 6,
-        offset: Offset(0, 4),
-        spreadRadius: -3,
+        color: Color(0x19000000),
+        blurRadius: 2,
+        offset: Offset(0, 1),
+        spreadRadius: -1,
       ),
     ],
     this.medium = const <BoxShadow>[
       BoxShadow(
-        color: Color(0x190D300D),
-        blurRadius: 1,
-        offset: Offset(0, 1),
+        color: Color(0x19000000),
+        blurRadius: 3,
+        offset: Offset(0, 2),
+        spreadRadius: -2,
       ),
       BoxShadow(
-        color: Color(0x190D300D),
-        blurRadius: 32,
-        offset: Offset(0, 16),
-        spreadRadius: -6,
+        color: Color(0x19000000),
+        blurRadius: 6,
+        offset: Offset(0, 4),
+        spreadRadius: -2,
       ),
     ],
     this.large = const <BoxShadow>[
       BoxShadow(
-        color: Color(0x190D300D),
-        blurRadius: 1,
-        offset: Offset(0, 1),
+        color: Color(0x19000000),
+        blurRadius: 6,
+        offset: Offset(0, 4),
+        spreadRadius: -4,
       ),
       BoxShadow(
-        color: Color(0x190D300D),
-        blurRadius: 8,
+        color: Color(0x19000000),
+        blurRadius: 15,
+        offset: Offset(0, 10),
+        spreadRadius: -3,
+      ),
+    ],
+    this.xlarge = const <BoxShadow>[
+      BoxShadow(
+        color: Color(0x19000000),
+        blurRadius: 10,
         offset: Offset(0, 8),
-        spreadRadius: -8,
+        spreadRadius: -6,
       ),
       BoxShadow(
-        color: Color(0x190D300D),
-        blurRadius: 28,
-        offset: Offset(0, 24),
-        spreadRadius: -12,
-      ),
-      BoxShadow(
-        color: Color(0x190D300D),
-        blurRadius: 48,
-        offset: Offset(0, 32),
-        spreadRadius: -8,
+        color: Color(0x19000000),
+        blurRadius: 25,
+        offset: Offset(0, 20),
+        spreadRadius: -5,
       ),
     ],
   });
@@ -98,6 +96,7 @@ class LemonadeShadows {
       small: BoxShadow.lerpList(a.small, b.small, t)!,
       medium: BoxShadow.lerpList(a.medium, b.medium, t)!,
       large: BoxShadow.lerpList(a.large, b.large, t)!,
+      xlarge: BoxShadow.lerpList(a.xlarge, b.xlarge, t)!,
     );
   }
 
@@ -113,6 +112,9 @@ class LemonadeShadows {
   /// Large shadow style
   final List<BoxShadow> large;
 
+  /// Shadow style for xlarge
+  final List<BoxShadow> xlarge;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -121,10 +123,11 @@ class LemonadeShadows {
           xsmall == other.xsmall &&
           small == other.small &&
           medium == other.medium &&
-          large == other.large;
+          large == other.large &&
+          xlarge == other.xlarge;
 
   @override
-  int get hashCode => Object.hash(xsmall, small, medium, large);
+  int get hashCode => Object.hash(xsmall, small, medium, large, xlarge);
 
   /// Helper method to access [LemonadeShadows] from the closest
   /// [LemonadeTheme] ancestor.

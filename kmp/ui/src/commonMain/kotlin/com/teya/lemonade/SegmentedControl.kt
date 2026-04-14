@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -201,7 +202,10 @@ internal fun CoreSegmentedControl(
 
     Box(
         modifier = modifier
-            .height(height = size.containerHeight())
+            .defaultMinSize(
+                minWidth = size.buttonMinWidth(),
+                minHeight = size.buttonMinHeight(),
+            ).height(height = size.containerHeight())
             .background(
                 color = LocalColors.current.background.bgElevated,
                 shape = pillShape,
@@ -336,6 +340,28 @@ private fun LemonadeSegmentedControlSize.containerPadding(): Dp {
         LemonadeSegmentedControlSize.Medium,
         LemonadeSegmentedControlSize.Large,
         -> spaces.spacing100
+    }
+}
+
+@Composable
+private fun LemonadeSegmentedControlSize.buttonMinWidth(): Dp {
+    val sizes = LocalSizes.current
+    return when (this) {
+        LemonadeSegmentedControlSize.Small -> sizes.size800
+        LemonadeSegmentedControlSize.Medium,
+        LemonadeSegmentedControlSize.Large,
+        -> sizes.size1200
+    }
+}
+
+@Composable
+private fun LemonadeSegmentedControlSize.buttonMinHeight(): Dp {
+    val sizes = LocalSizes.current
+    return when (this) {
+        LemonadeSegmentedControlSize.Small -> sizes.size700
+        LemonadeSegmentedControlSize.Medium,
+        LemonadeSegmentedControlSize.Large,
+        -> sizes.size800
     }
 }
 

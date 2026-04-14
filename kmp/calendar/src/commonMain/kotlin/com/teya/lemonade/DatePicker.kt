@@ -2,25 +2,19 @@
 
 package com.teya.lemonade
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,19 +23,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.disabled
-import androidx.compose.ui.semantics.selected
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
-import com.teya.lemonade.core.LemonadeIconButtonVariant
-import com.teya.lemonade.core.LemonadeIcons
 import kotlinx.coroutines.launch
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.DayOfWeek
@@ -52,7 +38,6 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.minusMonth
 import kotlinx.datetime.monthsUntil
 import kotlinx.datetime.number
-import kotlinx.datetime.onDay
 import kotlinx.datetime.plus
 import kotlinx.datetime.plusMonth
 import kotlinx.datetime.todayIn
@@ -185,6 +170,10 @@ public fun rememberDateRangePickerState(
  * @param modifier Optional [Modifier] for layout adjustments.
  * @param state Configuration state created via [rememberDatePickerState].
  * Observe [DatePickerState.selectedDate] to react to user selections.
+ * @param firstDayOfWeek The first day of the week shown in the grid. Defaults to
+ * [DayOfWeek.SUNDAY]. Callers should supply the correct value for their locale
+ * (e.g. [DayOfWeek.MONDAY] for ISO / European locales).
+ * @param onMonthDisplayed Optional callback invoked when the displayed month changes.
  */
 @Composable
 public fun LemonadeUi.DatePicker(
@@ -192,6 +181,8 @@ public fun LemonadeUi.DatePicker(
     weekdayAbbreviations: List<String>,
     modifier: Modifier = Modifier,
     state: DatePickerState = rememberDatePickerState(),
+    firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
+    onMonthDisplayed: ((YearMonth) -> Unit)? = null,
 ) {
     CoreDatePicker(
         monthFormatter = monthFormatter,
@@ -201,6 +192,8 @@ public fun LemonadeUi.DatePicker(
         onDateSelected = { date -> state.selectedDate = date },
         minDate = state.minDate,
         maxDate = state.maxDate,
+        firstDayOfWeek = firstDayOfWeek,
+        onMonthDisplayed = onMonthDisplayed,
     )
 }
 
@@ -230,6 +223,10 @@ public fun LemonadeUi.DatePicker(
  * @param state Configuration state created via [rememberDateRangePickerState].
  * Observe [DateRangePickerState.selectedStartDate] and [DateRangePickerState.selectedEndDate]
  * to react to user selections.
+ * @param firstDayOfWeek The first day of the week shown in the grid. Defaults to
+ * [DayOfWeek.SUNDAY]. Callers should supply the correct value for their locale
+ * (e.g. [DayOfWeek.MONDAY] for ISO / European locales).
+ * @param onMonthDisplayed Optional callback invoked when the displayed month changes.
  */
 @Composable
 public fun LemonadeUi.DateRangePicker(
@@ -237,6 +234,8 @@ public fun LemonadeUi.DateRangePicker(
     weekdayAbbreviations: List<String>,
     modifier: Modifier = Modifier,
     state: DateRangePickerState = rememberDateRangePickerState(),
+    firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
+    onMonthDisplayed: ((YearMonth) -> Unit)? = null,
 ) {
     val isSelectingEndDate = state.selectedStartDate != null && state.selectedEndDate == null
 
@@ -295,6 +294,8 @@ public fun LemonadeUi.DateRangePicker(
         },
         minDate = effectiveMin,
         maxDate = effectiveMax,
+        firstDayOfWeek = firstDayOfWeek,
+        onMonthDisplayed = onMonthDisplayed,
     )
 }
 
@@ -307,6 +308,8 @@ private fun CoreDatePicker(
     onDateSelected: (LocalDate) -> Unit,
     minDate: LocalDate?,
     maxDate: LocalDate?,
+    firstDayOfWeek: DayOfWeek,
+    onMonthDisplayed: ((YearMonth) -> Unit)?,
 ) {
     val today = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) }
 
@@ -316,6 +319,18 @@ private fun CoreDatePicker(
     val coroutineScope = rememberCoroutineScope()
 
     val centerYearMonth = startMonth.plus(pagerState.currentPage.toLong() - CENTER_PAGE, DateTimeUnit.MONTH)
+
+    val hasEmittedInitialMonth = remember { BoolRef(false) }
+
+    if (onMonthDisplayed != null) {
+        LaunchedEffect(centerYearMonth) {
+            if (hasEmittedInitialMonth.value) {
+                onMonthDisplayed(centerYearMonth)
+            } else {
+                hasEmittedInitialMonth.value = true
+            }
+        }
+    }
 
     val headerLabel = "${monthFormatter(centerYearMonth.month.number)} ${centerYearMonth.year}"
 
@@ -335,20 +350,27 @@ private fun CoreDatePicker(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        MonthHeader(
+        CalendarMonthHeader(
             modifier = Modifier.fillMaxWidth().padding(horizontal = horizontalPadding),
-            yearMonth = centerYearMonth,
-            onYearMonthChange = { newYearMonth ->
+            headerLabel = headerLabel,
+            canGoPrev = canGoPrev,
+            canGoNext = canGoNext,
+            onPrev = {
+                val newYearMonth = centerYearMonth.minusMonth()
                 val diff = centerYearMonth.monthsUntil(newYearMonth)
                 val targetPage = (pagerState.currentPage + diff).coerceIn(0, PAGES_TOTAL - 1)
-
                 coroutineScope.launch {
                     pagerState.animateScrollToPage(targetPage)
                 }
             },
-            headerLabel = headerLabel,
-            canGoPrev = canGoPrev,
-            canGoNext = canGoNext,
+            onNext = {
+                val newYearMonth = centerYearMonth.plusMonth()
+                val diff = centerYearMonth.monthsUntil(newYearMonth)
+                val targetPage = (pagerState.currentPage + diff).coerceIn(0, PAGES_TOTAL - 1)
+                coroutineScope.launch {
+                    pagerState.animateScrollToPage(targetPage)
+                }
+            },
         )
 
         Spacer(modifier = Modifier.height(LocalSpaces.current.spacing200))
@@ -387,74 +409,9 @@ private fun CoreDatePicker(
                 selectedDates = selectedDates,
                 minDate = minDate,
                 maxDate = maxDate,
+                firstDayOfWeek = firstDayOfWeek,
                 onDateSelected = onDateSelected,
             )
-        }
-    }
-}
-
-@Composable
-private fun MonthHeader(
-    modifier: Modifier = Modifier,
-    yearMonth: YearMonth,
-    onYearMonthChange: (YearMonth) -> Unit,
-    headerLabel: String,
-    canGoPrev: Boolean,
-    canGoNext: Boolean,
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        LemonadeUi.IconButton(
-            icon = LemonadeIcons.ChevronLeft,
-            contentDescription = "Previous month",
-            variant = LemonadeIconButtonVariant.Ghost,
-            enabled = canGoPrev,
-            onClick = { onYearMonthChange(yearMonth.minusMonth()) },
-        )
-
-        LemonadeUi.Text(
-            text = headerLabel,
-            textStyle = LocalTypographies.current.bodySmallSemiBold,
-            color = LocalColors.current.content.contentPrimary,
-        )
-
-        LemonadeUi.IconButton(
-            icon = LemonadeIcons.ChevronRight,
-            contentDescription = "Next month",
-            variant = LemonadeIconButtonVariant.Ghost,
-            enabled = canGoNext,
-            onClick = { onYearMonthChange(yearMonth.plusMonth()) },
-        )
-    }
-}
-
-private fun generateMonthDays(month: YearMonth): List<LocalDate> {
-    val firstDayOfMonth = month.firstDay.dayOfWeek.ordinal
-
-    val startingWeekDay = DayOfWeek.SUNDAY.ordinal
-    val firstDayOffset =
-        (firstDayOfMonth - startingWeekDay + DayOfWeek.entries.size) % DayOfWeek.entries.size
-
-    return buildList {
-        // Previous month
-        val previousMonth = month.minusMonth()
-        val prevMonthLength = previousMonth.numberOfDays
-        for (day in prevMonthLength - firstDayOffset + 1..prevMonthLength) {
-            add(previousMonth.onDay(day))
-        }
-
-        // Current month
-        for (day in 1..month.numberOfDays) {
-            add(month.onDay(day))
-        }
-
-        // Next month
-        val nextMonth = month.plusMonth()
-        for (day in 1..42 - size) {
-            add(nextMonth.onDay(day))
         }
     }
 }
@@ -465,11 +422,12 @@ private fun MonthGrid(
     selectedDates: Set<LocalDate>,
     minDate: LocalDate?,
     maxDate: LocalDate?,
+    firstDayOfWeek: DayOfWeek,
     onDateSelected: (LocalDate) -> Unit,
 ) {
     val today = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) }
 
-    val days = remember(yearMonth) { generateMonthDays(yearMonth) }
+    val days = remember(yearMonth, firstDayOfWeek) { daysForMonth(yearMonth, firstDayOfWeek = firstDayOfWeek) }
 
     val isRangeComplete = selectedDates.size >= 2
     val rangeStartDate = if (isRangeComplete) selectedDates.min() else null
@@ -501,7 +459,9 @@ private fun MonthGrid(
                     val isAfterMax = maxDate != null && current > maxDate
 
                     ContentCell(
-                        modifier = Modifier.padding(horizontal = cellHorizontalPadding),
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = cellHorizontalPadding),
                         text = "${current.day}",
                         isCurrent = current == today,
                         isSelected = current in selectedDates,
@@ -509,7 +469,6 @@ private fun MonthGrid(
                         isOutsideVisibleRange = current.yearMonth != yearMonth,
                         isInsideSelectedRange = isInRange,
                         onClick = { onDateSelected(current) },
-                        interactionSource = remember { MutableInteractionSource() },
                     )
                 }
             }
@@ -544,96 +503,6 @@ private fun Modifier.drawRangeHighlight(
                 topLeft = Offset(left, 0f),
                 size = Size(right - left, size.height),
                 cornerRadius = CornerRadius(cellRadius.toPx()),
-            )
-        }
-    }
-}
-
-@Composable
-private fun RowScope.ContentCell(
-    modifier: Modifier = Modifier,
-    text: String,
-    isCurrent: Boolean,
-    isSelected: Boolean,
-    isEnabled: Boolean,
-    isOutsideVisibleRange: Boolean,
-    isInsideSelectedRange: Boolean,
-    onClick: () -> Unit,
-    interactionSource: MutableInteractionSource,
-) {
-    val isFocused by interactionSource.collectIsFocusedAsState()
-
-    val textColor = when {
-        !isEnabled -> LocalColors.current.content.contentTertiary
-        isSelected || isInsideSelectedRange -> LocalColors.current.content.contentOnBrandHigh
-        isCurrent -> LocalColors.current.content.contentBrand
-        isOutsideVisibleRange -> LocalColors.current.content.contentSecondary
-        else -> LocalColors.current.content.contentPrimary
-    }
-
-    val textStyle = if (isCurrent) {
-        LocalTypographies.current.bodyMediumSemiBold
-    } else {
-        LocalTypographies.current.bodyMediumMedium
-    }
-
-    val backgroundColor = if (isSelected) {
-        LocalColors.current.interaction.bgBrandInteractive
-    } else {
-        Color.Transparent
-    }
-
-    val cellShape = LocalShapes.current.radius200
-
-    Box(
-        modifier = modifier
-            .weight(1f)
-            .then(
-                other = if (isFocused) {
-                    Modifier
-                        .border(
-                            width = LocalBorderWidths.current.base.border50,
-                            color = LocalColors.current.border.borderSelected,
-                            shape = cellShape,
-                        )
-                } else {
-                    Modifier
-                },
-            ).clip(
-                shape = cellShape,
-            ).clickable(
-                onClick = onClick,
-                interactionSource = interactionSource,
-                role = Role.Button,
-                enabled = isEnabled,
-                indication = LocalEffects.current.interactionIndication,
-            ).semantics {
-                selected = isSelected
-                if (!isEnabled) {
-                    disabled()
-                }
-            }.background(
-                color = backgroundColor,
-            ),
-        contentAlignment = Alignment.Center,
-    ) {
-        LemonadeUi.Text(
-            modifier = Modifier.padding(vertical = LocalSpaces.current.spacing200),
-            text = text,
-            textStyle = textStyle,
-            color = textColor,
-        )
-
-        if (isCurrent) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = LocalSpaces.current.spacing100)
-                    .size(LocalSpaces.current.spacing100)
-                    .background(
-                        color = textColor,
-                        shape = LocalShapes.current.radiusFull,
-                    ),
             )
         }
     }

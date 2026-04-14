@@ -19,7 +19,7 @@ import SwiftUI
 /// 
 
 /// Spacing token enum
-public enum LemonadeSpacing: Sendable {
+public enum LemonadeSpacing {
     case spacing0
     case spacing50
     case spacing100
@@ -78,7 +78,7 @@ public protocol LemonadeSpaceValues {
 }
 
 /// Default spacing values implementation
-public struct LemonadeSpaceValuesImpl: LemonadeSpaceValues, Sendable {
+public struct LemonadeSpaceValuesImpl: LemonadeSpaceValues {
     public let spacing0: CGFloat = LemonadeSpacing.spacing0.value
     public let spacing50: CGFloat = LemonadeSpacing.spacing50.value
     public let spacing100: CGFloat = LemonadeSpacing.spacing100.value

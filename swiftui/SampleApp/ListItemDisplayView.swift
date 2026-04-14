@@ -304,6 +304,30 @@ struct ListItemDisplayView: View {
                         }
                     )
                 }
+
+                // MARK: - Loading State
+                LemonadeUi.Card(
+                    contentPadding: .none,
+                    header: CardHeaderConfig(title: "Loading State")
+                ) {
+                    LemonadeUi.ActionListItem(
+                        label: "",
+                        isLoading: true,
+                        showDivider: true
+                    )
+
+                    LemonadeUi.ActionListItem(
+                        label: "",
+                        isLoading: true,
+                        showDivider: true
+                    )
+
+                    LemonadeUi.ActionListItem(
+                        label: "",
+                        isLoading: true,
+                        showDivider: false
+                    )
+                }
             }
             .padding(.space.spacing400)
         }

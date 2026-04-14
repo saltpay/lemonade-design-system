@@ -6,7 +6,6 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,8 +18,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -198,9 +199,9 @@ private fun CoreSkeleton(
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "SkeletonShimmer")
 
-    val fadeOpacity by infiniteTransition.animateFloat(
-        initialValue = LocalOpacities.current.base.opacity20,
-        targetValue = LocalOpacities.current.base.opacity60,
+    val shimmerOffset by infiniteTransition.animateFloat(
+        initialValue = -1f,
+        targetValue = 1f,
         animationSpec = infiniteRepeatable(
             animation = tween(
                 durationMillis = 1000,
@@ -208,8 +209,11 @@ private fun CoreSkeleton(
             ),
             repeatMode = RepeatMode.Reverse,
         ),
-        label = "FadeOpacity",
+        label = "ShimmerOffset",
     )
+
+    val baseColor = LocalColors.current.background.bgElevated
+    val highlightColor = LocalColors.current.background.bgElevatedHigh
 
     val skeletonSize = size.toSkeletonSizeDimensions(variant = variant)
     val variantData = variant.variantData
@@ -225,8 +229,22 @@ private fun CoreSkeleton(
                 .fillMaxHeight()
                 .fillMaxWidth()
                 .clip(shape = variantData.radius)
-                .alpha(alpha = fadeOpacity)
-                .background(color = LocalColors.current.background.bgElevatedHigh),
+                .drawBehind {
+                    val width = this.size.width
+                    drawRect(
+                        brush = Brush.linearGradient(
+                            colors = listOf(baseColor, highlightColor, baseColor),
+                            start = Offset(
+                                x = width * (shimmerOffset - 0.5f),
+                                y = 0f,
+                            ),
+                            end = Offset(
+                                x = width * (shimmerOffset + 0.5f),
+                                y = 0f,
+                            ),
+                        ),
+                    )
+                },
         )
     }
 }
