@@ -2,11 +2,7 @@ import SwiftUI
 
 // MARK: - LemonadeHistoryItemVoice
 
-/// Defines the semantic voice of a HistoryItem indicator dot.
-///
-/// - `neutral`: Dark dot for the current step, muted dot for past steps
-/// - `positive`: Green dot used to highlight success or completed states
-/// - `critical`: Red dot used to highlight failure or error states
+/// Defines the semantic voice of a HistoryItem indicator dot when rendered as the current step.
 public enum LemonadeHistoryItemVoice {
     case neutral
     case positive
@@ -29,12 +25,13 @@ public enum LemonadeHistoryItemVoice {
 /// layout) below the description. For full per-row composable control, use the
 /// standalone ``LemonadeUi/HistoryItem(label:subheading:description:voice:isCurrent:isLast:contentSlot:)``
 /// inside your own `VStack` instead.
-public struct LemonadeHistoryTimelineItem: Identifiable {
-    public let id: UUID
+public struct LemonadeHistoryTimelineItem {
     public let label: String
     public let subheading: String?
     public let description: String?
     public let voice: LemonadeHistoryItemVoice
+    // AnyView erasure: a heterogeneous [LemonadeHistoryTimelineItem] array can't carry
+    // generic view-builder slots. Stored as a closure so the view is only built when rendered.
     let contentSlot: (() -> AnyView)?
 
     /// Creates a history timeline row description.
@@ -53,7 +50,6 @@ public struct LemonadeHistoryTimelineItem: Identifiable {
         voice: LemonadeHistoryItemVoice = .neutral,
         @ViewBuilder contentSlot: @escaping () -> Content
     ) {
-        self.id = UUID()
         self.label = label
         self.subheading = subheading
         self.description = description
@@ -68,7 +64,6 @@ public struct LemonadeHistoryTimelineItem: Identifiable {
         description: String? = nil,
         voice: LemonadeHistoryItemVoice = .neutral
     ) {
-        self.id = UUID()
         self.label = label
         self.subheading = subheading
         self.description = description
@@ -191,7 +186,8 @@ private struct LemonadeHistoryTimelineView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
+            ForEach(items.indices, id: \.self) { index in
+                let item = items[index]
                 LemonadeHistoryItemView(
                     label: item.label,
                     subheading: item.subheading,
@@ -226,26 +222,30 @@ private struct LemonadeHistoryItemView<Content: View>: View {
     }
 
     var body: some View {
-        HStack(alignment: .top, spacing: LemonadeTheme.spaces.spacing300) {
+        let spaces = LemonadeTheme.spaces
+        let typography = LemonadeTypography.shared
+        let contentColors = LemonadeTheme.colors.content
+
+        HStack(alignment: .top, spacing: spaces.spacing300) {
             HistoryItemIndicator(
                 voice: voice,
                 isCurrent: isCurrent,
                 isLast: isLast
             )
 
-            VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing200) {
+            VStack(alignment: .leading, spacing: spaces.spacing200) {
                 VStack(alignment: .leading, spacing: 0) {
                     LemonadeUi.Text(
                         label,
-                        textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                        color: LemonadeTheme.colors.content.contentPrimary
+                        textStyle: typography.bodyMediumMedium,
+                        color: contentColors.contentPrimary
                     )
 
                     if let subheading = subheading {
                         LemonadeUi.Text(
                             subheading,
-                            textStyle: LemonadeTypography.shared.bodySmallRegular,
-                            color: LemonadeTheme.colors.content.contentSecondary
+                            textStyle: typography.bodySmallRegular,
+                            color: contentColors.contentSecondary
                         )
                     }
                 }
@@ -253,8 +253,8 @@ private struct LemonadeHistoryItemView<Content: View>: View {
                 if let description = description {
                     LemonadeUi.Text(
                         description,
-                        textStyle: LemonadeTypography.shared.bodySmallRegular,
-                        color: LemonadeTheme.colors.content.contentSecondary
+                        textStyle: typography.bodySmallRegular,
+                        color: contentColors.contentSecondary
                     )
                 }
 
@@ -262,7 +262,7 @@ private struct LemonadeHistoryItemView<Content: View>: View {
                     contentSlot()
                 }
             }
-            .padding(.bottom, LemonadeTheme.spaces.spacing400)
+            .padding(.bottom, isLast ? 0 : spaces.spacing400)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .fixedSize(horizontal: false, vertical: true)

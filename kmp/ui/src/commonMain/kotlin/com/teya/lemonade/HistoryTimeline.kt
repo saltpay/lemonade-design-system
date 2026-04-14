@@ -33,9 +33,6 @@ private val HistoryItemLineThickness: Dp = 1.dp
 /**
  * Describes a single row inside a [LemonadeUi.HistoryTimeline].
  *
- * Not a data class: the optional [contentSlot] is a composable lambda which does not
- * participate in structural equality.
- *
  * @param label Primary row text.
  * @param subheading Optional secondary text rendered immediately below [label].
  * @param description Optional tertiary paragraph text rendered below the subheading.
@@ -52,14 +49,13 @@ public class HistoryTimelineItem(
 )
 
 /**
- * A vertical list of history steps with a left-aligned indicator column.
+ * A vertical list of history steps with a left-aligned indicator column. The current row uses
+ * the item's [HistoryItemVoice] colour; past rows render muted. A connecting line joins every
+ * row except the last.
  *
- * Each row shows a coloured dot; the current row uses the item's [HistoryItemVoice] colour,
- * all other rows use a muted neutral. A connecting line joins every row except the last.
- *
- * For rows with custom composable content, set [HistoryTimelineItem.contentSlot]. For full
- * composable control over each row (including mixing non-HistoryItem composables) use the
- * standalone [LemonadeUi.HistoryItem] inside your own column.
+ * For rows with custom content, set [HistoryTimelineItem.contentSlot]. For full composable
+ * control per row (including mixing non-HistoryItem composables) use the standalone
+ * [LemonadeUi.HistoryItem] inside your own column.
  *
  * ## Usage
  * ```kotlin
@@ -112,11 +108,11 @@ public fun LemonadeUi.HistoryTimeline(
 }
 
 /**
- * A single row with a timeline indicator and a content stack of label, subheading,
- * description, and an optional custom content slot.
+ * A single timeline row with an indicator column and a stack of label, subheading, description
+ * and an optional content slot.
  *
- * Use this standalone form when the caller needs full composable control per row; otherwise
- * prefer [LemonadeUi.HistoryTimeline] which derives [isCurrent] and [isLast] automatically.
+ * Prefer [LemonadeUi.HistoryTimeline] for a list; use this standalone form when the caller
+ * needs full composable control per row.
  *
  * ## Usage
  * ```kotlin
@@ -134,9 +130,10 @@ public fun LemonadeUi.HistoryTimeline(
  * @param subheading Optional secondary text rendered immediately below [label].
  * @param description Optional tertiary paragraph text rendered below the subheading.
  * @param voice Semantic colour of the indicator dot. Only applied when [isCurrent] is `true`;
- *   non-current rows always render a muted dot. Defaults to [HistoryItemVoice.Neutral].
- * @param isCurrent Whether this row is the current (active) step. Past rows pass `false`.
- * @param isLast Whether this is the last row in the timeline. Hides the connecting line.
+ *   non-current rows always render a muted dot.
+ * @param isCurrent Whether this row is the current (active) step.
+ * @param isLast Whether this is the last row in the timeline. Hides the connecting line and
+ *   the trailing bottom padding.
  * @param contentSlot Optional slot for custom composable content (e.g. a button or tag)
  *   rendered below the description.
  */
@@ -151,9 +148,13 @@ public fun LemonadeUi.HistoryItem(
     isLast: Boolean = false,
     contentSlot: (@Composable ColumnScope.() -> Unit)? = null,
 ) {
+    val spaces = LocalSpaces.current
+    val typographies = LocalTypographies.current
+    val contentColors = LocalColors.current.content
+
     Row(
         modifier = modifier.height(intrinsicSize = IntrinsicSize.Min),
-        horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
+        horizontalArrangement = Arrangement.spacedBy(space = spaces.spacing300),
     ) {
         HistoryItemIndicator(
             voice = voice,
@@ -162,21 +163,21 @@ public fun LemonadeUi.HistoryItem(
         )
 
         Column(
-            modifier = Modifier.padding(bottom = LocalSpaces.current.spacing400),
-            verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),
+            modifier = Modifier.padding(bottom = if (isLast) spaces.spacing0 else spaces.spacing400),
+            verticalArrangement = Arrangement.spacedBy(space = spaces.spacing200),
         ) {
             Column {
                 LemonadeUi.Text(
                     text = label,
-                    textStyle = LocalTypographies.current.bodyMediumMedium,
-                    color = LocalColors.current.content.contentPrimary,
+                    textStyle = typographies.bodyMediumMedium,
+                    color = contentColors.contentPrimary,
                 )
 
                 if (subheading != null) {
                     LemonadeUi.Text(
                         text = subheading,
-                        textStyle = LocalTypographies.current.bodySmallRegular,
-                        color = LocalColors.current.content.contentSecondary,
+                        textStyle = typographies.bodySmallRegular,
+                        color = contentColors.contentSecondary,
                     )
                 }
             }
@@ -184,8 +185,8 @@ public fun LemonadeUi.HistoryItem(
             if (description != null) {
                 LemonadeUi.Text(
                     text = description,
-                    textStyle = LocalTypographies.current.bodySmallRegular,
-                    color = LocalColors.current.content.contentSecondary,
+                    textStyle = typographies.bodySmallRegular,
+                    color = contentColors.contentSecondary,
                 )
             }
 
@@ -196,23 +197,29 @@ public fun LemonadeUi.HistoryItem(
     }
 }
 
+private val HistoryItemVoice.currentDotColor: Color
+    @Composable
+    get() {
+        val background = LocalColors.current.background
+        return when (this) {
+            HistoryItemVoice.Positive -> background.bgPositive
+            HistoryItemVoice.Critical -> background.bgCritical
+            HistoryItemVoice.Neutral -> background.bgNeutral
+        }
+    }
+
 @Composable
 private fun HistoryItemIndicator(
     voice: HistoryItemVoice,
     isCurrent: Boolean,
     isLast: Boolean,
 ) {
-    val colors = LocalColors.current
+    val mutedColor = LocalColors.current.border.borderNeutralMedium
     val dotColor: Color = if (isCurrent) {
-        when (voice) {
-            HistoryItemVoice.Positive -> colors.background.bgPositive
-            HistoryItemVoice.Critical -> colors.background.bgCritical
-            HistoryItemVoice.Neutral -> colors.background.bgNeutral
-        }
+        voice.currentDotColor
     } else {
-        colors.border.borderNeutralMedium
+        mutedColor
     }
-    val lineColor: Color = colors.border.borderNeutralMedium
 
     Column(
         modifier = Modifier
@@ -232,7 +239,7 @@ private fun HistoryItemIndicator(
                 modifier = Modifier
                     .width(width = HistoryItemLineThickness)
                     .weight(weight = 1f)
-                    .background(color = lineColor),
+                    .background(color = mutedColor),
             )
         }
     }
