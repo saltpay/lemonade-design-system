@@ -15,6 +15,7 @@ import com.teya.lemonade.CountryFlagDisplay
 import com.teya.lemonade.DatePickerDisplay
 import com.teya.lemonade.Displays
 import com.teya.lemonade.DividerDisplay
+import com.teya.lemonade.HistoryTimelineDisplay
 import com.teya.lemonade.HomeDisplay
 import com.teya.lemonade.IconButtonDisplay
 import com.teya.lemonade.IconsDisplay
@@ -89,4 +90,5 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.InlineCalendar to { _ -> InlineCalendarDisplay() },
     Displays.Notice to { _ -> NoticeDisplay() },
     Displays.Toast to { _ -> ToastDisplay() },
+    Displays.HistoryTimeline to { _ -> HistoryTimelineDisplay() },
 )
