@@ -85,6 +85,9 @@ public fun LemonadeUi.Text(
  * Tags use the format `<name>content</name>`. This is localization-friendly because
  * translators can reorder the tags freely within the translated string.
  *
+ * **Note:** Overline auto-uppercasing is not applied in this overload. If using the overline
+ * text style, the caller must uppercase the string content before passing it.
+ *
  * ## Usage
  * ```kotlin
  * // The string can come from string resources — tag order is language-dependent

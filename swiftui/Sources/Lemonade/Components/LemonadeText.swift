@@ -232,9 +232,12 @@ private struct LemonadeTaggedTextView: View {
             let color = segment.tag.flatMap { tagColors[$0] } ?? baseColor
             let font: Font = .custom(LemonadeTypography.fontFamily, size: style.fontSize)
                 .weight(style.fontWeight)
-            let piece = SwiftUI.Text(segment.content)
+            var piece = SwiftUI.Text(segment.content)
                 .font(font)
                 .foregroundColor(color)
+            if let tracking = style.letterSpacing {
+                piece = piece.tracking(tracking)
+            }
             return result + piece
         }
 
