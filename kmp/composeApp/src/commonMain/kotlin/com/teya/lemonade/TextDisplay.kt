@@ -226,6 +226,17 @@ internal fun TextDisplay() {
                 )
 
                 LemonadeUi.Text(
+                    text = "You have 5 new messages from Anna",
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    overrideStyle = mapOf(
+                        "5 new messages" to LemonadeTheme.typography.bodyMediumSemiBold.spanStyle,
+                        "Anna" to LemonadeTheme.typography.bodyMediumSemiBold.spanStyle.merge(
+                            SpanStyle(color = LemonadeTheme.colors.content.contentInfo),
+                        ),
+                    ),
+                )
+
+                LemonadeUi.Text(
                     text = "3 items in your cart, 1 item is out of stock",
                     textStyle = LemonadeTheme.typography.bodySmallRegular,
                     overrideStyle = mapOf(

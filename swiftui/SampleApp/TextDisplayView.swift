@@ -106,6 +106,18 @@ struct TextDisplayView: View {
                         )
 
                         LemonadeUi.Text(
+                            "You have 5 new messages from Anna",
+                            textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                            overrideStyle: [
+                                "5 new messages": LemonadeTextOverride(textStyle: LemonadeTypography.shared.bodyMediumSemiBold),
+                                "Anna": LemonadeTextOverride(
+                                    textStyle: LemonadeTypography.shared.bodyMediumSemiBold,
+                                    color: LemonadeTheme.colors.content.contentInfo
+                                )
+                            ]
+                        )
+
+                        LemonadeUi.Text(
                             "3 items in your cart, 1 item is out of stock",
                             textStyle: LemonadeTypography.shared.bodySmallRegular,
                             overrideStyle: [
