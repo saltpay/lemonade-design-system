@@ -10,7 +10,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 
 @Suppress("LongMethod")
 @Composable
@@ -195,6 +198,59 @@ internal fun TextDisplay() {
                     text = "Info",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     color = LemonadeTheme.colors.content.contentInfo,
+                )
+            }
+        }
+
+        // Rich Text (AnnotatedString)
+        TextSection(title = "Rich Text") {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+            ) {
+                LemonadeUi.Text(
+                    text = buildAnnotatedString {
+                        append("It should arrive by ")
+                        withStyle(LemonadeTheme.typography.bodyMediumSemiBold.spanStyle) {
+                            append("15 June")
+                        }
+                    },
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    color = LemonadeTheme.colors.content.contentSecondary,
+                )
+
+                LemonadeUi.Text(
+                    text = buildAnnotatedString {
+                        append("Total: ")
+                        withStyle(
+                            LemonadeTheme.typography.bodyLargeSemiBold.spanStyle.merge(
+                                SpanStyle(color = LemonadeTheme.colors.content.contentPrimary),
+                            ),
+                        ) {
+                            append("€129.99")
+                        }
+                        append(" (incl. tax)")
+                    },
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    color = LemonadeTheme.colors.content.contentSecondary,
+                )
+
+                LemonadeUi.Text(
+                    text = buildAnnotatedString {
+                        withStyle(LemonadeTheme.typography.bodySmallSemiBold.spanStyle) {
+                            append("3 items")
+                        }
+                        append(" in your cart, ")
+                        withStyle(
+                            LemonadeTheme.typography.bodySmallSemiBold.spanStyle.merge(
+                                SpanStyle(color = LemonadeTheme.colors.content.contentCritical),
+                            ),
+                        ) {
+                            append("1 item")
+                        }
+                        append(" is out of stock")
+                    },
+                    textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    color = LemonadeTheme.colors.content.contentPrimary,
                 )
             }
         }

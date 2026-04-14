@@ -46,6 +46,32 @@ public extension LemonadeUi {
         )
     }
 
+    /// Creates a styled `Text` view using a Lemonade text style, suitable for
+    /// rich text composition via SwiftUI's native `+` operator.
+    ///
+    /// ## Usage
+    /// ```swift
+    /// LemonadeUi.StyledText("It should arrive by ", textStyle: .shared.bodyMediumRegular)
+    ///     + LemonadeUi.StyledText("15 June", textStyle: .shared.bodyMediumSemiBold)
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - text: The string to display
+    ///   - textStyle: The LemonadeTextStyle to apply.
+    ///   - color: Text color. Defaults to contentPrimary.
+    /// - Returns: A styled `Text` value that can be concatenated with `+`
+    static func StyledText(
+        _ text: String,
+        textStyle: LemonadeTextStyle,
+        color: Color = LemonadeTheme.colors.content.contentPrimary
+    ) -> SwiftUI.Text {
+        let font: Font = .custom(LemonadeTypography.fontFamily, size: textStyle.fontSize)
+            .weight(textStyle.fontWeight)
+        return SwiftUI.Text(text)
+            .font(font)
+            .foregroundColor(color)
+    }
+
     /// Text component with a raw TextStyle for advanced customization.
     ///
     /// - Parameters:
@@ -150,7 +176,7 @@ private struct LemonadeTextView: View {
                 .frame(minHeight: textStyle?.lineHeight)
         }
     }
-    
+
 
     private var isOverlineStyle: Bool {
         guard let style = textStyle else { return false }
@@ -203,7 +229,7 @@ struct LemonadeText_Previews: PreviewProvider {
                 "Overline Text",
                 textStyle: LemonadeTypography.shared.bodyXSmallOverline
             )
-            
+
             LemonadeUi.Text("This text allows multiple lines but is limited to 2 lines maximum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.", textStyle: LemonadeTypography.shared.bodyMediumRegular, maxLines: 2)
         }
         .padding()

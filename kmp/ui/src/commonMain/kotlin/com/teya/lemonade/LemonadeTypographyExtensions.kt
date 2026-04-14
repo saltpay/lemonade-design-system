@@ -1,6 +1,7 @@
 package com.teya.lemonade
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -48,6 +49,36 @@ public val LemonadeTextStyle.textStyle: TextStyle
             lineHeight = lineHeight.sp,
             letterSpacing = spacing.sp,
             fontFeatureSettings = "psum",
+        )
+    }
+
+/**
+ * Converts a [LemonadeTextStyle] to a Compose [SpanStyle] for use inside
+ * [buildAnnotatedString][androidx.compose.ui.text.buildAnnotatedString].
+ *
+ * ## Usage
+ * ```kotlin
+ * buildAnnotatedString {
+ *     withStyle(LemonadeTheme.typography.bodyMediumSemiBold.spanStyle) {
+ *         append("bold text")
+ *     }
+ * }
+ * ```
+ */
+public val LemonadeTextStyle.spanStyle: SpanStyle
+    @Composable get() {
+        val spacing = letterSpacing ?: 0f
+        return SpanStyle(
+            fontFamily = lemonadeFontFamily,
+            fontWeight = when (fontWeight) {
+                400 -> FontWeight.Normal
+                500 -> FontWeight.Medium
+                600 -> FontWeight.SemiBold
+                700 -> FontWeight.Bold
+                else -> FontWeight.Normal
+            },
+            fontSize = fontSize.sp,
+            letterSpacing = spacing.sp,
         )
     }
 
