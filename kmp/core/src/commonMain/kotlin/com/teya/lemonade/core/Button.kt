@@ -4,9 +4,13 @@ public enum class LemonadeButtonVariant {
     Primary,
     Secondary,
     Neutral,
-    CriticalSubtle,
-    CriticalSolid,
-    Special,
+    Critical,
+}
+
+public enum class LemonadeButtonType {
+    Solid,
+    Subtle,
+    Ghost,
 }
 
 public enum class LemonadeButtonSize {

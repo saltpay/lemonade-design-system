@@ -37,7 +37,6 @@ internal fun BottomSheetSampleDisplay() {
     ) {
         // Basic Bottom Sheet
         BottomSheetSection(title = "Basic Bottom Sheet") {
-            @OptIn(ExperimentalLemonadeComponent::class)
             LemonadeUi.Button(
                 label = "Open Bottom Sheet",
                 onClick = { showBasicSheet = true },
@@ -53,7 +52,6 @@ internal fun BottomSheetSampleDisplay() {
                 textStyle = LemonadeTheme.typography.bodySmallRegular,
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
-            @OptIn(ExperimentalLemonadeComponent::class)
             LemonadeUi.Button(
                 label = "Open Without Drag Handle",
                 onClick = { showNoDragHandleSheet = true },
@@ -82,7 +80,6 @@ internal fun BottomSheetSampleDisplay() {
                 text = "This is an example bottom sheet with free-form content. Swipe down or tap the scrim to dismiss.",
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
-            @OptIn(ExperimentalLemonadeComponent::class)
             LemonadeUi.Button(
                 label = "Close",
                 onClick = { showBasicSheet = false },
@@ -116,7 +113,6 @@ internal fun BottomSheetSampleDisplay() {
                 text = "This bottom sheet has no drag handle visible. Tap the scrim or use the button to close.",
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
-            @OptIn(ExperimentalLemonadeComponent::class)
             LemonadeUi.Button(
                 label = "Close",
                 onClick = { showNoDragHandleSheet = false },

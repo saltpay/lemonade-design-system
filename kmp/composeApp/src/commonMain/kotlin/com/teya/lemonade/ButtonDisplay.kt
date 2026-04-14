@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeButtonSize
+import com.teya.lemonade.core.LemonadeButtonType
 import com.teya.lemonade.core.LemonadeButtonVariant
 import com.teya.lemonade.core.LemonadeCardPadding
 import com.teya.lemonade.core.LemonadeIcons
@@ -25,123 +26,131 @@ import com.teya.lemonade.core.LemonadeIcons
 internal fun ButtonDisplay() {
     SampleScreenDisplayColumn("Button", itemsSpacing = LemonadeTheme.spaces.spacing600) {
         LemonadeButtonVariant.entries.forEach { variant ->
-            ButtonSection(title = variant.toString()) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(
-                        space = LemonadeTheme.spaces.spacing300,
-                    ),
-                ) {
-                    ButtonCard {
-                        LemonadeButtonSize.entries.forEach { size ->
-                            LemonadeUi.Button(
-                                label = size.toString(),
-                                onClick = {},
-                                variant = variant,
-                                size = size,
-                            )
+            LemonadeButtonType.entries.forEach { type ->
+                ButtonSection(title = "$variant+$type") {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(
+                            space = LemonadeTheme.spaces.spacing300,
+                        ),
+                    ) {
+                        ButtonCard {
+                            LemonadeButtonSize.entries.forEach { size ->
+                                LemonadeUi.Button(
+                                    label = size.toString(),
+                                    onClick = {},
+                                    variant = variant,
+                                    type = type,
+                                    size = size,
+                                )
+                            }
                         }
-                    }
 
-                    ButtonCard {
-                        listOf("leading", "trailing").forEach { position ->
-                            val leadingIcon = getButtonLeadingIcon(variant)
+                        ButtonCard {
+                            listOf("leading", "trailing").forEach { position ->
+                                val leadingIcon = getButtonLeadingIcon(variant)
+                                LemonadeUi.Button(
+                                    label = position.replaceFirstChar { char -> char.uppercase() },
+                                    onClick = {},
+                                    variant = variant,
+                                    type = type,
+                                    size = LemonadeButtonSize.Medium,
+                                    leadingIcon = if (position == "leading") leadingIcon else null,
+                                    trailingIcon = if (position == "trailing") LemonadeIcons.ChevronRight else null,
+                                )
+                            }
+                        }
+
+                        ButtonCard {
                             LemonadeUi.Button(
-                                label = position.replaceFirstChar { it.uppercase() },
+                                label = "Loading",
                                 onClick = {},
                                 variant = variant,
+                                type = type,
                                 size = LemonadeButtonSize.Medium,
-                                leadingIcon = if (position == "leading") leadingIcon else null,
-                                trailingIcon = if (position == "trailing") LemonadeIcons.ChevronRight else null,
+                                loading = true,
+                            )
+
+                            LemonadeUi.Button(
+                                label = "Disabled",
+                                onClick = {},
+                                variant = variant,
+                                type = type,
+                                size = LemonadeButtonSize.Medium,
+                                enabled = false,
                             )
                         }
-                    }
 
-                    ButtonCard {
-                        LemonadeUi.Button(
-                            label = "Loading",
-                            onClick = {},
-                            variant = variant,
-                            size = LemonadeButtonSize.Medium,
-                            loading = true,
-                        )
+                        ButtonCard {
+                            LemonadeUi.Button(
+                                label = "Dual Action",
+                                onClick = {},
+                                trailingSlot = { colors ->
+                                    LemonadeUi.VerticalDivider(modifier = Modifier.fillMaxHeight())
+                                    val interactionSource = remember { MutableInteractionSource() }
+                                    val isPressed by interactionSource.collectIsPressedAsState()
+                                    val backgroundColor by animateColorAsState(
+                                        targetValue = if (isPressed) {
+                                            colors.pressedBackgroundColor
+                                        } else {
+                                            colors.pressedBackgroundColor.copy(
+                                                alpha = LemonadeTheme.opacities.base.opacity0,
+                                            )
+                                        },
+                                    )
+                                    LemonadeUi.Icon(
+                                        icon = LemonadeIcons.EllipsisVertical,
+                                        contentDescription = null,
+                                        tint = colors.contentColor,
+                                        modifier = Modifier
+                                            .clickable(
+                                                onClick = { /* Nothing */ },
+                                                interactionSource = interactionSource,
+                                            ).background(color = backgroundColor)
+                                            .fillMaxHeight()
+                                            .padding(horizontal = LemonadeTheme.spaces.spacing400),
+                                    )
+                                },
+                                variant = variant,
+                                type = type,
+                                size = LemonadeButtonSize.Medium,
+                            )
 
-                        LemonadeUi.Button(
-                            label = "Disabled",
-                            onClick = {},
-                            variant = variant,
-                            size = LemonadeButtonSize.Medium,
-                            enabled = false,
-                        )
-                    }
-
-                    ButtonCard {
-                        LemonadeUi.Button(
-                            label = "Dual Action",
-                            onClick = {},
-                            trailingSlot = { colors ->
-                                LemonadeUi.VerticalDivider(modifier = Modifier.fillMaxHeight())
-                                val interactionSource = remember { MutableInteractionSource() }
-                                val isPressed by interactionSource.collectIsPressedAsState()
-                                val backgroundColor by animateColorAsState(
-                                    targetValue = if (isPressed) {
-                                        colors.pressedBackgroundColor
-                                    } else {
-                                        colors.pressedBackgroundColor.copy(
-                                            alpha = LemonadeTheme.opacities.base.opacity0,
-                                        )
-                                    },
-                                )
-                                LemonadeUi.Icon(
-                                    icon = LemonadeIcons.EllipsisVertical,
-                                    contentDescription = null,
-                                    tint = colors.contentColor,
-                                    modifier = Modifier
-                                        .clickable(
-                                            onClick = { /* Nothing */ },
-                                            interactionSource = interactionSource,
-                                        ).background(color = backgroundColor)
-                                        .fillMaxHeight()
-                                        .padding(horizontal = LemonadeTheme.spaces.spacing400),
-                                )
-                            },
-                            variant = variant,
-                            size = LemonadeButtonSize.Medium,
-                        )
-
-                        LemonadeUi.Button(
-                            modifier = Modifier.fillMaxWidth(),
-                            expandContents = true,
-                            label = "Dual Action",
-                            onClick = {},
-                            trailingSlot = { colors ->
-                                LemonadeUi.VerticalDivider(modifier = Modifier.fillMaxHeight())
-                                val interactionSource = remember { MutableInteractionSource() }
-                                val isPressed by interactionSource.collectIsPressedAsState()
-                                val backgroundColor by animateColorAsState(
-                                    targetValue = if (isPressed) {
-                                        colors.pressedBackgroundColor
-                                    } else {
-                                        colors.pressedBackgroundColor.copy(
-                                            alpha = LemonadeTheme.opacities.base.opacity0,
-                                        )
-                                    },
-                                )
-                                LemonadeUi.Icon(
-                                    icon = LemonadeIcons.EllipsisVertical,
-                                    contentDescription = null,
-                                    tint = colors.contentColor,
-                                    modifier = Modifier
-                                        .clickable(
-                                            onClick = { /* Nothing */ },
-                                            interactionSource = interactionSource,
-                                        ).background(color = backgroundColor)
-                                        .fillMaxHeight()
-                                        .padding(horizontal = LemonadeTheme.spaces.spacing400),
-                                )
-                            },
-                            variant = variant,
-                            size = LemonadeButtonSize.Medium,
-                        )
+                            LemonadeUi.Button(
+                                modifier = Modifier.fillMaxWidth(),
+                                expandContents = true,
+                                label = "Dual Action",
+                                onClick = {},
+                                trailingSlot = { colors ->
+                                    LemonadeUi.VerticalDivider(modifier = Modifier.fillMaxHeight())
+                                    val interactionSource = remember { MutableInteractionSource() }
+                                    val isPressed by interactionSource.collectIsPressedAsState()
+                                    val backgroundColor by animateColorAsState(
+                                        targetValue = if (isPressed) {
+                                            colors.pressedBackgroundColor
+                                        } else {
+                                            colors.pressedBackgroundColor.copy(
+                                                alpha = LemonadeTheme.opacities.base.opacity0,
+                                            )
+                                        },
+                                    )
+                                    LemonadeUi.Icon(
+                                        icon = LemonadeIcons.EllipsisVertical,
+                                        contentDescription = null,
+                                        tint = colors.contentColor,
+                                        modifier = Modifier
+                                            .clickable(
+                                                onClick = { /* Nothing */ },
+                                                interactionSource = interactionSource,
+                                            ).background(color = backgroundColor)
+                                            .fillMaxHeight()
+                                            .padding(horizontal = LemonadeTheme.spaces.spacing400),
+                                    )
+                                },
+                                variant = variant,
+                                type = type,
+                                size = LemonadeButtonSize.Medium,
+                            )
+                        }
                     }
                 }
             }
@@ -189,10 +198,7 @@ private fun getButtonLeadingIcon(variant: LemonadeButtonVariant = LemonadeButton
         LemonadeButtonVariant.Primary,
         LemonadeButtonVariant.Secondary,
         LemonadeButtonVariant.Neutral,
-        LemonadeButtonVariant.Special,
         -> LemonadeIcons.Heart
 
-        LemonadeButtonVariant.CriticalSubtle,
-        LemonadeButtonVariant.CriticalSolid,
-        -> LemonadeIcons.Trash
+        LemonadeButtonVariant.Critical -> LemonadeIcons.Trash
     }

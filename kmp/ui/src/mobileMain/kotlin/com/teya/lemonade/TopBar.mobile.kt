@@ -60,7 +60,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.zIndex
 import com.teya.lemonade.core.LemonadeAssetSize
-import com.teya.lemonade.core.LemonadeIconButtonVariant
+import com.teya.lemonade.core.LemonadeButtonType
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TopBarAction
 import kotlinx.coroutines.CoroutineScope
@@ -1283,7 +1283,7 @@ private fun Int.toPreviewTrailingSlot(): @Composable (RowScope.() -> Unit)? {
                 icon = icon,
                 contentDescription = null,
                 onClick = {},
-                variant = LemonadeIconButtonVariant.Ghost,
+                type = LemonadeButtonType.Ghost,
             )
         }
     }
@@ -1300,7 +1300,7 @@ private fun CompactLargeTopBarPreview() {
                 icon = LemonadeIcons.Bell,
                 contentDescription = null,
                 onClick = {},
-                variant = LemonadeIconButtonVariant.Ghost,
+                type = LemonadeButtonType.Ghost,
             )
         },
     )
@@ -1317,7 +1317,7 @@ private fun CompactLargeTopBarNoSubheadingPreview() {
                 icon = LemonadeIcons.Bell,
                 contentDescription = null,
                 onClick = {},
-                variant = LemonadeIconButtonVariant.Ghost,
+                type = LemonadeButtonType.Ghost,
             )
         },
     )

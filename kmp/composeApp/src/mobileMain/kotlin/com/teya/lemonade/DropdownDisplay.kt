@@ -44,7 +44,6 @@ internal fun DropdownSampleDisplay() {
         // Basic
         DropdownSection(title = "Basic") {
             Box {
-                @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.Button(
                     label = "Open Basic Menu",
                     onClick = { basicExpanded = true },
@@ -75,7 +74,6 @@ internal fun DropdownSampleDisplay() {
         // With Leading Icons
         DropdownSection(title = "With Leading Icons") {
             Box {
-                @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.Button(
                     label = "Open Menu with Leading Icons",
                     onClick = { leadingIconsExpanded = true },
@@ -109,7 +107,6 @@ internal fun DropdownSampleDisplay() {
         // With Trailing Icons
         DropdownSection(title = "With Trailing Icons") {
             Box {
-                @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.Button(
                     label = "Open Menu with Trailing Icons",
                     onClick = { trailingIconsExpanded = true },
@@ -143,7 +140,6 @@ internal fun DropdownSampleDisplay() {
         // With Disabled Items
         DropdownSection(title = "With Disabled Items") {
             Box {
-                @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.Button(
                     label = "Open Menu with Disabled Items",
                     onClick = { disabledItemsExpanded = true },
@@ -180,7 +176,6 @@ internal fun DropdownSampleDisplay() {
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
             Box {
-                @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.Button(
                     label = "Open Non-Dismissable Menu",
                     onClick = { nonDismissableExpanded = true },
@@ -225,7 +220,6 @@ internal fun DropdownSampleDisplay() {
                 )
             }
             Box {
-                @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.Button(
                     label = "Choose Option",
                     onClick = { interactiveExpanded = true },

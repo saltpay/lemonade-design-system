@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.teya.lemonade.core.LemonadeIconButtonVariant
+import com.teya.lemonade.core.LemonadeButtonType
 import com.teya.lemonade.core.LemonadeIcons
 
 /**
@@ -46,7 +46,7 @@ internal fun CalendarMonthHeader(
         LemonadeUi.IconButton(
             icon = LemonadeIcons.ChevronLeft,
             contentDescription = prevMonthContentDescription,
-            variant = LemonadeIconButtonVariant.Ghost,
+            type = LemonadeButtonType.Ghost,
             enabled = canGoPrev,
             onClick = onPrev,
         )
@@ -60,7 +60,7 @@ internal fun CalendarMonthHeader(
         LemonadeUi.IconButton(
             icon = LemonadeIcons.ChevronRight,
             contentDescription = nextMonthContentDescription,
-            variant = LemonadeIconButtonVariant.Ghost,
+            type = LemonadeButtonType.Ghost,
             enabled = canGoNext,
             onClick = onNext,
         )

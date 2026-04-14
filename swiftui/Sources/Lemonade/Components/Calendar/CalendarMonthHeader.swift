@@ -20,7 +20,7 @@ struct CalendarMonthHeader: View {
                 contentDescription: NSLocalizedString("calendar.navigation.previous_month", value: "Previous month", comment: "VoiceOver label for previous month navigation button"),
                 onClick: onPrev,
                 enabled: canGoPrev,
-                variant: .ghost
+                type: .ghost
             )
 
             Spacer()
@@ -34,7 +34,7 @@ struct CalendarMonthHeader: View {
                 contentDescription: NSLocalizedString("calendar.navigation.next_month", value: "Next month", comment: "VoiceOver label for next month navigation button"),
                 onClick: onNext,
                 enabled: canGoNext,
-                variant: .ghost
+                type: .ghost
             )
         }
     }

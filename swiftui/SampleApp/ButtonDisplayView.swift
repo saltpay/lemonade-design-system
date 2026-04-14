@@ -87,35 +87,19 @@ struct ButtonDisplayView: View {
                 sectionView(title: "Critical Solid") {
                     VStack(spacing: 16) {
                         HStack(spacing: 12) {
-                            LemonadeUi.Button(label: "XSmall", onClick: {}, variant: .criticalSolid, size: .xSmall)
-                            LemonadeUi.Button(label: "Small", onClick: {}, variant: .criticalSolid, size: .small)
-                            LemonadeUi.Button(label: "Medium", onClick: {}, variant: .criticalSolid, size: .medium)
-                            LemonadeUi.Button(label: "Large", onClick: {}, variant: .criticalSolid, size: .large)
+                            LemonadeUi.Button(label: "XSmall", onClick: {}, variant: .critical, type: .solid, size: .xSmall)
+                            LemonadeUi.Button(label: "Small", onClick: {}, variant: .critical, type: .solid, size: .small)
+                            LemonadeUi.Button(label: "Medium", onClick: {}, variant: .critical, type: .solid, size: .medium)
+                            LemonadeUi.Button(label: "Large", onClick: {}, variant: .critical, type: .solid, size: .large)
                         }
 
                         HStack(spacing: 12) {
-                            LemonadeUi.Button(label: "Delete", onClick: {}, leadingIcon: .trash, variant: .criticalSolid, size: .medium)
+                            LemonadeUi.Button(label: "Delete", onClick: {}, leadingIcon: .trash, variant: .critical, type: .solid, size: .medium)
                         }
 
-                        LemonadeUi.Button(label: "Disabled", onClick: {}, variant: .criticalSolid, size: .medium, enabled: false)
+                        LemonadeUi.Button(label: "Disabled", onClick: {}, variant: .critical, type: .solid, size: .medium, enabled: false)
 
-                        LemonadeUi.Button(label: "Loading", onClick: {}, variant: .criticalSolid, size: .medium, loading: true)
-                    }
-                }
-
-                // Special Variant
-                sectionView(title: "Special") {
-                    VStack(spacing: 16) {
-                        HStack(spacing: 12) {
-                            LemonadeUi.Button(label: "XSmall", onClick: {}, variant: .special, size: .xSmall)
-                            LemonadeUi.Button(label: "Small", onClick: {}, variant: .special, size: .small)
-                            LemonadeUi.Button(label: "Medium", onClick: {}, variant: .special, size: .medium)
-                            LemonadeUi.Button(label: "Large", onClick: {}, variant: .special, size: .large)
-                        }
-
-                        LemonadeUi.Button(label: "Disabled", onClick: {}, variant: .special, size: .medium, enabled: false)
-
-                        LemonadeUi.Button(label: "Loading", onClick: {}, variant: .special, size: .medium, loading: true)
+                        LemonadeUi.Button(label: "Loading", onClick: {}, variant: .critical, type: .solid, size: .medium, loading: true)
                     }
                 }
             }

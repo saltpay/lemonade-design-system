@@ -1,20 +1,30 @@
 import SwiftUI
 
-// MARK: - Icon Button Variant
+// MARK: - Button Variant (shared)
 
-/// Icon button variants following the Lemonade Design System.
-public enum LemonadeIconButtonVariant {
-    case ghost
-    case subtle
+/// Color variants for buttons, determining the color palette.
+public enum LemonadeButtonVariant {
+    case primary
+    case secondary
+    case neutral
+    case critical
 }
 
-// MARK: - Icon Button Size
+// MARK: - Button Type (shared)
 
-/// Icon button sizes following the Lemonade Design System.
-public enum LemonadeIconButtonSize {
-    case small
-    case medium
-    case large
+/// Fill treatment for buttons.
+public enum LemonadeButtonType {
+    case solid
+    case subtle
+    case ghost
+}
+
+// MARK: - Icon Button Shape
+
+/// Shape options for the icon button.
+public enum LemonadeIconButtonShape {
+    case rounded
+    case circular
 }
 
 // MARK: - Icon Button Component
@@ -36,8 +46,11 @@ public extension LemonadeUi {
     ///   - contentDescription: String content description for accessibility
     ///   - onClick: Callback to be invoked when the Button is clicked
     ///   - enabled: Boolean flag to enable or disable the Button
-    ///   - variant: LemonadeIconButtonVariant to style the Button accordingly
-    ///   - size: LemonadeIconButtonSize to size the Button accordingly
+    ///   - variant: LemonadeButtonVariant for the color palette (primary, secondary, neutral, critical)
+    ///   - type: LemonadeButtonType for the fill treatment (solid, subtle, ghost)
+    ///   - size: LemonadeButtonSize to size the Button accordingly
+    ///   - loading: Boolean flag to show a loading spinner
+    ///   - shape: LemonadeIconButtonShape for the button shape (rounded, circular)
     /// - Returns: A styled IconButton view
     @ViewBuilder
     static func IconButton(
@@ -45,8 +58,11 @@ public extension LemonadeUi {
         contentDescription: String?,
         onClick: @escaping () -> Void,
         enabled: Bool = true,
-        variant: LemonadeIconButtonVariant = .subtle,
-        size: LemonadeIconButtonSize = .medium
+        variant: LemonadeButtonVariant = .neutral,
+        type: LemonadeButtonType = .subtle,
+        size: LemonadeButtonSize = .medium,
+        loading: Bool = false,
+        shape: LemonadeIconButtonShape = .rounded
     ) -> some View {
         LemonadeIconButtonView(
             icon: icon,
@@ -54,7 +70,10 @@ public extension LemonadeUi {
             onClick: onClick,
             enabled: enabled,
             variant: variant,
-            size: size
+            type: type,
+            size: size,
+            loading: loading,
+            shape: shape
         )
     }
 }
@@ -65,6 +84,7 @@ private struct LemonadeIconButtonColors {
     let backgroundColor: Color
     let backgroundHoverColor: Color
     let backgroundPressedColor: Color
+    let contentColor: Color
 }
 
 // MARK: - Internal Icon Button Size Data
@@ -77,8 +97,8 @@ private struct LemonadeIconButtonSizeData {
 
 // MARK: - Icon Button Size Extension
 
-private extension LemonadeIconButtonSize {
-    var sizeData: LemonadeIconButtonSizeData {
+private extension LemonadeButtonSize {
+    var iconButtonSizeData: LemonadeIconButtonSizeData {
         switch self {
         case .large:
             return LemonadeIconButtonSizeData(
@@ -92,7 +112,7 @@ private extension LemonadeIconButtonSize {
                 innerPadding: LemonadeTheme.spaces.spacing200,
                 cornerRadius: LemonadeTheme.radius.radius300
             )
-        case .small:
+        case .small, .xSmall:
             return LemonadeIconButtonSizeData(
                 iconSize: .small,
                 innerPadding: LemonadeTheme.spaces.spacing200,
@@ -102,24 +122,104 @@ private extension LemonadeIconButtonSize {
     }
 }
 
-// MARK: - Icon Button Variant Extension
+// MARK: - Color Resolution (Variant x Type)
 
-private extension LemonadeIconButtonVariant {
-    var colorData: LemonadeIconButtonColors {
-        switch self {
-        case .ghost:
-            return LemonadeIconButtonColors(
-                backgroundColor: Color.clear,
-                backgroundHoverColor: LemonadeTheme.colors.interaction.bgSubtleInteractive,
-                backgroundPressedColor: LemonadeTheme.colors.interaction.bgNeutralSubtlePressed
-            )
-        case .subtle:
-            return LemonadeIconButtonColors(
-                backgroundColor: LemonadeTheme.colors.background.bgNeutralSubtle,
-                backgroundHoverColor: LemonadeTheme.colors.interaction.bgNeutralSubtleInteractive,
-                backgroundPressedColor: LemonadeTheme.colors.interaction.bgNeutralSubtlePressed
-            )
-        }
+private func resolveColors(
+    variant: LemonadeButtonVariant,
+    type: LemonadeButtonType
+) -> LemonadeIconButtonColors {
+    switch (variant, type) {
+    // MARK: Primary
+    case (.primary, .solid):
+        return LemonadeIconButtonColors(
+            backgroundColor: LemonadeTheme.colors.background.bgBrand,
+            backgroundHoverColor: LemonadeTheme.colors.interaction.bgBrandInteractive,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgBrandPressed,
+            contentColor: LemonadeTheme.colors.content.contentOnBrandHigh
+        )
+    case (.primary, .subtle):
+        return LemonadeIconButtonColors(
+            backgroundColor: LemonadeTheme.colors.background.bgBrandSubtle,
+            backgroundHoverColor: LemonadeTheme.colors.interaction.bgSubtleInteractive,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgSubtlePressed,
+            contentColor: LemonadeTheme.colors.content.contentBrandHigh
+        )
+    case (.primary, .ghost):
+        return LemonadeIconButtonColors(
+            backgroundColor: Color.clear,
+            backgroundHoverColor: LemonadeTheme.colors.interaction.bgSubtleInteractive,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgSubtlePressed,
+            contentColor: LemonadeTheme.colors.content.contentBrandHigh
+        )
+
+    // MARK: Secondary
+    case (.secondary, .solid):
+        return LemonadeIconButtonColors(
+            backgroundColor: LemonadeTheme.colors.background.bgSubtleInverse,
+            backgroundHoverColor: LemonadeTheme.colors.interaction.bgNeutralInteractive,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgNeutralPressed,
+            contentColor: LemonadeTheme.colors.content.contentPrimaryInverse
+        )
+    case (.secondary, .subtle):
+        return LemonadeIconButtonColors(
+            backgroundColor: LemonadeTheme.colors.background.bgNeutralSubtle,
+            backgroundHoverColor: LemonadeTheme.colors.interaction.bgNeutralSubtleInteractive,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgNeutralSubtlePressed,
+            contentColor: LemonadeTheme.colors.content.contentPrimary
+        )
+    case (.secondary, .ghost):
+        return LemonadeIconButtonColors(
+            backgroundColor: Color.clear,
+            backgroundHoverColor: LemonadeTheme.colors.interaction.bgSubtleInteractive,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgNeutralSubtlePressed,
+            contentColor: LemonadeTheme.colors.content.contentPrimary
+        )
+
+    // MARK: Neutral
+    case (.neutral, .solid):
+        return LemonadeIconButtonColors(
+            backgroundColor: LemonadeTheme.colors.background.bgElevated,
+            backgroundHoverColor: LemonadeTheme.colors.interaction.bgElevatedInteractive,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgElevatedPressed,
+            contentColor: LemonadeTheme.colors.content.contentPrimary
+        )
+    case (.neutral, .subtle):
+        return LemonadeIconButtonColors(
+            backgroundColor: LemonadeTheme.colors.background.bgNeutralSubtle,
+            backgroundHoverColor: LemonadeTheme.colors.interaction.bgNeutralSubtleInteractive,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgNeutralSubtlePressed,
+            contentColor: LemonadeTheme.colors.content.contentPrimary
+        )
+    case (.neutral, .ghost):
+        return LemonadeIconButtonColors(
+            backgroundColor: Color.clear,
+            backgroundHoverColor: LemonadeTheme.colors.interaction.bgSubtleInteractive,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgNeutralSubtlePressed,
+            contentColor: LemonadeTheme.colors.content.contentPrimary
+        )
+
+    // MARK: Critical
+    case (.critical, .solid):
+        return LemonadeIconButtonColors(
+            backgroundColor: LemonadeTheme.colors.background.bgCritical,
+            backgroundHoverColor: LemonadeTheme.colors.interaction.bgCriticalInteractive,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgCriticalPressed,
+            contentColor: LemonadeTheme.colors.content.contentAlwaysLight
+        )
+    case (.critical, .subtle):
+        return LemonadeIconButtonColors(
+            backgroundColor: LemonadeTheme.colors.background.bgCriticalSubtle,
+            backgroundHoverColor: LemonadeTheme.colors.interaction.bgCriticalSubtleInteractive,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgCriticalSubtlePressed,
+            contentColor: LemonadeTheme.colors.content.contentCritical
+        )
+    case (.critical, .ghost):
+        return LemonadeIconButtonColors(
+            backgroundColor: Color.clear,
+            backgroundHoverColor: LemonadeTheme.colors.interaction.bgSubtleInteractive,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgCriticalSubtlePressed,
+            contentColor: LemonadeTheme.colors.content.contentCritical
+        )
     }
 }
 
@@ -130,42 +230,54 @@ private struct LemonadeIconButtonView: View {
     let contentDescription: String?
     let onClick: () -> Void
     let enabled: Bool
-    let variant: LemonadeIconButtonVariant
-    let size: LemonadeIconButtonSize
+    let variant: LemonadeButtonVariant
+    let type: LemonadeButtonType
+    let size: LemonadeButtonSize
+    let loading: Bool
+    let shape: LemonadeIconButtonShape
 
     @State private var isPressed = false
     @State private var isHovering = false
 
-    private var backgroundColor: Color {
-        if isPressed {
-            return variant.colorData.backgroundPressedColor
-        } else if isHovering {
-            return variant.colorData.backgroundHoverColor
-        } else {
-            return variant.colorData.backgroundColor
-        }
+    private var cornerRadius: CGFloat {
+        shape == .circular
+            ? .infinity
+            : size.iconButtonSizeData.cornerRadius
     }
 
     var body: some View {
+        let colors = resolveColors(variant: variant, type: type)
+        let bgColor: Color = isHovering ? colors.backgroundHoverColor : colors.backgroundColor
+        let buttonShape = RoundedRectangle(cornerRadius: cornerRadius)
+
         SwiftUI.Button(action: onClick) {
-            LemonadeUi.Icon(
-                icon: icon,
-                contentDescription: contentDescription,
-                size: size.sizeData.iconSize
-            )
-            .padding(size.sizeData.innerPadding)
+            Group {
+                if loading {
+                    LemonadeUi.Spinner(tint: colors.contentColor)
+                } else {
+                    LemonadeUi.Icon(
+                        icon: icon,
+                        contentDescription: contentDescription,
+                        size: size.iconButtonSizeData.iconSize,
+                        tint: colors.contentColor
+                    )
+                }
+            }
+            .padding(size.iconButtonSizeData.innerPadding)
             .background(
-                RoundedRectangle(cornerRadius: size.sizeData.cornerRadius)
-                    .fill(backgroundColor)
-                    .animation(.easeInOut(duration: 0.1), value: backgroundColor)
+                buttonShape
+                    .fill(bgColor)
+                    .animation(.easeInOut(duration: 0.1), value: bgColor)
             )
-            .clipShape(RoundedRectangle(cornerRadius: size.sizeData.cornerRadius))
+            .clipShape(buttonShape)
         }
         .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
+        .opacity(isPressed ? .opacity.opacityPressed : .opacity.opacity100)
+        .animation(.easeInOut(duration: 0.1), value: isPressed)
         .onHover { hovering in
             isHovering = hovering
         }
-        .disabled(!enabled)
+        .disabled(!enabled || loading)
         .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
     }
 }
@@ -175,77 +287,149 @@ private struct LemonadeIconButtonView: View {
 #if DEBUG
 struct LemonadeIconButton_Previews: PreviewProvider {
     static var previews: some View {
-        VStack(spacing: 24) {
-            // Subtle variant
+        ScrollView {
+            VStack(spacing: 24) {
+                // Primary Solid
+                previewSection(title: "Primary Solid", variant: .primary, type: .solid)
+
+                // Secondary Solid
+                previewSection(title: "Secondary Solid", variant: .secondary, type: .solid)
+
+                // Neutral Subtle (default)
+                previewSection(title: "Neutral Subtle", variant: .neutral, type: .subtle)
+
+                // Neutral Ghost
+                previewSection(title: "Neutral Ghost", variant: .neutral, type: .ghost)
+
+                // Critical Subtle
+                previewSection(title: "Critical Subtle", variant: .critical, type: .subtle)
+
+                // Critical Solid
+                previewSection(title: "Critical Solid", variant: .critical, type: .solid)
+
+                // Loading states
+                HStack(spacing: 16) {
+                    LemonadeUi.IconButton(
+                        icon: .heart,
+                        contentDescription: "Loading",
+                        onClick: {},
+                        variant: .primary,
+                        type: .solid,
+                        loading: true
+                    )
+                    LemonadeUi.IconButton(
+                        icon: .heart,
+                        contentDescription: "Loading",
+                        onClick: {},
+                        variant: .neutral,
+                        type: .subtle,
+                        loading: true
+                    )
+                    LemonadeUi.IconButton(
+                        icon: .heart,
+                        contentDescription: "Loading",
+                        onClick: {},
+                        variant: .critical,
+                        type: .solid,
+                        loading: true
+                    )
+                }
+
+                // Circular shape
+                HStack(spacing: 16) {
+                    LemonadeUi.IconButton(
+                        icon: .heart,
+                        contentDescription: "Circular",
+                        onClick: {},
+                        variant: .primary,
+                        type: .solid,
+                        shape: .circular
+                    )
+                    LemonadeUi.IconButton(
+                        icon: .heart,
+                        contentDescription: "Circular",
+                        onClick: {},
+                        variant: .neutral,
+                        type: .subtle,
+                        shape: .circular
+                    )
+                    LemonadeUi.IconButton(
+                        icon: .heart,
+                        contentDescription: "Circular",
+                        onClick: {},
+                        variant: .critical,
+                        type: .solid,
+                        shape: .circular
+                    )
+                }
+
+                // Disabled
+                HStack(spacing: 16) {
+                    LemonadeUi.IconButton(
+                        icon: .heart,
+                        contentDescription: "Disabled",
+                        onClick: {},
+                        enabled: false,
+                        variant: .primary,
+                        type: .solid
+                    )
+                    LemonadeUi.IconButton(
+                        icon: .heart,
+                        contentDescription: "Disabled",
+                        onClick: {},
+                        enabled: false,
+                        variant: .neutral,
+                        type: .subtle
+                    )
+                    LemonadeUi.IconButton(
+                        icon: .heart,
+                        contentDescription: "Disabled",
+                        onClick: {},
+                        enabled: false,
+                        variant: .neutral,
+                        type: .ghost
+                    )
+                }
+            }
+            .padding()
+        }
+        .previewLayout(.sizeThatFits)
+    }
+
+    private static func previewSection(
+        title: String,
+        variant: LemonadeButtonVariant,
+        type: LemonadeButtonType
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            SwiftUI.Text(title).font(.caption).foregroundColor(.secondary)
             HStack(spacing: 16) {
                 LemonadeUi.IconButton(
                     icon: .heart,
-                    contentDescription: "Favorite",
+                    contentDescription: title,
                     onClick: {},
-                    variant: .subtle,
+                    variant: variant,
+                    type: type,
                     size: .small
                 )
                 LemonadeUi.IconButton(
                     icon: .heart,
-                    contentDescription: "Favorite",
+                    contentDescription: title,
                     onClick: {},
-                    variant: .subtle,
+                    variant: variant,
+                    type: type,
                     size: .medium
                 )
                 LemonadeUi.IconButton(
                     icon: .heart,
-                    contentDescription: "Favorite",
+                    contentDescription: title,
                     onClick: {},
-                    variant: .subtle,
+                    variant: variant,
+                    type: type,
                     size: .large
-                )
-            }
-
-            // Ghost variant
-            HStack(spacing: 16) {
-                LemonadeUi.IconButton(
-                    icon: .heart,
-                    contentDescription: "Favorite",
-                    onClick: {},
-                    variant: .ghost,
-                    size: .small
-                )
-                LemonadeUi.IconButton(
-                    icon: .heart,
-                    contentDescription: "Favorite",
-                    onClick: {},
-                    variant: .ghost,
-                    size: .medium
-                )
-                LemonadeUi.IconButton(
-                    icon: .heart,
-                    contentDescription: "Favorite",
-                    onClick: {},
-                    variant: .ghost,
-                    size: .large
-                )
-            }
-
-            // Disabled
-            HStack(spacing: 16) {
-                LemonadeUi.IconButton(
-                    icon: .heart,
-                    contentDescription: "Favorite",
-                    onClick: {},
-                    enabled: false,
-                    variant: .subtle
-                )
-                LemonadeUi.IconButton(
-                    icon: .heart,
-                    contentDescription: "Favorite",
-                    onClick: {},
-                    enabled: false,
-                    variant: .ghost
                 )
             }
         }
-        .padding()
-        .previewLayout(.sizeThatFits)
     }
 }
 #endif

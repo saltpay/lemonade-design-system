@@ -36,7 +36,6 @@ internal fun DialogSampleDisplay() {
     ) {
         // Basic Dialog
         DialogSection(title = "Basic Dialog") {
-            @OptIn(ExperimentalLemonadeComponent::class)
             LemonadeUi.Button(
                 label = "Open Dialog",
                 onClick = { showBasicDialog = true },
@@ -52,7 +51,6 @@ internal fun DialogSampleDisplay() {
                 textStyle = LemonadeTheme.typography.bodySmallRegular,
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
-            @OptIn(ExperimentalLemonadeComponent::class)
             LemonadeUi.Button(
                 label = "Open Non-Dismissable Dialog",
                 onClick = { showNonDismissableDialog = true },
@@ -88,14 +86,12 @@ internal fun DialogSampleDisplay() {
                 ),
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.Button(
                     label = "Cancel",
                     onClick = { showBasicDialog = false },
                     variant = LemonadeButtonVariant.Neutral,
                     size = LemonadeButtonSize.Small,
                 )
-                @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.Button(
                     label = "Confirm",
                     onClick = { showBasicDialog = false },
@@ -134,7 +130,6 @@ internal fun DialogSampleDisplay() {
                 ),
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.Button(
                     label = "Close",
                     onClick = { showNonDismissableDialog = false },
