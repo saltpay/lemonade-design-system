@@ -5,8 +5,10 @@ import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -77,30 +79,28 @@ public fun LemonadeUi.Text(
 }
 
 /**
- * Text component that renders an [AnnotatedString] with mixed styles.
+ * Rich text component that parses inline tags and applies the corresponding [SpanStyle]
+ * from the [tags] map. Untagged text inherits the base [textStyle] and [color].
  *
- * Use [buildAnnotatedString][androidx.compose.ui.text.buildAnnotatedString] with
- * [LemonadeTextStyle.spanStyle] to compose rich text using design system tokens.
+ * Tags use the format `<name>content</name>`. This is localization-friendly because
+ * translators can reorder the tags freely within the translated string.
  *
  * ## Usage
  * ```kotlin
- * val text = buildAnnotatedString {
- *     append("It should arrive by ")
- *     withStyle(LemonadeTheme.typography.bodyMediumSemiBold.spanStyle) {
- *         append("15 June")
- *     }
- * }
+ * // The string can come from string resources — tag order is language-dependent
  * LemonadeUi.Text(
- *     text = text,
+ *     text = "It should arrive by <bold>15 June</bold>",
  *     textStyle = LemonadeTheme.typography.bodyMediumRegular,
+ *     tags = mapOf("bold" to LemonadeTheme.typography.bodyMediumSemiBold.spanStyle),
  * )
  * ```
  */
 @Composable
 public fun LemonadeUi.Text(
-    text: AnnotatedString,
+    text: String,
     modifier: Modifier = Modifier,
     textStyle: LemonadeTextStyle = LocalTextStyles.current,
+    tags: Map<String, SpanStyle>,
     textAlign: TextAlign = TextAlign.Unspecified,
     color: Color = LocalColors.current.content.contentPrimary,
     overflow: TextOverflow = TextOverflow.Clip,
@@ -110,8 +110,24 @@ public fun LemonadeUi.Text(
     val baseStyle = textStyle.textStyle
     val finalColor = if (color != Color.Unspecified) color else baseStyle.color
 
+    val annotatedString = buildAnnotatedString {
+        val segments = parseTaggedText(text)
+        for ((content, tag) in segments) {
+            if (tag != null) {
+                val spanStyle = tags[tag]
+                if (spanStyle != null) {
+                    withStyle(spanStyle) { append(content) }
+                } else {
+                    append(content)
+                }
+            } else {
+                append(content)
+            }
+        }
+    }
+
     BasicText(
-        text = text,
+        text = annotatedString,
         modifier = modifier,
         overflow = overflow,
         maxLines = maxLines,
@@ -125,4 +141,22 @@ public fun LemonadeUi.Text(
             textAlign = textAlign,
         ),
     )
+}
+
+private val tagPattern = Regex("<(\\w+)>(.*?)</\\1>")
+
+private fun parseTaggedText(text: String): List<Pair<String, String?>> {
+    val segments = mutableListOf<Pair<String, String?>>()
+    var lastIndex = 0
+    for (match in tagPattern.findAll(text)) {
+        if (match.range.first > lastIndex) {
+            segments.add(Pair(text.substring(lastIndex, match.range.first), null))
+        }
+        segments.add(Pair(match.groupValues[2], match.groupValues[1]))
+        lastIndex = match.range.last + 1
+    }
+    if (lastIndex < text.length) {
+        segments.add(Pair(text.substring(lastIndex), null))
+    }
+    return segments
 }

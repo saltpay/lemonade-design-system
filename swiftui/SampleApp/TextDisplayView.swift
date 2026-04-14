@@ -81,29 +81,33 @@ struct TextDisplayView: View {
                     }
                 }
 
-                // Rich Text (StyledText + concatenation)
+                // Rich Text (tag-based)
                 sectionView(title: "Rich Text") {
                     VStack(alignment: .leading, spacing: 12) {
-                        (
-                            LemonadeUi.StyledText("It should arrive by ", textStyle: LemonadeTypography.shared.bodyMediumRegular, color: LemonadeTheme.colors.content.contentSecondary)
-                            + LemonadeUi.StyledText("15 June", textStyle: LemonadeTypography.shared.bodyMediumSemiBold, color: LemonadeTheme.colors.content.contentSecondary)
+                        LemonadeUi.Text(
+                            "It should arrive by <bold>15 June</bold>",
+                            textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                            tags: ["bold": LemonadeTypography.shared.bodyMediumSemiBold],
+                            color: LemonadeTheme.colors.content.contentSecondary
                         )
-                        .lineSpacing(LemonadeTypography.shared.bodyMediumRegular.lineSpacing)
 
-                        (
-                            LemonadeUi.StyledText("Total: ", textStyle: LemonadeTypography.shared.bodyMediumRegular, color: LemonadeTheme.colors.content.contentSecondary)
-                            + LemonadeUi.StyledText("€129.99", textStyle: LemonadeTypography.shared.bodyLargeSemiBold, color: LemonadeTheme.colors.content.contentPrimary)
-                            + LemonadeUi.StyledText(" (incl. tax)", textStyle: LemonadeTypography.shared.bodyMediumRegular, color: LemonadeTheme.colors.content.contentSecondary)
+                        LemonadeUi.Text(
+                            "Total: <price>€129.99</price> (incl. tax)",
+                            textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                            tags: ["price": LemonadeTypography.shared.bodyLargeSemiBold],
+                            color: LemonadeTheme.colors.content.contentSecondary,
+                            tagColors: ["price": LemonadeTheme.colors.content.contentPrimary]
                         )
-                        .lineSpacing(LemonadeTypography.shared.bodyMediumRegular.lineSpacing)
 
-                        (
-                            LemonadeUi.StyledText("3 items", textStyle: LemonadeTypography.shared.bodySmallSemiBold)
-                            + LemonadeUi.StyledText(" in your cart, ", textStyle: LemonadeTypography.shared.bodySmallRegular)
-                            + LemonadeUi.StyledText("1 item", textStyle: LemonadeTypography.shared.bodySmallSemiBold, color: LemonadeTheme.colors.content.contentCritical)
-                            + LemonadeUi.StyledText(" is out of stock", textStyle: LemonadeTypography.shared.bodySmallRegular)
+                        LemonadeUi.Text(
+                            "<count>3 items</count> in your cart, <alert>1 item</alert> is out of stock",
+                            textStyle: LemonadeTypography.shared.bodySmallRegular,
+                            tags: [
+                                "count": LemonadeTypography.shared.bodySmallSemiBold,
+                                "alert": LemonadeTypography.shared.bodySmallSemiBold
+                            ],
+                            tagColors: ["alert": LemonadeTheme.colors.content.contentCritical]
                         )
-                        .lineSpacing(LemonadeTypography.shared.bodySmallRegular.lineSpacing)
                     }
                 }
 

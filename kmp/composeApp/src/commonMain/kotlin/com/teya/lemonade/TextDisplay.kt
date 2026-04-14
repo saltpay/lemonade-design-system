@@ -11,9 +11,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 
 @Suppress("LongMethod")
 @Composable
@@ -202,54 +200,40 @@ internal fun TextDisplay() {
             }
         }
 
-        // Rich Text (AnnotatedString)
+        // Rich Text (tag-based)
         TextSection(title = "Rich Text") {
             Column(
                 verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
             ) {
                 LemonadeUi.Text(
-                    text = buildAnnotatedString {
-                        append("It should arrive by ")
-                        withStyle(LemonadeTheme.typography.bodyMediumSemiBold.spanStyle) {
-                            append("15 June")
-                        }
-                    },
+                    text = "It should arrive by <bold>15 June</bold>",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    tags = mapOf(
+                        "bold" to LemonadeTheme.typography.bodyMediumSemiBold.spanStyle,
+                    ),
                     color = LemonadeTheme.colors.content.contentSecondary,
                 )
 
                 LemonadeUi.Text(
-                    text = buildAnnotatedString {
-                        append("Total: ")
-                        withStyle(
-                            LemonadeTheme.typography.bodyLargeSemiBold.spanStyle.merge(
-                                SpanStyle(color = LemonadeTheme.colors.content.contentPrimary),
-                            ),
-                        ) {
-                            append("€129.99")
-                        }
-                        append(" (incl. tax)")
-                    },
+                    text = "Total: <price>€129.99</price> (incl. tax)",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    tags = mapOf(
+                        "price" to LemonadeTheme.typography.bodyLargeSemiBold.spanStyle.merge(
+                            SpanStyle(color = LemonadeTheme.colors.content.contentPrimary),
+                        ),
+                    ),
                     color = LemonadeTheme.colors.content.contentSecondary,
                 )
 
                 LemonadeUi.Text(
-                    text = buildAnnotatedString {
-                        withStyle(LemonadeTheme.typography.bodySmallSemiBold.spanStyle) {
-                            append("3 items")
-                        }
-                        append(" in your cart, ")
-                        withStyle(
-                            LemonadeTheme.typography.bodySmallSemiBold.spanStyle.merge(
-                                SpanStyle(color = LemonadeTheme.colors.content.contentCritical),
-                            ),
-                        ) {
-                            append("1 item")
-                        }
-                        append(" is out of stock")
-                    },
+                    text = "<count>3 items</count> in your cart, <alert>1 item</alert> is out of stock",
                     textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    tags = mapOf(
+                        "count" to LemonadeTheme.typography.bodySmallSemiBold.spanStyle,
+                        "alert" to LemonadeTheme.typography.bodySmallSemiBold.spanStyle.merge(
+                            SpanStyle(color = LemonadeTheme.colors.content.contentCritical),
+                        ),
+                    ),
                     color = LemonadeTheme.colors.content.contentPrimary,
                 )
             }
