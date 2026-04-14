@@ -5,17 +5,27 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 
 public enum class HistoryTimelineItemVoice {
     Positive,
@@ -27,7 +37,9 @@ public enum class HistoryTimelineItemVoice {
 public data class HistoryTimelineItem(
     val label: String,
     val voice: HistoryTimelineItemVoice,
+    val selected: Boolean = false,
     val subheading: String? = null,
+    val description: String? = null,
 )
 
 @Composable
@@ -64,17 +76,37 @@ private fun CoreHistoryTimelineItem(
     isFirst: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    var contentSize by remember {
+        mutableStateOf(IntSize.Zero)
+    }
     Row(
         modifier = modifier.defaultMinSize(minHeight = LocalSizes.current.size1600),
     ) {
-        CoreHistoryTimelineIndicator(
-            voice = item.voice,
-            isLast = isLast,
-            isFirst = isFirst,
-            modifier = Modifier,
+        Box(
+            modifier = Modifier
+                .width(width = LocalSizes.current.size800)
+                .height(
+                    height = with(LocalDensity.current) {
+                        maxOf(
+                            a = LocalSizes.current.size1600,
+                            b = contentSize.height.toDp(),
+                        )
+                    },
+                ),
+            content = {
+                CoreHistoryTimelineIndicator(
+                    voice = item.voice,
+                    selected = item.selected,
+                    isLast = isLast,
+                    isFirst = isFirst,
+                    modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing100),
+                )
+            }
         )
 
-        Column {
+        Column(
+            modifier = Modifier.onSizeChanged { contentSize = it },
+        ) {
             LemonadeUi.Text(
                 text = item.label,
                 textStyle = LocalTypographies.current.bodyMediumMedium,
@@ -87,6 +119,18 @@ private fun CoreHistoryTimelineItem(
                     color = LocalColors.current.content.contentSecondary,
                 )
             }
+
+            item.description?.let {
+                LemonadeUi.Text(
+                    text = item.description,
+                    textStyle = LocalTypographies.current.bodySmallRegular,
+                    color = LocalColors.current.content.contentSecondary,
+                    modifier = Modifier.padding(
+                        top = LocalSpaces.current.spacing200,
+                        bottom = LocalSpaces.current.spacing400,
+                    )
+                )
+            }
         }
     }
 }
@@ -94,33 +138,41 @@ private fun CoreHistoryTimelineItem(
 @Composable
 private fun CoreHistoryTimelineIndicator(
     voice: HistoryTimelineItemVoice,
+    selected: Boolean,
     isLast: Boolean,
     isFirst: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing50),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing100),
     ) {
         if (!isFirst) {
             Box(
                 modifier = Modifier
                     .background(
                         color = LocalColors.current.background.bgNeutralSubtle,
-                        shape = LocalShapes.current.radiusFull,
+                        shape = RoundedCornerShape(
+                            topStart = 0.dp,
+                            topEnd = 0.dp,
+                            bottomStart = Int.MAX_VALUE.dp,
+                            bottomEnd = Int.MAX_VALUE.dp,
+                        ),
                     )
-                    .width(width = LocalSizes.current.size50)
-                    .height(height = LocalSizes.current.size150),
+                    .size(size = LocalSizes.current.size50),
+            )
+        } else {
+            Spacer(
+                modifier = Modifier.height(height = LocalSizes.current.size50),
             )
         }
 
         Box(
             modifier = Modifier
-                .padding(all = LocalSpaces.current.spacing200)
                 .clip(shape = LocalShapes.current.radiusFull)
-                .background(color = voice.color(selected = isLast))
-                .requiredSize(size = LocalSizes.current.size250)
+                .background(color = voice.color(selected = selected))
+                .size(size = LocalSizes.current.size250)
         )
 
         if (!isLast) {
@@ -128,7 +180,12 @@ private fun CoreHistoryTimelineIndicator(
                 modifier = Modifier
                     .background(
                         color = LocalColors.current.background.bgNeutralSubtle,
-                        shape = LocalShapes.current.radiusFull,
+                        shape = RoundedCornerShape(
+                            topStart = Int.MAX_VALUE.dp,
+                            topEnd = Int.MAX_VALUE.dp,
+                            bottomStart = 0.dp,
+                            bottomEnd = 0.dp,
+                        ),
                     )
                     .width(width = LocalSizes.current.size50)
                     .weight(weight = 1f),
@@ -150,30 +207,35 @@ private fun HistoryTimelineItemVoice.color(selected: Boolean): Color {
 @Composable
 @LemonadePreview
 private fun HistoryTimelinePreview() {
-    LemonadeUi.HistoryTimeline(
-        items = listOf(
-            HistoryTimelineItem(
-                label = "Label",
-                subheading = "Subheading",
-                voice = HistoryTimelineItemVoice.Positive,
-            ),
-            HistoryTimelineItem(
-                label = "Label",
-                subheading = "Subheading",
-                voice = HistoryTimelineItemVoice.Critical,
-            ),
-            HistoryTimelineItem(
-                label = "Label",
-                subheading = "Subheading",
-                voice = HistoryTimelineItemVoice.Neutral,
-            ),
-            HistoryTimelineItem(
-                label = "Label",
-                subheading = "Subheading",
-                voice = HistoryTimelineItemVoice.Neutral,
-            ),
+    LemonadeTheme {
+        LemonadeUi.HistoryTimeline(
+            items = listOf(
+                HistoryTimelineItem(
+                    label = "Label",
+                    subheading = "Subheading",
+                    voice = HistoryTimelineItemVoice.Positive,
+                ),
+                HistoryTimelineItem(
+                    label = "Label",
+                    subheading = "Subheading",
+                    description = "Description",
+                    voice = HistoryTimelineItemVoice.Critical,
+                ),
+                HistoryTimelineItem(
+                    label = "Label",
+                    subheading = "Subheading",
+                    voice = HistoryTimelineItemVoice.Neutral,
+                ),
+                HistoryTimelineItem(
+                    label = "Label",
+                    subheading = "Subheading",
+                    description = "Description",
+                    voice = HistoryTimelineItemVoice.Neutral,
+                    selected = true,
+                ),
+            )
         )
-    )
+    }
 }
 
 
