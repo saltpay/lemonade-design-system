@@ -2,6 +2,7 @@ package com.teya.lemonade
 
 import androidx.compose.runtime.Composable
 
+@Suppress("LongMethod")
 @Composable
 internal fun HistoryTimelineDisplay() {
     SampleScreenDisplayColumn(
@@ -29,7 +30,61 @@ internal fun HistoryTimelineDisplay() {
         }
 
         LemonadeUi.Card(
-            header = CardHeaderConfig(title = "With Subheadings"),
+            header = CardHeaderConfig(title = "Selected State"),
+        ) {
+            LemonadeUi.HistoryTimeline(
+                items = listOf(
+                    HistoryTimelineItem(
+                        label = "Completed step",
+                        subheading = "Positive voice (unaffected by selected)",
+                        voice = HistoryTimelineItemVoice.Positive,
+                        selected = true,
+                    ),
+                    HistoryTimelineItem(
+                        label = "Neutral selected",
+                        subheading = "Stronger indicator color",
+                        voice = HistoryTimelineItemVoice.Neutral,
+                        selected = true,
+                    ),
+                    HistoryTimelineItem(
+                        label = "Neutral unselected",
+                        subheading = "Subtle indicator color",
+                        voice = HistoryTimelineItemVoice.Neutral,
+                        selected = false,
+                    ),
+                ),
+            )
+        }
+
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "With Descriptions"),
+        ) {
+            LemonadeUi.HistoryTimeline(
+                items = listOf(
+                    HistoryTimelineItem(
+                        label = "Account created",
+                        subheading = "January 10, 2026",
+                        description = "Welcome to the platform! Your account has been set up and is ready to use.",
+                        voice = HistoryTimelineItemVoice.Positive,
+                    ),
+                    HistoryTimelineItem(
+                        label = "Identity verification",
+                        subheading = "January 12, 2026",
+                        description = "Please upload a valid government-issued ID to complete verification.",
+                        voice = HistoryTimelineItemVoice.Neutral,
+                        selected = true,
+                    ),
+                    HistoryTimelineItem(
+                        label = "First transaction",
+                        subheading = "Pending",
+                        voice = HistoryTimelineItemVoice.Neutral,
+                    ),
+                ),
+            )
+        }
+
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "Order Tracking"),
         ) {
             LemonadeUi.HistoryTimeline(
                 items = listOf(
@@ -46,11 +101,13 @@ internal fun HistoryTimelineDisplay() {
                     HistoryTimelineItem(
                         label = "Preparing shipment",
                         subheading = "March 16, 2026 · 11:12",
+                        description = "Your order is being packed at the warehouse.",
                         voice = HistoryTimelineItemVoice.Neutral,
+                        selected = true,
                     ),
                     HistoryTimelineItem(
-                        label = "Shipped",
-                        subheading = "March 17, 2026 · 08:05",
+                        label = "Out for delivery",
+                        subheading = "Estimated March 18, 2026",
                         voice = HistoryTimelineItemVoice.Neutral,
                     ),
                 ),
@@ -58,44 +115,31 @@ internal fun HistoryTimelineDisplay() {
         }
 
         LemonadeUi.Card(
-            header = CardHeaderConfig(title = "Critical State"),
+            header = CardHeaderConfig(title = "Payment Dispute"),
         ) {
             LemonadeUi.HistoryTimeline(
                 items = listOf(
                     HistoryTimelineItem(
-                        label = "Payment received",
-                        subheading = "April 1, 2026",
+                        label = "Transaction processed",
+                        subheading = "April 1, 2026 · 14:30",
                         voice = HistoryTimelineItemVoice.Positive,
                     ),
                     HistoryTimelineItem(
-                        label = "Shipping failed",
-                        subheading = "Carrier returned the package",
+                        label = "Dispute opened",
+                        subheading = "April 3, 2026 · 10:15",
+                        description = "Customer reported an unauthorized charge of $249.99.",
                         voice = HistoryTimelineItemVoice.Critical,
                     ),
                     HistoryTimelineItem(
-                        label = "Redelivery scheduled",
-                        subheading = "April 5, 2026",
+                        label = "Under review",
+                        subheading = "April 4, 2026 · 09:00",
+                        description = "Our team is investigating the dispute. Resolution expected within 5 business days.",
                         voice = HistoryTimelineItemVoice.Neutral,
-                    ),
-                ),
-            )
-        }
-
-        LemonadeUi.Card(
-            header = CardHeaderConfig(title = "Labels Only"),
-        ) {
-            LemonadeUi.HistoryTimeline(
-                items = listOf(
-                    HistoryTimelineItem(
-                        label = "Submitted",
-                        voice = HistoryTimelineItemVoice.Positive,
+                        selected = true,
                     ),
                     HistoryTimelineItem(
-                        label = "Reviewed",
-                        voice = HistoryTimelineItemVoice.Positive,
-                    ),
-                    HistoryTimelineItem(
-                        label = "Approved",
+                        label = "Resolution",
+                        subheading = "Pending",
                         voice = HistoryTimelineItemVoice.Neutral,
                     ),
                 ),

@@ -26,13 +26,21 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.teya.lemonade.core.HistoryTimelineItemVoice
 
-public enum class HistoryTimelineItemVoice {
-    Positive,
-    Critical,
-    Neutral,
-}
-
+/**
+ * Represents a single entry in a [HistoryTimeline].
+ *
+ * Each item is displayed as a row with a colored indicator dot on the left and text content on
+ * the right. The indicator color is determined by the [voice] and [selected] combination.
+ *
+ * @param label - [String] primary text displayed for this timeline entry.
+ * @param voice - [HistoryTimelineItemVoice] semantic voice that colors the indicator dot.
+ * @param selected - [Boolean] when true, a [HistoryTimelineItemVoice.Neutral] item uses a
+ *   stronger indicator color. Has no effect on Positive or Critical voices. Defaults to false.
+ * @param subheading - Optional [String] secondary text shown below the label (e.g. a date or timestamp).
+ * @param description - Optional [String] longer description shown below the subheading with extra vertical padding.
+ */
 @Stable
 public data class HistoryTimelineItem(
     val label: String,
@@ -42,6 +50,32 @@ public data class HistoryTimelineItem(
     val description: String? = null,
 )
 
+/**
+ * Lemonade history timeline component. Displays a vertical list of chronological events, each
+ * with a colored indicator dot connected by a subtle line.
+ *
+ * ## Usage
+ * ```kotlin
+ * LemonadeUi.HistoryTimeline(
+ *     items = listOf(
+ *         HistoryTimelineItem(
+ *             label = "Order placed",
+ *             subheading = "March 15, 2026",
+ *             voice = HistoryTimelineItemVoice.Positive,
+ *         ),
+ *         HistoryTimelineItem(
+ *             label = "Shipping",
+ *             subheading = "In transit",
+ *             voice = HistoryTimelineItemVoice.Neutral,
+ *             selected = true,
+ *         ),
+ *     ),
+ * )
+ * ```
+ *
+ * @param items - [List] of [HistoryTimelineItem] entries to display in order.
+ * @param modifier - [Modifier] to be applied to the timeline container.
+ */
 @Composable
 public fun LemonadeUi.HistoryTimeline(
     items: List<HistoryTimelineItem>,
@@ -101,7 +135,7 @@ private fun CoreHistoryTimelineItem(
                     isFirst = isFirst,
                     modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing100),
                 )
-            }
+            },
         )
 
         Column(
@@ -128,7 +162,7 @@ private fun CoreHistoryTimelineItem(
                     modifier = Modifier.padding(
                         top = LocalSpaces.current.spacing200,
                         bottom = LocalSpaces.current.spacing400,
-                    )
+                    ),
                 )
             }
         }
@@ -159,8 +193,7 @@ private fun CoreHistoryTimelineIndicator(
                             bottomStart = Int.MAX_VALUE.dp,
                             bottomEnd = Int.MAX_VALUE.dp,
                         ),
-                    )
-                    .size(size = LocalSizes.current.size50),
+                    ).size(size = LocalSizes.current.size50),
             )
         } else {
             Spacer(
@@ -172,7 +205,7 @@ private fun CoreHistoryTimelineIndicator(
             modifier = Modifier
                 .clip(shape = LocalShapes.current.radiusFull)
                 .background(color = voice.color(selected = selected))
-                .size(size = LocalSizes.current.size250)
+                .size(size = LocalSizes.current.size250),
         )
 
         if (!isLast) {
@@ -186,8 +219,7 @@ private fun CoreHistoryTimelineIndicator(
                             bottomStart = 0.dp,
                             bottomEnd = 0.dp,
                         ),
-                    )
-                    .width(width = LocalSizes.current.size50)
+                    ).width(width = LocalSizes.current.size50)
                     .weight(weight = 1f),
             )
         }
@@ -195,47 +227,42 @@ private fun CoreHistoryTimelineIndicator(
 }
 
 @Composable
-private fun HistoryTimelineItemVoice.color(selected: Boolean): Color {
-    return when (this) {
+private fun HistoryTimelineItemVoice.color(selected: Boolean): Color =
+    when (this) {
         HistoryTimelineItemVoice.Positive -> LocalColors.current.background.bgPositive
         HistoryTimelineItemVoice.Critical -> LocalColors.current.background.bgCritical
         HistoryTimelineItemVoice.Neutral if (!selected) -> LocalColors.current.background.bgNeutralSubtle
         HistoryTimelineItemVoice.Neutral -> LocalColors.current.background.bgNeutral
     }
-}
 
 @Composable
 @LemonadePreview
 private fun HistoryTimelinePreview() {
-    LemonadeTheme {
-        LemonadeUi.HistoryTimeline(
-            items = listOf(
-                HistoryTimelineItem(
-                    label = "Label",
-                    subheading = "Subheading",
-                    voice = HistoryTimelineItemVoice.Positive,
-                ),
-                HistoryTimelineItem(
-                    label = "Label",
-                    subheading = "Subheading",
-                    description = "Description",
-                    voice = HistoryTimelineItemVoice.Critical,
-                ),
-                HistoryTimelineItem(
-                    label = "Label",
-                    subheading = "Subheading",
-                    voice = HistoryTimelineItemVoice.Neutral,
-                ),
-                HistoryTimelineItem(
-                    label = "Label",
-                    subheading = "Subheading",
-                    description = "Description",
-                    voice = HistoryTimelineItemVoice.Neutral,
-                    selected = true,
-                ),
-            )
-        )
-    }
+    LemonadeUi.HistoryTimeline(
+        items = listOf(
+            HistoryTimelineItem(
+                label = "Label",
+                subheading = "Subheading",
+                voice = HistoryTimelineItemVoice.Positive,
+            ),
+            HistoryTimelineItem(
+                label = "Label",
+                subheading = "Subheading",
+                description = "Description",
+                voice = HistoryTimelineItemVoice.Critical,
+            ),
+            HistoryTimelineItem(
+                label = "Label",
+                subheading = "Subheading",
+                voice = HistoryTimelineItemVoice.Neutral,
+            ),
+            HistoryTimelineItem(
+                label = "Label",
+                subheading = "Subheading",
+                description = "Description",
+                voice = HistoryTimelineItemVoice.Neutral,
+                selected = true,
+            ),
+        ),
+    )
 }
-
-
