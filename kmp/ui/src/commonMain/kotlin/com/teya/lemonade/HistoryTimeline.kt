@@ -33,7 +33,7 @@ private val HistoryItemLineThickness: Dp = 1.dp
  * @param contentSlot Optional slot for custom composable content (e.g. a button or tag)
  *   rendered below the description.
  */
-public class HistoryTimelineItem(
+public data class HistoryTimelineItem(
     public val label: String,
     public val subheading: String? = null,
     public val description: String? = null,
@@ -46,9 +46,7 @@ public class HistoryTimelineItem(
  * the item's [HistoryItemVoice] colour; past rows render muted. A connecting line joins every
  * row except the last.
  *
- * For rows with custom content, set [HistoryTimelineItem.contentSlot]. For full composable
- * control per row (including mixing non-HistoryItem composables) use the standalone
- * [LemonadeUi.HistoryItem] inside your own column.
+ * For rows with custom content, set [HistoryTimelineItem.contentSlot].
  *
  * ## Usage
  * ```kotlin
@@ -87,72 +85,33 @@ public fun LemonadeUi.HistoryTimeline(
 ) {
     Column(modifier = modifier) {
         items.forEachIndexed { index, item ->
-            LemonadeUi.HistoryItem(
-                label = item.label,
-                subheading = item.subheading,
-                description = item.description,
-                voice = item.voice,
+            CoreHistoryTimelineItem(
+                item = item,
                 isCurrent = index == currentIndex,
                 isLast = index == items.lastIndex,
-                contentSlot = item.contentSlot,
             )
         }
     }
 }
 
-/**
- * A single timeline row with an indicator column and a stack of label, subheading, description
- * and an optional content slot.
- *
- * Prefer [LemonadeUi.HistoryTimeline] for a list; use this standalone form when the caller
- * needs full composable control per row.
- *
- * ## Usage
- * ```kotlin
- * LemonadeUi.HistoryItem(
- *     label = "Paid",
- *     subheading = "10:24",
- *     description = "Payment was successfully processed.",
- *     voice = HistoryItemVoice.Positive,
- *     isCurrent = true,
- * )
- * ```
- *
- * @param label Primary row text.
- * @param modifier [Modifier] applied to the root row.
- * @param subheading Optional secondary text rendered immediately below [label].
- * @param description Optional tertiary paragraph text rendered below the subheading.
- * @param voice Semantic colour of the indicator dot. Only applied when [isCurrent] is `true`;
- *   non-current rows always render a muted dot.
- * @param isCurrent Whether this row is the current (active) step.
- * @param isLast Whether this is the last row in the timeline. Hides the connecting line and
- *   the trailing bottom padding.
- * @param contentSlot Optional slot for custom composable content (e.g. a button or tag)
- *   rendered below the description.
- */
 @Composable
-public fun LemonadeUi.HistoryItem(
-    label: String,
-    modifier: Modifier = Modifier,
-    subheading: String? = null,
-    description: String? = null,
-    voice: HistoryItemVoice = HistoryItemVoice.Neutral,
-    isCurrent: Boolean = false,
-    isLast: Boolean = false,
-    contentSlot: (@Composable ColumnScope.() -> Unit)? = null,
+private fun CoreHistoryTimelineItem(
+    item: HistoryTimelineItem,
+    isCurrent: Boolean,
+    isLast: Boolean,
 ) {
     val spaces = LocalSpaces.current
     val typographies = LocalTypographies.current
     val contentColors = LocalColors.current.content
     val mutedColor = LocalColors.current.border.borderNeutralMedium
     val dotColor: Color = if (isCurrent) {
-        voice.currentDotColor
+        item.voice.currentDotColor
     } else {
         mutedColor
     }
 
     Row(
-        modifier = modifier.drawBehind {
+        modifier = Modifier.drawBehind {
             val centerX = HistoryItemIndicatorWidth.toPx() / 2f
             val dotRadius = HistoryItemDotSize.toPx() / 2f
             val dotCenterY = HistoryItemDotTopOffset.toPx() + dotRadius
@@ -180,11 +139,12 @@ public fun LemonadeUi.HistoryItem(
         ) {
             Column {
                 LemonadeUi.Text(
-                    text = label,
+                    text = item.label,
                     textStyle = typographies.bodyMediumMedium,
                     color = contentColors.contentPrimary,
                 )
 
+                val subheading = item.subheading
                 if (subheading != null) {
                     LemonadeUi.Text(
                         text = subheading,
@@ -194,6 +154,7 @@ public fun LemonadeUi.HistoryItem(
                 }
             }
 
+            val description = item.description
             if (description != null) {
                 LemonadeUi.Text(
                     text = description,
@@ -202,6 +163,7 @@ public fun LemonadeUi.HistoryItem(
                 )
             }
 
+            val contentSlot = item.contentSlot
             if (contentSlot != null) {
                 contentSlot()
             }
@@ -252,27 +214,30 @@ private fun HistoryItemPreview(
     @PreviewParameter(HistoryItemPreviewProvider::class)
     previewData: HistoryItemPreviewData,
 ) {
-    LemonadeUi.HistoryItem(
-        label = "Label",
-        subheading = "Subheading",
-        description = if (previewData.hasDescription) {
-            "Description for the timeline step providing extra context."
-        } else {
-            null
-        },
-        voice = previewData.voice,
+    CoreHistoryTimelineItem(
+        item = HistoryTimelineItem(
+            label = "Label",
+            subheading = "Subheading",
+            description = if (previewData.hasDescription) {
+                "Description for the timeline step providing extra context."
+            } else {
+                null
+            },
+            voice = previewData.voice,
+            contentSlot = if (previewData.hasContentSlot) {
+                {
+                    LemonadeUi.Text(
+                        text = "Custom slot content",
+                        textStyle = LocalTypographies.current.bodySmallRegular,
+                        color = LocalColors.current.content.contentSecondary,
+                    )
+                }
+            } else {
+                null
+            },
+        ),
         isCurrent = previewData.isCurrent,
-        contentSlot = if (previewData.hasContentSlot) {
-            {
-                LemonadeUi.Text(
-                    text = "Custom slot content",
-                    textStyle = LocalTypographies.current.bodySmallRegular,
-                    color = LocalColors.current.content.contentSecondary,
-                )
-            }
-        } else {
-            null
-        },
+        isLast = false,
     )
 }
 

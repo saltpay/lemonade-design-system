@@ -122,23 +122,24 @@ internal fun HistoryTimelineDisplay() {
 
         LemonadeUi.Card(
             contentPadding = LemonadeCardPadding.Medium,
-            header = CardHeaderConfig(title = "Standalone HistoryItem — neutral current"),
+            header = CardHeaderConfig(title = "Timeline — neutral current"),
         ) {
-            Column {
-                LemonadeUi.HistoryItem(
-                    label = "Standalone current item",
-                    subheading = "Subheading",
-                    description = "Using the standalone HistoryItem composable.",
-                    voice = HistoryItemVoice.Neutral,
-                    isCurrent = true,
-                )
-                LemonadeUi.HistoryItem(
-                    label = "Past item",
-                    subheading = "Subheading",
-                    voice = HistoryItemVoice.Neutral,
-                    isLast = true,
-                )
-            }
+            LemonadeUi.HistoryTimeline(
+                items = listOf(
+                    HistoryTimelineItem(
+                        label = "Current item",
+                        subheading = "Subheading",
+                        description = "Timeline row rendered as the current step.",
+                        voice = HistoryItemVoice.Neutral,
+                    ),
+                    HistoryTimelineItem(
+                        label = "Past item",
+                        subheading = "Subheading",
+                        voice = HistoryItemVoice.Neutral,
+                    ),
+                ),
+                currentIndex = 0,
+            )
         }
     }
 }

@@ -22,9 +22,7 @@ public enum LemonadeHistoryItemVoice {
 /// Describes a single row inside a ``LemonadeUi/HistoryTimeline(items:currentIndex:)``.
 ///
 /// Use `contentSlot` to inject arbitrary view content (e.g. a button, tag, or nested
-/// layout) below the description. For full per-row composable control, use the
-/// standalone ``LemonadeUi/HistoryItem(label:subheading:description:voice:isCurrent:isLast:contentSlot:)``
-/// inside your own `VStack` instead.
+/// layout) below the description.
 public struct LemonadeHistoryTimelineItem {
     public let label: String
     public let subheading: String?
@@ -80,9 +78,7 @@ public extension LemonadeUi {
     /// A connecting line joins every row except the last.
     ///
     /// For rows with custom content (buttons, tags, etc.), set `contentSlot` on the
-    /// ``LemonadeHistoryTimelineItem``. For full view-builder control per row, use the
-    /// standalone ``LemonadeUi/HistoryItem(label:subheading:description:voice:isCurrent:isLast:contentSlot:)``
-    /// inside your own `VStack` instead.
+    /// ``LemonadeHistoryTimelineItem``.
     ///
     /// ## Usage
     /// ```swift
@@ -118,55 +114,6 @@ public extension LemonadeUi {
             currentIndex: currentIndex
         )
     }
-
-    /// A single row with a timeline indicator and a content stack of label,
-    /// subheading, description, and an optional custom content slot.
-    ///
-    /// Use this standalone form when the caller needs full view-builder control per row;
-    /// otherwise prefer ``LemonadeUi/HistoryTimeline(items:currentIndex:)`` which derives
-    /// `isCurrent` and `isLast` automatically.
-    ///
-    /// ## Usage
-    /// ```swift
-    /// LemonadeUi.HistoryItem(
-    ///     label: "Paid",
-    ///     subheading: "10:24",
-    ///     description: "Payment was successfully processed.",
-    ///     voice: .positive,
-    ///     isCurrent: true
-    /// )
-    /// ```
-    ///
-    /// - Parameters:
-    ///   - label: Primary row text.
-    ///   - subheading: Optional secondary text shown immediately below the label.
-    ///   - description: Optional tertiary paragraph shown below the subheading.
-    ///   - voice: Semantic color of the indicator dot. Only applied when `isCurrent`
-    ///     is `true`; non-current rows always render a muted dot.
-    ///   - isCurrent: Whether this row is the current (active) step.
-    ///   - isLast: Whether this is the last row in the timeline. Hides the connecting line.
-    ///   - contentSlot: Optional view builder for custom content (e.g. a button or tag)
-    ///     rendered below the description.
-    @ViewBuilder
-    static func HistoryItem<Content: View>(
-        label: String,
-        subheading: String? = nil,
-        description: String? = nil,
-        voice: LemonadeHistoryItemVoice = .neutral,
-        isCurrent: Bool = false,
-        isLast: Bool = false,
-        @ViewBuilder contentSlot: @escaping () -> Content = { EmptyView() }
-    ) -> some View {
-        LemonadeHistoryItemView(
-            label: label,
-            subheading: subheading,
-            description: description,
-            voice: voice,
-            isCurrent: isCurrent,
-            isLast: isLast,
-            contentSlot: contentSlot
-        )
-    }
 }
 
 // MARK: - Internal Views
@@ -185,42 +132,24 @@ private struct LemonadeHistoryTimelineView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(Array(items.enumerated()), id: \.offset) { index, item in
-                LemonadeHistoryItemView(
-                    label: item.label,
-                    subheading: item.subheading,
-                    description: item.description,
-                    voice: item.voice,
+                CoreHistoryTimelineItemView(
+                    item: item,
                     isCurrent: index == currentIndex,
-                    isLast: index == items.count - 1,
-                    contentSlot: {
-                        if let slot = item.contentSlot {
-                            slot()
-                        } else {
-                            EmptyView()
-                        }
-                    }
+                    isLast: index == items.count - 1
                 )
             }
         }
     }
 }
 
-private struct LemonadeHistoryItemView<Content: View>: View {
-    let label: String
-    let subheading: String?
-    let description: String?
-    let voice: LemonadeHistoryItemVoice
+private struct CoreHistoryTimelineItemView: View {
+    let item: LemonadeHistoryTimelineItem
     let isCurrent: Bool
     let isLast: Bool
-    @ViewBuilder let contentSlot: () -> Content
-
-    private var hasContentSlot: Bool {
-        Content.self != EmptyView.self
-    }
 
     private var dotColor: Color {
         isCurrent
-            ? voice.currentColor
+            ? item.voice.currentColor
             : LemonadeTheme.colors.border.borderNeutralMedium
     }
 
@@ -232,12 +161,12 @@ private struct LemonadeHistoryItemView<Content: View>: View {
             VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing200) {
                 VStack(alignment: .leading, spacing: 0) {
                     LemonadeUi.Text(
-                        label,
+                        item.label,
                         textStyle: LemonadeTypography.shared.bodyMediumMedium,
                         color: LemonadeTheme.colors.content.contentPrimary
                     )
 
-                    if let subheading = subheading {
+                    if let subheading = item.subheading {
                         LemonadeUi.Text(
                             subheading,
                             textStyle: LemonadeTypography.shared.bodySmallRegular,
@@ -246,7 +175,7 @@ private struct LemonadeHistoryItemView<Content: View>: View {
                     }
                 }
 
-                if let description = description {
+                if let description = item.description {
                     LemonadeUi.Text(
                         description,
                         textStyle: LemonadeTypography.shared.bodySmallRegular,
@@ -254,7 +183,7 @@ private struct LemonadeHistoryItemView<Content: View>: View {
                     )
                 }
 
-                if hasContentSlot {
+                if let contentSlot = item.contentSlot {
                     contentSlot()
                 }
             }
@@ -344,33 +273,46 @@ struct LemonadeHistoryTimeline_Previews: PreviewProvider {
                     currentIndex: 0
                 )
 
-                VStack(alignment: .leading, spacing: 0) {
-                    LemonadeUi.HistoryItem(
-                        label: "Positive current",
-                        subheading: "Subheading",
-                        voice: .positive,
-                        isCurrent: true
-                    )
-                    LemonadeUi.HistoryItem(
-                        label: "Critical current",
-                        subheading: "Subheading",
-                        voice: .critical,
-                        isCurrent: true
-                    )
-                    LemonadeUi.HistoryItem(
-                        label: "Neutral current",
-                        subheading: "Subheading",
-                        voice: .neutral,
-                        isCurrent: true
-                    )
-                    LemonadeUi.HistoryItem(
-                        label: "Neutral past",
-                        subheading: "Subheading",
-                        voice: .neutral,
-                        isCurrent: false,
-                        isLast: true
-                    )
-                }
+                LemonadeUi.HistoryTimeline(
+                    items: [
+                        LemonadeHistoryTimelineItem(
+                            label: "Positive current",
+                            subheading: "Subheading",
+                            voice: .positive
+                        )
+                    ]
+                )
+
+                LemonadeUi.HistoryTimeline(
+                    items: [
+                        LemonadeHistoryTimelineItem(
+                            label: "Critical current",
+                            subheading: "Subheading",
+                            voice: .critical
+                        )
+                    ]
+                )
+
+                LemonadeUi.HistoryTimeline(
+                    items: [
+                        LemonadeHistoryTimelineItem(
+                            label: "Neutral current",
+                            subheading: "Subheading",
+                            voice: .neutral
+                        )
+                    ]
+                )
+
+                LemonadeUi.HistoryTimeline(
+                    items: [
+                        LemonadeHistoryTimelineItem(
+                            label: "Neutral past",
+                            subheading: "Subheading",
+                            voice: .neutral
+                        )
+                    ],
+                    currentIndex: nil
+                )
             }
             .padding()
         }

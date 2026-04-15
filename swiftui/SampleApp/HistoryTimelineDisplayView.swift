@@ -93,26 +93,27 @@ struct HistoryTimelineDisplayView: View {
                     )
                 }
 
-                // MARK: - Standalone HistoryItem
+                // MARK: - Timeline — neutral current
                 LemonadeUi.Card(
                     contentPadding: .medium,
-                    header: CardHeaderConfig(title: "Standalone HistoryItem — neutral current")
+                    header: CardHeaderConfig(title: "Timeline — neutral current")
                 ) {
-                    VStack(alignment: .leading, spacing: 0) {
-                        LemonadeUi.HistoryItem(
-                            label: "Standalone current item",
-                            subheading: "Subheading",
-                            description: "Using the standalone HistoryItem view.",
-                            voice: .neutral,
-                            isCurrent: true
-                        )
-                        LemonadeUi.HistoryItem(
-                            label: "Past item",
-                            subheading: "Subheading",
-                            voice: .neutral,
-                            isLast: true
-                        )
-                    }
+                    LemonadeUi.HistoryTimeline(
+                        items: [
+                            LemonadeHistoryTimelineItem(
+                                label: "Current item",
+                                subheading: "Subheading",
+                                description: "Timeline row rendered as the current step.",
+                                voice: .neutral
+                            ),
+                            LemonadeHistoryTimelineItem(
+                                label: "Past item",
+                                subheading: "Subheading",
+                                voice: .neutral
+                            )
+                        ],
+                        currentIndex: 0
+                    )
                 }
             }
             .padding(.horizontal, .space.spacing400)
