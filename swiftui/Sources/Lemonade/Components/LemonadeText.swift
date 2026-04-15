@@ -1,5 +1,21 @@
 import SwiftUI
 
+// MARK: - Text Override
+
+/// Describes style overrides for a substring within rich text.
+/// All properties are optional — only specified values override the base style.
+public struct LemonadeTextOverride {
+    /// The text style to apply to the matched substring.
+    public let textStyle: LemonadeTextStyle?
+    /// The color to apply to the matched substring.
+    public let color: Color?
+
+    public init(textStyle: LemonadeTextStyle? = nil, color: Color? = nil) {
+        self.textStyle = textStyle
+        self.color = color
+    }
+}
+
 // MARK: - Text Component
 
 public extension LemonadeUi {
@@ -40,6 +56,46 @@ public extension LemonadeUi {
             textStyle: textStyle,
             textAlign: textAlign,
             color: color,
+            overflow: overflow,
+            maxLines: maxLines,
+            minLines: minLines
+        )
+    }
+
+    /// Text component with substring style overrides. Matches each key in `overrideStyle`
+    /// within the text and applies the corresponding overrides to that substring.
+    /// The rest of the text uses the base `textStyle` and `color`.
+    ///
+    /// ## Usage
+    /// ```swift
+    /// LemonadeUi.Text(
+    ///     "Total: €129.99 (incl. tax)",
+    ///     textStyle: LemonadeTypography.shared.bodyMediumRegular,
+    ///     overrideStyle: [
+    ///         "€129.99": LemonadeTextOverride(
+    ///             textStyle: LemonadeTypography.shared.bodyLargeSemiBold,
+    ///             color: LemonadeTheme.colors.content.contentPrimary
+    ///         )
+    ///     ]
+    /// )
+    /// ```
+    @ViewBuilder
+    static func Text(
+        _ text: String,
+        textStyle: LemonadeTextStyle = LemonadeTypography.shared.bodyMediumRegular,
+        overrideStyle: [String: LemonadeTextOverride],
+        textAlign: TextAlignment = .leading,
+        color: Color = LemonadeTheme.colors.content.contentPrimary,
+        overflow: Text.TruncationMode = .tail,
+        maxLines: Int? = nil,
+        minLines: Int = 1
+    ) -> some View {
+        LemonadeOverrideTextView(
+            text: text,
+            baseTextStyle: textStyle,
+            overrideStyle: overrideStyle,
+            textAlign: textAlign,
+            baseColor: color,
             overflow: overflow,
             maxLines: maxLines,
             minLines: minLines
@@ -150,7 +206,7 @@ private struct LemonadeTextView: View {
                 .frame(minHeight: textStyle?.lineHeight)
         }
     }
-    
+
 
     private var isOverlineStyle: Bool {
         guard let style = textStyle else { return false }
@@ -169,6 +225,74 @@ private struct LemonadeTextView: View {
 
         let size = fontSize ?? style.fontSize
         return .custom(LemonadeTypography.fontFamily, size: size).weight(style.fontWeight)
+    }
+}
+
+// MARK: - Override Text View
+
+private struct LemonadeOverrideTextView: View {
+    let text: String
+    let baseTextStyle: LemonadeTextStyle
+    let overrideStyle: [String: LemonadeTextOverride]
+    let textAlign: TextAlignment
+    let baseColor: Color
+    let overflow: Text.TruncationMode
+    let maxLines: Int?
+    let minLines: Int
+
+    var body: some View {
+        let segments = buildSegments()
+        let combined = segments.reduce(SwiftUI.Text("")) { result, segment in
+            let style = segment.override?.textStyle ?? baseTextStyle
+            let color = segment.override?.color ?? baseColor
+            let font: Font = .custom(LemonadeTypography.fontFamily, size: style.fontSize)
+                .weight(style.fontWeight)
+            var piece = SwiftUI.Text(segment.content)
+                .font(font)
+                .foregroundColor(color)
+            if let tracking = style.letterSpacing {
+                piece = piece.tracking(tracking)
+            }
+            return result + piece
+        }
+
+        combined
+            .multilineTextAlignment(textAlign)
+            .lineLimit(maxLines)
+            .truncationMode(overflow)
+            .lineSpacing(baseTextStyle.lineSpacing)
+            .frame(minHeight: baseTextStyle.lineHeight)
+    }
+
+    private struct Segment {
+        let content: String
+        let override: LemonadeTextOverride?
+    }
+
+    private func buildSegments() -> [Segment] {
+        var ranges: [(range: Range<String.Index>, key: String)] = []
+        for key in overrideStyle.keys {
+            var searchStart = text.startIndex
+            while let foundRange = text.range(of: key, range: searchStart..<text.endIndex) {
+                ranges.append((range: foundRange, key: key))
+                searchStart = foundRange.upperBound
+            }
+        }
+        ranges.sort { $0.range.lowerBound < $1.range.lowerBound }
+
+        var segments: [Segment] = []
+        var currentIndex = text.startIndex
+        for entry in ranges {
+            if entry.range.lowerBound > currentIndex {
+                segments.append(Segment(content: String(text[currentIndex..<entry.range.lowerBound]), override: nil))
+            }
+            segments.append(Segment(content: String(text[entry.range]), override: overrideStyle[entry.key]))
+            currentIndex = entry.range.upperBound
+        }
+        if currentIndex < text.endIndex {
+            segments.append(Segment(content: String(text[currentIndex...]), override: nil))
+        }
+        return segments
     }
 }
 
@@ -203,7 +327,7 @@ struct LemonadeText_Previews: PreviewProvider {
                 "Overline Text",
                 textStyle: LemonadeTypography.shared.bodyXSmallOverline
             )
-            
+
             LemonadeUi.Text("This text allows multiple lines but is limited to 2 lines maximum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.", textStyle: LemonadeTypography.shared.bodyMediumRegular, maxLines: 2)
         }
         .padding()

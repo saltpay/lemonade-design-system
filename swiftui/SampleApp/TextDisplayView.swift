@@ -81,6 +81,56 @@ struct TextDisplayView: View {
                     }
                 }
 
+                // Rich Text (overrideStyle)
+                sectionView(title: "Rich Text") {
+                    VStack(alignment: .leading, spacing: 12) {
+                        LemonadeUi.Text(
+                            "It should arrive by 15 June",
+                            textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                            overrideStyle: [
+                                "15 June": LemonadeTextOverride(textStyle: LemonadeTypography.shared.bodyMediumSemiBold)
+                            ],
+                            color: LemonadeTheme.colors.content.contentSecondary
+                        )
+
+                        LemonadeUi.Text(
+                            "Total: €129.99 (incl. tax)",
+                            textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                            overrideStyle: [
+                                "€129.99": LemonadeTextOverride(
+                                    textStyle: LemonadeTypography.shared.bodyLargeSemiBold,
+                                    color: LemonadeTheme.colors.content.contentPrimary
+                                )
+                            ],
+                            color: LemonadeTheme.colors.content.contentSecondary
+                        )
+
+                        LemonadeUi.Text(
+                            "You have 5 new messages from Anna",
+                            textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                            overrideStyle: [
+                                "5 new messages": LemonadeTextOverride(textStyle: LemonadeTypography.shared.bodyMediumSemiBold),
+                                "Anna": LemonadeTextOverride(
+                                    textStyle: LemonadeTypography.shared.bodyMediumSemiBold,
+                                    color: LemonadeTheme.colors.content.contentInfo
+                                )
+                            ]
+                        )
+
+                        LemonadeUi.Text(
+                            "3 items in your cart, 1 item is out of stock",
+                            textStyle: LemonadeTypography.shared.bodySmallRegular,
+                            overrideStyle: [
+                                "3 items": LemonadeTextOverride(textStyle: LemonadeTypography.shared.bodySmallSemiBold),
+                                "1 item": LemonadeTextOverride(
+                                    textStyle: LemonadeTypography.shared.bodySmallSemiBold,
+                                    color: LemonadeTheme.colors.content.contentCritical
+                                )
+                            ]
+                        )
+                    }
+                }
+
                 // Overflow
                 sectionView(title: "Overflow") {
                     VStack(alignment: .leading, spacing: 12) {

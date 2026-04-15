@@ -10,6 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextOverflow
 
 @Suppress("LongMethod")
@@ -195,6 +196,56 @@ internal fun TextDisplay() {
                     text = "Info",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     color = LemonadeTheme.colors.content.contentInfo,
+                )
+            }
+        }
+
+        // Rich Text (overrideStyle)
+        TextSection(title = "Rich Text") {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+            ) {
+                LemonadeUi.Text(
+                    text = "It should arrive by 15 June",
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    overrideStyle = mapOf(
+                        "15 June" to LemonadeTheme.typography.bodyMediumSemiBold.spanStyle,
+                    ),
+                    color = LemonadeTheme.colors.content.contentSecondary,
+                )
+
+                LemonadeUi.Text(
+                    text = "Total: €129.99 (incl. tax)",
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    overrideStyle = mapOf(
+                        "€129.99" to LemonadeTheme.typography.bodyLargeSemiBold.spanStyle.merge(
+                            SpanStyle(color = LemonadeTheme.colors.content.contentPrimary),
+                        ),
+                    ),
+                    color = LemonadeTheme.colors.content.contentSecondary,
+                )
+
+                LemonadeUi.Text(
+                    text = "You have 5 new messages from Anna",
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    overrideStyle = mapOf(
+                        "5 new messages" to LemonadeTheme.typography.bodyMediumSemiBold.spanStyle,
+                        "Anna" to LemonadeTheme.typography.bodyMediumSemiBold.spanStyle.merge(
+                            SpanStyle(color = LemonadeTheme.colors.content.contentInfo),
+                        ),
+                    ),
+                )
+
+                LemonadeUi.Text(
+                    text = "3 items in your cart, 1 item is out of stock",
+                    textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    overrideStyle = mapOf(
+                        "3 items" to LemonadeTheme.typography.bodySmallSemiBold.spanStyle,
+                        "1 item" to LemonadeTheme.typography.bodySmallSemiBold.spanStyle.merge(
+                            SpanStyle(color = LemonadeTheme.colors.content.contentCritical),
+                        ),
+                    ),
+                    color = LemonadeTheme.colors.content.contentPrimary,
                 )
             }
         }
