@@ -300,54 +300,67 @@ private fun MarkdownParseState.parseColorTags(
 ) {
     var searchFrom = 0
     while (searchFrom < source.length) {
-        val openBrace = source.indexOf(
-            char = '{',
-            startIndex = searchFrom,
+        val nextSearchFrom = parseNextColorTag(
+            source = source,
+            colorMap = colorMap,
+            searchFrom = searchFrom,
         )
-        if (openBrace == -1) break
-
-        val closeBrace = source.indexOf(
-            char = '}',
-            startIndex = openBrace + 1,
-        )
-        if (closeBrace == -1) break
-
-        val tagName = source.substring(
-            startIndex = openBrace + 1,
-            endIndex = closeBrace,
-        )
-
-        if (tagName.startsWith('/') || tagName !in colorMap) {
-            searchFrom = openBrace + 1
-            continue
-        }
-
-        val openTag = "{$tagName}"
-        val closeTag = "{/$tagName}"
-        val contentStart = openBrace + openTag.length
-        val closeTagIdx = source.indexOf(
-            string = closeTag,
-            startIndex = contentStart,
-        )
-        if (closeTagIdx == -1) {
-            searchFrom = openBrace + 1
-            continue
-        }
-
-        val openRange = openBrace until (openBrace + openTag.length)
-        val closeRange = closeTagIdx until (closeTagIdx + closeTag.length)
-
-        openRange.forEach { index -> markerPositions.add(index) }
-        closeRange.forEach { index -> markerPositions.add(index) }
-
-        spanStarts.add(contentStart)
-        spanEnds.add(closeTagIdx)
-        spanStyles.add(
-            SpanStyle(color = colorMap.getValue(tagName)),
-        )
-
-        searchFrom = closeTagIdx + closeTag.length
+            ?: return
+        searchFrom = nextSearchFrom
     }
+}
+
+@Suppress("ReturnCount")
+private fun MarkdownParseState.parseNextColorTag(
+    source: String,
+    colorMap: Map<String, Color>,
+    searchFrom: Int,
+): Int? {
+    val openBrace = source.indexOf(
+        char = '{',
+        startIndex = searchFrom,
+    )
+    if (openBrace == -1) return null
+
+    val closeBrace = source.indexOf(
+        char = '}',
+        startIndex = openBrace + 1,
+    )
+    if (closeBrace == -1) return null
+
+    val tagName = source.substring(
+        startIndex = openBrace + 1,
+        endIndex = closeBrace,
+    )
+
+    if (tagName.startsWith('/') || tagName !in colorMap) {
+        return openBrace + 1
+    }
+
+    val openTag = "{$tagName}"
+    val closeTag = "{/$tagName}"
+    val contentStart = openBrace + openTag.length
+    val closeTagIdx = source.indexOf(
+        string = closeTag,
+        startIndex = contentStart,
+    )
+    if (closeTagIdx == -1) {
+        return openBrace + 1
+    }
+
+    val openRange = openBrace until openBrace + openTag.length
+    val closeRange = closeTagIdx until closeTagIdx + closeTag.length
+
+    openRange.forEach { index -> markerPositions.add(index) }
+    closeRange.forEach { index -> markerPositions.add(index) }
+
+    spanStarts.add(contentStart)
+    spanEnds.add(closeTagIdx)
+    spanStyles.add(
+        SpanStyle(color = colorMap.getValue(tagName)),
+    )
+
+    return closeTagIdx + closeTag.length
 }
 
 private fun MarkdownParseState.parseStyleMarkers(source: String) {
@@ -357,45 +370,68 @@ private fun MarkdownParseState.parseStyleMarkers(source: String) {
         }
 
     for (markdown in sortedMarkdowns) {
-        val key = markdown.key
-        var searchFrom = 0
-
-        while (searchFrom < source.length) {
-            val openIdx = source.indexOf(
-                string = key,
-                startIndex = searchFrom,
-            )
-            if (openIdx == -1) break
-
-            val openRange = openIdx until (openIdx + key.length)
-            if (openRange.any { index -> index in markerPositions }) {
-                searchFrom = openIdx + 1
-                continue
-            }
-
-            val contentStart = openIdx + key.length
-            val closeIdx = source.indexOf(
-                string = key,
-                startIndex = contentStart,
-            )
-            if (closeIdx == -1) break
-
-            val closeRange = closeIdx until (closeIdx + key.length)
-            if (closeRange.any { index -> index in markerPositions }) {
-                searchFrom = openIdx + 1
-                continue
-            }
-
-            openRange.forEach { index -> markerPositions.add(index) }
-            closeRange.forEach { index -> markerPositions.add(index) }
-
-            spanStarts.add(contentStart)
-            spanEnds.add(closeIdx)
-            spanStyles.add(markdown.toSpanStyle())
-
-            searchFrom = closeIdx + key.length
-        }
+        parseStyleMarker(
+            source = source,
+            markdown = markdown,
+        )
     }
+}
+
+private fun MarkdownParseState.parseStyleMarker(
+    source: String,
+    markdown: LemonadeMarkdown,
+) {
+    var searchFrom = 0
+
+    while (searchFrom < source.length) {
+        val nextSearchFrom = parseNextStyleMarker(
+            source = source,
+            markdown = markdown,
+            searchFrom = searchFrom,
+        )
+            ?: return
+        searchFrom = nextSearchFrom
+    }
+}
+
+@Suppress("ReturnCount")
+private fun MarkdownParseState.parseNextStyleMarker(
+    source: String,
+    markdown: LemonadeMarkdown,
+    searchFrom: Int,
+): Int? {
+    val key = markdown.key
+    val openIdx = source.indexOf(
+        string = key,
+        startIndex = searchFrom,
+    )
+    if (openIdx == -1) return null
+
+    val openRange = openIdx until openIdx + key.length
+    if (openRange.any { index -> index in markerPositions }) {
+        return openIdx + 1
+    }
+
+    val contentStart = openIdx + key.length
+    val closeIdx = source.indexOf(
+        string = key,
+        startIndex = contentStart,
+    )
+    if (closeIdx == -1) return null
+
+    val closeRange = closeIdx until closeIdx + key.length
+    if (closeRange.any { index -> index in markerPositions }) {
+        return openIdx + 1
+    }
+
+    openRange.forEach { index -> markerPositions.add(index) }
+    closeRange.forEach { index -> markerPositions.add(index) }
+
+    spanStarts.add(contentStart)
+    spanEnds.add(closeIdx)
+    spanStyles.add(markdown.toSpanStyle())
+
+    return closeIdx + key.length
 }
 
 private fun MarkdownParseState.buildAnnotatedString(source: String): AnnotatedString =
