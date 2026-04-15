@@ -1,23 +1,16 @@
 package com.teya.lemonade
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -151,16 +144,35 @@ public fun LemonadeUi.HistoryItem(
     val spaces = LocalSpaces.current
     val typographies = LocalTypographies.current
     val contentColors = LocalColors.current.content
+    val mutedColor = LocalColors.current.border.borderNeutralMedium
+    val dotColor: Color = if (isCurrent) {
+        voice.currentDotColor
+    } else {
+        mutedColor
+    }
 
     Row(
-        modifier = modifier.height(intrinsicSize = IntrinsicSize.Min),
+        modifier = modifier.drawBehind {
+            val centerX = HistoryItemIndicatorWidth.toPx() / 2f
+            val dotRadius = HistoryItemDotSize.toPx() / 2f
+            val dotCenterY = HistoryItemDotTopOffset.toPx() + dotRadius
+            drawCircle(
+                color = dotColor,
+                radius = dotRadius,
+                center = Offset(x = centerX, y = dotCenterY),
+            )
+            if (!isLast) {
+                drawLine(
+                    color = mutedColor,
+                    start = Offset(x = centerX, y = dotCenterY + dotRadius),
+                    end = Offset(x = centerX, y = size.height),
+                    strokeWidth = HistoryItemLineThickness.toPx(),
+                )
+            }
+        },
         horizontalArrangement = Arrangement.spacedBy(space = spaces.spacing300),
     ) {
-        HistoryItemIndicator(
-            voice = voice,
-            isCurrent = isCurrent,
-            isLast = isLast,
-        )
+        Spacer(modifier = Modifier.width(width = HistoryItemIndicatorWidth))
 
         Column(
             modifier = Modifier.padding(bottom = if (isLast) 0.dp else spaces.spacing400),
@@ -205,43 +217,6 @@ private val HistoryItemVoice.currentDotColor: Color
             HistoryItemVoice.Neutral -> LocalColors.current.background.bgNeutral
         }
     }
-
-@Composable
-private fun HistoryItemIndicator(
-    voice: HistoryItemVoice,
-    isCurrent: Boolean,
-    isLast: Boolean,
-) {
-    val mutedColor = LocalColors.current.border.borderNeutralMedium
-    val dotColor: Color = if (isCurrent) {
-        voice.currentDotColor
-    } else {
-        mutedColor
-    }
-
-    Column(
-        modifier = Modifier
-            .width(width = HistoryItemIndicatorWidth)
-            .fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Spacer(modifier = Modifier.height(height = HistoryItemDotTopOffset))
-        Box(
-            modifier = Modifier
-                .size(size = HistoryItemDotSize)
-                .clip(shape = CircleShape)
-                .background(color = dotColor),
-        )
-        if (!isLast) {
-            Box(
-                modifier = Modifier
-                    .width(width = HistoryItemLineThickness)
-                    .weight(weight = 1f)
-                    .background(color = mutedColor),
-            )
-        }
-    }
-}
 
 private data class HistoryItemPreviewData(
     val voice: HistoryItemVoice,

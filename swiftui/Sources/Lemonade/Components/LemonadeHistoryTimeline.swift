@@ -184,8 +184,7 @@ private struct LemonadeHistoryTimelineView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ForEach(items.indices, id: \.self) { index in
-                let item = items[index]
+            ForEach(Array(items.enumerated()), id: \.offset) { index, item in
                 LemonadeHistoryItemView(
                     label: item.label,
                     subheading: item.subheading,
@@ -219,13 +218,16 @@ private struct LemonadeHistoryItemView<Content: View>: View {
         Content.self != EmptyView.self
     }
 
+    private var dotColor: Color {
+        isCurrent
+            ? voice.currentColor
+            : LemonadeTheme.colors.border.borderNeutralMedium
+    }
+
     var body: some View {
         HStack(alignment: .top, spacing: LemonadeTheme.spaces.spacing300) {
-            HistoryItemIndicator(
-                voice: voice,
-                isCurrent: isCurrent,
-                isLast: isLast
-            )
+            Color.clear
+                .frame(width: HistoryTimelineMetrics.indicatorWidth)
 
             VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing200) {
                 VStack(alignment: .leading, spacing: 0) {
@@ -259,24 +261,15 @@ private struct LemonadeHistoryItemView<Content: View>: View {
             .padding(.bottom, isLast ? 0 : LemonadeTheme.spaces.spacing400)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .fixedSize(horizontal: false, vertical: true)
+        .background(alignment: .topLeading) {
+            HistoryItemIndicator(dotColor: dotColor, isLast: isLast)
+        }
     }
 }
 
 private struct HistoryItemIndicator: View {
-    let voice: LemonadeHistoryItemVoice
-    let isCurrent: Bool
+    let dotColor: Color
     let isLast: Bool
-
-    private var dotColor: Color {
-        isCurrent
-            ? voice.currentColor
-            : LemonadeTheme.colors.border.borderNeutralMedium
-    }
-
-    private var lineColor: Color {
-        LemonadeTheme.colors.border.borderNeutralMedium
-    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -290,11 +283,9 @@ private struct HistoryItemIndicator: View {
                     height: HistoryTimelineMetrics.dotSize
                 )
 
-            if isLast {
-                Spacer(minLength: 0)
-            } else {
+            if !isLast {
                 Rectangle()
-                    .fill(lineColor)
+                    .fill(LemonadeTheme.colors.border.borderNeutralMedium)
                     .frame(width: HistoryTimelineMetrics.lineThickness)
                     .frame(maxHeight: .infinity)
             }
