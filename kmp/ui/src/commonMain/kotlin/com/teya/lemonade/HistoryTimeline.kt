@@ -163,7 +163,7 @@ public fun LemonadeUi.HistoryItem(
         )
 
         Column(
-            modifier = Modifier.padding(bottom = if (isLast) spaces.spacing0 else spaces.spacing400),
+            modifier = Modifier.padding(bottom = if (isLast) 0.dp else spaces.spacing400),
             verticalArrangement = Arrangement.spacedBy(space = spaces.spacing200),
         ) {
             Column {
@@ -198,13 +198,11 @@ public fun LemonadeUi.HistoryItem(
 }
 
 private val HistoryItemVoice.currentDotColor: Color
-    @Composable
-    get() {
-        val background = LocalColors.current.background
+    @Composable get() {
         return when (this) {
-            HistoryItemVoice.Positive -> background.bgPositive
-            HistoryItemVoice.Critical -> background.bgCritical
-            HistoryItemVoice.Neutral -> background.bgNeutral
+            HistoryItemVoice.Positive -> LocalColors.current.background.bgPositive
+            HistoryItemVoice.Critical -> LocalColors.current.background.bgCritical
+            HistoryItemVoice.Neutral -> LocalColors.current.background.bgNeutral
         }
     }
 
