@@ -28,7 +28,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
@@ -55,7 +54,6 @@ import com.teya.lemonade.core.LemonadeTileVariant
  * @param onClick - Callback to be invoked when the Tile is clicked.
  * @param interactionSource - [MutableInteractionSource] to be applied to the Tile.
  * @param variant - [LemonadeTileVariant] to style the Tile accordingly.
- * @param addon - Optional composable content displayed as a badge overlay on the Tile.
  */
 @Composable
 public fun LemonadeUi.Tile(
@@ -69,11 +67,9 @@ public fun LemonadeUi.Tile(
     onClick: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     variant: LemonadeTileVariant = LemonadeTileVariant.Filled,
-    addon: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     CoreTile(
         modifier = modifier,
-        addon = addon,
         variant = variant,
         onClick = onClick,
         enabled = enabled,
@@ -128,7 +124,6 @@ public fun LemonadeUi.Tile(
 @Composable
 private fun CoreTile(
     variant: LemonadeTileVariant,
-    addon: (@Composable BoxScope.() -> Unit)?,
     content: @Composable BoxScope.() -> Unit,
     enabled: Boolean,
     isSelected: Boolean,
@@ -165,71 +160,58 @@ private fun CoreTile(
         targetValue = tileData.borderWidth,
     )
 
-    val spaces = LocalSpaces.current
-    LemonadeBadgeBox(
-        modifier = modifier,
-        badgeOffset = {
-            DpOffset(
-                x = spaces.spacing200,
-                y = spaces.spacing200,
-            )
-        },
-        badge = { addon?.invoke(this) },
-        content = {
-            Box(
-                contentAlignment = Alignment.Center,
-                content = content,
-                modifier = Modifier
-                    .then(
-                        other = if (!enabled) {
-                            Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                        } else {
-                            Modifier
-                        },
-                    ).then(
-                        other = if (isFocused) {
-                            Modifier
-                                .border(
-                                    width = LocalBorderWidths.current.base.border25,
-                                    color = LocalColors.current.border.borderSelected,
-                                    shape = tileShape,
-                                ).padding(all = LocalSpaces.current.spacing50)
-                        } else {
-                            Modifier
-                        },
-                    ).then(
-                        other = tileData.shadow?.let { lemonadeShadow ->
-                            Modifier.lemonadeShadow(
-                                shadow = lemonadeShadow,
-                                shape = tileShape,
-                            )
-                        }
-                            ?: Modifier,
-                    ).then(
-                        other = Modifier.border(
-                            color = animatedBorderColor,
+    Box(
+        contentAlignment = Alignment.Center,
+        content = content,
+        modifier = modifier
+            .then(
+                other = if (!enabled) {
+                    Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+                } else {
+                    Modifier
+                },
+            ).then(
+                other = if (isFocused) {
+                    Modifier
+                        .border(
+                            width = LocalBorderWidths.current.base.border25,
+                            color = LocalColors.current.border.borderSelected,
                             shape = tileShape,
-                            width = animatedBorderWidth,
-                        ),
-                    ).clip(shape = tileShape)
-                    .then(
-                        other = if (onClick != null) {
-                            Modifier.clickable(
-                                onClick = onClick,
-                                interactionSource = interactionSource,
-                                role = Role.Button,
-                                enabled = enabled,
-                                indication = LocalEffects.current.interactionIndication,
-                            )
-                        } else {
-                            Modifier
-                        },
-                    ).background(
-                        color = animatedBackgroundColor,
+                        ).padding(all = LocalSpaces.current.spacing50)
+                } else {
+                    Modifier
+                },
+            ).then(
+                other = tileData.shadow?.let { lemonadeShadow ->
+                    Modifier.lemonadeShadow(
+                        shadow = lemonadeShadow,
                         shape = tileShape,
-                    ),
-            )
-        },
+                    )
+                }
+                    ?: Modifier,
+            ).then(
+                other = Modifier.border(
+                    color = animatedBorderColor,
+                    shape = tileShape,
+                    width = animatedBorderWidth,
+                ),
+            ).clip(shape = tileShape)
+            .then(
+                other = if (onClick != null) {
+                    Modifier.clickable(
+                        onClick = onClick,
+                        interactionSource = interactionSource,
+                        role = Role.Button,
+                        enabled = enabled,
+                        indication = LocalEffects.current.interactionIndication,
+                    )
+                } else {
+                    Modifier
+                },
+            ).background(
+                color = animatedBackgroundColor,
+                shape = tileShape,
+            ),
     )
 }
 
@@ -290,7 +272,6 @@ internal val LemonadeTileVariant.data: TileData
 
 private data class TilePreviewData(
     val enabled: Boolean,
-    val withAddon: Boolean,
     val variant: LemonadeTileVariant,
     val alignment: Alignment.Horizontal,
     val isSelected: Boolean,
@@ -302,27 +283,24 @@ private class TilePreviewProvider : PreviewParameterProvider<TilePreviewData> {
     private fun buildAllVariants(): Sequence<TilePreviewData> {
         return buildList {
             listOf(true, false).forEach { enabled ->
-                listOf(true, false).forEach { withAddon ->
+                listOf(
+                    LemonadeTileVariant.Filled,
+                    LemonadeTileVariant.Outlined,
+                ).forEach { variant ->
                     listOf(
-                        LemonadeTileVariant.Filled,
-                        LemonadeTileVariant.Outlined,
-                    ).forEach { variant ->
-                        listOf(
-                            Alignment.Start,
-                            Alignment.CenterHorizontally,
-                            Alignment.End,
-                        ).forEach { alignment ->
-                            listOf(true, false).forEach { selected ->
-                                add(
-                                    TilePreviewData(
-                                        enabled = enabled,
-                                        withAddon = withAddon,
-                                        variant = variant,
-                                        alignment = alignment,
-                                        isSelected = selected,
-                                    ),
-                                )
-                            }
+                        Alignment.Start,
+                        Alignment.CenterHorizontally,
+                        Alignment.End,
+                    ).forEach { alignment ->
+                        listOf(true, false).forEach { selected ->
+                            add(
+                                TilePreviewData(
+                                    enabled = enabled,
+                                    variant = variant,
+                                    alignment = alignment,
+                                    isSelected = selected,
+                                ),
+                            )
                         }
                     }
                 }
@@ -353,13 +331,6 @@ private fun LemonadeTilePreview(
             isSelected = previewData.isSelected,
             alignment = previewData.alignment,
             variant = previewData.variant,
-            addon = if (previewData.withAddon) {
-                {
-                    LemonadeUi.Badge(text = "Addon")
-                }
-            } else {
-                null
-            },
         )
     }
 }

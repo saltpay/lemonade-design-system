@@ -13,7 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.teya.lemonade.core.LemonadeBadgeSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTileVariant
 
@@ -155,32 +154,6 @@ internal fun TileDisplay() {
             }
         }
 
-        // With Addon (Badge)
-        TileSection(title = "With Addon (Badge)") {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-                modifier = Modifier.horizontalScroll(rememberScrollState()),
-            ) {
-                LemonadeUi.Tile(
-                    label = "Messages",
-                    icon = LemonadeIcons.Envelope,
-                    variant = LemonadeTileVariant.Filled,
-                    addon = {
-                        LemonadeUi.Badge(text = "5", size = LemonadeBadgeSize.XSmall)
-                    },
-                )
-
-                LemonadeUi.Tile(
-                    label = "Updates",
-                    icon = LemonadeIcons.Bell,
-                    variant = LemonadeTileVariant.Filled,
-                    addon = {
-                        LemonadeUi.Badge(text = "New", size = LemonadeBadgeSize.XSmall)
-                    },
-                )
-            }
-        }
-
         // Interactive
         TileSection(title = "Interactive") {
             Row(
@@ -293,9 +266,6 @@ internal fun TileDisplay() {
                         icon = LemonadeIcons.ShoppingBag,
                         onClick = {},
                         variant = LemonadeTileVariant.Outlined,
-                        addon = {
-                            LemonadeUi.Badge(text = "3", size = LemonadeBadgeSize.XSmall)
-                        },
                     )
                     LemonadeUi.Tile(
                         label = "Inventory",
