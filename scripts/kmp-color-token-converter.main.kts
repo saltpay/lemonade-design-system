@@ -13,7 +13,7 @@ private data class Color(
 
 fun main() {
     val colorTokensFile = File("tokens/primitive-colors.json")
-    val outputDir = File("kmp/ui/src/commonMain/kotlin/com/teya/lemonade")
+    val outputDir = File("kmp/tokens/src/commonMain/kotlin/com/teya/lemonade")
     try {
         if (!colorTokensFile.exists() || !colorTokensFile.isFile) {
             error(message = "File $colorTokensFile does not exist in system.")
