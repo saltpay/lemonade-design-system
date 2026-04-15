@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
@@ -40,6 +41,7 @@ import com.teya.lemonade.core.HistoryTimelineItemVoice
  *   stronger indicator color. Has no effect on Positive or Critical voices. Defaults to false.
  * @param subheading - Optional [String] secondary text shown below the label (e.g. a date or timestamp).
  * @param description - Optional [String] longer description shown below the subheading with extra vertical padding.
+ * @param contentSlot - Optional content slot to be placed in component.
  */
 @Stable
 public data class HistoryTimelineItem(
@@ -48,6 +50,7 @@ public data class HistoryTimelineItem(
     val selected: Boolean = false,
     val subheading: String? = null,
     val description: String? = null,
+    val contentSlot: (@Composable ColumnScope.() -> Unit)? = null,
 )
 
 /**
@@ -165,6 +168,8 @@ private fun CoreHistoryTimelineItem(
                     ),
                 )
             }
+
+            item.contentSlot?.invoke(this)
         }
     }
 }
