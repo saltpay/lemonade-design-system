@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,7 +15,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.LineHeightStyle
 
 @Composable
 internal fun MarkdownDisplay() {
@@ -56,16 +54,9 @@ internal fun MarkdownDisplay() {
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
 
-            val style = LemonadeTheme.typography.bodyMediumRegular.textStyle
-            BasicText(
+            LemonadeUi.Text(
                 text = input.toLemonadeMarkdown(),
-                style = style.copy(
-                    lineHeightStyle = LineHeightStyle(
-                        alignment = LineHeightStyle.Alignment.Center,
-                        trim = LineHeightStyle.Trim.None,
-                    ),
-                    color = LemonadeTheme.colors.content.contentPrimary,
-                ),
+                textStyle = LemonadeTheme.typography.bodyMediumRegular,
             )
         }
 

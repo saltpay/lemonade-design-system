@@ -3,7 +3,6 @@ package com.teya.lemonade
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
@@ -12,9 +11,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import com.teya.lemonade.core.LemonadeTextStyle
@@ -52,10 +51,6 @@ public fun LemonadeUi.Text(
         text
     }
 
-    val style = textStyle.textStyle
-    val finalFontSize = if (fontSize != TextUnit.Unspecified) fontSize else style.fontSize
-    val finalColor = if (color != Color.Unspecified) color else style.color
-
     BasicText(
         text = finalText,
         modifier = modifier,
@@ -63,13 +58,54 @@ public fun LemonadeUi.Text(
         maxLines = maxLines,
         minLines = minLines,
         autoSize = autoSize,
-        style = textStyle.textStyle.copy(
-            fontSize = finalFontSize,
-            lineHeightStyle = LineHeightStyle(
-                alignment = LineHeightStyle.Alignment.Center,
-                trim = LineHeightStyle.Trim.None,
-            ),
-            color = finalColor,
+        style = textStyle.resolveStyle(
+            fontSize = fontSize,
+            color = color,
+            textAlign = textAlign,
+        ),
+    )
+}
+
+/**
+ * Displays styled [AnnotatedString] text using the Lemonade Design System typography tokens.
+ *
+ * Use this overload to render text with inline styling such as the output of
+ * [String.toLemonadeMarkdown].
+ *
+ * @param text The [AnnotatedString] to display.
+ * @param fontSize Optional font size override. When [TextUnit.Unspecified], the size from [textStyle] is used.
+ * @param modifier Modifier to apply to the text layout.
+ * @param textStyle The Lemonade typography token to apply. Defaults to the current local text style.
+ * @param textAlign The alignment of the text within its container.
+ * @param color The text color. When [Color.Unspecified], the color from [textStyle] is used.
+ * @param overflow How text overflow is handled.
+ * @param maxLines Maximum number of lines to display.
+ * @param minLines Minimum number of lines to display.
+ * @param autoSize Optional auto-sizing configuration for the text.
+ */
+@Composable
+public fun LemonadeUi.Text(
+    text: AnnotatedString,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    modifier: Modifier = Modifier,
+    textStyle: LemonadeTextStyle = LocalTextStyles.current,
+    textAlign: TextAlign = TextAlign.Unspecified,
+    color: Color = LocalColors.current.content.contentPrimary,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE,
+    minLines: Int = 1,
+    autoSize: TextAutoSize? = null,
+) {
+    BasicText(
+        text = text,
+        modifier = modifier,
+        overflow = overflow,
+        maxLines = maxLines,
+        minLines = minLines,
+        autoSize = autoSize,
+        style = textStyle.resolveStyle(
+            fontSize = fontSize,
+            color = color,
             textAlign = textAlign,
         ),
     )
@@ -107,6 +143,69 @@ public fun LemonadeUi.Text(
         maxLines = maxLines,
         minLines = minLines,
         autoSize = autoSize,
+    )
+}
+
+/**
+ * Displays styled [AnnotatedString] text using a raw Compose [TextStyle].
+ *
+ * Use this overload when you need full control over the text style and want to
+ * render an [AnnotatedString] with inline styling.
+ *
+ * @param text The [AnnotatedString] to display.
+ * @param modifier Modifier to apply to the text layout.
+ * @param textStyle The Compose [TextStyle] to apply.
+ * @param overflow How text overflow is handled.
+ * @param maxLines Maximum number of lines to display.
+ * @param minLines Minimum number of lines to display.
+ * @param autoSize Optional auto-sizing configuration for the text.
+ */
+@Composable
+public fun LemonadeUi.Text(
+    text: AnnotatedString,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE,
+    minLines: Int = 1,
+    autoSize: TextAutoSize? = null,
+) {
+    BasicText(
+        text = text,
+        modifier = modifier,
+        style = textStyle,
+        overflow = overflow,
+        maxLines = maxLines,
+        minLines = minLines,
+        autoSize = autoSize,
+    )
+}
+
+@Composable
+private fun LemonadeTextStyle.resolveStyle(
+    fontSize: TextUnit,
+    color: Color,
+    textAlign: TextAlign,
+): TextStyle {
+    val base = textStyle
+    val resolvedFontSize = if (fontSize != TextUnit.Unspecified) {
+        fontSize
+    } else {
+        base.fontSize
+    }
+    val resolvedColor = if (color != Color.Unspecified) {
+        color
+    } else {
+        base.color
+    }
+    return base.copy(
+        fontSize = resolvedFontSize,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None,
+        ),
+        color = resolvedColor,
+        textAlign = textAlign,
     )
 }
 
