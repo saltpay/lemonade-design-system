@@ -398,8 +398,8 @@ private fun MarkdownParseState.parseStyleMarkers(source: String) {
     }
 }
 
-private fun MarkdownParseState.buildAnnotatedString(source: String): AnnotatedString {
-    return buildAnnotatedString {
+private fun MarkdownParseState.buildAnnotatedString(source: String): AnnotatedString =
+    buildAnnotatedString {
         val indexMapping = IntArray(size = source.length)
         var newIndex = 0
 
@@ -419,7 +419,6 @@ private fun MarkdownParseState.buildAnnotatedString(source: String): AnnotatedSt
             )
         }
     }
-}
 
 @Composable
 private fun resolveContentColorMap(): Map<String, Color> {

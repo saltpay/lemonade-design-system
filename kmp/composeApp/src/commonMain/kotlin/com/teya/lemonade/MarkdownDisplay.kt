@@ -19,7 +19,9 @@ import androidx.compose.ui.Modifier
 @Composable
 internal fun MarkdownDisplay() {
     var input by remember {
-        mutableStateOf("Hello **semi-bold** and ***bold*** with __underline__ and ___strikethrough___ or ~~italic~~ plus {critical}critical{/critical} and {positive}positive{/positive}")
+        mutableStateOf(
+            "Hello **semi-bold** and ***bold*** with __underline__ and ___strikethrough___ or ~~italic~~ plus {critical}critical{/critical} and {positive}positive{/positive}",
+        )
     }
 
     Column(
