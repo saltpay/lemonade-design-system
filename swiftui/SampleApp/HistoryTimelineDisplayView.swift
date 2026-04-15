@@ -47,7 +47,9 @@ struct HistoryTimelineDisplayView: View {
                                 LemonadeUi.Button(
                                     label: "Find a PayPoint",
                                     onClick: {},
-                                    variant: .secondary
+                                    leadingIcon: .mapPin,
+                                    variant: .neutral,
+                                    size: .medium
                                 )
                             },
                             LemonadeHistoryTimelineItem(

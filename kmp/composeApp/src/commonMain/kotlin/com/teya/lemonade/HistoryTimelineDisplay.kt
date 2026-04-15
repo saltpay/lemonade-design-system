@@ -12,8 +12,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.HistoryItemVoice
+import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonVariant
 import com.teya.lemonade.core.LemonadeCardPadding
+import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TagVoice
 
 @Composable
@@ -68,7 +70,9 @@ internal fun HistoryTimelineDisplay() {
                             LemonadeUi.Button(
                                 label = "Find a PayPoint",
                                 onClick = {},
-                                variant = LemonadeButtonVariant.Secondary,
+                                leadingIcon = LemonadeIcons.MapPin,
+                                variant = LemonadeButtonVariant.Neutral,
+                                size = LemonadeButtonSize.Medium,
                             )
                         },
                     ),
