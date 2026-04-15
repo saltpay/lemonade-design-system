@@ -42,7 +42,8 @@ struct HomeView: View {
             DemoSection(
                 title: "Typography",
                 items: [
-                    DemoItem(title: "Text", destination: AnyView(TextDisplayView()))
+                    DemoItem(title: "Text", destination: AnyView(TextDisplayView())),
+                    DemoItem(title: "Markdown", destination: AnyView(MarkdownDisplayView()))
                 ]
             ),
             DemoSection(
