@@ -1,0 +1,107 @@
+package com.teya.lemonade
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.LineHeightStyle
+
+@Composable
+internal fun MarkdownDisplay() {
+    var input by remember {
+        mutableStateOf("Hello **semi-bold** and ***bold*** with __underline__ and ___strikethrough___ or ~~italic~~")
+    }
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(state = rememberScrollState())
+            .statusBarsPadding()
+            .navigationBarsPadding()
+            .padding(all = LemonadeTheme.spaces.spacing400),
+    ) {
+        LemonadeUi.Text(
+            text = "Markdown",
+            textStyle = LemonadeTheme.typography.headingXSmall,
+            color = LemonadeTheme.colors.content.contentSecondary,
+        )
+
+        LemonadeUi.TextField(
+            input = input,
+            onInputChanged = { value -> input = value },
+            label = "Markdown input",
+            placeholderText = "Type markdown here...",
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
+        ) {
+            LemonadeUi.Text(
+                text = "Preview",
+                textStyle = LemonadeTheme.typography.headingXSmall,
+                color = LemonadeTheme.colors.content.contentSecondary,
+            )
+
+            val style = LemonadeTheme.typography.bodyMediumRegular.textStyle
+            BasicText(
+                text = input.toLemonadeMarkdown(),
+                style = style.copy(
+                    lineHeightStyle = LineHeightStyle(
+                        alignment = LineHeightStyle.Alignment.Center,
+                        trim = LineHeightStyle.Trim.None,
+                    ),
+                    color = LemonadeTheme.colors.content.contentPrimary,
+                ),
+            )
+        }
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
+        ) {
+            LemonadeUi.Text(
+                text = "Syntax Reference",
+                textStyle = LemonadeTheme.typography.headingXSmall,
+                color = LemonadeTheme.colors.content.contentSecondary,
+            )
+            LemonadeUi.Text(
+                text = "**text** = Semi-Bold",
+                textStyle = LemonadeTheme.typography.bodySmallRegular,
+                color = LemonadeTheme.colors.content.contentTertiary,
+            )
+            LemonadeUi.Text(
+                text = "***text*** = Bold",
+                textStyle = LemonadeTheme.typography.bodySmallRegular,
+                color = LemonadeTheme.colors.content.contentTertiary,
+            )
+            LemonadeUi.Text(
+                text = "__text__ = Underline",
+                textStyle = LemonadeTheme.typography.bodySmallRegular,
+                color = LemonadeTheme.colors.content.contentTertiary,
+            )
+            LemonadeUi.Text(
+                text = "___text___ = Strikethrough",
+                textStyle = LemonadeTheme.typography.bodySmallRegular,
+                color = LemonadeTheme.colors.content.contentTertiary,
+            )
+            LemonadeUi.Text(
+                text = "~~text~~ = Italic",
+                textStyle = LemonadeTheme.typography.bodySmallRegular,
+                color = LemonadeTheme.colors.content.contentTertiary,
+            )
+        }
+    }
+}

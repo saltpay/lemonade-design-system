@@ -49,6 +49,7 @@ internal interface Displays {
             InlineCalendar,
             Notice,
             Toast,
+            Markdown,
         )
     }
 
@@ -250,5 +251,10 @@ internal interface Displays {
     @Serializable
     data object Toast : Displays {
         override val label: String = "Toast"
+    }
+
+    @Serializable
+    data object Markdown : Displays {
+        override val label: String = "Markdown"
     }
 }
