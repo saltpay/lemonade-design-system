@@ -10,7 +10,7 @@ data class BorderWidthResource(
 
 fun main() {
     val borderWidthTokensFile = File("tokens/border-width.json")
-    val implementationOutputDir = File("kmp/ui/src/commonMain/kotlin/com/teya/lemonade")
+    val implementationOutputDir = File("kmp/tokens/src/commonMain/kotlin/com/teya/lemonade")
 
     try {
         if (!implementationOutputDir.exists()) {

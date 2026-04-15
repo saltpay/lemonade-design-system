@@ -12,11 +12,15 @@ data class ThemeResourceData(
 
 fun main() {
     val colorTokensFile = File("tokens/theme-colors.json")
-    val outputDir = File("kmp/ui/src/commonMain/kotlin/com/teya/lemonade")
+    val themesOutputDir = File("kmp/ui/src/commonMain/kotlin/com/teya/lemonade")
+    val interfaceOutputDir = File("kmp/tokens/src/commonMain/kotlin/com/teya/lemonade")
 
     try {
-        if (!outputDir.exists()) {
-            outputDir.mkdirs()
+        if (!themesOutputDir.exists()) {
+            themesOutputDir.mkdirs()
+        }
+        if (!interfaceOutputDir.exists()) {
+            interfaceOutputDir.mkdirs()
         }
 
         if (!colorTokensFile.exists() || !colorTokensFile.isFile) {
@@ -69,7 +73,7 @@ fun main() {
             )
             println("✓ $modeName implementation generated")
 
-            val classOutputFile = File(outputDir, "$themeName.kt")
+            val classOutputFile = File(themesOutputDir, "$themeName.kt")
             classOutputFile.writeText(classCode)
             println("✓ $themeName.kt created")
         }
@@ -103,7 +107,7 @@ fun main() {
         )
         println("✓ Interface generated")
 
-        val interfaceOutputFile = File(outputDir, "LemonadeSemanticColors.kt")
+        val interfaceOutputFile = File(interfaceOutputDir, "LemonadeSemanticColors.kt")
         interfaceOutputFile.writeText(interfaceCode)
         println("✓ Definition & Implementation files created")
     } catch (error: Throwable) {
