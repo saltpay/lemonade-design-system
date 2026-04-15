@@ -60,7 +60,7 @@ public enum LemonadeTileVariant {
 // MARK: - Tile Component
 
 public extension LemonadeUi {
-    /// A tile component with icon, label, and optional addon.
+    /// A tile component with icon and label.
     ///
     /// ## Usage
     /// ```swift
@@ -82,36 +82,7 @@ public extension LemonadeUi {
     ///   - variant: LemonadeTileVariant to define visual style. Defaults to .filled
     ///   - stretched: Whether the tile should stretch to fill available width. Defaults to false
     ///   - alignment: Horizontal alignment of the tile content. Defaults to .center
-    ///   - addon: Optional content to be displayed as a badge overlay
     /// - Returns: A styled Tile view
-    @ViewBuilder
-    static func Tile<AddonContent: View>(
-        label: String,
-        icon: LemonadeIcon,
-        enabled: Bool = true,
-        isSelected: Bool = false,
-        supportText: String? = nil,
-        onClick: (() -> Void)? = nil,
-        variant: LemonadeTileVariant = .filled,
-        stretched: Bool = false,
-        alignment: HorizontalAlignment = .center,
-        @ViewBuilder addon: @escaping () -> AddonContent
-    ) -> some View {
-        LemonadeTileView(
-            label: label,
-            icon: icon,
-            enabled: enabled,
-            isSelected: isSelected,
-            supportText: supportText,
-            onClick: onClick,
-            variant: variant,
-            stretched: stretched,
-            alignment: alignment,
-            addon: addon
-        )
-    }
-
-    /// A tile component without addon.
     @ViewBuilder
     static func Tile(
         label: String,
@@ -124,7 +95,7 @@ public extension LemonadeUi {
         stretched: Bool = false,
         alignment: HorizontalAlignment = .center
     ) -> some View {
-        LemonadeTileView<EmptyView>(
+        LemonadeTileView(
             label: label,
             icon: icon,
             enabled: enabled,
@@ -133,15 +104,14 @@ public extension LemonadeUi {
             onClick: onClick,
             variant: variant,
             stretched: stretched,
-            alignment: alignment,
-            addon: nil
+            alignment: alignment
         )
     }
 }
 
 // MARK: - Internal Tile View
 
-private struct LemonadeTileView<AddonContent: View>: View {
+private struct LemonadeTileView: View {
     let label: String
     let icon: LemonadeIcon
     let enabled: Bool
@@ -151,7 +121,6 @@ private struct LemonadeTileView<AddonContent: View>: View {
     let variant: LemonadeTileVariant
     let stretched: Bool
     let alignment: HorizontalAlignment
-    let addon: (() -> AddonContent)?
 
     private let minWidth: CGFloat = 120
     private let minHeight: CGFloat = 88
@@ -203,44 +172,32 @@ private struct LemonadeTileView<AddonContent: View>: View {
     }
 
     var body: some View {
-        ZStack(alignment: .topTrailing) {
-            // Main tile content
-            Group {
-                if #available(iOS 16, macOS 13, *) {
-                    DefaultMinSize(minWidth: minWidth) {
-                        tileContent
-                    }
-                } else {
+        Group {
+            if #available(iOS 16, macOS 13, *) {
+                DefaultMinSize(minWidth: minWidth) {
                     tileContent
-                        .frame(minWidth: minWidth)
                 }
+            } else {
+                tileContent
+                    .frame(minWidth: minWidth)
             }
-            .frame(minHeight: minHeight)
-            .applyIf(stretched) { $0.frame(maxWidth: .infinity) }
-            .background(effectiveBackgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
-            .overlay(
-                RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
-                    .stroke(effectiveBorderColor, lineWidth: effectiveBorderWidth)
-            )
-            .applyIf(variant.shadow != nil) { view in
-                view.lemonadeShadow(variant.shadow!)
-            }
-            .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-            .contentShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
-            .onTapGesture {
-                if let onClick = onClick, enabled {
-                    onClick()
-                }
-            }
-
-            // Addon badge
-            if let addon = addon {
-                addon()
-                    .offset(
-                        x: LemonadeTheme.spaces.spacing200,
-                        y: -LemonadeTheme.spaces.spacing200
-                    )
+        }
+        .frame(minHeight: minHeight)
+        .applyIf(stretched) { $0.frame(maxWidth: .infinity) }
+        .background(effectiveBackgroundColor)
+        .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
+        .overlay(
+            RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
+                .stroke(effectiveBorderColor, lineWidth: effectiveBorderWidth)
+        )
+        .applyIf(variant.shadow != nil) { view in
+            view.lemonadeShadow(variant.shadow!)
+        }
+        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+        .contentShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
+        .onTapGesture {
+            if let onClick = onClick, enabled {
+                onClick()
             }
         }
     }
@@ -313,15 +270,6 @@ struct LemonadeTile_Previews: PreviewProvider {
                     variant: .filled,
                     alignment: .trailing
                 )
-            }
-
-            // With addon
-            LemonadeUi.Tile(
-                label: "With Addon",
-                icon: .heart,
-                variant: .filled
-            ) {
-                LemonadeUi.Badge(text: "New", size: .xSmall)
             }
 
             // Disabled

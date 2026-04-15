@@ -98,26 +98,6 @@ struct TileDisplayView: View {
                 }
 
                 // MARK: - Features
-                sectionView(title: "With Addon (Badge)") {
-                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
-                        LemonadeUi.Tile(
-                            label: "Messages",
-                            icon: .envelope,
-                            variant: .filled
-                        ) {
-                            LemonadeUi.Badge(text: "5", size: .xSmall)
-                        }
-
-                        LemonadeUi.Tile(
-                            label: "Updates",
-                            icon: .bell,
-                            variant: .filled
-                        ) {
-                            LemonadeUi.Badge(text: "New", size: .xSmall)
-                        }
-                    }
-                }
-
                 sectionView(title: "Interactive") {
                     HStack(spacing: LemonadeTheme.spaces.spacing400) {
                         LemonadeUi.Tile(
@@ -285,9 +265,7 @@ struct TileDisplayView: View {
                                 icon: .shoppingBag,
                                 onClick: {},
                                 variant: .outlined
-                            ) {
-                                LemonadeUi.Badge(text: "3", size: .xSmall)
-                            }
+                            )
 
                             LemonadeUi.Tile(
                                 label: "Inventory",
