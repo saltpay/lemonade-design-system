@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 @Composable
 internal fun MarkdownDisplay() {
     var input by remember {
-        mutableStateOf("Hello **semi-bold** and ***bold*** with __underline__ and ___strikethrough___ or ~~italic~~")
+        mutableStateOf("Hello **semi-bold** and ***bold*** with __underline__ and ___strikethrough___ or ~~italic~~ plus {critical}critical{/critical} and {positive}positive{/positive}")
     }
 
     Column(
@@ -90,6 +90,11 @@ internal fun MarkdownDisplay() {
             )
             LemonadeUi.Text(
                 text = "~~text~~ = Italic",
+                textStyle = LemonadeTheme.typography.bodySmallRegular,
+                color = LemonadeTheme.colors.content.contentTertiary,
+            )
+            LemonadeUi.Text(
+                text = "{color}text{/color} = Color (e.g. critical, positive, info, caution, brand)",
                 textStyle = LemonadeTheme.typography.bodySmallRegular,
                 color = LemonadeTheme.colors.content.contentTertiary,
             )
