@@ -11,7 +11,7 @@ public enum SymbolContainerVoice {
     case positive
     case brand
     case brandSubtle
-
+    
     var tintColor: Color {
         switch self {
         case .neutral: return LemonadeTheme.colors.content.contentPrimary
@@ -23,7 +23,7 @@ public enum SymbolContainerVoice {
         case .brandSubtle: return LemonadeTheme.colors.content.contentOnBrandHigh
         }
     }
-
+    
     var containerColor: Color {
         switch self {
         case .neutral: return LemonadeTheme.colors.background.bgNeutralSubtle
@@ -47,7 +47,7 @@ public enum SymbolContainerSize {
     case large
     case xLarge
     case xxLarge
-
+    
     var containerSize: CGFloat {
         switch self {
         case .xSmall: return LemonadeTheme.sizes.size600
@@ -58,7 +58,7 @@ public enum SymbolContainerSize {
         case .xxLarge: return LemonadeTheme.sizes.size2000
         }
     }
-
+    
     var contentSize: CGFloat {
         switch self {
         case .xSmall: return LemonadeTheme.sizes.size300
@@ -69,7 +69,7 @@ public enum SymbolContainerSize {
         case .xxLarge: return LemonadeTheme.sizes.size1000
         }
     }
-
+    
     var iconSize: LemonadeUiIconSize {
         switch self {
         case .xSmall: return .xSmall
@@ -80,7 +80,7 @@ public enum SymbolContainerSize {
         case .xxLarge: return .xxLarge
         }
     }
-
+    
     var textStyle: LemonadeTextStyle {
         switch self {
         case .xSmall: return LemonadeTypography.shared.bodyXSmallSemiBold
@@ -104,9 +104,9 @@ public enum SymbolContainerShape {
 // MARK: - SymbolContainer Component
 
 public extension LemonadeUi {
-
+    
     // MARK: Icon
-
+    
     /// A versatile container used to display an icon with consistent sizing and tone.
     ///
     /// - Parameters:
@@ -135,7 +135,7 @@ public extension LemonadeUi {
             )
         }
     }
-
+    
     /// A versatile container used to display an icon with consistent sizing and tone (no badge).
     @ViewBuilder
     static func SymbolContainer(
@@ -154,9 +154,9 @@ public extension LemonadeUi {
             badgeSlot: { EmptyView() }
         )
     }
-
+    
     // MARK: Text
-
+    
     /// A versatile container used to display text with consistent sizing and tone.
     ///
     /// - Parameters:
@@ -182,7 +182,7 @@ public extension LemonadeUi {
             )
         }
     }
-
+    
     /// A versatile container used to display text with consistent sizing and tone (no badge).
     @ViewBuilder
     static func SymbolContainer(
@@ -199,9 +199,9 @@ public extension LemonadeUi {
             badgeSlot: { EmptyView() }
         )
     }
-
+    
     // MARK: Image
-
+    
     /// A versatile container used to display an image with consistent sizing and tone.
     ///
     /// - Parameters:
@@ -233,7 +233,7 @@ public extension LemonadeUi {
             )
         }
     }
-
+    
     /// A versatile container used to display an image with consistent sizing and tone (no badge).
     @ViewBuilder
     static func SymbolContainer(
@@ -254,9 +254,9 @@ public extension LemonadeUi {
             badgeSlot: { EmptyView() }
         )
     }
-
+    
     // MARK: Custom Content
-
+    
     /// A versatile container used to display custom content with consistent sizing and tone.
     ///
     /// - Parameters:
@@ -279,7 +279,7 @@ public extension LemonadeUi {
                 .frame(width: size.contentSize, height: size.contentSize)
         }
     }
-
+    
     /// A versatile container used to display custom content with consistent sizing and tone (no badge).
     @ViewBuilder
     static func SymbolContainer<Content: View>(
@@ -306,7 +306,7 @@ private struct SymbolContainerImageContent: View {
     let fill: Bool
     let containerSize: CGFloat
     let contentSize: CGFloat
-
+    
     var body: some View {
         image
             .resizable()
@@ -329,13 +329,13 @@ private struct LemonadeSymbolContainerView<Content: View, Badge: View>: View {
     let shape: SymbolContainerShape
     let badgeSlot: () -> Badge
     let content: () -> Content
-
+    
     @ViewBuilder
     private var containerView: some View {
         let base = content()
             .frame(width: size.containerSize, height: size.containerSize)
             .background(voice.containerColor)
-
+        
         switch shape {
         case .circle:
             base.clipShape(Circle())
@@ -343,7 +343,7 @@ private struct LemonadeSymbolContainerView<Content: View, Badge: View>: View {
             base.clipShape(RoundedRectangle(cornerRadius: roundedRadius(for: size)))
         }
     }
-
+    
     private func roundedRadius(for size: SymbolContainerSize) -> CGFloat {
         switch size {
         case .xSmall: LemonadeTheme.radius.radius200
@@ -354,14 +354,14 @@ private struct LemonadeSymbolContainerView<Content: View, Badge: View>: View {
         case .xxLarge: LemonadeTheme.radius.radius600
         }
     }
-
+    
     var body: some View {
         if Badge.self == EmptyView.self {
             containerView
         } else {
             ZStack(alignment: .bottomTrailing) {
                 containerView
-
+                
                 badgeSlot()
                     .offset(
                         x: LemonadeTheme.spaces.spacing100,
@@ -387,7 +387,7 @@ struct LemonadeSymbolContainer_Previews: PreviewProvider {
                 LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .xLarge)
                 LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Heart", size: .xxLarge)
             }
-
+            
             // Text variant - all voices
             HStack(spacing: 8) {
                 LemonadeUi.SymbolContainer(text: "A", voice: .neutral)
@@ -396,19 +396,19 @@ struct LemonadeSymbolContainer_Previews: PreviewProvider {
                 LemonadeUi.SymbolContainer(text: "D", voice: .info)
                 LemonadeUi.SymbolContainer(text: "E", voice: .positive)
             }
-
+            
             // Shapes
             HStack(spacing: 8) {
                 LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Circle", shape: .circle)
                 LemonadeUi.SymbolContainer(icon: .heart, contentDescription: "Rounded", shape: .rounded)
             }
-
+            
             // Brand voices
             HStack(spacing: 8) {
                 LemonadeUi.SymbolContainer(icon: .star, contentDescription: "Star", voice: .brand)
                 LemonadeUi.SymbolContainer(icon: .star, contentDescription: "Star", voice: .brandSubtle)
             }
-
+            
             // With badge
             HStack(spacing: 16) {
                 LemonadeUi.SymbolContainer(
@@ -416,7 +416,8 @@ struct LemonadeSymbolContainer_Previews: PreviewProvider {
                     contentDescription: "Heart",
                     size: .medium
                 ) {
-                    LemonadeUi.Badge(text: "3", size: .xSmall)
+                    LemonadeUi.Badge(text: "3")
+                        .badgeSize(.xSmall)
                 }
             }
         }

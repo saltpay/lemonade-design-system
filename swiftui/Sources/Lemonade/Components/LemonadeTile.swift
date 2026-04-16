@@ -8,7 +8,7 @@ public enum LemonadeTileVariant {
     case muted
     case onColor
     case selected
-
+    
     var backgroundColor: Color {
         switch self {
         case .neutral: return LemonadeTheme.colors.background.bgElevated
@@ -17,7 +17,7 @@ public enum LemonadeTileVariant {
         case .selected: return LemonadeTheme.colors.background.bgBrandSubtle
         }
     }
-
+    
     var backgroundPressedColor: Color {
         switch self {
         case .neutral: return LemonadeTheme.colors.interaction.bgElevatedPressed
@@ -25,7 +25,7 @@ public enum LemonadeTileVariant {
         case .onColor, .selected: return LemonadeTheme.colors.interaction.bgBrandElevatedPressed
         }
     }
-
+    
     var borderColor: Color {
         switch self {
         case .neutral, .muted: return LemonadeTheme.colors.border.borderNeutralMedium
@@ -33,14 +33,14 @@ public enum LemonadeTileVariant {
         case .selected: return LemonadeTheme.colors.border.borderSelected
         }
     }
-
+    
     var borderWidth: CGFloat {
         switch self {
         case .neutral, .muted, .onColor: return LemonadeTheme.borderWidth.base.border25
         case .selected: return LemonadeTheme.borderWidth.base.border50
         }
     }
-
+    
     var shadow: LemonadeShadow? {
         switch self {
         case .neutral: return nil
@@ -97,7 +97,7 @@ public extension LemonadeUi {
             addon: addon
         )
     }
-
+    
     /// A tile component without addon.
     @ViewBuilder
     static func Tile(
@@ -133,13 +133,13 @@ private struct LemonadeTileView<AddonContent: View>: View {
     let stretched: Bool
     let alignment: HorizontalAlignment
     let addon: (() -> AddonContent)?
-
+    
     private let minWidth: CGFloat = 120
-
+    
     private var backgroundColor: Color {
         variant.backgroundColor
     }
-
+    
     private var tileContent: some View {
         VStack(alignment: alignment, spacing: LemonadeTheme.spaces.spacing400) {
             LemonadeUi.Icon(
@@ -147,7 +147,7 @@ private struct LemonadeTileView<AddonContent: View>: View {
                 contentDescription: nil,
                 size: .medium
             )
-
+            
             LemonadeUi.Text(
                 label,
                 textStyle: LemonadeTypography.shared.bodySmallSemiBold,
@@ -159,7 +159,7 @@ private struct LemonadeTileView<AddonContent: View>: View {
         .frame(maxWidth: .infinity, alignment: Alignment(horizontal: alignment, vertical: .center))
         .padding(LemonadeTheme.spaces.spacing400)
     }
-
+    
     var body: some View {
         ZStack(alignment: .topTrailing) {
             // Main tile content
@@ -190,7 +190,7 @@ private struct LemonadeTileView<AddonContent: View>: View {
                     onClick()
                 }
             }
-
+            
             // Addon badge
             if let addon = addon {
                 addon()
@@ -216,20 +216,20 @@ struct LemonadeTile_Previews: PreviewProvider {
                     icon: .heart,
                     variant: .neutral
                 )
-
+                
                 LemonadeUi.Tile(
                     label: "Muted",
                     icon: .star,
                     variant: .muted
                 )
-
+                
                 LemonadeUi.Tile(
                     label: "Selected",
                     icon: .circleCheck,
                     variant: .selected
                 )
             }
-
+            
             // OnColor variant (needs brand background)
             LemonadeUi.Tile(
                 label: "OnColor",
@@ -238,7 +238,7 @@ struct LemonadeTile_Previews: PreviewProvider {
             )
             .padding()
             .background(LemonadeTheme.colors.background.bgBrand)
-
+            
             // Alignment
             HStack(spacing: 16) {
                 LemonadeUi.Tile(
@@ -247,14 +247,14 @@ struct LemonadeTile_Previews: PreviewProvider {
                     variant: .neutral,
                     alignment: .leading
                 )
-
+                
                 LemonadeUi.Tile(
                     label: "Center",
                     icon: .arrowLeftRight,
                     variant: .neutral,
                     alignment: .center
                 )
-
+                
                 LemonadeUi.Tile(
                     label: "Trailing",
                     icon: .arrowRight,
@@ -262,16 +262,17 @@ struct LemonadeTile_Previews: PreviewProvider {
                     alignment: .trailing
                 )
             }
-
+            
             // With addon
             LemonadeUi.Tile(
                 label: "With Addon",
                 icon: .heart,
                 variant: .neutral
             ) {
-                LemonadeUi.Badge(text: "New", size: .xSmall)
+                LemonadeUi.Badge(text: "New")
+                    .badgeSize(.xSmall)
             }
-
+            
             // Disabled
             HStack(spacing: 16) {
                 LemonadeUi.Tile(
@@ -281,7 +282,7 @@ struct LemonadeTile_Previews: PreviewProvider {
                     variant: .neutral
                 )
             }
-
+            
             // Tight container — tiles shrink below 120pt instead of overflowing
             // Only demonstrates correctly on iOS 16+ where DefaultMinSize is used
             if #available(iOS 16, macOS 13, *) {
