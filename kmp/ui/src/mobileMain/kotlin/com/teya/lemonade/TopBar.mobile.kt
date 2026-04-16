@@ -806,11 +806,6 @@ private fun CoreTopBarActionContent(
         is TopBarAction.Close -> LemonadeIcons.Times
         is TopBarAction.Custom -> action.icon
     }
-    val contentDescription = when (action) {
-        is TopBarAction.Back -> "Back"
-        is TopBarAction.Close -> "Close"
-        is TopBarAction.Custom -> null
-    }
     val type = if (navigationAction.filled) {
         LemonadeButtonType.Subtle
     } else {
@@ -822,7 +817,7 @@ private fun CoreTopBarActionContent(
     ) {
         LemonadeUi.IconButton(
             icon = icon,
-            contentDescription = contentDescription,
+            contentDescription = null,
             onClick = navigationAction.onNavigationActionClicked,
             variant = LemonadeButtonVariant.Neutral,
             type = type,
