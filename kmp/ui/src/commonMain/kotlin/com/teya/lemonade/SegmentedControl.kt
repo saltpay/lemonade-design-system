@@ -27,7 +27,6 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -191,23 +190,19 @@ internal fun CoreSegmentedControl(
 
     val indicatorWidthAnimatable = remember { Animatable(0.dp, Dp.VectorConverter) }
     val indicatorOffsetAnimatable = remember { Animatable(0.dp, Dp.VectorConverter) }
-    val hasInitialized = remember { mutableStateOf(false) }
+    val hasInitialized = remember { booleanArrayOf(false) }
 
     LaunchedEffect(targetWidth, targetOffset, hasMeasurements) {
         if (!hasMeasurements) return@LaunchedEffect
 
-        if (!hasInitialized.value) {
+        if (!hasInitialized[0]) {
             // First measurement after (re)composition — snap to avoid entrance animation
             indicatorWidthAnimatable.snapTo(targetWidth)
             indicatorOffsetAnimatable.snapTo(targetOffset)
-            hasInitialized.value = true
+            hasInitialized[0] = true
         } else {
-            val springSpec = spring<Dp>(
-                dampingRatio = Spring.DampingRatioLowBouncy,
-                stiffness = Spring.StiffnessMediumLow,
-            )
-            launch { indicatorWidthAnimatable.animateTo(targetWidth, springSpec) }
-            launch { indicatorOffsetAnimatable.animateTo(targetOffset, springSpec) }
+            launch { indicatorWidthAnimatable.animateTo(targetWidth, IndicatorSpringSpec) }
+            launch { indicatorOffsetAnimatable.animateTo(targetOffset, IndicatorSpringSpec) }
         }
     }
 
@@ -411,6 +406,11 @@ private fun LemonadeSegmentedControlSize.textStyle(): LemonadeTextStyle {
         -> typography.bodySmallMedium
     }
 }
+
+private val IndicatorSpringSpec = spring<Dp>(
+    dampingRatio = Spring.DampingRatioLowBouncy,
+    stiffness = Spring.StiffnessMediumLow,
+)
 
 @LemonadePreview
 @Composable
