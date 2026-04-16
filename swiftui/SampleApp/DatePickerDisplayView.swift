@@ -2,10 +2,10 @@ import SwiftUI
 import Lemonade
 
 struct DatePickerDisplayView: View {
-    @StateObject private var singleState = LemonadeDatePickerState()
-    @StateObject private var rangeState = LemonadeDateRangePickerState()
-    @StateObject private var constrainedState: LemonadeDatePickerState
-    @StateObject private var maxRangeState = LemonadeDateRangePickerState(maxRangeDays: 7)
+    @State private var singleState = LemonadeDatePickerState()
+    @State private var rangeState = LemonadeDateRangePickerState()
+    @State private var constrainedState: LemonadeDatePickerState
+    @State private var maxRangeState = LemonadeDateRangePickerState(maxRangeDays: 7)
 
     private let monthFormatter: (Int) -> String = { month in
         DateFormatter().monthSymbols[month - 1]
@@ -23,7 +23,7 @@ struct DatePickerDisplayView: View {
         let today = Calendar.current.startOfDay(for: Date())
         let minDate = Calendar.current.date(byAdding: .day, value: -7, to: today)!
         let maxDate = Calendar.current.date(byAdding: .day, value: 30, to: today)!
-        _constrainedState = StateObject(wrappedValue: LemonadeDatePickerState(minDate: minDate, maxDate: maxDate))
+        _constrainedState = State(wrappedValue: LemonadeDatePickerState(minDate: minDate, maxDate: maxDate))
     }
 
     var body: some View {
@@ -32,7 +32,7 @@ struct DatePickerDisplayView: View {
                 sectionView(title: "Single Date Picker") {
                     VStack(alignment: .leading, spacing: 12) {
                         LemonadeUi.DatePicker(
-                            state: singleState,
+                            state: $singleState,
                             monthFormatter: monthFormatter,
                             weekdayAbbreviations: weekdays
                         )
@@ -50,7 +50,7 @@ struct DatePickerDisplayView: View {
                 sectionView(title: "Date Range Picker") {
                     VStack(alignment: .leading, spacing: 12) {
                         LemonadeUi.DateRangePicker(
-                            state: rangeState,
+                            state: $rangeState,
                             monthFormatter: monthFormatter,
                             weekdayAbbreviations: weekdays
                         )
@@ -68,7 +68,7 @@ struct DatePickerDisplayView: View {
                 sectionView(title: "With Min/Max Constraints") {
                     VStack(alignment: .leading, spacing: 12) {
                         LemonadeUi.DatePicker(
-                            state: constrainedState,
+                            state: $constrainedState,
                             monthFormatter: monthFormatter,
                             weekdayAbbreviations: weekdays
                         )
@@ -91,7 +91,7 @@ struct DatePickerDisplayView: View {
 
                 sectionView(title: "Range with Max Days (7)") {
                     LemonadeUi.DateRangePicker(
-                        state: maxRangeState,
+                        state: $maxRangeState,
                         monthFormatter: monthFormatter,
                         weekdayAbbreviations: weekdays
                     )
