@@ -2,7 +2,8 @@ package com.teya.lemonade
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,10 +22,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +47,7 @@ import com.teya.lemonade.core.LemonadeSegmentedControlSize
 import com.teya.lemonade.core.LemonadeShadow
 import com.teya.lemonade.core.LemonadeTextStyle
 import com.teya.lemonade.core.TabButtonProperties
+import kotlinx.coroutines.launch
 
 /**
  * A horizontal control used to select a single option from a set of two or more segments.
@@ -185,20 +189,30 @@ internal fun CoreSegmentedControl(
         targetOffset = baseOffset
     }
 
-    val indicatorWidth by animateDpAsState(
-        targetValue = targetWidth,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioLowBouncy,
-            stiffness = Spring.StiffnessMediumLow,
-        ),
-    )
-    val indicatorOffset by animateDpAsState(
-        targetValue = targetOffset,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioLowBouncy,
-            stiffness = Spring.StiffnessMediumLow,
-        ),
-    )
+    val indicatorWidthAnimatable = remember { Animatable(0.dp, Dp.VectorConverter) }
+    val indicatorOffsetAnimatable = remember { Animatable(0.dp, Dp.VectorConverter) }
+    val hasInitialized = remember { mutableStateOf(false) }
+
+    LaunchedEffect(targetWidth, targetOffset, hasMeasurements) {
+        if (!hasMeasurements) return@LaunchedEffect
+
+        if (!hasInitialized.value) {
+            // First measurement after (re)composition — snap to avoid entrance animation
+            indicatorWidthAnimatable.snapTo(targetWidth)
+            indicatorOffsetAnimatable.snapTo(targetOffset)
+            hasInitialized.value = true
+        } else {
+            val springSpec = spring<Dp>(
+                dampingRatio = Spring.DampingRatioLowBouncy,
+                stiffness = Spring.StiffnessMediumLow,
+            )
+            launch { indicatorWidthAnimatable.animateTo(targetWidth, springSpec) }
+            launch { indicatorOffsetAnimatable.animateTo(targetOffset, springSpec) }
+        }
+    }
+
+    val indicatorWidth = indicatorWidthAnimatable.value
+    val indicatorOffset = indicatorOffsetAnimatable.value
 
     Box(
         modifier = modifier
