@@ -92,12 +92,13 @@ private fun buildFontSizesDefinitionCode(
     appendLine(" *")
     append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
     appendLine(" */")
-    appendLine("public enum class LemonadeFontSizes {")
     // Typography tokens have path separators (e.g. "font-size/font-size-1200"), so
     // groupFullName collapses all tokens in the same group to the same value ("FontSize").
     // Use name.replaceFirstChar instead to get unique enum entries (e.g. "FontSize1200").
+    appendLine("public enum class LemonadeFontSizes(public val value: Float) {")
     resources.forEach { resource ->
-        appendLine("    ${resource.name.replaceFirstChar { it.uppercase() }},")
+        val spValue = resource.value.floatValue?.toInt() ?: 0
+        appendLine("    ${resource.name.replaceFirstChar { it.uppercase() }}(${spValue}f),")
     }
     appendLine("}")
 }
@@ -120,12 +121,7 @@ private fun buildFontSizesImplementationCode(
     append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
     appendLine(" */")
     appendLine("public val LemonadeFontSizes.sp: TextUnit")
-    appendLine("    get() = when (this) {")
-    resources.forEach { resource ->
-        val spValue = resource.value.floatValue?.toInt() ?: 0
-        appendLine("        LemonadeFontSizes.${resource.name.replaceFirstChar { it.uppercase() }} -> ${spValue}.sp")
-    }
-    appendLine("    }")
+    appendLine("    get() = value.sp")
     appendLine()
     appendLine("public interface LemonadeFontSizeValues {")
     resources.forEach { resource ->
@@ -152,9 +148,17 @@ private fun buildFontWeightsDefinitionCode(
     appendLine(" *")
     append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
     appendLine(" */")
-    appendLine("public enum class LemonadeFontWeights {")
+    // see LemonadeFontSizes for why name is used instead of groupFullName
+    appendLine("public enum class LemonadeFontWeights(public val weight: Int) {")
     resources.forEach { resource ->
-        appendLine("    ${resource.name.replaceFirstChar { it.uppercase() }},") // see LemonadeFontSizes for why name is used instead of groupFullName
+        val weightInt = when (resource.value.stringValue) {
+            "Bold" -> 700
+            "SemiBold" -> 600
+            "Medium" -> 500
+            "Regular" -> 400
+            else -> 400
+        }
+        appendLine("    ${resource.name.replaceFirstChar { it.uppercase() }}($weightInt),")
     }
     appendLine("}")
 }
@@ -175,18 +179,7 @@ private fun buildFontWeightsImplementationCode(
     append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
     appendLine(" */")
     appendLine("public val LemonadeFontWeights.fontWeight: FontWeight")
-    appendLine("    get() = when (this) {")
-    resources.forEach { resource ->
-        val fontWeightExpression = when (resource.value.stringValue) {
-            "Bold" -> "FontWeight.Bold"
-            "SemiBold" -> "FontWeight.SemiBold"
-            "Medium" -> "FontWeight.Medium"
-            "Regular" -> "FontWeight.Normal"
-            else -> "FontWeight.Normal"
-        }
-        appendLine("        LemonadeFontWeights.${resource.name.replaceFirstChar { it.uppercase() }} -> $fontWeightExpression")
-    }
-    appendLine("    }")
+    appendLine("    get() = FontWeight(weight)")
     appendLine()
     appendLine("public interface LemonadeFontWeightValues {")
     resources.forEach { resource ->
@@ -213,9 +206,11 @@ private fun buildLineHeightsDefinitionCode(
     appendLine(" *")
     append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
     appendLine(" */")
-    appendLine("public enum class LemonadeLineHeights {")
+    // see LemonadeFontSizes for why name is used instead of groupFullName
+    appendLine("public enum class LemonadeLineHeights(public val value: Float) {")
     resources.forEach { resource ->
-        appendLine("    ${resource.name.replaceFirstChar { it.uppercase() }},") // see LemonadeFontSizes for why name is used instead of groupFullName
+        val spValue = resource.value.floatValue?.toInt() ?: 0
+        appendLine("    ${resource.name.replaceFirstChar { it.uppercase() }}(${spValue}f),")
     }
     appendLine("}")
 }
@@ -237,12 +232,7 @@ private fun buildLineHeightsImplementationCode(
     append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
     appendLine(" */")
     appendLine("public val LemonadeLineHeights.sp: TextUnit")
-    appendLine("    get() = when (this) {")
-    resources.forEach { resource ->
-        val spValue = resource.value.floatValue?.toInt() ?: 0
-        appendLine("        LemonadeLineHeights.${resource.name.replaceFirstChar { it.uppercase() }} -> ${spValue}.sp")
-    }
-    appendLine("    }")
+    appendLine("    get() = value.sp")
     appendLine()
     appendLine("public interface LemonadeLineHeightValues {")
     resources.forEach { resource ->

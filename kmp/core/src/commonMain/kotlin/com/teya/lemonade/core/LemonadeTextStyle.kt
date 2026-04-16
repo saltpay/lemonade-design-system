@@ -22,43 +22,43 @@ public data class LemonadeTextStyle(
  */
 public enum class LemonadeTypography(public val style: LemonadeTextStyle) {
     // Display styles
-    DisplayXSmall(LemonadeTextStyle(fontSize = 24f, lineHeight = 32f, fontWeight = 600)),
-    DisplaySmall(LemonadeTextStyle(fontSize = 28f, lineHeight = 36f, fontWeight = 600)),
-    DisplayMedium(LemonadeTextStyle(fontSize = 36f, lineHeight = 44f, fontWeight = 600)),
-    DisplayLarge(LemonadeTextStyle(fontSize = 48f, lineHeight = 56f, fontWeight = 600)),
+    DisplayXSmall(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize600.value, lineHeight = LemonadeLineHeights.LineHeight800.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
+    DisplaySmall(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize700.value, lineHeight = LemonadeLineHeights.LineHeight900.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
+    DisplayMedium(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize900.value, lineHeight = LemonadeLineHeights.LineHeight1100.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
+    DisplayLarge(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize1200.value, lineHeight = LemonadeLineHeights.LineHeight1400.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
 
     // Heading styles
-    HeadingXLarge(LemonadeTextStyle(fontSize = 40f, lineHeight = 48f, fontWeight = 600)),
-    HeadingLarge(LemonadeTextStyle(fontSize = 32f, lineHeight = 40f, fontWeight = 600)),
-    HeadingMedium(LemonadeTextStyle(fontSize = 28f, lineHeight = 36f, fontWeight = 600)),
-    HeadingSmall(LemonadeTextStyle(fontSize = 24f, lineHeight = 32f, fontWeight = 600)),
-    HeadingXSmall(LemonadeTextStyle(fontSize = 18f, lineHeight = 26f, fontWeight = 600)),
-    HeadingXXSmall(LemonadeTextStyle(fontSize = 16f, lineHeight = 24f, fontWeight = 600)),
+    HeadingXLarge(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize1000.value, lineHeight = LemonadeLineHeights.LineHeight1200.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
+    HeadingLarge(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize800.value, lineHeight = LemonadeLineHeights.LineHeight1000.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
+    HeadingMedium(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize700.value, lineHeight = LemonadeLineHeights.LineHeight900.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
+    HeadingSmall(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize600.value, lineHeight = LemonadeLineHeights.LineHeight800.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
+    HeadingXSmall(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize450.value, lineHeight = LemonadeLineHeights.LineHeight650.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
+    HeadingXXSmall(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize400.value, lineHeight = LemonadeLineHeights.LineHeight600.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
 
     // Body XLarge styles
-    BodyXLargeRegular(LemonadeTextStyle(fontSize = 20f, lineHeight = 28f, fontWeight = 400)),
-    BodyXLargeMedium(LemonadeTextStyle(fontSize = 20f, lineHeight = 28f, fontWeight = 500)),
-    BodyXLargeSemiBold(LemonadeTextStyle(fontSize = 20f, lineHeight = 28f, fontWeight = 600)),
+    BodyXLargeRegular(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize500.value, lineHeight = LemonadeLineHeights.LineHeight700.value, fontWeight = LemonadeFontWeights.Regular.weight)),
+    BodyXLargeMedium(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize500.value, lineHeight = LemonadeLineHeights.LineHeight700.value, fontWeight = LemonadeFontWeights.Medium.weight)),
+    BodyXLargeSemiBold(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize500.value, lineHeight = LemonadeLineHeights.LineHeight700.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
 
     // Body Large styles
-    BodyLargeRegular(LemonadeTextStyle(fontSize = 18f, lineHeight = 28f, fontWeight = 400)),
-    BodyLargeMedium(LemonadeTextStyle(fontSize = 18f, lineHeight = 28f, fontWeight = 500)),
-    BodyLargeSemiBold(LemonadeTextStyle(fontSize = 18f, lineHeight = 28f, fontWeight = 600)),
+    BodyLargeRegular(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize450.value, lineHeight = LemonadeLineHeights.LineHeight700.value, fontWeight = LemonadeFontWeights.Regular.weight)),
+    BodyLargeMedium(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize450.value, lineHeight = LemonadeLineHeights.LineHeight700.value, fontWeight = LemonadeFontWeights.Medium.weight)),
+    BodyLargeSemiBold(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize450.value, lineHeight = LemonadeLineHeights.LineHeight700.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
 
     // Body Medium styles
-    BodyMediumRegular(LemonadeTextStyle(fontSize = 16f, lineHeight = 24f, fontWeight = 400)),
-    BodyMediumMedium(LemonadeTextStyle(fontSize = 16f, lineHeight = 24f, fontWeight = 500)),
-    BodyMediumSemiBold(LemonadeTextStyle(fontSize = 16f, lineHeight = 24f, fontWeight = 600)),
-    BodyMediumBold(LemonadeTextStyle(fontSize = 16f, lineHeight = 24f, fontWeight = 700)),
+    BodyMediumRegular(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize400.value, lineHeight = LemonadeLineHeights.LineHeight600.value, fontWeight = LemonadeFontWeights.Regular.weight)),
+    BodyMediumMedium(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize400.value, lineHeight = LemonadeLineHeights.LineHeight600.value, fontWeight = LemonadeFontWeights.Medium.weight)),
+    BodyMediumSemiBold(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize400.value, lineHeight = LemonadeLineHeights.LineHeight600.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
+    BodyMediumBold(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize400.value, lineHeight = LemonadeLineHeights.LineHeight600.value, fontWeight = LemonadeFontWeights.Bold.weight)),
 
     // Body Small styles
-    BodySmallRegular(LemonadeTextStyle(fontSize = 14f, lineHeight = 20f, fontWeight = 400)),
-    BodySmallMedium(LemonadeTextStyle(fontSize = 14f, lineHeight = 20f, fontWeight = 500)),
-    BodySmallSemiBold(LemonadeTextStyle(fontSize = 14f, lineHeight = 20f, fontWeight = 600)),
+    BodySmallRegular(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize350.value, lineHeight = LemonadeLineHeights.LineHeight500.value, fontWeight = LemonadeFontWeights.Regular.weight)),
+    BodySmallMedium(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize350.value, lineHeight = LemonadeLineHeights.LineHeight500.value, fontWeight = LemonadeFontWeights.Medium.weight)),
+    BodySmallSemiBold(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize350.value, lineHeight = LemonadeLineHeights.LineHeight500.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
 
     // Body XSmall styles
-    BodyXSmallRegular(LemonadeTextStyle(fontSize = 12f, lineHeight = 16f, fontWeight = 400)),
-    BodyXSmallMedium(LemonadeTextStyle(fontSize = 12f, lineHeight = 16f, fontWeight = 500)),
-    BodyXSmallSemiBold(LemonadeTextStyle(fontSize = 12f, lineHeight = 16f, fontWeight = 600)),
-    BodyXSmallOverline(LemonadeTextStyle(fontSize = 12f, lineHeight = 16f, fontWeight = 600, letterSpacing = 1.5f)),
+    BodyXSmallRegular(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize300.value, lineHeight = LemonadeLineHeights.LineHeight400.value, fontWeight = LemonadeFontWeights.Regular.weight)),
+    BodyXSmallMedium(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize300.value, lineHeight = LemonadeLineHeights.LineHeight400.value, fontWeight = LemonadeFontWeights.Medium.weight)),
+    BodyXSmallSemiBold(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize300.value, lineHeight = LemonadeLineHeights.LineHeight400.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
+    BodyXSmallOverline(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize300.value, lineHeight = LemonadeLineHeights.LineHeight400.value, fontWeight = LemonadeFontWeights.Semibold.weight, letterSpacing = 1.5f)),
 }
