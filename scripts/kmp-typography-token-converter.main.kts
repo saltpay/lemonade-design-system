@@ -43,11 +43,6 @@ fun main() {
         val lineHeightResources = allResources
             .filter { it.groups.firstOrNull() == "LineHeight" }
             .sortedBy { it.value.floatValue }
-        val fontFamilyBase = allResources
-            .filter { it.groups.firstOrNull() == "FontFamily" }
-            .firstOrNull { it.name == "base" }
-            ?.value?.stringValue ?: "Figtree"
-
         val scriptFilePath = "scripts/kmp-typography-token-converter.main.kts"
 
         File(definitionOutputDir, "LemonadeFontSizes.kt").writeText(
@@ -56,7 +51,7 @@ fun main() {
         println("✓ LemonadeFontSizes.kt created")
 
         File(implementationOutputDir, "LemonadeFontSizesExtension.kt").writeText(
-            buildFontSizesImplementationCode(scriptFilePath, fontSizeResources, fontFamilyBase)
+            buildFontSizesImplementationCode(scriptFilePath, fontSizeResources)
         )
         println("✓ LemonadeFontSizesExtension.kt created")
 
@@ -110,7 +105,6 @@ private fun buildFontSizesDefinitionCode(
 private fun buildFontSizesImplementationCode(
     scriptFilePath: String,
     resources: List<ResourceData<TypographyTokenValue>>,
-    fontFamilyBase: String,
 ): String = buildString {
     appendLine("package com.teya.lemonade")
     appendLine()
@@ -132,8 +126,6 @@ private fun buildFontSizesImplementationCode(
         appendLine("        LemonadeFontSizes.${resource.name.replaceFirstChar { it.uppercase() }} -> ${spValue}.sp")
     }
     appendLine("    }")
-    appendLine()
-    appendLine("public const val lemonadeFontFamily: String = \"$fontFamilyBase\"")
     appendLine()
     appendLine("public interface LemonadeFontSizeValues {")
     resources.forEach { resource ->

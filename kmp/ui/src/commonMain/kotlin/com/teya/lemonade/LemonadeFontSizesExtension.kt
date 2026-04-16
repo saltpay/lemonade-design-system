@@ -41,8 +41,6 @@ public val LemonadeFontSizes.sp: TextUnit
         LemonadeFontSizes.FontSize1800 -> 72.sp
     }
 
-public const val lemonadeFontFamily: String = "Figtree"
-
 public interface LemonadeFontSizeValues {
     public val fontSize250: TextUnit
     public val fontSize300: TextUnit
