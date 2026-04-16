@@ -98,6 +98,9 @@ private fun buildFontSizesDefinitionCode(
     append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
     appendLine(" */")
     appendLine("public enum class LemonadeFontSizes {")
+    // Typography tokens have path separators (e.g. "font-size/font-size-1200"), so
+    // groupFullName collapses all tokens in the same group to the same value ("FontSize").
+    // Use name.replaceFirstChar instead to get unique enum entries (e.g. "FontSize1200").
     resources.forEach { resource ->
         appendLine("    ${resource.name.replaceFirstChar { it.uppercase() }},")
     }
@@ -143,7 +146,7 @@ private fun buildFontSizesImplementationCode(
     resources.forEach { resource ->
         appendLine("    override val ${resource.name}: TextUnit = LemonadeFontSizes.${resource.name.replaceFirstChar { it.uppercase() }}.sp,")
     }
-    appendLine("): LemonadeFontSizeValues")
+    appendLine(") : LemonadeFontSizeValues")
 }
 
 private fun buildFontWeightsDefinitionCode(
@@ -159,7 +162,7 @@ private fun buildFontWeightsDefinitionCode(
     appendLine(" */")
     appendLine("public enum class LemonadeFontWeights {")
     resources.forEach { resource ->
-        appendLine("    ${resource.name.replaceFirstChar { it.uppercase() }},")
+        appendLine("    ${resource.name.replaceFirstChar { it.uppercase() }},") // see LemonadeFontSizes for why name is used instead of groupFullName
     }
     appendLine("}")
 }
@@ -204,7 +207,7 @@ private fun buildFontWeightsImplementationCode(
     resources.forEach { resource ->
         appendLine("    override val ${resource.name}: FontWeight = LemonadeFontWeights.${resource.name.replaceFirstChar { it.uppercase() }}.fontWeight,")
     }
-    appendLine("): LemonadeFontWeightValues")
+    appendLine(") : LemonadeFontWeightValues")
 }
 
 private fun buildLineHeightsDefinitionCode(
@@ -220,7 +223,7 @@ private fun buildLineHeightsDefinitionCode(
     appendLine(" */")
     appendLine("public enum class LemonadeLineHeights {")
     resources.forEach { resource ->
-        appendLine("    ${resource.name.replaceFirstChar { it.uppercase() }},")
+        appendLine("    ${resource.name.replaceFirstChar { it.uppercase() }},") // see LemonadeFontSizes for why name is used instead of groupFullName
     }
     appendLine("}")
 }
@@ -260,7 +263,7 @@ private fun buildLineHeightsImplementationCode(
     resources.forEach { resource ->
         appendLine("    override val ${resource.name}: TextUnit = LemonadeLineHeights.${resource.name.replaceFirstChar { it.uppercase() }}.sp,")
     }
-    appendLine("): LemonadeLineHeightValues")
+    appendLine(") : LemonadeLineHeightValues")
 }
 
 main()

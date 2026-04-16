@@ -84,4 +84,4 @@ internal data class InternalLemonadeLineHeightValues(
     override val lineHeight1600: TextUnit = LemonadeLineHeights.LineHeight1600.sp,
     override val lineHeight1800: TextUnit = LemonadeLineHeights.LineHeight1800.sp,
     override val lineHeight2000: TextUnit = LemonadeLineHeights.LineHeight2000.sp,
-): LemonadeLineHeightValues
+) : LemonadeLineHeightValues

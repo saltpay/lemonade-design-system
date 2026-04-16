@@ -41,4 +41,4 @@ internal data class InternalLemonadeFontWeightValues(
     override val semibold: FontWeight = LemonadeFontWeights.Semibold.fontWeight,
     override val medium: FontWeight = LemonadeFontWeights.Medium.fontWeight,
     override val regular: FontWeight = LemonadeFontWeights.Regular.fontWeight,
-): LemonadeFontWeightValues
+) : LemonadeFontWeightValues

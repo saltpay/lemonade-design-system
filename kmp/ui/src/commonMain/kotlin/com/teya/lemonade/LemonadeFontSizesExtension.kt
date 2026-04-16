@@ -78,4 +78,4 @@ internal data class InternalLemonadeFontSizeValues(
     override val fontSize1400: TextUnit = LemonadeFontSizes.FontSize1400.sp,
     override val fontSize1600: TextUnit = LemonadeFontSizes.FontSize1600.sp,
     override val fontSize1800: TextUnit = LemonadeFontSizes.FontSize1800.sp,
-): LemonadeFontSizeValues
+) : LemonadeFontSizeValues
