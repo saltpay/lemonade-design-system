@@ -120,6 +120,7 @@ internal object DisplayRegistry {
                 Displays.Divider,
                 Displays.Notice,
                 Displays.Toast,
+                Displays.HistoryTimeline,
             ),
         ),
         DisplayData(
