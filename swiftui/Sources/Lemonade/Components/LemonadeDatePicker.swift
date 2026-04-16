@@ -6,12 +6,12 @@ import SwiftUI
 ///
 /// Holds the currently selected date as observable state, plus the selectable date range.
 /// Observe ``selectedDate`` to react to user selections.
-@MainActor
-public final class LemonadeDatePickerState: ObservableObject {
-    @Published public internal(set) var selectedDate: Date?
+
+public struct LemonadeDatePickerState {
+    public internal(set) var selectedDate: Date?
     public let minDate: Date?
     public let maxDate: Date?
-
+    
     public init(initialDate: Date? = nil, minDate: Date? = nil, maxDate: Date? = nil) {
         self.selectedDate = initialDate
         self.minDate = minDate
@@ -24,14 +24,13 @@ public final class LemonadeDatePickerState: ObservableObject {
 /// Holds the currently selected start/end dates as observable state, plus the selectable
 /// date range and maximum range length. Observe ``selectedStartDate`` and ``selectedEndDate``
 /// to react to user selections.
-@MainActor
-public final class LemonadeDateRangePickerState: ObservableObject {
-    @Published public internal(set) var selectedStartDate: Date?
-    @Published public internal(set) var selectedEndDate: Date?
+public struct LemonadeDateRangePickerState {
+    public internal(set) var selectedStartDate: Date?
+    public internal(set) var selectedEndDate: Date?
     public let minDate: Date?
     public let maxDate: Date?
     public let maxRangeDays: Int?
-
+    
     public init(
         initialStartDate: Date? = nil,
         initialEndDate: Date? = nil,
@@ -74,7 +73,7 @@ public extension LemonadeUi {
     ///     Receives a `DateComponents` with `.year` and `.month` set.
     @ViewBuilder
     static func DatePicker(
-        state: LemonadeDatePickerState,
+        state: Binding<LemonadeDatePickerState>,
         monthFormatter: @escaping (Int) -> String,
         weekdayAbbreviations: [String],
         onMonthDisplayed: ((DateComponents) -> Void)? = nil
@@ -86,7 +85,7 @@ public extension LemonadeUi {
             onMonthDisplayed: onMonthDisplayed
         )
     }
-
+    
     /// A date range picker component from the Lemonade Design System.
     ///
     /// Provides a swipeable month view that allows users to select a start and end date.
@@ -114,7 +113,7 @@ public extension LemonadeUi {
     ///     Receives a `DateComponents` with `.year` and `.month` set.
     @ViewBuilder
     static func DateRangePicker(
-        state: LemonadeDateRangePickerState,
+        state: Binding<LemonadeDateRangePickerState>,
         monthFormatter: @escaping (Int) -> String,
         weekdayAbbreviations: [String],
         onMonthDisplayed: ((DateComponents) -> Void)? = nil
@@ -131,11 +130,11 @@ public extension LemonadeUi {
 // MARK: - Single Date Picker View
 
 private struct LemonadeDatePickerView: View {
-    @ObservedObject var state: LemonadeDatePickerState
+    @Binding var state: LemonadeDatePickerState
     let monthFormatter: (Int) -> String
     let weekdayAbbreviations: [String]
     let onMonthDisplayed: ((DateComponents) -> Void)?
-
+    
     var body: some View {
         CoreDatePickerView(
             monthFormatter: monthFormatter,
@@ -154,15 +153,15 @@ private struct LemonadeDatePickerView: View {
 // MARK: - Date Range Picker View
 
 private struct LemonadeDateRangePickerView: View {
-    @ObservedObject var state: LemonadeDateRangePickerState
+    @Binding var state: LemonadeDateRangePickerState
     let monthFormatter: (Int) -> String
     let weekdayAbbreviations: [String]
     let onMonthDisplayed: ((DateComponents) -> Void)?
-
+    
     private var isSelectingEndDate: Bool {
         state.selectedStartDate != nil && state.selectedEndDate == nil
     }
-
+    
     private var effectiveMin: Date? {
         var min = state.minDate
         if isSelectingEndDate, let maxDays = state.maxRangeDays, let start = state.selectedStartDate,
@@ -173,7 +172,7 @@ private struct LemonadeDateRangePickerView: View {
         }
         return min
     }
-
+    
     private var effectiveMax: Date? {
         var max = state.maxDate
         if isSelectingEndDate, let maxDays = state.maxRangeDays, let start = state.selectedStartDate,
@@ -184,7 +183,7 @@ private struct LemonadeDateRangePickerView: View {
         }
         return max
     }
-
+    
     var body: some View {
         CoreDatePickerView(
             monthFormatter: monthFormatter,
@@ -196,7 +195,7 @@ private struct LemonadeDateRangePickerView: View {
                     state.selectedEndDate = nil
                     return
                 }
-
+                
                 let newStart = min(date, start)
                 let newEnd = max(date, start)
                 state.selectedStartDate = newStart
@@ -219,26 +218,26 @@ private struct CoreDatePickerView: View {
     let minDate: Date?
     let maxDate: Date?
     let onMonthDisplayed: ((DateComponents) -> Void)?
-
+    
     private let totalPages = 240
     private var centerPage: Int { totalPages / 2 }
-
+    
     @State private var displayedMonthOffset: Int = 0
-
+    
     private let calendar = Calendar.current
     private let today = CalendarUtils.startOfDay(Date())
-
+    
     private var currentYearMonth: DateComponents {
         guard let target = calendar.date(byAdding: .month, value: displayedMonthOffset, to: today) else {
             return calendar.dateComponents([.year, .month], from: today)
         }
         return calendar.dateComponents([.year, .month], from: target)
     }
-
+    
     private var headerLabel: String {
         CalendarUtils.monthYearLabel(for: currentYearMonth, monthFormatter: monthFormatter)
     }
-
+    
     private var canGoPrev: Bool {
         guard displayedMonthOffset > -centerPage else { return false }
         guard let min = minDate else { return true }
@@ -252,7 +251,7 @@ private struct CoreDatePickerView: View {
         }
         return min <= lastDayOfPrev
     }
-
+    
     private var canGoNext: Bool {
         guard displayedMonthOffset < centerPage - 1 else { return false }
         guard let max = maxDate else { return true }
@@ -266,7 +265,7 @@ private struct CoreDatePickerView: View {
         }
         return max >= firstDayOfNext
     }
-
+    
     var body: some View {
         VStack(spacing: 0) {
             CalendarMonthHeader(
@@ -277,9 +276,9 @@ private struct CoreDatePickerView: View {
                 onNext: { displayedMonthOffset = min(displayedMonthOffset + 1, centerPage - 1) }
             )
             .padding(.horizontal, LemonadeTheme.spaces.spacing400)
-
+            
             Spacer().frame(height: LemonadeTheme.spaces.spacing200)
-
+            
             HStack(spacing: 0) {
                 ForEach(Array(weekdayAbbreviations.prefix(7).enumerated()), id: \.offset) { _, day in
                     LemonadeUi.Text(
@@ -291,9 +290,9 @@ private struct CoreDatePickerView: View {
                 }
             }
             .padding(.horizontal, LemonadeTheme.spaces.spacing400)
-
+            
             Spacer().frame(height: LemonadeTheme.spaces.spacing100)
-
+            
             TabView(selection: $displayedMonthOffset) {
                 ForEach(-centerPage..<centerPage, id: \.self) { offset in
                     MonthGridView(
@@ -326,50 +325,50 @@ private struct MonthGridView: View {
     let minDate: Date?
     let maxDate: Date?
     let onDateSelected: (Date) -> Void
-
+    
     private let calendar = Calendar.current
     private let today = CalendarUtils.startOfDay(Date())
-
+    
     private var yearMonth: DateComponents {
         guard let target = calendar.date(byAdding: .month, value: monthOffset, to: baseDate) else {
             return calendar.dateComponents([.year, .month], from: baseDate)
         }
         return calendar.dateComponents([.year, .month], from: target)
     }
-
+    
     private var days: [Date] {
         guard let year = yearMonth.year, let month = yearMonth.month else { return [] }
         return CalendarUtils.generateMonthDays(year: year, month: month, calendar: calendar)
     }
-
+    
     private var normalizedSelectedDates: Set<Date> {
         Set(selectedDates.map { CalendarUtils.startOfDay($0) })
     }
-
+    
     var body: some View {
         let allDays = days
         let isRangeComplete = normalizedSelectedDates.count >= 2
         let rangeStart = isRangeComplete ? normalizedSelectedDates.min() : nil
         let rangeEnd = isRangeComplete ? normalizedSelectedDates.max() : nil
-
+        
         VStack(spacing: LemonadeTheme.spaces.spacing100) {
             ForEach(0..<6, id: \.self) { weekIndex in
                 let weekStart = weekIndex * 7
                 let weekDays = Array(allDays[weekStart..<min(weekStart + 7, allDays.count)])
-
+                
                 HStack(spacing: 0) {
                     ForEach(Array(weekDays.enumerated()), id: \.offset) { _, current in
                         let normalized = CalendarUtils.startOfDay(current)
                         let isInRange = isRangeComplete &&
-                            rangeStart.map { normalized >= $0 } ?? false &&
-                            rangeEnd.map { normalized <= $0 } ?? false
-
+                        rangeStart.map { normalized >= $0 } ?? false &&
+                        rangeEnd.map { normalized <= $0 } ?? false
+                        
                         let currentMonth = calendar.component(.month, from: current)
                         let isOutsideMonth = currentMonth != yearMonth.month
-
+                        
                         let isBeforeMin = minDate.map { normalized < CalendarUtils.startOfDay($0) } ?? false
                         let isAfterMax = maxDate.map { normalized > CalendarUtils.startOfDay($0) } ?? false
-
+                        
                         CalendarDayCell(
                             date: current,
                             text: "\(calendar.component(.day, from: current))",
@@ -390,14 +389,14 @@ private struct MonthGridView: View {
                             let cellWidth = geo.size.width / 7
                             let padding = LemonadeTheme.spaces.spacing200
                             let radius = LemonadeTheme.radius.radius200
-
+                            
                             let startIdx = weekDays.firstIndex { CalendarUtils.startOfDay($0) >= rangeStart }
                             let endIdx = weekDays.lastIndex { CalendarUtils.startOfDay($0) <= rangeEnd }
-
+                            
                             if let startIdx = startIdx, let endIdx = endIdx {
                                 let left = cellWidth * CGFloat(startIdx) + padding
                                 let right = cellWidth * CGFloat(endIdx + 1) - padding
-
+                                
                                 RoundedRectangle(cornerRadius: radius)
                                     .fill(LemonadeTheme.colors.background.bgBrandSubtle)
                                     .frame(width: right - left, height: geo.size.height)
@@ -415,11 +414,11 @@ private struct MonthGridView: View {
 
 #if DEBUG
 private struct DatePickerPreview: View {
-    @StateObject private var state = LemonadeDatePickerState()
-
+    @State private var state = LemonadeDatePickerState()
+    
     var body: some View {
         LemonadeUi.DatePicker(
-            state: state,
+            state: $state,
             monthFormatter: { month in DateFormatter().monthSymbols[month - 1] },
             weekdayAbbreviations: ["S", "M", "T", "W", "T", "F", "S"]
         )
@@ -427,11 +426,11 @@ private struct DatePickerPreview: View {
 }
 
 private struct DateRangePickerPreview: View {
-    @StateObject private var state = LemonadeDateRangePickerState()
-
+    @State private var state = LemonadeDateRangePickerState()
+    
     var body: some View {
         LemonadeUi.DateRangePicker(
-            state: state,
+            state: $state,
             monthFormatter: { month in DateFormatter().monthSymbols[month - 1] },
             weekdayAbbreviations: ["S", "M", "T", "W", "T", "F", "S"]
         )
