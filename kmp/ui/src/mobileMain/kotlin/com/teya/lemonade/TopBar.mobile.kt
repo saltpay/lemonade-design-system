@@ -1,7 +1,6 @@
 package com.teya.lemonade
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -13,9 +12,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -53,14 +49,15 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.zIndex
-import com.teya.lemonade.core.LemonadeAssetSize
+import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonType
+import com.teya.lemonade.core.LemonadeButtonVariant
+import com.teya.lemonade.core.LemonadeIconButtonShape
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TopBarAction
 import kotlinx.coroutines.CoroutineScope
@@ -803,34 +800,29 @@ private fun CoreTopBarActionContent(
     navigationAction: NavigationAction,
     modifier: Modifier = Modifier,
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val backgroundColor by animateColorAsState(
-        targetValue = when {
-            isPressed -> LocalColors.current.interaction.bgNeutralSubtlePressed
-            navigationAction.filled -> LocalColors.current.background.bgNeutralSubtle
-            else -> LocalColors.current.background.bgNeutralSubtle.copy(
-                alpha = LocalOpacities.current.base.opacity0,
-            )
-        },
-    )
+    val action = navigationAction.navigationAction
+    val icon = when (action) {
+        is TopBarAction.Back -> LemonadeIcons.ArrowLeft
+        is TopBarAction.Close -> LemonadeIcons.Times
+        is TopBarAction.Custom -> action.icon
+    }
+    val type = if (navigationAction.filled) {
+        LemonadeButtonType.Subtle
+    } else {
+        LemonadeButtonType.Ghost
+    }
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier
-            .background(
-                color = backgroundColor,
-                shape = LocalShapes.current.radius300,
-            ).clickable(
-                role = Role.Button,
-                onClick = navigationAction.onNavigationActionClicked,
-                interactionSource = interactionSource,
-                indication = null,
-            ),
+        modifier = modifier,
     ) {
-        LemonadeUi.Icon(
-            icon = navigationAction.navigationAction.icon,
-            contentDescription = navigationAction.navigationAction.name,
-            size = LemonadeAssetSize.Medium,
+        LemonadeUi.IconButton(
+            icon = icon,
+            contentDescription = null,
+            onClick = navigationAction.onNavigationActionClicked,
+            variant = LemonadeButtonVariant.Neutral,
+            type = type,
+            size = LemonadeButtonSize.Medium,
+            shape = LemonadeIconButtonShape.Circular,
         )
     }
 }
@@ -1116,14 +1108,6 @@ internal fun CoreTopBarContent(
     )
 }
 
-private val TopBarAction.icon: LemonadeIcons
-    @Composable get() {
-        return when (this) {
-            TopBarAction.Back -> LemonadeIcons.ArrowLeft
-            TopBarAction.Close -> LemonadeIcons.Times
-        }
-    }
-
 @Composable
 private fun CompactLargeTopBarHeading(
     label: String,
@@ -1188,7 +1172,7 @@ private class TopBarPreviewProvider : PreviewParameterProvider<TopBarPreviewData
         buildList {
             listOf(true, false).forEach { filled ->
                 listOf(true, false).forEach { collapsed ->
-                    (TopBarAction.entries).forEach { action ->
+                    listOf(TopBarAction.Back, TopBarAction.Close).forEach { action ->
                         listOf(0, 1, 2).forEach { trailingIconCount ->
                             listOf(false, true).forEach { longLabel ->
                                 add(
