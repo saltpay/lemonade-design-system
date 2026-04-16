@@ -1,9 +1,9 @@
 package com.teya.lemonade
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.VectorConverter
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -46,7 +45,6 @@ import com.teya.lemonade.core.LemonadeSegmentedControlSize
 import com.teya.lemonade.core.LemonadeShadow
 import com.teya.lemonade.core.LemonadeTextStyle
 import com.teya.lemonade.core.TabButtonProperties
-import kotlinx.coroutines.launch
 
 /**
  * A horizontal control used to select a single option from a set of two or more segments.
@@ -188,26 +186,21 @@ internal fun CoreSegmentedControl(
         targetOffset = baseOffset
     }
 
-    val indicatorWidthAnimatable = remember { Animatable(0.dp, Dp.VectorConverter) }
-    val indicatorOffsetAnimatable = remember { Animatable(0.dp, Dp.VectorConverter) }
-    val hasInitialized = remember { booleanArrayOf(false) }
+    val hasInitialMeasurement = remember { booleanArrayOf(false) }
+    val animationSpec = if (hasInitialMeasurement[0]) IndicatorSpringSpec else snap()
 
-    LaunchedEffect(targetWidth, targetOffset, hasMeasurements) {
-        if (!hasMeasurements) return@LaunchedEffect
-
-        if (!hasInitialized[0]) {
-            // First measurement after (re)composition — snap to avoid entrance animation
-            indicatorWidthAnimatable.snapTo(targetWidth)
-            indicatorOffsetAnimatable.snapTo(targetOffset)
-            hasInitialized[0] = true
-        } else {
-            launch { indicatorWidthAnimatable.animateTo(targetWidth, IndicatorSpringSpec) }
-            launch { indicatorOffsetAnimatable.animateTo(targetOffset, IndicatorSpringSpec) }
-        }
+    SideEffect {
+        if (hasMeasurements) hasInitialMeasurement[0] = true
     }
 
-    val indicatorWidth = indicatorWidthAnimatable.value
-    val indicatorOffset = indicatorOffsetAnimatable.value
+    val indicatorWidth by animateDpAsState(
+        targetValue = targetWidth,
+        animationSpec = animationSpec,
+    )
+    val indicatorOffset by animateDpAsState(
+        targetValue = targetOffset,
+        animationSpec = animationSpec,
+    )
 
     Box(
         modifier = modifier
