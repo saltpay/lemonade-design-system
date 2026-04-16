@@ -36,21 +36,12 @@ struct TileDisplayView: View {
 
                 // MARK: - Selected
                 sectionView(title: "Selected") {
-                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
-                        LemonadeUi.Tile(
-                            label: "Filled",
-                            icon: .heart,
-                            isSelected: true,
-                            variant: .filled
-                        )
-
-                        LemonadeUi.Tile(
-                            label: "Outlined",
-                            icon: .star,
-                            isSelected: true,
-                            variant: .outlined
-                        )
-                    }
+                    LemonadeUi.Tile(
+                        label: "Selected",
+                        icon: .circleCheck,
+                        isSelected: true,
+                        variant: .filled
+                    )
                 }
 
                 // MARK: - Support Text

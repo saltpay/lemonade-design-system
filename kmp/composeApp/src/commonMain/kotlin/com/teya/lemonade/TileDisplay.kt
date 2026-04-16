@@ -77,29 +77,13 @@ internal fun TileDisplay() {
                     verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Tile(
-                        label = "Filled",
+                        label = "Selected",
                         icon = LemonadeIcons.CircleCheck,
                         variant = LemonadeTileVariant.Filled,
                         isSelected = true,
                     )
                     LemonadeUi.Text(
-                        text = "Filled + Selected",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular,
-                    )
-                }
-
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-                ) {
-                    LemonadeUi.Tile(
-                        label = "Outlined",
-                        icon = LemonadeIcons.CircleCheck,
-                        variant = LemonadeTileVariant.Outlined,
-                        isSelected = true,
-                    )
-                    LemonadeUi.Text(
-                        text = "Outlined + Selected",
+                        text = "Selected",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }

@@ -137,6 +137,10 @@ private struct LemonadeTileView: View {
         isSelected ? LemonadeTheme.borderWidth.base.border50 : variant.borderWidth
     }
 
+    private var effectiveShadow: LemonadeShadow? {
+        isSelected ? nil : variant.shadow
+    }
+
     private var tileContent: some View {
         VStack(alignment: alignment, spacing: LemonadeTheme.spaces.spacing300) {
             LemonadeUi.Icon(
@@ -190,8 +194,8 @@ private struct LemonadeTileView: View {
             RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
                 .stroke(effectiveBorderColor, lineWidth: effectiveBorderWidth)
         )
-        .applyIf(variant.shadow != nil) { view in
-            view.lemonadeShadow(variant.shadow!)
+        .applyIf(effectiveShadow != nil) { view in
+            view.lemonadeShadow(self.effectiveShadow!)
         }
         .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
         .contentShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))

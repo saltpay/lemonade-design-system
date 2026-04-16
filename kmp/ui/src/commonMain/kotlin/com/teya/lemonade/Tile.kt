@@ -142,6 +142,7 @@ private fun CoreTile(
             backgroundPressedColor = LocalColors.current.interaction.bgBrandElevatedPressed,
             borderColor = LocalColors.current.border.borderSelected,
             borderWidth = LocalBorderWidths.current.base.border50,
+            shadow = null,
         )
     } else {
         baseTileData
