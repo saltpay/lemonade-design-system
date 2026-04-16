@@ -85,6 +85,7 @@ internal object DisplayRegistry {
             title = "Typography",
             items = listOf(
                 Displays.Text,
+                Displays.Markdown,
             ),
         ),
         DisplayData(
