@@ -216,7 +216,8 @@ struct ActionListItemPreview: View {
                         )
                     },
                     trailingSlot: {
-                        LemonadeUi.Badge(text: "3", size: .small)
+                        LemonadeUi.Badge(text: "3")
+                            .badgeSize(.small)
                     }
                 )
                 
