@@ -207,7 +207,7 @@ private struct LemonadeTileView<TopAccessory: View>: View {
     }
 
     private var tileContent: some View {
-        VStack(alignment: alignment, spacing: LemonadeTheme.spaces.spacing300) {
+        VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing300) {
             // Top row: icon + topAccessory
             HStack {
                 LemonadeUi.Icon(
@@ -217,16 +217,16 @@ private struct LemonadeTileView<TopAccessory: View>: View {
                     tint: effectiveContentColor
                 )
 
-                Spacer()
+                Spacer(minLength: 0)
 
                 if let topAccessory {
                     topAccessory()
                 }
             }
 
-            Spacer()
+            Spacer(minLength: 0)
 
-            VStack(alignment: alignment, spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
                 LemonadeUi.Text(
                     label,
                     textStyle: LemonadeTypography.shared.bodySmallMedium,
@@ -246,22 +246,12 @@ private struct LemonadeTileView<TopAccessory: View>: View {
                 }
             }
         }
-        .frame(maxWidth: .infinity, alignment: Alignment(horizontal: alignment, vertical: .top))
         .padding(LemonadeTheme.spaces.spacing300)
     }
 
     var body: some View {
-        Group {
-            if #available(iOS 16, macOS 13, *) {
-                DefaultMinSize(minWidth: minWidth) {
-                    tileContent
-                }
-            } else {
-                tileContent
-                    .frame(minWidth: minWidth)
-            }
-        }
-        .frame(minHeight: minHeight)
+        tileContent
+        .frame(minWidth: minWidth, minHeight: minHeight)
         .applyIf(stretched) { $0.frame(maxWidth: .infinity) }
         .background(effectiveBackgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
