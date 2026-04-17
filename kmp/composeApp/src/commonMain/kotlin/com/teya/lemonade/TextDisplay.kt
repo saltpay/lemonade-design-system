@@ -30,6 +30,18 @@ internal fun TextDisplay() {
                 verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
             ) {
                 LemonadeUi.Text(
+                    text = "Display 3XLarge",
+                    textStyle = LemonadeTheme.typography.display3XLarge,
+                )
+                LemonadeUi.Text(
+                    text = "Display 2XLarge",
+                    textStyle = LemonadeTheme.typography.display2XLarge,
+                )
+                LemonadeUi.Text(
+                    text = "Display XLarge",
+                    textStyle = LemonadeTheme.typography.displayXLarge,
+                )
+                LemonadeUi.Text(
                     text = "Display Large",
                     textStyle = LemonadeTheme.typography.displayLarge,
                 )
@@ -40,6 +52,10 @@ internal fun TextDisplay() {
                 LemonadeUi.Text(
                     text = "Display Small",
                     textStyle = LemonadeTheme.typography.displaySmall,
+                )
+                LemonadeUi.Text(
+                    text = "Display XSmall",
+                    textStyle = LemonadeTheme.typography.displayXSmall,
                 )
             }
         }
@@ -206,7 +222,7 @@ internal fun TextDisplay() {
             ) {
                 LemonadeUi.Text(
                     text = "This is a very long text that will be truncated at the end " +
-                        "with ellipsis because it exceeds the available width",
+                            "with ellipsis because it exceeds the available width",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
@@ -214,8 +230,8 @@ internal fun TextDisplay() {
 
                 LemonadeUi.Text(
                     text = "This text allows multiple lines but is limited to 2 lines " +
-                        "maximum. Lorem ipsum dolor sit amet, consectetur adipiscing " +
-                        "elit. Sed do eiusmod tempor incididunt ut labore.",
+                            "maximum. Lorem ipsum dolor sit amet, consectetur adipiscing " +
+                            "elit. Sed do eiusmod tempor incididunt ut labore.",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
