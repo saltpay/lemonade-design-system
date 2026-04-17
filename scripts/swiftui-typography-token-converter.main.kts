@@ -41,15 +41,10 @@ fun main() {
         val lineHeightResources = allResources
             .filter { it.groups.firstOrNull() == "LineHeight" }
             .sortedBy { it.value.floatValue }
-        val fontFamilyBase = allResources
-            .filter { it.groups.firstOrNull() == "FontFamily" }
-            .firstOrNull { it.name == "base" }
-            ?.value?.stringValue ?: "Figtree"
-
         val scriptFilePath = "scripts/swiftui-typography-token-converter.main.kts"
 
         File(outputDir, "LemonadeFontSizes.swift").writeText(
-            buildFontSizesCode(scriptFilePath, fontSizeResources, fontFamilyBase)
+            buildFontSizesCode(scriptFilePath, fontSizeResources)
         )
         println("✓ LemonadeFontSizes.swift created")
 
@@ -72,7 +67,6 @@ fun main() {
 private fun buildFontSizesCode(
     scriptFilePath: String,
     resources: List<ResourceData<TypographyTokenValue>>,
-    fontFamilyBase: String,
 ): String = buildString {
     appendLine("import SwiftUI")
     appendLine()
@@ -92,14 +86,13 @@ private fun buildFontSizesCode(
         appendLine("    case ${resource.name}")
     }
     appendLine()
-    appendLine("    /// The base font family for the design system")
-    appendLine("    public static let fontFamily: String = \"$fontFamilyBase\"")
-    appendLine()
     appendLine("    /// Returns the CGFloat value for this font size token")
     appendLine("    public var value: CGFloat {")
     appendLine("        switch self {")
     resources.forEach { resource ->
-        val cgValue = resource.value.floatValue?.toInt() ?: 0
+        val cgValue = requireNotNull(resource.value.floatValue) {
+            "Missing numeric value for token '${resource.name}'"
+        }.toInt()
         appendLine("        case .${resource.name}: return $cgValue")
     }
     appendLine("        }")
@@ -201,7 +194,9 @@ private fun buildLineHeightsCode(
     appendLine("    public var value: CGFloat {")
     appendLine("        switch self {")
     resources.forEach { resource ->
-        val cgValue = resource.value.floatValue?.toInt() ?: 0
+        val cgValue = requireNotNull(resource.value.floatValue) {
+            "Missing numeric value for token '${resource.name}'"
+        }.toInt()
         appendLine("        case .${resource.name}: return $cgValue")
     }
     appendLine("        }")

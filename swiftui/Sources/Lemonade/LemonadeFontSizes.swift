@@ -35,9 +35,6 @@ public enum LemonadeFontSizes {
     case fontSize1600
     case fontSize1800
 
-    /// The base font family for the design system
-    public static let fontFamily: String = "Figtree"
-
     /// Returns the CGFloat value for this font size token
     public var value: CGFloat {
         switch self {

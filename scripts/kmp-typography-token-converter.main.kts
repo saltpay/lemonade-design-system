@@ -97,7 +97,9 @@ private fun buildFontSizesDefinitionCode(
     // Use name.replaceFirstChar instead to get unique enum entries (e.g. "FontSize1200").
     appendLine("public enum class LemonadeFontSizes(public val value: Float) {")
     resources.forEach { resource ->
-        val spValue = resource.value.floatValue?.toInt() ?: 0
+        val spValue = requireNotNull(resource.value.floatValue) {
+            "Missing numeric value for token '${resource.name}'"
+        }.toInt()
         appendLine("    ${resource.name.replaceFirstChar { it.uppercase() }}(${spValue}f),")
     }
     appendLine("}")
@@ -209,7 +211,9 @@ private fun buildLineHeightsDefinitionCode(
     // see LemonadeFontSizes for why name is used instead of groupFullName
     appendLine("public enum class LemonadeLineHeights(public val value: Float) {")
     resources.forEach { resource ->
-        val spValue = resource.value.floatValue?.toInt() ?: 0
+        val spValue = requireNotNull(resource.value.floatValue) {
+            "Missing numeric value for token '${resource.name}'"
+        }.toInt()
         appendLine("    ${resource.name.replaceFirstChar { it.uppercase() }}(${spValue}f),")
     }
     appendLine("}")
