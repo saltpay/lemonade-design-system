@@ -10,7 +10,6 @@ private val scripts = listOf(
     "kotlin scripts/flutter-shadow-token-converter.main.kts",
     "kotlin scripts/flutter-size-token-converter.main.kts",
     "kotlin scripts/flutter-svg-converter.main.kts",
-    "kotlin scripts/flutter-typography-token-converter.main.kts",
 )
 
 fun main() {
