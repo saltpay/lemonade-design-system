@@ -5,7 +5,7 @@ struct ListItemDisplayView: View {
     @State private var singleSelection = 0
     @State private var multipleSelections: Set<Int> = [0]
     @State private var toggleStates: [Bool] = [true, false, true]
-
+    
     var body: some View {
         ScrollView(.vertical) {
             VStack(spacing: .space.spacing400) {
@@ -25,7 +25,7 @@ struct ListItemDisplayView: View {
                         )
                     }
                 }
-
+                
                 // MARK: - SelectListItem - Multiple
                 LemonadeUi.Card(
                     contentPadding: .none,
@@ -47,7 +47,7 @@ struct ListItemDisplayView: View {
                         )
                     }
                 }
-
+                
                 // MARK: - SelectListItem - Toggle
                 LemonadeUi.Card(
                     contentPadding: .none,
@@ -64,7 +64,7 @@ struct ListItemDisplayView: View {
                         )
                     }
                 }
-
+                
                 // MARK: - SelectListItem with Leading
                 LemonadeUi.Card(
                     contentPadding: .none,
@@ -85,7 +85,7 @@ struct ListItemDisplayView: View {
                         }
                     )
                 }
-
+                
                 // MARK: - Disabled States (Select)
                 LemonadeUi.Card(
                     contentPadding: .none,
@@ -99,7 +99,7 @@ struct ListItemDisplayView: View {
                         enabled: false
                     )
                 }
-
+                
                 // MARK: - ResourceListItem
                 LemonadeUi.Card(
                     contentPadding: .none,
@@ -119,7 +119,7 @@ struct ListItemDisplayView: View {
                             )
                         }
                     )
-
+                    
                     LemonadeUi.ResourceListItem(
                         label: "Savings",
                         value: "$5,000.00",
@@ -134,7 +134,7 @@ struct ListItemDisplayView: View {
                         }
                     )
                 }
-
+                
                 // MARK: - ResourceListItem with Addon
                 LemonadeUi.Card(
                     contentPadding: .none,
@@ -158,7 +158,7 @@ struct ListItemDisplayView: View {
                         }
                     )
                 }
-
+                
                 // MARK: - ActionListItem
                 LemonadeUi.Card(
                     contentPadding: .none,
@@ -177,7 +177,7 @@ struct ListItemDisplayView: View {
                             )
                         }
                     )
-
+                    
                     LemonadeUi.ActionListItem(
                         label: "Notifications",
                         supportText: "Manage your notifications",
@@ -192,7 +192,7 @@ struct ListItemDisplayView: View {
                             )
                         }
                     )
-
+                    
                     LemonadeUi.ActionListItem(
                         label: "Privacy",
                         showNavigationIndicator: true,
@@ -207,7 +207,7 @@ struct ListItemDisplayView: View {
                         }
                     )
                 }
-
+                
                 // MARK: - ActionListItem with Trailing
                 LemonadeUi.Card(
                     contentPadding: .none,
@@ -226,10 +226,11 @@ struct ListItemDisplayView: View {
                             )
                         },
                         trailingSlot: {
-                            LemonadeUi.Badge(text: "3", size: .small)
+                            LemonadeUi.Badge(text: "3")
+                                .badgeSize(.small)
                         }
                     )
-
+                    
                     LemonadeUi.ActionListItem(
                         label: "New Features",
                         showNavigationIndicator: true,
@@ -247,7 +248,7 @@ struct ListItemDisplayView: View {
                         }
                     )
                 }
-
+                
                 // MARK: - ActionListItem - Critical Voice
                 LemonadeUi.Card(
                     contentPadding: .none,
@@ -267,7 +268,7 @@ struct ListItemDisplayView: View {
                             )
                         }
                     )
-
+                    
                     LemonadeUi.ActionListItem(
                         label: "Log Out",
                         supportText: "You will need to sign in again",
@@ -284,7 +285,7 @@ struct ListItemDisplayView: View {
                         }
                     )
                 }
-
+                
                 // MARK: - Disabled States (Action)
                 LemonadeUi.Card(
                     contentPadding: .none,
@@ -304,7 +305,7 @@ struct ListItemDisplayView: View {
                         }
                     )
                 }
-
+                
                 // MARK: - Loading State
                 LemonadeUi.Card(
                     contentPadding: .none,
@@ -315,13 +316,13 @@ struct ListItemDisplayView: View {
                         isLoading: true,
                         showDivider: true
                     )
-
+                    
                     LemonadeUi.ActionListItem(
                         label: "",
                         isLoading: true,
                         showDivider: true
                     )
-
+                    
                     LemonadeUi.ActionListItem(
                         label: "",
                         isLoading: true,

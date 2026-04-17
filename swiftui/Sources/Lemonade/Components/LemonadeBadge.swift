@@ -6,39 +6,39 @@ import SwiftUI
 public enum LemonadeBadgeSize {
     case xSmall
     case small
-
+    
     var height: CGFloat {
         switch self {
         case .xSmall: return LemonadeTheme.sizes.size400
         case .small: return LemonadeTheme.sizes.size500
         }
     }
-
+    
     var horizontalPadding: CGFloat {
         switch self {
         case .xSmall: return LemonadeTheme.spaces.spacing50
         case .small: return LemonadeTheme.spaces.spacing100
         }
     }
-
+    
     var textHorizontalPadding: CGFloat {
         LemonadeTheme.spaces.spacing50
     }
-
+    
     var textVerticalPadding: CGFloat {
         switch self {
         case .xSmall: return 1
         case .small: return 2
         }
     }
-
+    
     var fontSize: CGFloat {
         switch self {
         case .xSmall: return LemonadeTheme.sizes.size250
         case .small: return LemonadeTheme.sizes.size300
         }
     }
-
+    
     var lineHeight: CGFloat {
         switch self {
         case .xSmall: return LemonadeTheme.sizes.size350
@@ -49,33 +49,70 @@ public enum LemonadeBadgeSize {
 
 // MARK: - Badge Component
 
-public extension LemonadeUi {
-    /// Badge component to highlight new or unread items, or to indicate status.
+private struct LemonadeBadgeSizeKey: EnvironmentKey {
+    static let defaultValue: LemonadeBadgeSize = .small
+}
+
+extension EnvironmentValues {
+    var lemonadeBadgeSize: LemonadeBadgeSize {
+        get { self[LemonadeBadgeSizeKey.self] }
+        set { self[LemonadeBadgeSizeKey.self] = newValue }
+    }
+}
+
+// MARK: - Modifier
+
+private struct LemonadeBadgeSizeModifier: ViewModifier {
+    let size: LemonadeBadgeSize
+    
+    func body(content: Content) -> some View {
+        content.environment(\.lemonadeBadgeSize, size)
+    }
+}
+
+public extension View {
+
+    /// Sets the size of a `LemonadeBadge`.
     ///
-    /// Badges are small, rounded indicators that can be used to draw attention
-    /// to specific elements. They typically display counts, statuses, or categories.
+    /// This modifier should only be used with `LemonadeUi.Badge(...)`.
+    ///
+    /// - Parameter size: The badge size configuration
+    /// - Returns: A view with the updated badge size environment value
+    func badgeSize(_ size: LemonadeBadgeSize) -> some View {
+        modifier(LemonadeBadgeSizeModifier(size: size))
+    }
+}
+
+// MARK: - Public API
+
+public extension LemonadeUi {
+
+    /// Badge component to highlight new or unread items, or to indicate status.
     ///
     /// ## Usage
     /// ```swift
-    /// LemonadeUi.Badge(
-    ///     text: "New",
-    ///     size: .small
-    /// )
+    /// LemonadeUi.Badge(text: "New")
+    ///     .badgeSize(.small)
     /// ```
     ///
-    /// - Parameters:
+    ///  Parameters:
     ///   - text: The text to be displayed inside the badge
-    ///   - size: The size of the badge. Defaults to .small
     /// - Returns: A styled Badge view
     @ViewBuilder
     static func Badge(
-        text: String,
-        size: LemonadeBadgeSize = .small
+        text: String
     ) -> some View {
-        LemonadeBadgeView(
-            text: text,
-            size: size
-        )
+        LemonadeBadgeView(text: text)
+    }
+    
+    @available(*, deprecated, message: "Use LemonadeUi.Badge(text:).badgeSize(_:) instead.")
+    @ViewBuilder
+    static func Badge(
+        text: String,
+        size: LemonadeBadgeSize
+    ) -> some View {
+        LemonadeBadgeView(text: text)
+            .badgeSize(size)
     }
 }
 
@@ -83,8 +120,10 @@ public extension LemonadeUi {
 
 private struct LemonadeBadgeView: View {
     let text: String
-    let size: LemonadeBadgeSize
-
+    
+    @Environment(\.lemonadeBadgeSize)
+    private var size
+    
     private var gradientColors: [Color] {
         let brandHighlight = LemonadeTheme.colors.background.bgBrandHigh
         return [
@@ -92,9 +131,9 @@ private struct LemonadeBadgeView: View {
             brandHighlight.opacity(0)
         ]
     }
-
+    
     var body: some View {
-        SwiftUI.Text(text)
+        Text(text)
             .font(.custom(LemonadeTypography.fontFamily, size: size.fontSize).weight(.semibold))
             .foregroundStyle(LemonadeTheme.colors.content.contentOnBrandHigh)
             .lineLimit(1)
@@ -106,7 +145,7 @@ private struct LemonadeBadgeView: View {
                 ZStack {
                     Capsule()
                         .fill(LemonadeTheme.colors.background.bgBrand)
-
+                    
                     Capsule()
                         .fill(
                             LinearGradient(
@@ -128,16 +167,23 @@ struct LemonadeBadge_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 24) {
             HStack(spacing: 16) {
-                LemonadeUi.Badge(text: "New", size: .xSmall)
-                LemonadeUi.Badge(text: "New", size: .small)
+                LemonadeUi.Badge(text: "New")
+                    .badgeSize(.xSmall)
+                
+                LemonadeUi.Badge(text: "New")
+                    .badgeSize(.small)
             }
-
+            
             HStack(spacing: 16) {
-                LemonadeUi.Badge(text: "5", size: .xSmall)
-                LemonadeUi.Badge(text: "99+", size: .small)
+                LemonadeUi.Badge(text: "5")
+                    .badgeSize(.xSmall)
+                
+                LemonadeUi.Badge(text: "99+")
+                    .badgeSize(.small)
             }
-
-            LemonadeUi.Badge(text: "Label", size: .small)
+            
+            LemonadeUi.Badge(text: "Label")
+                .badgeSize(.small)
         }
         .padding()
         .previewLayout(.sizeThatFits)

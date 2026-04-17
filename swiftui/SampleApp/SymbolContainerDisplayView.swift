@@ -10,7 +10,7 @@ struct SymbolContainerDisplayView: View {
         (.xLarge, "XLarge"),
         (.xxLarge, "XXLarge"),
     ]
-
+    
     private let allVoices: [(SymbolContainerVoice, String, LemonadeIcon)] = [
         (.neutral, "Neutral", .heart),
         (.critical, "Critical", .circleX),
@@ -20,19 +20,19 @@ struct SymbolContainerDisplayView: View {
         (.brand, "Brand", .star),
         (.brandSubtle, "Brand Subtle", .star),
     ]
-
+    
     private let allShapes: [(SymbolContainerShape, String)] = [
         (.circle, "Circle"),
         (.rounded, "Rounded"),
     ]
-
+    
     private let badgeSizes: [(SymbolContainerSize, String)] = [
         (.small, "Small"),
         (.medium, "Medium"),
         (.large, "Large"),
         (.xLarge, "XLarge"),
     ]
-
+    
     private let imageSizes: [(SymbolContainerSize, String)] = [
         (.small, "Small"),
         (.medium, "Medium"),
@@ -40,7 +40,7 @@ struct SymbolContainerDisplayView: View {
         (.xLarge, "XLarge"),
         (.xxLarge, "XXLarge"),
     ]
-
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 32) {
@@ -56,9 +56,9 @@ struct SymbolContainerDisplayView: View {
         }
         .navigationTitle("SymbolContainer")
     }
-
+    
     // MARK: - Sizes
-
+    
     private var sizesSection: some View {
         sectionView(title: "Sizes (Icon)") {
             FlowLayout(spacing: 16) {
@@ -75,9 +75,9 @@ struct SymbolContainerDisplayView: View {
             }
         }
     }
-
+    
     // MARK: - Voices
-
+    
     private var voicesSection: some View {
         sectionView(title: "Voices") {
             FlowLayout(spacing: 16) {
@@ -95,15 +95,15 @@ struct SymbolContainerDisplayView: View {
             }
         }
     }
-
+    
     // MARK: - Shapes
-
+    
     private let roundedScalingSizes: [(SymbolContainerSize, String)] = [
         (.large, "Rounded L"),
         (.xLarge, "Rounded XL"),
         (.xxLarge, "Rounded XXL"),
     ]
-
+    
     private var shapesSection: some View {
         sectionView(title: "Shapes") {
             VStack(alignment: .leading, spacing: 16) {
@@ -136,9 +136,9 @@ struct SymbolContainerDisplayView: View {
             }
         }
     }
-
+    
     // MARK: - Badge
-
+    
     private var badgeSection: some View {
         sectionView(title: "With Badge") {
             HStack(spacing: 24) {
@@ -149,7 +149,8 @@ struct SymbolContainerDisplayView: View {
                             contentDescription: nil,
                             size: size
                         ) {
-                            LemonadeUi.Badge(text: "3", size: .xSmall)
+                            LemonadeUi.Badge(text: "3")
+                                .badgeSize(.xSmall)
                         }
                         Text(label).font(.caption)
                     }
@@ -157,9 +158,9 @@ struct SymbolContainerDisplayView: View {
             }
         }
     }
-
+    
     // MARK: - Image
-
+    
     private var imageSection: some View {
         sectionView(title: "Image Variants") {
             VStack(alignment: .leading, spacing: 16) {
@@ -177,7 +178,7 @@ struct SymbolContainerDisplayView: View {
                         }
                     }
                 }
-
+                
                 Text("fill = true").font(.subheadline)
                 HStack(spacing: 16) {
                     ForEach(allShapes, id: \.0) { shape, label in
@@ -196,9 +197,9 @@ struct SymbolContainerDisplayView: View {
             }
         }
     }
-
+    
     // MARK: - Text
-
+    
     private var textSection: some View {
         sectionView(title: "Text Variant") {
             FlowLayout(spacing: 16) {
@@ -215,9 +216,9 @@ struct SymbolContainerDisplayView: View {
             }
         }
     }
-
+    
     // MARK: - Custom Content
-
+    
     private var customContentSection: some View {
         sectionView(title: "Custom Content") {
             HStack(spacing: 16) {
@@ -225,7 +226,7 @@ struct SymbolContainerDisplayView: View {
                     Image(systemName: "star.fill")
                         .foregroundStyle(.yellow)
                 }
-
+                
                 LemonadeUi.SymbolContainer(voice: .info, size: .large) {
                     Image(systemName: "person.fill")
                         .foregroundStyle(.content.contentInfo)
@@ -233,9 +234,9 @@ struct SymbolContainerDisplayView: View {
             }
         }
     }
-
+    
     // MARK: - Helpers
-
+    
     private func sectionView<Content: View>(
         title: String,
         @ViewBuilder content: () -> Content
@@ -253,12 +254,12 @@ struct SymbolContainerDisplayView: View {
 
 private struct FlowLayout: Layout {
     var spacing: CGFloat = 8
-
+    
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         let result = arrange(proposal: proposal, subviews: subviews)
         return result.size
     }
-
+    
     func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
         let result = arrange(proposal: proposal, subviews: subviews)
         for (index, position) in result.positions.enumerated() {
@@ -268,7 +269,7 @@ private struct FlowLayout: Layout {
             )
         }
     }
-
+    
     private func arrange(proposal: ProposedViewSize, subviews: Subviews) -> (positions: [CGPoint], size: CGSize) {
         let maxWidth = proposal.width ?? .infinity
         var positions: [CGPoint] = []
@@ -276,7 +277,7 @@ private struct FlowLayout: Layout {
         var y: CGFloat = 0
         var rowHeight: CGFloat = 0
         var totalSize: CGSize = .zero
-
+        
         for subview in subviews {
             let size = subview.sizeThatFits(.unspecified)
             if x + size.width > maxWidth, x > 0 {
@@ -290,7 +291,7 @@ private struct FlowLayout: Layout {
             totalSize.width = max(totalSize.width, x - spacing)
             totalSize.height = max(totalSize.height, y + rowHeight)
         }
-
+        
         return (positions, totalSize)
     }
 }

@@ -9,39 +9,49 @@ struct BadgeDisplayView: View {
                 sectionView(title: "Sizes") {
                     HStack(spacing: 16) {
                         VStack(spacing: 8) {
-                            LemonadeUi.Badge(text: "New", size: .xSmall)
+                            LemonadeUi.Badge(text: "New")
+                                .badgeSize(.xSmall)
                             Text("XSmall")
                                 .font(.caption)
                         }
-
+                        
                         VStack(spacing: 8) {
-                            LemonadeUi.Badge(text: "New", size: .small)
+                            LemonadeUi.Badge(text: "New")
+                                .badgeSize(.small)
                             Text("Small")
                                 .font(.caption)
                         }
                     }
                 }
-
+                
                 // With Numbers
                 sectionView(title: "With Numbers") {
                     HStack(spacing: 16) {
-                        LemonadeUi.Badge(text: "1", size: .xSmall)
-                        LemonadeUi.Badge(text: "5", size: .small)
-                        LemonadeUi.Badge(text: "99", size: .small)
-                        LemonadeUi.Badge(text: "99+", size: .small)
+                        LemonadeUi.Badge(text: "1")
+                            .badgeSize(.xSmall)
+                        LemonadeUi.Badge(text: "5")
+                            .badgeSize(.small)
+                        LemonadeUi.Badge(text: "99")
+                            .badgeSize(.small)
+                        LemonadeUi.Badge(text: "99+")
+                            .badgeSize(.small)
                     }
                 }
-
+                
                 // Labels
                 sectionView(title: "Labels") {
                     HStack(spacing: 16) {
-                        LemonadeUi.Badge(text: "New", size: .small)
-                        LemonadeUi.Badge(text: "Hot", size: .small)
-                        LemonadeUi.Badge(text: "Sale", size: .small)
-                        LemonadeUi.Badge(text: "Beta", size: .small)
+                        LemonadeUi.Badge(text: "New")
+                            .badgeSize(.xSmall)
+                        LemonadeUi.Badge(text: "Hot")
+                            .badgeSize(.xSmall)
+                        LemonadeUi.Badge(text: "Sale")
+                            .badgeSize(.xSmall)
+                        LemonadeUi.Badge(text: "Beta")
+                            .badgeSize(.xSmall)
                     }
                 }
-
+                
                 // In Context
                 sectionView(title: "In Context") {
                     VStack(spacing: 24) {
@@ -53,31 +63,34 @@ struct BadgeDisplayView: View {
                                     contentDescription: "Notifications",
                                     size: .large
                                 )
-                                LemonadeUi.Badge(text: "3", size: .xSmall)
+                                LemonadeUi.Badge(text: "3")
+                                    .badgeSize(.xSmall)
                                     .offset(x: 8, y: -8)
                             }
-
+                            
                             ZStack(alignment: .topTrailing) {
                                 LemonadeUi.Icon(
                                     icon: .envelope,
                                     contentDescription: "Messages",
                                     size: .large
                                 )
-                                LemonadeUi.Badge(text: "12", size: .xSmall)
+                                LemonadeUi.Badge(text: "12")
+                                    .badgeSize(.xSmall)
                                     .offset(x: 8, y: -8)
                             }
-
+                            
                             ZStack(alignment: .topTrailing) {
                                 LemonadeUi.Icon(
                                     icon: .shoppingBag,
                                     contentDescription: "Cart",
                                     size: .large
                                 )
-                                LemonadeUi.Badge(text: "99+", size: .xSmall)
+                                LemonadeUi.Badge(text: "99+")
+                                    .badgeSize(.xSmall)
                                     .offset(x: 12, y: -8)
                             }
                         }
-
+                        
                         // Menu item with badge
                         HStack {
                             LemonadeUi.Icon(
@@ -87,12 +100,13 @@ struct BadgeDisplayView: View {
                             )
                             Text("Inbox")
                             Spacer()
-                            LemonadeUi.Badge(text: "5", size: .small)
+                            LemonadeUi.Badge(text: "5")
+                                .badgeSize(.small)
                         }
                         .padding()
                         .background(.bg.bgSubtle)
                         .clipShape(.rect(cornerRadius: 12))
-
+                        
                         // Tab-like item with badge
                         HStack(spacing: 24) {
                             VStack(spacing: 4) {
@@ -106,7 +120,7 @@ struct BadgeDisplayView: View {
                                 Text("Home")
                                     .font(.caption)
                             }
-
+                            
                             VStack(spacing: 4) {
                                 ZStack(alignment: .topTrailing) {
                                     LemonadeUi.Icon(
@@ -114,13 +128,14 @@ struct BadgeDisplayView: View {
                                         contentDescription: nil,
                                         size: .medium
                                     )
-                                    LemonadeUi.Badge(text: "2", size: .xSmall)
+                                    LemonadeUi.Badge(text: "2")
+                                        .badgeSize(.xSmall)
                                         .offset(x: 8, y: -8)
                                 }
                                 Text("Alerts")
                                     .font(.caption)
                             }
-
+                            
                             VStack(spacing: 4) {
                                 ZStack(alignment: .topTrailing) {
                                     LemonadeUi.Icon(
@@ -128,7 +143,8 @@ struct BadgeDisplayView: View {
                                         contentDescription: nil,
                                         size: .medium
                                     )
-                                    LemonadeUi.Badge(text: "New", size: .xSmall)
+                                    LemonadeUi.Badge(text: "New")
+                                        .badgeSize(.xSmall)
                                         .offset(x: 12, y: -8)
                                 }
                                 Text("Profile")
@@ -142,13 +158,13 @@ struct BadgeDisplayView: View {
         }
         .navigationTitle("Badge")
     }
-
+    
     private func sectionView<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(.headline)
                 .foregroundStyle(.content.contentSecondary)
-
+            
             content()
         }
     }
