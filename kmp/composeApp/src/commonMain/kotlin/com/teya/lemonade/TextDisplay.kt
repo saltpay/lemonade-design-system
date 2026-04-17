@@ -114,8 +114,7 @@ internal fun TextDisplay() {
 
 // Splits the enum name into words by inserting spaces before uppercase letters/digits
 // that follow a lowercase letter (e.g. "BodyXLargeRegular" → ["Body", "XLarge", "Regular"]).
-private fun LemonadeTypography.labelParts(): List<String> =
-    name.replace(Regex("([a-z])([A-Z0-9])"), "$1 $2").split(" ")
+private fun LemonadeTypography.labelParts(): List<String> = name.replace(Regex("([a-z])([A-Z0-9])"), "$1 $2").split(" ")
 
 private fun LemonadeTypography.toDisplayLabel(): String = labelParts().joinToString(" ")
 
