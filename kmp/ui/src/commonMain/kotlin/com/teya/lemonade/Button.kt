@@ -386,6 +386,7 @@ private fun CoreButton(
             leadingSlot?.invoke(this, colors)
             Row(
                 horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
                 content = contentSlot,
                 modifier = Modifier
                     .then(
