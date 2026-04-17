@@ -23,7 +23,7 @@ struct TextDisplayView: View {
 
         return orderedCategories.compactMap { category in
             guard let styles = byCategory[category] else { return nil }
-            let groups = Dictionary(grouping: styles) { $0.subCategory ?? "" 
+            let groups = Dictionary(grouping: styles) { $0.subCategory ?? "" }
                 .sorted { a, b in
                     // preserve size-descending order by taking the max fontSize in each group
                     let maxA = a.value.map(\.style.fontSize).max() ?? 0
