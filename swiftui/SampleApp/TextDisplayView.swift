@@ -41,9 +41,9 @@ struct TextDisplayView: View {
                 ForEach(categorizedStyles, id: \.category) { section in
                     sectionView(title: section.category) {
                         VStack(alignment: .leading, spacing: 12) {
-                            ForEach(Array(section.groups.enumerated()), id: \.offset) { index, group in
+                            ForEach(section.groups.indices, id: \.self) { index in
                                 if index > 0 { Divider() }
-                                ForEach(group) { entry in
+                                ForEach(section.groups[index]) { entry in
                                     LemonadeUi.Text(entry.label, textStyle: entry.style)
                                 }
                             }
@@ -108,14 +108,11 @@ private struct TypographyEntry: Identifiable {
     let label: String
     let style: LemonadeTextStyle
 
-    /// Top-level category derived from the first word of the label ("Display", "Heading", "Body").
     var category: String {
         label.components(separatedBy: " ").first ?? ""
     }
 
-    /// Size sub-category used for inserting dividers within the Body section.
-    /// Returns nil for Display and Heading (no weight variants per size).
-    /// e.g. "Body XLarge Regular" → "XLarge", "Display XSmall" → nil
+    // Returns nil for Display and Heading, which have no weight variants per size.
     var subCategory: String? {
         let parts = label.components(separatedBy: " ")
         return parts.count > 2 ? parts[1] : nil
@@ -123,8 +120,6 @@ private struct TypographyEntry: Identifiable {
 }
 
 private extension String {
-    /// Converts a camelCase property name to a human-readable display label.
-    /// e.g. "display3XLarge" → "Display 3XLarge", "bodyXLargeRegular" → "Body XLarge Regular"
     func typographyDisplayLabel() -> String {
         let spaced = replacingOccurrences(
             of: "([a-z])([A-Z0-9])",
