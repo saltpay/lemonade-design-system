@@ -114,15 +114,26 @@ internal fun TextDisplay() {
 
 // Splits the enum name into words by inserting spaces before uppercase letters/digits
 // that follow a lowercase letter (e.g. "BodyXLargeRegular" → ["Body", "XLarge", "Regular"]).
-private fun LemonadeTypography.labelParts(): List<String> = name.replace(Regex("([a-z])([A-Z0-9])"), "$1 $2").split(" ")
+private val typographyLabelRegex = Regex("([a-z])([A-Z0-9])")
 
-private fun LemonadeTypography.toDisplayLabel(): String = labelParts().joinToString(" ")
+private data class TypographyLabelInfo(val displayLabel: String, val category: String, val subCategory: String?)
 
-private fun LemonadeTypography.category(): String = labelParts().first()
+private val typographyLabels: Map<LemonadeTypography, TypographyLabelInfo> = LemonadeTypography.entries.associateWith { typography ->
+    val parts = typography.name.replace(typographyLabelRegex, "$1 $2").split(" ")
+    TypographyLabelInfo(
+        displayLabel = parts.joinToString(" "),
+        category = parts.first(),
+        subCategory = if (parts.size > 2) parts[1] else null,
+    )
+}
+
+private fun LemonadeTypography.toDisplayLabel(): String = typographyLabels.getValue(this).displayLabel
+
+private fun LemonadeTypography.category(): String = typographyLabels.getValue(this).category
 
 // Returns non-null only for styles with weight variants (e.g. Body),
 // so callers can insert dividers between size groups.
-private fun LemonadeTypography.subCategory(): String? = labelParts().let { if (it.size > 2) it[1] else null }
+private fun LemonadeTypography.subCategory(): String? = typographyLabels.getValue(this).subCategory
 
 @Composable
 private fun TextSection(

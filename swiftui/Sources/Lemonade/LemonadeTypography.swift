@@ -1,7 +1,7 @@
 import SwiftUI
 
 #if canImport(UIKit)
-    import UIKit
+import UIKit
 #endif
 
 /// Represents a text style with typographic properties.

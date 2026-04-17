@@ -78,6 +78,7 @@ fun main() {
         println("✓ Implementation generated")
     } catch (error: Throwable) {
         println("✗ Failed to convert ${typographyTokensFile.name}: ${error.message}")
+        throw error
     }
 }
 
