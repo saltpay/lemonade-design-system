@@ -11,10 +11,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import com.teya.lemonade.core.LemonadeTypography
 
-@Suppress("LongMethod")
 @Composable
 internal fun TextDisplay() {
+    val categorizedStyles = LemonadeTypography.entries
+        .groupBy { it.category() }
+        .mapValues { (_, styles) -> styles.sortedByDescending { it.style.fontSize } }
+
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
         modifier = Modifier
@@ -24,160 +28,28 @@ internal fun TextDisplay() {
             .navigationBarsPadding()
             .padding(LemonadeTheme.spaces.spacing400),
     ) {
-        // Display Styles
-        TextSection(title = "Display") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-            ) {
-                LemonadeUi.Text(
-                    text = "Display 3XLarge",
-                    textStyle = LemonadeTheme.typography.display3XLarge,
-                )
-                LemonadeUi.Text(
-                    text = "Display 2XLarge",
-                    textStyle = LemonadeTheme.typography.display2XLarge,
-                )
-                LemonadeUi.Text(
-                    text = "Display XLarge",
-                    textStyle = LemonadeTheme.typography.displayXLarge,
-                )
-                LemonadeUi.Text(
-                    text = "Display Large",
-                    textStyle = LemonadeTheme.typography.displayLarge,
-                )
-                LemonadeUi.Text(
-                    text = "Display Medium",
-                    textStyle = LemonadeTheme.typography.displayMedium,
-                )
-                LemonadeUi.Text(
-                    text = "Display Small",
-                    textStyle = LemonadeTheme.typography.displaySmall,
-                )
-                LemonadeUi.Text(
-                    text = "Display XSmall",
-                    textStyle = LemonadeTheme.typography.displayXSmall,
-                )
+        categorizedStyles.forEach { (category, styles) ->
+            TextSection(title = category) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+                ) {
+                    var lastSubCategory: String? = null
+                    styles.forEach { typography ->
+                        val subCategory = typography.subCategory()
+                        if (lastSubCategory != null && subCategory != lastSubCategory) {
+                            LemonadeUi.HorizontalDivider()
+                        }
+                        lastSubCategory = subCategory
+                        LemonadeUi.Text(
+                            text = typography.toDisplayLabel(),
+                            textStyle = typography.style,
+                        )
+                    }
+                }
             }
         }
 
-        // Heading Styles
-        TextSection(title = "Heading") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-            ) {
-                LemonadeUi.Text(
-                    text = "Heading XLarge",
-                    textStyle = LemonadeTheme.typography.headingXLarge,
-                )
-                LemonadeUi.Text(
-                    text = "Heading Large",
-                    textStyle = LemonadeTheme.typography.headingLarge,
-                )
-                LemonadeUi.Text(
-                    text = "Heading Medium",
-                    textStyle = LemonadeTheme.typography.headingMedium,
-                )
-                LemonadeUi.Text(
-                    text = "Heading Small",
-                    textStyle = LemonadeTheme.typography.headingSmall,
-                )
-                LemonadeUi.Text(
-                    text = "Heading XSmall",
-                    textStyle = LemonadeTheme.typography.headingXSmall,
-                )
-                LemonadeUi.Text(
-                    text = "Heading XXSmall",
-                    textStyle = LemonadeTheme.typography.headingXXSmall,
-                )
-            }
-        }
-
-        // Body Styles
-        TextSection(title = "Body") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-            ) {
-                // XLarge
-                LemonadeUi.Text(
-                    text = "Body XLarge Regular",
-                    textStyle = LemonadeTheme.typography.bodyXLargeRegular,
-                )
-                LemonadeUi.Text(
-                    text = "Body XLarge Medium",
-                    textStyle = LemonadeTheme.typography.bodyXLargeMedium,
-                )
-                LemonadeUi.Text(
-                    text = "Body XLarge SemiBold",
-                    textStyle = LemonadeTheme.typography.bodyXLargeSemiBold,
-                )
-
-                LemonadeUi.HorizontalDivider()
-
-                // Large
-                LemonadeUi.Text(
-                    text = "Body Large Regular",
-                    textStyle = LemonadeTheme.typography.bodyLargeRegular,
-                )
-                LemonadeUi.Text(
-                    text = "Body Large Medium",
-                    textStyle = LemonadeTheme.typography.bodyLargeMedium,
-                )
-                LemonadeUi.Text(
-                    text = "Body Large SemiBold",
-                    textStyle = LemonadeTheme.typography.bodyLargeSemiBold,
-                )
-
-                LemonadeUi.HorizontalDivider()
-
-                // Medium
-                LemonadeUi.Text(
-                    text = "Body Medium Regular",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                )
-                LemonadeUi.Text(
-                    text = "Body Medium Medium",
-                    textStyle = LemonadeTheme.typography.bodyMediumMedium,
-                )
-                LemonadeUi.Text(
-                    text = "Body Medium SemiBold",
-                    textStyle = LemonadeTheme.typography.bodyMediumSemiBold,
-                )
-
-                LemonadeUi.HorizontalDivider()
-
-                // Small
-                LemonadeUi.Text(
-                    text = "Body Small Regular",
-                    textStyle = LemonadeTheme.typography.bodySmallRegular,
-                )
-                LemonadeUi.Text(
-                    text = "Body Small Medium",
-                    textStyle = LemonadeTheme.typography.bodySmallMedium,
-                )
-                LemonadeUi.Text(
-                    text = "Body Small SemiBold",
-                    textStyle = LemonadeTheme.typography.bodySmallSemiBold,
-                )
-
-                LemonadeUi.HorizontalDivider()
-
-                // XSmall
-                LemonadeUi.Text(
-                    text = "Body XSmall Regular",
-                    textStyle = LemonadeTheme.typography.bodyXSmallRegular,
-                )
-                LemonadeUi.Text(
-                    text = "Body XSmall Medium",
-                    textStyle = LemonadeTheme.typography.bodyXSmallMedium,
-                )
-                LemonadeUi.Text(
-                    text = "Body XSmall SemiBold",
-                    textStyle = LemonadeTheme.typography.bodyXSmallSemiBold,
-                )
-            }
-        }
-
-        // Text Colors
+        // Text Colors — not part of the typography enum, kept manual
         TextSection(title = "Colors") {
             Column(
                 verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
@@ -215,23 +87,22 @@ internal fun TextDisplay() {
             }
         }
 
-        // Overflow
+        // Overflow — behavioural examples, kept manual
         TextSection(title = "Overflow") {
             Column(
                 verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
             ) {
                 LemonadeUi.Text(
                     text = "This is a very long text that will be truncated at the end " +
-                            "with ellipsis because it exceeds the available width",
+                        "with ellipsis because it exceeds the available width",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                 )
-
                 LemonadeUi.Text(
                     text = "This text allows multiple lines but is limited to 2 lines " +
-                            "maximum. Lorem ipsum dolor sit amet, consectetur adipiscing " +
-                            "elit. Sed do eiusmod tempor incididunt ut labore.",
+                        "maximum. Lorem ipsum dolor sit amet, consectetur adipiscing " +
+                        "elit. Sed do eiusmod tempor incididunt ut labore.",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
@@ -240,6 +111,32 @@ internal fun TextDisplay() {
         }
     }
 }
+
+/**
+ * Derives the top-level category from the enum entry name.
+ * e.g. "BodyXLargeRegular" → "Body", "DisplayXSmall" → "Display"
+ */
+private fun LemonadeTypography.category(): String =
+    toDisplayLabel().split(" ").first()
+
+/**
+ * Derives the size sub-category used to insert dividers within a category.
+ * Returns a value only when there are more than two label words (i.e. Body styles),
+ * so that dividers are inserted between BodyXLarge/BodyLarge/etc. groups.
+ * e.g. "BodyXLargeRegular" → "XLarge", "DisplayXSmall" → null
+ */
+private fun LemonadeTypography.subCategory(): String? {
+    val parts = toDisplayLabel().split(" ")
+    return if (parts.size > 2) parts[1] else null
+}
+
+/**
+ * Converts a camelCase enum name to a human-readable label by inserting a space
+ * before any uppercase letter or digit that follows a lowercase letter.
+ * e.g. "Display3XLarge" → "Display 3XLarge", "BodyXLargeRegular" → "Body XLarge Regular"
+ */
+private fun LemonadeTypography.toDisplayLabel(): String =
+    name.replace(Regex("([a-z])([A-Z0-9])"), "$1 $2")
 
 @Composable
 private fun TextSection(
