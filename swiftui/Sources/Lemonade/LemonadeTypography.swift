@@ -51,22 +51,22 @@ public struct LemonadeTextStyle: Sendable {
         .custom(fontName, size: fontSize, relativeTo: .body)
     }
 
-    #if canImport(UIKit)
-        /// Returns a UIFont based on this text style
-        public var uiFont: UIFont {
-            UIFont(name: fontName, size: fontSize)
-                ?? .systemFont(ofSize: fontSize)
-        }
-    #endif
+#if canImport(UIKit)
+    /// Returns a UIFont based on this text style
+    public var uiFont: UIFont {
+        UIFont(name: fontName, size: fontSize)
+            ?? .systemFont(ofSize: fontSize)
+    }
+#endif
 
     /// Returns the line spacing needed to achieve the desired line height.
     /// Uses UIFont.lineHeight for precise calculation on iOS, fallback ratio on other platforms.
     public var lineSpacing: CGFloat {
-        #if canImport(UIKit)
-            let naturalLineHeight = uiFont.lineHeight
-        #else
-            let naturalLineHeight = fontSize * Self.fallbackLineHeightRatio
-        #endif
+#if canImport(UIKit)
+        let naturalLineHeight = uiFont.lineHeight
+#else
+        let naturalLineHeight = fontSize * Self.fallbackLineHeightRatio
+#endif
         return max(0, lineHeight - naturalLineHeight)
     }
 }
