@@ -22,10 +22,13 @@ public data class LemonadeTextStyle(
  */
 public enum class LemonadeTypography(public val style: LemonadeTextStyle) {
     // Display styles
-    DisplayXSmall(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize600.value, lineHeight = LemonadeLineHeights.LineHeight800.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
-    DisplaySmall(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize700.value, lineHeight = LemonadeLineHeights.LineHeight900.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
-    DisplayMedium(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize900.value, lineHeight = LemonadeLineHeights.LineHeight1100.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
-    DisplayLarge(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize1200.value, lineHeight = LemonadeLineHeights.LineHeight1400.value, fontWeight = LemonadeFontWeights.Semibold.weight)),
+    DisplayXSmall(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize600.value, lineHeight = LemonadeLineHeights.LineHeight800.value, fontWeight = LemonadeFontWeights.Semibold.weight, letterSpacing = -0.25f)),
+    DisplaySmall(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize700.value, lineHeight = LemonadeLineHeights.LineHeight900.value, fontWeight = LemonadeFontWeights.Semibold.weight, letterSpacing = -0.25f)),
+    DisplayMedium(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize900.value, lineHeight = LemonadeLineHeights.LineHeight1100.value, fontWeight = LemonadeFontWeights.Semibold.weight, letterSpacing = -0.25f)),
+    DisplayLarge(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize1200.value, lineHeight = LemonadeLineHeights.LineHeight1400.value, fontWeight = LemonadeFontWeights.Semibold.weight, letterSpacing = -0.25f)),
+    DisplayXLarge(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize1400.value, lineHeight = LemonadeLineHeights.LineHeight1600.value, fontWeight = LemonadeFontWeights.Semibold.weight, letterSpacing = -0.25f)),
+    Display2XLarge(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize1600.value, lineHeight = LemonadeLineHeights.LineHeight1800.value, fontWeight = LemonadeFontWeights.Semibold.weight, letterSpacing = -0.25f)),
+    Display3XLarge(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize1800.value, lineHeight = LemonadeLineHeights.LineHeight2000.value, fontWeight = LemonadeFontWeights.Semibold.weight, letterSpacing = -0.25f)),
 
     // Heading styles
     HeadingXLarge(LemonadeTextStyle(fontSize = LemonadeFontSizes.FontSize1000.value, lineHeight = LemonadeLineHeights.LineHeight1200.value, fontWeight = LemonadeFontWeights.Semibold.weight)),

@@ -13,6 +13,9 @@ public open class LemonadeTypographyProvider {
     public open val displaySmall: LemonadeTextStyle get() = LemonadeTypography.DisplaySmall.style
     public open val displayMedium: LemonadeTextStyle get() = LemonadeTypography.DisplayMedium.style
     public open val displayLarge: LemonadeTextStyle get() = LemonadeTypography.DisplayLarge.style
+    public open val displayXLarge: LemonadeTextStyle get() = LemonadeTypography.DisplayXLarge.style
+    public open val display2XLarge: LemonadeTextStyle get() = LemonadeTypography.Display2XLarge.style
+    public open val display3XLarge: LemonadeTextStyle get() = LemonadeTypography.Display3XLarge.style
 
     // Heading styles
     public open val headingXLarge: LemonadeTextStyle get() = LemonadeTypography.HeadingXLarge.style
