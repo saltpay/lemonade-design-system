@@ -50,13 +50,12 @@ private val trailingPresets: List<TrailingPreset> = listOf(
     TrailingPreset(label = "Popular", voice = TagVoice.Neutral),
 )
 
-private fun Set<Int>.toggle(index: Int): Set<Int> {
-    return if (contains(element = index)) {
+private fun Set<Int>.toggle(index: Int): Set<Int> =
+    if (contains(element = index)) {
         this - index
     } else {
         this + index
     }
-}
 
 @Suppress("LongMethod")
 @Composable
