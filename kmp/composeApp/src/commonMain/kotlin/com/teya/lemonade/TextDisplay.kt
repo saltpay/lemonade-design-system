@@ -124,13 +124,13 @@ private data class TypographyLabelInfo(
 
 private val typographyLabels: Map<LemonadeTypography, TypographyLabelInfo> =
     LemonadeTypography.entries.associateWith { typography ->
-    val parts = typography.name.replace(typographyLabelRegex, "$1 $2").split(" ")
-    TypographyLabelInfo(
-        displayLabel = parts.joinToString(" "),
-        category = parts.first(),
-        subCategory = if (parts.size > 2) parts[1] else null,
-    )
-}
+        val parts = typography.name.replace(typographyLabelRegex, "$1 $2").split(" ")
+        TypographyLabelInfo(
+            displayLabel = parts.joinToString(" "),
+            category = parts.first(),
+            subCategory = if (parts.size > 2) parts[1] else null,
+        )
+    }
 
 private fun LemonadeTypography.toDisplayLabel(): String = typographyLabels.getValue(this).displayLabel
 
