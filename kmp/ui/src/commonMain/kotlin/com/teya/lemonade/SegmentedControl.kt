@@ -3,6 +3,7 @@ package com.teya.lemonade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -185,19 +186,20 @@ internal fun CoreSegmentedControl(
         targetOffset = baseOffset
     }
 
+    val hasInitialMeasurement = remember { booleanArrayOf(false) }
+    val animationSpec = if (hasInitialMeasurement[0]) IndicatorSpringSpec else snap()
+
+    SideEffect {
+        if (hasMeasurements) hasInitialMeasurement[0] = true
+    }
+
     val indicatorWidth by animateDpAsState(
         targetValue = targetWidth,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioLowBouncy,
-            stiffness = Spring.StiffnessMediumLow,
-        ),
+        animationSpec = animationSpec,
     )
     val indicatorOffset by animateDpAsState(
         targetValue = targetOffset,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioLowBouncy,
-            stiffness = Spring.StiffnessMediumLow,
-        ),
+        animationSpec = animationSpec,
     )
 
     Box(
@@ -397,6 +399,11 @@ private fun LemonadeSegmentedControlSize.textStyle(): LemonadeTextStyle {
         -> typography.bodySmallMedium
     }
 }
+
+private val IndicatorSpringSpec = spring<Dp>(
+    dampingRatio = Spring.DampingRatioLowBouncy,
+    stiffness = Spring.StiffnessMediumLow,
+)
 
 @LemonadePreview
 @Composable
