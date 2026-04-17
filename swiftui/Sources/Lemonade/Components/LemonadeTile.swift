@@ -258,7 +258,6 @@ private struct LemonadeTileView<TopAccessory: View>: View {
     let topAccessory: (() -> TopAccessory)?
 
     private let minWidth: CGFloat = 120
-    private let minHeight: CGFloat = 88
 
     private var effectiveBackgroundColor: Color {
         isSelected ? LemonadeTheme.colors.background.bgBrandSubtle : variant.backgroundColor
@@ -320,12 +319,21 @@ private struct LemonadeTileView<TopAccessory: View>: View {
                 }
             }
         }
+        .frame(maxWidth: .infinity, alignment: .topLeading)
         .padding(LemonadeTheme.spaces.spacing300)
     }
 
     var body: some View {
-        tileContent
-        .frame(minWidth: minWidth, minHeight: minHeight)
+        Group {
+            if #available(iOS 16, macOS 13, *) {
+                DefaultMinSize(minWidth: minWidth) {
+                    tileContent
+                }
+            } else {
+                tileContent
+                    .frame(minWidth: minWidth)
+            }
+        }
         .applyIf(stretched) { $0.frame(maxWidth: .infinity) }
         .background(effectiveBackgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
@@ -360,7 +368,6 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
     let topAccessory: (() -> TopAccessory)?
 
     private let minWidth: CGFloat = 120
-    private let minHeight: CGFloat = 88
 
     private var effectiveBackgroundColor: Color {
         isSelected ? LemonadeTheme.colors.background.bgBrandSubtle : variant.backgroundColor
@@ -417,12 +424,21 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
                 }
             }
         }
+        .frame(maxWidth: .infinity, alignment: .topLeading)
         .padding(LemonadeTheme.spaces.spacing300)
     }
 
     var body: some View {
-        tileContent
-        .frame(minWidth: minWidth, minHeight: minHeight)
+        Group {
+            if #available(iOS 16, macOS 13, *) {
+                DefaultMinSize(minWidth: minWidth) {
+                    tileContent
+                }
+            } else {
+                tileContent
+                    .frame(minWidth: minWidth)
+            }
+        }
         .applyIf(stretched) { $0.frame(maxWidth: .infinity) }
         .background(effectiveBackgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))

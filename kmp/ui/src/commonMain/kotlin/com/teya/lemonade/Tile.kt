@@ -89,10 +89,8 @@ public fun LemonadeUi.Tile(
                 verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier
-                    .defaultMinSize(
-                        minWidth = 120.dp,
-                        minHeight = 88.dp,
-                    ).padding(all = LocalSpaces.current.spacing300),
+                    .defaultMinSize(minWidth = 120.dp)
+                    .padding(all = LocalSpaces.current.spacing300),
             ) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -193,10 +191,8 @@ public fun LemonadeUi.Tile(
                 verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier
-                    .defaultMinSize(
-                        minWidth = 120.dp,
-                        minHeight = 88.dp,
-                    ).padding(all = LocalSpaces.current.spacing300),
+                    .defaultMinSize(minWidth = 120.dp)
+                    .padding(all = LocalSpaces.current.spacing300),
             ) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
