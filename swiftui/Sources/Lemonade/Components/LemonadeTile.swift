@@ -7,52 +7,38 @@ public enum LemonadeTileVariant {
     case filled
     case outlined
 
-    @available(*, deprecated, renamed: "filled", message: "Use .filled instead")
-    case neutral
-    @available(*, deprecated, renamed: "outlined", message: "Use .outlined instead")
-    case muted
-    @available(*, deprecated, message: "OnColor variant has been removed. Use .filled instead")
-    case onColor
-    @available(*, deprecated, message: "Use .filled with isSelected = true instead")
-    case selected
-
     var backgroundColor: Color {
         switch self {
-        case .filled, .neutral: return LemonadeTheme.colors.background.bgElevated
-        case .outlined, .muted: return LemonadeTheme.colors.background.bgDefault
-        case .onColor: return LemonadeTheme.colors.background.bgBrandElevated
-        case .selected: return LemonadeTheme.colors.background.bgBrandSubtle
+        case .filled: return LemonadeTheme.colors.background.bgElevated
+        case .outlined: return LemonadeTheme.colors.background.bgDefault
         }
     }
 
     var backgroundPressedColor: Color {
         switch self {
-        case .filled, .neutral: return LemonadeTheme.colors.interaction.bgElevatedPressed
-        case .outlined, .muted: return LemonadeTheme.colors.interaction.bgDefaultPressed
-        case .onColor, .selected: return LemonadeTheme.colors.interaction.bgBrandElevatedPressed
+        case .filled: return LemonadeTheme.colors.interaction.bgElevatedPressed
+        case .outlined: return LemonadeTheme.colors.interaction.bgDefaultPressed
         }
     }
 
     var borderColor: Color {
         switch self {
-        case .filled, .neutral, .outlined, .muted: return LemonadeTheme.colors.border.borderNeutralMedium
-        case .onColor: return LemonadeTheme.colors.border.borderNeutralMediumInverse
-        case .selected: return LemonadeTheme.colors.border.borderSelected
+        case .filled: return LemonadeTheme.colors.border.borderNeutralMedium
+        case .outlined: return LemonadeTheme.colors.border.borderNeutralMedium
         }
     }
 
     var borderWidth: CGFloat {
         switch self {
-        case .filled, .neutral, .outlined, .muted, .onColor: return LemonadeTheme.borderWidth.base.border25
-        case .selected: return LemonadeTheme.borderWidth.base.border50
+        case .filled: return LemonadeTheme.borderWidth.base.border25
+        case .outlined: return LemonadeTheme.borderWidth.base.border25
         }
     }
 
     var shadow: LemonadeShadow? {
         switch self {
-        case .filled, .neutral: return nil
-        case .outlined, .muted: return .xsmall
-        case .onColor, .selected: return nil
+        case .filled: return nil
+        case .outlined: return .xsmall
         }
     }
 }
@@ -81,9 +67,6 @@ public extension LemonadeUi {
     ///   - onClick: Callback called when component is tapped
     ///   - variant: LemonadeTileVariant to define visual style. Defaults to .filled
     ///   - stretched: Whether the tile should stretch to fill available width. Defaults to false
-    ///   - alignment: Horizontal alignment of the tile content. Defaults to .leading.
-    ///     **Deprecated**: Tiles now always use leading alignment per the design spec.
-    ///     This parameter will be removed in a future release.
     /// - Returns: A styled Tile view
     @ViewBuilder
     static func Tile(
@@ -94,8 +77,7 @@ public extension LemonadeUi {
         supportText: String? = nil,
         onClick: (() -> Void)? = nil,
         variant: LemonadeTileVariant = .filled,
-        stretched: Bool = false,
-        alignment: HorizontalAlignment = .leading
+        stretched: Bool = false
     ) -> some View {
         LemonadeTileView<EmptyView>(
             label: label,
@@ -106,7 +88,6 @@ public extension LemonadeUi {
             onClick: onClick,
             variant: variant,
             stretched: stretched,
-            alignment: alignment,
             topAccessory: nil
         )
     }
@@ -135,9 +116,6 @@ public extension LemonadeUi {
     ///   - onClick: Callback called when component is tapped
     ///   - variant: LemonadeTileVariant to define visual style. Defaults to .filled
     ///   - stretched: Whether the tile should stretch to fill available width. Defaults to false
-    ///   - alignment: Horizontal alignment of the tile content. Defaults to .leading.
-    ///     **Deprecated**: Tiles now always use leading alignment per the design spec.
-    ///     This parameter will be removed in a future release.
     ///   - topAccessory: A view rendered at the top-right of the tile
     /// - Returns: A styled Tile view
     @ViewBuilder
@@ -150,7 +128,6 @@ public extension LemonadeUi {
         onClick: (() -> Void)? = nil,
         variant: LemonadeTileVariant = .filled,
         stretched: Bool = false,
-        alignment: HorizontalAlignment = .leading,
         @ViewBuilder topAccessory: @escaping () -> TopAccessory
     ) -> some View {
         LemonadeTileView(
@@ -162,7 +139,6 @@ public extension LemonadeUi {
             onClick: onClick,
             variant: variant,
             stretched: stretched,
-            alignment: alignment,
             topAccessory: topAccessory
         )
     }
@@ -188,7 +164,6 @@ public extension LemonadeUi {
     ///   - onClick: Callback called when component is tapped
     ///   - variant: LemonadeTileVariant to define visual style. Defaults to .filled
     ///   - stretched: Whether the tile should stretch to fill available width. Defaults to false
-    ///   - alignment: Horizontal alignment of the tile content. Defaults to .leading
     ///   - leadingSlot: A custom view rendered where the icon would normally appear
     /// - Returns: A styled Tile view
     @ViewBuilder
@@ -200,7 +175,6 @@ public extension LemonadeUi {
         onClick: (() -> Void)? = nil,
         variant: LemonadeTileVariant = .filled,
         stretched: Bool = false,
-        alignment: HorizontalAlignment = .leading,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent
     ) -> some View {
         LemonadeTileSlotView<LeadingContent, EmptyView>(
@@ -211,7 +185,6 @@ public extension LemonadeUi {
             onClick: onClick,
             variant: variant,
             stretched: stretched,
-            alignment: alignment,
             leadingSlot: leadingSlot,
             topAccessory: nil
         )
@@ -241,7 +214,6 @@ public extension LemonadeUi {
     ///   - onClick: Callback called when component is tapped
     ///   - variant: LemonadeTileVariant to define visual style. Defaults to .filled
     ///   - stretched: Whether the tile should stretch to fill available width. Defaults to false
-    ///   - alignment: Horizontal alignment of the tile content. Defaults to .leading
     ///   - leadingSlot: A custom view rendered where the icon would normally appear
     ///   - topAccessory: A view rendered at the top-right of the tile
     /// - Returns: A styled Tile view
@@ -254,7 +226,6 @@ public extension LemonadeUi {
         onClick: (() -> Void)? = nil,
         variant: LemonadeTileVariant = .filled,
         stretched: Bool = false,
-        alignment: HorizontalAlignment = .leading,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder topAccessory: @escaping () -> TopAccessory
     ) -> some View {
@@ -266,7 +237,6 @@ public extension LemonadeUi {
             onClick: onClick,
             variant: variant,
             stretched: stretched,
-            alignment: alignment,
             leadingSlot: leadingSlot,
             topAccessory: topAccessory
         )
@@ -285,7 +255,6 @@ private struct LemonadeTileView<TopAccessory: View>: View {
     let onClick: (() -> Void)?
     let variant: LemonadeTileVariant
     let stretched: Bool
-    let alignment: HorizontalAlignment
     let topAccessory: (() -> TopAccessory)?
 
     private let minWidth: CGFloat = 120
@@ -387,7 +356,6 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
     let onClick: (() -> Void)?
     let variant: LemonadeTileVariant
     let stretched: Bool
-    let alignment: HorizontalAlignment
     let leadingSlot: () -> LeadingContent
     let topAccessory: (() -> TopAccessory)?
 

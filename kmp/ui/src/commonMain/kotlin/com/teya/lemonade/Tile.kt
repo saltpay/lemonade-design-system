@@ -52,14 +52,10 @@ import com.teya.lemonade.core.LemonadeTileVariant
  * @param enabled - [Boolean] flag to enable or disable the Tile.
  * @param isSelected - [Boolean] flag to apply selected styling to the Tile.
  * @param supportText - Optional [String] to be displayed below the label.
- * @param alignment - **Deprecated**: Alignment is no longer configurable per Figma spec.
- *  The tile always uses [Alignment.Start]. Kept for backward compatibility.
  * @param topAccessory - Optional composable rendered at the top-right of the tile, next to the icon.
  * @param onClick - Callback to be invoked when the Tile is clicked.
  * @param interactionSource - [MutableInteractionSource] to be applied to the Tile.
  * @param variant - [LemonadeTileVariant] to style the Tile accordingly.
- * @param addon - **Deprecated**: Use [topAccessory] instead.
- *  Addon badge overlay has been replaced by an internal top accessory slot.
  */
 @Suppress("LongParameterList")
 @Composable
@@ -70,15 +66,11 @@ public fun LemonadeUi.Tile(
     enabled: Boolean = true,
     isSelected: Boolean = false,
     supportText: String? = null,
-    alignment: Alignment.Horizontal = Alignment.Start,
     topAccessory: (@Composable () -> Unit)? = null,
     onClick: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     variant: LemonadeTileVariant = LemonadeTileVariant.Filled,
-    addon: (@Composable () -> Unit)? = null,
 ) {
-    val effectiveTopAccessory = topAccessory ?: addon
-
     val contentColor = if (isSelected) {
         LocalColors.current.content.contentOnBrandHigh
     } else {
@@ -95,13 +87,12 @@ public fun LemonadeUi.Tile(
         content = {
             Column(
                 verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
-                horizontalAlignment = alignment,
+                horizontalAlignment = Alignment.Start,
                 modifier = Modifier
                     .defaultMinSize(
                         minWidth = 120.dp,
                         minHeight = 88.dp,
-                    )
-                    .padding(all = LocalSpaces.current.spacing300),
+                    ).padding(all = LocalSpaces.current.spacing300),
             ) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -115,15 +106,15 @@ public fun LemonadeUi.Tile(
                         tint = contentColor,
                     )
 
-                    if (effectiveTopAccessory != null) {
-                        effectiveTopAccessory()
+                    if (topAccessory != null) {
+                        topAccessory()
                     }
                 }
 
                 Spacer(modifier = Modifier.weight(weight = 1f))
 
                 Column(
-                    horizontalAlignment = alignment,
+                    horizontalAlignment = Alignment.Start,
                 ) {
                     LemonadeUi.Text(
                         text = label,
@@ -165,8 +156,6 @@ public fun LemonadeUi.Tile(
  * @param enabled - [Boolean] flag to enable or disable the Tile.
  * @param isSelected - [Boolean] flag to apply selected styling to the Tile.
  * @param supportText - Optional [String] to be displayed below the label.
- * @param alignment - [Alignment.Horizontal] to align the Tile's content horizontally.
- *  **Deprecated**: Tiles now always use Start alignment per the design spec.
  * @param topAccessory - Optional composable rendered at the top-right of the Tile.
  * @param onClick - Callback to be invoked when the Tile is clicked.
  * @param interactionSource - [MutableInteractionSource] to be applied to the Tile.
@@ -180,7 +169,6 @@ public fun LemonadeUi.Tile(
     enabled: Boolean = true,
     isSelected: Boolean = false,
     supportText: String? = null,
-    alignment: Alignment.Horizontal = Alignment.Start,
     topAccessory: (@Composable () -> Unit)? = null,
     onClick: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -203,13 +191,12 @@ public fun LemonadeUi.Tile(
         content = {
             Column(
                 verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
-                horizontalAlignment = alignment,
+                horizontalAlignment = Alignment.Start,
                 modifier = Modifier
                     .defaultMinSize(
                         minWidth = 120.dp,
                         minHeight = 88.dp,
-                    )
-                    .padding(all = LocalSpaces.current.spacing300),
+                    ).padding(all = LocalSpaces.current.spacing300),
             ) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -226,7 +213,7 @@ public fun LemonadeUi.Tile(
                 Spacer(modifier = Modifier.weight(weight = 1f))
 
                 Column(
-                    horizontalAlignment = alignment,
+                    horizontalAlignment = Alignment.Start,
                 ) {
                     LemonadeUi.Text(
                         text = label,
@@ -358,10 +345,7 @@ internal data class TileData(
 internal val LemonadeTileVariant.data: TileData
     @Composable get() {
         return when (this) {
-            LemonadeTileVariant.Filled,
-            @Suppress("DEPRECATION")
-            LemonadeTileVariant.Neutral,
-            -> TileData(
+            LemonadeTileVariant.Filled -> TileData(
                 backgroundColor = LocalColors.current.background.bgElevated,
                 backgroundPressedColor = LocalColors.current.interaction.bgElevatedPressed,
                 borderColor = LocalColors.current.border.borderNeutralMedium,
@@ -369,35 +353,12 @@ internal val LemonadeTileVariant.data: TileData
                 shadow = null,
             )
 
-            LemonadeTileVariant.Outlined,
-            @Suppress("DEPRECATION")
-            LemonadeTileVariant.Muted,
-            -> TileData(
+            LemonadeTileVariant.Outlined -> TileData(
                 backgroundColor = LocalColors.current.background.bgDefault,
                 backgroundPressedColor = LocalColors.current.interaction.bgDefaultPressed,
                 borderColor = LocalColors.current.border.borderNeutralMedium,
                 borderWidth = LocalBorderWidths.current.base.border25,
                 shadow = LemonadeShadow.Xsmall,
-            )
-
-            @Suppress("DEPRECATION")
-            LemonadeTileVariant.OnColor,
-            -> TileData(
-                backgroundColor = LocalColors.current.background.bgBrandElevated,
-                backgroundPressedColor = LocalColors.current.interaction.bgBrandElevatedPressed,
-                borderColor = LocalColors.current.border.borderNeutralMediumInverse,
-                borderWidth = LocalBorderWidths.current.base.border25,
-                shadow = null,
-            )
-
-            @Suppress("DEPRECATION")
-            LemonadeTileVariant.Selected,
-            -> TileData(
-                backgroundColor = LocalColors.current.background.bgBrandSubtle,
-                backgroundPressedColor = LocalColors.current.interaction.bgBrandElevatedPressed,
-                borderColor = LocalColors.current.border.borderSelected,
-                borderWidth = LocalBorderWidths.current.base.border50,
-                shadow = null,
             )
         }
     }
@@ -411,8 +372,8 @@ private data class TilePreviewData(
 private class TilePreviewProvider : PreviewParameterProvider<TilePreviewData> {
     override val values: Sequence<TilePreviewData> = buildAllVariants()
 
-    private fun buildAllVariants(): Sequence<TilePreviewData> {
-        return buildList {
+    private fun buildAllVariants(): Sequence<TilePreviewData> =
+        buildList {
             listOf(true, false).forEach { enabled ->
                 listOf(
                     LemonadeTileVariant.Filled,
@@ -430,7 +391,6 @@ private class TilePreviewProvider : PreviewParameterProvider<TilePreviewData> {
                 }
             }
         }.asSequence()
-    }
 }
 
 @LemonadePreview
