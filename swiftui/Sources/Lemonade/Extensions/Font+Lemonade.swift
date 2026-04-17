@@ -16,6 +16,9 @@ public extension Font {
     static var displaySmall: Font { LemonadeTypography.shared.displaySmall.font }
     static var displayMedium: Font { LemonadeTypography.shared.displayMedium.font }
     static var displayLarge: Font { LemonadeTypography.shared.displayLarge.font }
+    static var displayXLarge: Font { LemonadeTypography.shared.displayXLarge.font }
+    static var display2XLarge: Font { LemonadeTypography.shared.display2XLarge.font }
+    static var display3XLarge: Font { LemonadeTypography.shared.display3XLarge.font }
 
     // MARK: - Heading Styles
 

@@ -77,6 +77,9 @@ public protocol LemonadeTypographyProtocol {
     var displaySmall: LemonadeTextStyle { get }
     var displayMedium: LemonadeTextStyle { get }
     var displayLarge: LemonadeTextStyle { get }
+    var displayXLarge: LemonadeTextStyle { get }
+    var display2XLarge: LemonadeTextStyle { get }
+    var display3XLarge: LemonadeTextStyle { get }
 
     // Heading styles
     var headingXLarge: LemonadeTextStyle { get }
@@ -125,10 +128,13 @@ public struct LemonadeTypography: LemonadeTypographyProtocol {
     public init() {}
 
     // Display styles
-    public let displayXSmall = LemonadeTextStyle(fontSize: 24, lineHeight: 32, fontWeight: .semibold)
-    public let displaySmall = LemonadeTextStyle(fontSize: 28, lineHeight: 36, fontWeight: .semibold)
-    public let displayMedium = LemonadeTextStyle(fontSize: 36, lineHeight: 44, fontWeight: .semibold)
-    public let displayLarge = LemonadeTextStyle(fontSize: 48, lineHeight: 56, fontWeight: .semibold)
+    public let displayXSmall = LemonadeTextStyle(fontSize: 24, lineHeight: 32, fontWeight: .semibold, letterSpacing: -0.25)
+    public let displaySmall = LemonadeTextStyle(fontSize: 28, lineHeight: 36, fontWeight: .semibold, letterSpacing: -0.25)
+    public let displayMedium = LemonadeTextStyle(fontSize: 36, lineHeight: 44, fontWeight: .semibold, letterSpacing: -0.25)
+    public let displayLarge = LemonadeTextStyle(fontSize: 48, lineHeight: 56, fontWeight: .semibold, letterSpacing: -0.25)
+    public let displayXLarge = LemonadeTextStyle(fontSize: 56, lineHeight: 64, fontWeight: .semibold, letterSpacing: -0.25)
+    public let display2XLarge = LemonadeTextStyle(fontSize: 64, lineHeight: 72, fontWeight: .semibold, letterSpacing: -0.25)
+    public let display3XLarge = LemonadeTextStyle(fontSize: 72, lineHeight: 80, fontWeight: .semibold, letterSpacing: -0.25)
 
     // Heading styles
     public let headingXLarge = LemonadeTextStyle(fontSize: 40, lineHeight: 48, fontWeight: .semibold)
