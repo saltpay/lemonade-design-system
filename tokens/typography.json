@@ -1,0 +1,809 @@
+{
+  "id": "VariableCollectionId:2:448",
+  "name": "Typography",
+  "modes": {
+    "2:2": "Default"
+  },
+  "variableIds": [
+    "VariableID:2:497",
+    "VariableID:2:499",
+    "VariableID:2:490",
+    "VariableID:2:498",
+    "VariableID:2:493",
+    "VariableID:2:489",
+    "VariableID:2:488",
+    "VariableID:2:487",
+    "VariableID:2:486",
+    "VariableID:2:495",
+    "VariableID:2:485",
+    "VariableID:2:484",
+    "VariableID:3841:4454",
+    "VariableID:4383:780",
+    "VariableID:4383:781",
+    "VariableID:3187:2085",
+    "VariableID:2:606",
+    "VariableID:2:611",
+    "VariableID:2:610",
+    "VariableID:2:602",
+    "VariableID:2:604",
+    "VariableID:2:601",
+    "VariableID:3189:2054",
+    "VariableID:2:599",
+    "VariableID:2:598",
+    "VariableID:2:597",
+    "VariableID:2:596",
+    "VariableID:3187:2087",
+    "VariableID:2:608",
+    "VariableID:2:607",
+    "VariableID:3841:4455",
+    "VariableID:4383:952",
+    "VariableID:4383:953",
+    "VariableID:6:2",
+    "VariableID:2:562",
+    "VariableID:2:561",
+    "VariableID:2:560",
+    "VariableID:2:559"
+  ],
+  "variables": [
+    {
+      "id": "VariableID:2:484",
+      "name": "font-size/font-size-1200",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 48
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 48,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:485",
+      "name": "font-size/font-size-1000",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 40
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 40,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:486",
+      "name": "font-size/font-size-800",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 32
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 32,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:487",
+      "name": "font-size/font-size-700",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 28
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 28,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:488",
+      "name": "font-size/font-size-600",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 24
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 24,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:489",
+      "name": "font-size/font-size-500",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 20
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 20,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:490",
+      "name": "font-size/font-size-350",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 14
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 14,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:493",
+      "name": "font-size/font-size-450",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 18
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 18,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:495",
+      "name": "font-size/font-size-900",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 36
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 36,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:497",
+      "name": "font-size/font-size-250",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 10
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 10,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:498",
+      "name": "font-size/font-size-400",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 16
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 16,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:499",
+      "name": "font-size/font-size-300",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 12
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 12,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:559",
+      "name": "font-weight/bold",
+      "description": "",
+      "type": "STRING",
+      "valuesByMode": {
+        "2:2": "Bold"
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": "Bold",
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_STYLE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:560",
+      "name": "font-weight/semibold",
+      "description": "",
+      "type": "STRING",
+      "valuesByMode": {
+        "2:2": "SemiBold"
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": "SemiBold",
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_STYLE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:561",
+      "name": "font-weight/medium",
+      "description": "",
+      "type": "STRING",
+      "valuesByMode": {
+        "2:2": "Medium"
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": "Medium",
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_STYLE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:562",
+      "name": "font-weight/regular",
+      "description": "",
+      "type": "STRING",
+      "valuesByMode": {
+        "2:2": "Regular"
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": "Regular",
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_STYLE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:596",
+      "name": "line-height/line-height-1000",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 40
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 40,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:597",
+      "name": "line-height/line-height-900",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 36
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 36,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:598",
+      "name": "line-height/line-height-800",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 32
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 32,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:599",
+      "name": "line-height/line-height-700",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 28
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 28,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:601",
+      "name": "line-height/line-height-600",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 24
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 24,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:602",
+      "name": "line-height/line-height-450",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 18
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 18,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:604",
+      "name": "line-height/line-height-500",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 20
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 20,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:606",
+      "name": "line-height/line-height-300",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 12
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 12,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:607",
+      "name": "line-height/line-height-1400",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 56
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 56,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:608",
+      "name": "line-height/line-height-1200",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 48
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 48,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:610",
+      "name": "line-height/line-height-400",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 16
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 16,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:2:611",
+      "name": "line-height/line-height-350",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 14
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 14,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:6:2",
+      "name": "font-family/base",
+      "description": "",
+      "type": "STRING",
+      "valuesByMode": {
+        "2:2": "Figtree"
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": "Figtree",
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_FAMILY"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:3187:2085",
+      "name": "line-height/line-height-250",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 10
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 10,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:3187:2087",
+      "name": "line-height/line-height-1100",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 44
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 44,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:3189:2054",
+      "name": "line-height/line-height-650",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 26
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 26,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:3841:4454",
+      "name": "font-size/font-size-1400",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 56
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 56,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:3841:4455",
+      "name": "line-height/line-height-1600",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 64
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 64,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:4383:780",
+      "name": "font-size/font-size-1600",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 64
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 64,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:4383:781",
+      "name": "font-size/font-size-1800",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 72
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 72,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FONT_SIZE"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:4383:952",
+      "name": "line-height/line-height-1800",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 72
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 72,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:4383:953",
+      "name": "line-height/line-height-2000",
+      "description": "",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "2:2": 80
+      },
+      "resolvedValuesByMode": {
+        "2:2": {
+          "resolvedValue": 80,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "LINE_HEIGHT"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
+    }
+  ]
+}
