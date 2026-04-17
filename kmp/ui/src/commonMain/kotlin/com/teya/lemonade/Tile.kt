@@ -148,6 +148,109 @@ public fun LemonadeUi.Tile(
     )
 }
 
+/**
+ * Lemonade tile component with a custom leading slot instead of an icon.
+ * ## Usage
+ * ```kotlin
+ * LemonadeUi.Tile(
+ *   label = "Custom",
+ *   leadingSlot = {
+ *     // Custom composable content
+ *   },
+ * )
+ * ```
+ * @param label - [String] to be displayed as the Tile's label.
+ * @param leadingSlot - Custom composable content displayed in the leading position.
+ * @param modifier - [Modifier] to be applied to the Tile.
+ * @param enabled - [Boolean] flag to enable or disable the Tile.
+ * @param isSelected - [Boolean] flag to apply selected styling to the Tile.
+ * @param supportText - Optional [String] to be displayed below the label.
+ * @param alignment - [Alignment.Horizontal] to align the Tile's content horizontally.
+ *  **Deprecated**: Tiles now always use Start alignment per the design spec.
+ * @param topAccessory - Optional composable rendered at the top-right of the Tile.
+ * @param onClick - Callback to be invoked when the Tile is clicked.
+ * @param interactionSource - [MutableInteractionSource] to be applied to the Tile.
+ * @param variant - [LemonadeTileVariant] to style the Tile accordingly.
+ */
+@Suppress("LongParameterList")
+@Composable
+public fun LemonadeUi.Tile(
+    label: String,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    isSelected: Boolean = false,
+    supportText: String? = null,
+    alignment: Alignment.Horizontal = Alignment.Start,
+    topAccessory: (@Composable () -> Unit)? = null,
+    onClick: (() -> Unit)? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    variant: LemonadeTileVariant = LemonadeTileVariant.Filled,
+    leadingSlot: @Composable () -> Unit,
+) {
+    val contentColor = if (isSelected) {
+        LocalColors.current.content.contentOnBrandHigh
+    } else {
+        LocalColors.current.content.contentPrimary
+    }
+
+    CoreTile(
+        modifier = modifier,
+        variant = variant,
+        onClick = onClick,
+        enabled = enabled,
+        isSelected = isSelected,
+        interactionSource = interactionSource,
+        content = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
+                horizontalAlignment = alignment,
+                modifier = Modifier
+                    .defaultMinSize(
+                        minWidth = 120.dp,
+                        minHeight = 88.dp,
+                    )
+                    .padding(all = LocalSpaces.current.spacing300),
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    leadingSlot()
+
+                    if (topAccessory != null) {
+                        topAccessory()
+                    }
+                }
+
+                Spacer(modifier = Modifier.weight(weight = 1f))
+
+                Column(
+                    horizontalAlignment = alignment,
+                ) {
+                    LemonadeUi.Text(
+                        text = label,
+                        textStyle = LocalTypographies.current.bodySmallMedium,
+                        color = contentColor,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                    )
+
+                    if (supportText != null) {
+                        LemonadeUi.Text(
+                            text = supportText,
+                            textStyle = LocalTypographies.current.bodySmallRegular,
+                            color = LocalColors.current.content.contentSecondary,
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1,
+                        )
+                    }
+                }
+            }
+        },
+    )
+}
+
 @Suppress("LongMethod", "LongParameterList")
 @Composable
 private fun CoreTile(

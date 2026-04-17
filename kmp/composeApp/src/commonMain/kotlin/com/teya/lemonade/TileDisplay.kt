@@ -131,6 +131,26 @@ internal fun TileDisplay() {
             }
         }
 
+        // Leading Slot
+        TileSection(title = "Leading Slot") {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+                modifier = Modifier.horizontalScroll(rememberScrollState()),
+            ) {
+                LemonadeUi.Tile(
+                    label = "Custom",
+                    variant = LemonadeTileVariant.Filled,
+                    leadingSlot = {
+                        LemonadeUi.Icon(
+                            icon = LemonadeIcons.ShoppingBag,
+                            size = LemonadeAssetSize.Medium,
+                            contentDescription = null,
+                        )
+                    },
+                )
+            }
+        }
+
         // Interactive
         TileSection(title = "Interactive") {
             Row(

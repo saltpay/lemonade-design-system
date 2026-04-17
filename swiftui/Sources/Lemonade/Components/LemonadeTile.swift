@@ -167,6 +167,111 @@ public extension LemonadeUi {
         )
     }
 
+    /// A tile component with a custom leading slot view instead of an icon.
+    ///
+    /// ## Usage
+    /// ```swift
+    /// LemonadeUi.Tile(
+    ///     label: "Custom",
+    ///     variant: .filled,
+    ///     leadingSlot: {
+    ///         LemonadeUi.Icon(icon: .shoppingBag, contentDescription: nil, size: .medium)
+    ///     }
+    /// )
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - label: The text to be displayed in the tile
+    ///   - enabled: Flag to define if component is enabled. Defaults to true
+    ///   - isSelected: Whether the tile is in a selected state. Defaults to false
+    ///   - supportText: Optional secondary text displayed below the label
+    ///   - onClick: Callback called when component is tapped
+    ///   - variant: LemonadeTileVariant to define visual style. Defaults to .filled
+    ///   - stretched: Whether the tile should stretch to fill available width. Defaults to false
+    ///   - alignment: Horizontal alignment of the tile content. Defaults to .leading
+    ///   - leadingSlot: A custom view rendered where the icon would normally appear
+    /// - Returns: A styled Tile view
+    @ViewBuilder
+    static func Tile<LeadingContent: View>(
+        label: String,
+        enabled: Bool = true,
+        isSelected: Bool = false,
+        supportText: String? = nil,
+        onClick: (() -> Void)? = nil,
+        variant: LemonadeTileVariant = .filled,
+        stretched: Bool = false,
+        alignment: HorizontalAlignment = .leading,
+        @ViewBuilder leadingSlot: @escaping () -> LeadingContent
+    ) -> some View {
+        LemonadeTileSlotView<LeadingContent, EmptyView>(
+            label: label,
+            enabled: enabled,
+            isSelected: isSelected,
+            supportText: supportText,
+            onClick: onClick,
+            variant: variant,
+            stretched: stretched,
+            alignment: alignment,
+            leadingSlot: leadingSlot,
+            topAccessory: nil
+        )
+    }
+
+    /// A tile component with a custom leading slot view and a top-right accessory.
+    ///
+    /// ## Usage
+    /// ```swift
+    /// LemonadeUi.Tile(
+    ///     label: "Custom",
+    ///     variant: .filled,
+    ///     leadingSlot: {
+    ///         LemonadeUi.Icon(icon: .shoppingBag, contentDescription: nil, size: .medium)
+    ///     },
+    ///     topAccessory: {
+    ///         LemonadeUi.Icon(icon: .circleInfo, contentDescription: nil, size: .small)
+    ///     }
+    /// )
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - label: The text to be displayed in the tile
+    ///   - enabled: Flag to define if component is enabled. Defaults to true
+    ///   - isSelected: Whether the tile is in a selected state. Defaults to false
+    ///   - supportText: Optional secondary text displayed below the label
+    ///   - onClick: Callback called when component is tapped
+    ///   - variant: LemonadeTileVariant to define visual style. Defaults to .filled
+    ///   - stretched: Whether the tile should stretch to fill available width. Defaults to false
+    ///   - alignment: Horizontal alignment of the tile content. Defaults to .leading
+    ///   - leadingSlot: A custom view rendered where the icon would normally appear
+    ///   - topAccessory: A view rendered at the top-right of the tile
+    /// - Returns: A styled Tile view
+    @ViewBuilder
+    static func Tile<LeadingContent: View, TopAccessory: View>(
+        label: String,
+        enabled: Bool = true,
+        isSelected: Bool = false,
+        supportText: String? = nil,
+        onClick: (() -> Void)? = nil,
+        variant: LemonadeTileVariant = .filled,
+        stretched: Bool = false,
+        alignment: HorizontalAlignment = .leading,
+        @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
+        @ViewBuilder topAccessory: @escaping () -> TopAccessory
+    ) -> some View {
+        LemonadeTileSlotView(
+            label: label,
+            enabled: enabled,
+            isSelected: isSelected,
+            supportText: supportText,
+            onClick: onClick,
+            variant: variant,
+            stretched: stretched,
+            alignment: alignment,
+            leadingSlot: leadingSlot,
+            topAccessory: topAccessory
+        )
+    }
+
 }
 
 // MARK: - Internal Tile View
@@ -216,6 +321,104 @@ private struct LemonadeTileView<TopAccessory: View>: View {
                     size: .medium,
                     tint: effectiveContentColor
                 )
+
+                Spacer(minLength: 0)
+
+                if let topAccessory {
+                    topAccessory()
+                }
+            }
+
+            Spacer(minLength: 0)
+
+            VStack(alignment: .leading, spacing: 0) {
+                LemonadeUi.Text(
+                    label,
+                    textStyle: LemonadeTypography.shared.bodySmallMedium,
+                    color: effectiveContentColor,
+                    overflow: .tail,
+                    maxLines: 1
+                )
+
+                if let supportText {
+                    LemonadeUi.Text(
+                        supportText,
+                        textStyle: LemonadeTypography.shared.bodySmallRegular,
+                        color: LemonadeTheme.colors.content.contentSecondary,
+                        overflow: .tail,
+                        maxLines: 1
+                    )
+                }
+            }
+        }
+        .padding(LemonadeTheme.spaces.spacing300)
+    }
+
+    var body: some View {
+        tileContent
+        .frame(minWidth: minWidth, minHeight: minHeight)
+        .applyIf(stretched) { $0.frame(maxWidth: .infinity) }
+        .background(effectiveBackgroundColor)
+        .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
+        .overlay(
+            RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
+                .stroke(effectiveBorderColor, lineWidth: effectiveBorderWidth)
+        )
+        .applyIf(effectiveShadow != nil) { view in
+            view.lemonadeShadow(self.effectiveShadow!)
+        }
+        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+        .contentShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
+        .onTapGesture {
+            if let onClick = onClick, enabled {
+                onClick()
+            }
+        }
+    }
+}
+
+// MARK: - Internal Tile Slot View
+
+private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: View {
+    let label: String
+    let enabled: Bool
+    let isSelected: Bool
+    let supportText: String?
+    let onClick: (() -> Void)?
+    let variant: LemonadeTileVariant
+    let stretched: Bool
+    let alignment: HorizontalAlignment
+    let leadingSlot: () -> LeadingContent
+    let topAccessory: (() -> TopAccessory)?
+
+    private let minWidth: CGFloat = 120
+    private let minHeight: CGFloat = 88
+
+    private var effectiveBackgroundColor: Color {
+        isSelected ? LemonadeTheme.colors.background.bgBrandSubtle : variant.backgroundColor
+    }
+
+    private var effectiveBorderColor: Color {
+        isSelected ? LemonadeTheme.colors.border.borderSelected : variant.borderColor
+    }
+
+    private var effectiveBorderWidth: CGFloat {
+        isSelected ? LemonadeTheme.borderWidth.base.border50 : variant.borderWidth
+    }
+
+    private var effectiveShadow: LemonadeShadow? {
+        isSelected ? nil : variant.shadow
+    }
+
+    private var effectiveContentColor: Color {
+        isSelected ? LemonadeTheme.colors.content.contentOnBrandHigh : LemonadeTheme.colors.content.contentPrimary
+    }
+
+    private var tileContent: some View {
+        VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing300) {
+            // Top row: leadingSlot + topAccessory
+            HStack {
+                leadingSlot()
 
                 Spacer(minLength: 0)
 

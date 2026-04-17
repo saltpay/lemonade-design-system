@@ -88,6 +88,23 @@ struct TileDisplayView: View {
                     }
                 }
 
+                // MARK: - Leading Slot
+                sectionView(title: "Leading Slot") {
+                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
+                        LemonadeUi.Tile(
+                            label: "Custom",
+                            variant: .filled,
+                            leadingSlot: {
+                                LemonadeUi.Icon(
+                                    icon: .shoppingBag,
+                                    contentDescription: nil,
+                                    size: .medium
+                                )
+                            }
+                        )
+                    }
+                }
+
                 // MARK: - Features
                 sectionView(title: "Interactive") {
                     HStack(spacing: LemonadeTheme.spaces.spacing400) {
