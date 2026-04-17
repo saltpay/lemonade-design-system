@@ -18,7 +18,7 @@ internal interface Displays {
             Switch,
             Checkbox,
             RadioButton,
-            SelectionListItem,
+            SelectListItem,
             ActionListItem,
             ResourceListItem,
             ContentListItem,
@@ -100,8 +100,8 @@ internal interface Displays {
     }
 
     @Serializable
-    data object SelectionListItem : Displays {
-        override val label: String = "SelectionListItem"
+    data object SelectListItem : Displays {
+        override val label: String = "SelectListItem"
     }
 
     @Serializable

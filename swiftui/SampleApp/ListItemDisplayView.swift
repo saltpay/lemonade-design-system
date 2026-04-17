@@ -1,10 +1,39 @@
 import SwiftUI
 import Lemonade
 
+private struct OutlinedOption: Identifiable {
+    let id = UUID()
+    let label: String
+    let icon: LemonadeIcon
+}
+
+private struct TrailingPreset {
+    let label: String
+    let voice: TagVoice
+}
+
+private let trailingPresets: [TrailingPreset] = [
+    TrailingPreset(label: "New", voice: .info),
+    TrailingPreset(label: "Recommended", voice: .positive),
+    TrailingPreset(label: "Popular", voice: .neutral)
+]
+
 struct ListItemDisplayView: View {
     @State private var singleSelection = 0
     @State private var multipleSelections: Set<Int> = [0]
     @State private var toggleStates: [Bool] = [true, false, true]
+    @State private var outlinedWithLeading = 0
+    @State private var outlinedWithTrailing = 1
+    @State private var outlinedLabelOnly = 0
+    @State private var outlinedWithSupport = 0
+    @State private var outlinedMultiple: Set<Int> = [0]
+
+    private let outlinedOptions: [OutlinedOption] = [
+        OutlinedOption(label: "Option A", icon: .heart),
+        OutlinedOption(label: "Option B", icon: .star),
+        OutlinedOption(label: "Option C", icon: .sparkles),
+        OutlinedOption(label: "Option D", icon: .gift)
+    ]
 
     var body: some View {
         ScrollView(.vertical) {
@@ -327,6 +356,197 @@ struct ListItemDisplayView: View {
                         isLoading: true,
                         showDivider: false
                     )
+                }
+
+                // MARK: - Outlined — Leading icon only
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(title: "Outlined — Leading icon only")
+                ) {
+                    VStack(spacing: LemonadeTheme.spaces.spacing200) {
+                        ForEach(Array(outlinedOptions.enumerated()), id: \.element.id) { index, option in
+                            let isChecked = outlinedWithLeading == index
+                            LemonadeUi.SelectListItem(
+                                label: option.label,
+                                type: .single,
+                                checked: isChecked,
+                                onItemClicked: { outlinedWithLeading = index },
+                                variant: .outlined,
+                                leadingSlot: {
+                                    LemonadeUi.SymbolContainer(
+                                        icon: option.icon,
+                                        contentDescription: nil,
+                                        voice: isChecked ? .positive : .neutral,
+                                        size: .large,
+                                        shape: .rounded
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
+
+                // MARK: - Outlined — Leading + trailing tag
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(title: "Outlined — Leading + trailing tag")
+                ) {
+                    VStack(spacing: LemonadeTheme.spaces.spacing200) {
+                        ForEach(Array(outlinedOptions.prefix(3).enumerated()), id: \.element.id) { index, option in
+                            let isChecked = outlinedWithTrailing == index
+                            let preset = trailingPresets[index]
+                            LemonadeUi.SelectListItem(
+                                label: option.label,
+                                type: .single,
+                                checked: isChecked,
+                                onItemClicked: { outlinedWithTrailing = index },
+                                variant: .outlined,
+                                leadingSlot: {
+                                    LemonadeUi.SymbolContainer(
+                                        icon: option.icon,
+                                        contentDescription: nil,
+                                        voice: isChecked ? .positive : .neutral,
+                                        size: .large,
+                                        shape: .rounded
+                                    )
+                                },
+                                trailingSlot: {
+                                    LemonadeUi.Tag(label: preset.label, voice: preset.voice)
+                                }
+                            )
+                        }
+                    }
+                }
+
+                // MARK: - Outlined — Label only
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(title: "Outlined — Label only (no leading, no trailing)")
+                ) {
+                    VStack(spacing: LemonadeTheme.spaces.spacing200) {
+                        ForEach(0..<3, id: \.self) { index in
+                            LemonadeUi.SelectListItem(
+                                label: "Option \(index + 1)",
+                                type: .single,
+                                checked: outlinedLabelOnly == index,
+                                onItemClicked: { outlinedLabelOnly = index },
+                                variant: .outlined
+                            )
+                        }
+                    }
+                }
+
+                // MARK: - Outlined — With support text
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(title: "Outlined — With support text")
+                ) {
+                    VStack(spacing: LemonadeTheme.spaces.spacing200) {
+                        ForEach(Array(outlinedOptions.prefix(3).enumerated()), id: \.element.id) { index, option in
+                            LemonadeUi.SelectListItem(
+                                label: option.label,
+                                type: .single,
+                                checked: outlinedWithSupport == index,
+                                onItemClicked: { outlinedWithSupport = index },
+                                variant: .outlined,
+                                supportText: "Short description for \(option.label.lowercased())",
+                                leadingSlot: {
+                                    LemonadeUi.SymbolContainer(
+                                        icon: option.icon,
+                                        contentDescription: nil,
+                                        voice: .neutral,
+                                        size: .large,
+                                        shape: .rounded
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
+
+                // MARK: - Outlined — Multiple
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(title: "Outlined — Multiple")
+                ) {
+                    VStack(spacing: LemonadeTheme.spaces.spacing200) {
+                        ForEach(Array(outlinedOptions.enumerated()), id: \.element.id) { index, option in
+                            let isChecked = outlinedMultiple.contains(index)
+                            LemonadeUi.SelectListItem(
+                                label: option.label,
+                                type: .multiple,
+                                checked: isChecked,
+                                onItemClicked: {
+                                    if isChecked {
+                                        outlinedMultiple.remove(index)
+                                    } else {
+                                        outlinedMultiple.insert(index)
+                                    }
+                                },
+                                variant: .outlined,
+                                supportText: index == 0 ? "Tap to toggle" : nil,
+                                leadingSlot: {
+                                    LemonadeUi.SymbolContainer(
+                                        icon: option.icon,
+                                        contentDescription: nil,
+                                        voice: isChecked ? .positive : .neutral,
+                                        size: .large,
+                                        shape: .rounded
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
+
+                // MARK: - Outlined — Disabled states
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(title: "Outlined — Disabled states")
+                ) {
+                    VStack(spacing: LemonadeTheme.spaces.spacing200) {
+                        LemonadeUi.SelectListItem(
+                            label: "Disabled, no leading",
+                            type: .single,
+                            checked: false,
+                            onItemClicked: {},
+                            variant: .outlined,
+                            enabled: false
+                        )
+
+                        LemonadeUi.SelectListItem(
+                            label: "Disabled, with leading",
+                            type: .single,
+                            checked: false,
+                            onItemClicked: {},
+                            variant: .outlined,
+                            enabled: false,
+                            leadingSlot: {
+                                LemonadeUi.SymbolContainer(
+                                    icon: .padlock,
+                                    contentDescription: nil,
+                                    voice: .neutral,
+                                    size: .large,
+                                    shape: .rounded
+                                )
+                            }
+                        )
+
+                        LemonadeUi.SelectListItem(
+                            label: "Disabled, with trailing tag",
+                            type: .single,
+                            checked: false,
+                            onItemClicked: {},
+                            variant: .outlined,
+                            enabled: false,
+                            leadingSlot: {
+                                LemonadeUi.SymbolContainer(
+                                    icon: .bell,
+                                    contentDescription: nil,
+                                    voice: .neutral,
+                                    size: .large,
+                                    shape: .rounded
+                                )
+                            },
+                            trailingSlot: {
+                                LemonadeUi.Tag(label: "Coming Soon")
+                            }
+                        )
+                    }
                 }
             }
             .padding(.space.spacing400)

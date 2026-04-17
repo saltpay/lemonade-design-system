@@ -2,6 +2,7 @@ package com.teya.lemonade
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
@@ -36,6 +37,7 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeListItemVoice
 import com.teya.lemonade.core.LemonadeSkeletonSize
 import com.teya.lemonade.core.SelectListItemType
+import com.teya.lemonade.core.SelectListItemVariant
 import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.SymbolContainerVoice
 import com.teya.lemonade.core.TagVoice
@@ -64,11 +66,18 @@ import com.teya.lemonade.core.TagVoice
  * @param checked - Flag defining if item is selected or not.
  * @param onItemClicked - Callback that is triggered on click interaction with list item.
  * @param modifier - [Modifier] to be applied to the base container of component.
- * @param isLoading - Shows a skeleton loading placeholder instead of content.
+ * @param variant - [SelectListItemVariant] that controls the visual treatment.
+ *  [SelectListItemVariant.Plain] (default) delegates to the base [LemonadeUi.ListItem] row and is
+ *  meant to sit inside a surrounding surface such as [LemonadeUi.Card]. [SelectListItemVariant.Outlined]
+ *  presents its own rounded container with a border and a brand-tinted background when selected,
+ *  so items can stand alone in a stack.
+ * @param isLoading - Shows a skeleton loading placeholder instead of content. Only honored by
+ *  [SelectListItemVariant.Plain].
  * @param enabled - Flag that defines if the component is enabled or not. If disabled, click interactions
  *  and visual states are disabled.
  * @param interactionSource - Selection list item [MutableInteractionSource] for interaction events.
- * @param showDivider - Flag to show a divider below the list item.
+ * @param showDivider - Flag to show a divider below the list item. Only honored by
+ *  [SelectListItemVariant.Plain].
  * @param supportText - Text to be displayed below the [label] as a support text.
  * @param leadingSlot - A Slot to be placed in the leading position of the list item.
  * @param trailingSlot - A Slot to be placed in the trailing position of the list item.
@@ -80,6 +89,7 @@ public fun LemonadeUi.SelectListItem(
     checked: Boolean,
     onItemClicked: () -> Unit,
     modifier: Modifier = Modifier,
+    variant: SelectListItemVariant = SelectListItemVariant.Plain,
     isLoading: Boolean = false,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -88,6 +98,127 @@ public fun LemonadeUi.SelectListItem(
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
 ) {
+    when (variant) {
+        SelectListItemVariant.Plain -> {
+            PlainSelectListItem(
+                label = label,
+                type = type,
+                checked = checked,
+                onItemClicked = onItemClicked,
+                modifier = modifier,
+                isLoading = isLoading,
+                enabled = enabled,
+                interactionSource = interactionSource,
+                showDivider = showDivider,
+                supportText = supportText,
+                leadingSlot = leadingSlot,
+                trailingSlot = trailingSlot,
+            )
+        }
+
+        SelectListItemVariant.Outlined -> {
+            OutlinedSelectListItem(
+                label = label,
+                type = type,
+                checked = checked,
+                onItemClicked = onItemClicked,
+                modifier = modifier,
+                enabled = enabled,
+                interactionSource = interactionSource,
+                supportText = supportText,
+                leadingSlot = leadingSlot,
+                trailingSlot = trailingSlot,
+            )
+        }
+    }
+}
+
+private val SelectListItemType.role: Role
+    get() {
+        return when (this) {
+            SelectListItemType.Single -> Role.RadioButton
+            SelectListItemType.Multiple -> Role.Checkbox
+            SelectListItemType.Toggle -> Role.Switch
+        }
+    }
+
+private fun handleSelectClick(
+    type: SelectListItemType,
+    checked: Boolean,
+    onItemClicked: () -> Unit,
+) {
+    when (type) {
+        SelectListItemType.Single -> {
+            if (!checked) {
+                onItemClicked()
+            }
+        }
+
+        SelectListItemType.Multiple,
+        SelectListItemType.Toggle,
+        -> {
+            onItemClicked()
+        }
+    }
+}
+
+@Composable
+private fun SelectionControl(
+    type: SelectListItemType,
+    checked: Boolean,
+    onItemClicked: () -> Unit,
+    enabled: Boolean,
+    interactionSource: MutableInteractionSource,
+) {
+    when (type) {
+        SelectListItemType.Single -> {
+            LemonadeUi.RadioButton(
+                checked = checked,
+                onRadioButtonClicked = onItemClicked,
+                enabled = enabled,
+                interactionSource = interactionSource,
+            )
+        }
+
+        SelectListItemType.Multiple -> {
+            LemonadeUi.Checkbox(
+                status = if (checked) {
+                    CheckboxStatus.Checked
+                } else {
+                    CheckboxStatus.Unchecked
+                },
+                onCheckboxClicked = onItemClicked,
+                enabled = enabled,
+                interactionSource = interactionSource,
+            )
+        }
+
+        SelectListItemType.Toggle -> {
+            LemonadeUi.Switch(
+                checked = checked,
+                onCheckedChange = { onItemClicked() },
+                enabled = enabled,
+                interactionSource = interactionSource,
+            )
+        }
+    }
+}
+
+@Composable
+private fun PlainSelectListItem(
+    label: String,
+    type: SelectListItemType,
+    checked: Boolean,
+    onItemClicked: () -> Unit,
+    modifier: Modifier,
+    isLoading: Boolean,
+    enabled: Boolean,
+    interactionSource: MutableInteractionSource,
+    showDivider: Boolean,
+    supportText: String?,
+    leadingSlot: (@Composable RowScope.() -> Unit)?,
+    trailingSlot: (@Composable RowScope.() -> Unit)?,
+) {
     LemonadeUi.ListItem(
         modifier = modifier,
         label = label,
@@ -95,25 +226,13 @@ public fun LemonadeUi.SelectListItem(
         isLoading = isLoading,
         interactionSource = interactionSource,
         showDivider = showDivider,
-        role = when (type) {
-            SelectListItemType.Single -> Role.RadioButton
-            SelectListItemType.Multiple -> Role.Checkbox
-            SelectListItemType.Toggle -> Role.Switch
-        },
+        role = type.role,
         onListItemClick = {
-            when (type) {
-                SelectListItemType.Single -> {
-                    if (!checked) {
-                        onItemClicked()
-                    }
-                }
-
-                SelectListItemType.Multiple,
-                SelectListItemType.Toggle,
-                -> {
-                    onItemClicked()
-                }
-            }
+            handleSelectClick(
+                type = type,
+                checked = checked,
+                onItemClicked = onItemClicked,
+            )
         },
         enabled = enabled,
         leadingSlot = leadingSlot,
@@ -126,41 +245,141 @@ public fun LemonadeUi.SelectListItem(
                     trailingSlot()
                 }
 
-                when (type) {
-                    SelectListItemType.Single -> {
-                        LemonadeUi.RadioButton(
-                            enabled = enabled,
-                            checked = checked,
-                            onRadioButtonClicked = onItemClicked,
-                            interactionSource = interactionSource,
-                        )
-                    }
-
-                    SelectListItemType.Multiple -> {
-                        LemonadeUi.Checkbox(
-                            enabled = enabled,
-                            onCheckboxClicked = onItemClicked,
-                            interactionSource = interactionSource,
-                            status = if (checked) {
-                                CheckboxStatus.Checked
-                            } else {
-                                CheckboxStatus.Unchecked
-                            },
-                        )
-                    }
-
-                    SelectListItemType.Toggle -> {
-                        LemonadeUi.Switch(
-                            enabled = enabled,
-                            checked = checked,
-                            interactionSource = interactionSource,
-                            onCheckedChange = { onItemClicked() },
-                        )
-                    }
-                }
+                SelectionControl(
+                    type = type,
+                    checked = checked,
+                    onItemClicked = onItemClicked,
+                    enabled = enabled,
+                    interactionSource = interactionSource,
+                )
             }
         },
     )
+}
+
+@Suppress("LongParameterList")
+@Composable
+private fun OutlinedSelectListItem(
+    label: String,
+    type: SelectListItemType,
+    checked: Boolean,
+    onItemClicked: () -> Unit,
+    modifier: Modifier,
+    enabled: Boolean,
+    interactionSource: MutableInteractionSource,
+    supportText: String?,
+    leadingSlot: (@Composable RowScope.() -> Unit)?,
+    trailingSlot: (@Composable RowScope.() -> Unit)?,
+) {
+    val colors = LocalColors.current
+    val spaces = LocalSpaces.current
+    val shapes = LocalShapes.current
+    val borderWidths = LocalBorderWidths.current
+    val typographies = LocalTypographies.current
+    val opacities = LocalOpacities.current
+
+    val animatedBackgroundColor by animateColorAsState(
+        targetValue = if (checked) {
+            colors.background.bgBrandSubtle
+        } else {
+            colors.background.bgDefault
+        },
+    )
+    val animatedBorderColor by animateColorAsState(
+        targetValue = if (checked) {
+            colors.border.borderSelected
+        } else {
+            colors.border.borderNeutralLow
+        },
+    )
+    val borderWidth = if (checked) {
+        borderWidths.base.border50
+    } else {
+        borderWidths.base.border40
+    }
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .clip(shape = shapes.radius500)
+            .background(color = animatedBackgroundColor)
+            .border(
+                width = borderWidth,
+                color = animatedBorderColor,
+                shape = shapes.radius500,
+            ).clickable(
+                onClick = {
+                    handleSelectClick(
+                        type = type,
+                        checked = checked,
+                        onItemClicked = onItemClicked,
+                    )
+                },
+                enabled = enabled,
+                interactionSource = interactionSource,
+                role = type.role,
+            ).padding(
+                start = spaces.spacing300,
+                end = spaces.spacing400,
+                top = spaces.spacing300,
+                bottom = spaces.spacing300,
+            ),
+    ) {
+        if (leadingSlot != null) {
+            Row(
+                modifier = Modifier
+                    .modifyIf(predicate = !enabled) {
+                        alpha(alpha = opacities.state.opacityDisabled)
+                    }.padding(end = spaces.spacing300),
+                content = leadingSlot,
+            )
+        }
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(space = spaces.spacing50),
+            modifier = Modifier
+                .weight(weight = 1f)
+                .padding(end = spaces.spacing300)
+                .modifyIf(predicate = !enabled) {
+                    alpha(alpha = opacities.state.opacityDisabled)
+                },
+        ) {
+            LemonadeUi.Text(
+                text = label,
+                textStyle = typographies.bodyMediumMedium,
+                color = colors.content.contentPrimary,
+            )
+
+            if (supportText != null) {
+                LemonadeUi.Text(
+                    text = supportText,
+                    textStyle = typographies.bodySmallRegular,
+                    color = colors.content.contentSecondary,
+                )
+            }
+        }
+
+        if (trailingSlot != null) {
+            Row(
+                modifier = Modifier.modifyIf(predicate = !enabled) {
+                    alpha(alpha = opacities.state.opacityDisabled)
+                },
+                content = trailingSlot,
+            )
+        }
+
+        Row(
+            modifier = Modifier.padding(start = spaces.spacing200),
+        ) {
+            SelectionControl(
+                type = type,
+                checked = checked,
+                onItemClicked = onItemClicked,
+                enabled = enabled,
+                interactionSource = interactionSource,
+            )
+        }
+    }
 }
 
 /**

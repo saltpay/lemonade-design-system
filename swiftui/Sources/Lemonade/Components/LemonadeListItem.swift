@@ -12,6 +12,18 @@ public enum SelectListItemType {
     case toggle
 }
 
+// MARK: - SelectListItemVariant
+
+/// Defines the visual variant of a SelectListItem.
+/// - `plain`: Bare row, meant to sit inside a surrounding `LemonadeUi.Card` or surface. Uses
+///   press/hover interaction background, supports dividers and loading skeletons.
+/// - `outlined`: Card-shaped container with its own rounded background and border, brand-tinted
+///   when selected. Stands alone in a stack without a surrounding surface.
+public enum SelectListItemVariant {
+    case plain
+    case outlined
+}
+
 // MARK: - LemonadeListItemVoice
 
 /// Defines the tone of voice for ListItem.
