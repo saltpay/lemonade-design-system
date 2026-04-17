@@ -116,9 +116,14 @@ internal fun TextDisplay() {
 // that follow a lowercase letter (e.g. "BodyXLargeRegular" → ["Body", "XLarge", "Regular"]).
 private val typographyLabelRegex = Regex("([a-z])([A-Z0-9])")
 
-private data class TypographyLabelInfo(val displayLabel: String, val category: String, val subCategory: String?)
+private data class TypographyLabelInfo(
+    val displayLabel: String,
+    val category: String,
+    val subCategory: String?,
+)
 
-private val typographyLabels: Map<LemonadeTypography, TypographyLabelInfo> = LemonadeTypography.entries.associateWith { typography ->
+private val typographyLabels: Map<LemonadeTypography, TypographyLabelInfo> =
+    LemonadeTypography.entries.associateWith { typography ->
     val parts = typography.name.replace(typographyLabelRegex, "$1 $2").split(" ")
     TypographyLabelInfo(
         displayLabel = parts.joinToString(" "),
