@@ -246,7 +246,7 @@ private struct LemonadeTileView<TopAccessory: View>: View {
                 }
             }
         }
-        .frame(maxWidth: .infinity, alignment: Alignment(horizontal: alignment, vertical: .center))
+        .frame(maxWidth: .infinity, alignment: Alignment(horizontal: alignment, vertical: .top))
         .padding(LemonadeTheme.spaces.spacing300)
     }
 
