@@ -75,7 +75,6 @@ interface class LemonadeInteractionColors {
   final Color bgElevatedInteractive;
   final Color bgCriticalSubtleInteractive;
   final Color bgDefaultPressed;
-  final Color bgSubtlePressed;
   final Color bgElevatedPressed;
   final Color bgBrandPressed;
   final Color bgBrandHighPressed;
@@ -84,7 +83,6 @@ interface class LemonadeInteractionColors {
   final Color bgInfoPressed;
   final Color bgPositivePressed;
   final Color bgNeutralPressed;
-  final Color bgCriticalSubtlePressed;
   final Color bgCautionSubtlePressed;
   final Color bgInfoSubtlePressed;
   final Color bgPositiveSubtlePressed;
@@ -110,7 +108,6 @@ interface class LemonadeInteractionColors {
     required this.bgElevatedInteractive,
     required this.bgCriticalSubtleInteractive,
     required this.bgDefaultPressed,
-    required this.bgSubtlePressed,
     required this.bgElevatedPressed,
     required this.bgBrandPressed,
     required this.bgBrandHighPressed,
@@ -119,7 +116,6 @@ interface class LemonadeInteractionColors {
     required this.bgInfoPressed,
     required this.bgPositivePressed,
     required this.bgNeutralPressed,
-    required this.bgCriticalSubtlePressed,
     required this.bgCautionSubtlePressed,
     required this.bgInfoSubtlePressed,
     required this.bgPositiveSubtlePressed,
@@ -153,7 +149,6 @@ interface class LemonadeInteractionColors {
       bgElevatedInteractive: Color.lerp(a.bgElevatedInteractive, b.bgElevatedInteractive, t)!,
       bgCriticalSubtleInteractive: Color.lerp(a.bgCriticalSubtleInteractive, b.bgCriticalSubtleInteractive, t)!,
       bgDefaultPressed: Color.lerp(a.bgDefaultPressed, b.bgDefaultPressed, t)!,
-      bgSubtlePressed: Color.lerp(a.bgSubtlePressed, b.bgSubtlePressed, t)!,
       bgElevatedPressed: Color.lerp(a.bgElevatedPressed, b.bgElevatedPressed, t)!,
       bgBrandPressed: Color.lerp(a.bgBrandPressed, b.bgBrandPressed, t)!,
       bgBrandHighPressed: Color.lerp(a.bgBrandHighPressed, b.bgBrandHighPressed, t)!,
@@ -162,7 +157,6 @@ interface class LemonadeInteractionColors {
       bgInfoPressed: Color.lerp(a.bgInfoPressed, b.bgInfoPressed, t)!,
       bgPositivePressed: Color.lerp(a.bgPositivePressed, b.bgPositivePressed, t)!,
       bgNeutralPressed: Color.lerp(a.bgNeutralPressed, b.bgNeutralPressed, t)!,
-      bgCriticalSubtlePressed: Color.lerp(a.bgCriticalSubtlePressed, b.bgCriticalSubtlePressed, t)!,
       bgCautionSubtlePressed: Color.lerp(a.bgCautionSubtlePressed, b.bgCautionSubtlePressed, t)!,
       bgInfoSubtlePressed: Color.lerp(a.bgInfoSubtlePressed, b.bgInfoSubtlePressed, t)!,
       bgPositiveSubtlePressed: Color.lerp(a.bgPositiveSubtlePressed, b.bgPositiveSubtlePressed, t)!,
