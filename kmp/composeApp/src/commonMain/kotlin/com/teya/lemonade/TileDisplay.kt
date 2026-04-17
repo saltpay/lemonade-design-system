@@ -13,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTileVariant
 
@@ -72,21 +73,18 @@ internal fun TileDisplay() {
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 modifier = Modifier.horizontalScroll(rememberScrollState()),
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-                ) {
-                    LemonadeUi.Tile(
-                        label = "Selected",
-                        icon = LemonadeIcons.CircleCheck,
-                        variant = LemonadeTileVariant.Filled,
-                        isSelected = true,
-                    )
-                    LemonadeUi.Text(
-                        text = "Selected",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular,
-                    )
-                }
+                LemonadeUi.Tile(
+                    label = "Filled",
+                    icon = LemonadeIcons.CircleCheck,
+                    variant = LemonadeTileVariant.Filled,
+                    isSelected = true,
+                )
+                LemonadeUi.Tile(
+                    label = "Outlined",
+                    icon = LemonadeIcons.CircleCheck,
+                    variant = LemonadeTileVariant.Outlined,
+                    isSelected = true,
+                )
             }
         }
 
@@ -112,28 +110,23 @@ internal fun TileDisplay() {
             }
         }
 
-        // Alignment
-        TileSection(title = "Alignment") {
+        // Top Accessory
+        TileSection(title = "Top Accessory") {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 modifier = Modifier.horizontalScroll(rememberScrollState()),
             ) {
                 LemonadeUi.Tile(
-                    label = "Start",
-                    icon = LemonadeIcons.ArrowLeft,
-                    alignment = Alignment.Start,
-                )
-
-                LemonadeUi.Tile(
-                    label = "Center",
-                    icon = LemonadeIcons.ArrowLeftRight,
-                    alignment = Alignment.CenterHorizontally,
-                )
-
-                LemonadeUi.Tile(
-                    label = "End",
-                    icon = LemonadeIcons.ArrowRight,
-                    alignment = Alignment.End,
+                    label = "Accessory",
+                    icon = LemonadeIcons.Heart,
+                    variant = LemonadeTileVariant.Filled,
+                    topAccessory = {
+                        LemonadeUi.Icon(
+                            icon = LemonadeIcons.CircleInfo,
+                            size = LemonadeAssetSize.Small,
+                            contentDescription = null,
+                        )
+                    },
                 )
             }
         }

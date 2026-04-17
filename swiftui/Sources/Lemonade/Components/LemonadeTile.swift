@@ -81,7 +81,9 @@ public extension LemonadeUi {
     ///   - onClick: Callback called when component is tapped
     ///   - variant: LemonadeTileVariant to define visual style. Defaults to .filled
     ///   - stretched: Whether the tile should stretch to fill available width. Defaults to false
-    ///   - alignment: Horizontal alignment of the tile content. Defaults to .center
+    ///   - alignment: Horizontal alignment of the tile content. Defaults to .leading.
+    ///     **Deprecated**: Tiles now always use leading alignment per the design spec.
+    ///     This parameter will be removed in a future release.
     /// - Returns: A styled Tile view
     @ViewBuilder
     static func Tile(
@@ -93,7 +95,63 @@ public extension LemonadeUi {
         onClick: (() -> Void)? = nil,
         variant: LemonadeTileVariant = .filled,
         stretched: Bool = false,
-        alignment: HorizontalAlignment = .center
+        alignment: HorizontalAlignment = .leading
+    ) -> some View {
+        LemonadeTileView<EmptyView>(
+            label: label,
+            icon: icon,
+            enabled: enabled,
+            isSelected: isSelected,
+            supportText: supportText,
+            onClick: onClick,
+            variant: variant,
+            stretched: stretched,
+            alignment: alignment,
+            topAccessory: nil
+        )
+    }
+
+    /// A tile component with icon, label, and a top-right accessory view.
+    ///
+    /// ## Usage
+    /// ```swift
+    /// LemonadeUi.Tile(
+    ///     label: "Label",
+    ///     icon: .heart,
+    ///     variant: .filled,
+    ///     onClick: { /* action */ }
+    /// ) {
+    ///     // top-right accessory content
+    ///     Image(systemName: "info.circle")
+    /// }
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - label: The text to be displayed in the tile
+    ///   - icon: LemonadeIcon to be displayed above the label
+    ///   - enabled: Flag to define if component is enabled. Defaults to true
+    ///   - isSelected: Whether the tile is in a selected state. Defaults to false
+    ///   - supportText: Optional secondary text displayed below the label
+    ///   - onClick: Callback called when component is tapped
+    ///   - variant: LemonadeTileVariant to define visual style. Defaults to .filled
+    ///   - stretched: Whether the tile should stretch to fill available width. Defaults to false
+    ///   - alignment: Horizontal alignment of the tile content. Defaults to .leading.
+    ///     **Deprecated**: Tiles now always use leading alignment per the design spec.
+    ///     This parameter will be removed in a future release.
+    ///   - topAccessory: A view rendered at the top-right of the tile
+    /// - Returns: A styled Tile view
+    @ViewBuilder
+    static func Tile<TopAccessory: View>(
+        label: String,
+        icon: LemonadeIcon,
+        enabled: Bool = true,
+        isSelected: Bool = false,
+        supportText: String? = nil,
+        onClick: (() -> Void)? = nil,
+        variant: LemonadeTileVariant = .filled,
+        stretched: Bool = false,
+        alignment: HorizontalAlignment = .leading,
+        @ViewBuilder topAccessory: @escaping () -> TopAccessory
     ) -> some View {
         LemonadeTileView(
             label: label,
@@ -104,14 +162,16 @@ public extension LemonadeUi {
             onClick: onClick,
             variant: variant,
             stretched: stretched,
-            alignment: alignment
+            alignment: alignment,
+            topAccessory: topAccessory
         )
     }
+
 }
 
 // MARK: - Internal Tile View
 
-private struct LemonadeTileView: View {
+private struct LemonadeTileView<TopAccessory: View>: View {
     let label: String
     let icon: LemonadeIcon
     let enabled: Bool
@@ -121,6 +181,7 @@ private struct LemonadeTileView: View {
     let variant: LemonadeTileVariant
     let stretched: Bool
     let alignment: HorizontalAlignment
+    let topAccessory: (() -> TopAccessory)?
 
     private let minWidth: CGFloat = 120
     private let minHeight: CGFloat = 88
@@ -141,13 +202,27 @@ private struct LemonadeTileView: View {
         isSelected ? nil : variant.shadow
     }
 
+    private var effectiveContentColor: Color {
+        isSelected ? LemonadeTheme.colors.content.contentOnBrandHigh : LemonadeTheme.colors.content.contentPrimary
+    }
+
     private var tileContent: some View {
         VStack(alignment: alignment, spacing: LemonadeTheme.spaces.spacing300) {
-            LemonadeUi.Icon(
-                icon: icon,
-                contentDescription: nil,
-                size: .medium
-            )
+            // Top row: icon + topAccessory
+            HStack {
+                LemonadeUi.Icon(
+                    icon: icon,
+                    contentDescription: nil,
+                    size: .medium,
+                    tint: effectiveContentColor
+                )
+
+                Spacer()
+
+                if let topAccessory {
+                    topAccessory()
+                }
+            }
 
             Spacer()
 
@@ -155,7 +230,7 @@ private struct LemonadeTileView: View {
                 LemonadeUi.Text(
                     label,
                     textStyle: LemonadeTypography.shared.bodySmallMedium,
-                    color: LemonadeTheme.colors.content.contentPrimary,
+                    color: effectiveContentColor,
                     overflow: .tail,
                     maxLines: 1
                 )
@@ -252,27 +327,33 @@ struct LemonadeTile_Previews: PreviewProvider {
                 )
             }
 
-            // Alignment
+            // With top accessory
             HStack(spacing: 16) {
                 LemonadeUi.Tile(
-                    label: "Leading",
-                    icon: .arrowLeft,
+                    label: "With Accessory",
+                    icon: .heart,
                     variant: .filled,
-                    alignment: .leading
+                    topAccessory: {
+                        LemonadeUi.Icon(
+                            icon: .circleInfo,
+                            contentDescription: nil,
+                            size: .small
+                        )
+                    }
                 )
 
                 LemonadeUi.Tile(
-                    label: "Center",
-                    icon: .arrowLeftRight,
+                    label: "Selected",
+                    icon: .star,
+                    isSelected: true,
                     variant: .filled,
-                    alignment: .center
-                )
-
-                LemonadeUi.Tile(
-                    label: "Trailing",
-                    icon: .arrowRight,
-                    variant: .filled,
-                    alignment: .trailing
+                    topAccessory: {
+                        LemonadeUi.Icon(
+                            icon: .circleInfo,
+                            contentDescription: nil,
+                            size: .small
+                        )
+                    }
                 )
             }
 

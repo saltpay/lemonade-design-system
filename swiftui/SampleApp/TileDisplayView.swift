@@ -36,12 +36,20 @@ struct TileDisplayView: View {
 
                 // MARK: - Selected
                 sectionView(title: "Selected") {
-                    LemonadeUi.Tile(
-                        label: "Selected",
-                        icon: .circleCheck,
-                        isSelected: true,
-                        variant: .filled
-                    )
+                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
+                        LemonadeUi.Tile(
+                            label: "Filled",
+                            icon: .circleCheck,
+                            isSelected: true,
+                            variant: .filled
+                        )
+                        LemonadeUi.Tile(
+                            label: "Outlined",
+                            icon: .circleCheck,
+                            isSelected: true,
+                            variant: .outlined
+                        )
+                    }
                 }
 
                 // MARK: - Support Text
@@ -63,28 +71,20 @@ struct TileDisplayView: View {
                     }
                 }
 
-                sectionView(title: "Alignment") {
+                // MARK: - Top Accessory
+                sectionView(title: "Top Accessory") {
                     HStack(spacing: LemonadeTheme.spaces.spacing400) {
                         LemonadeUi.Tile(
-                            label: "Start",
-                            icon: .arrowLeft,
-                            variant: .filled,
-                            alignment: .leading
-                        )
-
-                        LemonadeUi.Tile(
-                            label: "Center",
-                            icon: .arrowLeftRight,
-                            variant: .filled,
-                            alignment: .center
-                        )
-
-                        LemonadeUi.Tile(
-                            label: "End",
-                            icon: .arrowRight,
-                            variant: .filled,
-                            alignment: .trailing
-                        )
+                            label: "Accessory",
+                            icon: .heart,
+                            variant: .filled
+                        ) {
+                            LemonadeUi.Icon(
+                                icon: .circleInfo,
+                                contentDescription: nil,
+                                size: .small
+                            )
+                        }
                     }
                 }
 

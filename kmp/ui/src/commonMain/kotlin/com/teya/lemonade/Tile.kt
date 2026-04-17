@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -50,11 +52,16 @@ import com.teya.lemonade.core.LemonadeTileVariant
  * @param enabled - [Boolean] flag to enable or disable the Tile.
  * @param isSelected - [Boolean] flag to apply selected styling to the Tile.
  * @param supportText - Optional [String] to be displayed below the label.
- * @param alignment - [Alignment.Horizontal] to align the Tile's content horizontally.
+ * @param alignment - **Deprecated**: Alignment is no longer configurable per Figma spec.
+ *  The tile always uses [Alignment.Start]. Kept for backward compatibility.
+ * @param topAccessory - Optional composable rendered at the top-right of the tile, next to the icon.
  * @param onClick - Callback to be invoked when the Tile is clicked.
  * @param interactionSource - [MutableInteractionSource] to be applied to the Tile.
  * @param variant - [LemonadeTileVariant] to style the Tile accordingly.
+ * @param addon - **Deprecated**: Use [topAccessory] instead.
+ *  Addon badge overlay has been replaced by an internal top accessory slot.
  */
+@Suppress("LongParameterList")
 @Composable
 public fun LemonadeUi.Tile(
     label: String,
@@ -63,11 +70,21 @@ public fun LemonadeUi.Tile(
     enabled: Boolean = true,
     isSelected: Boolean = false,
     supportText: String? = null,
-    alignment: Alignment.Horizontal = Alignment.CenterHorizontally,
+    alignment: Alignment.Horizontal = Alignment.Start,
+    topAccessory: (@Composable () -> Unit)? = null,
     onClick: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     variant: LemonadeTileVariant = LemonadeTileVariant.Filled,
+    addon: (@Composable () -> Unit)? = null,
 ) {
+    val effectiveTopAccessory = topAccessory ?: addon
+
+    val contentColor = if (isSelected) {
+        LocalColors.current.content.contentOnBrandHigh
+    } else {
+        LocalColors.current.content.contentPrimary
+    }
+
     CoreTile(
         modifier = modifier,
         variant = variant,
@@ -86,11 +103,22 @@ public fun LemonadeUi.Tile(
                     )
                     .padding(all = LocalSpaces.current.spacing300),
             ) {
-                LemonadeUi.Icon(
-                    icon = icon,
-                    size = LemonadeAssetSize.Medium,
-                    contentDescription = null,
-                )
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    LemonadeUi.Icon(
+                        icon = icon,
+                        size = LemonadeAssetSize.Medium,
+                        contentDescription = null,
+                        tint = contentColor,
+                    )
+
+                    if (effectiveTopAccessory != null) {
+                        effectiveTopAccessory()
+                    }
+                }
 
                 Spacer(modifier = Modifier.weight(weight = 1f))
 
@@ -100,7 +128,7 @@ public fun LemonadeUi.Tile(
                     LemonadeUi.Text(
                         text = label,
                         textStyle = LocalTypographies.current.bodySmallMedium,
-                        color = LocalColors.current.content.contentPrimary,
+                        color = contentColor,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
                     )
@@ -274,7 +302,6 @@ internal val LemonadeTileVariant.data: TileData
 private data class TilePreviewData(
     val enabled: Boolean,
     val variant: LemonadeTileVariant,
-    val alignment: Alignment.Horizontal,
     val isSelected: Boolean,
 )
 
@@ -288,21 +315,14 @@ private class TilePreviewProvider : PreviewParameterProvider<TilePreviewData> {
                     LemonadeTileVariant.Filled,
                     LemonadeTileVariant.Outlined,
                 ).forEach { variant ->
-                    listOf(
-                        Alignment.Start,
-                        Alignment.CenterHorizontally,
-                        Alignment.End,
-                    ).forEach { alignment ->
-                        listOf(true, false).forEach { selected ->
-                            add(
-                                TilePreviewData(
-                                    enabled = enabled,
-                                    variant = variant,
-                                    alignment = alignment,
-                                    isSelected = selected,
-                                ),
-                            )
-                        }
+                    listOf(true, false).forEach { selected ->
+                        add(
+                            TilePreviewData(
+                                enabled = enabled,
+                                variant = variant,
+                                isSelected = selected,
+                            ),
+                        )
                     }
                 }
             }
@@ -330,7 +350,6 @@ private fun LemonadeTilePreview(
             icon = LemonadeIcons.Heart,
             enabled = previewData.enabled,
             isSelected = previewData.isSelected,
-            alignment = previewData.alignment,
             variant = previewData.variant,
         )
     }
