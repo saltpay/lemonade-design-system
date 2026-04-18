@@ -76,34 +76,34 @@ private fun generateColorCodes(
         appendLine("    public sealed class Solid : LemonadePrimitiveColors() {")
         solidGroup
             .groupBy { resource -> resource.groupFullName }
-            .entries.forEachIndexed { index, (groupName, resources) ->
-                if (groupName != null) {
-                    append(
-                        buildColorGroupCode(
-                            parentGroupName = "Solid",
-                            groupName = groupName,
-                            resources = resources,
-                            isFirst = index == 0,
-                        )
+            .entries
+            .filter { (groupName, _) -> groupName != null }
+            .forEachIndexed { index, (groupName, resources) ->
+                append(
+                    buildColorGroupCode(
+                        parentGroupName = "Solid",
+                        groupName = groupName!!,
+                        resources = resources,
+                        isFirst = index == 0,
                     )
-                }
+                )
             }
         appendLine("    }")
         appendLine()
         appendLine("    public sealed class Alpha : LemonadePrimitiveColors() {")
         alphaGroup
             .groupBy { resource -> resource.groupFullName }
-            .entries.forEachIndexed { index, (groupName, resources) ->
-                if (groupName != null) {
-                    append(
-                        buildColorGroupCode(
-                            parentGroupName = "Alpha",
-                            groupName = groupName.removeSuffix("Alpha"),
-                            resources = resources,
-                            isFirst = index == 0,
-                        )
+            .entries
+            .filter { (groupName, _) -> groupName != null }
+            .forEachIndexed { index, (groupName, resources) ->
+                append(
+                    buildColorGroupCode(
+                        parentGroupName = "Alpha",
+                        groupName = groupName!!.removeSuffix("Alpha"),
+                        resources = resources,
+                        isFirst = index == 0,
                     )
-                }
+                )
             }
         appendLine("    }")
         appendLine("}")
