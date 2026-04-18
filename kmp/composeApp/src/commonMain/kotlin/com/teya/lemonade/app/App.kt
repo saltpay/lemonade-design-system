@@ -30,7 +30,7 @@ import com.teya.lemonade.ResourceListItemDisplay
 import com.teya.lemonade.SearchFieldDisplay
 import com.teya.lemonade.SegmentedControlDisplay
 import com.teya.lemonade.SelectFieldDisplay
-import com.teya.lemonade.SelectionListItemDisplay
+import com.teya.lemonade.SelectListItemDisplay
 import com.teya.lemonade.ShadowDisplay
 import com.teya.lemonade.SizesDisplay
 import com.teya.lemonade.SkeletonDisplay
@@ -60,7 +60,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.Switch to { _ -> SwitchDisplay() },
     Displays.Checkbox to { _ -> CheckboxDisplay() },
     Displays.RadioButton to { _ -> RadioButtonDisplay() },
-    Displays.SelectionListItem to { _ -> SelectionListItemDisplay() },
+    Displays.SelectListItem to { _ -> SelectListItemDisplay() },
     Displays.ActionListItem to { _ -> ActionListItemDisplay() },
     Displays.ResourceListItem to { _ -> ResourceListItemDisplay() },
     Displays.ContentListItem to { _ -> ContentListItemDisplay() },

@@ -127,7 +127,7 @@ internal object DisplayRegistry {
             title = "Selection & Lists",
             items = listOf(
                 Displays.Chip,
-                Displays.SelectionListItem,
+                Displays.SelectListItem,
                 Displays.ResourceListItem,
                 Displays.ContentListItem,
                 Displays.SegmentedControl,

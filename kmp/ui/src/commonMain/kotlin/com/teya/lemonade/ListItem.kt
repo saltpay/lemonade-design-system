@@ -30,138 +30,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import com.teya.lemonade.core.CheckboxStatus
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeListItemVoice
 import com.teya.lemonade.core.LemonadeSkeletonSize
-import com.teya.lemonade.core.SelectListItemType
 import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.SymbolContainerVoice
 import com.teya.lemonade.core.TagVoice
-
-/**
- * A list item with the sole purpose of selection of a single or multiple items, with behaviour
- *  changing depending if selection is singular or not.
- *
- * ## Usage
- * ```kotlin
- * LemonadeUi.SelectListItem(
- *     label = "Label"
- *     supportText = "Support Text"
- *     type = SelectListItemType.Single,
- *     checked = true,
- *     onItemClicked = { /* trigger an action */ }
- *     enabled = false,
- *     showDivider = true,
- *     leadingSlot = { /* slot composable for any item */ },
- *     trailingSlot = { /* slot composable for any item */ },
- * )
- * ```
- *
- * @param label - Label to be displayed in the selection item.
- * @param type - [SelectListItemType], that will define the selection behaviour and selection component.
- * @param checked - Flag defining if item is selected or not.
- * @param onItemClicked - Callback that is triggered on click interaction with list item.
- * @param modifier - [Modifier] to be applied to the base container of component.
- * @param isLoading - Shows a skeleton loading placeholder instead of content.
- * @param enabled - Flag that defines if the component is enabled or not. If disabled, click interactions
- *  and visual states are disabled.
- * @param interactionSource - Selection list item [MutableInteractionSource] for interaction events.
- * @param showDivider - Flag to show a divider below the list item.
- * @param supportText - Text to be displayed below the [label] as a support text.
- * @param leadingSlot - A Slot to be placed in the leading position of the list item.
- * @param trailingSlot - A Slot to be placed in the trailing position of the list item.
- */
-@Composable
-public fun LemonadeUi.SelectListItem(
-    label: String,
-    type: SelectListItemType,
-    checked: Boolean,
-    onItemClicked: () -> Unit,
-    modifier: Modifier = Modifier,
-    isLoading: Boolean = false,
-    enabled: Boolean = true,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    showDivider: Boolean = false,
-    supportText: String? = null,
-    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
-    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
-) {
-    LemonadeUi.ListItem(
-        modifier = modifier,
-        label = label,
-        supportText = supportText,
-        isLoading = isLoading,
-        interactionSource = interactionSource,
-        showDivider = showDivider,
-        role = when (type) {
-            SelectListItemType.Single -> Role.RadioButton
-            SelectListItemType.Multiple -> Role.Checkbox
-            SelectListItemType.Toggle -> Role.Switch
-        },
-        onListItemClick = {
-            when (type) {
-                SelectListItemType.Single -> {
-                    if (!checked) {
-                        onItemClicked()
-                    }
-                }
-
-                SelectListItemType.Multiple,
-                SelectListItemType.Toggle,
-                -> {
-                    onItemClicked()
-                }
-            }
-        },
-        enabled = enabled,
-        leadingSlot = leadingSlot,
-        trailingSlot = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(LocalSpaces.current.spacing200),
-            ) {
-                if (trailingSlot != null) {
-                    trailingSlot()
-                }
-
-                when (type) {
-                    SelectListItemType.Single -> {
-                        LemonadeUi.RadioButton(
-                            enabled = enabled,
-                            checked = checked,
-                            onRadioButtonClicked = onItemClicked,
-                            interactionSource = interactionSource,
-                        )
-                    }
-
-                    SelectListItemType.Multiple -> {
-                        LemonadeUi.Checkbox(
-                            enabled = enabled,
-                            onCheckboxClicked = onItemClicked,
-                            interactionSource = interactionSource,
-                            status = if (checked) {
-                                CheckboxStatus.Checked
-                            } else {
-                                CheckboxStatus.Unchecked
-                            },
-                        )
-                    }
-
-                    SelectListItemType.Toggle -> {
-                        LemonadeUi.Switch(
-                            enabled = enabled,
-                            checked = checked,
-                            interactionSource = interactionSource,
-                            onCheckedChange = { onItemClicked() },
-                        )
-                    }
-                }
-            }
-        },
-    )
-}
 
 /**
  * A list item for resource info display.
@@ -351,7 +226,7 @@ public fun LemonadeUi.ActionListItem(
  * @param slotContent - Optional slot content below the label and support text.
  */
 @Composable
-private fun LemonadeUi.ListItem(
+internal fun LemonadeUi.ListItem(
     label: String,
     modifier: Modifier = Modifier,
     supportText: String? = null,
@@ -425,7 +300,7 @@ private fun LemonadeUi.ListItem(
  * @param interactionSource - [MutableInteractionSource] for interaction events.
  */
 @Composable
-private fun LemonadeUi.ListItem(
+internal fun LemonadeUi.ListItem(
     contentSlot: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
     onListItemClick: (() -> Unit)? = null,
@@ -655,77 +530,6 @@ private fun ListItemSkeleton(
             }
         }
     }
-}
-
-private data class SelectionListItemPreviewData(
-    val type: SelectListItemType,
-    val supportText: Boolean,
-    val enabled: Boolean,
-    val leading: Boolean,
-    val trailing: Boolean,
-)
-
-private class SelectionListItemPreviewProvider :
-    PreviewParameterProvider<SelectionListItemPreviewData> {
-    override val values: Sequence<SelectionListItemPreviewData> = buildAllVariants()
-
-    private fun buildAllVariants(): Sequence<SelectionListItemPreviewData> =
-        buildList {
-            SelectListItemType.entries.forEach { type ->
-                listOf(true, false).forEach { enabled ->
-                    listOf(true, false).forEach { leading ->
-                        listOf(true, false).forEach { trailing ->
-                            listOf(true, false).forEach { withSupportText ->
-                                add(
-                                    SelectionListItemPreviewData(
-                                        type = type,
-                                        supportText = withSupportText,
-                                        enabled = enabled,
-                                        leading = leading,
-                                        trailing = trailing,
-                                    ),
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }.asSequence()
-}
-
-@LemonadePreview
-@Composable
-private fun SelectListItemPreview(
-    @PreviewParameter(SelectionListItemPreviewProvider::class)
-    previewData: SelectionListItemPreviewData,
-) {
-    LemonadeUi.SelectListItem(
-        label = "Label",
-        supportText = "Support Text".takeIf { previewData.supportText },
-        type = previewData.type,
-        checked = previewData.enabled,
-        onItemClicked = { /* Nothing */ },
-        leadingSlot = if (previewData.leading) {
-            {
-                LemonadeUi.Icon(
-                    icon = LemonadeIcons.Check,
-                    contentDescription = "Leading icon",
-                )
-            }
-        } else {
-            null
-        },
-        trailingSlot = if (previewData.trailing) {
-            {
-                LemonadeUi.Icon(
-                    icon = LemonadeIcons.Airplane,
-                    contentDescription = "Trailing icon",
-                )
-            }
-        } else {
-            null
-        },
-    )
 }
 
 private data class ResourceListItemPreviewData(
