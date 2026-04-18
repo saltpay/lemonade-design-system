@@ -70,7 +70,7 @@ struct TagDisplayView: View {
                     VStack(spacing: 16) {
                         // Product card example
                         HStack(alignment: .top, spacing: 12) {
-                            RoundedRectangle(cornerRadius: 8)
+                            RoundedRectangle(cornerRadius: .radius.radius400)
                                 .fill(.bg.bgNeutralSubtle)
                                 .frame(width: 60, height: 60)
 
@@ -93,14 +93,15 @@ struct TagDisplayView: View {
                             Spacer()
                         }
                         .padding()
-                        .background(.bg.bgSubtle)
-                        .clipShape(.rect(cornerRadius: 12))
+                        .background(.bg.bgDefault)
+                        .clipShape(.rect(cornerRadius: .radius.radius600))
                     }
                 }
             }
             .padding()
         }
         .navigationTitle("Tag")
+        .background(.bg.bgSubtle)
     }
 
     private func sectionView<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {

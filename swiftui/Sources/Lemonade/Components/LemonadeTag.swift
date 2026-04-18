@@ -30,6 +30,16 @@ public enum TagVoice {
         case .positive: return LemonadeTheme.colors.background.bgPositiveSubtle
         }
     }
+
+    var borderColor: Color {
+        switch self {
+        case .neutral: return LemonadeTheme.colors.border.borderNeutralMedium
+        case .critical: return LemonadeTheme.colors.border.borderCriticalSubtle
+        case .warning: return LemonadeTheme.colors.border.borderCautionSubtle
+        case .info: return LemonadeTheme.colors.border.borderInfoSubtle
+        case .positive: return LemonadeTheme.colors.border.borderPositiveSubtle
+        }
+    }
 }
 
 // MARK: - Tag Component
@@ -97,6 +107,10 @@ private struct LemonadeTagView: View {
         .padding(.horizontal, LemonadeTheme.spaces.spacing100)
         .background(voice.containerColor)
         .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius150))
+        .overlay(
+            RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius150)
+                .stroke(voice.borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
+        )
     }
 }
 

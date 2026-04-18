@@ -43,6 +43,7 @@ public interface LemonadeSemanticColors {
         public val bgElevatedInteractive: Color
         public val bgCriticalSubtleInteractive: Color
         public val bgDefaultPressed: Color
+        public val bgSubtlePressed: Color
         public val bgElevatedPressed: Color
         public val bgBrandPressed: Color
         public val bgBrandHighPressed: Color
@@ -51,6 +52,7 @@ public interface LemonadeSemanticColors {
         public val bgInfoPressed: Color
         public val bgPositivePressed: Color
         public val bgNeutralPressed: Color
+        public val bgCriticalSubtlePressed: Color
         public val bgCautionSubtlePressed: Color
         public val bgInfoSubtlePressed: Color
         public val bgPositiveSubtlePressed: Color

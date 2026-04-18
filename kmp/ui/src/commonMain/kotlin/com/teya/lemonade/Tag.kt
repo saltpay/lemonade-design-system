@@ -1,6 +1,7 @@
 package com.teya.lemonade
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -64,6 +65,10 @@ private fun CoreTag(
             .background(
                 color = voice.containerColor,
                 shape = LocalShapes.current.radius150,
+            ).border(
+                width = LocalBorderWidths.current.base.border25,
+                color = voice.borderColor,
+                shape = LocalShapes.current.radius150,
             ).padding(
                 vertical = LocalSpaces.current.spacing50,
                 horizontal = LocalSpaces.current.spacing100,
@@ -108,6 +113,17 @@ private val TagVoice.containerColor: Color
             TagVoice.Warning -> LocalColors.current.background.bgCautionSubtle
             TagVoice.Info -> LocalColors.current.background.bgInfoSubtle
             TagVoice.Positive -> LocalColors.current.background.bgPositiveSubtle
+        }
+    }
+
+private val TagVoice.borderColor: Color
+    @Composable get() {
+        return when (this) {
+            TagVoice.Neutral -> LocalColors.current.border.borderNeutralMedium
+            TagVoice.Critical -> LocalColors.current.border.borderCriticalSubtle
+            TagVoice.Warning -> LocalColors.current.border.borderCautionSubtle
+            TagVoice.Info -> LocalColors.current.border.borderInfoSubtle
+            TagVoice.Positive -> LocalColors.current.border.borderPositiveSubtle
         }
     }
 
