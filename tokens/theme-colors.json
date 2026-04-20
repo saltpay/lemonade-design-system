@@ -1897,7 +1897,7 @@
     {
       "id": "VariableID:3037:2039",
       "name": "Background/Voice/bg-neutral",
-      "description": "Use for neutral states that don\u2019t carry positive, caution, or critical meaning.",
+      "description": "Use for neutral states that don't carry positive, caution, or critical meaning.",
       "type": "COLOR",
       "valuesByMode": {
         "3037:0": {
