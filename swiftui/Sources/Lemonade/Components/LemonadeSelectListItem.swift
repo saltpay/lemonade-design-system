@@ -246,6 +246,7 @@ private struct PlainSelectListItem<LeadingContent: View, TrailingContent: View>:
                         enabled: enabled
                     )
                 }
+                .frame(maxHeight: .infinity)
             }
         )
     }
