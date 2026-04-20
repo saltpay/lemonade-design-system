@@ -223,6 +223,8 @@ private struct LemonadeSegmentedControlView: View {
                 }
                 .buttonStyle(SegmentPressStyle())
                 .frame(maxWidth: .infinity)
+                .accessibilityLabel(property.label ?? property.icon?.rawValue ?? "")
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
                 .background {
                     if drawSelectionIndicator && isSelected {
                         RoundedRectangle(cornerRadius: LemonadeTheme.radius.radiusFull)
