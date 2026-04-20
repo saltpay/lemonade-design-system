@@ -117,8 +117,7 @@ private struct BasicTrailingSlotDemo: View {
         ) {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {}) {
-                    LemonadeUi
-                        .Icon(icon: .bell, contentDescription: "Notifications")
+                    LemonadeUi.Icon(icon: .bell, contentDescription: "Notifications")
                 }
             }
             #if compiler(>=6.2)
@@ -128,11 +127,7 @@ private struct BasicTrailingSlotDemo: View {
             #endif
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {}) {
-                    LemonadeUi
-                        .Icon(
-                            icon: .ellipsisHorizontal,
-                            contentDescription: "More options"
-                        )
+                    LemonadeUi.Icon(icon: .ellipsisHorizontal, contentDescription: "More")
                 }
             }
         }
@@ -279,25 +274,13 @@ private struct CompactLargePillDemo: View {
             SampleListContent()
         }
         .lemonadeTopBar(label: "Home", subheading: "Pill trailing") {
-            GlassPill {
+            ToolbarItemGroup(placement: .topBarTrailing) {
                 Button(action: {}) {
-                    LemonadeUi.Icon(
-                        icon: .bell,
-                        contentDescription: "Notifications",
-                        tint: LemonadeTheme.colors.content.contentPrimary
-                    )
-                    .frame(width: 44, height: 44)
+                    LemonadeUi.Icon(icon: .bell, contentDescription: "Notifications")
                 }
-                .buttonStyle(.plain)
                 Button(action: {}) {
-                    LemonadeUi.Icon(
-                        icon: .gear,
-                        contentDescription: "Settings",
-                        tint: LemonadeTheme.colors.content.contentPrimary
-                    )
-                    .frame(width: 44, height: 44)
+                    LemonadeUi.Icon(icon: .gear, contentDescription: "Settings")
                 }
-                .buttonStyle(.plain)
             }
         }
     }
@@ -309,8 +292,16 @@ private struct CompactLargeDemo: View {
             SampleListContent()
         }
         .lemonadeTopBar(label: "Home", subheading: nil) {
-            GlassIconButton(icon: .bell, contentDescription: "Notifications", action: {})
-            GlassIconButton(icon: .gear, contentDescription: "Settings", action: {})
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {}) {
+                    LemonadeUi.Icon(icon: .bell, contentDescription: "Notifications")
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {}) {
+                    LemonadeUi.Icon(icon: .gear, contentDescription: "Settings")
+                }
+            }
         }
     }
 }
@@ -321,7 +312,11 @@ private struct CompactLargeSubheadingDemo: View {
             SampleListContent()
         }
         .lemonadeTopBar(label: "Home", subheading: "Welcome back, John") {
-            GlassIconButton(icon: .bell, contentDescription: "Notifications", action: {})
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {}) {
+                    LemonadeUi.Icon(icon: .bell, contentDescription: "Notifications")
+                }
+            }
         }
     }
 }
@@ -372,44 +367,12 @@ private struct CompactLargeSearchDemo: View {
             searchInput: $searchQuery,
             searchPrompt: "Search categories..."
         ) {
-            GlassIconButton(icon: .ellipsisHorizontal, contentDescription: "More options", action: {})
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {}) {
+                    LemonadeUi.Icon(icon: .ellipsisHorizontal, contentDescription: "More")
+                }
+            }
         }
-    }
-}
-
-// MARK: - Glass Icon Button Helper
-
-/// A circular icon button with glass effect for Compact Large trailing slots.
-private struct GlassIconButton: View {
-    let icon: LemonadeIcon
-    let contentDescription: String?
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            LemonadeUi.Icon(
-                icon: icon,
-                contentDescription: contentDescription,
-                tint: LemonadeTheme.colors.content.contentPrimary
-            )
-            .frame(width: 44, height: 44)
-        }
-        .buttonStyle(.plain)
-        .modifier(GlassCircleModifier())
-    }
-}
-
-private struct GlassCircleModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        #if compiler(>=6.2)
-        if #available(iOS 26, *) {
-            content.glassEffect(.regular.interactive(), in: .circle)
-        } else {
-            content.background(.ultraThinMaterial, in: Circle())
-        }
-        #else
-        content.background(.ultraThinMaterial, in: Circle())
-        #endif
     }
 }
 

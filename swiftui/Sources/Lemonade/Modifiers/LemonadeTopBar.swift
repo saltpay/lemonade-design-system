@@ -67,11 +67,7 @@ private struct BasicTopBarModifier<Toolbar: ToolbarContent, BottomContent: View>
                 }
                 toolbarContent
             }
-            .safeAreaInset(edge: .top, spacing: 0) {
-                if let bottomSlot {
-                    bottomSlot()
-                }
-            }
+            .lemonadeTopBarBottomSlot(bottomSlot)
     }
 }
 
@@ -111,11 +107,7 @@ private struct SearchTopBarModifier<Toolbar: ToolbarContent, BottomContent: View
                 }
                 toolbarContent
             }
-            .safeAreaInset(edge: .top, spacing: 0) {
-                if let bottomSlot {
-                    bottomSlot()
-                }
-            }
+            .lemonadeTopBarBottomSlot(bottomSlot)
     }
 }
 
@@ -475,11 +467,12 @@ private struct CompactLargeBlurLayout<HeaderContent: View>: View {
                 }
 
             let totalHeight = maxHeaderHeight + fadeExtension
+            let headerRatio = maxHeaderHeight / totalHeight
             VariableBlurView(maxBlurRadius: 5, direction: .blurredTopClearBottom)
                 .overlay {
                     LinearGradient(stops: [
                         .init(color: fadeTint.opacity(0.7), location: 0),
-                        .init(color: fadeTint.opacity(0.5), location: 90 / totalHeight),
+                        .init(color: fadeTint.opacity(0.7), location: headerRatio),
                         .init(color: fadeTint.opacity(0), location: 1),
                     ], startPoint: .top, endPoint: .bottom)
                 }
@@ -509,7 +502,249 @@ private struct CompactLargeBlurLayout<HeaderContent: View>: View {
     }
 }
 
-// MARK: - Compact Large TopBar Modifier
+// MARK: - Compact Large TopBar Modifier (Native iOS 26+)
+
+@available(iOS 16.0, *)
+private struct NativeCompactLargeTopBarModifier<Toolbar: ToolbarContent>: ViewModifier {
+    let label: String
+    let subheading: String?
+    let toolbarContent: Toolbar
+
+    @State private var showTitle = true
+    @State private var lastScrollOffset: CGFloat = 0
+
+    func body(content: Content) -> some View {
+        content
+            .coordinateSpace(name: "compactLargeNativeScroll")
+            .onPreferenceChange(NativeScrollOffsetKey.self) { offset in
+                if abs(offset - lastScrollOffset) > 2 {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        showTitle = offset > -10
+                    }
+                }
+                lastScrollOffset = offset
+            }
+            .overlay(alignment: .top) {
+                GeometryReader { geo in
+                    Color.clear.preference(
+                        key: NativeScrollOffsetKey.self,
+                        value: geo.frame(in: .named("compactLargeNativeScroll")).minY
+                    )
+                }
+                .frame(height: 0)
+            }
+            .navigationBarBackButtonHidden(true)
+            .lemonadeCompactLargeSubtitle(subheading)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    LemonadeCompactLargeTitle(label: label, subheading: subheading)
+                        .blur(radius: showTitle ? 0 : 4)
+                        .opacity(showTitle ? 1 : 0)
+                        .animation(.easeInOut(duration: 0.2), value: showTitle)
+                }
+                .lemonadeHiddenSharedBackground()
+
+                toolbarContent
+            }
+    }
+}
+
+@available(iOS 16.0, *)
+private struct NativeCompactLargeSearchTopBarModifier<Toolbar: ToolbarContent>: ViewModifier {
+    let label: String
+    let subheading: String?
+    @Binding var searchInput: String
+    let searchPrompt: String
+    let toolbarContent: Toolbar
+
+    @State private var showTitle = true
+    @State private var lastScrollOffset: CGFloat = 0
+
+    func body(content: Content) -> some View {
+        content
+            .coordinateSpace(name: "compactLargeSearchNativeScroll")
+            .onPreferenceChange(NativeScrollOffsetKey.self) { offset in
+                if abs(offset - lastScrollOffset) > 2 {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        showTitle = offset > -10
+                    }
+                }
+                lastScrollOffset = offset
+            }
+            .overlay(alignment: .top) {
+                GeometryReader { geo in
+                    Color.clear.preference(
+                        key: NativeScrollOffsetKey.self,
+                        value: geo.frame(in: .named("compactLargeSearchNativeScroll")).minY
+                    )
+                }
+                .frame(height: 0)
+            }
+            .navigationBarBackButtonHidden(true)
+            .lemonadeCompactLargeSubtitle(subheading)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    LemonadeCompactLargeTitle(label: label, subheading: subheading)
+                        .blur(radius: showTitle ? 0 : 4)
+                        .opacity(showTitle ? 1 : 0)
+                        .animation(.easeInOut(duration: 0.2), value: showTitle)
+                }
+                .lemonadeHiddenSharedBackground()
+
+                toolbarContent
+            }
+            .searchable(
+                text: $searchInput,
+                placement: .navigationBarDrawer,
+                prompt: searchPrompt
+            )
+    }
+}
+
+private struct NativeScrollOffsetKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
+}
+
+// MARK: - Version-specific helpers
+
+private extension View {
+    /// Applies .navigationSubtitle on iOS 26+, no-op on older.
+    @ViewBuilder
+    func lemonadeCompactLargeSubtitle(_ subtitle: String?) -> some View {
+        #if compiler(>=6.2)
+        if #available(iOS 26, *) {
+            self.navigationSubtitle(subtitle ?? "")
+        } else {
+            self
+        }
+        #else
+        self
+        #endif
+    }
+}
+
+@available(iOS 16.0, *)
+private extension ToolbarContent {
+    /// Hides the shared glass background on iOS 26+, no-op on older.
+    @ToolbarContentBuilder
+    func lemonadeHiddenSharedBackground() -> some ToolbarContent {
+        #if compiler(>=6.2)
+        if #available(iOS 26, *) {
+            self.sharedBackgroundVisibility(.hidden)
+        } else {
+            self
+        }
+        #else
+        self
+        #endif
+    }
+}
+
+private extension View {
+    /// Renders a bottom slot attached to the nav bar.
+    ///
+    /// On iOS 26+: uses the native glass toolbar (no divider) and lets the inset ride on top.
+    /// On iOS 16-25: hides the nav bar shadow and wraps the slot in a `.bar` material +
+    /// bottom divider so it reads as an extension of the nav bar.
+    @ViewBuilder
+    func lemonadeTopBarBottomSlot<BottomContent: View>(
+        _ bottomSlot: (() -> BottomContent)?
+    ) -> some View {
+        if let bottomSlot {
+            #if compiler(>=6.2)
+            if #available(iOS 26, *) {
+                self.safeAreaInset(edge: .top, spacing: 0) {
+                    bottomSlot()
+                }
+            } else if #available(iOS 16, *) {
+                self
+                    .toolbarBackground(.hidden, for: .navigationBar)
+                    .safeAreaInset(edge: .top, spacing: 0) {
+                        VStack(spacing: 0) {
+                            bottomSlot()
+                            LemonadeUi.HorizontalDivider()
+                        }
+                        .background(.bar)
+                    }
+            } else {
+                self.safeAreaInset(edge: .top, spacing: 0) {
+                    VStack(spacing: 0) {
+                        bottomSlot()
+                        LemonadeUi.HorizontalDivider()
+                    }
+                    .background(.bar)
+                }
+            }
+            #else
+            if #available(iOS 16, *) {
+                self
+                    .toolbarBackground(.hidden, for: .navigationBar)
+                    .safeAreaInset(edge: .top, spacing: 0) {
+                        VStack(spacing: 0) {
+                            bottomSlot()
+                            LemonadeUi.HorizontalDivider()
+                        }
+                        .background(.bar)
+                    }
+            } else {
+                self.safeAreaInset(edge: .top, spacing: 0) {
+                    VStack(spacing: 0) {
+                        bottomSlot()
+                        LemonadeUi.HorizontalDivider()
+                    }
+                    .background(.bar)
+                }
+            }
+            #endif
+        } else {
+            self
+        }
+    }
+}
+
+
+// MARK: - Compact Large Title helper
+
+@available(iOS 16.0, *)
+private struct LemonadeCompactLargeTitle: View {
+    let label: String
+    let subheading: String?
+
+    var body: some View {
+        #if compiler(>=6.2)
+        if #available(iOS 26, *) {
+            SwiftUI.Text(label)
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .fixedSize(horizontal: true, vertical: false)
+        } else {
+            compactLayout
+        }
+        #else
+        compactLayout
+        #endif
+    }
+
+    private var compactLayout: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            SwiftUI.Text(label)
+                .font(.title2)
+                .fontWeight(.bold)
+                .fixedSize(horizontal: true, vertical: false)
+            if let subheading {
+                SwiftUI.Text(subheading)
+                    .font(.caption2)
+                    .fixedSize(horizontal: true, vertical: false)
+                    .foregroundStyle(.gray)
+            }
+        }
+    }
+}
+
+// MARK: - Compact Large TopBar Modifier (Legacy)
 
 private struct CompactLargeTopBarModifier<TrailingContent: View, BottomContent: View>: ViewModifier {
     let label: String
@@ -770,45 +1005,42 @@ public extension View {
     ///         }
     ///     )
     /// ```
-    func lemonadeTopBar<TrailingContent: View, BottomContent: View>(
+    @ViewBuilder
+    func lemonadeTopBar<Toolbar: ToolbarContent>(
         label: String,
         subheading: String?,
-        @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
-        @ViewBuilder bottomSlot: @escaping () -> BottomContent
+        @ToolbarContentBuilder toolbar: () -> Toolbar
     ) -> some View {
-        modifier(CompactLargeTopBarModifier(
-            label: label,
-            subheading: subheading,
-            trailingSlot: trailingSlot,
-            bottomSlot: bottomSlot
-        ))
+        if #available(iOS 16, *) {
+            modifier(NativeCompactLargeTopBarModifier(
+                label: label, subheading: subheading,
+                toolbarContent: toolbar()
+            ))
+        } else {
+            modifier(CompactLargeTopBarModifier<EmptyView, EmptyView>(
+                label: label, subheading: subheading,
+                trailingSlot: nil, bottomSlot: nil
+            ))
+        }
     }
 
-    /// Applies a Lemonade-styled large title bar with subheading (no bottom slot).
-    func lemonadeTopBar<TrailingContent: View>(
-        label: String,
-        subheading: String?,
-        @ViewBuilder trailingSlot: @escaping () -> TrailingContent
-    ) -> some View {
-        modifier(CompactLargeTopBarModifier(
-            label: label,
-            subheading: subheading,
-            trailingSlot: trailingSlot,
-            bottomSlot: nil as (() -> EmptyView)?
-        ))
-    }
-
-    /// Applies a Lemonade-styled large title bar with subheading (no trailing or bottom slot).
+    /// Applies a Lemonade-styled large title bar with subheading (no toolbar).
+    @ViewBuilder
     func lemonadeTopBar(
         label: String,
         subheading: String?
     ) -> some View {
-        modifier(CompactLargeTopBarModifier<EmptyView, EmptyView>(
-            label: label,
-            subheading: subheading,
-            trailingSlot: nil,
-            bottomSlot: nil
-        ))
+        if #available(iOS 16, *) {
+            modifier(NativeCompactLargeTopBarModifier(
+                label: label, subheading: subheading,
+                toolbarContent: LemonadeEmptyToolbarContent()
+            ))
+        } else {
+            modifier(CompactLargeTopBarModifier<EmptyView, EmptyView>(
+                label: label, subheading: subheading,
+                trailingSlot: nil, bottomSlot: nil
+            ))
+        }
     }
 
     // MARK: 4. Compact Large Search TopBar
@@ -828,36 +1060,50 @@ public extension View {
     ///         searchInput: $query
     ///     )
     /// ```
-    func lemonadeTopBar<TrailingContent: View>(
+    @ViewBuilder
+    func lemonadeTopBar<Toolbar: ToolbarContent>(
         label: String,
         subheading: String?,
         searchInput: Binding<String>,
         searchPrompt: String = "Search...",
-        @ViewBuilder trailingSlot: @escaping () -> TrailingContent
+        @ToolbarContentBuilder toolbar: () -> Toolbar
     ) -> some View {
-        modifier(CompactLargeSearchTopBarModifier(
-            label: label,
-            subheading: subheading,
-            searchInput: searchInput,
-            searchPrompt: searchPrompt,
-            trailingSlot: trailingSlot
-        ))
+        if #available(iOS 16, *) {
+            modifier(NativeCompactLargeSearchTopBarModifier(
+                label: label, subheading: subheading,
+                searchInput: searchInput, searchPrompt: searchPrompt,
+                toolbarContent: toolbar()
+            ))
+        } else {
+            modifier(CompactLargeSearchTopBarModifier<EmptyView>(
+                label: label, subheading: subheading,
+                searchInput: searchInput, searchPrompt: searchPrompt,
+                trailingSlot: nil
+            ))
+        }
     }
 
-    /// Applies a Lemonade-styled large title bar with subheading and search (no trailing slot).
+    /// Applies a Lemonade-styled large title bar with subheading and search (no toolbar).
+    @ViewBuilder
     func lemonadeTopBar(
         label: String,
         subheading: String?,
         searchInput: Binding<String>,
         searchPrompt: String = "Search..."
     ) -> some View {
-        modifier(CompactLargeSearchTopBarModifier<EmptyView>(
-            label: label,
-            subheading: subheading,
-            searchInput: searchInput,
-            searchPrompt: searchPrompt,
-            trailingSlot: nil
-        ))
+        if #available(iOS 16, *) {
+            modifier(NativeCompactLargeSearchTopBarModifier(
+                label: label, subheading: subheading,
+                searchInput: searchInput, searchPrompt: searchPrompt,
+                toolbarContent: LemonadeEmptyToolbarContent()
+            ))
+        } else {
+            modifier(CompactLargeSearchTopBarModifier<EmptyView>(
+                label: label, subheading: subheading,
+                searchInput: searchInput, searchPrompt: searchPrompt,
+                trailingSlot: nil
+            ))
+        }
     }
 }
 
