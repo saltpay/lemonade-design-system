@@ -277,6 +277,31 @@ struct ListItemDisplayView: View {
                     )
                 }
 
+                // MARK: - ActionListItem - Figma reference (multi-line support text)
+                LemonadeUi.Card(
+                    contentPadding: .none,
+                    header: CardHeaderConfig(title: "ActionListItem - Figma reference")
+                ) {
+                    LemonadeUi.ActionListItem(
+                        label: "Account ***4236",
+                        supportText: "PT50 0002 0123 1234…\n1 store linked",
+                        showNavigationIndicator: true,
+                        showDivider: false,
+                        onItemClicked: {},
+                        leadingSlot: {
+                            LemonadeUi.SymbolContainer(
+                                icon: .bank,
+                                contentDescription: nil,
+                                voice: .neutral,
+                                size: .large
+                            )
+                        },
+                        trailingSlot: {
+                            LemonadeUi.Tag(label: "Settlements", voice: .positive)
+                        }
+                    )
+                }
+
                 // MARK: - ActionListItem - Critical Voice
                 LemonadeUi.Card(
                     contentPadding: .none,
