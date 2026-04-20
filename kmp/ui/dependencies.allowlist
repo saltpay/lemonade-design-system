@@ -8,7 +8,7 @@
 # Lines starting with `#` and blank lines are ignored.
 
 api projects.core
-api projects.tokens
+implementation projects.tokens
 debugImplementation libs.compose.ui.tooling
 implementation compose.components.resources
 implementation compose.desktop.currentOs

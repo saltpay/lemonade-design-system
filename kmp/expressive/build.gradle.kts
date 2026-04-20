@@ -22,6 +22,7 @@ kotlin {
             implementation(libs.components.resources)
             implementation(libs.compose.ui.tooling.preview)
             api(projects.ui)
+            api(projects.tokens)
             implementation(libs.compose.material3)
         }
 

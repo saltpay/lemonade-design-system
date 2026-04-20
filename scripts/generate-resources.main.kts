@@ -9,6 +9,7 @@ private val kmpTokenConverters = listOf(
     "kotlin scripts/kmp-border-width-token-converter.main.kts",
     "kotlin scripts/kmp-shadow-token-converter.main.kts",
     "kotlin scripts/kmp-dimension-token-converter.main.kts",
+    "kotlin scripts/kmp-typography-token-converter.main.kts",
 )
 
 private val swiftUiTokenConverters = listOf(
@@ -21,6 +22,7 @@ private val swiftUiTokenConverters = listOf(
     "kotlin scripts/swiftui-shadow-token-converter.main.kts",
     "kotlin scripts/swiftui-size-token-converter.main.kts",
     "kotlin scripts/swiftui-color-assets-generator.main.kts",
+    "kotlin scripts/swiftui-typography-token-converter.main.kts",
 )
 
 private val svgAssetConverter = listOf(

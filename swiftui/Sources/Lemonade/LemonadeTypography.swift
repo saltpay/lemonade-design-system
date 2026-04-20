@@ -51,21 +51,22 @@ public struct LemonadeTextStyle: Sendable {
         .custom(fontName, size: fontSize, relativeTo: .body)
     }
 
-    #if canImport(UIKit)
+#if canImport(UIKit)
     /// Returns a UIFont based on this text style
     public var uiFont: UIFont {
-        UIFont(name: fontName, size: fontSize) ?? .systemFont(ofSize: fontSize)
+        UIFont(name: fontName, size: fontSize)
+            ?? .systemFont(ofSize: fontSize)
     }
-    #endif
+#endif
 
     /// Returns the line spacing needed to achieve the desired line height.
     /// Uses UIFont.lineHeight for precise calculation on iOS, fallback ratio on other platforms.
     public var lineSpacing: CGFloat {
-        #if canImport(UIKit)
+#if canImport(UIKit)
         let naturalLineHeight = uiFont.lineHeight
-        #else
+#else
         let naturalLineHeight = fontSize * Self.fallbackLineHeightRatio
-        #endif
+#endif
         return max(0, lineHeight - naturalLineHeight)
     }
 }
@@ -77,6 +78,9 @@ public protocol LemonadeTypographyProtocol {
     var displaySmall: LemonadeTextStyle { get }
     var displayMedium: LemonadeTextStyle { get }
     var displayLarge: LemonadeTextStyle { get }
+    var displayXLarge: LemonadeTextStyle { get }
+    var display2XLarge: LemonadeTextStyle { get }
+    var display3XLarge: LemonadeTextStyle { get }
 
     // Heading styles
     var headingXLarge: LemonadeTextStyle { get }
@@ -125,46 +129,177 @@ public struct LemonadeTypography: LemonadeTypographyProtocol {
     public init() {}
 
     // Display styles
-    public let displayXSmall = LemonadeTextStyle(fontSize: 24, lineHeight: 32, fontWeight: .semibold)
-    public let displaySmall = LemonadeTextStyle(fontSize: 28, lineHeight: 36, fontWeight: .semibold)
-    public let displayMedium = LemonadeTextStyle(fontSize: 36, lineHeight: 44, fontWeight: .semibold)
-    public let displayLarge = LemonadeTextStyle(fontSize: 48, lineHeight: 56, fontWeight: .semibold)
+    public let displayXSmall = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize600.value,
+        lineHeight: LemonadeLineHeights.lineHeight800.value,
+        fontWeight: LemonadeFontWeights.semibold.value,
+        letterSpacing: -0.25
+    )
+    public let displaySmall = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize700.value,
+        lineHeight: LemonadeLineHeights.lineHeight900.value,
+        fontWeight: LemonadeFontWeights.semibold.value,
+        letterSpacing: -0.25
+    )
+    public let displayMedium = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize900.value,
+        lineHeight: LemonadeLineHeights.lineHeight1100.value,
+        fontWeight: LemonadeFontWeights.semibold.value,
+        letterSpacing: -0.25
+    )
+    public let displayLarge = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize1200.value,
+        lineHeight: LemonadeLineHeights.lineHeight1400.value,
+        fontWeight: LemonadeFontWeights.semibold.value,
+        letterSpacing: -0.25
+    )
+    public let displayXLarge = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize1400.value,
+        lineHeight: LemonadeLineHeights.lineHeight1600.value,
+        fontWeight: LemonadeFontWeights.semibold.value,
+        letterSpacing: -0.25
+    )
+    public let display2XLarge = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize1600.value,
+        lineHeight: LemonadeLineHeights.lineHeight1800.value,
+        fontWeight: LemonadeFontWeights.semibold.value,
+        letterSpacing: -0.25
+    )
+    public let display3XLarge = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize1800.value,
+        lineHeight: LemonadeLineHeights.lineHeight2000.value,
+        fontWeight: LemonadeFontWeights.semibold.value,
+        letterSpacing: -0.25
+    )
 
     // Heading styles
-    public let headingXLarge = LemonadeTextStyle(fontSize: 40, lineHeight: 48, fontWeight: .semibold)
-    public let headingLarge = LemonadeTextStyle(fontSize: 32, lineHeight: 40, fontWeight: .semibold)
-    public let headingMedium = LemonadeTextStyle(fontSize: 28, lineHeight: 36, fontWeight: .semibold)
-    public let headingSmall = LemonadeTextStyle(fontSize: 24, lineHeight: 32, fontWeight: .semibold)
-    public let headingXSmall = LemonadeTextStyle(fontSize: 18, lineHeight: 26, fontWeight: .semibold)
-    public let headingXXSmall = LemonadeTextStyle(fontSize: 16, lineHeight: 24, fontWeight: .semibold)
+    public let headingXLarge = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize1000.value,
+        lineHeight: LemonadeLineHeights.lineHeight1200.value,
+        fontWeight: LemonadeFontWeights.semibold.value
+    )
+    public let headingLarge = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize800.value,
+        lineHeight: LemonadeLineHeights.lineHeight1000.value,
+        fontWeight: LemonadeFontWeights.semibold.value
+    )
+    public let headingMedium = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize700.value,
+        lineHeight: LemonadeLineHeights.lineHeight900.value,
+        fontWeight: LemonadeFontWeights.semibold.value
+    )
+    public let headingSmall = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize600.value,
+        lineHeight: LemonadeLineHeights.lineHeight800.value,
+        fontWeight: LemonadeFontWeights.semibold.value
+    )
+    public let headingXSmall = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize450.value,
+        lineHeight: LemonadeLineHeights.lineHeight650.value,
+        fontWeight: LemonadeFontWeights.semibold.value
+    )
+    public let headingXXSmall = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize400.value,
+        lineHeight: LemonadeLineHeights.lineHeight600.value,
+        fontWeight: LemonadeFontWeights.semibold.value
+    )
 
     // Body XLarge styles
-    public let bodyXLargeRegular = LemonadeTextStyle(fontSize: 20, lineHeight: 28, fontWeight: .regular)
-    public let bodyXLargeMedium = LemonadeTextStyle(fontSize: 20, lineHeight: 28, fontWeight: .medium)
-    public let bodyXLargeSemiBold = LemonadeTextStyle(fontSize: 20, lineHeight: 28, fontWeight: .semibold)
+    public let bodyXLargeRegular = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize500.value,
+        lineHeight: LemonadeLineHeights.lineHeight700.value,
+        fontWeight: LemonadeFontWeights.regular.value
+    )
+    public let bodyXLargeMedium = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize500.value,
+        lineHeight: LemonadeLineHeights.lineHeight700.value,
+        fontWeight: LemonadeFontWeights.medium.value
+    )
+    public let bodyXLargeSemiBold = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize500.value,
+        lineHeight: LemonadeLineHeights.lineHeight700.value,
+        fontWeight: LemonadeFontWeights.semibold.value
+    )
 
     // Body Large styles
-    public let bodyLargeRegular = LemonadeTextStyle(fontSize: 18, lineHeight: 28, fontWeight: .regular)
-    public let bodyLargeMedium = LemonadeTextStyle(fontSize: 18, lineHeight: 28, fontWeight: .medium)
-    public let bodyLargeSemiBold = LemonadeTextStyle(fontSize: 18, lineHeight: 28, fontWeight: .semibold)
+    public let bodyLargeRegular = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize450.value,
+        lineHeight: LemonadeLineHeights.lineHeight700.value,
+        fontWeight: LemonadeFontWeights.regular.value
+    )
+    public let bodyLargeMedium = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize450.value,
+        lineHeight: LemonadeLineHeights.lineHeight700.value,
+        fontWeight: LemonadeFontWeights.medium.value
+    )
+    public let bodyLargeSemiBold = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize450.value,
+        lineHeight: LemonadeLineHeights.lineHeight700.value,
+        fontWeight: LemonadeFontWeights.semibold.value
+    )
 
     // Body Medium styles
-    public let bodyMediumRegular = LemonadeTextStyle(fontSize: 16, lineHeight: 24, fontWeight: .regular)
-    public let bodyMediumMedium = LemonadeTextStyle(fontSize: 16, lineHeight: 24, fontWeight: .medium)
-    public let bodyMediumSemiBold = LemonadeTextStyle(fontSize: 16, lineHeight: 24, fontWeight: .semibold)
+    public let bodyMediumRegular = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize400.value,
+        lineHeight: LemonadeLineHeights.lineHeight600.value,
+        fontWeight: LemonadeFontWeights.regular.value
+    )
+    public let bodyMediumMedium = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize400.value,
+        lineHeight: LemonadeLineHeights.lineHeight600.value,
+        fontWeight: LemonadeFontWeights.medium.value
+    )
+    public let bodyMediumSemiBold = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize400.value,
+        lineHeight: LemonadeLineHeights.lineHeight600.value,
+        fontWeight: LemonadeFontWeights.semibold.value
+    )
     /// Maps to `.semibold` weight because the Figtree font family does not include a true bold weight.
-    public let bodyMediumBold = LemonadeTextStyle(fontSize: 16, lineHeight: 24, fontWeight: .semibold)
+    public let bodyMediumBold = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize400.value,
+        lineHeight: LemonadeLineHeights.lineHeight600.value,
+        fontWeight: LemonadeFontWeights.semibold.value
+    )
 
     // Body Small styles
-    public let bodySmallRegular = LemonadeTextStyle(fontSize: 14, lineHeight: 20, fontWeight: .regular)
-    public let bodySmallMedium = LemonadeTextStyle(fontSize: 14, lineHeight: 20, fontWeight: .medium)
-    public let bodySmallSemiBold = LemonadeTextStyle(fontSize: 14, lineHeight: 20, fontWeight: .semibold)
+    public let bodySmallRegular = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize350.value,
+        lineHeight: LemonadeLineHeights.lineHeight500.value,
+        fontWeight: LemonadeFontWeights.regular.value
+    )
+    public let bodySmallMedium = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize350.value,
+        lineHeight: LemonadeLineHeights.lineHeight500.value,
+        fontWeight: LemonadeFontWeights.medium.value
+    )
+    public let bodySmallSemiBold = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize350.value,
+        lineHeight: LemonadeLineHeights.lineHeight500.value,
+        fontWeight: LemonadeFontWeights.semibold.value
+    )
 
     // Body XSmall styles
-    public let bodyXSmallRegular = LemonadeTextStyle(fontSize: 12, lineHeight: 16, fontWeight: .regular)
-    public let bodyXSmallMedium = LemonadeTextStyle(fontSize: 12, lineHeight: 16, fontWeight: .medium)
-    public let bodyXSmallSemiBold = LemonadeTextStyle(fontSize: 12, lineHeight: 16, fontWeight: .semibold)
-    public let bodyXSmallOverline = LemonadeTextStyle(fontSize: 12, lineHeight: 16, fontWeight: .semibold, letterSpacing: 1.5)
+    public let bodyXSmallRegular = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize300.value,
+        lineHeight: LemonadeLineHeights.lineHeight400.value,
+        fontWeight: LemonadeFontWeights.regular.value
+    )
+    public let bodyXSmallMedium = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize300.value,
+        lineHeight: LemonadeLineHeights.lineHeight400.value,
+        fontWeight: LemonadeFontWeights.medium.value
+    )
+    public let bodyXSmallSemiBold = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize300.value,
+        lineHeight: LemonadeLineHeights.lineHeight400.value,
+        fontWeight: LemonadeFontWeights.semibold.value
+    )
+    public let bodyXSmallOverline = LemonadeTextStyle(
+        fontSize: LemonadeFontSizes.fontSize300.value,
+        lineHeight: LemonadeLineHeights.lineHeight400.value,
+        fontWeight: LemonadeFontWeights.semibold.value,
+        letterSpacing: 1.5
+    )
 }
 
 // MARK: - Environment Key
@@ -173,8 +308,8 @@ private struct LemonadeTypographyKey: EnvironmentKey {
     static let defaultValue: LemonadeTypographyProtocol = LemonadeTypography()
 }
 
-public extension EnvironmentValues {
-    var lemonadeTypography: LemonadeTypographyProtocol {
+extension EnvironmentValues {
+    public var lemonadeTypography: LemonadeTypographyProtocol {
         get { self[LemonadeTypographyKey.self] }
         set { self[LemonadeTypographyKey.self] = newValue }
     }
