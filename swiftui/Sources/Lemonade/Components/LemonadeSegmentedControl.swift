@@ -140,6 +140,8 @@ private struct LemonadeSegmentedControlView: View {
     let size: LemonadeSegmentedControlSize
     let onTabSelected: (Int) -> Void
 
+    @Namespace private var indicatorNamespace
+
     private var clampedSelectedTab: Int {
         min(max(selectedTab, 0), properties.count - 1)
     }
@@ -155,7 +157,7 @@ private struct LemonadeSegmentedControlView: View {
                     onSelectionChanged: onTabSelected
                 )
 
-                labelsOverlay
+                labelsOverlay(drawSelectionIndicator: false)
                     .allowsHitTesting(false)
             }
             .frame(
@@ -164,19 +166,15 @@ private struct LemonadeSegmentedControlView: View {
             )
             .frame(height: size.containerHeight)
         } else {
-            labelsOverlay
-                .frame(
-                    minWidth: size.buttonMinWidth,
-                    minHeight: size.buttonMinHeight
-                )
-                .frame(height: size.containerHeight)
-                .background(
-                    RoundedRectangle(cornerRadius: LemonadeTheme.radius.radiusFull)
-                        .fill(LemonadeTheme.colors.background.bgElevated)
-                )
+            fallbackControl
         }
         #else
-        labelsOverlay
+        fallbackControl
+        #endif
+    }
+
+    private var fallbackControl: some View {
+        labelsOverlay(drawSelectionIndicator: true)
             .frame(
                 minWidth: size.buttonMinWidth,
                 minHeight: size.buttonMinHeight
@@ -186,14 +184,14 @@ private struct LemonadeSegmentedControlView: View {
                 RoundedRectangle(cornerRadius: LemonadeTheme.radius.radiusFull)
                     .fill(LemonadeTheme.colors.background.bgElevated)
             )
-        #endif
     }
 
-    private var labelsOverlay: some View {
+    private func labelsOverlay(drawSelectionIndicator: Bool) -> some View {
         HStack(spacing: 0) {
             ForEach(properties.indices, id: \.self) { index in
                 let property = properties[index]
-                let tintColor = index == clampedSelectedTab
+                let isSelected = index == clampedSelectedTab
+                let tintColor = isSelected
                     ? LemonadeTheme.colors.content.contentPrimary
                     : LemonadeTheme.colors.content.contentSecondary
 
@@ -225,6 +223,16 @@ private struct LemonadeSegmentedControlView: View {
                 }
                 .buttonStyle(SegmentPressStyle())
                 .frame(maxWidth: .infinity)
+                .accessibilityLabel(property.label ?? property.icon?.rawValue ?? "")
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
+                .background {
+                    if drawSelectionIndicator && isSelected {
+                        RoundedRectangle(cornerRadius: LemonadeTheme.radius.radiusFull)
+                            .fill(LemonadeTheme.colors.background.bgDefault)
+                            .lemonadeShadow(.xsmall)
+                            .matchedGeometryEffect(id: "indicator", in: indicatorNamespace)
+                    }
+                }
             }
         }
         .padding(size.containerPadding)
