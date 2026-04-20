@@ -54,7 +54,8 @@ struct HomeView: View {
                     DemoItem(title: "Checkbox", destination: AnyView(CheckboxDisplayView())),
                     DemoItem(title: "RadioButton", destination: AnyView(RadioButtonDisplayView())),
                     DemoItem(title: "Switch", destination: AnyView(SwitchDisplayView())),
-                    DemoItem(title: "DatePicker", destination: AnyView(DatePickerDisplayView()))
+                    DemoItem(title: "DatePicker", destination: AnyView(DatePickerDisplayView())),
+                    DemoItem(title: "InlineCalendar", destination: AnyView(InlineCalendarDisplayView()))
                 ]
             ),
             DemoSection(

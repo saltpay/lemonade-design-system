@@ -378,6 +378,7 @@ private struct MonthGridView: View {
                             isOutsideVisibleRange: isOutsideMonth,
                             isInsideSelectedRange: isInRange,
                             showWeekdayLabel: false,
+                            showTodayIndicator: true,
                             onClick: { onDateSelected(normalized) }
                         )
                         .padding(.horizontal, LemonadeTheme.spaces.spacing200)
@@ -407,6 +408,7 @@ private struct MonthGridView: View {
                 )
             }
         }
+        .frame(maxHeight: .infinity, alignment: .top)
     }
 }
 
