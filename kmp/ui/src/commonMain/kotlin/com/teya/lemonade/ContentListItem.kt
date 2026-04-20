@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +43,7 @@ import com.teya.lemonade.core.SymbolContainerVoice
  * @param value - Value [String] to display.
  * @param layout - [LemonadeContentListItemLayout] horizontal or vertical arrangement.
  * @param modifier - [Modifier] to be applied to the root container.
+ * @param showDivider - Whether to display a bottom divider below the item.
  * @param leadingSlot - Optional slot for a leading element (e.g. SymbolContainer).
  * @param trailingSlot - Optional slot for a trailing element (e.g. icon action).
  * @param contentSlot - Optional slot for additional content. In vertical layout, this also
@@ -53,28 +55,39 @@ public fun LemonadeUi.ContentListItem(
     value: String,
     layout: LemonadeContentListItemLayout = LemonadeContentListItemLayout.Horizontal,
     modifier: Modifier = Modifier,
+    showDivider: Boolean = false,
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     contentSlot: (@Composable ColumnScope.() -> Unit)? = null,
 ) {
-    when (layout) {
-        LemonadeContentListItemLayout.Horizontal -> HorizontalContentListItem(
-            label = label,
-            value = value,
-            modifier = modifier,
-            leadingSlot = leadingSlot,
-            trailingSlot = trailingSlot,
-            contentSlot = contentSlot,
-        )
+    val contentModifier = Modifier.padding(all = LocalSpaces.current.spacing400)
 
-        LemonadeContentListItemLayout.Vertical -> VerticalContentListItem(
-            label = label,
-            value = value,
-            modifier = modifier,
-            leadingSlot = leadingSlot,
-            trailingSlot = trailingSlot,
-            contentSlot = contentSlot,
-        )
+    Column(modifier = modifier) {
+        when (layout) {
+            LemonadeContentListItemLayout.Horizontal -> HorizontalContentListItem(
+                label = label,
+                value = value,
+                modifier = contentModifier,
+                leadingSlot = leadingSlot,
+                trailingSlot = trailingSlot,
+                contentSlot = contentSlot,
+            )
+
+            LemonadeContentListItemLayout.Vertical -> VerticalContentListItem(
+                label = label,
+                value = value,
+                modifier = contentModifier,
+                leadingSlot = leadingSlot,
+                trailingSlot = trailingSlot,
+                contentSlot = contentSlot,
+            )
+        }
+
+        if (showDivider) {
+            LemonadeUi.HorizontalDivider(
+                modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing400),
+            )
+        }
     }
 }
 
@@ -187,6 +200,7 @@ private data class ContentListItemPreviewData(
     val hasLeading: Boolean,
     val hasTrailing: Boolean,
     val hasContentSlot: Boolean,
+    val showDivider: Boolean,
 )
 
 private class ContentListItemPreviewProvider :
@@ -197,14 +211,17 @@ private class ContentListItemPreviewProvider :
                 listOf(true, false).forEach { leading ->
                     listOf(true, false).forEach { trailing ->
                         listOf(true, false).forEach { contentSlot ->
-                            add(
-                                ContentListItemPreviewData(
-                                    layout = layout,
-                                    hasLeading = leading,
-                                    hasTrailing = trailing,
-                                    hasContentSlot = contentSlot,
-                                ),
-                            )
+                            listOf(true, false).forEach { divider ->
+                                add(
+                                    ContentListItemPreviewData(
+                                        layout = layout,
+                                        hasLeading = leading,
+                                        hasTrailing = trailing,
+                                        hasContentSlot = contentSlot,
+                                        showDivider = divider,
+                                    ),
+                                )
+                            }
                         }
                     }
                 }
@@ -222,6 +239,7 @@ private fun ContentListItemPreview(
         label = "Label",
         value = "Value",
         layout = previewData.layout,
+        showDivider = previewData.showDivider,
         leadingSlot = if (previewData.hasLeading) {
             {
                 LemonadeUi.SymbolContainer(

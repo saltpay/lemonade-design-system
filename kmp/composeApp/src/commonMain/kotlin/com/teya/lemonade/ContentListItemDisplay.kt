@@ -12,7 +12,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeAssetSize
-import com.teya.lemonade.core.LemonadeCardPadding
 import com.teya.lemonade.core.LemonadeContentListItemLayout
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.SymbolContainerSize
@@ -32,28 +31,25 @@ internal fun ContentListItemDisplay() {
             .navigationBarsPadding()
             .padding(all = LemonadeTheme.spaces.spacing400),
     ) {
-        // Horizontal simple
+        // Horizontal simple (stacked with dividers)
         LemonadeUi.Card(
-            contentPadding = LemonadeCardPadding.Medium,
             header = CardHeaderConfig(title = "Horizontal — Simple"),
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)) {
-                LemonadeUi.ContentListItem(
-                    label = "Account holder",
-                    value = "John Doe",
-                    layout = LemonadeContentListItemLayout.Horizontal,
-                )
-                LemonadeUi.ContentListItem(
-                    label = "Account number",
-                    value = "123-456-789",
-                    layout = LemonadeContentListItemLayout.Horizontal,
-                )
-            }
+            LemonadeUi.ContentListItem(
+                label = "Account holder",
+                value = "John Doe",
+                layout = LemonadeContentListItemLayout.Horizontal,
+                showDivider = true,
+            )
+            LemonadeUi.ContentListItem(
+                label = "Account number",
+                value = "123-456-789",
+                layout = LemonadeContentListItemLayout.Horizontal,
+            )
         }
 
         // Horizontal with leading SymbolContainer + trailing icon
         LemonadeUi.Card(
-            contentPadding = LemonadeCardPadding.Medium,
             header = CardHeaderConfig(title = "Horizontal — Leading & Trailing"),
         ) {
             LemonadeUi.ContentListItem(
@@ -81,7 +77,6 @@ internal fun ContentListItemDisplay() {
 
         // Horizontal with content slot
         LemonadeUi.Card(
-            contentPadding = LemonadeCardPadding.Medium,
             header = CardHeaderConfig(title = "Horizontal — Content Slot"),
         ) {
             LemonadeUi.ContentListItem(
@@ -99,7 +94,6 @@ internal fun ContentListItemDisplay() {
 
         // Vertical small (no content slot)
         LemonadeUi.Card(
-            contentPadding = LemonadeCardPadding.Medium,
             header = CardHeaderConfig(title = "Vertical Small — Simple"),
         ) {
             LemonadeUi.ContentListItem(
@@ -111,7 +105,6 @@ internal fun ContentListItemDisplay() {
 
         // Vertical small with leading + trailing
         LemonadeUi.Card(
-            contentPadding = LemonadeCardPadding.Medium,
             header = CardHeaderConfig(title = "Vertical Small — Leading & Trailing"),
         ) {
             LemonadeUi.ContentListItem(
@@ -139,7 +132,6 @@ internal fun ContentListItemDisplay() {
 
         // Vertical large (with content slot)
         LemonadeUi.Card(
-            contentPadding = LemonadeCardPadding.Medium,
             header = CardHeaderConfig(title = "Vertical Large — Content Slot"),
         ) {
             LemonadeUi.ContentListItem(
@@ -157,7 +149,6 @@ internal fun ContentListItemDisplay() {
 
         // Vertical large with leading + trailing + content slot
         LemonadeUi.Card(
-            contentPadding = LemonadeCardPadding.Medium,
             header = CardHeaderConfig(title = "Vertical Large — Full"),
         ) {
             LemonadeUi.ContentListItem(
@@ -180,6 +171,35 @@ internal fun ContentListItemDisplay() {
                         contentDescription = "Edit",
                     )
                 },
+                contentSlot = {
+                    LemonadeUi.Tag(
+                        label = "Available",
+                        voice = TagVoice.Positive,
+                    )
+                },
+            )
+        }
+
+        // Mixed list with dividers
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "Mixed List with Dividers"),
+        ) {
+            LemonadeUi.ContentListItem(
+                label = "Label",
+                value = "Value",
+                layout = LemonadeContentListItemLayout.Horizontal,
+                showDivider = true,
+            )
+            LemonadeUi.ContentListItem(
+                label = "Label",
+                value = "Value",
+                layout = LemonadeContentListItemLayout.Vertical,
+                showDivider = true,
+            )
+            LemonadeUi.ContentListItem(
+                label = "Label",
+                value = "Value",
+                layout = LemonadeContentListItemLayout.Vertical,
                 contentSlot = {
                     LemonadeUi.Tag(
                         label = "Available",

@@ -5,27 +5,24 @@ struct ContentListItemDisplayView: View {
     var body: some View {
         ScrollView(.vertical) {
             VStack(spacing: .space.spacing400) {
-                // MARK: - Horizontal Simple
+                // MARK: - Horizontal Simple (stacked with dividers)
                 LemonadeUi.Card(
-                    contentPadding: .medium,
                     header: CardHeaderConfig(title: "Horizontal Simple")
                 ) {
-                    VStack(spacing: .space.spacing400) {
-                        LemonadeUi.ContentListItem(
-                            label: "Account holder",
-                            value: "John Doe"
-                        )
-                        
-                        LemonadeUi.ContentListItem(
-                            label: "Account number",
-                            value: "1234-5678"
-                        )
-                    }
+                    LemonadeUi.ContentListItem(
+                        label: "Account holder",
+                        value: "John Doe",
+                        showDivider: true
+                    )
+
+                    LemonadeUi.ContentListItem(
+                        label: "Account number",
+                        value: "1234-5678"
+                    )
                 }
 
                 // MARK: - Horizontal with Leading + Trailing
                 LemonadeUi.Card(
-                    contentPadding: .medium,
                     header: CardHeaderConfig(title: "Horizontal with Leading + Trailing")
                 ) {
                     LemonadeUi.ContentListItem(
@@ -51,7 +48,6 @@ struct ContentListItemDisplayView: View {
 
                 // MARK: - Horizontal with Content Slot
                 LemonadeUi.Card(
-                    contentPadding: .medium,
                     header: CardHeaderConfig(title: "Horizontal with Content Slot")
                 ) {
                     LemonadeUi.ContentListItem(
@@ -65,7 +61,6 @@ struct ContentListItemDisplayView: View {
 
                 // MARK: - Vertical Small
                 LemonadeUi.Card(
-                    contentPadding: .medium,
                     header: CardHeaderConfig(title: "Vertical Small")
                 ) {
                     LemonadeUi.ContentListItem(
@@ -77,7 +72,6 @@ struct ContentListItemDisplayView: View {
 
                 // MARK: - Vertical Small with Leading + Trailing
                 LemonadeUi.Card(
-                    contentPadding: .medium,
                     header: CardHeaderConfig(title: "Vertical Small with Leading + Trailing")
                 ) {
                     LemonadeUi.ContentListItem(
@@ -104,7 +98,6 @@ struct ContentListItemDisplayView: View {
 
                 // MARK: - Vertical Large (with Content Slot)
                 LemonadeUi.Card(
-                    contentPadding: .medium,
                     header: CardHeaderConfig(title: "Vertical Large")
                 ) {
                     LemonadeUi.ContentListItem(
@@ -119,7 +112,6 @@ struct ContentListItemDisplayView: View {
 
                 // MARK: - Vertical Large with All Slots
                 LemonadeUi.Card(
-                    contentPadding: .medium,
                     header: CardHeaderConfig(title: "Vertical Large with All Slots")
                 ) {
                     LemonadeUi.ContentListItem(
@@ -141,6 +133,33 @@ struct ContentListItemDisplayView: View {
                                 tint: LemonadeTheme.colors.content.contentBrand
                             )
                         },
+                        contentSlot: {
+                            LemonadeUi.Tag(label: "Available", voice: .positive)
+                        }
+                    )
+                }
+
+                // MARK: - Mixed List with Dividers
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(title: "Mixed List with Dividers")
+                ) {
+                    LemonadeUi.ContentListItem(
+                        label: "Label",
+                        value: "Value",
+                        showDivider: true
+                    )
+
+                    LemonadeUi.ContentListItem(
+                        label: "Label",
+                        value: "Value",
+                        layout: .vertical,
+                        showDivider: true
+                    )
+
+                    LemonadeUi.ContentListItem(
+                        label: "Label",
+                        value: "Value",
+                        layout: .vertical,
                         contentSlot: {
                             LemonadeUi.Tag(label: "Available", voice: .positive)
                         }
