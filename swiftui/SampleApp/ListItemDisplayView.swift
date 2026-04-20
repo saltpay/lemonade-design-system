@@ -144,7 +144,8 @@ struct ListItemDisplayView: View {
                                 icon: .money,
                                 contentDescription: nil,
                                 voice: .info,
-                                size: .large
+                                size: .large,
+                                shape: .rounded
                             )
                         }
                     )
@@ -158,7 +159,8 @@ struct ListItemDisplayView: View {
                                 icon: .coins,
                                 contentDescription: nil,
                                 voice: .positive,
-                                size: .large
+                                size: .large,
+                                shape: .rounded
                             )
                         }
                     )
@@ -182,7 +184,8 @@ struct ListItemDisplayView: View {
                                 icon: .arrowUpRight,
                                 contentDescription: nil,
                                 voice: .critical,
-                                size: .large
+                                size: .large,
+                                shape: .rounded
                             )
                         }
                     )
@@ -293,7 +296,8 @@ struct ListItemDisplayView: View {
                                 icon: .bank,
                                 contentDescription: nil,
                                 voice: .neutral,
-                                size: .large
+                                size: .large,
+                                shape: .rounded
                             )
                         },
                         trailingSlot: {
@@ -385,9 +389,10 @@ struct ListItemDisplayView: View {
 
                 // MARK: - Outlined — Leading icon only
                 LemonadeUi.Card(
+                    contentPadding: .xSmall,
                     header: CardHeaderConfig(title: "Outlined — Leading icon only")
                 ) {
-                    VStack(spacing: LemonadeTheme.spaces.spacing200) {
+                    VStack(spacing: LemonadeTheme.spaces.spacing100) {
                         ForEach(Array(outlinedOptions.enumerated()), id: \.element.id) { index, option in
                             let isChecked = outlinedWithLeading == index
                             LemonadeUi.SelectListItem(
@@ -412,9 +417,10 @@ struct ListItemDisplayView: View {
 
                 // MARK: - Outlined — Leading + trailing tag
                 LemonadeUi.Card(
+                    contentPadding: .xSmall,
                     header: CardHeaderConfig(title: "Outlined — Leading + trailing tag")
                 ) {
-                    VStack(spacing: LemonadeTheme.spaces.spacing200) {
+                    VStack(spacing: LemonadeTheme.spaces.spacing100) {
                         ForEach(Array(outlinedOptions.prefix(3).enumerated()), id: \.element.id) { index, option in
                             let isChecked = outlinedWithTrailing == index
                             let preset = trailingPresets[index]
@@ -443,9 +449,10 @@ struct ListItemDisplayView: View {
 
                 // MARK: - Outlined — Label only
                 LemonadeUi.Card(
+                    contentPadding: .xSmall,
                     header: CardHeaderConfig(title: "Outlined — Label only (no leading, no trailing)")
                 ) {
-                    VStack(spacing: LemonadeTheme.spaces.spacing200) {
+                    VStack(spacing: LemonadeTheme.spaces.spacing100) {
                         ForEach(0..<3, id: \.self) { index in
                             LemonadeUi.SelectListItem(
                                 label: "Option \(index + 1)",
@@ -460,9 +467,10 @@ struct ListItemDisplayView: View {
 
                 // MARK: - Outlined — With support text
                 LemonadeUi.Card(
+                    contentPadding: .xSmall,
                     header: CardHeaderConfig(title: "Outlined — With support text")
                 ) {
-                    VStack(spacing: LemonadeTheme.spaces.spacing200) {
+                    VStack(spacing: LemonadeTheme.spaces.spacing100) {
                         ForEach(Array(outlinedOptions.prefix(3).enumerated()), id: \.element.id) { index, option in
                             LemonadeUi.SelectListItem(
                                 label: option.label,
@@ -487,9 +495,10 @@ struct ListItemDisplayView: View {
 
                 // MARK: - Outlined — Multiple
                 LemonadeUi.Card(
+                    contentPadding: .xSmall,
                     header: CardHeaderConfig(title: "Outlined — Multiple")
                 ) {
-                    VStack(spacing: LemonadeTheme.spaces.spacing200) {
+                    VStack(spacing: LemonadeTheme.spaces.spacing100) {
                         ForEach(Array(outlinedOptions.enumerated()), id: \.element.id) { index, option in
                             let isChecked = outlinedMultiple.contains(index)
                             LemonadeUi.SelectListItem(
@@ -521,9 +530,10 @@ struct ListItemDisplayView: View {
 
                 // MARK: - Outlined — Disabled states
                 LemonadeUi.Card(
+                    contentPadding: .xSmall,
                     header: CardHeaderConfig(title: "Outlined — Disabled states")
                 ) {
-                    VStack(spacing: LemonadeTheme.spaces.spacing200) {
+                    VStack(spacing: LemonadeTheme.spaces.spacing100) {
                         LemonadeUi.SelectListItem(
                             label: "Disabled, no leading",
                             type: .single,
