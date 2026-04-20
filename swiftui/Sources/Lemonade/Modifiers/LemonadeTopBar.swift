@@ -534,7 +534,6 @@ private struct NativeCompactLargeTopBarModifier<Toolbar: ToolbarContent>: ViewMo
                 .frame(height: 0)
             }
             .navigationBarBackButtonHidden(true)
-            .lemonadeCompactLargeSubtitle(subheading)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     LemonadeCompactLargeTitle(label: label, subheading: subheading)
@@ -581,7 +580,6 @@ private struct NativeCompactLargeSearchTopBarModifier<Toolbar: ToolbarContent>: 
                 .frame(height: 0)
             }
             .navigationBarBackButtonHidden(true)
-            .lemonadeCompactLargeSubtitle(subheading)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     LemonadeCompactLargeTitle(label: label, subheading: subheading)
@@ -595,7 +593,7 @@ private struct NativeCompactLargeSearchTopBarModifier<Toolbar: ToolbarContent>: 
             }
             .searchable(
                 text: $searchInput,
-                placement: .navigationBarDrawer,
+                placement: .navigationBarDrawer(displayMode: .automatic),
                 prompt: searchPrompt
             )
     }
@@ -609,22 +607,6 @@ private struct NativeScrollOffsetKey: PreferenceKey {
 }
 
 // MARK: - Version-specific helpers
-
-private extension View {
-    /// Applies .navigationSubtitle on iOS 26+, no-op on older.
-    @ViewBuilder
-    func lemonadeCompactLargeSubtitle(_ subtitle: String?) -> some View {
-        #if compiler(>=6.2)
-        if #available(iOS 26, *) {
-            self.navigationSubtitle(subtitle ?? "")
-        } else {
-            self
-        }
-        #else
-        self
-        #endif
-    }
-}
 
 @available(iOS 16.0, *)
 private extension ToolbarContent {
@@ -714,33 +696,28 @@ private struct LemonadeCompactLargeTitle: View {
     let subheading: String?
 
     var body: some View {
-        #if compiler(>=6.2)
-        if #available(iOS 26, *) {
-            SwiftUI.Text(label)
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .fixedSize(horizontal: true, vertical: false)
-        } else {
-            compactLayout
-        }
-        #else
-        compactLayout
-        #endif
-    }
-
-    private var compactLayout: some View {
         VStack(alignment: .leading, spacing: 0) {
             SwiftUI.Text(label)
-                .font(.title2)
+                .font(titleFont)
                 .fontWeight(.bold)
                 .fixedSize(horizontal: true, vertical: false)
             if let subheading {
                 SwiftUI.Text(subheading)
-                    .font(.caption2)
+                    .font(.bodySmallRegular)
                     .fixedSize(horizontal: true, vertical: false)
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(LemonadeTheme.colors.content.contentSecondary)
+                    .padding(.bottom, LemonadeSpacing.spacing200.value)
             }
         }
+    }
+
+    private var titleFont: Font {
+        #if compiler(>=6.2)
+        if #available(iOS 26, *) {
+            return .largeTitle
+        }
+        #endif
+        return .title2
     }
 }
 
