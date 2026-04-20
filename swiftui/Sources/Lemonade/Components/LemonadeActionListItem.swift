@@ -53,8 +53,11 @@ public extension LemonadeUi {
             onListItemClick: onItemClicked,
             leadingSlot: leadingSlot,
             trailingSlot: {
-                trailingSlot()
-                    .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+                HStack {
+                    trailingSlot()
+                        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+                }
+                .frame(maxHeight: .infinity)
             }
         )
     }
@@ -139,3 +142,43 @@ public extension LemonadeUi {
         )
     }
 }
+
+#if DEBUG
+struct LemonadeActionListItem_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // SelectListItem - Single with divider
+            LemonadeUi.ActionListItem(
+                label: "Action",
+                supportText: "Support text",
+                showNavigationIndicator: true,
+                showDivider: true,
+                onItemClicked: {},
+                leadingSlot: {
+                    LemonadeUi.SymbolContainer(
+                        icon: .star,
+                        contentDescription: nil,
+                        size: .medium,
+                        shape: .rounded
+                    )
+                }
+            )
+            LemonadeUi.ActionListItem(
+                label: "Action",
+                supportText: "Support text",
+                showNavigationIndicator: true,
+                onItemClicked: {},
+                leadingSlot: {
+                    LemonadeUi.SymbolContainer(
+                        icon: .star,
+                        contentDescription: nil,
+                        size: .medium,
+                        shape: .rounded
+                    )
+                }
+            )
+        }
+        .frame(maxHeight: .infinity, alignment: .top)
+    }
+}
+#endif

@@ -236,17 +236,18 @@ private struct PlainSelectListItem<LeadingContent: View, TrailingContent: View>:
             },
             leadingSlot: { leadingSlot() },
             trailingSlot: {
-                HStack(spacing: LemonadeTheme.spaces.spacing200) {
-                    trailingSlot()
-
-                    SelectionControlView(
-                        type: type,
-                        checked: checked,
-                        onItemClicked: onItemClicked,
-                        enabled: enabled
-                    )
-                }
-                .frame(maxHeight: .infinity)
+                
+                    HStack(spacing: LemonadeTheme.spaces.spacing200) {
+                        trailingSlot()
+                        
+                        SelectionControlView(
+                            type: type,
+                            checked: checked,
+                            onItemClicked: onItemClicked,
+                            enabled: enabled
+                        )
+                    }
+                    .frame(maxHeight:.infinity)
             }
         )
     }
@@ -355,3 +356,30 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
         .animation(.easeInOut(duration: 0.15), value: checked)
     }
 }
+
+#if DEBUG
+struct LemonadeSelectListItem_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // SelectListItem - Single with divider
+            LemonadeUi.SelectListItem(
+                label: "Single Selection",
+                type: .single,
+                checked: true,
+                onItemClicked: {},
+                showDivider: true,
+                supportText: "Support text"
+            )
+            LemonadeUi.SelectListItem(
+                label: "Single Selection",
+                type: .single,
+                checked: true,
+                onItemClicked: {},
+                showDivider: false,
+                supportText: "Support text"
+            )
+        }
+        .frame(maxHeight: .infinity, alignment: .top)
+    }
+}
+#endif
