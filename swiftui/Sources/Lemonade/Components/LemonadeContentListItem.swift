@@ -38,6 +38,7 @@ public extension LemonadeUi {
     ///   - label: Label String describing the data field
     ///   - value: Value String to display
     ///   - layout: Horizontal or vertical arrangement
+    ///   - showDivider: Whether to display a bottom divider below the item
     ///   - leadingSlot: Optional leading element (e.g. SymbolContainer)
     ///   - trailingSlot: Optional trailing element (e.g. icon action)
     ///   - contentSlot: Optional additional content. In vertical layout, switches value to larger typography
@@ -46,6 +47,7 @@ public extension LemonadeUi {
         label: String,
         value: String,
         layout: LemonadeContentListItemLayout = .horizontal,
+        showDivider: Bool = false,
         @ViewBuilder leadingSlot: @escaping () -> Leading = { EmptyView() },
         @ViewBuilder trailingSlot: @escaping () -> Trailing = { EmptyView() },
         @ViewBuilder contentSlot: @escaping () -> Content = { EmptyView() }
@@ -54,6 +56,7 @@ public extension LemonadeUi {
             label: label,
             value: value,
             layout: layout,
+            showDivider: showDivider,
             leadingSlot: leadingSlot,
             trailingSlot: trailingSlot,
             contentSlot: contentSlot
@@ -67,6 +70,7 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
     let label: String
     let value: String
     let layout: LemonadeContentListItemLayout
+    let showDivider: Bool
     @ViewBuilder let leadingSlot: () -> Leading
     @ViewBuilder let trailingSlot: () -> Trailing
     @ViewBuilder let contentSlot: () -> Content
@@ -84,11 +88,21 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
     }
 
     var body: some View {
-        switch layout {
-        case .horizontal:
-            horizontalLayout
-        case .vertical:
-            verticalLayout
+        VStack(spacing: 0) {
+            Group {
+                switch layout {
+                case .horizontal:
+                    horizontalLayout
+                case .vertical:
+                    verticalLayout
+                }
+            }
+            .padding(LemonadeTheme.spaces.spacing400)
+
+            if showDivider {
+                LemonadeUi.HorizontalDivider()
+                    .padding(.horizontal, LemonadeTheme.spaces.spacing400)
+            }
         }
     }
 
@@ -229,6 +243,24 @@ struct LemonadeContentListItem_Previews: PreviewProvider {
                         LemonadeUi.Tag(label: "Available", voice: .positive)
                     }
                 )
+
+                // Stacked list with dividers
+                VStack(spacing: 0) {
+                    LemonadeUi.ContentListItem(
+                        label: "Label",
+                        value: "Value",
+                        showDivider: true
+                    )
+                    LemonadeUi.ContentListItem(
+                        label: "Label",
+                        value: "Value",
+                        showDivider: true
+                    )
+                    LemonadeUi.ContentListItem(
+                        label: "Label",
+                        value: "Value"
+                    )
+                }
             }
         }
         .padding()
