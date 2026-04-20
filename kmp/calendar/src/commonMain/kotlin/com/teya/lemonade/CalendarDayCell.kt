@@ -55,7 +55,7 @@ internal fun CalendarDayCell(
     selectionContentColor: Color? = null,
     trailingContent: (@Composable () -> Unit)? = null,
 ) {
-    val selectionShape = LocalShapes.current.radius300
+    val selectionShape = LocalShapes.current.radius200
     val resolvedSelectionBgColor = selectionBackgroundColor
         ?: LocalColors.current.interaction.bgBrandInteractive
     val weekdayLabelColor = resolveWeekdayLabelColor(

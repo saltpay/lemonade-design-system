@@ -46,6 +46,7 @@ struct CalendarDayCell<TrailingContent: View>: View {
     /// circle draws the brand background (DatePicker style), and the weekday label
     /// retains its default color.
     let expandSelectionToLabel: Bool
+    let showTodayIndicator: Bool
     let selectionBackgroundColor: Color?
     let selectionContentColor: Color?
     let onClick: () -> Void
@@ -62,6 +63,7 @@ struct CalendarDayCell<TrailingContent: View>: View {
         showWeekdayLabel: Bool = true,
         weekdayLabel: String? = nil,
         expandSelectionToLabel: Bool = true,
+        showTodayIndicator: Bool = false,
         selectionBackgroundColor: Color? = nil,
         selectionContentColor: Color? = nil,
         onClick: @escaping () -> Void,
@@ -77,6 +79,7 @@ struct CalendarDayCell<TrailingContent: View>: View {
         self.showWeekdayLabel = showWeekdayLabel
         self.weekdayLabel = weekdayLabel
         self.expandSelectionToLabel = expandSelectionToLabel
+        self.showTodayIndicator = showTodayIndicator
         self.selectionBackgroundColor = selectionBackgroundColor
         self.selectionContentColor = selectionContentColor
         self.onClick = onClick
@@ -107,6 +110,17 @@ struct CalendarDayCell<TrailingContent: View>: View {
         return LemonadeTheme.colors.content.contentPrimary
     }
 
+    /// Renders the selected-state brand background when `active` is true.
+    @ViewBuilder
+    private func selectionBackground(active: Bool, inset: CGFloat = 0) -> some View {
+        if active {
+            RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius200)
+                .fill(selectionBackgroundColor ?? LemonadeTheme.colors.interaction.bgBrandInteractive)
+                .padding(.horizontal, inset)
+                .padding(.vertical, inset)
+        }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             if showWeekdayLabel, let label = weekdayLabel {
@@ -131,7 +145,7 @@ struct CalendarDayCell<TrailingContent: View>: View {
                     isOutsideVisibleRange: isOutsideVisibleRange,
                     isInsideSelectedRange: isInsideSelectedRange,
                     showSelectionBackground: false,
-                    showTodayIndicator: false,
+                    showTodayIndicator: showTodayIndicator,
                     selectionContentColor: selectionContentColor,
                     onClick: onClick
                 )
@@ -140,28 +154,15 @@ struct CalendarDayCell<TrailingContent: View>: View {
             }
             .padding(.vertical, !expandSelectionToLabel ? LemonadeTheme.spaces.spacing100 : 0)
             .background(
-                Group {
-                    if !expandSelectionToLabel && isSelected {
-                        // Negative horizontal padding extends the background into the
-                        // outer VStack's padding area so the compact selection matches
-                        // the expanded selection width.
-                        RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400)
-                            .fill(selectionBackgroundColor ?? LemonadeTheme.colors.interaction.bgBrandInteractive)
-                            .padding(.horizontal, -LemonadeTheme.spaces.spacing100)
-                            .padding(.vertical, -LemonadeTheme.spaces.spacing100)
-                    }
-                }
+                selectionBackground(
+                    active: !expandSelectionToLabel && isSelected,
+                    inset: -LemonadeTheme.spaces.spacing100
+                )
             )
         }
-        .padding(.horizontal, LemonadeTheme.spaces.spacing100)
-        .padding(.vertical, LemonadeTheme.spaces.spacing100)
+        .padding(showWeekdayLabel ? LemonadeTheme.spaces.spacing100 : 0)
         .background(
-            Group {
-                if showWeekdayLabel && expandSelectionToLabel && isSelected {
-                    RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400)
-                        .fill(selectionBackgroundColor ?? LemonadeTheme.colors.interaction.bgBrandInteractive)
-                }
-            }
+            selectionBackground(active: expandSelectionToLabel && isSelected)
         )
     }
 }
