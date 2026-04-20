@@ -46,9 +46,9 @@ public enum LemonadeListItemVoice {
     }
 }
 
-// MARK: - Internal ListItem Helpers
+// MARK: - ListItem
 
-extension LemonadeUi {
+public extension LemonadeUi {
     /// Convenience overload that composes standard label and support-text content from string
     /// parameters and delegates to the content-slot variant of ListItem.
     ///
