@@ -225,13 +225,9 @@ private struct SearchExpandedLabelDemo: View {
             navigationAction: NavigationAction(action: .back, onAction: {})
         ) {
             ToolbarItem(placement: .navigationBarTrailing) {
-                LemonadeUi.IconButton(
-                    icon: .filter,
-                    contentDescription: "Filter",
-                    onClick: {},
-                    variant: .ghost,
-                    size: .medium
-                )
+                Button(action: {}) {
+                    LemonadeUi.Icon(icon: .filter, contentDescription: "Filter")
+                }
             }
         }
     }
