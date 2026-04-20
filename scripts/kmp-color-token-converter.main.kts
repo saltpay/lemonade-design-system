@@ -70,37 +70,40 @@ private fun generateColorCodes(
         appendLine(" */")
         appendLine("@InternalLemonadeApi(")
         appendLine("    message = \"This API is internal to Lemonade using it directly in general is a mistake, \" +")
-        appendLine("            \"accessing the colors directly is not recommended, use the LemonadeTheme instead.\",")
+        appendLine("        \"accessing the colors directly is not recommended, use the LemonadeTheme instead.\",")
         appendLine(")")
         appendLine("public sealed class LemonadePrimitiveColors {")
-        appendLine("    public sealed class Solid: LemonadePrimitiveColors() {")
+        appendLine("    public sealed class Solid : LemonadePrimitiveColors() {")
         solidGroup
             .groupBy { resource -> resource.groupFullName }
-            .forEach { (groupName, resources) ->
-                if (groupName != null) {
-                    append(
-                        buildColorGroupCode(
-                            parentGroupName = "Solid",
-                            groupName = groupName,
-                            resources = resources,
-                        )
+            .entries
+            .filter { (groupName, _) -> groupName != null }
+            .forEachIndexed { index, (groupName, resources) ->
+                append(
+                    buildColorGroupCode(
+                        parentGroupName = "Solid",
+                        groupName = groupName!!,
+                        resources = resources,
+                        isFirst = index == 0,
                     )
-                }
+                )
             }
         appendLine("    }")
-        appendLine("    public sealed class Alpha: LemonadePrimitiveColors() {")
+        appendLine()
+        appendLine("    public sealed class Alpha : LemonadePrimitiveColors() {")
         alphaGroup
             .groupBy { resource -> resource.groupFullName }
-            .forEach { (groupName, resources) ->
-                if (groupName != null) {
-                    append(
-                        buildColorGroupCode(
-                            parentGroupName = "Alpha",
-                            groupName = groupName.removeSuffix("Alpha"),
-                            resources = resources,
-                        )
+            .entries
+            .filter { (groupName, _) -> groupName != null }
+            .forEachIndexed { index, (groupName, resources) ->
+                append(
+                    buildColorGroupCode(
+                        parentGroupName = "Alpha",
+                        groupName = groupName!!.removeSuffix("Alpha"),
+                        resources = resources,
+                        isFirst = index == 0,
                     )
-                }
+                )
             }
         appendLine("    }")
         appendLine("}")
@@ -111,9 +114,11 @@ private fun buildColorGroupCode(
     groupName: String,
     parentGroupName: String,
     resources: List<ResourceData<Color>>,
+    isFirst: Boolean = true,
 ): String {
     return buildString {
-        appendLine("        public data object $groupName: $parentGroupName() {")
+        if (!isFirst) appendLine()
+        appendLine("        public data object $groupName : $parentGroupName() {")
         resources.forEach { resource ->
             append(
                 colorCode(
