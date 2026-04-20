@@ -229,7 +229,8 @@ private struct SearchExpandedLabelDemo: View {
                     icon: .filter,
                     contentDescription: "Filter",
                     onClick: {},
-                    variant: LemonadeIconButtonVariant.ghost
+                    variant: .ghost,
+                    size: .medium
                 )
             }
         }
