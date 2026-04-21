@@ -309,12 +309,12 @@ internal fun CoreChip(
                     modifier = Modifier
                         .padding(horizontal = LocalSpaces.current.spacing100)
                         .defaultMinSize(
-                            minWidth = 18.dp,
-                            minHeight = 16.dp,
+                            minWidth = LocalSizes.current.size450,
+                            minHeight = LocalSizes.current.size400,
                         ).background(
                             color = LocalColors.current.background.bgBrand,
                             shape = LocalShapes.current.radiusFull,
-                        ).padding(horizontal = LocalSpaces.current.spacing100),
+                        ).padding(horizontal = LocalSpaces.current.spacing50),
                 ) {
                     LemonadeUi.Text(
                         text = counter.toString(),
@@ -332,7 +332,6 @@ internal fun CoreChip(
                     contentAlignment = Alignment.Center,
                     content = trailingSlot,
                     modifier = Modifier
-                        .padding(start = LocalSpaces.current.spacing50)
                         .then(
                             other = if (onTrailingIconClick != null) {
                                 Modifier.clickable(
