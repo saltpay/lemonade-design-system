@@ -34,6 +34,7 @@ internal fun TopBarSampleDisplay() {
         LemonadeUi.TopBar(
             label = "Top Bar",
             collapsedLabel = "Collapsed Top Bar",
+            subtitle = "Subheading preview",
             state = topBarState,
             navigationAction = NavigationAction(
                 navigationAction = TopBarAction.Close,
