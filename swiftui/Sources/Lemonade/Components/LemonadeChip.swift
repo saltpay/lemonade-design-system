@@ -235,7 +235,7 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
     }
 
     private var chipContent: some View {
-        HStack(spacing: .space.spacing100) {
+        HStack(spacing: .space.spacing0) {
             leadingContent()
 
             LemonadeUi.Text(
@@ -252,7 +252,7 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
                     .frame(minWidth: .size.size450, minHeight: .size.size400)
                     .background(.bg.bgBrand)
                     .clipShape(Capsule())
-                    .padding(.trailing, .space.spacing100)
+                    .padding(.trailing, .space.spacing50)
             }
 
             if let onTrailingIconClick = onTrailingIconClick {
@@ -261,7 +261,6 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
                 }
                 .buttonStyle(PlainButtonStyle())
                 .disabled(!enabled)
-                .padding(.trailing, .space.spacing100)
             } else {
                 trailingContent()
             }
