@@ -30,15 +30,8 @@ public enum LemonadeTileVariant {
 
     var borderWidth: CGFloat {
         switch self {
-        case .filled: return LemonadeTheme.borderWidth.base.border25
-        case .outlined: return LemonadeTheme.borderWidth.base.border25
-        }
-    }
-
-    var shadow: LemonadeShadow? {
-        switch self {
-        case .filled: return nil
-        case .outlined: return .xsmall
+        case .filled: return 0
+        case .outlined: return LemonadeTheme.borderWidth.base.border40
         }
     }
 }
@@ -244,6 +237,21 @@ public extension LemonadeUi {
 
 }
 
+// MARK: - Haptic Helpers
+
+#if os(iOS)
+fileprivate func triggerTouchHaptic() {
+    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+}
+
+fileprivate func triggerSelectionHaptic() {
+    UISelectionFeedbackGenerator().selectionChanged()
+}
+#else
+fileprivate func triggerTouchHaptic() {}
+fileprivate func triggerSelectionHaptic() {}
+#endif
+
 // MARK: - Internal Tile View
 
 private struct LemonadeTileView<TopAccessory: View>: View {
@@ -257,6 +265,8 @@ private struct LemonadeTileView<TopAccessory: View>: View {
     let stretched: Bool
     let topAccessory: (() -> TopAccessory)?
 
+    @State private var isPressed = false
+
     private let minWidth: CGFloat = 120
 
     private var effectiveBackgroundColor: Color {
@@ -269,10 +279,6 @@ private struct LemonadeTileView<TopAccessory: View>: View {
 
     private var effectiveBorderWidth: CGFloat {
         isSelected ? LemonadeTheme.borderWidth.base.border50 : variant.borderWidth
-    }
-
-    private var effectiveShadow: LemonadeShadow? {
-        isSelected ? nil : variant.shadow
     }
 
     private var effectiveContentColor: Color {
@@ -323,7 +329,7 @@ private struct LemonadeTileView<TopAccessory: View>: View {
         .padding(LemonadeTheme.spaces.spacing300)
     }
 
-    var body: some View {
+    private var tileShape: some View {
         Group {
             if #available(iOS 16, macOS 13, *) {
                 DefaultMinSize(minWidth: minWidth) {
@@ -341,15 +347,23 @@ private struct LemonadeTileView<TopAccessory: View>: View {
             RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
                 .stroke(effectiveBorderColor, lineWidth: effectiveBorderWidth)
         )
-        .applyIf(effectiveShadow != nil) { view in
-            view.lemonadeShadow(self.effectiveShadow!)
-        }
-        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+        .opacity(enabled
+            ? (isPressed ? .opacity.opacityPressed : .opacity.opacity100)
+            : LemonadeTheme.opacity.state.opacityDisabled)
         .contentShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
-        .onTapGesture {
-            if let onClick = onClick, enabled {
-                onClick()
-            }
+        .animation(.easeInOut(duration: 0.1), value: isPressed)
+        .onChange(of: isSelected) { newValue in
+            if newValue { triggerSelectionHaptic() }
+        }
+    }
+
+    var body: some View {
+        if let onClick {
+            Button(action: { triggerTouchHaptic(); onClick() }) { tileShape }
+                .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
+                .disabled(!enabled)
+        } else {
+            tileShape
         }
     }
 }
@@ -367,6 +381,8 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
     let leadingSlot: () -> LeadingContent
     let topAccessory: (() -> TopAccessory)?
 
+    @State private var isPressed = false
+
     private let minWidth: CGFloat = 120
 
     private var effectiveBackgroundColor: Color {
@@ -379,10 +395,6 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
 
     private var effectiveBorderWidth: CGFloat {
         isSelected ? LemonadeTheme.borderWidth.base.border50 : variant.borderWidth
-    }
-
-    private var effectiveShadow: LemonadeShadow? {
-        isSelected ? nil : variant.shadow
     }
 
     private var effectiveContentColor: Color {
@@ -428,7 +440,7 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
         .padding(LemonadeTheme.spaces.spacing300)
     }
 
-    var body: some View {
+    private var tileShape: some View {
         Group {
             if #available(iOS 16, macOS 13, *) {
                 DefaultMinSize(minWidth: minWidth) {
@@ -446,15 +458,23 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
             RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
                 .stroke(effectiveBorderColor, lineWidth: effectiveBorderWidth)
         )
-        .applyIf(effectiveShadow != nil) { view in
-            view.lemonadeShadow(self.effectiveShadow!)
-        }
-        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+        .opacity(enabled
+            ? (isPressed ? .opacity.opacityPressed : .opacity.opacity100)
+            : LemonadeTheme.opacity.state.opacityDisabled)
         .contentShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
-        .onTapGesture {
-            if let onClick = onClick, enabled {
-                onClick()
-            }
+        .animation(.easeInOut(duration: 0.1), value: isPressed)
+        .onChange(of: isSelected) { newValue in
+            if newValue { triggerSelectionHaptic() }
+        }
+    }
+
+    var body: some View {
+        if let onClick {
+            Button(action: { triggerTouchHaptic(); onClick() }) { tileShape }
+                .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
+                .disabled(!enabled)
+        } else {
+            tileShape
         }
     }
 }
@@ -470,6 +490,7 @@ struct LemonadeTile_Previews: PreviewProvider {
                 LemonadeUi.Tile(
                     label: "Filled",
                     icon: .heart,
+                    onClick: {},
                     variant: .filled
                 )
 

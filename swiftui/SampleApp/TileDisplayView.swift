@@ -2,6 +2,9 @@ import SwiftUI
 import Lemonade
 
 struct TileDisplayView: View {
+    @State private var isFilledSelected = true
+    @State private var isOutlinedSelected = true
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing600) {
@@ -12,6 +15,7 @@ struct TileDisplayView: View {
                             LemonadeUi.Tile(
                                 label: "Filled",
                                 icon: .heart,
+                                onClick: {},
                                 variant: .filled
                             )
                             LemonadeUi.Text(
@@ -24,6 +28,7 @@ struct TileDisplayView: View {
                             LemonadeUi.Tile(
                                 label: "Outlined",
                                 icon: .star,
+                                onClick: {},
                                 variant: .outlined
                             )
                             LemonadeUi.Text(
@@ -40,13 +45,15 @@ struct TileDisplayView: View {
                         LemonadeUi.Tile(
                             label: "Filled",
                             icon: .circleCheck,
-                            isSelected: true,
+                            isSelected: isFilledSelected,
+                            onClick: { isFilledSelected.toggle() },
                             variant: .filled
                         )
                         LemonadeUi.Tile(
                             label: "Outlined",
                             icon: .circleCheck,
-                            isSelected: true,
+                            isSelected: isOutlinedSelected,
+                            onClick: { isOutlinedSelected.toggle() },
                             variant: .outlined
                         )
                     }
