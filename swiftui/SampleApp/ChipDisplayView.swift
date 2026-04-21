@@ -14,6 +14,7 @@ struct ChipDisplayView: View {
                     customLeadingSection
                     interactiveSection
                     disabledSection
+                    errorSection
                 }
                 .frame(maxWidth: .infinity, alignment: .topLeading)
                 .padding()
@@ -34,12 +35,6 @@ struct ChipDisplayView: View {
                 VStack(spacing: 8) {
                     LemonadeUi.Chip(label: "Selected", selected: true)
                     LemonadeUi.Text("Selected", font: .bodyXSmallRegular)
-                        .foregroundStyle(.content.contentSecondary)
-                }
-
-                VStack(spacing: 8) {
-                    LemonadeUi.Chip(label: "Error", selected: false, error: true)
-                    LemonadeUi.Text("Error", font: .bodyXSmallRegular)
                         .foregroundStyle(.content.contentSecondary)
                 }
             }
@@ -73,12 +68,6 @@ struct ChipDisplayView: View {
                         selected: true,
                         leadingIcon: .heart
                     )
-                    LemonadeUi.Chip(
-                        label: "Favorites",
-                        selected: false,
-                        leadingIcon: .heart,
-                        error: true
-                    )
                 }
 
                 HStack(spacing: 12) {
@@ -91,12 +80,6 @@ struct ChipDisplayView: View {
                         label: "Remove",
                         selected: true,
                         trailingIcon: .circleX
-                    )
-                    LemonadeUi.Chip(
-                        label: "Remove",
-                        selected: false,
-                        trailingIcon: .circleX,
-                        error: true
                     )
                 }
             }
@@ -168,12 +151,56 @@ struct ChipDisplayView: View {
                     selected: true,
                     enabled: false
                 )
-                LemonadeUi.Chip(
-                    label: "Disabled",
-                    selected: false,
-                    enabled: false,
-                    error: true
-                )
+            }
+        }
+    }
+
+    private var errorSection: some View {
+        sectionView(title: "Error") {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(spacing: 12) {
+                    VStack(spacing: 8) {
+                        LemonadeUi.Chip(
+                            label: "Error",
+                            selected: false,
+                            error: true,
+                            onChipClicked: {}
+                        )
+                        LemonadeUi.Text("Error", font: .bodyXSmallRegular)
+                            .foregroundStyle(.content.contentSecondary)
+                    }
+                    VStack(spacing: 8) {
+                        LemonadeUi.Chip(
+                            label: "Error",
+                            selected: false,
+                            enabled: false,
+                            error: true,
+                            onChipClicked: {}
+                        )
+                        LemonadeUi.Text(
+                            "Error Disabled",
+                            font: .bodyXSmallRegular,
+                        )
+                        .foregroundStyle(.content.contentSecondary)
+                    }
+                }
+
+                HStack(spacing: 12) {
+                    LemonadeUi.Chip(
+                        label: "With Icon",
+                        selected: false,
+                        leadingIcon: .circleAlert,
+                        error: true,
+                        onChipClicked: {}
+                    )
+                    LemonadeUi.Chip(
+                        label: "With Trailing",
+                        selected: false,
+                        trailingIcon: .circleX,
+                        error: true,
+                        onChipClicked: {}
+                    )
+                }
             }
         }
     }
