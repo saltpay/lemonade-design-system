@@ -30,14 +30,14 @@ public enum SelectListItemVariant {
 public enum LemonadeListItemVoice {
     case neutral
     case critical
-
+    
     var interactionBackground: Color {
         switch self {
         case .neutral: return LemonadeTheme.colors.interaction.bgSubtleInteractive
         case .critical: return LemonadeTheme.colors.interaction.bgCriticalSubtleInteractive
         }
     }
-
+    
     var contentColor: Color {
         switch self {
         case .neutral: return LemonadeTheme.colors.content.contentPrimary
@@ -95,7 +95,7 @@ extension LemonadeUi {
                         textStyle: LemonadeTypography.shared.bodyMediumMedium,
                         color: voice.contentColor
                     )
-
+                    
                     if let supportText = supportText {
                         LemonadeUi.Text(
                             supportText,
@@ -103,7 +103,7 @@ extension LemonadeUi {
                             color: LemonadeTheme.colors.content.contentSecondary
                         )
                     }
-
+                    
                     if SlotContent.self != EmptyView.self {
                         slotContent()
                     }
@@ -111,7 +111,7 @@ extension LemonadeUi {
             )
         }
     }
-
+    
     /// Foundational list-item overload that accepts a generic content slot for custom content,
     /// delegating layout and interaction handling to LemonadeCoreListItemView.
     ///
@@ -159,15 +159,15 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
     let onListItemClick: (() -> Void)?
     let leadingSlot: () -> LeadingContent
     let trailingSlot: () -> TrailingContent
-
+    
     private var hasLeading: Bool {
         LeadingContent.self != EmptyView.self
     }
-
+    
     private var hasTrailing: Bool {
         TrailingContent.self != EmptyView.self
     }
-
+    
     var body: some View {
         ListItemSafeArea(showDivider: showDivider) {
             if let onClick = onListItemClick, enabled {
@@ -181,29 +181,31 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
             }
         }
     }
-
+    
     private var listItemContent: some View {
-        HStack(spacing: 0) {
+        HStack(alignment: .top, spacing: 0) {
             if hasLeading {
                 leadingSlot()
-                    .frame(maxHeight: .infinity, alignment: .top)
+                    .frame(alignment: .top)
                     .padding(.trailing, LemonadeTheme.spaces.spacing300)
                     .padding(.vertical, LemonadeTheme.spaces.spacing50)
                     .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
             }
-
-            HStack(spacing: 0) {
+            
+            HStack(alignment: .top, spacing: 0) {
                 VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing0) {
                     contentSlot()
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-
+                
+                Spacer()
+                
                 HStack(spacing: 0) {
                     if hasTrailing {
                         trailingSlot()
                     }
-
+                    
                     if navigationIndicator {
                         LemonadeUi.Icon(
                             icon: .chevronRight,
@@ -220,6 +222,7 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
         .padding(.horizontal, LemonadeTheme.spaces.spacing300)
         .padding(.vertical, LemonadeTheme.spaces.spacing300)
         .frame(minHeight: LemonadeTheme.sizes.size1200)
+        .fixedSize(horizontal: false, vertical: true)
     }
 }
 
@@ -228,15 +231,15 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
 struct ListItemSafeArea<Content: View>: View {
     let showDivider: Bool
     @ViewBuilder let content: () -> Content
-
+    
     var body: some View {
         VStack(spacing: 0) {
             content()
                 .padding(LemonadeTheme.spaces.spacing100)
-
+            
             if showDivider {
                 LemonadeUi.HorizontalDivider()
-                .padding(.horizontal, LemonadeTheme.spaces.spacing400)
+                    .padding(.horizontal, LemonadeTheme.spaces.spacing400)
             }
         }
         .background(Color.clear)
@@ -247,13 +250,13 @@ struct ListItemSafeArea<Content: View>: View {
 
 struct ListItemButtonStyle: ButtonStyle {
     let voice: LemonadeListItemVoice
-
+    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .background(
                 configuration.isPressed
-                    ? voice.interactionBackground
-                    : Color.clear
+                ? voice.interactionBackground
+                : Color.clear
             )
             .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
             .contentShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
@@ -265,24 +268,24 @@ struct ListItemButtonStyle: ButtonStyle {
 
 private struct ListItemSkeletonView: View {
     let showDivider: Bool
-
+    
     var body: some View {
         ListItemSafeArea(showDivider: showDivider) {
-            HStack(spacing: 0) {
+            HStack(alignment: .top, spacing: 0) {
                 LemonadeUi.CircleSkeleton(size: .xLarge)
                     .padding(.trailing, LemonadeTheme.spaces.spacing300)
-
-                HStack(spacing: 0) {
-                    VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing100) {
+                
+                HStack(alignment: .top, spacing: 0) {
+                    VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing0) {
                         LemonadeUi.LineSkeleton(size: .medium)
-                        LemonadeUi.LineSkeleton(size: .small)
-                            .mask(Rectangle().scaleEffect(x: 0.6, y: 1, anchor: .leading))
+                        LemonadeUi.LineSkeleton(size: .xSmall)
+                            .frame(width: 128)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-
+                    
                     Spacer()
-                        .frame(width: LemonadeTheme.spaces.spacing300)
-
+                        .frame(width: LemonadeTheme.spaces.spacing800)
+                    
                     LemonadeUi.LineSkeleton(size: .medium)
                         .frame(width: 54)
                 }
@@ -298,7 +301,7 @@ private struct ListItemSkeletonView: View {
 #if DEBUG
 struct LemonadeListItem_Previews: PreviewProvider {
     static var previews: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
             // SelectListItem - Single with divider
             LemonadeUi.SelectListItem(
                 label: "Single Selection",
@@ -308,7 +311,7 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 showDivider: true,
                 supportText: "Support text"
             )
-
+            
             // SelectListItem - Multiple with divider
             LemonadeUi.SelectListItem(
                 label: "Multiple Selection",
@@ -318,29 +321,32 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 showDivider: true,
                 supportText: "Support text"
             )
-
+            
             LemonadeUi.HorizontalDivider()
                 .padding(.vertical, LemonadeTheme.spaces.spacing200)
-
+            
             // ResourceListItem with divider
             LemonadeUi.ResourceListItem(
                 label: "Resource Label",
                 value: "$100.00",
                 supportText: "Metadata",
-                showDivider: true
+                showDivider: true,
+                onItemClicked: {},
             ) {
                 LemonadeUi.SymbolContainer(
                     icon: .heart,
                     contentDescription: nil,
-                    size: .large
+                    size: .medium,
+                    shape: .rounded
                 )
             }
-
+            
             // ResourceListItem with addon and divider
             LemonadeUi.ResourceListItem(
                 label: "With Addon",
                 value: "$50.00",
-                showDivider: true,
+                supportText: "Metadata",
+                onItemClicked: {},
                 addonSlot: {
                     LemonadeUi.Tag(label: "Approved", voice: .positive)
                 },
@@ -348,15 +354,17 @@ struct LemonadeListItem_Previews: PreviewProvider {
                     LemonadeUi.SymbolContainer(
                         icon: .star,
                         contentDescription: nil,
-                        size: .large
+                        size: .medium,
+                        shape: .rounded
                     )
                 }
             )
-
+            
             LemonadeUi.HorizontalDivider()
                 .padding(.vertical, LemonadeTheme.spaces.spacing200)
-
+            
             // ActionListItem with divider
+            
             LemonadeUi.ActionListItem(
                 label: "Action Item",
                 supportText: "Support text",
@@ -371,11 +379,27 @@ struct LemonadeListItem_Previews: PreviewProvider {
                     )
                 }
             )
-
+            
             // ActionListItem - Critical with divider
             LemonadeUi.ActionListItem(
                 label: "Delete Account",
                 voice: .critical,
+                showDivider: true,
+                onItemClicked: {},
+                leadingSlot: {
+                    LemonadeUi.Icon(
+                        icon: .trash,
+                        contentDescription: nil,
+                        size: .medium,
+                        tint: LemonadeTheme.colors.content.contentCritical
+                    )
+                }
+            )
+            
+            // ActionListItem - Loading
+            LemonadeUi.ActionListItem(
+                label: "Delete Account",
+                isLoading: true,
                 showDivider: false,
                 onItemClicked: {},
                 leadingSlot: {
@@ -388,7 +412,6 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 }
             )
         }
-        .padding()
         .previewLayout(.sizeThatFits)
     }
 }
