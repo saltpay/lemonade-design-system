@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
@@ -1046,7 +1047,7 @@ internal fun CoreTopBarContent(
 
     Layout(
         modifier = modifier
-            .height(height = LocalSizes.current.size1100)
+            .heightIn(min = LocalSizes.current.size1100)
             .padding(horizontal = LocalSpaces.current.spacing100),
         content = {
             Box(
@@ -1124,7 +1125,15 @@ internal fun CoreTopBarContent(
                 )
 
             val fullWidth = constraints.maxWidth
-            val fullHeight = constraints.maxHeight
+            val contentHeight = maxOf(
+                a = leadingPlaceable.height,
+                b = trailingPlaceable.height,
+                c = labelPlaceable.height,
+            )
+            val fullHeight = contentHeight.coerceIn(
+                minimumValue = constraints.minHeight,
+                maximumValue = constraints.maxHeight,
+            )
 
             layout(width = fullWidth, height = fullHeight) {
                 leadingPlaceable.placeRelative(
