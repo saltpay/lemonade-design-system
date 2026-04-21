@@ -66,7 +66,9 @@ public extension LemonadeUi {
                         icon: icon,
                         contentDescription: nil,
                         size: .small,
-                        tint: selected
+                        tint: error
+                        ? LemonadeTheme.colors.content.contentPrimary
+                        : selected
                         ? LemonadeTheme.colors.content.contentBrandInverse
                         : LemonadeTheme.colors.content.contentPrimary
                     )
@@ -74,7 +76,7 @@ public extension LemonadeUi {
             }
         )
     }
-    
+
     /// A compact element used to display information with a custom leading image.
     ///
     /// ## Usage

@@ -1,5 +1,5 @@
-import Lemonade
 import SwiftUI
+import Lemonade
 
 struct ChipDisplayView: View {
     @State private var selectedChips: Set<String> = ["Option 1"]
@@ -179,7 +179,7 @@ struct ChipDisplayView: View {
                         )
                         LemonadeUi.Text(
                             "Error Disabled",
-                            font: .bodyXSmallRegular,
+                            font: .bodyXSmallRegular
                         )
                         .foregroundStyle(.content.contentSecondary)
                     }
