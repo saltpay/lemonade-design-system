@@ -388,8 +388,11 @@ private data class ChipProps(
 )
 
 @Composable
-private fun getChipProps(selected: Boolean, error: Boolean): ChipProps {
-    return if (error) {
+private fun getChipProps(
+    selected: Boolean,
+    error: Boolean,
+): ChipProps =
+    if (error) {
         ChipProps(
             backgroundColor = LocalColors.current.background.bgCriticalSubtle,
             pressedBackgroundColor = LocalColors.current.interaction.bgCriticalSubtleInteractive,
@@ -414,7 +417,6 @@ private fun getChipProps(selected: Boolean, error: Boolean): ChipProps {
             borderColor = Color.Transparent,
         )
     }
-}
 
 private data class ChipPreviewData(
     val counter: Int?,
