@@ -92,7 +92,8 @@ struct HomeView: View {
                 items: [
                     DemoItem(title: "Link", destination: AnyView(LinkDisplayView())),
                     DemoItem(title: "Tabs", destination: AnyView(TabsDisplayView())),
-                    DemoItem(title: "Tile", destination: AnyView(TileDisplayView()))
+                    DemoItem(title: "Tile", destination: AnyView(TileDisplayView())),
+                    DemoItem(title: "TopBar", destination: AnyView(TopBarDisplayView()))
                 ]
             ),
             DemoSection(
