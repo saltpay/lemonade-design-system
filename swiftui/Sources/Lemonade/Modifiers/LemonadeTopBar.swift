@@ -7,6 +7,11 @@ import CoreImage.CIFilterBuiltins
 
 /// The type of navigation action displayed in the leading slot of a top bar.
 /// Mirrors the KMP `TopBarAction` enum.
+///
+/// - Note: On iOS, `.back` defers to the native `NavigationStack` back button so the
+///   system swipe-to-go-back gesture keeps working. The `NavigationAction.onAction`
+///   callback is **not** invoked for `.back` — use `.close` (with `@Environment(\.dismiss)`)
+///   if you need to run logic when the user dismisses the screen.
 public enum TopBarAction {
     case back
     case close
@@ -174,8 +179,10 @@ private struct ScrollOffsetObserver: UIViewRepresentable {
         /// BFS to find the first UIScrollView in the subtree, skipping self.
         private func findScrollView(in root: UIView) -> UIScrollView? {
             var queue = root.subviews
-            while !queue.isEmpty {
-                let view = queue.removeFirst()
+            var index = 0
+            while index < queue.count {
+                let view = queue[index]
+                index += 1
                 if view === self { continue }
                 if let scrollView = view as? UIScrollView {
                     return scrollView
@@ -242,6 +249,7 @@ private class VariableBlurUIView: UIVisualEffectView {
     required init?(coder: NSCoder) { fatalError() }
 
     override func didMoveToWindow() {
+        super.didMoveToWindow()
         guard let window, let backdropLayer = subviews.first?.layer else { return }
         backdropLayer.setValue(window.traitCollection.displayScale, forKey: "scale")
     }
@@ -437,7 +445,6 @@ private struct CompactLargeBlurLayout<HeaderContent: View>: View {
     @ViewBuilder let headerContent: () -> HeaderContent
 
     private let fadeExtension: CGFloat = 64
-    @State private var headerHeight: CGFloat = 76
     /// Tracks the maximum header height ever seen, used for the safeAreaInset
     /// spacer so it doesn't shrink when the search bar collapses (avoids feedback loop).
     @State private var maxHeaderHeight: CGFloat = 76
@@ -489,7 +496,6 @@ private struct CompactLargeBlurLayout<HeaderContent: View>: View {
                 )
         }
         .onPreferenceChange(HeaderHeightKey.self) { newHeight in
-            headerHeight = newHeight
             if newHeight > maxHeaderHeight {
                 maxHeaderHeight = newHeight
             }
@@ -517,12 +523,11 @@ private struct NativeCompactLargeTopBarModifier<Toolbar: ToolbarContent>: ViewMo
         content
             .coordinateSpace(name: "compactLargeNativeScroll")
             .onPreferenceChange(NativeScrollOffsetKey.self) { offset in
-                if abs(offset - lastScrollOffset) > 2 {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        showTitle = offset > -10
-                    }
-                }
+                guard abs(offset - lastScrollOffset) > 2 else { return }
                 lastScrollOffset = offset
+                let newValue = offset > -10
+                guard newValue != showTitle else { return }
+                withAnimation(.easeInOut(duration: 0.2)) { showTitle = newValue }
             }
             .overlay(alignment: .top) {
                 GeometryReader { geo in
@@ -539,7 +544,6 @@ private struct NativeCompactLargeTopBarModifier<Toolbar: ToolbarContent>: ViewMo
                     LemonadeCompactLargeTitle(label: label, subheading: subheading)
                         .blur(radius: showTitle ? 0 : 4)
                         .opacity(showTitle ? 1 : 0)
-                        .animation(.easeInOut(duration: 0.2), value: showTitle)
                 }
                 .lemonadeHiddenSharedBackground()
 
@@ -563,12 +567,11 @@ private struct NativeCompactLargeSearchTopBarModifier<Toolbar: ToolbarContent>: 
         content
             .coordinateSpace(name: "compactLargeSearchNativeScroll")
             .onPreferenceChange(NativeScrollOffsetKey.self) { offset in
-                if abs(offset - lastScrollOffset) > 2 {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        showTitle = offset > -10
-                    }
-                }
+                guard abs(offset - lastScrollOffset) > 2 else { return }
                 lastScrollOffset = offset
+                let newValue = offset > -10
+                guard newValue != showTitle else { return }
+                withAnimation(.easeInOut(duration: 0.2)) { showTitle = newValue }
             }
             .overlay(alignment: .top) {
                 GeometryReader { geo in
@@ -585,7 +588,6 @@ private struct NativeCompactLargeSearchTopBarModifier<Toolbar: ToolbarContent>: 
                     LemonadeCompactLargeTitle(label: label, subheading: subheading)
                         .blur(radius: showTitle ? 0 : 4)
                         .opacity(showTitle ? 1 : 0)
-                        .animation(.easeInOut(duration: 0.2), value: showTitle)
                 }
                 .lemonadeHiddenSharedBackground()
 
@@ -638,55 +640,37 @@ private extension View {
         if let bottomSlot {
             #if compiler(>=6.2)
             if #available(iOS 26, *) {
-                self.safeAreaInset(edge: .top, spacing: 0) {
-                    bottomSlot()
-                }
-            } else if #available(iOS 16, *) {
-                self
-                    .toolbarBackground(.hidden, for: .navigationBar)
-                    .safeAreaInset(edge: .top, spacing: 0) {
-                        VStack(spacing: 0) {
-                            bottomSlot()
-                            LemonadeUi.HorizontalDivider()
-                        }
-                        .background(.bar)
-                    }
+                self.safeAreaInset(edge: .top, spacing: 0) { bottomSlot() }
             } else {
-                self.safeAreaInset(edge: .top, spacing: 0) {
-                    VStack(spacing: 0) {
-                        bottomSlot()
-                        LemonadeUi.HorizontalDivider()
-                    }
-                    .background(.bar)
-                }
+                self.lemonadeTopBarBottomSlotFallback(bottomSlot)
             }
             #else
-            if #available(iOS 16, *) {
-                self
-                    .toolbarBackground(.hidden, for: .navigationBar)
-                    .safeAreaInset(edge: .top, spacing: 0) {
-                        VStack(spacing: 0) {
-                            bottomSlot()
-                            LemonadeUi.HorizontalDivider()
-                        }
-                        .background(.bar)
-                    }
-            } else {
-                self.safeAreaInset(edge: .top, spacing: 0) {
-                    VStack(spacing: 0) {
-                        bottomSlot()
-                        LemonadeUi.HorizontalDivider()
-                    }
-                    .background(.bar)
-                }
-            }
+            self.lemonadeTopBarBottomSlotFallback(bottomSlot)
             #endif
         } else {
             self
         }
     }
-}
 
+    @ViewBuilder
+    func lemonadeTopBarBottomSlotFallback<BottomContent: View>(
+        _ bottomSlot: @escaping () -> BottomContent
+    ) -> some View {
+        let inset = VStack(spacing: 0) {
+            bottomSlot()
+            LemonadeUi.HorizontalDivider()
+        }
+        .background(.bar)
+
+        if #available(iOS 16, *) {
+            self
+                .toolbarBackground(.hidden, for: .navigationBar)
+                .safeAreaInset(edge: .top, spacing: 0) { inset }
+        } else {
+            self.safeAreaInset(edge: .top, spacing: 0) { inset }
+        }
+    }
+}
 
 // MARK: - Compact Large Title helper
 
