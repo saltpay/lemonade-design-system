@@ -22,6 +22,7 @@ public extension LemonadeUi {
     ///   - trailingIcon: Optional LemonadeIcon to be displayed in the trailing position
     ///   - counter: Optional Int number to be displayed in the chip
     ///   - enabled: Controls the enabled state of the chip. Defaults to true
+    ///   - error: Set to true to display the chip in an error state (critical border and background). When true, takes precedence over `selected` styling. Defaults to false
     ///   - onChipClicked: Optional callback for when the chip is clicked
     ///   - onTrailingIconClick: Optional callback when the trailing icon is clicked
     /// - Returns: A styled Chip view
@@ -33,6 +34,7 @@ public extension LemonadeUi {
         trailingIcon: LemonadeIcon? = nil,
         counter: Int? = nil,
         enabled: Bool = true,
+        error: Bool = false,
         onChipClicked: (() -> Void)? = nil,
         onTrailingIconClick: (() -> Void)? = nil
     ) -> some View {
@@ -41,6 +43,7 @@ public extension LemonadeUi {
             selected: selected,
             counter: counter,
             enabled: enabled,
+            error: error,
             onChipClicked: onChipClicked,
             onTrailingIconClick: onTrailingIconClick,
             leadingContent: {
@@ -49,7 +52,9 @@ public extension LemonadeUi {
                         icon: icon,
                         contentDescription: nil,
                         size: .medium,
-                        tint: selected
+                        tint: error
+                        ? LemonadeTheme.colors.content.contentCritical
+                        : selected
                         ? LemonadeTheme.colors.content.contentBrandInverse
                         : LemonadeTheme.colors.content.contentPrimary
                     )
@@ -61,7 +66,9 @@ public extension LemonadeUi {
                         icon: icon,
                         contentDescription: nil,
                         size: .small,
-                        tint: selected
+                        tint: error
+                        ? LemonadeTheme.colors.content.contentPrimary
+                        : selected
                         ? LemonadeTheme.colors.content.contentBrandInverse
                         : LemonadeTheme.colors.content.contentPrimary
                     )
@@ -69,7 +76,7 @@ public extension LemonadeUi {
             }
         )
     }
-    
+
     /// A compact element used to display information with a custom leading image.
     ///
     /// ## Usage
@@ -88,6 +95,7 @@ public extension LemonadeUi {
     ///   - trailingIcon: Optional LemonadeIcon to be displayed in the trailing position
     ///   - counter: Optional Int number to be displayed in the chip
     ///   - enabled: Controls the enabled state of the chip. Defaults to true
+    ///   - error: Set to true to display the chip in an error state (critical border and background). When true, takes precedence over `selected` styling. Defaults to false
     ///   - onChipClicked: Optional callback for when the chip is clicked
     ///   - onTrailingIconClick: Optional callback when the trailing icon is clicked
     /// - Returns: A styled Chip view
@@ -99,6 +107,7 @@ public extension LemonadeUi {
         trailingIcon: LemonadeIcon? = nil,
         counter: Int? = nil,
         enabled: Bool = true,
+        error: Bool = false,
         onChipClicked: (() -> Void)? = nil,
         onTrailingIconClick: (() -> Void)? = nil
     ) -> some View {
@@ -107,6 +116,7 @@ public extension LemonadeUi {
             selected: selected,
             counter: counter,
             enabled: enabled,
+            error: error,
             onChipClicked: onChipClicked,
             onTrailingIconClick: onTrailingIconClick,
             leadingContent: {
@@ -157,6 +167,7 @@ public extension LemonadeUi {
     ///   - selected: Set to true if the chip is in the selected state
     ///   - counter: Optional Int number to be displayed in the chip
     ///   - enabled: Controls the enabled state of the chip. Defaults to true
+    ///   - error: Set to true to display the chip in an error state (critical border and background). When true, takes precedence over `selected` styling. Defaults to false
     ///   - onChipClicked: Optional callback for when the chip is clicked
     ///   - onTrailingIconClick: Optional callback when the trailing icon is clicked
     ///   - leadingContent: Custom leading content
@@ -168,6 +179,7 @@ public extension LemonadeUi {
         selected: Bool,
         counter: Int? = nil,
         enabled: Bool = true,
+        error: Bool = false,
         onChipClicked: (() -> Void)? = nil,
         onTrailingIconClick: (() -> Void)? = nil,
         @ViewBuilder leadingContent: @escaping () -> LeadingContent,
@@ -178,6 +190,7 @@ public extension LemonadeUi {
             selected: selected,
             counter: counter,
             enabled: enabled,
+            error: error,
             onChipClicked: onChipClicked,
             onTrailingIconClick: onTrailingIconClick,
             leadingContent: leadingContent,
@@ -193,17 +206,23 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
     let selected: Bool
     let counter: Int?
     let enabled: Bool
+    let error: Bool
     let onChipClicked: (() -> Void)?
     let onTrailingIconClick: (() -> Void)?
     @ViewBuilder let leadingContent: () -> LeadingContent
     @ViewBuilder let trailingContent: () -> TrailingContent
-    
+
     @State private var isPressed = false
-    
+
     private let minWidth: CGFloat = .size.size1600
     private let minHeight: CGFloat = .size.size800
-    
+
     private var backgroundColor: Color {
+        if error {
+            return isPressed
+                ? LemonadeTheme.colors.interaction.bgCriticalSubtleInteractive
+                : LemonadeTheme.colors.background.bgCriticalSubtle
+        }
         if isPressed {
             return selected
             ? LemonadeTheme.colors.interaction.bgBrandHighInteractive
@@ -213,27 +232,26 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
         ? LemonadeTheme.colors.background.bgBrandHigh
         : LemonadeTheme.colors.background.bgElevated
     }
-    
+
     private var contentColor: Color {
-        selected
+        error
+        ? LemonadeTheme.colors.content.contentPrimary
+        : selected
         ? LemonadeTheme.colors.content.contentBrandInverse
         : LemonadeTheme.colors.content.contentPrimary
     }
-    
+
     private var chipContent: some View {
-        HStack(spacing: .space.spacing100) {
-            // Leading slot
+        HStack(spacing: .space.spacing0) {
             leadingContent()
-            
-            // Label
+
             LemonadeUi.Text(
                 label,
                 textStyle: LemonadeTypography.shared.bodySmallMedium,
                 color: contentColor
             )
             .padding(.horizontal, LemonadeTheme.spaces.spacing100)
-            
-            // Counter
+
             if let counter = counter {
                 LemonadeUi.Text("\(counter)", font: .bodyXSmallSemiBold)
                     .foregroundStyle(LemonadeTheme.colors.content.contentOnBrandHigh)
@@ -241,17 +259,15 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
                     .frame(minWidth: .size.size450, minHeight: .size.size400)
                     .background(.bg.bgBrand)
                     .clipShape(Capsule())
-                    .padding(.trailing, .space.spacing100)
+                    .padding(.trailing, .space.spacing50)
             }
-            
-            // Trailing slot
+
             if let onTrailingIconClick = onTrailingIconClick {
                 SwiftUI.Button(action: onTrailingIconClick) {
                     trailingContent()
                 }
                 .buttonStyle(PlainButtonStyle())
                 .disabled(!enabled)
-                .padding(.trailing, .space.spacing100)
             } else {
                 trailingContent()
             }
@@ -260,10 +276,19 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
         .frame(minWidth: minWidth, minHeight: minHeight)
         .background(backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: .radius.radiusFull))
+        .overlay {
+            if error {
+                RoundedRectangle(cornerRadius: .radius.radiusFull)
+                    .stroke(
+                        LemonadeTheme.colors.border.borderCritical,
+                        lineWidth: LemonadeTheme.borderWidth.base.border40
+                    )
+                    .transition(.opacity)
+            }
+        }
         .opacity(enabled ? 1.0 : .opacity.opacityDisabled)
         .contentShape(Capsule())
-        .animation(.easeInOut(duration: 0.15), value: selected)
-        .animation(.easeInOut(duration: 0.15), value: isPressed)
+        .animation(.easeInOut(duration: 0.15), value: backgroundColor)
     }
     
     var body: some View {
@@ -323,6 +348,12 @@ struct LemonadeChip_Previews: PreviewProvider {
             HStack(spacing: 8) {
                 LemonadeUi.Chip(label: "Disabled", selected: false, enabled: false)
                 LemonadeUi.Chip(label: "Disabled", selected: true, enabled: false)
+            }
+
+            // Error
+            HStack(spacing: 8) {
+                LemonadeUi.Chip(label: "Error", selected: false, error: true)
+                LemonadeUi.Chip(label: "Error Disabled", selected: false, enabled: false, error: true)
             }
         }
         .padding()

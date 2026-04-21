@@ -65,6 +65,8 @@ import com.teya.lemonade.core.LemonadeTextStyle
  * @param enabled: Optional - controls the enabled state of the chip.
  *  When `false`, interaction is disabled and it is visually styled
  *  as such. Defaults to true.
+ * @param error: Optional - set to `true` to display the chip in an error state with a
+ *  critical border and background. Takes precedence over [selected] styling when both are true. Defaults to false.
  * @param onChipClicked: Optional - sets the callback for when
  *  the chip is clicked. If null the clickable interactions will be
  *  automatically disabled.
@@ -84,6 +86,7 @@ public fun LemonadeUi.Chip(
     trailingIcon: LemonadeIcons? = null,
     counter: Int? = null,
     enabled: Boolean = true,
+    error: Boolean = false,
     onChipClicked: (() -> Unit)? = null,
     onTrailingIconClick: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -92,6 +95,7 @@ public fun LemonadeUi.Chip(
         label = label,
         selected = selected,
         enabled = enabled,
+        error = error,
         counter = counter,
         leadingSlot = if (leadingPainter != null) {
             {
@@ -156,6 +160,8 @@ public fun LemonadeUi.Chip(
  * @param enabled: Optional - controls the enabled state of the chip.
  *  When `false`, interaction is disabled and it is visually styled
  *  as such. Defaults to true.
+ * @param error: Optional - set to `true` to display the chip in an error state with a
+ *  critical border and background. Takes precedence over [selected] styling when both are true. Defaults to false.
  * @param onChipClicked: Optional - sets the callback for when
  *  the chip is clicked. If null the clickable interactions will be
  *  automatically disabled.
@@ -175,6 +181,7 @@ public fun LemonadeUi.Chip(
     trailingIcon: LemonadeIcons? = null,
     counter: Int? = null,
     enabled: Boolean = true,
+    error: Boolean = false,
     onChipClicked: (() -> Unit)? = null,
     onTrailingIconClick: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -183,12 +190,13 @@ public fun LemonadeUi.Chip(
         label = label,
         selected = selected,
         enabled = enabled,
+        error = error,
         counter = counter,
         leadingSlot = if (leadingIcon != null) {
             {
                 LemonadeUi.Icon(
                     icon = leadingIcon,
-                    tint = LocalChipContentColor.current.invoke(),
+                    tint = LocalChipLeadingIconColor.current.invoke(),
                     size = LemonadeAssetSize.Small,
                     contentDescription = null,
                 )
@@ -221,6 +229,7 @@ internal fun CoreChip(
     label: String,
     selected: Boolean,
     enabled: Boolean,
+    error: Boolean,
     counter: Int?,
     leadingSlot: (@Composable BoxScope.() -> Unit)?,
     trailingSlot: (@Composable BoxScope.() -> Unit)?,
@@ -230,12 +239,14 @@ internal fun CoreChip(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val platformDimensions = defaultChipDimensions()
-    val props = getChipProps(selected = selected)
+    val props = getChipProps(selected = selected, error = error)
 
     val isHover by interactionSource.collectIsHoveredAsState()
     val isPressed by interactionSource.collectIsPressedAsState()
 
     val animatedContentColor by animateColorAsState(targetValue = props.contentColor)
+    val animatedLeadingIconColor by animateColorAsState(targetValue = props.leadingIconColor)
+    val animatedBorderColor by animateColorAsState(targetValue = props.borderColor)
     val animatedBackgroundColor by animateColorAsState(
         targetValue = if (isHover || isPressed) {
             props.pressedBackgroundColor
@@ -243,7 +254,10 @@ internal fun CoreChip(
             props.backgroundColor
         },
     )
-    CompositionLocalProvider(LocalChipContentColor provides { animatedContentColor }) {
+    CompositionLocalProvider(
+        LocalChipContentColor provides { animatedContentColor },
+        LocalChipLeadingIconColor provides { animatedLeadingIconColor },
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
@@ -266,6 +280,10 @@ internal fun CoreChip(
                     indication = LocalEffects.current.interactionIndication,
                 ).background(
                     color = animatedBackgroundColor,
+                    shape = LocalShapes.current.radiusFull,
+                ).border(
+                    width = LocalBorderWidths.current.base.border40,
+                    color = animatedBorderColor,
                     shape = LocalShapes.current.radiusFull,
                 ).padding(all = LocalSpaces.current.spacing200),
         ) {
@@ -291,12 +309,12 @@ internal fun CoreChip(
                     modifier = Modifier
                         .padding(horizontal = LocalSpaces.current.spacing100)
                         .defaultMinSize(
-                            minWidth = 18.dp,
-                            minHeight = 16.dp,
+                            minWidth = LocalSizes.current.size450,
+                            minHeight = LocalSizes.current.size400,
                         ).background(
                             color = LocalColors.current.background.bgBrand,
                             shape = LocalShapes.current.radiusFull,
-                        ).padding(horizontal = LocalSpaces.current.spacing100),
+                        ).padding(horizontal = LocalSpaces.current.spacing50),
                 ) {
                     LemonadeUi.Text(
                         text = counter.toString(),
@@ -314,7 +332,6 @@ internal fun CoreChip(
                     contentAlignment = Alignment.Center,
                     content = trailingSlot,
                     modifier = Modifier
-                        .padding(start = LocalSpaces.current.spacing50)
                         .then(
                             other = if (onTrailingIconClick != null) {
                                 Modifier.clickable(
@@ -334,6 +351,11 @@ internal fun CoreChip(
 }
 
 private val LocalChipContentColor: ProvidableCompositionLocal<@Composable () -> Color> =
+    staticCompositionLocalOf {
+        { LocalColors.current.content.contentPrimary }
+    }
+
+private val LocalChipLeadingIconColor: ProvidableCompositionLocal<@Composable () -> Color> =
     staticCompositionLocalOf {
         { LocalColors.current.content.contentPrimary }
     }
@@ -361,21 +383,36 @@ private data class ChipProps(
     val backgroundColor: Color,
     val pressedBackgroundColor: Color,
     val contentColor: Color,
+    val leadingIconColor: Color,
+    val borderColor: Color,
 )
 
 @Composable
-private fun getChipProps(selected: Boolean): ChipProps =
-    if (selected) {
-        ChipProps(
+private fun getChipProps(
+    selected: Boolean,
+    error: Boolean,
+): ChipProps =
+    when {
+        error -> ChipProps(
+            backgroundColor = LocalColors.current.background.bgCriticalSubtle,
+            pressedBackgroundColor = LocalColors.current.interaction.bgCriticalSubtleInteractive,
+            contentColor = LocalColors.current.content.contentPrimary,
+            leadingIconColor = LocalColors.current.content.contentCritical,
+            borderColor = LocalColors.current.border.borderCritical,
+        )
+        selected -> ChipProps(
             backgroundColor = LocalColors.current.background.bgBrandHigh,
             pressedBackgroundColor = LocalColors.current.interaction.bgBrandHighInteractive,
             contentColor = LocalColors.current.content.contentBrandInverse,
+            leadingIconColor = LocalColors.current.content.contentBrandInverse,
+            borderColor = Color.Transparent,
         )
-    } else {
-        ChipProps(
+        else -> ChipProps(
             backgroundColor = LocalColors.current.background.bgElevated,
             pressedBackgroundColor = LocalColors.current.interaction.bgSubtleInteractive,
             contentColor = LocalColors.current.content.contentPrimary,
+            leadingIconColor = LocalColors.current.content.contentPrimary,
+            borderColor = Color.Transparent,
         )
     }
 
@@ -383,6 +420,7 @@ private data class ChipPreviewData(
     val counter: Int?,
     val isSelected: Boolean,
     val enabled: Boolean,
+    val error: Boolean,
     val leadingIcon: LemonadeIcons?,
     val trailingIcon: LemonadeIcons?,
 )
@@ -401,6 +439,7 @@ private class ChipPreviewProvider : PreviewParameterProvider<ChipPreviewData> {
                                     ChipPreviewData(
                                         isSelected = selected,
                                         enabled = enabled,
+                                        error = false,
                                         counter = 5.takeIf { withCounter },
                                         leadingIcon = LemonadeIcons.Airplane.takeIf { withLeadingIcon },
                                         trailingIcon = LemonadeIcons.Airplane.takeIf { withTrailingIcon },
@@ -424,8 +463,43 @@ private fun ChipPreview(
         label = "Label",
         selected = previewData.isSelected,
         enabled = previewData.enabled,
+        error = previewData.error,
         counter = previewData.counter,
         leadingIcon = previewData.leadingIcon,
         trailingIcon = previewData.trailingIcon,
+    )
+}
+
+@LemonadePreview
+@Composable
+private fun ChipErrorPreview() {
+    LemonadeUi.Chip(
+        label = "Error",
+        selected = false,
+        leadingIcon = null,
+        error = true,
+    )
+}
+
+@LemonadePreview
+@Composable
+private fun ChipErrorWithIconPreview() {
+    LemonadeUi.Chip(
+        label = "Error",
+        selected = false,
+        leadingIcon = LemonadeIcons.CircleAlert,
+        error = true,
+    )
+}
+
+@LemonadePreview
+@Composable
+private fun ChipErrorDisabledPreview() {
+    LemonadeUi.Chip(
+        label = "Error",
+        selected = false,
+        leadingIcon = null,
+        enabled = false,
+        error = true,
     )
 }
