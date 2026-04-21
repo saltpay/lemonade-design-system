@@ -226,7 +226,7 @@ public fun LemonadeUi.ActionListItem(
  * @param slotContent - Optional slot content below the label and support text.
  */
 @Composable
-internal fun LemonadeUi.ListItem(
+public fun LemonadeUi.ListItem(
     label: String,
     modifier: Modifier = Modifier,
     supportText: String? = null,
@@ -300,7 +300,7 @@ internal fun LemonadeUi.ListItem(
  * @param interactionSource - [MutableInteractionSource] for interaction events.
  */
 @Composable
-internal fun LemonadeUi.ListItem(
+public fun LemonadeUi.ListItem(
     contentSlot: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
     onListItemClick: (() -> Unit)? = null,
