@@ -392,24 +392,22 @@ private fun getChipProps(
     selected: Boolean,
     error: Boolean,
 ): ChipProps =
-    if (error) {
-        ChipProps(
+    when {
+        error -> ChipProps(
             backgroundColor = LocalColors.current.background.bgCriticalSubtle,
             pressedBackgroundColor = LocalColors.current.interaction.bgCriticalSubtleInteractive,
             contentColor = LocalColors.current.content.contentPrimary,
             leadingIconColor = LocalColors.current.content.contentCritical,
             borderColor = LocalColors.current.border.borderCritical,
         )
-    } else if (selected) {
-        ChipProps(
+        selected -> ChipProps(
             backgroundColor = LocalColors.current.background.bgBrandHigh,
             pressedBackgroundColor = LocalColors.current.interaction.bgBrandHighInteractive,
             contentColor = LocalColors.current.content.contentBrandInverse,
             leadingIconColor = LocalColors.current.content.contentBrandInverse,
             borderColor = Color.Transparent,
         )
-    } else {
-        ChipProps(
+        else -> ChipProps(
             backgroundColor = LocalColors.current.background.bgElevated,
             pressedBackgroundColor = LocalColors.current.interaction.bgSubtleInteractive,
             contentColor = LocalColors.current.content.contentPrimary,
