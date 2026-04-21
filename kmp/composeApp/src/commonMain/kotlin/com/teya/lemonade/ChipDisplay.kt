@@ -58,6 +58,17 @@ internal fun ChipDisplay() {
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.Chip(label = "Error", selected = false, leadingIcon = null, error = true)
+                    LemonadeUi.Text(
+                        text = "Error",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    )
+                }
             }
         }
 
@@ -81,6 +92,12 @@ internal fun ChipDisplay() {
                 ) {
                     LemonadeUi.Chip(label = "Favorites", selected = false, leadingIcon = LemonadeIcons.Heart)
                     LemonadeUi.Chip(label = "Favorites", selected = true, leadingIcon = LemonadeIcons.Heart)
+                    LemonadeUi.Chip(
+                        label = "Favorites",
+                        selected = false,
+                        leadingIcon = LemonadeIcons.Heart,
+                        error = true,
+                    )
                 }
 
                 Row(
@@ -97,6 +114,13 @@ internal fun ChipDisplay() {
                         selected = true,
                         leadingIcon = null,
                         trailingIcon = LemonadeIcons.CircleX,
+                    )
+                    LemonadeUi.Chip(
+                        label = "Remove",
+                        selected = false,
+                        leadingIcon = null,
+                        trailingIcon = LemonadeIcons.CircleX,
+                        error = true,
                     )
                 }
             }
@@ -146,68 +170,13 @@ internal fun ChipDisplay() {
             ) {
                 LemonadeUi.Chip(label = "Disabled", selected = false, leadingIcon = null, enabled = false)
                 LemonadeUi.Chip(label = "Disabled", selected = true, leadingIcon = null, enabled = false)
-            }
-        }
-
-        // Error
-        ChipSection(title = "Error") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-                    ) {
-                        LemonadeUi.Chip(
-                            label = "Error",
-                            selected = false,
-                            leadingIcon = null,
-                            error = true,
-                        )
-                        LemonadeUi.Text(
-                            text = "Error",
-                            textStyle = LemonadeTheme.typography.bodySmallRegular,
-                        )
-                    }
-
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-                    ) {
-                        LemonadeUi.Chip(
-                            label = "Error",
-                            selected = false,
-                            leadingIcon = null,
-                            enabled = false,
-                            error = true,
-                        )
-                        LemonadeUi.Text(
-                            text = "Error Disabled",
-                            textStyle = LemonadeTheme.typography.bodySmallRegular,
-                        )
-                    }
-                }
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-                ) {
-                    LemonadeUi.Chip(
-                        label = "With Icon",
-                        selected = false,
-                        leadingIcon = LemonadeIcons.CircleAlert,
-                        error = true,
-                    )
-                    LemonadeUi.Chip(
-                        label = "With Trailing",
-                        selected = false,
-                        leadingIcon = null,
-                        trailingIcon = LemonadeIcons.CircleX,
-                        error = true,
-                    )
-                }
+                LemonadeUi.Chip(
+                    label = "Disabled",
+                    selected = false,
+                    leadingIcon = null,
+                    enabled = false,
+                    error = true,
+                )
             }
         }
     }
