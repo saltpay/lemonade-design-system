@@ -6,28 +6,28 @@ import SwiftUI
 public enum LemonadeTileVariant {
     case filled
     case outlined
-
+    
     var backgroundColor: Color {
         switch self {
         case .filled: return LemonadeTheme.colors.background.bgElevated
         case .outlined: return LemonadeTheme.colors.background.bgDefault
         }
     }
-
+    
     var backgroundPressedColor: Color {
         switch self {
         case .filled: return LemonadeTheme.colors.interaction.bgElevatedPressed
         case .outlined: return LemonadeTheme.colors.interaction.bgDefaultPressed
         }
     }
-
+    
     var borderColor: Color {
         switch self {
         case .filled: return LemonadeTheme.colors.border.borderNeutralMedium
         case .outlined: return LemonadeTheme.colors.border.borderNeutralMedium
         }
     }
-
+    
     var borderWidth: CGFloat {
         switch self {
         case .filled: return 0
@@ -84,7 +84,7 @@ public extension LemonadeUi {
             topAccessory: nil
         )
     }
-
+    
     /// A tile component with icon, label, and a top-right accessory view.
     ///
     /// ## Usage
@@ -135,7 +135,7 @@ public extension LemonadeUi {
             topAccessory: topAccessory
         )
     }
-
+    
     /// A tile component with a custom leading slot view instead of an icon.
     ///
     /// ## Usage
@@ -182,7 +182,7 @@ public extension LemonadeUi {
             topAccessory: nil
         )
     }
-
+    
     /// A tile component with a custom leading slot view and a top-right accessory.
     ///
     /// ## Usage
@@ -234,7 +234,7 @@ public extension LemonadeUi {
             topAccessory: topAccessory
         )
     }
-
+    
 }
 
 // MARK: - Haptic Helpers
@@ -275,25 +275,25 @@ private struct LemonadeTileView<TopAccessory: View>: View {
     let variant: LemonadeTileVariant
     let stretched: Bool
     let topAccessory: (() -> TopAccessory)?
-
+    
     private let minWidth: CGFloat = 120
-
+    
     private var effectiveBackgroundColor: Color {
         isSelected ? LemonadeTheme.colors.background.bgBrandSubtle : variant.backgroundColor
     }
-
+    
     private var effectiveBorderColor: Color {
         isSelected ? LemonadeTheme.colors.border.borderSelected : variant.borderColor
     }
-
+    
     private var effectiveBorderWidth: CGFloat {
         isSelected ? LemonadeTheme.borderWidth.base.border50 : variant.borderWidth
     }
-
+    
     private var effectiveContentColor: Color {
         isSelected ? LemonadeTheme.colors.content.contentOnBrandHigh : LemonadeTheme.colors.content.contentPrimary
     }
-
+    
     private var tileContent: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing300) {
             // Top row: icon + topAccessory
@@ -304,16 +304,16 @@ private struct LemonadeTileView<TopAccessory: View>: View {
                     size: .medium,
                     tint: effectiveContentColor
                 )
-
+                
                 Spacer(minLength: 0)
-
+                
                 if let topAccessory {
                     topAccessory()
                 }
             }
-
+            
             Spacer(minLength: 0)
-
+            
             VStack(alignment: .leading, spacing: 0) {
                 LemonadeUi.Text(
                     label,
@@ -322,22 +322,23 @@ private struct LemonadeTileView<TopAccessory: View>: View {
                     overflow: .tail,
                     maxLines: 1
                 )
-
+                
                 if let supportText {
                     LemonadeUi.Text(
                         supportText,
                         textStyle: LemonadeTypography.shared.bodySmallRegular,
                         color: LemonadeTheme.colors.content.contentSecondary,
                         overflow: .tail,
-                        maxLines: 1
+                        maxLines: 1,
                     )
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(LemonadeTheme.spaces.spacing300)
     }
-
+    
     private var tileShape: some View {
         Group {
             if #available(iOS 16, macOS 13, *) {
@@ -349,7 +350,9 @@ private struct LemonadeTileView<TopAccessory: View>: View {
                     .frame(minWidth: minWidth)
             }
         }
-        .applyIf(stretched) { $0.frame(maxWidth: .infinity) }
+        .applyIf(stretched) {
+            $0.frame(maxWidth: .infinity, alignment: .leading)
+        }
         .background(effectiveBackgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
         .overlay(
@@ -362,7 +365,7 @@ private struct LemonadeTileView<TopAccessory: View>: View {
             if newValue { triggerSelectionHaptic() }
         }
     }
-
+    
     var body: some View {
         if let onClick {
             Button(action: { triggerTouchHaptic(); onClick() }) { tileShape }
@@ -386,40 +389,40 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
     let stretched: Bool
     let leadingSlot: () -> LeadingContent
     let topAccessory: (() -> TopAccessory)?
-
+    
     private let minWidth: CGFloat = 120
-
+    
     private var effectiveBackgroundColor: Color {
         isSelected ? LemonadeTheme.colors.background.bgBrandSubtle : variant.backgroundColor
     }
-
+    
     private var effectiveBorderColor: Color {
         isSelected ? LemonadeTheme.colors.border.borderSelected : variant.borderColor
     }
-
+    
     private var effectiveBorderWidth: CGFloat {
         isSelected ? LemonadeTheme.borderWidth.base.border50 : variant.borderWidth
     }
-
+    
     private var effectiveContentColor: Color {
         isSelected ? LemonadeTheme.colors.content.contentOnBrandHigh : LemonadeTheme.colors.content.contentPrimary
     }
-
+    
     private var tileContent: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing300) {
             // Top row: leadingSlot + topAccessory
             HStack {
                 leadingSlot()
-
+                
                 Spacer(minLength: 0)
-
+                
                 if let topAccessory {
                     topAccessory()
                 }
             }
-
+            
             Spacer(minLength: 0)
-
+            
             VStack(alignment: .leading, spacing: 0) {
                 LemonadeUi.Text(
                     label,
@@ -428,7 +431,7 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
                     overflow: .tail,
                     maxLines: 1
                 )
-
+                
                 if let supportText {
                     LemonadeUi.Text(
                         supportText,
@@ -437,10 +440,11 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
                         overflow: .tail,
                         maxLines: 1
                     )
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(LemonadeTheme.spaces.spacing300)
     }
 
@@ -455,7 +459,9 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
                     .frame(minWidth: minWidth)
             }
         }
-        .applyIf(stretched) { $0.frame(maxWidth: .infinity) }
+        .applyIf(stretched) {
+            $0.frame(maxWidth: .infinity, alignment: .leading)
+        }
         .background(effectiveBackgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
         .overlay(
@@ -468,7 +474,7 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
             if newValue { triggerSelectionHaptic() }
         }
     }
-
+    
     var body: some View {
         if let onClick {
             Button(action: { triggerTouchHaptic(); onClick() }) { tileShape }
@@ -494,13 +500,13 @@ struct LemonadeTile_Previews: PreviewProvider {
                     onClick: {},
                     variant: .filled
                 )
-
+                
                 LemonadeUi.Tile(
                     label: "Outlined",
                     icon: .star,
                     variant: .outlined
                 )
-
+                
                 LemonadeUi.Tile(
                     label: "Selected",
                     icon: .circleCheck,
@@ -508,24 +514,26 @@ struct LemonadeTile_Previews: PreviewProvider {
                     variant: .filled
                 )
             }
-
+            
             // With support text
             HStack(spacing: 16) {
                 LemonadeUi.Tile(
                     label: "Filled",
                     icon: .heart,
                     supportText: "Support",
-                    variant: .filled
+                    variant: .filled,
+                    stretched: true
                 )
-
+                
                 LemonadeUi.Tile(
                     label: "Outlined",
                     icon: .star,
-                    supportText: "Long support text example to check how it wraps and looks on smaller screens",
-                    variant: .outlined
+                    supportText: "Long Support Text to Check Layout",
+                    variant: .outlined,
+                    stretched: true
                 )
             }
-
+            
             // With top accessory
             HStack(spacing: 16) {
                 LemonadeUi.Tile(
@@ -540,7 +548,7 @@ struct LemonadeTile_Previews: PreviewProvider {
                         )
                     }
                 )
-
+                
                 LemonadeUi.Tile(
                     label: "Selected",
                     icon: .star,
@@ -555,17 +563,18 @@ struct LemonadeTile_Previews: PreviewProvider {
                     }
                 )
             }
-
+            
             // Disabled
             HStack(spacing: 16) {
                 LemonadeUi.Tile(
                     label: "Disabled",
                     icon: .heart,
                     enabled: false,
-                    variant: .filled
+                    variant: .filled,
+                    stretched: true
                 )
             }
-
+            
             // Tight container -- tiles shrink below 120pt instead of overflowing
             // Only demonstrates correctly on iOS 16+ where DefaultMinSize is used
             if #available(iOS 16, macOS 13, *) {

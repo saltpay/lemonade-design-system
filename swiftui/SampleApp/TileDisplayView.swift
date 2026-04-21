@@ -65,15 +65,17 @@ struct TileDisplayView: View {
                         LemonadeUi.Tile(
                             label: "Filled",
                             icon: .heart,
-                            supportText: "Support",
+                            supportText: "Long support text example to check how it wraps and looks on smaller screens",
                             variant: .filled
                         )
 
                         LemonadeUi.Tile(
                             label: "Outlined",
                             icon: .star,
-                            supportText: "Support",
-                            variant: .outlined
+//                            supportText: "Support",
+                            supportText: "Long support text example to check how it wraps and looks on smaller screens",
+                            variant: .outlined,
+                            stretched: true
                         )
                     }
                 }
