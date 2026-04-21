@@ -477,6 +477,7 @@ private fun ChipErrorPreview() {
     LemonadeUi.Chip(
         label = "Error",
         selected = false,
+        leadingIcon = null,
         error = true,
     )
 }
@@ -487,8 +488,8 @@ private fun ChipErrorWithIconPreview() {
     LemonadeUi.Chip(
         label = "Error",
         selected = false,
-        error = true,
         leadingIcon = LemonadeIcons.CircleAlert,
+        error = true,
     )
 }
 
@@ -498,6 +499,7 @@ private fun ChipErrorDisabledPreview() {
     LemonadeUi.Chip(
         label = "Error",
         selected = false,
+        leadingIcon = null,
         enabled = false,
         error = true,
     )
