@@ -22,6 +22,7 @@ public extension LemonadeUi {
     ///   - trailingIcon: Optional LemonadeIcon to be displayed in the trailing position
     ///   - counter: Optional Int number to be displayed in the chip
     ///   - enabled: Controls the enabled state of the chip. Defaults to true
+    ///   - error: Set to true to display the chip in an error state (critical border and background). When true, takes precedence over `selected` styling. Defaults to false
     ///   - onChipClicked: Optional callback for when the chip is clicked
     ///   - onTrailingIconClick: Optional callback when the trailing icon is clicked
     /// - Returns: A styled Chip view
@@ -92,6 +93,7 @@ public extension LemonadeUi {
     ///   - trailingIcon: Optional LemonadeIcon to be displayed in the trailing position
     ///   - counter: Optional Int number to be displayed in the chip
     ///   - enabled: Controls the enabled state of the chip. Defaults to true
+    ///   - error: Set to true to display the chip in an error state (critical border and background). When true, takes precedence over `selected` styling. Defaults to false
     ///   - onChipClicked: Optional callback for when the chip is clicked
     ///   - onTrailingIconClick: Optional callback when the trailing icon is clicked
     /// - Returns: A styled Chip view
@@ -163,6 +165,7 @@ public extension LemonadeUi {
     ///   - selected: Set to true if the chip is in the selected state
     ///   - counter: Optional Int number to be displayed in the chip
     ///   - enabled: Controls the enabled state of the chip. Defaults to true
+    ///   - error: Set to true to display the chip in an error state (critical border and background). When true, takes precedence over `selected` styling. Defaults to false
     ///   - onChipClicked: Optional callback for when the chip is clicked
     ///   - onTrailingIconClick: Optional callback when the trailing icon is clicked
     ///   - leadingContent: Custom leading content
@@ -229,7 +232,9 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
     }
 
     private var contentColor: Color {
-        selected
+        error
+        ? LemonadeTheme.colors.content.contentPrimary
+        : selected
         ? LemonadeTheme.colors.content.contentBrandInverse
         : LemonadeTheme.colors.content.contentPrimary
     }

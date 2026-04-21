@@ -66,7 +66,7 @@ import com.teya.lemonade.core.LemonadeTextStyle
  *  When `false`, interaction is disabled and it is visually styled
  *  as such. Defaults to true.
  * @param error: Optional - set to `true` to display the chip in an error state with a
- *  critical border and background. Cannot be combined with [selected]. Defaults to false.
+ *  critical border and background. Takes precedence over [selected] styling when both are true. Defaults to false.
  * @param onChipClicked: Optional - sets the callback for when
  *  the chip is clicked. If null the clickable interactions will be
  *  automatically disabled.
@@ -161,7 +161,7 @@ public fun LemonadeUi.Chip(
  *  When `false`, interaction is disabled and it is visually styled
  *  as such. Defaults to true.
  * @param error: Optional - set to `true` to display the chip in an error state with a
- *  critical border and background. Cannot be combined with [selected]. Defaults to false.
+ *  critical border and background. Takes precedence over [selected] styling when both are true. Defaults to false.
  * @param onChipClicked: Optional - sets the callback for when
  *  the chip is clicked. If null the clickable interactions will be
  *  automatically disabled.
