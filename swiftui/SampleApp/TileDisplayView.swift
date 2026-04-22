@@ -2,6 +2,9 @@ import SwiftUI
 import Lemonade
 
 struct TileDisplayView: View {
+    @State private var isFilledSelected = true
+    @State private var isOutlinedSelected = true
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing600) {
@@ -10,107 +13,108 @@ struct TileDisplayView: View {
                     HStack(spacing: LemonadeTheme.spaces.spacing400) {
                         VStack(spacing: LemonadeTheme.spaces.spacing200) {
                             LemonadeUi.Tile(
-                                label: "Neutral",
+                                label: "Filled",
                                 icon: .heart,
-                                variant: .neutral
+                                onClick: {},
+                                variant: .filled
                             )
                             LemonadeUi.Text(
-                                "Neutral",
+                                "Filled",
                                 textStyle: LemonadeTypography.shared.bodySmallRegular
                             )
                         }
 
                         VStack(spacing: LemonadeTheme.spaces.spacing200) {
                             LemonadeUi.Tile(
-                                label: "Muted",
+                                label: "Outlined",
                                 icon: .star,
-                                variant: .muted
+                                onClick: {},
+                                variant: .outlined
                             )
                             LemonadeUi.Text(
-                                "Muted",
-                                textStyle: LemonadeTypography.shared.bodySmallRegular
-                            )
-                        }
-
-                        VStack(spacing: LemonadeTheme.spaces.spacing200) {
-                            LemonadeUi.Tile(
-                                label: "Selected",
-                                icon: .circleCheck,
-                                variant: .selected
-                            )
-                            LemonadeUi.Text(
-                                "Selected",
+                                "Outlined",
                                 textStyle: LemonadeTypography.shared.bodySmallRegular
                             )
                         }
                     }
                 }
 
-                sectionView(title: "OnColor Variant") {
-                    VStack(spacing: LemonadeTheme.spaces.spacing200) {
-                        LemonadeUi.Tile(
-                            label: "OnColor",
-                            icon: .check,
-                            variant: .onColor
-                        )
-                        LemonadeUi.Text(
-                            "Use on brand backgrounds",
-                            textStyle: LemonadeTypography.shared.bodySmallRegular,
-                            color: .content.contentOnBrandHigh
-                        )
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(LemonadeTheme.spaces.spacing400)
-                    .background(.bg.bgBrand)
-                    .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius300))
-                }
-
-                sectionView(title: "Alignment") {
+                // MARK: - Selected
+                sectionView(title: "Selected") {
                     HStack(spacing: LemonadeTheme.spaces.spacing400) {
                         LemonadeUi.Tile(
-                            label: "Start",
-                            icon: .arrowLeft,
-                            variant: .neutral,
-                            alignment: .leading
+                            label: "Filled",
+                            icon: .circleCheck,
+                            isSelected: isFilledSelected,
+                            onClick: { isFilledSelected.toggle() },
+                            variant: .filled
+                        )
+                        LemonadeUi.Tile(
+                            label: "Outlined",
+                            icon: .circleCheck,
+                            isSelected: isOutlinedSelected,
+                            onClick: { isOutlinedSelected.toggle() },
+                            variant: .outlined
+                        )
+                    }
+                }
+
+                // MARK: - Support Text
+                sectionView(title: "Support Text") {
+                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
+                        LemonadeUi.Tile(
+                            label: "Filled",
+                            icon: .heart,
+                            supportText: "Long support text example to check how it wraps and looks on smaller screens",
+                            variant: .filled
                         )
 
                         LemonadeUi.Tile(
-                            label: "Center",
-                            icon: .arrowLeftRight,
-                            variant: .neutral,
-                            alignment: .center
+                            label: "Outlined",
+                            icon: .star,
+//                            supportText: "Support",
+                            supportText: "Long support text example to check how it wraps and looks on smaller screens",
+                            variant: .outlined,
+                            stretched: true
                         )
+                    }
+                }
 
+                // MARK: - Top Accessory
+                sectionView(title: "Top Accessory") {
+                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
                         LemonadeUi.Tile(
-                            label: "End",
-                            icon: .arrowRight,
-                            variant: .neutral,
-                            alignment: .trailing
+                            label: "Accessory",
+                            icon: .heart,
+                            variant: .filled
+                        ) {
+                            LemonadeUi.Icon(
+                                icon: .circleInfo,
+                                contentDescription: nil,
+                                size: .small
+                            )
+                        }
+                    }
+                }
+
+                // MARK: - Leading Slot
+                sectionView(title: "Leading Slot") {
+                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
+                        LemonadeUi.Tile(
+                            label: "Custom",
+                            variant: .filled,
+                            leadingSlot: {
+                                LemonadeUi.Icon(
+                                    icon: .shoppingBag,
+                                    contentDescription: nil,
+                                    size: .medium
+                                )
+                            }
                         )
                     }
                 }
 
                 // MARK: - Features
-                sectionView(title: "With Addon (Badge)") {
-                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
-                        LemonadeUi.Tile(
-                            label: "Messages",
-                            icon: .envelope,
-                            variant: .neutral
-                        ) {
-                            LemonadeUi.Badge(text: "5", size: .xSmall)
-                        }
-
-                        LemonadeUi.Tile(
-                            label: "Updates",
-                            icon: .bell,
-                            variant: .neutral
-                        ) {
-                            LemonadeUi.Badge(text: "New", size: .xSmall)
-                        }
-                    }
-                }
-
                 sectionView(title: "Interactive") {
                     HStack(spacing: LemonadeTheme.spaces.spacing400) {
                         LemonadeUi.Tile(
@@ -119,7 +123,7 @@ struct TileDisplayView: View {
                             onClick: {
                                 print("Tile tapped!")
                             },
-                            variant: .neutral
+                            variant: .filled
                         )
 
                         LemonadeUi.Tile(
@@ -128,7 +132,7 @@ struct TileDisplayView: View {
                             onClick: {
                                 print("Click!")
                             },
-                            variant: .muted
+                            variant: .outlined
                         )
                     }
                 }
@@ -139,14 +143,14 @@ struct TileDisplayView: View {
                             label: "Disabled",
                             icon: .padlock,
                             enabled: false,
-                            variant: .neutral
+                            variant: .filled
                         )
 
                         LemonadeUi.Tile(
                             label: "Disabled",
                             icon: .padlock,
                             enabled: false,
-                            variant: .muted
+                            variant: .outlined
                         )
                     }
                 }
@@ -156,7 +160,7 @@ struct TileDisplayView: View {
                     LemonadeUi.Tile(
                         label: "Default",
                         icon: .heart,
-                        variant: .neutral
+                        variant: .filled
                     )
                 }
 
@@ -165,7 +169,7 @@ struct TileDisplayView: View {
                         label: "Single Stretched",
                         icon: .heart,
                         onClick: {},
-                        variant: .neutral,
+                        variant: .filled,
                         stretched: true
                     )
 
@@ -174,7 +178,7 @@ struct TileDisplayView: View {
                             label: "Transfer",
                             icon: .arrowLeftRight,
                             onClick: {},
-                            variant: .neutral,
+                            variant: .filled,
                             stretched: true
                         )
 
@@ -182,7 +186,7 @@ struct TileDisplayView: View {
                             label: "Pay",
                             icon: .card,
                             onClick: {},
-                            variant: .neutral,
+                            variant: .filled,
                             stretched: true
                         )
 
@@ -190,7 +194,7 @@ struct TileDisplayView: View {
                             label: "Request",
                             icon: .download,
                             onClick: {},
-                            variant: .neutral,
+                            variant: .filled,
                             stretched: true
                         )
                     }
@@ -201,19 +205,19 @@ struct TileDisplayView: View {
                         LemonadeUi.Tile(
                             label: "One",
                             icon: .heart,
-                            variant: .neutral
+                            variant: .filled
                         )
 
                         LemonadeUi.Tile(
                             label: "Two",
                             icon: .star,
-                            variant: .neutral
+                            variant: .filled
                         )
 
                         LemonadeUi.Tile(
                             label: "Three",
                             icon: .check,
-                            variant: .neutral
+                            variant: .filled
                         )
                     }
                     .frame(width: 200)
@@ -230,42 +234,42 @@ struct TileDisplayView: View {
                             label: "Transfer",
                             icon: .arrowLeftRight,
                             onClick: {},
-                            variant: .neutral
+                            variant: .filled
                         )
 
                         LemonadeUi.Tile(
                             label: "Pay",
                             icon: .card,
                             onClick: {},
-                            variant: .neutral
+                            variant: .filled
                         )
 
                         LemonadeUi.Tile(
                             label: "Request",
                             icon: .download,
                             onClick: {},
-                            variant: .neutral
+                            variant: .filled
                         )
 
                         LemonadeUi.Tile(
                             label: "Scan",
                             icon: .qrCode,
                             onClick: {},
-                            variant: .neutral
+                            variant: .filled
                         )
 
                         LemonadeUi.Tile(
                             label: "Top Up",
                             icon: .plus,
                             onClick: {},
-                            variant: .neutral
+                            variant: .filled
                         )
 
                         LemonadeUi.Tile(
                             label: "More",
                             icon: .ellipsisHorizontal,
                             onClick: {},
-                            variant: .neutral
+                            variant: .filled
                         )
                     }
                 }
@@ -277,16 +281,14 @@ struct TileDisplayView: View {
                                 label: "Orders",
                                 icon: .shoppingBag,
                                 onClick: {},
-                                variant: .muted
-                            ) {
-                                LemonadeUi.Badge(text: "3", size: .xSmall)
-                            }
+                                variant: .outlined
+                            )
 
                             LemonadeUi.Tile(
                                 label: "Inventory",
                                 icon: .package,
                                 onClick: {},
-                                variant: .muted
+                                variant: .outlined
                             )
                         }
 
@@ -295,14 +297,14 @@ struct TileDisplayView: View {
                                 label: "Reports",
                                 icon: .chart,
                                 onClick: {},
-                                variant: .muted
+                                variant: .outlined
                             )
 
                             LemonadeUi.Tile(
                                 label: "Settings",
                                 icon: .gear,
                                 onClick: {},
-                                variant: .muted
+                                variant: .outlined
                             )
                         }
                     }

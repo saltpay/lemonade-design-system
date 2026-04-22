@@ -8,8 +8,13 @@ struct DefaultMinSize: Layout {
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         guard let child = subviews.first else { return .zero }
 
-        let childSize = child.sizeThatFits(proposal)
         let idealSize = child.sizeThatFits(.unspecified)
+
+        // childSize is only needed in the tight-container branch (proposed < minimum).
+        // Avoid the second layout pass in the common case.
+        let inTightContainer = (proposal.width ?? .infinity) < minWidth
+                            || (proposal.height ?? .infinity) < minHeight
+        let childSize = inTightContainer ? child.sizeThatFits(proposal) : .zero
 
         return CGSize(
             width: resolvedDimension(proposed: proposal.width, minimum: minWidth, ideal: idealSize.width, child: childSize.width),
@@ -24,18 +29,16 @@ struct DefaultMinSize: Layout {
 
     /// Resolves a single dimension (width or height) based on the proposed size.
     ///
-    /// - `proposed` is nil, ≤0, or ∞ → return `contentSize` (appear inflexible to HStack probes)
-    /// - `minimum > 0 && proposed > contentSize` → return `proposed` (stretch to fill, e.g. .frame(maxWidth: .infinity))
-    /// - `proposed < contentSize` → return `max(child, proposed)` (graceful shrink in tight containers)
-    /// - Otherwise → return `contentSize` (content-hugging)
+    /// - `proposed` is nil or ∞ → return `contentSize` (appear inflexible to HStack probes)
+    /// - `proposed < minimum` → return `max(child, proposed)` (graceful shrink in tight containers)
+    /// - Otherwise → return `min(contentSize, proposed)` (content-hugging, but never overflow)
     ///
-    /// The ≤0 and ∞ checks make the view report the same size for HStack's min/max probes,
+    /// The nil and ∞ checks make the view report the same size for HStack's min/max probes,
     /// so HStack treats it as inflexible and won't distribute excess space to it.
-    /// The `minimum > 0` guard prevents vertical stretching (minHeight defaults to 0).
     private func resolvedDimension(proposed: CGFloat?, minimum: CGFloat, ideal: CGFloat, child: CGFloat) -> CGFloat {
         let contentSize = max(minimum, ideal)
-        guard let proposed else { return contentSize }
+        guard let proposed, !proposed.isInfinite else { return contentSize }
         if proposed < minimum { return max(child, proposed) }
-        return contentSize
+        return min(contentSize, proposed)
     }
 }

@@ -1,23 +1,23 @@
 package com.teya.lemonade
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import com.teya.lemonade.core.LemonadeBadgeSize
+import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTileVariant
 
@@ -44,12 +44,12 @@ internal fun TileDisplay() {
                     verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Tile(
-                        label = "Neutral",
+                        label = "Filled",
                         icon = LemonadeIcons.Heart,
-                        variant = LemonadeTileVariant.Neutral,
+                        variant = LemonadeTileVariant.Filled,
                     )
                     LemonadeUi.Text(
-                        text = "Neutral",
+                        text = "Filled",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
@@ -59,104 +59,101 @@ internal fun TileDisplay() {
                     verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
                 ) {
                     LemonadeUi.Tile(
-                        label = "Muted",
+                        label = "Outlined",
                         icon = LemonadeIcons.Star,
-                        variant = LemonadeTileVariant.Muted,
+                        variant = LemonadeTileVariant.Outlined,
                     )
                     LemonadeUi.Text(
-                        text = "Muted",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular,
-                    )
-                }
-
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-                ) {
-                    LemonadeUi.Tile(
-                        label = "Selected",
-                        icon = LemonadeIcons.CircleCheck,
-                        variant = LemonadeTileVariant.Selected,
-                    )
-                    LemonadeUi.Text(
-                        text = "Selected",
+                        text = "Outlined",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
                     )
                 }
             }
         }
 
-        // OnColor Variant
-        TileSection(title = "OnColor Variant") {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(LemonadeTheme.radius.radius300))
-                    .background(LemonadeTheme.colors.background.bgBrand)
-                    .padding(LemonadeTheme.spaces.spacing400),
-            ) {
-                LemonadeUi.Tile(
-                    label = "OnColor",
-                    icon = LemonadeIcons.Check,
-                    variant = LemonadeTileVariant.OnColor,
-                )
-                LemonadeUi.Text(
-                    text = "Use on brand backgrounds",
-                    textStyle = LemonadeTheme.typography.bodySmallRegular,
-                    color = LemonadeTheme.colors.content.contentOnBrandHigh,
-                )
-            }
-        }
-
-        // Alignment
-        TileSection(title = "Alignment") {
+        // Selected
+        TileSection(title = "Selected") {
+            var isFilledSelected by remember { mutableStateOf(value = true) }
+            var isOutlinedSelected by remember { mutableStateOf(value = true) }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 modifier = Modifier.horizontalScroll(rememberScrollState()),
             ) {
                 LemonadeUi.Tile(
-                    label = "Start",
-                    icon = LemonadeIcons.ArrowLeft,
-                    alignment = Alignment.Start,
+                    label = "Filled",
+                    icon = LemonadeIcons.CircleCheck,
+                    variant = LemonadeTileVariant.Filled,
+                    isSelected = isFilledSelected,
+                    onClick = { isFilledSelected = !isFilledSelected },
                 )
-
                 LemonadeUi.Tile(
-                    label = "Center",
-                    icon = LemonadeIcons.ArrowLeftRight,
-                    alignment = Alignment.CenterHorizontally,
-                )
-
-                LemonadeUi.Tile(
-                    label = "End",
-                    icon = LemonadeIcons.ArrowRight,
-                    alignment = Alignment.End,
+                    label = "Outlined",
+                    icon = LemonadeIcons.CircleCheck,
+                    variant = LemonadeTileVariant.Outlined,
+                    isSelected = isOutlinedSelected,
+                    onClick = { isOutlinedSelected = !isOutlinedSelected },
                 )
             }
         }
 
-        // With Addon (Badge)
-        TileSection(title = "With Addon (Badge)") {
+        // Support Text
+        TileSection(title = "Support Text") {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 modifier = Modifier.horizontalScroll(rememberScrollState()),
             ) {
                 LemonadeUi.Tile(
-                    label = "Messages",
-                    icon = LemonadeIcons.Envelope,
-                    variant = LemonadeTileVariant.Neutral,
-                    addon = {
-                        LemonadeUi.Badge(text = "5", size = LemonadeBadgeSize.XSmall)
+                    label = "Filled",
+                    icon = LemonadeIcons.Heart,
+                    variant = LemonadeTileVariant.Filled,
+                    supportText = "Support text",
+                )
+
+                LemonadeUi.Tile(
+                    label = "Outlined",
+                    icon = LemonadeIcons.Star,
+                    variant = LemonadeTileVariant.Outlined,
+                    supportText = "Support text",
+                )
+            }
+        }
+
+        // Top Accessory
+        TileSection(title = "Top Accessory") {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+                modifier = Modifier.horizontalScroll(rememberScrollState()),
+            ) {
+                LemonadeUi.Tile(
+                    label = "Accessory",
+                    icon = LemonadeIcons.Heart,
+                    variant = LemonadeTileVariant.Filled,
+                    topAccessory = {
+                        LemonadeUi.Icon(
+                            icon = LemonadeIcons.CircleInfo,
+                            size = LemonadeAssetSize.Small,
+                            contentDescription = null,
+                        )
                     },
                 )
+            }
+        }
 
+        // Leading Slot
+        TileSection(title = "Leading Slot") {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+                modifier = Modifier.horizontalScroll(rememberScrollState()),
+            ) {
                 LemonadeUi.Tile(
-                    label = "Updates",
-                    icon = LemonadeIcons.Bell,
-                    variant = LemonadeTileVariant.Neutral,
-                    addon = {
-                        LemonadeUi.Badge(text = "New", size = LemonadeBadgeSize.XSmall)
+                    label = "Custom",
+                    variant = LemonadeTileVariant.Filled,
+                    leadingSlot = {
+                        LemonadeUi.Icon(
+                            icon = LemonadeIcons.ShoppingBag,
+                            size = LemonadeAssetSize.Medium,
+                            contentDescription = null,
+                        )
                     },
                 )
             }
@@ -172,14 +169,14 @@ internal fun TileDisplay() {
                     label = "Tap me",
                     icon = LemonadeIcons.HandCoins,
                     onClick = { println("Tile tapped!") },
-                    variant = LemonadeTileVariant.Neutral,
+                    variant = LemonadeTileVariant.Filled,
                 )
 
                 LemonadeUi.Tile(
                     label = "Click",
                     icon = LemonadeIcons.FingerPrint,
                     onClick = { println("Click!") },
-                    variant = LemonadeTileVariant.Muted,
+                    variant = LemonadeTileVariant.Outlined,
                 )
             }
         }
@@ -194,14 +191,14 @@ internal fun TileDisplay() {
                     label = "Disabled",
                     icon = LemonadeIcons.Padlock,
                     enabled = false,
-                    variant = LemonadeTileVariant.Neutral,
+                    variant = LemonadeTileVariant.Filled,
                 )
 
                 LemonadeUi.Tile(
                     label = "Disabled",
                     icon = LemonadeIcons.Padlock,
                     enabled = false,
-                    variant = LemonadeTileVariant.Muted,
+                    variant = LemonadeTileVariant.Outlined,
                 )
             }
         }
@@ -219,19 +216,19 @@ internal fun TileDisplay() {
                         label = "Transfer",
                         icon = LemonadeIcons.ArrowLeftRight,
                         onClick = {},
-                        variant = LemonadeTileVariant.Neutral,
+                        variant = LemonadeTileVariant.Filled,
                     )
                     LemonadeUi.Tile(
                         label = "Pay",
                         icon = LemonadeIcons.Card,
                         onClick = {},
-                        variant = LemonadeTileVariant.Neutral,
+                        variant = LemonadeTileVariant.Filled,
                     )
                     LemonadeUi.Tile(
                         label = "Request",
                         icon = LemonadeIcons.Download,
                         onClick = {},
-                        variant = LemonadeTileVariant.Neutral,
+                        variant = LemonadeTileVariant.Filled,
                     )
                 }
                 Row(
@@ -242,19 +239,19 @@ internal fun TileDisplay() {
                         label = "Scan",
                         icon = LemonadeIcons.QrCode,
                         onClick = {},
-                        variant = LemonadeTileVariant.Neutral,
+                        variant = LemonadeTileVariant.Filled,
                     )
                     LemonadeUi.Tile(
                         label = "Top Up",
                         icon = LemonadeIcons.Plus,
                         onClick = {},
-                        variant = LemonadeTileVariant.Neutral,
+                        variant = LemonadeTileVariant.Filled,
                     )
                     LemonadeUi.Tile(
                         label = "More",
                         icon = LemonadeIcons.EllipsisHorizontal,
                         onClick = {},
-                        variant = LemonadeTileVariant.Neutral,
+                        variant = LemonadeTileVariant.Filled,
                     )
                 }
             }
@@ -273,16 +270,13 @@ internal fun TileDisplay() {
                         label = "Orders",
                         icon = LemonadeIcons.ShoppingBag,
                         onClick = {},
-                        variant = LemonadeTileVariant.Muted,
-                        addon = {
-                            LemonadeUi.Badge(text = "3", size = LemonadeBadgeSize.XSmall)
-                        },
+                        variant = LemonadeTileVariant.Outlined,
                     )
                     LemonadeUi.Tile(
                         label = "Inventory",
                         icon = LemonadeIcons.Package,
                         onClick = {},
-                        variant = LemonadeTileVariant.Muted,
+                        variant = LemonadeTileVariant.Outlined,
                     )
                 }
                 Row(
@@ -293,13 +287,13 @@ internal fun TileDisplay() {
                         label = "Reports",
                         icon = LemonadeIcons.Chart,
                         onClick = {},
-                        variant = LemonadeTileVariant.Muted,
+                        variant = LemonadeTileVariant.Outlined,
                     )
                     LemonadeUi.Tile(
                         label = "Settings",
                         icon = LemonadeIcons.Gear,
                         onClick = {},
-                        variant = LemonadeTileVariant.Muted,
+                        variant = LemonadeTileVariant.Outlined,
                     )
                 }
             }
