@@ -192,7 +192,7 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
                     .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
             }
             
-            HStack(alignment: .top, spacing: 0) {
+            HStack(alignment: .center, spacing: 0) {
                 VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing0) {
                     contentSlot()
                 }
@@ -213,7 +213,7 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
                             size: .medium,
                             tint: LemonadeTheme.colors.content.contentTertiary
                         )
-                        .opacity(enabled ? 0.5 : 0.5 * LemonadeTheme.opacity.state.opacityDisabled)
+                        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
                         .padding(.leading, LemonadeTheme.spaces.spacing100)
                     }
                 }

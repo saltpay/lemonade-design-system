@@ -398,6 +398,7 @@ private fun CoreListItem(
 
             Row(
                 modifier = Modifier.weight(weight = 1f),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Column(
                     content = contentSlot,
@@ -426,11 +427,11 @@ private fun CoreListItem(
                             size = LemonadeAssetSize.Medium,
                             contentDescription = null,
                             modifier = Modifier
-                                .alpha(
-                                    alpha = if (enabled) {
-                                        0.5f
+                                .then(
+                                    other = if (!enabled) {
+                                        Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
                                     } else {
-                                        0.5f * LocalOpacities.current.state.opacityDisabled
+                                        Modifier
                                     },
                                 ).padding(start = LocalSpaces.current.spacing100),
                         )
