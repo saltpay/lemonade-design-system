@@ -1,5 +1,3 @@
 package com.teya.lemonade
 
-internal actual fun supportsImeInsets(): Boolean {
-    return true
-}
+internal actual fun supportsImeInsets(): Boolean = true
