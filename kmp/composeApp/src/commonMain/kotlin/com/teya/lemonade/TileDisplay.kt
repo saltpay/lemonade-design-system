@@ -11,6 +11,10 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeAssetSize
@@ -69,6 +73,8 @@ internal fun TileDisplay() {
 
         // Selected
         TileSection(title = "Selected") {
+            var isFilledSelected by remember { mutableStateOf(value = true) }
+            var isOutlinedSelected by remember { mutableStateOf(value = true) }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 modifier = Modifier.horizontalScroll(rememberScrollState()),
@@ -77,13 +83,15 @@ internal fun TileDisplay() {
                     label = "Filled",
                     icon = LemonadeIcons.CircleCheck,
                     variant = LemonadeTileVariant.Filled,
-                    isSelected = true,
+                    isSelected = isFilledSelected,
+                    onClick = { isFilledSelected = !isFilledSelected },
                 )
                 LemonadeUi.Tile(
                     label = "Outlined",
                     icon = LemonadeIcons.CircleCheck,
                     variant = LemonadeTileVariant.Outlined,
-                    isSelected = true,
+                    isSelected = isOutlinedSelected,
+                    onClick = { isOutlinedSelected = !isOutlinedSelected },
                 )
             }
         }
