@@ -16,8 +16,10 @@ struct TopBarDisplayView: View {
         DemoItem(title: "Basic (close button)", destination: AnyView(BasicCloseDemo())),
         DemoItem(title: "Basic with Trailing Slot", destination: AnyView(BasicTrailingSlotDemo())),
         DemoItem(title: "Basic with Bottom Slot", destination: AnyView(BasicBottomSlotDemo())),
+        DemoItem(title: "Basic with Subheading", destination: AnyView(BasicSubheadingDemo())),
         DemoItem(title: "Search", destination: AnyView(SearchTopBarDemo())),
         DemoItem(title: "Search with Expanded Label", destination: AnyView(SearchExpandedLabelDemo())),
+        DemoItem(title: "Search with Subheading", destination: AnyView(SearchSubheadingDemo())),
         DemoItem(title: "Compact Large (pill)", destination: AnyView(CompactLargePillDemo())),
         DemoItem(title: "Compact Large", destination: AnyView(CompactLargeDemo())),
         DemoItem(title: "Compact Large with Subheading", destination: AnyView(CompactLargeSubheadingDemo())),
@@ -162,6 +164,25 @@ private struct BasicBottomSlotDemo: View {
     }
 }
 
+private struct BasicSubheadingDemo: View {
+    var body: some View {
+        ScrollView {
+            SampleListContent()
+        }
+        .lemonadeTopBar(
+            label: "Account",
+            subheading: "Signed in as john@example.com",
+            navigationAction: NavigationAction(action: .back, onAction: {})
+        ) {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {}) {
+                    LemonadeUi.Icon(icon: .bell, contentDescription: "Notifications")
+                }
+            }
+        }
+    }
+}
+
 // MARK: - 2. Search TopBar Demos
 
 private struct SearchTopBarDemo: View {
@@ -230,6 +251,35 @@ private struct SearchExpandedLabelDemo: View {
                 }
             }
         }
+    }
+}
+
+private struct SearchSubheadingDemo: View {
+    @State private var searchQuery = ""
+
+    private let contacts = [
+        "Alice Anderson", "Bob Brown", "Carol Chen", "David Davis",
+        "Eve Edwards", "Frank Foster", "Grace Green", "Henry Harris",
+    ]
+
+    private var filteredContacts: [String] {
+        guard !searchQuery.isEmpty else { return contacts }
+        return contacts.filter { $0.localizedCaseInsensitiveContains(searchQuery) }
+    }
+
+    var body: some View {
+        List {
+            ForEach(filteredContacts, id: \.self) { contact in
+                SwiftUI.Text(contact)
+            }
+        }
+        .lemonadeTopBar(
+            label: "Contacts",
+            subheading: "\(contacts.count) people",
+            searchInput: $searchQuery,
+            searchPrompt: "Search contacts...",
+            navigationAction: NavigationAction(action: .back, onAction: {})
+        )
     }
 }
 

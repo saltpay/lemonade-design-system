@@ -49,6 +49,7 @@ private struct LemonadeEmptyToolbarContent: ToolbarContent {
 /// same way as the native `.toolbar` modifier.
 private struct BasicTopBarModifier<Toolbar: ToolbarContent, BottomContent: View>: ViewModifier {
     let label: String
+    let subheading: String?
     let collapsedLabel: String?
     let navigationAction: NavigationAction?
     let toolbarContent: Toolbar
@@ -56,8 +57,7 @@ private struct BasicTopBarModifier<Toolbar: ToolbarContent, BottomContent: View>
 
     func body(content: Content) -> some View {
         content
-            .navigationTitle(collapsedLabel ?? label)
-            .navigationBarTitleDisplayMode(.large)
+            .lemonadeNavigationTitle(title: collapsedLabel ?? label, subheading: subheading)
             .navigationBarBackButtonHidden(navigationAction?.action == .close)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -72,6 +72,7 @@ private struct BasicTopBarModifier<Toolbar: ToolbarContent, BottomContent: View>
                 }
                 toolbarContent
             }
+            .lemonadeFallbackPrincipalTitle(label: collapsedLabel ?? label, subheading: subheading)
             .lemonadeTopBarBottomSlot(bottomSlot)
     }
 }
@@ -82,6 +83,7 @@ private struct BasicTopBarModifier<Toolbar: ToolbarContent, BottomContent: View>
 /// Uses `.searchable` with `.navigationBarDrawer` placement for native collapse behavior.
 private struct SearchTopBarModifier<Toolbar: ToolbarContent, BottomContent: View>: ViewModifier {
     let label: String
+    let subheading: String?
     @Binding var searchInput: String
     let searchPrompt: String
     let expandedLabel: String?
@@ -91,8 +93,7 @@ private struct SearchTopBarModifier<Toolbar: ToolbarContent, BottomContent: View
 
     func body(content: Content) -> some View {
         content
-            .navigationTitle(expandedLabel ?? label)
-            .navigationBarTitleDisplayMode(.large)
+            .lemonadeNavigationTitle(title: expandedLabel ?? label, subheading: subheading)
             .searchable(
                 text: $searchInput,
                 placement: .navigationBarDrawer(displayMode: .always),
@@ -112,6 +113,7 @@ private struct SearchTopBarModifier<Toolbar: ToolbarContent, BottomContent: View
                 }
                 toolbarContent
             }
+            .lemonadeFallbackPrincipalTitle(label: expandedLabel ?? label, subheading: subheading)
             .lemonadeTopBarBottomSlot(bottomSlot)
     }
 }
@@ -628,6 +630,96 @@ private extension ToolbarContent {
 }
 
 private extension View {
+    /// Applies the navigation title and, on iOS 26, the native `.navigationSubtitle`
+    /// (preserves the large-title morph). On iOS < 26 a non-nil subheading forces
+    /// inline display mode with an empty title so `lemonadeFallbackPrincipalTitle`
+    /// can render a stacked `title` + `subheading` in the principal toolbar slot —
+    /// matching the platform convention (Mail, Messages, Settings) for pre-iOS 26
+    /// two-line nav bars at the cost of losing the large-title morph.
+    @ViewBuilder
+    func lemonadeNavigationTitle(title: String, subheading: String?) -> some View {
+        #if compiler(>=6.2)
+        if #available(iOS 26, *), let subheading {
+            self
+                .navigationTitle(title)
+                .navigationSubtitle(subheading)
+                .navigationBarTitleDisplayMode(.large)
+        } else if #available(iOS 26, *) {
+            self
+                .navigationTitle(title)
+                .navigationBarTitleDisplayMode(.large)
+        } else if subheading != nil {
+            self
+                .navigationTitle("")
+                .navigationBarTitleDisplayMode(.inline)
+        } else {
+            self
+                .navigationTitle(title)
+                .navigationBarTitleDisplayMode(.large)
+        }
+        #else
+        if subheading != nil {
+            self
+                .navigationTitle("")
+                .navigationBarTitleDisplayMode(.inline)
+        } else {
+            self
+                .navigationTitle(title)
+                .navigationBarTitleDisplayMode(.large)
+        }
+        #endif
+    }
+}
+
+private extension View {
+    /// iOS < 26 fallback: attaches a principal toolbar item that renders
+    /// `label` + `subheading` stacked vertically (matches the Mail / Messages
+    /// pattern used before `.navigationSubtitle` existed). No-op on iOS 26,
+    /// where the native API handles the subheading in both expanded and
+    /// collapsed states.
+    @ViewBuilder
+    func lemonadeFallbackPrincipalTitle(label: String, subheading: String?) -> some View {
+        #if compiler(>=6.2)
+        if #available(iOS 26, *) {
+            self
+        } else if let subheading {
+            self.toolbar {
+                ToolbarItem(placement: .principal) {
+                    VStack(spacing: 2) {
+                        SwiftUI.Text(label)
+                            .font(.headingXSmall)
+                            .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
+                        SwiftUI.Text(subheading)
+                            .font(.bodySmallRegular)
+                            .foregroundStyle(LemonadeTheme.colors.content.contentSecondary)
+                    }
+                }
+            }
+        } else {
+            self
+        }
+        #else
+        if let subheading {
+            self.toolbar {
+                ToolbarItem(placement: .principal) {
+                    VStack(spacing: 2) {
+                        SwiftUI.Text(label)
+                            .font(.headingXSmall)
+                            .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
+                        SwiftUI.Text(subheading)
+                            .font(.bodySmallRegular)
+                            .foregroundStyle(LemonadeTheme.colors.content.contentSecondary)
+                    }
+                }
+            }
+        } else {
+            self
+        }
+        #endif
+    }
+}
+
+private extension View {
     /// Renders a bottom slot attached to the nav bar.
     ///
     /// On iOS 26+: uses the native glass toolbar (no divider) and lets the inset ride on top.
@@ -822,6 +914,7 @@ public extension View {
     /// ```
     func lemonadeTopBar<Toolbar: ToolbarContent, BottomContent: View>(
         label: String,
+        subheading: String? = nil,
         collapsedLabel: String? = nil,
         navigationAction: NavigationAction? = nil,
         @ViewBuilder bottomSlot: @escaping () -> BottomContent,
@@ -829,6 +922,7 @@ public extension View {
     ) -> some View {
         modifier(BasicTopBarModifier(
             label: label,
+            subheading: subheading,
             collapsedLabel: collapsedLabel,
             navigationAction: navigationAction,
             toolbarContent: toolbar(),
@@ -839,12 +933,14 @@ public extension View {
     /// Applies a Lemonade-styled navigation bar with toolbar content (no bottom slot).
     func lemonadeTopBar<Toolbar: ToolbarContent>(
         label: String,
+        subheading: String? = nil,
         collapsedLabel: String? = nil,
         navigationAction: NavigationAction? = nil,
         @ToolbarContentBuilder toolbar: () -> Toolbar
     ) -> some View {
         modifier(BasicTopBarModifier(
             label: label,
+            subheading: subheading,
             collapsedLabel: collapsedLabel,
             navigationAction: navigationAction,
             toolbarContent: toolbar(),
@@ -855,11 +951,13 @@ public extension View {
     /// Applies a Lemonade-styled navigation bar with a collapsible large title (no toolbar or bottom slot).
     func lemonadeTopBar(
         label: String,
+        subheading: String? = nil,
         collapsedLabel: String? = nil,
         navigationAction: NavigationAction? = nil
     ) -> some View {
         modifier(BasicTopBarModifier(
             label: label,
+            subheading: subheading,
             collapsedLabel: collapsedLabel,
             navigationAction: navigationAction,
             toolbarContent: LemonadeEmptyToolbarContent(),
@@ -889,6 +987,7 @@ public extension View {
     /// ```
     func lemonadeTopBar<Toolbar: ToolbarContent, BottomContent: View>(
         label: String,
+        subheading: String? = nil,
         searchInput: Binding<String>,
         searchPrompt: String = "Search...",
         expandedLabel: String? = nil,
@@ -898,6 +997,7 @@ public extension View {
     ) -> some View {
         modifier(SearchTopBarModifier(
             label: label,
+            subheading: subheading,
             searchInput: searchInput,
             searchPrompt: searchPrompt,
             expandedLabel: expandedLabel,
@@ -910,6 +1010,7 @@ public extension View {
     /// Applies a Lemonade-styled navigation bar with search + toolbar (no bottom slot).
     func lemonadeTopBar<Toolbar: ToolbarContent>(
         label: String,
+        subheading: String? = nil,
         searchInput: Binding<String>,
         searchPrompt: String = "Search...",
         expandedLabel: String? = nil,
@@ -918,6 +1019,7 @@ public extension View {
     ) -> some View {
         modifier(SearchTopBarModifier(
             label: label,
+            subheading: subheading,
             searchInput: searchInput,
             searchPrompt: searchPrompt,
             expandedLabel: expandedLabel,
@@ -930,6 +1032,7 @@ public extension View {
     /// Applies a Lemonade-styled navigation bar with search (no toolbar or bottom slot).
     func lemonadeTopBar(
         label: String,
+        subheading: String? = nil,
         searchInput: Binding<String>,
         searchPrompt: String = "Search...",
         expandedLabel: String? = nil,
@@ -937,6 +1040,7 @@ public extension View {
     ) -> some View {
         modifier(SearchTopBarModifier(
             label: label,
+            subheading: subheading,
             searchInput: searchInput,
             searchPrompt: searchPrompt,
             expandedLabel: expandedLabel,
