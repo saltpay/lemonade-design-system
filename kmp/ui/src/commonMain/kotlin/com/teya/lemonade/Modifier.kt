@@ -29,8 +29,11 @@ internal fun Modifier.modifyIf(
         },
     )
 
-internal fun Modifier.clearFocusOnKeyboardDismiss(): Modifier =
-    composed {
+internal fun Modifier.clearFocusOnKeyboardDismiss(): Modifier {
+    if (!supportsImeInsets()) {
+        return this
+    }
+    return composed {
         var isFocused by remember { mutableStateOf(false) }
         var keyboardAppearedSinceLastFocused by remember { mutableStateOf(false) }
 
@@ -53,6 +56,7 @@ internal fun Modifier.clearFocusOnKeyboardDismiss(): Modifier =
             }
         }
     }
+}
 
 @Composable
 public fun Modifier.clickable(
