@@ -1,5 +1,5 @@
-import SwiftUI
 import Lemonade
+import SwiftUI
 
 private struct OutlinedOption: Identifiable {
     let id = UUID()
@@ -15,285 +15,698 @@ private struct TrailingPreset {
 private let trailingPresets: [TrailingPreset] = [
     TrailingPreset(label: "New", voice: .info),
     TrailingPreset(label: "Recommended", voice: .positive),
-    TrailingPreset(label: "Popular", voice: .neutral)
+    TrailingPreset(label: "Popular", voice: .neutral),
 ]
 
-struct ListItemDisplayView: View {
+struct ResourceListItemPreview: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: .space.spacing400) {
+            LemonadeUi.Text("ResourceListItem", font: .headingXSmall)
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(title: "ResourceListItem")
+            ) {
+                LemonadeUi.ResourceListItem(
+                    label: "Credit •••• 8931",
+                    value: "$1,234.56",
+                    supportText: "Today 12:54 • Onion Garden",
+                    showDivider: true,
+                    onItemClicked: {},
+                    addonSlot: {
+                        LemonadeUi.Tag(
+                            label: "Approved",
+                            icon: .circleCheck,
+                            voice: .positive
+                        )
+                    },
+                    leadingSlot: {
+                        LemonadeUi.SymbolContainer(
+                            shape: .rounded,
+                            content: {
+                                LemonadeUi.BrandLogo(
+                                    logo: .mastercard,
+                                    size: .medium
+                                )
+                            }
+                        )
+                    }
+                )
+                
+                LemonadeUi.ResourceListItem(
+                    label: "14 Apr sales",
+                    value: "$5,000.00",
+                    supportText: "Paid on 22 Apr • Onion Garden",
+                    showDivider: false,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.SymbolContainer(
+                            icon: .coins,
+                            contentDescription: nil,
+                            voice: .positive,
+                            size: .large,
+                            shape: .rounded
+                        )
+                    }
+                )
+            }
+            
+            // MARK: - ResourceListItem with Addon
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "ResourceListItem with Addon"
+                )
+            ) {
+                LemonadeUi.ResourceListItem(
+                    label: "Last Transaction",
+                    value: "-$50.00",
+                    supportText: "Yesterday",
+                    showDivider: false,
+                    addonSlot: {
+                        LemonadeUi.Tag(label: "Pending", voice: .warning)
+                    },
+                    leadingSlot: {
+                        LemonadeUi.SymbolContainer(
+                            icon: .arrowUpRight,
+                            contentDescription: nil,
+                            voice: .critical,
+                            size: .large,
+                            shape: .rounded
+                        )
+                    }
+                )
+            }
+        }
+    }
+}
+
+struct ActionListItemPreview: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: .space.spacing400) {
+            LemonadeUi.Text("ActionListItem", font: .headingXSmall)
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(title: "ActionListItem")
+            ) {
+                LemonadeUi.ActionListItem(
+                    label: "Settings",
+                    showNavigationIndicator: true,
+                    showDivider: true,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .gear,
+                            contentDescription: nil,
+                            size: .medium
+                        )
+                    }
+                )
+                
+                LemonadeUi.ActionListItem(
+                    label: "Notifications",
+                    supportText: "Manage your notifications",
+                    showNavigationIndicator: true,
+                    showDivider: true,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .bell,
+                            contentDescription: nil,
+                            size: .medium
+                        )
+                    }
+                )
+                
+                LemonadeUi.ActionListItem(
+                    label: "Privacy",
+                    showNavigationIndicator: true,
+                    showDivider: false,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .padlock,
+                            contentDescription: nil,
+                            size: .medium
+                        )
+                    }
+                )
+            }
+            
+            // MARK: - ActionListItem - Trailing Alignment
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "ActionListItem - Trailing Alignment"
+                )
+            ) {
+                LemonadeUi.ActionListItem(
+                    label: "Top aligned",
+                    supportText: "trailingAlignment: .top\nSecond line",
+                    showNavigationIndicator: true,
+                    showDivider: true,
+                    trailingAlignment: .top,
+                    onItemClicked: {},
+                    trailingSlot: {
+                        LemonadeUi.Tag(label: "Top", voice: .info)
+                    }
+                )
+                
+                LemonadeUi.ActionListItem(
+                    label: "Center aligned",
+                    supportText: "trailingAlignment: .center\nSecond line",
+                    showNavigationIndicator: true,
+                    showDivider: true,
+                    trailingAlignment: .center,
+                    onItemClicked: {},
+                    trailingSlot: {
+                        LemonadeUi.Tag(label: "Center", voice: .positive)
+                    }
+                )
+                
+                LemonadeUi.ActionListItem(
+                    label: "Bottom aligned",
+                    supportText: "trailingAlignment: .bottom\nSecond line",
+                    showNavigationIndicator: true,
+                    showDivider: false,
+                    trailingAlignment: .bottom,
+                    onItemClicked: {},
+                    trailingSlot: {
+                        LemonadeUi.Tag(label: "Bottom", voice: .warning)
+                    }
+                )
+            }
+            
+            // MARK: - ActionListItem with Trailing
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "ActionListItem with Trailing"
+                )
+            ) {
+                LemonadeUi.ActionListItem(
+                    label: "Updates Available",
+                    showNavigationIndicator: true,
+                    showDivider: true,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .download,
+                            contentDescription: nil,
+                            size: .medium
+                        )
+                    },
+                    trailingSlot: {
+                        LemonadeUi.Badge(text: "3", size: .small)
+                    }
+                )
+                
+                LemonadeUi.ActionListItem(
+                    label: "New Features",
+                    showNavigationIndicator: true,
+                    showDivider: false,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .sparkles,
+                            contentDescription: nil,
+                            size: .medium
+                        )
+                    },
+                    trailingSlot: {
+                        LemonadeUi.Tag(label: "New", voice: .positive)
+                    }
+                )
+            }
+            
+            // MARK: - ActionListItem - Design reference (multi-line support text)
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "ActionListItem - Figma reference"
+                )
+            ) {
+                LemonadeUi.ActionListItem(
+                    label: "Account ***4236",
+                    supportText: "PT50 0002 0123 1234…\n1 store linked",
+                    showNavigationIndicator: true,
+                    showDivider: false,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.SymbolContainer(
+                            icon: .bank,
+                            contentDescription: nil,
+                            voice: .neutral,
+                            size: .large,
+                            shape: .rounded
+                        )
+                    },
+                    trailingSlot: {
+                        LemonadeUi.Tag(
+                            label: "Settlements",
+                            voice: .positive
+                        )
+                    }
+                )
+            }
+            
+            // MARK: - ActionListItem - Critical Voice
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "ActionListItem - Critical Voice"
+                )
+            ) {
+                LemonadeUi.ActionListItem(
+                    label: "Delete Account",
+                    voice: .critical,
+                    showDivider: true,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .trash,
+                            contentDescription: nil,
+                            size: .medium,
+                            tint: .content.contentCritical
+                        )
+                    }
+                )
+                
+                LemonadeUi.ActionListItem(
+                    label: "Log Out",
+                    supportText: "You will need to sign in again",
+                    voice: .critical,
+                    showDivider: false,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .logOut,
+                            contentDescription: nil,
+                            size: .medium,
+                            tint: .content.contentCritical
+                        )
+                    }
+                )
+            }
+            
+            // MARK: - Disabled States (Action)
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(title: "Disabled States")
+            ) {
+                LemonadeUi.ActionListItem(
+                    label: "Disabled Action",
+                    enabled: false,
+                    showDivider: false,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .gear,
+                            contentDescription: nil,
+                            size: .medium
+                        )
+                    }
+                )
+            }
+            
+            // MARK: - Loading State
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(title: "Loading State")
+            ) {
+                LemonadeUi.ActionListItem(
+                    label: "",
+                    isLoading: true,
+                    showDivider: true
+                )
+                
+                LemonadeUi.ActionListItem(
+                    label: "",
+                    isLoading: true,
+                    showDivider: true
+                )
+                
+                LemonadeUi.ActionListItem(
+                    label: "",
+                    isLoading: true,
+                    showDivider: false
+                )
+            }
+        }
+    }
+}
+
+struct SelectListItemPreview: View {
     @State private var singleSelection = 0
     @State private var multipleSelections: Set<Int> = [0]
     @State private var toggleStates: [Bool] = [true, false, true]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: .space.spacing400) {
+            LemonadeUi.Text("SelectListItem", font: .headingXSmall)
+            // MARK: - SelectListItem - Single
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "SelectListItem - Single"
+                )
+            ) {
+                ForEach(0..<3, id: \.self) { index in
+                    LemonadeUi.SelectListItem(
+                        label: "Option \(index + 1)",
+                        type: .single,
+                        checked: singleSelection == index,
+                        onItemClicked: { singleSelection = index },
+                        showDivider: index < 2,
+                        supportText: index == 0
+                        ? "With support text" : nil
+                    )
+                }
+            }
+            
+            // MARK: - SelectListItem - Multiple
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "SelectListItem - Multiple"
+                )
+            ) {
+                ForEach(0..<3, id: \.self) { index in
+                    LemonadeUi.SelectListItem(
+                        label: "Item \(index + 1)",
+                        type: .multiple,
+                        checked: multipleSelections.contains(index),
+                        onItemClicked: {
+                            if multipleSelections.contains(index) {
+                                multipleSelections.remove(index)
+                            } else {
+                                multipleSelections.insert(index)
+                            }
+                        },
+                        showDivider: index < 2
+                    )
+                }
+            }
+            
+            // MARK: - SelectListItem - Toggle
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "SelectListItem - Toggle"
+                )
+            ) {
+                ForEach(0..<3, id: \.self) { index in
+                    LemonadeUi.SelectListItem(
+                        label: "Setting \(index + 1)",
+                        type: .toggle,
+                        checked: toggleStates[index],
+                        onItemClicked: { toggleStates[index].toggle() },
+                        showDivider: index < 2,
+                        supportText: index == 0
+                        ? "With support text" : nil
+                    )
+                }
+            }
+            
+            // MARK: - SelectListItem with Leading
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "SelectListItem with Leading"
+                )
+            ) {
+                LemonadeUi.SelectListItem(
+                    label: "With Icon",
+                    type: .single,
+                    checked: true,
+                    onItemClicked: {},
+                    supportText: "Leading icon example",
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .star,
+                            contentDescription: nil,
+                            size: .medium
+                        )
+                    }
+                )
+                LemonadeUi.SelectListItem(
+                    label: "With Leading",
+                    type: .single,
+                    checked: true,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.SymbolContainer(
+                            text: "LM",
+                            size: .medium,
+                            shape: .rounded
+                        )
+                    }
+                )
+            }
+            // MARK: - Disabled States (Select)
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(title: "Disabled States")
+            ) {
+                LemonadeUi.SelectListItem(
+                    label: "Disabled Option",
+                    type: .single,
+                    checked: false,
+                    onItemClicked: {},
+                    enabled: false
+                )
+            }
+        }
+    }
+}
+
+struct OutlinedSelectListItemPreview: View {
     @State private var outlinedWithLeading = 0
     @State private var outlinedWithTrailing = 1
     @State private var outlinedLabelOnly = 0
     @State private var outlinedWithSupport = 0
     @State private var outlinedMultiple: Set<Int> = [0]
-
+    
     private let outlinedOptions: [OutlinedOption] = [
         OutlinedOption(label: "Option A", icon: .heart),
         OutlinedOption(label: "Option B", icon: .star),
         OutlinedOption(label: "Option C", icon: .sparkles),
-        OutlinedOption(label: "Option D", icon: .gift)
+        OutlinedOption(label: "Option D", icon: .gift),
     ]
-
+    
     var body: some View {
-        ScrollView(.vertical) {
-            VStack(spacing: .space.spacing400) {
-                // MARK: - SelectListItem - Single
-                LemonadeUi.Card(
-                    contentPadding: .none,
-                    header: CardHeaderConfig(title: "SelectListItem - Single")
-                ) {
+        VStack(alignment: .leading, spacing: .space.spacing400) {
+            LemonadeUi.Text("SelectListItem", font: .headingXSmall)
+
+            // MARK: - Outlined — Leading icon only
+            LemonadeUi.Card(
+                contentPadding: .xSmall,
+                header: CardHeaderConfig(
+                    title: "Outlined — Leading icon only"
+                )
+            ) {
+                VStack(spacing: LemonadeTheme.spaces.spacing100) {
+                    ForEach(
+                        Array(outlinedOptions.enumerated()),
+                        id: \.element.id
+                    ) { index, option in
+                        let isChecked = outlinedWithLeading == index
+                        LemonadeUi.SelectListItem(
+                            label: option.label,
+                            type: .single,
+                            checked: isChecked,
+                            onItemClicked: { outlinedWithLeading = index },
+                            variant: .outlined,
+                            leadingSlot: {
+                                LemonadeUi.SymbolContainer(
+                                    icon: option.icon,
+                                    contentDescription: nil,
+                                    voice: isChecked ? .positive : .neutral,
+                                    size: .large,
+                                    shape: .rounded
+                                )
+                            }
+                        )
+                    }
+                }
+            }
+            
+            // MARK: - Outlined — Leading + trailing tag
+            LemonadeUi.Card(
+                contentPadding: .xSmall,
+                header: CardHeaderConfig(
+                    title: "Outlined — Leading + trailing tag"
+                )
+            ) {
+                VStack(spacing: LemonadeTheme.spaces.spacing100) {
+                    ForEach(
+                        Array(outlinedOptions.prefix(3).enumerated()),
+                        id: \.element.id
+                    ) { index, option in
+                        let isChecked = outlinedWithTrailing == index
+                        let preset = trailingPresets[index]
+                        LemonadeUi.SelectListItem(
+                            label: option.label,
+                            type: .single,
+                            checked: isChecked,
+                            onItemClicked: { outlinedWithTrailing = index },
+                            variant: .outlined,
+                            leadingSlot: {
+                                LemonadeUi.SymbolContainer(
+                                    icon: option.icon,
+                                    contentDescription: nil,
+                                    voice: isChecked ? .positive : .neutral,
+                                    size: .large,
+                                    shape: .rounded
+                                )
+                            },
+                            trailingSlot: {
+                                LemonadeUi.Tag(
+                                    label: preset.label,
+                                    voice: preset.voice
+                                )
+                            }
+                        )
+                    }
+                }
+            }
+            
+            // MARK: - Outlined — Label only
+            LemonadeUi.Card(
+                contentPadding: .xSmall,
+                header: CardHeaderConfig(
+                    title: "Outlined — Label only (no leading, no trailing)"
+                )
+            ) {
+                VStack(spacing: LemonadeTheme.spaces.spacing100) {
                     ForEach(0..<3, id: \.self) { index in
                         LemonadeUi.SelectListItem(
                             label: "Option \(index + 1)",
                             type: .single,
-                            checked: singleSelection == index,
-                            onItemClicked: { singleSelection = index },
-                            showDivider: index < 2,
-                            supportText: index == 0 ? "With support text" : nil
+                            checked: outlinedLabelOnly == index,
+                            onItemClicked: { outlinedLabelOnly = index },
+                            variant: .outlined
                         )
                     }
                 }
-
-                // MARK: - SelectListItem - Multiple
-                LemonadeUi.Card(
-                    contentPadding: .none,
-                    header: CardHeaderConfig(title: "SelectListItem - Multiple")
-                ) {
-                    ForEach(0..<3, id: \.self) { index in
+            }
+            
+            // MARK: - Outlined — With support text
+            LemonadeUi.Card(
+                contentPadding: .xSmall,
+                header: CardHeaderConfig(
+                    title: "Outlined — With support text"
+                )
+            ) {
+                VStack(spacing: LemonadeTheme.spaces.spacing100) {
+                    ForEach(
+                        Array(outlinedOptions.prefix(3).enumerated()),
+                        id: \.element.id
+                    ) { index, option in
                         LemonadeUi.SelectListItem(
-                            label: "Item \(index + 1)",
+                            label: option.label,
+                            type: .single,
+                            checked: outlinedWithSupport == index,
+                            onItemClicked: { outlinedWithSupport = index },
+                            variant: .outlined,
+                            supportText:
+                                "Short description for \(option.label.lowercased())",
+                            leadingSlot: {
+                                LemonadeUi.SymbolContainer(
+                                    icon: option.icon,
+                                    contentDescription: nil,
+                                    voice: .neutral,
+                                    size: .large,
+                                    shape: .rounded
+                                )
+                            }
+                        )
+                    }
+                }
+            }
+            
+            // MARK: - Outlined — Multiple
+            LemonadeUi.Card(
+                contentPadding: .xSmall,
+                header: CardHeaderConfig(title: "Outlined — Multiple")
+            ) {
+                VStack(spacing: LemonadeTheme.spaces.spacing100) {
+                    ForEach(
+                        Array(outlinedOptions.enumerated()),
+                        id: \.element.id
+                    ) { index, option in
+                        let isChecked = outlinedMultiple.contains(index)
+                        LemonadeUi.SelectListItem(
+                            label: option.label,
                             type: .multiple,
-                            checked: multipleSelections.contains(index),
+                            checked: isChecked,
                             onItemClicked: {
-                                if multipleSelections.contains(index) {
-                                    multipleSelections.remove(index)
+                                if isChecked {
+                                    outlinedMultiple.remove(index)
                                 } else {
-                                    multipleSelections.insert(index)
+                                    outlinedMultiple.insert(index)
                                 }
                             },
-                            showDivider: index < 2
+                            variant: .outlined,
+                            supportText: index == 0 ? "Tap to toggle" : nil,
+                            leadingSlot: {
+                                LemonadeUi.SymbolContainer(
+                                    icon: option.icon,
+                                    contentDescription: nil,
+                                    voice: isChecked ? .positive : .neutral,
+                                    size: .large,
+                                    shape: .rounded
+                                )
+                            }
                         )
                     }
                 }
-
-                // MARK: - SelectListItem - Toggle
-                LemonadeUi.Card(
-                    contentPadding: .none,
-                    header: CardHeaderConfig(title: "SelectListItem - Toggle")
-                ) {
-                    ForEach(0..<3, id: \.self) { index in
-                        LemonadeUi.SelectListItem(
-                            label: "Setting \(index + 1)",
-                            type: .toggle,
-                            checked: toggleStates[index],
-                            onItemClicked: { toggleStates[index].toggle() },
-                            showDivider: index < 2,
-                            supportText: index == 0 ? "With support text" : nil
-                        )
-                    }
-                }
-
-                // MARK: - SelectListItem with Leading
-                LemonadeUi.Card(
-                    contentPadding: .none,
-                    header: CardHeaderConfig(title: "SelectListItem with Leading")
-                ) {
+            }
+            
+            // MARK: - Outlined — Disabled states
+            LemonadeUi.Card(
+                contentPadding: .xSmall,
+                header: CardHeaderConfig(
+                    title: "Outlined — Disabled states"
+                )
+            ) {
+                VStack(spacing: LemonadeTheme.spaces.spacing100) {
                     LemonadeUi.SelectListItem(
-                        label: "With Icon",
-                        type: .single,
-                        checked: true,
-                        onItemClicked: {},
-                        supportText: "Leading icon example",
-                        leadingSlot: {
-                            LemonadeUi.Icon(
-                                icon: .star,
-                                contentDescription: nil,
-                                size: .medium
-                            )
-                        }
-                    )
-                }
-
-                // MARK: - Disabled States (Select)
-                LemonadeUi.Card(
-                    contentPadding: .none,
-                    header: CardHeaderConfig(title: "Disabled States")
-                ) {
-                    LemonadeUi.SelectListItem(
-                        label: "Disabled Option",
+                        label: "Disabled, no leading",
                         type: .single,
                         checked: false,
                         onItemClicked: {},
+                        variant: .outlined,
                         enabled: false
                     )
-                }
-
-                // MARK: - ResourceListItem
-                LemonadeUi.Card(
-                    contentPadding: .none,
-                    header: CardHeaderConfig(title: "ResourceListItem")
-                ) {
-                    LemonadeUi.ResourceListItem(
-                        label: "Account Balance",
-                        value: "$1,234.56",
-                        supportText: "Updated today",
-                        showDivider: true,
+                    
+                    LemonadeUi.SelectListItem(
+                        label: "Disabled, with leading",
+                        type: .single,
+                        checked: false,
+                        onItemClicked: {},
+                        variant: .outlined,
+                        enabled: false,
                         leadingSlot: {
                             LemonadeUi.SymbolContainer(
-                                icon: .money,
-                                contentDescription: nil,
-                                voice: .info,
-                                size: .large,
-                                shape: .rounded
-                            )
-                        }
-                    )
-
-                    LemonadeUi.ResourceListItem(
-                        label: "Savings",
-                        value: "$5,000.00",
-                        showDivider: false,
-                        leadingSlot: {
-                            LemonadeUi.SymbolContainer(
-                                icon: .coins,
-                                contentDescription: nil,
-                                voice: .positive,
-                                size: .large,
-                                shape: .rounded
-                            )
-                        }
-                    )
-                }
-
-                // MARK: - ResourceListItem with Addon
-                LemonadeUi.Card(
-                    contentPadding: .none,
-                    header: CardHeaderConfig(title: "ResourceListItem with Addon")
-                ) {
-                    LemonadeUi.ResourceListItem(
-                        label: "Last Transaction",
-                        value: "-$50.00",
-                        supportText: "Yesterday",
-                        showDivider: false,
-                        addonSlot: {
-                            LemonadeUi.Tag(label: "Pending", voice: .warning)
-                        },
-                        leadingSlot: {
-                            LemonadeUi.SymbolContainer(
-                                icon: .arrowUpRight,
-                                contentDescription: nil,
-                                voice: .critical,
-                                size: .large,
-                                shape: .rounded
-                            )
-                        }
-                    )
-                }
-
-                // MARK: - ActionListItem
-                LemonadeUi.Card(
-                    contentPadding: .none,
-                    header: CardHeaderConfig(title: "ActionListItem")
-                ) {
-                    LemonadeUi.ActionListItem(
-                        label: "Settings",
-                        showNavigationIndicator: true,
-                        showDivider: true,
-                        onItemClicked: {},
-                        leadingSlot: {
-                            LemonadeUi.Icon(
-                                icon: .gear,
-                                contentDescription: nil,
-                                size: .medium
-                            )
-                        }
-                    )
-
-                    LemonadeUi.ActionListItem(
-                        label: "Notifications",
-                        supportText: "Manage your notifications",
-                        showNavigationIndicator: true,
-                        showDivider: true,
-                        onItemClicked: {},
-                        leadingSlot: {
-                            LemonadeUi.Icon(
-                                icon: .bell,
-                                contentDescription: nil,
-                                size: .medium
-                            )
-                        }
-                    )
-
-                    LemonadeUi.ActionListItem(
-                        label: "Privacy",
-                        showNavigationIndicator: true,
-                        showDivider: false,
-                        onItemClicked: {},
-                        leadingSlot: {
-                            LemonadeUi.Icon(
                                 icon: .padlock,
                                 contentDescription: nil,
-                                size: .medium
+                                voice: .neutral,
+                                size: .large,
+                                shape: .rounded
                             )
                         }
                     )
-                }
-
-                // MARK: - ActionListItem with Trailing
-                LemonadeUi.Card(
-                    contentPadding: .none,
-                    header: CardHeaderConfig(title: "ActionListItem with Trailing")
-                ) {
-                    LemonadeUi.ActionListItem(
-                        label: "Updates Available",
-                        showNavigationIndicator: true,
-                        showDivider: true,
+                    
+                    LemonadeUi.SelectListItem(
+                        label: "Disabled, with trailing tag",
+                        type: .single,
+                        checked: false,
                         onItemClicked: {},
-                        leadingSlot: {
-                            LemonadeUi.Icon(
-                                icon: .download,
-                                contentDescription: nil,
-                                size: .medium
-                            )
-                        },
-                        trailingSlot: {
-                            LemonadeUi.Badge(text: "3", size: .small)
-                        }
-                    )
-
-                    LemonadeUi.ActionListItem(
-                        label: "New Features",
-                        showNavigationIndicator: true,
-                        showDivider: false,
-                        onItemClicked: {},
-                        leadingSlot: {
-                            LemonadeUi.Icon(
-                                icon: .sparkles,
-                                contentDescription: nil,
-                                size: .medium
-                            )
-                        },
-                        trailingSlot: {
-                            LemonadeUi.Tag(label: "New", voice: .positive)
-                        }
-                    )
-                }
-
-                // MARK: - ActionListItem - Figma reference (multi-line support text)
-                LemonadeUi.Card(
-                    contentPadding: .none,
-                    header: CardHeaderConfig(title: "ActionListItem - Figma reference")
-                ) {
-                    LemonadeUi.ActionListItem(
-                        label: "Account ***4236",
-                        supportText: "PT50 0002 0123 1234…\n1 store linked",
-                        showNavigationIndicator: true,
-                        showDivider: false,
-                        onItemClicked: {},
+                        variant: .outlined,
+                        enabled: false,
                         leadingSlot: {
                             LemonadeUi.SymbolContainer(
-                                icon: .bank,
+                                icon: .bell,
                                 contentDescription: nil,
                                 voice: .neutral,
                                 size: .large,
@@ -301,288 +714,23 @@ struct ListItemDisplayView: View {
                             )
                         },
                         trailingSlot: {
-                            LemonadeUi.Tag(label: "Settlements", voice: .positive)
+                            LemonadeUi.Tag(label: "Coming Soon")
                         }
                     )
                 }
+            }
+        }
+    }
+}
 
-                // MARK: - ActionListItem - Critical Voice
-                LemonadeUi.Card(
-                    contentPadding: .none,
-                    header: CardHeaderConfig(title: "ActionListItem - Critical Voice")
-                ) {
-                    LemonadeUi.ActionListItem(
-                        label: "Delete Account",
-                        voice: .critical,
-                        showDivider: true,
-                        onItemClicked: {},
-                        leadingSlot: {
-                            LemonadeUi.Icon(
-                                icon: .trash,
-                                contentDescription: nil,
-                                size: .medium,
-                                tint: .content.contentCritical
-                            )
-                        }
-                    )
-
-                    LemonadeUi.ActionListItem(
-                        label: "Log Out",
-                        supportText: "You will need to sign in again",
-                        voice: .critical,
-                        showDivider: false,
-                        onItemClicked: {},
-                        leadingSlot: {
-                            LemonadeUi.Icon(
-                                icon: .logOut,
-                                contentDescription: nil,
-                                size: .medium,
-                                tint: .content.contentCritical
-                            )
-                        }
-                    )
-                }
-
-                // MARK: - Disabled States (Action)
-                LemonadeUi.Card(
-                    contentPadding: .none,
-                    header: CardHeaderConfig(title: "Disabled States")
-                ) {
-                    LemonadeUi.ActionListItem(
-                        label: "Disabled Action",
-                        enabled: false,
-                        showDivider: false,
-                        onItemClicked: {},
-                        leadingSlot: {
-                            LemonadeUi.Icon(
-                                icon: .gear,
-                                contentDescription: nil,
-                                size: .medium
-                            )
-                        }
-                    )
-                }
-
-                // MARK: - Loading State
-                LemonadeUi.Card(
-                    contentPadding: .none,
-                    header: CardHeaderConfig(title: "Loading State")
-                ) {
-                    LemonadeUi.ActionListItem(
-                        label: "",
-                        isLoading: true,
-                        showDivider: true
-                    )
-
-                    LemonadeUi.ActionListItem(
-                        label: "",
-                        isLoading: true,
-                        showDivider: true
-                    )
-
-                    LemonadeUi.ActionListItem(
-                        label: "",
-                        isLoading: true,
-                        showDivider: false
-                    )
-                }
-
-                // MARK: - Outlined — Leading icon only
-                LemonadeUi.Card(
-                    contentPadding: .xSmall,
-                    header: CardHeaderConfig(title: "Outlined — Leading icon only")
-                ) {
-                    VStack(spacing: LemonadeTheme.spaces.spacing100) {
-                        ForEach(Array(outlinedOptions.enumerated()), id: \.element.id) { index, option in
-                            let isChecked = outlinedWithLeading == index
-                            LemonadeUi.SelectListItem(
-                                label: option.label,
-                                type: .single,
-                                checked: isChecked,
-                                onItemClicked: { outlinedWithLeading = index },
-                                variant: .outlined,
-                                leadingSlot: {
-                                    LemonadeUi.SymbolContainer(
-                                        icon: option.icon,
-                                        contentDescription: nil,
-                                        voice: isChecked ? .positive : .neutral,
-                                        size: .large,
-                                        shape: .rounded
-                                    )
-                                }
-                            )
-                        }
-                    }
-                }
-
-                // MARK: - Outlined — Leading + trailing tag
-                LemonadeUi.Card(
-                    contentPadding: .xSmall,
-                    header: CardHeaderConfig(title: "Outlined — Leading + trailing tag")
-                ) {
-                    VStack(spacing: LemonadeTheme.spaces.spacing100) {
-                        ForEach(Array(outlinedOptions.prefix(3).enumerated()), id: \.element.id) { index, option in
-                            let isChecked = outlinedWithTrailing == index
-                            let preset = trailingPresets[index]
-                            LemonadeUi.SelectListItem(
-                                label: option.label,
-                                type: .single,
-                                checked: isChecked,
-                                onItemClicked: { outlinedWithTrailing = index },
-                                variant: .outlined,
-                                leadingSlot: {
-                                    LemonadeUi.SymbolContainer(
-                                        icon: option.icon,
-                                        contentDescription: nil,
-                                        voice: isChecked ? .positive : .neutral,
-                                        size: .large,
-                                        shape: .rounded
-                                    )
-                                },
-                                trailingSlot: {
-                                    LemonadeUi.Tag(label: preset.label, voice: preset.voice)
-                                }
-                            )
-                        }
-                    }
-                }
-
-                // MARK: - Outlined — Label only
-                LemonadeUi.Card(
-                    contentPadding: .xSmall,
-                    header: CardHeaderConfig(title: "Outlined — Label only (no leading, no trailing)")
-                ) {
-                    VStack(spacing: LemonadeTheme.spaces.spacing100) {
-                        ForEach(0..<3, id: \.self) { index in
-                            LemonadeUi.SelectListItem(
-                                label: "Option \(index + 1)",
-                                type: .single,
-                                checked: outlinedLabelOnly == index,
-                                onItemClicked: { outlinedLabelOnly = index },
-                                variant: .outlined
-                            )
-                        }
-                    }
-                }
-
-                // MARK: - Outlined — With support text
-                LemonadeUi.Card(
-                    contentPadding: .xSmall,
-                    header: CardHeaderConfig(title: "Outlined — With support text")
-                ) {
-                    VStack(spacing: LemonadeTheme.spaces.spacing100) {
-                        ForEach(Array(outlinedOptions.prefix(3).enumerated()), id: \.element.id) { index, option in
-                            LemonadeUi.SelectListItem(
-                                label: option.label,
-                                type: .single,
-                                checked: outlinedWithSupport == index,
-                                onItemClicked: { outlinedWithSupport = index },
-                                variant: .outlined,
-                                supportText: "Short description for \(option.label.lowercased())",
-                                leadingSlot: {
-                                    LemonadeUi.SymbolContainer(
-                                        icon: option.icon,
-                                        contentDescription: nil,
-                                        voice: .neutral,
-                                        size: .large,
-                                        shape: .rounded
-                                    )
-                                }
-                            )
-                        }
-                    }
-                }
-
-                // MARK: - Outlined — Multiple
-                LemonadeUi.Card(
-                    contentPadding: .xSmall,
-                    header: CardHeaderConfig(title: "Outlined — Multiple")
-                ) {
-                    VStack(spacing: LemonadeTheme.spaces.spacing100) {
-                        ForEach(Array(outlinedOptions.enumerated()), id: \.element.id) { index, option in
-                            let isChecked = outlinedMultiple.contains(index)
-                            LemonadeUi.SelectListItem(
-                                label: option.label,
-                                type: .multiple,
-                                checked: isChecked,
-                                onItemClicked: {
-                                    if isChecked {
-                                        outlinedMultiple.remove(index)
-                                    } else {
-                                        outlinedMultiple.insert(index)
-                                    }
-                                },
-                                variant: .outlined,
-                                supportText: index == 0 ? "Tap to toggle" : nil,
-                                leadingSlot: {
-                                    LemonadeUi.SymbolContainer(
-                                        icon: option.icon,
-                                        contentDescription: nil,
-                                        voice: isChecked ? .positive : .neutral,
-                                        size: .large,
-                                        shape: .rounded
-                                    )
-                                }
-                            )
-                        }
-                    }
-                }
-
-                // MARK: - Outlined — Disabled states
-                LemonadeUi.Card(
-                    contentPadding: .xSmall,
-                    header: CardHeaderConfig(title: "Outlined — Disabled states")
-                ) {
-                    VStack(spacing: LemonadeTheme.spaces.spacing100) {
-                        LemonadeUi.SelectListItem(
-                            label: "Disabled, no leading",
-                            type: .single,
-                            checked: false,
-                            onItemClicked: {},
-                            variant: .outlined,
-                            enabled: false
-                        )
-
-                        LemonadeUi.SelectListItem(
-                            label: "Disabled, with leading",
-                            type: .single,
-                            checked: false,
-                            onItemClicked: {},
-                            variant: .outlined,
-                            enabled: false,
-                            leadingSlot: {
-                                LemonadeUi.SymbolContainer(
-                                    icon: .padlock,
-                                    contentDescription: nil,
-                                    voice: .neutral,
-                                    size: .large,
-                                    shape: .rounded
-                                )
-                            }
-                        )
-
-                        LemonadeUi.SelectListItem(
-                            label: "Disabled, with trailing tag",
-                            type: .single,
-                            checked: false,
-                            onItemClicked: {},
-                            variant: .outlined,
-                            enabled: false,
-                            leadingSlot: {
-                                LemonadeUi.SymbolContainer(
-                                    icon: .bell,
-                                    contentDescription: nil,
-                                    voice: .neutral,
-                                    size: .large,
-                                    shape: .rounded
-                                )
-                            },
-                            trailingSlot: {
-                                LemonadeUi.Tag(label: "Coming Soon")
-                            }
-                        )
-                    }
-                }
+struct ListItemDisplayView: View {
+    var body: some View {
+        ScrollView(.vertical) {
+            VStack(spacing: .space.spacing800) {
+                ResourceListItemPreview()
+                SelectListItemPreview()
+                OutlinedSelectListItemPreview()
+                ActionListItemPreview()
             }
             .padding(.space.spacing400)
         }
