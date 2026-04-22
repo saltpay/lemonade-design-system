@@ -25,6 +25,7 @@ public extension LemonadeUi {
     ///   - isLoading: Shows a skeleton loading placeholder instead of content
     ///   - enabled: Flag to define if component is enabled. Defaults to true
     ///   - showDivider: Flag to show a divider below the list item. Defaults to false
+    ///   - trailingAlignment: Vertical alignment of the trailing slot and navigation indicator. Defaults to `.center`.
     ///   - onItemClicked: Callback called when component is tapped
     ///   - leadingSlot: Slot content to be placed in leading position
     ///   - trailingSlot: Slot content to be placed in trailing position
@@ -38,6 +39,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        trailingAlignment: VerticalAlignment = .center,
         onItemClicked: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent
@@ -50,14 +52,12 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
+            trailingAlignment: trailingAlignment,
             onListItemClick: onItemClicked,
             leadingSlot: leadingSlot,
             trailingSlot: {
-                HStack {
-                    trailingSlot()
-                        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-                }
-                .frame(maxHeight: .infinity)
+                trailingSlot()
+                    .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
             }
         )
     }
@@ -72,6 +72,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        trailingAlignment: VerticalAlignment = .center,
         onItemClicked: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent
     ) -> some View {
@@ -83,6 +84,7 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
+            trailingAlignment: trailingAlignment,
             onItemClicked: onItemClicked,
             leadingSlot: leadingSlot,
             trailingSlot: { EmptyView() }
@@ -99,6 +101,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        trailingAlignment: VerticalAlignment = .center,
         onItemClicked: (() -> Void)? = nil,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent
     ) -> some View {
@@ -110,6 +113,7 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
+            trailingAlignment: trailingAlignment,
             onItemClicked: onItemClicked,
             leadingSlot: { EmptyView() },
             trailingSlot: trailingSlot
@@ -126,6 +130,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        trailingAlignment: VerticalAlignment = .center,
         onItemClicked: (() -> Void)? = nil
     ) -> some View {
         ActionListItem(
@@ -136,6 +141,7 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
+            trailingAlignment: trailingAlignment,
             onItemClicked: onItemClicked,
             leadingSlot: { EmptyView() },
             trailingSlot: { EmptyView() }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeBadgeSize
@@ -74,6 +75,47 @@ internal fun ActionListItemDisplay() {
                         contentDescription = null,
                         size = LemonadeAssetSize.Medium,
                     )
+                },
+            )
+        }
+
+        // ActionListItem - Trailing Alignment
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "ActionListItem - Trailing Alignment"),
+        ) {
+            LemonadeUi.ActionListItem(
+                label = "Top aligned",
+                supportText = "trailingVerticalAlignment: Top\nSecond line",
+                showNavigationIndicator = true,
+                showDivider = true,
+                trailingVerticalAlignment = Alignment.Top,
+                onItemClicked = {},
+                trailingSlot = {
+                    LemonadeUi.Tag(label = "Top", voice = TagVoice.Info)
+                },
+            )
+
+            LemonadeUi.ActionListItem(
+                label = "Center aligned",
+                supportText = "trailingVerticalAlignment: CenterVertically\nSecond line",
+                showNavigationIndicator = true,
+                showDivider = true,
+                trailingVerticalAlignment = Alignment.CenterVertically,
+                onItemClicked = {},
+                trailingSlot = {
+                    LemonadeUi.Tag(label = "Center", voice = TagVoice.Positive)
+                },
+            )
+
+            LemonadeUi.ActionListItem(
+                label = "Bottom aligned",
+                supportText = "trailingVerticalAlignment: Bottom\nSecond line",
+                showNavigationIndicator = true,
+                showDivider = false,
+                trailingVerticalAlignment = Alignment.Bottom,
+                onItemClicked = {},
+                trailingSlot = {
+                    LemonadeUi.Tag(label = "Bottom", voice = TagVoice.Warning)
                 },
             )
         }

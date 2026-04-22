@@ -47,13 +47,14 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
+            trailingAlignment: .top,
             onListItemClick: onItemClicked,
             leadingSlot: {
                 leadingSlot()
                     .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
             },
             trailingSlot: {
-                VStack(alignment: .trailing, spacing: LemonadeTheme.spaces.spacing50) {
+                VStack(alignment: .trailing, spacing: .space.spacing0) {
                     LemonadeUi.Text(
                         value,
                         textStyle: LemonadeTypography.shared.bodyMediumMedium
@@ -91,3 +92,54 @@ public extension LemonadeUi {
         )
     }
 }
+
+#if DEBUG
+struct LemonadeResourceListItem_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack(spacing: .space.spacing0) {
+            LemonadeUi.ResourceListItem(
+                label: "Credit •••• 8931",
+                value: "£1,234.56",
+                supportText: "Today 12:54 • Onion Garden",
+                showDivider: true,
+                onItemClicked: {},
+                addonSlot: {
+                    LemonadeUi.Tag(
+                        label: "Approved",
+                        icon: .circleCheck,
+                        voice: .positive
+                    )
+                },
+                leadingSlot: {
+                    LemonadeUi.SymbolContainer(
+                        shape: .rounded,
+                        content: {
+                            LemonadeUi.BrandLogo(
+                                logo: .mastercard,
+                                size: .medium
+                            )
+                        }
+                    )
+                }
+            )
+            
+            LemonadeUi.ResourceListItem(
+                label: "14 Apr sales",
+                value: "$5,000.00",
+                supportText: "Paid on 22 Apr • Onion Garden",
+                showDivider: false,
+                onItemClicked: {},
+                leadingSlot: {
+                    LemonadeUi.SymbolContainer(
+                        icon: .coins,
+                        contentDescription: nil,
+                        voice: .positive,
+                        size: .large,
+                        shape: .rounded
+                    )
+                }
+            )
+        }
+    }
+}
+#endif

@@ -123,6 +123,7 @@ public fun LemonadeUi.ResourceListItem(
         modifier = modifier,
         showDivider = showDivider,
         interactionSource = interactionSource,
+        trailingVerticalAlignment = Alignment.Top,
     )
 }
 
@@ -156,6 +157,8 @@ public fun LemonadeUi.ResourceListItem(
  * @param role - [Role] interaction semantics.
  * @param interactionSource - [MutableInteractionSource] to be had within the component.
  * @param showDivider - [Boolean] flag to show a divider below the list item.
+ * @param trailingVerticalAlignment - Vertical alignment of the trailing slot and navigation
+ *  indicator against the label/supportText column. Defaults to [Alignment.CenterVertically].
  */
 @Composable
 public fun LemonadeUi.ActionListItem(
@@ -172,6 +175,7 @@ public fun LemonadeUi.ActionListItem(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     showNavigationIndicator: Boolean = false,
     showDivider: Boolean = false,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
 ) {
     LemonadeUi.ListItem(
         label = label,
@@ -203,6 +207,7 @@ public fun LemonadeUi.ActionListItem(
         modifier = modifier,
         showDivider = showDivider,
         interactionSource = interactionSource,
+        trailingVerticalAlignment = trailingVerticalAlignment,
     )
 }
 
@@ -224,6 +229,8 @@ public fun LemonadeUi.ActionListItem(
  * @param showDivider - Flag to show a divider below the list item.
  * @param interactionSource - [MutableInteractionSource] for interaction events.
  * @param slotContent - Optional slot content below the label and support text.
+ * @param trailingVerticalAlignment - Vertical alignment of the trailing slot and navigation
+ *  indicator against the label/supportText column. Defaults to [Alignment.CenterVertically].
  */
 @Composable
 public fun LemonadeUi.ListItem(
@@ -241,6 +248,7 @@ public fun LemonadeUi.ListItem(
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
 ) {
     if (isLoading) {
         ListItemSkeleton(
@@ -259,6 +267,7 @@ public fun LemonadeUi.ListItem(
             modifier = modifier,
             showDivider = showDivider,
             interactionSource = interactionSource,
+            trailingVerticalAlignment = trailingVerticalAlignment,
             contentSlot = {
                 LemonadeUi.Text(
                     text = label,
@@ -298,6 +307,8 @@ public fun LemonadeUi.ListItem(
  * @param modifier - [Modifier] to be applied to the base container of the component.
  * @param showDivider - Flag to show a divider below the list item.
  * @param interactionSource - [MutableInteractionSource] for interaction events.
+ * @param trailingVerticalAlignment - Vertical alignment of the trailing slot and navigation
+ *  indicator against the content slot. Defaults to [Alignment.CenterVertically].
  */
 @Composable
 public fun LemonadeUi.ListItem(
@@ -312,6 +323,7 @@ public fun LemonadeUi.ListItem(
     showDivider: Boolean = false,
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
 ) {
     CoreListItem(
         contentSlot = contentSlot,
@@ -325,6 +337,7 @@ public fun LemonadeUi.ListItem(
         modifier = modifier,
         showDivider = showDivider,
         interactionSource = interactionSource,
+        trailingVerticalAlignment = trailingVerticalAlignment,
     )
 }
 
@@ -341,6 +354,7 @@ private fun CoreListItem(
     modifier: Modifier = Modifier,
     showDivider: Boolean,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
 ) {
     val isPressed by interactionSource.collectIsPressedAsState()
     val isHovering by interactionSource.collectIsHoveredAsState()
@@ -398,6 +412,7 @@ private fun CoreListItem(
 
             Row(
                 modifier = Modifier.weight(weight = 1f),
+                verticalAlignment = trailingVerticalAlignment,
             ) {
                 Column(
                     content = contentSlot,
@@ -426,11 +441,11 @@ private fun CoreListItem(
                             size = LemonadeAssetSize.Medium,
                             contentDescription = null,
                             modifier = Modifier
-                                .alpha(
-                                    alpha = if (enabled) {
-                                        0.5f
+                                .then(
+                                    other = if (!enabled) {
+                                        Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
                                     } else {
-                                        0.5f * LocalOpacities.current.state.opacityDisabled
+                                        Modifier
                                     },
                                 ).padding(start = LocalSpaces.current.spacing100),
                         )

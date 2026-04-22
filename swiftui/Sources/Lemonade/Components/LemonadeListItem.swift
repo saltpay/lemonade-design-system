@@ -60,6 +60,7 @@ public extension LemonadeUi {
     ///   - isLoading: Shows a skeleton loading placeholder instead of content
     ///   - enabled: Flag to define if component is enabled
     ///   - showDivider: Flag to show a divider below the list item
+    ///   - trailingAlignment: Vertical alignment of the trailing slot and navigation indicator. Defaults to `.center`.
     ///   - onListItemClick: Optional callback triggered on click interaction
     ///   - leadingSlot: Slot content to be placed in leading position
     ///   - trailingSlot: Slot content to be placed in trailing position
@@ -73,6 +74,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        trailingAlignment: VerticalAlignment = .center,
         onListItemClick: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
@@ -86,6 +88,7 @@ public extension LemonadeUi {
                 navigationIndicator: navigationIndicator,
                 enabled: enabled,
                 showDivider: showDivider,
+                trailingAlignment: trailingAlignment,
                 onListItemClick: onListItemClick,
                 leadingSlot: leadingSlot,
                 trailingSlot: trailingSlot,
@@ -120,6 +123,7 @@ public extension LemonadeUi {
     ///   - navigationIndicator: Shows a chevron-right navigation indicator
     ///   - enabled: Flag to define if component is enabled
     ///   - showDivider: Flag to show a divider below the list item
+    ///   - trailingAlignment: Vertical alignment of the trailing slot and navigation indicator. Defaults to `.center`.
     ///   - onListItemClick: Optional callback triggered on click interaction
     ///   - leadingSlot: Slot content to be placed in leading position
     ///   - trailingSlot: Slot content to be placed in trailing position
@@ -130,6 +134,7 @@ public extension LemonadeUi {
         navigationIndicator: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        trailingAlignment: VerticalAlignment = .center,
         onListItemClick: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
@@ -141,6 +146,7 @@ public extension LemonadeUi {
             navigationIndicator: navigationIndicator,
             enabled: enabled,
             showDivider: showDivider,
+            trailingAlignment: trailingAlignment,
             onListItemClick: onListItemClick,
             leadingSlot: leadingSlot,
             trailingSlot: trailingSlot
@@ -156,6 +162,7 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
     let navigationIndicator: Bool
     let enabled: Bool
     let showDivider: Bool
+    let trailingAlignment: VerticalAlignment
     let onListItemClick: (() -> Void)?
     let leadingSlot: () -> LeadingContent
     let trailingSlot: () -> TrailingContent
@@ -192,11 +199,15 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
                     .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
             }
             
-            HStack(alignment: .top, spacing: 0) {
+            HStack(alignment: trailingAlignment, spacing: 0) {
                 VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing0) {
                     contentSlot()
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(
+                    maxWidth: .infinity,
+                    maxHeight: .infinity,
+                    alignment: .leading
+                )
                 .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
                 
                 Spacer()
@@ -213,7 +224,7 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
                             size: .medium,
                             tint: LemonadeTheme.colors.content.contentTertiary
                         )
-                        .opacity(enabled ? 0.5 : 0.5 * LemonadeTheme.opacity.state.opacityDisabled)
+                        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
                         .padding(.leading, LemonadeTheme.spaces.spacing100)
                     }
                 }
@@ -329,7 +340,7 @@ struct LemonadeListItem_Previews: PreviewProvider {
             LemonadeUi.ResourceListItem(
                 label: "Resource Label",
                 value: "$100.00",
-                supportText: "Metadata",
+//                supportText: "Metadata",
                 showDivider: true,
                 onItemClicked: {},
             ) {
@@ -340,6 +351,23 @@ struct LemonadeListItem_Previews: PreviewProvider {
                     shape: .rounded
                 )
             }
+            
+            LemonadeUi.ResourceListItem(
+                label: "14 Apr sales",
+                value: "$5,000.00",
+                supportText: "Paid on 22 Apr • Onion Garden",
+                showDivider: true,
+                onItemClicked: {},
+                leadingSlot: {
+                    LemonadeUi.SymbolContainer(
+                        icon: .check,
+                        contentDescription: nil,
+                        voice: .positive,
+                        size: .large,
+                        shape: .rounded
+                    )
+                }
+            )
             
             // ResourceListItem with addon and divider
             LemonadeUi.ResourceListItem(
