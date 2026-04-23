@@ -23,7 +23,6 @@ kotlin {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.compose.material3)
             api(projects.ui)
-            api(projects.tokens)
         }
 
         androidMain.dependencies {
