@@ -29,7 +29,7 @@ kotlin {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
-            implementation(projects.tokens)
+            api(projects.tokens)
             api(projects.core)
         }
 
