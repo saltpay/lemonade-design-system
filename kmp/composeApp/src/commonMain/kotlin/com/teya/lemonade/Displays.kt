@@ -27,6 +27,7 @@ internal interface Displays {
             SymbolContainer,
             Text,
             Tag,
+            NoticeRow,
             TextField,
             SearchField,
             SelectField,
@@ -232,6 +233,11 @@ internal interface Displays {
     @Serializable
     data object Tabs : Displays {
         override val label: String = "Tabs"
+    }
+
+    @Serializable
+    data object NoticeRow : Displays {
+        override val label: String = "NoticeRow"
     }
 
     @Serializable

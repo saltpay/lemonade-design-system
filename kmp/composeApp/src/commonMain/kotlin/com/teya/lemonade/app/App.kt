@@ -23,6 +23,7 @@ import com.teya.lemonade.InlineCalendarDisplay
 import com.teya.lemonade.LinkDisplay
 import com.teya.lemonade.MarkdownDisplay
 import com.teya.lemonade.NoticeDisplay
+import com.teya.lemonade.NoticeRowDisplay
 import com.teya.lemonade.OpacityDisplay
 import com.teya.lemonade.RadioButtonDisplay
 import com.teya.lemonade.RadiusDisplay
@@ -69,6 +70,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.Text to { _ -> TextDisplay() },
     Displays.SymbolContainer to { _ -> SymbolContainerDisplay() },
     Displays.Tag to { _ -> TagDisplay() },
+    Displays.NoticeRow to { _ -> NoticeRowDisplay() },
     Displays.TextField to { _ -> TextFieldDisplay() },
     Displays.SearchField to { _ -> SearchFieldDisplay() },
     Displays.SelectField to { _ -> SelectFieldDisplay() },
