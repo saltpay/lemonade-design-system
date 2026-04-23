@@ -22,9 +22,8 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.ui)
-            api(projects.ui)
-            implementation(projects.tokens)
             api(libs.kotlinx.datetime)
+            api(projects.ui)
         }
     }
 }

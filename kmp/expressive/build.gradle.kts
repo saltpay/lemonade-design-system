@@ -21,9 +21,8 @@ kotlin {
             implementation(libs.compose.foundation)
             implementation(libs.components.resources)
             implementation(libs.compose.ui.tooling.preview)
-            api(projects.ui)
-            api(projects.tokens)
             implementation(libs.compose.material3)
+            api(projects.ui)
         }
 
         androidMain.dependencies {
