@@ -87,7 +87,10 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.Cards -> LemonadeRes.drawable.gen_cards
         LemonadeIcons.Chart -> LemonadeRes.drawable.gen_chart
         LemonadeIcons.ChartSolid -> LemonadeRes.drawable.gen_chart_solid
+        LemonadeIcons.ChartStats -> LemonadeRes.drawable.gen_chart_stats
+        LemonadeIcons.ChartStatsSolid -> LemonadeRes.drawable.gen_chart_stats_solid
         LemonadeIcons.ChartTrending -> LemonadeRes.drawable.gen_chart_trending
+        LemonadeIcons.ChatBubblePlus -> LemonadeRes.drawable.gen_chat_bubble_plus
         LemonadeIcons.Check -> LemonadeRes.drawable.gen_check
         LemonadeIcons.CheckDouble -> LemonadeRes.drawable.gen_check_double
         LemonadeIcons.CheckPartial -> LemonadeRes.drawable.gen_check_partial
@@ -120,8 +123,11 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.ClockCross -> LemonadeRes.drawable.gen_clock_cross
         LemonadeIcons.ClockTimer -> LemonadeRes.drawable.gen_clock_timer
         LemonadeIcons.Coins -> LemonadeRes.drawable.gen_coins
+        LemonadeIcons.CoinsDoubleStack -> LemonadeRes.drawable.gen_coins_double_stack
         LemonadeIcons.CoinsStack -> LemonadeRes.drawable.gen_coins_stack
         LemonadeIcons.Compass -> LemonadeRes.drawable.gen_compass
+        LemonadeIcons.Computer -> LemonadeRes.drawable.gen_computer
+        LemonadeIcons.Contacts -> LemonadeRes.drawable.gen_contacts
         LemonadeIcons.Cookie -> LemonadeRes.drawable.gen_cookie
         LemonadeIcons.Copy -> LemonadeRes.drawable.gen_copy
         LemonadeIcons.CornerUpLeft -> LemonadeRes.drawable.gen_corner_up_left
@@ -174,6 +180,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.Lightning -> LemonadeRes.drawable.gen_lightning
         LemonadeIcons.Limit -> LemonadeRes.drawable.gen_limit
         LemonadeIcons.Link -> LemonadeRes.drawable.gen_link
+        LemonadeIcons.LinkGear -> LemonadeRes.drawable.gen_link_gear
         LemonadeIcons.List -> LemonadeRes.drawable.gen_list
         LemonadeIcons.Loader -> LemonadeRes.drawable.gen_loader
         LemonadeIcons.LogIn -> LemonadeRes.drawable.gen_log_in
@@ -188,6 +195,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.MaximizeMini -> LemonadeRes.drawable.gen_maximize_mini
         LemonadeIcons.Megaphone -> LemonadeRes.drawable.gen_megaphone
         LemonadeIcons.Menu -> LemonadeRes.drawable.gen_menu
+        LemonadeIcons.MenuTwoLines -> LemonadeRes.drawable.gen_menu_two_lines
         LemonadeIcons.Microphone -> LemonadeRes.drawable.gen_microphone
         LemonadeIcons.MicrophoneSlash -> LemonadeRes.drawable.gen_microphone_slash
         LemonadeIcons.Minus -> LemonadeRes.drawable.gen_minus
@@ -212,19 +220,23 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.PencilLine -> LemonadeRes.drawable.gen_pencil_line
         LemonadeIcons.Percentage -> LemonadeRes.drawable.gen_percentage
         LemonadeIcons.Phone -> LemonadeRes.drawable.gen_phone
-        LemonadeIcons.PigMoney -> LemonadeRes.drawable.gen_pig_money
+        LemonadeIcons.Pig -> LemonadeRes.drawable.gen_pig
+        LemonadeIcons.PigPlus -> LemonadeRes.drawable.gen_pig_plus
         LemonadeIcons.Pin -> LemonadeRes.drawable.gen_pin
         LemonadeIcons.Plus -> LemonadeRes.drawable.gen_plus
         LemonadeIcons.Pound -> LemonadeRes.drawable.gen_pound
+        LemonadeIcons.PoundPlus -> LemonadeRes.drawable.gen_pound_plus
         LemonadeIcons.Printer -> LemonadeRes.drawable.gen_printer
         LemonadeIcons.Puzzle -> LemonadeRes.drawable.gen_puzzle
         LemonadeIcons.QrCode -> LemonadeRes.drawable.gen_qr_code
         LemonadeIcons.Receipt -> LemonadeRes.drawable.gen_receipt
+        LemonadeIcons.ReceiptPlus -> LemonadeRes.drawable.gen_receipt_plus
         LemonadeIcons.ReceiptTax -> LemonadeRes.drawable.gen_receipt_tax
         LemonadeIcons.RescueRing -> LemonadeRes.drawable.gen_rescue_ring
         LemonadeIcons.RotateMoney -> LemonadeRes.drawable.gen_rotate_money
         LemonadeIcons.ScanFace -> LemonadeRes.drawable.gen_scan_face
         LemonadeIcons.Search -> LemonadeRes.drawable.gen_search
+        LemonadeIcons.SearchAi -> LemonadeRes.drawable.gen_search_ai
         LemonadeIcons.Send -> LemonadeRes.drawable.gen_send
         LemonadeIcons.SettingsSlider -> LemonadeRes.drawable.gen_settings_slider
         LemonadeIcons.Share -> LemonadeRes.drawable.gen_share
@@ -234,6 +246,8 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.Smartphone -> LemonadeRes.drawable.gen_smartphone
         LemonadeIcons.Snowflake -> LemonadeRes.drawable.gen_snowflake
         LemonadeIcons.Sparkles -> LemonadeRes.drawable.gen_sparkles
+        LemonadeIcons.SparklesSoft -> LemonadeRes.drawable.gen_sparkles_soft
+        LemonadeIcons.SparklesSoftSolid -> LemonadeRes.drawable.gen_sparkles_soft_solid
         LemonadeIcons.SquarePencil -> LemonadeRes.drawable.gen_square_pencil
         LemonadeIcons.SquarePlus -> LemonadeRes.drawable.gen_square_plus
         LemonadeIcons.SquarePlusSolid -> LemonadeRes.drawable.gen_square_plus_solid
@@ -264,6 +278,8 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.UserRemove -> LemonadeRes.drawable.gen_user_remove
         LemonadeIcons.UserSuccess -> LemonadeRes.drawable.gen_user_success
         LemonadeIcons.Users -> LemonadeRes.drawable.gen_users
+        LemonadeIcons.VoiceWaveHigh -> LemonadeRes.drawable.gen_voice_wave_high
         LemonadeIcons.Wallet -> LemonadeRes.drawable.gen_wallet
+        LemonadeIcons.WalletSolid -> LemonadeRes.drawable.gen_wallet_solid
         LemonadeIcons.Wifi -> LemonadeRes.drawable.gen_wifi
     }
