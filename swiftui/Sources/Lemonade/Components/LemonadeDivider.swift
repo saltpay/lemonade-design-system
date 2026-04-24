@@ -55,6 +55,7 @@ public extension LemonadeUi {
                     textStyle: LemonadeTypography.shared.bodySmallRegular,
                     color: LemonadeTheme.colors.content.contentSecondary
                 )
+                .fixedSize(horizontal: true, vertical: false)
                 .padding(.horizontal, LemonadeTheme.spaces.spacing300)
 
                 CoreHorizontalDivider(
