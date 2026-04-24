@@ -57,6 +57,16 @@ struct DividerDisplayView: View {
                             )
                             LemonadeUi.HorizontalDivider(label: "Are you already at a PayPoint?")
                         }
+
+                        VStack(alignment: .leading, spacing: .space.spacing200) {
+                            LemonadeUi.Text(
+                                "Narrow Container",
+                                textStyle: LemonadeTypography.shared.bodySmallRegular,
+                                color: .content.contentSecondary
+                            )
+                            LemonadeUi.HorizontalDivider(label: "Are you already at a PayPoint?")
+                                .frame(width: 200)
+                        }
                     }
                 }
 

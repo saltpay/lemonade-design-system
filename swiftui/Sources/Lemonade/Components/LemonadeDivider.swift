@@ -54,7 +54,7 @@ public extension LemonadeUi {
                     label,
                     textStyle: LemonadeTypography.shared.bodySmallRegular,
                     color: LemonadeTheme.colors.content.contentSecondary,
-                    maxLines: 1
+                    maxLines: 2
                 )
                 .padding(.horizontal, LemonadeTheme.spaces.spacing300)
                 .layoutPriority(1)
