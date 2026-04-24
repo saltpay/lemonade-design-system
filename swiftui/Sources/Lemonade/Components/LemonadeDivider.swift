@@ -53,6 +53,7 @@ public extension LemonadeUi {
                 LemonadeUi.Text(
                     label,
                     textStyle: LemonadeTypography.shared.bodySmallRegular,
+                    textAlign: .center,
                     color: LemonadeTheme.colors.content.contentSecondary,
                     maxLines: 2
                 )
