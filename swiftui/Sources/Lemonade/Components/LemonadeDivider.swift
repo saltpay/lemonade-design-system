@@ -53,9 +53,12 @@ public extension LemonadeUi {
                 LemonadeUi.Text(
                     label,
                     textStyle: LemonadeTypography.shared.bodySmallRegular,
-                    color: LemonadeTheme.colors.content.contentSecondary
+                    textAlign: .center,
+                    color: LemonadeTheme.colors.content.contentSecondary,
+                    maxLines: 2
                 )
                 .padding(.horizontal, LemonadeTheme.spaces.spacing300)
+                .layoutPriority(1)
 
                 CoreHorizontalDivider(
                     color: dividerColor,
