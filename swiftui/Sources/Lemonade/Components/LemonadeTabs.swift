@@ -1,4 +1,7 @@
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 // MARK: - Tab Item Model
 
@@ -76,18 +79,19 @@ private struct LemonadeTabsView: View {
     @Namespace private var tabNamespace
     @State private var contentWidth: CGFloat = 0
     @State private var containerWidth: CGFloat = 0
+    @State private var scrollOffset: CGFloat = 0
     @State private var didInitialScroll = false
     @State private var contentWrapperWidths: [Int: CGFloat] = [:]
 
-    // Mirrors KMP's `canScrollForward` signal: the fade should only paint
-    // when there is content beyond the trailing edge. SwiftUI's ScrollView
-    // doesn't expose a live scroll offset on iOS 15/16 without UIKit interop,
-    // so we use a deterministic substitute — when the last tab is selected,
-    // proxy.scrollTo(_, anchor: .center) clamps to the maximum offset, leaving
-    // the trailing edge of the strip flush with the viewport.
+    // Mirrors KMP's `scrollState.canScrollForward`: the fade only paints when
+    // the strip is scrollable AND there is still content beyond the trailing
+    // edge. `scrollOffset` is observed live from the underlying UIScrollView
+    // via `ScrollViewOffsetObserver`, since SwiftUI's ScrollView doesn't
+    // expose offset directly on the iOS 15 deployment target.
     private var showTrailingFade: Bool {
+        let scrollThreshold: CGFloat = 1
         guard contentWidth > containerWidth, containerWidth > 0 else { return false }
-        return selectedIndex < tabs.count - 1
+        return scrollOffset + containerWidth < contentWidth - scrollThreshold
     }
 
     var body: some View {
@@ -104,6 +108,12 @@ private struct LemonadeTabsView: View {
                                         .onChange(of: geo.size.width) { contentWidth = $0 }
                                 }
                             )
+                            #if canImport(UIKit)
+                            .background(
+                                ScrollViewOffsetObserver(offset: $scrollOffset)
+                                    .frame(width: 0, height: 0)
+                            )
+                            #endif
                     }
                     .background(
                         GeometryReader { geo in
@@ -124,6 +134,10 @@ private struct LemonadeTabsView: View {
                         }
                     }
                     .onChange(of: selectedIndex) { newIndex in
+                        // Any intentional selection change supersedes the
+                        // initial-scroll path so widths arriving late can't
+                        // cancel the animated scroll with a non-animated one.
+                        didInitialScroll = true
                         withAnimation(.easeInOut(duration: 0.25)) {
                             proxy.scrollTo(newIndex, anchor: .center)
                         }
@@ -321,6 +335,80 @@ private struct TabPressButtonStyle: ButtonStyle {
             }
     }
 }
+
+// MARK: - Scroll Offset Observer
+
+#if canImport(UIKit)
+/// Walks up to the enclosing `UIScrollView` and KVO-observes `contentOffset.x`,
+/// publishing it back into a SwiftUI `@State` via the binding. Needed because
+/// `.onPreferenceChange` over a named coordinate space doesn't fire on every
+/// scroll tick on iOS 18+ in this configuration, and iOS 15 is the deployment
+/// target so `.scrollPosition` / `.onScrollGeometryChange` aren't available.
+private struct ScrollViewOffsetObserver: UIViewRepresentable {
+    @Binding var offset: CGFloat
+
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView()
+        view.isUserInteractionEnabled = false
+        return view
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {
+        DispatchQueue.main.async {
+            context.coordinator.attachIfNeeded(from: uiView)
+        }
+    }
+
+    static func dismantleUIView(_ uiView: UIView, coordinator: Coordinator) {
+        coordinator.detach()
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(offset: $offset)
+    }
+
+    final class Coordinator {
+        @Binding var offset: CGFloat
+        private var observation: NSKeyValueObservation?
+        private weak var observedScrollView: UIScrollView?
+
+        init(offset: Binding<CGFloat>) {
+            self._offset = offset
+        }
+
+        func attachIfNeeded(from view: UIView) {
+            guard let scrollView = enclosingScrollView(of: view),
+                  scrollView !== observedScrollView else { return }
+            observation?.invalidate()
+            observedScrollView = scrollView
+            observation = scrollView.observe(
+                \.contentOffset,
+                options: [.initial, .new]
+            ) { [weak self] sv, _ in
+                let value = sv.contentOffset.x
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self, self.offset != value else { return }
+                    self.offset = value
+                }
+            }
+        }
+
+        func detach() {
+            observation?.invalidate()
+            observation = nil
+        }
+
+        private func enclosingScrollView(of view: UIView) -> UIScrollView? {
+            var current: UIView? = view.superview
+            while let v = current {
+                if let scrollView = v as? UIScrollView { return scrollView }
+                current = v.superview
+            }
+            return nil
+        }
+    }
+}
+#endif
 
 // MARK: - Previews
 
