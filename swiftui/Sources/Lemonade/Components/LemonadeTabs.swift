@@ -76,8 +76,19 @@ private struct LemonadeTabsView: View {
     @Namespace private var tabNamespace
     @State private var contentWidth: CGFloat = 0
     @State private var containerWidth: CGFloat = 0
-    @State private var showTrailingFade = false
+    @State private var didInitialScroll = false
     @State private var contentWrapperWidths: [Int: CGFloat] = [:]
+
+    // Mirrors KMP's `canScrollForward` signal: the fade should only paint
+    // when there is content beyond the trailing edge. SwiftUI's ScrollView
+    // doesn't expose a live scroll offset on iOS 15/16 without UIKit interop,
+    // so we use a deterministic substitute — when the last tab is selected,
+    // proxy.scrollTo(_, anchor: .center) clamps to the maximum offset, leaving
+    // the trailing edge of the strip flush with the viewport.
+    private var showTrailingFade: Bool {
+        guard contentWidth > containerWidth, containerWidth > 0 else { return false }
+        return selectedIndex < tabs.count - 1
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -89,37 +100,16 @@ private struct LemonadeTabsView: View {
                             .background(
                                 GeometryReader { geo in
                                     Color.clear
-                                        .preference(
-                                            key: TabsScrollOffsetKey.self,
-                                            value: -geo.frame(in: .named("tabsScroll")).origin.x
-                                        )
-                                        .onAppear {
-                                            contentWidth = geo.size.width
-                                            showTrailingFade = geo.size.width > containerWidth && containerWidth > 0
-                                        }
-                                        .onChange(of: geo.size.width) { newWidth in
-                                            contentWidth = newWidth
-                                            showTrailingFade = newWidth > containerWidth && containerWidth > 0
-                                        }
+                                        .onAppear { contentWidth = geo.size.width }
+                                        .onChange(of: geo.size.width) { contentWidth = $0 }
                                 }
                             )
                     }
-                    .coordinateSpace(name: "tabsScroll")
-                    .onPreferenceChange(TabsScrollOffsetKey.self) { offset in
-                        let scrollThreshold: CGFloat = 1
-                        let newTrailing = contentWidth > containerWidth && offset + containerWidth < contentWidth - scrollThreshold
-                        if newTrailing != showTrailingFade { showTrailingFade = newTrailing }
-                    }
                     .background(
                         GeometryReader { geo in
-                            Color.clear.onAppear {
-                                containerWidth = geo.size.width
-                                showTrailingFade = contentWidth > geo.size.width
-                            }
-                            .onChange(of: geo.size.width) { newWidth in
-                                containerWidth = newWidth
-                                showTrailingFade = contentWidth > newWidth
-                            }
+                            Color.clear
+                                .onAppear { containerWidth = geo.size.width }
+                                .onChange(of: geo.size.width) { containerWidth = $0 }
                         }
                     )
                     .overlay(alignment: .trailing) {
@@ -138,6 +128,12 @@ private struct LemonadeTabsView: View {
                             proxy.scrollTo(newIndex, anchor: .center)
                         }
                     }
+                    .onChange(of: contentWidth) { _ in
+                        performInitialScrollIfNeeded(proxy: proxy)
+                    }
+                    .onChange(of: containerWidth) { _ in
+                        performInitialScrollIfNeeded(proxy: proxy)
+                    }
                 }
             case .stretch:
                 tabRow
@@ -147,6 +143,12 @@ private struct LemonadeTabsView: View {
                 .fill(LemonadeTheme.colors.border.borderNeutralLow)
                 .frame(height: LemonadeTheme.borderWidth.base.border25)
         }
+    }
+
+    private func performInitialScrollIfNeeded(proxy: ScrollViewProxy) {
+        guard !didInitialScroll, contentWidth > 0, containerWidth > 0 else { return }
+        didInitialScroll = true
+        proxy.scrollTo(selectedIndex, anchor: .center)
     }
 
     private var tabRow: some View {
@@ -317,15 +319,6 @@ private struct TabPressButtonStyle: ButtonStyle {
                     isPressed = newValue
                 }
             }
-    }
-}
-
-// MARK: - Scroll Offset Preference Key
-
-private struct TabsScrollOffsetKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
     }
 }
 
