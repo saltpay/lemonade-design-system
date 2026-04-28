@@ -7,6 +7,7 @@ struct TabsDisplayView: View {
     @State private var manyTabsSelectedIndex = 2
     @State private var iconTabsSelectedIndex = 0
     @State private var disabledTabsSelectedIndex = 0
+    @State private var rightEdgeSelectedIndex = 5
 
     var body: some View {
         ScrollView {
@@ -48,6 +49,21 @@ struct TabsDisplayView: View {
                         ],
                         selectedIndex: manyTabsSelectedIndex,
                         onTabSelected: { manyTabsSelectedIndex = $0 }
+                    )
+                }
+
+                sectionView(title: "Right-edge selected (initial)") {
+                    LemonadeUi.Tabs(
+                        tabs: [
+                            LemonadeTabItem(label: "November"),
+                            LemonadeTabItem(label: "December"),
+                            LemonadeTabItem(label: "January"),
+                            LemonadeTabItem(label: "February"),
+                            LemonadeTabItem(label: "March"),
+                            LemonadeTabItem(label: "April")
+                        ],
+                        selectedIndex: rightEdgeSelectedIndex,
+                        onTabSelected: { rightEdgeSelectedIndex = $0 }
                     )
                 }
 
