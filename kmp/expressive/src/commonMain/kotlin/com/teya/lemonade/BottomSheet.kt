@@ -1,6 +1,7 @@
 package com.teya.lemonade
 
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -75,6 +76,25 @@ public fun LemonadeUi.BottomSheet(
     skipPartiallyExpanded: Boolean = false,
     content: @Composable ColumnScope.() -> Unit,
 ) {
+    CoreBottomSheet(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest,
+        showDragHandle = showDragHandle,
+        skipPartiallyExpanded = skipPartiallyExpanded,
+        content = content,
+    )
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+internal fun CoreBottomSheet(
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+    showDragHandle: Boolean = true,
+    skipPartiallyExpanded: Boolean = false,
+    contentWindowInsets: @Composable () -> WindowInsets = { BottomSheetDefaults.windowInsets },
+    content: @Composable ColumnScope.() -> Unit,
+) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpanded)
     LaunchedEffect(expanded) {
         if (!expanded && sheetState.isVisible) {
@@ -97,6 +117,7 @@ public fun LemonadeUi.BottomSheet(
             } else {
                 null
             },
+            contentWindowInsets = contentWindowInsets,
             content = content,
         )
     }
