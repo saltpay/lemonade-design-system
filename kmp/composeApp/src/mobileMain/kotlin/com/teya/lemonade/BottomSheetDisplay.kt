@@ -45,6 +45,11 @@ internal fun BottomSheetSampleDisplay() {
             )
         }
 
+        // Hidden Navigation Bar (Android only)
+        BottomSheetSection(title = "Hidden Navigation Bar") {
+            HiddenNavBarBottomSheetSample()
+        }
+
         // Without Drag Handle
         BottomSheetSection(title = "Without Drag Handle") {
             LemonadeUi.Text(
