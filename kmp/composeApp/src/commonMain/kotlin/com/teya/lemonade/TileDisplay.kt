@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeTileVariant
@@ -199,6 +200,37 @@ internal fun TileDisplay() {
                     icon = LemonadeIcons.Padlock,
                     enabled = false,
                     variant = LemonadeTileVariant.Outlined,
+                )
+            }
+        }
+
+        // Custom Background
+        TileSection(title = "Custom Background") {
+            val customBg = Color(red = 0.96f, green = 0.97f, blue = 0.65f)
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+                modifier = Modifier.horizontalScroll(rememberScrollState()),
+            ) {
+                LemonadeUi.Tile(
+                    label = "Filled",
+                    icon = LemonadeIcons.Heart,
+                    variant = LemonadeTileVariant.Filled,
+                    backgroundColor = customBg,
+                )
+
+                LemonadeUi.Tile(
+                    label = "Outlined",
+                    icon = LemonadeIcons.Star,
+                    variant = LemonadeTileVariant.Outlined,
+                    backgroundColor = customBg,
+                )
+
+                LemonadeUi.Tile(
+                    label = "Disabled",
+                    icon = LemonadeIcons.Padlock,
+                    enabled = false,
+                    variant = LemonadeTileVariant.Filled,
+                    backgroundColor = customBg,
                 )
             }
         }

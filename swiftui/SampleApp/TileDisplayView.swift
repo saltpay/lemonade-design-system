@@ -155,6 +155,33 @@ struct TileDisplayView: View {
                     }
                 }
 
+                // MARK: - Custom Background
+                sectionView(title: "Custom Background") {
+                    HStack(spacing: LemonadeTheme.spaces.spacing400) {
+                        LemonadeUi.Tile(
+                            label: "Filled",
+                            icon: .heart,
+                            variant: .filled,
+                            backgroundColor: Color(red: 0.96, green: 0.97, blue: 0.65)
+                        )
+
+                        LemonadeUi.Tile(
+                            label: "Outlined",
+                            icon: .star,
+                            variant: .outlined,
+                            backgroundColor: Color(red: 0.96, green: 0.97, blue: 0.65)
+                        )
+
+                        LemonadeUi.Tile(
+                            label: "Disabled",
+                            icon: .padlock,
+                            enabled: false,
+                            variant: .filled,
+                            backgroundColor: Color(red: 0.96, green: 0.97, blue: 0.65)
+                        )
+                    }
+                }
+
                 // MARK: - Layout Behavior
                 sectionView(title: "Default Size (min 120pt)") {
                     LemonadeUi.Tile(

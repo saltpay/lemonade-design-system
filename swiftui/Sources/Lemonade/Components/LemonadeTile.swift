@@ -59,6 +59,8 @@ public extension LemonadeUi {
     ///   - supportText: Optional secondary text displayed below the label
     ///   - onClick: Callback called when component is tapped
     ///   - variant: LemonadeTileVariant to define visual style. Defaults to .filled
+    ///   - backgroundColor: Optional override for the tile background color. When non-nil it replaces
+    ///     the variant's background in the unselected state. Defaults to nil.
     ///   - stretched: Whether the tile should stretch to fill available width. Defaults to false
     /// - Returns: A styled Tile view
     @ViewBuilder
@@ -70,6 +72,7 @@ public extension LemonadeUi {
         supportText: String? = nil,
         onClick: (() -> Void)? = nil,
         variant: LemonadeTileVariant = .filled,
+        backgroundColor: Color? = nil,
         stretched: Bool = false
     ) -> some View {
         LemonadeTileView<EmptyView>(
@@ -80,6 +83,7 @@ public extension LemonadeUi {
             supportText: supportText,
             onClick: onClick,
             variant: variant,
+            backgroundColor: backgroundColor,
             stretched: stretched,
             topAccessory: nil
         )
@@ -108,6 +112,8 @@ public extension LemonadeUi {
     ///   - supportText: Optional secondary text displayed below the label
     ///   - onClick: Callback called when component is tapped
     ///   - variant: LemonadeTileVariant to define visual style. Defaults to .filled
+    ///   - backgroundColor: Optional override for the tile background color. When non-nil it replaces
+    ///     the variant's background in the unselected state. Defaults to nil.
     ///   - stretched: Whether the tile should stretch to fill available width. Defaults to false
     ///   - topAccessory: A view rendered at the top-right of the tile
     /// - Returns: A styled Tile view
@@ -120,6 +126,7 @@ public extension LemonadeUi {
         supportText: String? = nil,
         onClick: (() -> Void)? = nil,
         variant: LemonadeTileVariant = .filled,
+        backgroundColor: Color? = nil,
         stretched: Bool = false,
         @ViewBuilder topAccessory: @escaping () -> TopAccessory
     ) -> some View {
@@ -131,6 +138,7 @@ public extension LemonadeUi {
             supportText: supportText,
             onClick: onClick,
             variant: variant,
+            backgroundColor: backgroundColor,
             stretched: stretched,
             topAccessory: topAccessory
         )
@@ -156,6 +164,8 @@ public extension LemonadeUi {
     ///   - supportText: Optional secondary text displayed below the label
     ///   - onClick: Callback called when component is tapped
     ///   - variant: LemonadeTileVariant to define visual style. Defaults to .filled
+    ///   - backgroundColor: Optional override for the tile background color. When non-nil it replaces
+    ///     the variant's background in the unselected state. Defaults to nil.
     ///   - stretched: Whether the tile should stretch to fill available width. Defaults to false
     ///   - leadingSlot: A custom view rendered where the icon would normally appear
     /// - Returns: A styled Tile view
@@ -167,6 +177,7 @@ public extension LemonadeUi {
         supportText: String? = nil,
         onClick: (() -> Void)? = nil,
         variant: LemonadeTileVariant = .filled,
+        backgroundColor: Color? = nil,
         stretched: Bool = false,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent
     ) -> some View {
@@ -177,6 +188,7 @@ public extension LemonadeUi {
             supportText: supportText,
             onClick: onClick,
             variant: variant,
+            backgroundColor: backgroundColor,
             stretched: stretched,
             leadingSlot: leadingSlot,
             topAccessory: nil
@@ -206,6 +218,8 @@ public extension LemonadeUi {
     ///   - supportText: Optional secondary text displayed below the label
     ///   - onClick: Callback called when component is tapped
     ///   - variant: LemonadeTileVariant to define visual style. Defaults to .filled
+    ///   - backgroundColor: Optional override for the tile background color. When non-nil it replaces
+    ///     the variant's background in the unselected state. Defaults to nil.
     ///   - stretched: Whether the tile should stretch to fill available width. Defaults to false
     ///   - leadingSlot: A custom view rendered where the icon would normally appear
     ///   - topAccessory: A view rendered at the top-right of the tile
@@ -218,6 +232,7 @@ public extension LemonadeUi {
         supportText: String? = nil,
         onClick: (() -> Void)? = nil,
         variant: LemonadeTileVariant = .filled,
+        backgroundColor: Color? = nil,
         stretched: Bool = false,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder topAccessory: @escaping () -> TopAccessory
@@ -229,6 +244,7 @@ public extension LemonadeUi {
             supportText: supportText,
             onClick: onClick,
             variant: variant,
+            backgroundColor: backgroundColor,
             stretched: stretched,
             leadingSlot: leadingSlot,
             topAccessory: topAccessory
@@ -273,13 +289,15 @@ private struct LemonadeTileView<TopAccessory: View>: View {
     let supportText: String?
     let onClick: (() -> Void)?
     let variant: LemonadeTileVariant
+    let backgroundColor: Color?
     let stretched: Bool
     let topAccessory: (() -> TopAccessory)?
-    
+
     private let minWidth: CGFloat = 120
-    
+
     private var effectiveBackgroundColor: Color {
-        isSelected ? LemonadeTheme.colors.background.bgBrandSubtle : variant.backgroundColor
+        if isSelected { return LemonadeTheme.colors.background.bgBrandSubtle }
+        return backgroundColor ?? variant.backgroundColor
     }
     
     private var effectiveBorderColor: Color {
@@ -386,14 +404,16 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
     let supportText: String?
     let onClick: (() -> Void)?
     let variant: LemonadeTileVariant
+    let backgroundColor: Color?
     let stretched: Bool
     let leadingSlot: () -> LeadingContent
     let topAccessory: (() -> TopAccessory)?
-    
+
     private let minWidth: CGFloat = 120
-    
+
     private var effectiveBackgroundColor: Color {
-        isSelected ? LemonadeTheme.colors.background.bgBrandSubtle : variant.backgroundColor
+        if isSelected { return LemonadeTheme.colors.background.bgBrandSubtle }
+        return backgroundColor ?? variant.backgroundColor
     }
     
     private var effectiveBorderColor: Color {

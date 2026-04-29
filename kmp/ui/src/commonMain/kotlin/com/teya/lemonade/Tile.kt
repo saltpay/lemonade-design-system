@@ -54,6 +54,8 @@ import com.teya.lemonade.core.LemonadeTileVariant
  * @param onClick - Callback to be invoked when the Tile is clicked.
  * @param interactionSource - [MutableInteractionSource] to be applied to the Tile.
  * @param variant - [LemonadeTileVariant] to style the Tile accordingly.
+ * @param backgroundColor - Optional override for the tile background color. When non-null it replaces
+ *   the variant's background in the unselected state.
  */
 @Suppress("LongParameterList")
 @Composable
@@ -68,6 +70,7 @@ public fun LemonadeUi.Tile(
     onClick: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     variant: LemonadeTileVariant = LemonadeTileVariant.Filled,
+    backgroundColor: Color? = null,
 ) {
     val contentColor = if (isSelected) {
         LocalColors.current.content.contentOnBrandHigh
@@ -78,6 +81,7 @@ public fun LemonadeUi.Tile(
     CoreTile(
         modifier = modifier,
         variant = variant,
+        backgroundColor = backgroundColor,
         onClick = onClick,
         enabled = enabled,
         isSelected = isSelected,
@@ -157,6 +161,8 @@ public fun LemonadeUi.Tile(
  * @param onClick - Callback to be invoked when the Tile is clicked.
  * @param interactionSource - [MutableInteractionSource] to be applied to the Tile.
  * @param variant - [LemonadeTileVariant] to style the Tile accordingly.
+ * @param backgroundColor - Optional override for the tile background color. When non-null it replaces
+ *   the variant's background in the unselected state.
  */
 @Suppress("LongParameterList")
 @Composable
@@ -170,6 +176,7 @@ public fun LemonadeUi.Tile(
     onClick: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     variant: LemonadeTileVariant = LemonadeTileVariant.Filled,
+    backgroundColor: Color? = null,
     leadingSlot: @Composable () -> Unit,
 ) {
     val contentColor = if (isSelected) {
@@ -181,6 +188,7 @@ public fun LemonadeUi.Tile(
     CoreTile(
         modifier = modifier,
         variant = variant,
+        backgroundColor = backgroundColor,
         onClick = onClick,
         enabled = enabled,
         isSelected = isSelected,
@@ -244,19 +252,20 @@ private fun CoreTile(
     onClick: (() -> Unit)?,
     interactionSource: MutableInteractionSource,
     modifier: Modifier = Modifier,
+    backgroundColor: Color? = null,
 ) {
     val isFocused by interactionSource.collectIsFocusedAsState()
 
     val tileShape = LocalShapes.current.radius500
     val baseTileData = variant.data
-    val tileData = if (isSelected) {
-        baseTileData.copy(
+    val tileData = when {
+        isSelected -> baseTileData.copy(
             backgroundColor = LocalColors.current.background.bgBrandSubtle,
             borderColor = LocalColors.current.border.borderSelected,
             borderWidth = LocalBorderWidths.current.base.border50,
         )
-    } else {
-        baseTileData
+        backgroundColor != null -> baseTileData.copy(backgroundColor = backgroundColor)
+        else -> baseTileData
     }
     val animatedBackgroundColor by animateColorAsState(
         targetValue = tileData.backgroundColor,
