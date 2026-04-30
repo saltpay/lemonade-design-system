@@ -51,11 +51,20 @@ struct DividerDisplayView: View {
 
                         VStack(alignment: .leading, spacing: .space.spacing200) {
                             LemonadeUi.Text(
-                                "Long Label",
+                                "Long Label — single line (fix: maxLines 2→1)",
                                 textStyle: LemonadeTypography.shared.bodySmallRegular,
                                 color: .content.contentSecondary
                             )
                             LemonadeUi.HorizontalDivider(label: "Are you already at a PayPoint?")
+                        }
+
+                        VStack(alignment: .leading, spacing: .space.spacing200) {
+                            LemonadeUi.Text(
+                                "Real-world example — card delivery flow",
+                                textStyle: LemonadeTypography.shared.bodySmallRegular,
+                                color: .content.contentSecondary
+                            )
+                            LemonadeUi.HorizontalDivider(label: "Or use a saved address")
                         }
 
                         VStack(alignment: .leading, spacing: .space.spacing200) {
