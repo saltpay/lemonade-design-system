@@ -238,6 +238,48 @@ struct ActionListItemPreview: View {
                 )
             }
             
+            // MARK: - ActionListItem - Label Is Secondary
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "ActionListItem - Label Is Secondary"
+                )
+            ) {
+                LemonadeUi.ActionListItem(
+                    label: "Last used",
+                    supportText: "170 Oaklands Grove, London,...",
+                    showNavigationIndicator: true,
+                    showDivider: true,
+                    labelIsSecondary: true,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .mapPin,
+                            contentDescription: nil,
+                            size: .medium,
+                            tint: .content.contentSecondary
+                        )
+                    }
+                )
+
+                LemonadeUi.ActionListItem(
+                    label: "Company address",
+                    supportText: "170 Oaklands Grove, London,...",
+                    showNavigationIndicator: true,
+                    showDivider: false,
+                    labelIsSecondary: true,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .mapPin,
+                            contentDescription: nil,
+                            size: .medium,
+                            tint: .content.contentSecondary
+                        )
+                    }
+                )
+            }
+
             // MARK: - ActionListItem - Design reference (multi-line support text)
             LemonadeUi.Card(
                 contentPadding: .none,

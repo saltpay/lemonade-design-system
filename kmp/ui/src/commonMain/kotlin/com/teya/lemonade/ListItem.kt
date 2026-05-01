@@ -165,6 +165,7 @@ public fun LemonadeUi.ActionListItem(
     label: String,
     modifier: Modifier = Modifier,
     supportText: String? = null,
+    labelIsSecondary: Boolean = false,
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
@@ -177,38 +178,68 @@ public fun LemonadeUi.ActionListItem(
     showDivider: Boolean = false,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
 ) {
-    LemonadeUi.ListItem(
-        label = label,
-        supportText = supportText,
-        isLoading = isLoading,
-        leadingSlot = leadingSlot,
-        trailingSlot = if (trailingSlot != null) {
-            {
-                Row(
-                    modifier = Modifier.then(
-                        other = if (enabled) {
-                            Modifier
-                        } else {
-                            Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                        },
-                    ),
-                ) {
-                    trailingSlot()
-                }
+    val resolvedTrailingSlot: (@Composable RowScope.() -> Unit)? = if (trailingSlot != null) {
+        {
+            Row(
+                modifier = Modifier.then(
+                    other = if (enabled) {
+                        Modifier
+                    } else {
+                        Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+                    },
+                ),
+            ) {
+                trailingSlot()
             }
-        } else {
-            null
-        },
-        navigationIndicator = showNavigationIndicator,
-        voice = voice,
-        onListItemClick = onItemClicked,
-        role = role,
-        enabled = enabled,
-        modifier = modifier,
-        showDivider = showDivider,
-        interactionSource = interactionSource,
-        trailingVerticalAlignment = trailingVerticalAlignment,
-    )
+        }
+    } else {
+        null
+    }
+
+    if (labelIsSecondary && supportText != null) {
+        LemonadeUi.ListItem(
+            contentSlot = {
+                LemonadeUi.Text(
+                    text = label,
+                    textStyle = LocalTypographies.current.bodySmallRegular,
+                    color = LocalColors.current.content.contentSecondary,
+                )
+                LemonadeUi.Text(
+                    text = supportText,
+                    textStyle = LocalTypographies.current.bodyMediumMedium,
+                    color = voice.contentColor,
+                )
+            },
+            leadingSlot = leadingSlot,
+            trailingSlot = resolvedTrailingSlot,
+            navigationIndicator = showNavigationIndicator,
+            voice = voice,
+            onListItemClick = onItemClicked,
+            role = role,
+            enabled = enabled,
+            modifier = modifier,
+            showDivider = showDivider,
+            interactionSource = interactionSource,
+            trailingVerticalAlignment = trailingVerticalAlignment,
+        )
+    } else {
+        LemonadeUi.ListItem(
+            label = label,
+            supportText = supportText,
+            isLoading = isLoading,
+            leadingSlot = leadingSlot,
+            trailingSlot = resolvedTrailingSlot,
+            navigationIndicator = showNavigationIndicator,
+            voice = voice,
+            onListItemClick = onItemClicked,
+            role = role,
+            enabled = enabled,
+            modifier = modifier,
+            showDivider = showDivider,
+            interactionSource = interactionSource,
+            trailingVerticalAlignment = trailingVerticalAlignment,
+        )
+    }
 }
 
 /**

@@ -74,6 +74,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        labelIsSecondary: Bool = false,
         trailingAlignment: VerticalAlignment = .center,
         onListItemClick: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
@@ -93,20 +94,33 @@ public extension LemonadeUi {
                 leadingSlot: leadingSlot,
                 trailingSlot: trailingSlot,
                 contentSlot: {
-                    LemonadeUi.Text(
-                        label,
-                        textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                        color: voice.contentColor
-                    )
-                    
-                    if let supportText = supportText {
+                    if labelIsSecondary, let supportText = supportText {
                         LemonadeUi.Text(
-                            supportText,
+                            label,
                             textStyle: LemonadeTypography.shared.bodySmallRegular,
                             color: LemonadeTheme.colors.content.contentSecondary
                         )
+                        LemonadeUi.Text(
+                            supportText,
+                            textStyle: LemonadeTypography.shared.bodyMediumMedium,
+                            color: voice.contentColor
+                        )
+                    } else {
+                        LemonadeUi.Text(
+                            label,
+                            textStyle: LemonadeTypography.shared.bodyMediumMedium,
+                            color: voice.contentColor
+                        )
+
+                        if let supportText = supportText {
+                            LemonadeUi.Text(
+                                supportText,
+                                textStyle: LemonadeTypography.shared.bodySmallRegular,
+                                color: LemonadeTheme.colors.content.contentSecondary
+                            )
+                        }
                     }
-                    
+
                     if SlotContent.self != EmptyView.self {
                         slotContent()
                     }
