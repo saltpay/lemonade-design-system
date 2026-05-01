@@ -70,7 +70,7 @@ internal fun ContentListItemDisplay() {
                 layout = LemonadeContentListItemLayout.Horizontal,
                 showDivider = true,
                 verticalAlignment = Alignment.Top,
-                valueTextAlign = TextAlign.Left,
+                valueTextAlign = TextAlign.Start,
             )
             LemonadeUi.ContentListItem(
                 label = "Address",
