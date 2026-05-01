@@ -21,6 +21,31 @@ struct ContentListItemDisplayView: View {
                     )
                 }
 
+                // MARK: - Horizontal Simple (Long Text)
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(title: "Horizontal Simple — Long Text")
+                ) {
+                    LemonadeUi.ContentListItem(
+                        label: "Terms and conditions agreement for the account holder regarding international transfers and currency exchange policies",
+                        value: "This value is intentionally very long to demonstrate how the horizontal simple layout handles multi-line text wrapping across several lines in a constrained width",
+                        showDivider: true
+                    )
+
+                    LemonadeUi.ContentListItem(
+                        label: "Short label",
+                        value: "A much longer value that should wrap onto multiple lines to test alignment behavior when only one side is long",
+                        showDivider: true,
+                        verticalAlignment: .top,
+                        valueAlignment: .leading
+                    )
+
+                    LemonadeUi.ContentListItem(
+                        label: "Address",
+                        value: "Westminster, London SW1A 2HQ, United Kingdom",
+                        verticalAlignment: .top
+                    )
+                }
+
                 // MARK: - Horizontal with Leading + Trailing
                 LemonadeUi.Card(
                     header: CardHeaderConfig(title: "Horizontal with Leading + Trailing")
