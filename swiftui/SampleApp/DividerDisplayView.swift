@@ -51,7 +51,7 @@ struct DividerDisplayView: View {
 
                         VStack(alignment: .leading, spacing: .space.spacing200) {
                             LemonadeUi.Text(
-                                "Long Label — single line (fix: maxLines 2→1)",
+                                "Long Label",
                                 textStyle: LemonadeTypography.shared.bodySmallRegular,
                                 color: .content.contentSecondary
                             )
@@ -60,7 +60,7 @@ struct DividerDisplayView: View {
 
                         VStack(alignment: .leading, spacing: .space.spacing200) {
                             LemonadeUi.Text(
-                                "Real-world example — card delivery flow",
+                                "Label with preposition",
                                 textStyle: LemonadeTypography.shared.bodySmallRegular,
                                 color: .content.contentSecondary
                             )
