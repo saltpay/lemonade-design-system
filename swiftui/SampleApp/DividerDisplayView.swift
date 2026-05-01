@@ -60,6 +60,15 @@ struct DividerDisplayView: View {
 
                         VStack(alignment: .leading, spacing: .space.spacing200) {
                             LemonadeUi.Text(
+                                "Label with preposition",
+                                textStyle: LemonadeTypography.shared.bodySmallRegular,
+                                color: .content.contentSecondary
+                            )
+                            LemonadeUi.HorizontalDivider(label: "Or use a saved address")
+                        }
+
+VStack(alignment: .leading, spacing: .space.spacing200) {
+                            LemonadeUi.Text(
                                 "Narrow Container",
                                 textStyle: LemonadeTypography.shared.bodySmallRegular,
                                 color: .content.contentSecondary

@@ -88,6 +88,28 @@ internal fun DividerDisplay() {
                     )
                     LemonadeUi.HorizontalDivider(label = "OR", variant = DividerVariant.Dashed)
                 }
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.Text(
+                        text = "Long Label",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                        color = LemonadeTheme.colors.content.contentSecondary,
+                    )
+                    LemonadeUi.HorizontalDivider(label = "Are you already at a PayPoint?")
+                }
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    LemonadeUi.Text(
+                        text = "Label with preposition",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                        color = LemonadeTheme.colors.content.contentSecondary,
+                    )
+                    LemonadeUi.HorizontalDivider(label = "Or use a saved address")
+                }
             }
         }
 
