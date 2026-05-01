@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeContentListItemLayout
@@ -55,14 +55,18 @@ internal fun ContentListItemDisplay() {
             header = CardHeaderConfig(title = "Horizontal Simple — Long Text"),
         ) {
             LemonadeUi.ContentListItem(
-                label = "Terms and conditions agreement for the account holder regarding international transfers and currency exchange policies",
-                value = "This value is intentionally very long to demonstrate how the horizontal simple layout handles multi-line text wrapping across several lines in a constrained width",
+                label = "Terms and conditions agreement for the account holder " +
+                    "regarding international transfers and currency exchange policies",
+                value = "This value is intentionally very long to demonstrate how " +
+                    "the horizontal simple layout handles multi-line text wrapping " +
+                    "across several lines in a constrained width",
                 layout = LemonadeContentListItemLayout.Horizontal,
                 showDivider = true,
             )
             LemonadeUi.ContentListItem(
                 label = "Short label",
-                value = "A much longer value that should wrap onto multiple lines to test alignment behavior when only one side is long",
+                value = "A much longer value that should wrap onto multiple lines " +
+                    "to test alignment behavior when only one side is long",
                 layout = LemonadeContentListItemLayout.Horizontal,
                 showDivider = true,
                 verticalAlignment = Alignment.Top,
