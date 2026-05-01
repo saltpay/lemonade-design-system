@@ -54,11 +54,10 @@ public extension LemonadeUi {
                     label,
                     textStyle: LemonadeTypography.shared.bodySmallRegular,
                     textAlign: .center,
-                    color: LemonadeTheme.colors.content.contentSecondary,
-                    maxLines: 1
+                    color: LemonadeTheme.colors.content.contentSecondary
                 )
+                .fixedSize(horizontal: true, vertical: false)
                 .padding(.horizontal, LemonadeTheme.spaces.spacing300)
-                .layoutPriority(1)
 
                 CoreHorizontalDivider(
                     color: dividerColor,

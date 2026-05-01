@@ -67,7 +67,7 @@ struct DividerDisplayView: View {
                             LemonadeUi.HorizontalDivider(label: "Or use a saved address")
                         }
 
-                        VStack(alignment: .leading, spacing: .space.spacing200) {
+VStack(alignment: .leading, spacing: .space.spacing200) {
                             LemonadeUi.Text(
                                 "Narrow Container",
                                 textStyle: LemonadeTypography.shared.bodySmallRegular,
