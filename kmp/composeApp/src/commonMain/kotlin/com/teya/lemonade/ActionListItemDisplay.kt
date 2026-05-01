@@ -79,6 +79,45 @@ internal fun ActionListItemDisplay() {
             )
         }
 
+        // ActionListItem - Label Is Secondary
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "ActionListItem - Label Is Secondary"),
+        ) {
+            LemonadeUi.ActionListItem(
+                label = "Last used",
+                supportText = "170 Oaklands Grove, London,...",
+                labelIsSecondary = true,
+                showNavigationIndicator = true,
+                onItemClicked = {},
+                showDivider = true,
+                leadingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.MapPin,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                        tint = LemonadeTheme.colors.content.contentSecondary,
+                    )
+                },
+            )
+
+            LemonadeUi.ActionListItem(
+                label = "Company address",
+                supportText = "170 Oaklands Grove, London,...",
+                labelIsSecondary = true,
+                showNavigationIndicator = true,
+                onItemClicked = {},
+                showDivider = false,
+                leadingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.MapPin,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                        tint = LemonadeTheme.colors.content.contentSecondary,
+                    )
+                },
+            )
+        }
+
         // ActionListItem - Trailing Alignment
         LemonadeUi.Card(
             header = CardHeaderConfig(title = "ActionListItem - Trailing Alignment"),

@@ -39,6 +39,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        labelIsSecondary: Bool = false,
         trailingAlignment: VerticalAlignment = .center,
         onItemClicked: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
@@ -52,6 +53,7 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
+            labelIsSecondary: labelIsSecondary,
             trailingAlignment: trailingAlignment,
             onListItemClick: onItemClicked,
             leadingSlot: leadingSlot,
@@ -72,6 +74,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        labelIsSecondary: Bool = false,
         trailingAlignment: VerticalAlignment = .center,
         onItemClicked: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent
@@ -84,6 +87,7 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
+            labelIsSecondary: labelIsSecondary,
             trailingAlignment: trailingAlignment,
             onItemClicked: onItemClicked,
             leadingSlot: leadingSlot,
@@ -101,6 +105,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        labelIsSecondary: Bool = false,
         trailingAlignment: VerticalAlignment = .center,
         onItemClicked: (() -> Void)? = nil,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent
@@ -113,6 +118,7 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
+            labelIsSecondary: labelIsSecondary,
             trailingAlignment: trailingAlignment,
             onItemClicked: onItemClicked,
             leadingSlot: { EmptyView() },
@@ -130,6 +136,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        labelIsSecondary: Bool = false,
         trailingAlignment: VerticalAlignment = .center,
         onItemClicked: (() -> Void)? = nil
     ) -> some View {
@@ -141,6 +148,7 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
+            labelIsSecondary: labelIsSecondary,
             trailingAlignment: trailingAlignment,
             onItemClicked: onItemClicked,
             leadingSlot: { EmptyView() },
