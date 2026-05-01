@@ -42,12 +42,16 @@ public extension LemonadeUi {
     ///   - leadingSlot: Optional leading element (e.g. SymbolContainer)
     ///   - trailingSlot: Optional trailing element (e.g. icon action)
     ///   - contentSlot: Optional additional content. In vertical layout, switches value to larger typography
+    ///   - verticalAlignment: Vertical alignment for horizontal layout (default `.center`)
+    ///   - valueAlignment: Text alignment for the value in horizontal layout (default `.trailing`)
     @ViewBuilder
     static func ContentListItem<Leading: View, Trailing: View, Content: View>(
         label: String,
         value: String,
         layout: LemonadeContentListItemLayout = .horizontal,
         showDivider: Bool = false,
+        verticalAlignment: VerticalAlignment = .center,
+        valueAlignment: TextAlignment = .trailing,
         @ViewBuilder leadingSlot: @escaping () -> Leading = { EmptyView() },
         @ViewBuilder trailingSlot: @escaping () -> Trailing = { EmptyView() },
         @ViewBuilder contentSlot: @escaping () -> Content = { EmptyView() }
@@ -57,6 +61,8 @@ public extension LemonadeUi {
             value: value,
             layout: layout,
             showDivider: showDivider,
+            verticalAlignment: verticalAlignment,
+            valueAlignment: valueAlignment,
             leadingSlot: leadingSlot,
             trailingSlot: trailingSlot,
             contentSlot: contentSlot
@@ -71,6 +77,8 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
     let value: String
     let layout: LemonadeContentListItemLayout
     let showDivider: Bool
+    let verticalAlignment: VerticalAlignment
+    let valueAlignment: TextAlignment
     @ViewBuilder let leadingSlot: () -> Leading
     @ViewBuilder let trailingSlot: () -> Trailing
     @ViewBuilder let contentSlot: () -> Content
@@ -107,7 +115,7 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
     }
 
     private var horizontalLayout: some View {
-        HStack(alignment: .center, spacing: LemonadeTheme.spaces.spacing300) {
+        HStack(alignment: verticalAlignment, spacing: LemonadeTheme.spaces.spacing300) {
             if hasLeadingSlot {
                 leadingSlot()
             }
@@ -129,9 +137,9 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
                 LemonadeUi.Text(
                     value,
                     textStyle: LemonadeTypography.shared.bodyMediumMedium,
+                    textAlign: valueAlignment,
                     color: LemonadeTheme.colors.content.contentPrimary
                 )
-                .multilineTextAlignment(.trailing)
 
                 if hasTrailingSlot {
                     trailingSlot()
