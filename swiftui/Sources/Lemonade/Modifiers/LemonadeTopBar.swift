@@ -631,11 +631,12 @@ private extension ToolbarContent {
 
 private extension View {
     /// Applies the navigation title and, on iOS 26, the native `.navigationSubtitle`
-    /// (preserves the large-title morph). On iOS < 26 a non-nil subheading forces
-    /// inline display mode with an empty title so `lemonadeFallbackPrincipalTitle`
-    /// can render a stacked `title` + `subheading` in the principal toolbar slot —
-    /// matching the platform convention (Mail, Messages, Settings) for pre-iOS 26
-    /// two-line nav bars at the cost of losing the large-title morph.
+    /// (preserves the large-title morph). On iOS < 26 a non-nil subheading switches
+    /// to inline display mode so `lemonadeFallbackPrincipalTitle` can render a
+    /// stacked `title` + `subheading` in the principal toolbar slot — matching the
+    /// platform convention (Mail, Messages, Settings) for pre-iOS 26 two-line nav
+    /// bars at the cost of losing the large-title morph. The native `.navigationTitle`
+    /// is kept (not emptied) so pushed screens still inherit a back button label.
     @ViewBuilder
     func lemonadeNavigationTitle(title: String, subheading: String?) -> some View {
         #if compiler(>=6.2)
@@ -650,7 +651,7 @@ private extension View {
                 .navigationBarTitleDisplayMode(.large)
         } else if subheading != nil {
             self
-                .navigationTitle("")
+                .navigationTitle(title)
                 .navigationBarTitleDisplayMode(.inline)
         } else {
             self
@@ -660,7 +661,7 @@ private extension View {
         #else
         if subheading != nil {
             self
-                .navigationTitle("")
+                .navigationTitle(title)
                 .navigationBarTitleDisplayMode(.inline)
         } else {
             self
@@ -685,14 +686,7 @@ private extension View {
         } else if let subheading {
             self.toolbar {
                 ToolbarItem(placement: .principal) {
-                    VStack(spacing: 2) {
-                        SwiftUI.Text(label)
-                            .font(.headingXSmall)
-                            .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
-                        SwiftUI.Text(subheading)
-                            .font(.bodySmallRegular)
-                            .foregroundStyle(LemonadeTheme.colors.content.contentSecondary)
-                    }
+                    LemonadePrincipalTwoLineTitle(label: label, subheading: subheading)
                 }
             }
         } else {
@@ -702,20 +696,36 @@ private extension View {
         if let subheading {
             self.toolbar {
                 ToolbarItem(placement: .principal) {
-                    VStack(spacing: 2) {
-                        SwiftUI.Text(label)
-                            .font(.headingXSmall)
-                            .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
-                        SwiftUI.Text(subheading)
-                            .font(.bodySmallRegular)
-                            .foregroundStyle(LemonadeTheme.colors.content.contentSecondary)
-                    }
+                    LemonadePrincipalTwoLineTitle(label: label, subheading: subheading)
                 }
             }
         } else {
             self
         }
         #endif
+    }
+}
+
+/// Stacked title + subheading used as `.principal` toolbar item on iOS < 26.
+/// Constrained to a single line each with tail truncation so the nav bar
+/// height stays stable regardless of label length.
+private struct LemonadePrincipalTwoLineTitle: View {
+    let label: String
+    let subheading: String
+
+    var body: some View {
+        VStack(spacing: 2) {
+            SwiftUI.Text(label)
+                .font(.headingXSmall)
+                .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
+                .lineLimit(1)
+                .truncationMode(.tail)
+            SwiftUI.Text(subheading)
+                .font(.bodySmallRegular)
+                .foregroundStyle(LemonadeTheme.colors.content.contentSecondary)
+                .lineLimit(1)
+                .truncationMode(.tail)
+        }
     }
 }
 
