@@ -12,7 +12,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeContentListItemLayout
 import com.teya.lemonade.core.LemonadeIcons
@@ -70,7 +69,6 @@ internal fun ContentListItemDisplay() {
                 layout = LemonadeContentListItemLayout.Horizontal,
                 showDivider = true,
                 verticalAlignment = Alignment.Top,
-                valueTextAlign = TextAlign.Start,
             )
             LemonadeUi.ContentListItem(
                 label = "Address",

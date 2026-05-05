@@ -35,8 +35,7 @@ struct ContentListItemDisplayView: View {
                         label: "Short label",
                         value: "A much longer value that should wrap onto multiple lines to test alignment behavior when only one side is long",
                         showDivider: true,
-                        verticalAlignment: .top,
-                        valueAlignment: .leading
+                        verticalAlignment: .top
                     )
 
                     LemonadeUi.ContentListItem(

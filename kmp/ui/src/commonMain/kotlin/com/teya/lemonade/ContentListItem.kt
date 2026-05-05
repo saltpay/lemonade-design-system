@@ -49,7 +49,6 @@ import com.teya.lemonade.core.SymbolContainerVoice
  * @param contentSlot - Optional slot for additional content. In vertical layout, this also
  *   switches the value typography to bodyXLargeSemiBold.
  * @param verticalAlignment - Vertical alignment for horizontal layout (default [Alignment.CenterVertically]).
- * @param valueTextAlign - Text alignment for the value in horizontal layout (default [TextAlign.End]).
  */
 @Composable
 public fun LemonadeUi.ContentListItem(
@@ -59,7 +58,6 @@ public fun LemonadeUi.ContentListItem(
     modifier: Modifier = Modifier,
     showDivider: Boolean = false,
     verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
-    valueTextAlign: TextAlign = TextAlign.End,
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     contentSlot: (@Composable ColumnScope.() -> Unit)? = null,
@@ -73,7 +71,6 @@ public fun LemonadeUi.ContentListItem(
                 value = value,
                 modifier = contentModifier,
                 verticalAlignment = verticalAlignment,
-                valueTextAlign = valueTextAlign,
                 leadingSlot = leadingSlot,
                 trailingSlot = trailingSlot,
                 contentSlot = contentSlot,
@@ -103,7 +100,6 @@ private fun HorizontalContentListItem(
     value: String,
     modifier: Modifier = Modifier,
     verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
-    valueTextAlign: TextAlign = TextAlign.End,
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     contentSlot: (@Composable ColumnScope.() -> Unit)? = null,
@@ -140,7 +136,7 @@ private fun HorizontalContentListItem(
                 text = value,
                 textStyle = LocalTypographies.current.bodyMediumMedium,
                 color = LocalColors.current.content.contentPrimary,
-                textAlign = valueTextAlign,
+                textAlign = TextAlign.End,
                 modifier = Modifier.weight(weight = 1f),
             )
 

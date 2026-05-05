@@ -43,7 +43,6 @@ public extension LemonadeUi {
     ///   - trailingSlot: Optional trailing element (e.g. icon action)
     ///   - contentSlot: Optional additional content. In vertical layout, switches value to larger typography
     ///   - verticalAlignment: Vertical alignment for horizontal layout (default `.center`)
-    ///   - valueAlignment: Text alignment for the value in horizontal layout (default `.trailing`)
     @ViewBuilder
     static func ContentListItem<Leading: View, Trailing: View, Content: View>(
         label: String,
@@ -51,7 +50,6 @@ public extension LemonadeUi {
         layout: LemonadeContentListItemLayout = .horizontal,
         showDivider: Bool = false,
         verticalAlignment: VerticalAlignment = .center,
-        valueAlignment: TextAlignment = .trailing,
         @ViewBuilder leadingSlot: @escaping () -> Leading = { EmptyView() },
         @ViewBuilder trailingSlot: @escaping () -> Trailing = { EmptyView() },
         @ViewBuilder contentSlot: @escaping () -> Content = { EmptyView() }
@@ -62,7 +60,6 @@ public extension LemonadeUi {
             layout: layout,
             showDivider: showDivider,
             verticalAlignment: verticalAlignment,
-            valueAlignment: valueAlignment,
             leadingSlot: leadingSlot,
             trailingSlot: trailingSlot,
             contentSlot: contentSlot
@@ -78,7 +75,6 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
     let layout: LemonadeContentListItemLayout
     let showDivider: Bool
     let verticalAlignment: VerticalAlignment
-    let valueAlignment: TextAlignment
     @ViewBuilder let leadingSlot: () -> Leading
     @ViewBuilder let trailingSlot: () -> Trailing
     @ViewBuilder let contentSlot: () -> Content
@@ -137,7 +133,7 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
                 LemonadeUi.Text(
                     value,
                     textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                    textAlign: valueAlignment,
+                    textAlign: .trailing,
                     color: LemonadeTheme.colors.content.contentPrimary
                 )
 
