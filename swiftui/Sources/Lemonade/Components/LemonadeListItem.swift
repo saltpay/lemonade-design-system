@@ -54,6 +54,7 @@ public extension LemonadeUi {
     ///
     /// - Parameters:
     ///   - label: Label String to be displayed
+    ///   - topLabel: Optional label displayed above the main label
     ///   - supportText: Optional support text displayed below the label
     ///   - voice: LemonadeListItemVoice to define tone of voice
     ///   - navigationIndicator: Shows a chevron-right navigation indicator
@@ -68,6 +69,7 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ListItem<LeadingContent: View, TrailingContent: View, SlotContent: View>(
         label: String,
+        topLabel: String? = nil,
         supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         navigationIndicator: Bool = false,
@@ -93,6 +95,14 @@ public extension LemonadeUi {
                 leadingSlot: leadingSlot,
                 trailingSlot: trailingSlot,
                 contentSlot: {
+                    if let topLabel = topLabel {
+                        LemonadeUi.Text(
+                            topLabel,
+                            textStyle: LemonadeTypography.shared.bodySmallRegular,
+                            color: LemonadeTheme.colors.content.contentSecondary
+                        )
+                    }
+
                     LemonadeUi.Text(
                         label,
                         textStyle: LemonadeTypography.shared.bodyMediumMedium,
