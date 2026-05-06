@@ -181,6 +181,7 @@ public fun LemonadeUi.ActionListItem(
 ) {
     LemonadeUi.ListItem(
         label = label,
+        topLabel = topLabel,
         supportText = supportText,
         isLoading = isLoading,
         leadingSlot = leadingSlot,
