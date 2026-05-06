@@ -48,6 +48,7 @@ import com.teya.lemonade.core.SymbolContainerVoice
  * @param trailingSlot - Optional slot for a trailing element (e.g. icon action).
  * @param contentSlot - Optional slot for additional content. In vertical layout, this also
  *   switches the value typography to bodyXLargeSemiBold.
+ * @param verticalAlignment - Vertical alignment for horizontal layout (default [Alignment.CenterVertically]).
  */
 @Composable
 public fun LemonadeUi.ContentListItem(
@@ -56,6 +57,7 @@ public fun LemonadeUi.ContentListItem(
     layout: LemonadeContentListItemLayout = LemonadeContentListItemLayout.Horizontal,
     modifier: Modifier = Modifier,
     showDivider: Boolean = false,
+    verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     contentSlot: (@Composable ColumnScope.() -> Unit)? = null,
@@ -68,6 +70,7 @@ public fun LemonadeUi.ContentListItem(
                 label = label,
                 value = value,
                 modifier = contentModifier,
+                verticalAlignment = verticalAlignment,
                 leadingSlot = leadingSlot,
                 trailingSlot = trailingSlot,
                 contentSlot = contentSlot,
@@ -96,12 +99,13 @@ private fun HorizontalContentListItem(
     label: String,
     value: String,
     modifier: Modifier = Modifier,
+    verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     contentSlot: (@Composable ColumnScope.() -> Unit)? = null,
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = verticalAlignment,
         horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
         modifier = modifier,
     ) {
@@ -126,12 +130,14 @@ private fun HorizontalContentListItem(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
+            modifier = Modifier.weight(weight = 1f),
         ) {
             LemonadeUi.Text(
                 text = value,
                 textStyle = LocalTypographies.current.bodyMediumMedium,
                 color = LocalColors.current.content.contentPrimary,
-                textAlign = TextAlign.Right,
+                textAlign = TextAlign.End,
+                modifier = Modifier.weight(weight = 1f),
             )
 
             if (trailingSlot != null) {
