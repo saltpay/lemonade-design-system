@@ -1,16 +1,14 @@
 package com.teya.lemonade
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
@@ -39,8 +38,10 @@ public data class BottomTabBarItem(
  * A floating, pill-shaped bottom navigation bar for top-level destinations.
  *
  * Items are distributed equally across the bar. The selected item is highlighted with an
- * elevated background pill. The bar applies a soft scroll-edge gradient behind itself so it
- * floats over scrollable content, and reserves space for the system navigation bar.
+ * elevated background pill. The bar paints a soft scroll-edge gradient behind itself so it
+ * floats nicely over scrollable content. The component does not apply any system bar inset —
+ * callers are expected to place it inside a layout that already accounts for the navigation
+ * bar (e.g. a `Scaffold` `bottomBar` slot or a wrapper using `Modifier.navigationBarsPadding`).
  *
  * ## Usage
  * ```kotlin
@@ -77,7 +78,6 @@ public fun LemonadeUi.BottomTabBar(
     )
 }
 
-private val MaxBarWidth: Dp = 500.dp
 private val ItemHeight: Dp = 54.dp
 private val ScrollEdgeHeight: Dp = 132.dp
 
@@ -124,7 +124,6 @@ internal fun CoreBottomTabBar(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .navigationBarsPadding()
                 .padding(
                     start = LocalSpaces.current.spacing400,
                     end = LocalSpaces.current.spacing400,
@@ -150,7 +149,6 @@ private fun BottomTabBarRow(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .widthIn(max = MaxBarWidth)
             .lemonadeShadow(
                 shadow = LemonadeShadow.Xlarge,
                 shape = LocalShapes.current.radiusFull,
@@ -192,9 +190,10 @@ private fun BottomTabBarItemContent(
             .height(height = ItemHeight)
             .clip(shape = LocalShapes.current.radiusFull)
             .background(color = backgroundColor)
-            .clickable(
-                onClick = onClick,
+            .selectable(
+                selected = isSelected,
                 role = Role.Tab,
+                onClick = onClick,
             ).padding(vertical = LocalSpaces.current.spacing200),
     ) {
         LemonadeUi.Icon(
@@ -208,6 +207,8 @@ private fun BottomTabBarItemContent(
             text = item.label,
             textStyle = LocalTypographies.current.bodyXSmallMedium,
             color = LocalColors.current.content.contentPrimary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }
