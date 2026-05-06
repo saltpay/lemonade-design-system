@@ -45,6 +45,7 @@ internal interface Displays {
             Spinner,
             Divider,
             Tabs,
+            BottomTabBar,
             DatePicker,
             InlineCalendar,
             Notice,
@@ -232,6 +233,11 @@ internal interface Displays {
     @Serializable
     data object Tabs : Displays {
         override val label: String = "Tabs"
+    }
+
+    @Serializable
+    data object BottomTabBar : Displays {
+        override val label: String = "BottomTabBar"
     }
 
     @Serializable

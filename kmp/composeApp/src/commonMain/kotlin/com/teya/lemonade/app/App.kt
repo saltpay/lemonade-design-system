@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import com.teya.lemonade.ActionListItemDisplay
 import com.teya.lemonade.BadgeDisplay
 import com.teya.lemonade.BorderWidthDisplay
+import com.teya.lemonade.BottomTabBarDisplay
 import com.teya.lemonade.BrandLogoDisplay
 import com.teya.lemonade.ButtonDisplay
 import com.teya.lemonade.CardDisplay
@@ -87,6 +88,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.Spinner to { _ -> SpinnerDisplay() },
     Displays.Divider to { _ -> DividerDisplay() },
     Displays.Tabs to { _ -> TabsDisplay() },
+    Displays.BottomTabBar to { _ -> BottomTabBarDisplay() },
     Displays.DatePicker to { _ -> DatePickerDisplay() },
     Displays.InlineCalendar to { _ -> InlineCalendarDisplay() },
     Displays.Notice to { _ -> NoticeDisplay() },
