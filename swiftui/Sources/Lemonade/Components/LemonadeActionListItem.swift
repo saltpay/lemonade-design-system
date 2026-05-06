@@ -19,6 +19,7 @@ public extension LemonadeUi {
     ///
     /// - Parameters:
     ///   - label: Label String to be displayed
+    ///   - topLabel: Optional label displayed above the main label
     ///   - supportText: Text to be displayed as supportText below the label
     ///   - voice: LemonadeListItemVoice to define tone of voice. Defaults to .neutral
     ///   - showNavigationIndicator: Indicates navigation visually
@@ -33,6 +34,7 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ActionListItem<LeadingContent: View, TrailingContent: View>(
         label: String,
+        topLabel: String? = nil,
         supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
@@ -46,6 +48,7 @@ public extension LemonadeUi {
     ) -> some View {
         ListItem(
             label: label,
+            topLabel: topLabel,
             supportText: supportText,
             voice: voice,
             navigationIndicator: showNavigationIndicator,
@@ -66,6 +69,7 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ActionListItem<LeadingContent: View>(
         label: String,
+        topLabel: String? = nil,
         supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
@@ -78,6 +82,7 @@ public extension LemonadeUi {
     ) -> some View {
         ActionListItem(
             label: label,
+            topLabel: topLabel,
             supportText: supportText,
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,
@@ -95,6 +100,7 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ActionListItem<TrailingContent: View>(
         label: String,
+        topLabel: String? = nil,
         supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
@@ -107,6 +113,7 @@ public extension LemonadeUi {
     ) -> some View {
         ActionListItem(
             label: label,
+            topLabel: topLabel,
             supportText: supportText,
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,
@@ -124,6 +131,7 @@ public extension LemonadeUi {
     @ViewBuilder
     static func ActionListItem(
         label: String,
+        topLabel: String? = nil,
         supportText: String? = nil,
         voice: LemonadeListItemVoice = .neutral,
         showNavigationIndicator: Bool = false,
@@ -135,6 +143,7 @@ public extension LemonadeUi {
     ) -> some View {
         ActionListItem(
             label: label,
+            topLabel: topLabel,
             supportText: supportText,
             voice: voice,
             showNavigationIndicator: showNavigationIndicator,

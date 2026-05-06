@@ -144,6 +144,7 @@ public fun LemonadeUi.ResourceListItem(
  * ```
  * @param label - label [String] to be displayed in the list item.
  * @param modifier - [Modifier] to be applied to the base container of component.
+ * @param topLabel - Optional label [String] displayed above the [label].
  * @param supportText - text [String] to be displayed as Support Text.
  * @param leadingSlot - slot content to be placed in the leading position of the component.
  * @param trailingSlot - slot content to be placed in the trailing position of the component.
@@ -164,6 +165,7 @@ public fun LemonadeUi.ResourceListItem(
 public fun LemonadeUi.ActionListItem(
     label: String,
     modifier: Modifier = Modifier,
+    topLabel: String? = null,
     supportText: String? = null,
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
@@ -179,6 +181,7 @@ public fun LemonadeUi.ActionListItem(
 ) {
     LemonadeUi.ListItem(
         label = label,
+        topLabel = topLabel,
         supportText = supportText,
         isLoading = isLoading,
         leadingSlot = leadingSlot,
@@ -216,6 +219,7 @@ public fun LemonadeUi.ActionListItem(
  * and delegates to the content-slot variant of [ListItem].
  *
  * @param label - Label [String] to be displayed in the list item.
+ * @param topLabel - Optional label [String] displayed above the [label].
  * @param supportText - Optional support text [String] displayed below the [label].
  * @param leadingSlot - A slot to be placed in the leading position of the list item.
  * @param trailingSlot - A slot to be placed in the trailing position of the list item.
@@ -236,6 +240,7 @@ public fun LemonadeUi.ActionListItem(
 public fun LemonadeUi.ListItem(
     label: String,
     modifier: Modifier = Modifier,
+    topLabel: String? = null,
     supportText: String? = null,
     onListItemClick: (() -> Unit)? = null,
     voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
@@ -269,6 +274,14 @@ public fun LemonadeUi.ListItem(
             interactionSource = interactionSource,
             trailingVerticalAlignment = trailingVerticalAlignment,
             contentSlot = {
+                if (topLabel != null) {
+                    LemonadeUi.Text(
+                        text = topLabel,
+                        textStyle = LocalTypographies.current.bodySmallRegular,
+                        color = LocalColors.current.content.contentSecondary,
+                    )
+                }
+
                 LemonadeUi.Text(
                     text = label,
                     textStyle = LocalTypographies.current.bodyMediumMedium,
@@ -611,6 +624,7 @@ private fun ResourceListItemPreview(
 private data class ActionListItemPreviewData(
     val voice: Boolean,
     val enabled: Boolean,
+    val topLabel: Boolean,
     val supportText: Boolean,
     val trailingSlot: Boolean,
     val showNavigationIndicator: Boolean,
@@ -624,18 +638,21 @@ private class ActionListItemPreviewProvider :
         buildList {
             listOf(true, false).forEach { voice ->
                 listOf(true, false).forEach { enabled ->
-                    listOf(true, false).forEach { withSupportText ->
-                        listOf(true, false).forEach { trailingSlot ->
-                            listOf(true, false).forEach { showNavigationIndicator ->
-                                add(
-                                    ActionListItemPreviewData(
-                                        voice = voice,
-                                        enabled = enabled,
-                                        supportText = withSupportText,
-                                        trailingSlot = trailingSlot,
-                                        showNavigationIndicator = showNavigationIndicator,
-                                    ),
-                                )
+                    listOf(true, false).forEach { topLabel ->
+                        listOf(true, false).forEach { withSupportText ->
+                            listOf(true, false).forEach { trailingSlot ->
+                                listOf(true, false).forEach { showNavigationIndicator ->
+                                    add(
+                                        ActionListItemPreviewData(
+                                            voice = voice,
+                                            enabled = enabled,
+                                            topLabel = topLabel,
+                                            supportText = withSupportText,
+                                            trailingSlot = trailingSlot,
+                                            showNavigationIndicator = showNavigationIndicator,
+                                        ),
+                                    )
+                                }
                             }
                         }
                     }
@@ -654,6 +671,7 @@ private fun ActionListItemPreview(
         label = "Label",
         showDivider = true,
         supportText = "Support Text".takeIf { previewData.supportText },
+        topLabel = "Top Label Text".takeIf { previewData.topLabel },
         enabled = previewData.enabled,
         voice = if (previewData.voice) LemonadeListItemVoice.Critical else LemonadeListItemVoice.Neutral,
         showNavigationIndicator = previewData.showNavigationIndicator,

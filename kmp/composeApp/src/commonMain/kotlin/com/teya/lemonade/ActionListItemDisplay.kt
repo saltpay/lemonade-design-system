@@ -79,6 +79,59 @@ internal fun ActionListItemDisplay() {
             )
         }
 
+        // ActionListItem - Top Label
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "ActionListItem - Top Label"),
+        ) {
+            LemonadeUi.ActionListItem(
+                label = "Notifications",
+                topLabel = "Account",
+                showNavigationIndicator = true,
+                onItemClicked = {},
+                showDivider = true,
+                leadingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.Bell,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                    )
+                },
+            )
+
+            LemonadeUi.ActionListItem(
+                label = "Two-factor auth",
+                topLabel = "Security",
+                supportText = "Recommended",
+                showNavigationIndicator = true,
+                onItemClicked = {},
+                showDivider = true,
+                leadingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.Padlock,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                    )
+                },
+            )
+
+            LemonadeUi.ActionListItem(
+                label = "What's new",
+                topLabel = "Release notes",
+                onItemClicked = {},
+                showDivider = false,
+                leadingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.Sparkles,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                    )
+                },
+                trailingSlot = {
+                    LemonadeUi.Tag(label = "New", voice = TagVoice.Positive)
+                },
+            )
+        }
+
         // ActionListItem - Trailing Alignment
         LemonadeUi.Card(
             header = CardHeaderConfig(title = "ActionListItem - Trailing Alignment"),
