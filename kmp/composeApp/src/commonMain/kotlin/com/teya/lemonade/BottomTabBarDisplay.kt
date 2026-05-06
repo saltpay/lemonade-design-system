@@ -41,10 +41,25 @@ private fun LazyListScope.defaultBottomTabBarSection() {
     item {
         LemonadeUi.BottomTabBar(
             items = listOf(
-                BottomTabBarItem(label = "Home", icon = LemonadeIcons.BrandTeyaSymbol),
-                BottomTabBarItem(label = "Sales", icon = LemonadeIcons.ChartStats),
-                BottomTabBarItem(label = "Money", icon = LemonadeIcons.Wallet),
-                BottomTabBarItem(label = "Teya AI", icon = LemonadeIcons.SparklesSoft),
+                BottomTabBarItem(
+                    label = "Home",
+                    icon = LemonadeIcons.BrandTeyaSymbol,
+                ),
+                BottomTabBarItem(
+                    label = "Sales",
+                    icon = LemonadeIcons.ChartStats,
+                    selectedIcon = LemonadeIcons.ChartStatsSolid,
+                ),
+                BottomTabBarItem(
+                    label = "Money",
+                    icon = LemonadeIcons.Wallet,
+                    selectedIcon = LemonadeIcons.WalletSolid,
+                ),
+                BottomTabBarItem(
+                    label = "Teya AI",
+                    icon = LemonadeIcons.SparklesSoft,
+                    selectedIcon = LemonadeIcons.SparklesSoftSolid,
+                ),
             ),
             selectedIndex = 0,
             onItemSelected = { /* display only */ },
@@ -68,10 +83,25 @@ private fun LazyListScope.interactiveBottomTabBarSection() {
 
         LemonadeUi.BottomTabBar(
             items = listOf(
-                BottomTabBarItem(label = "Home", icon = LemonadeIcons.BrandTeyaSymbol),
-                BottomTabBarItem(label = "Sales", icon = LemonadeIcons.ChartStatsSolid),
-                BottomTabBarItem(label = "Money", icon = LemonadeIcons.WalletSolid),
-                BottomTabBarItem(label = "Teya AI", icon = LemonadeIcons.SparklesSoftSolid),
+                BottomTabBarItem(
+                    label = "Home",
+                    icon = LemonadeIcons.BrandTeyaSymbol,
+                ),
+                BottomTabBarItem(
+                    label = "Sales",
+                    icon = LemonadeIcons.ChartStats,
+                    selectedIcon = LemonadeIcons.ChartStatsSolid,
+                ),
+                BottomTabBarItem(
+                    label = "Money",
+                    icon = LemonadeIcons.Wallet,
+                    selectedIcon = LemonadeIcons.WalletSolid,
+                ),
+                BottomTabBarItem(
+                    label = "Teya AI",
+                    icon = LemonadeIcons.SparklesSoft,
+                    selectedIcon = LemonadeIcons.SparklesSoftSolid,
+                ),
             ),
             selectedIndex = selectedIndex,
             onItemSelected = { index -> selectedIndex = index },
@@ -95,9 +125,20 @@ private fun LazyListScope.threeItemsBottomTabBarSection() {
 
         LemonadeUi.BottomTabBar(
             items = listOf(
-                BottomTabBarItem(label = "Home", icon = LemonadeIcons.BrandTeyaSymbol),
-                BottomTabBarItem(label = "Sales", icon = LemonadeIcons.ChartStats),
-                BottomTabBarItem(label = "Money", icon = LemonadeIcons.Wallet),
+                BottomTabBarItem(
+                    label = "Home",
+                    icon = LemonadeIcons.BrandTeyaSymbol,
+                ),
+                BottomTabBarItem(
+                    label = "Sales",
+                    icon = LemonadeIcons.ChartStats,
+                    selectedIcon = LemonadeIcons.ChartStatsSolid,
+                ),
+                BottomTabBarItem(
+                    label = "Money",
+                    icon = LemonadeIcons.Wallet,
+                    selectedIcon = LemonadeIcons.WalletSolid,
+                ),
             ),
             selectedIndex = selectedIndex,
             onItemSelected = { index -> selectedIndex = index },
@@ -121,8 +162,15 @@ private fun LazyListScope.twoItemsBottomTabBarSection() {
 
         LemonadeUi.BottomTabBar(
             items = listOf(
-                BottomTabBarItem(label = "Home", icon = LemonadeIcons.BrandTeyaSymbol),
-                BottomTabBarItem(label = "Money", icon = LemonadeIcons.Wallet),
+                BottomTabBarItem(
+                    label = "Home",
+                    icon = LemonadeIcons.BrandTeyaSymbol,
+                ),
+                BottomTabBarItem(
+                    label = "Money",
+                    icon = LemonadeIcons.Wallet,
+                    selectedIcon = LemonadeIcons.WalletSolid,
+                ),
             ),
             selectedIndex = selectedIndex,
             onItemSelected = { index -> selectedIndex = index },
