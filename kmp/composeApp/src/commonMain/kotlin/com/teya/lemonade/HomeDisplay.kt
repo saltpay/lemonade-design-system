@@ -139,6 +139,7 @@ internal object DisplayRegistry {
             items = listOf(
                 Displays.Link,
                 Displays.Tabs,
+                Displays.BottomTabBar,
                 Displays.Tile,
             ),
         ),
