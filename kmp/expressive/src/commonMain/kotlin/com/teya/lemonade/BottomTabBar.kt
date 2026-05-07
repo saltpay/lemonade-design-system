@@ -132,8 +132,7 @@ internal fun CoreBottomTabBar(
                         edgeColor,
                     ),
                 ),
-            )
-            .navigationBarsPadding()
+            ).navigationBarsPadding()
             .padding(all = LemonadeTheme.spaces.spacing400)
             .height(intrinsicSize = IntrinsicSize.Min),
     ) {
