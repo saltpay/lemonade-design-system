@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -58,9 +59,8 @@ public data class BottomTabBarItem(
  * highlighted with an elevated background pill. The component paints a soft scroll-edge gradient
  * behind itself so it floats nicely over scrollable content.
  *
- * The component does not apply any system bar inset — callers are expected to place it inside a
- * layout that already accounts for the navigation bar (e.g. a `Scaffold` `bottomBar` slot or a
- * wrapper using `Modifier.navigationBarsPadding`).
+ * The component already applies `Modifier.navigationBarsPadding`, so callers do not need to pad
+ * around the system navigation bar themselves.
  *
  * ## Usage
  * ```kotlin
@@ -132,12 +132,10 @@ internal fun CoreBottomTabBar(
                         edgeColor,
                     ),
                 ),
-            ).padding(
-                start = LemonadeTheme.spaces.spacing400,
-                end = LemonadeTheme.spaces.spacing400,
-                top = LemonadeTheme.spaces.spacing400,
-                bottom = LemonadeTheme.spaces.spacing800,
-            ).height(intrinsicSize = IntrinsicSize.Min),
+            )
+            .navigationBarsPadding()
+            .padding(all = LemonadeTheme.spaces.spacing400)
+            .height(intrinsicSize = IntrinsicSize.Min),
     ) {
         HorizontalFloatingToolbar(
             modifier = Modifier
