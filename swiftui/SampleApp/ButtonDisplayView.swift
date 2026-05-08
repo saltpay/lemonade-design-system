@@ -102,6 +102,25 @@ struct ButtonDisplayView: View {
                         LemonadeUi.Button(label: "Loading", onClick: {}, variant: .critical, type: .solid, size: .medium, loading: true)
                     }
                 }
+
+                // Rounded Corner
+                sectionView(title: "Rounded Corner (.full)") {
+                    VStack(spacing: 16) {
+                        HStack(spacing: 12) {
+                            LemonadeUi.Button(label: "XSmall", onClick: {}, size: .xSmall)
+                                .roundedCorner(.full)
+                            LemonadeUi.Button(label: "Small", onClick: {}, size: .small)
+                                .roundedCorner(.full)
+                            LemonadeUi.Button(label: "Medium", onClick: {}, size: .medium)
+                                .roundedCorner(.full)
+                            LemonadeUi.Button(label: "Large", onClick: {}, size: .large)
+                                .roundedCorner(.full)
+                        }
+
+                        LemonadeUi.Button(label: "Pill with icon", onClick: {}, leadingIcon: .heart, variant: .secondary)
+                            .roundedCorner(.full)
+                    }
+                }
             }
             .padding()
         }
