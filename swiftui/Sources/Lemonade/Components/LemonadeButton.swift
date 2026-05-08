@@ -366,7 +366,7 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
     private var cornerRadius: CGFloat {
         switch cornerRadiusOverride {
         case .full: return LemonadeTheme.radius.radiusFull
-        case .none: return size.contentData.cornerRadius
+        case .default, .none: return size.contentData.cornerRadius
         }
     }
 

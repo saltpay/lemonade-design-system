@@ -4,10 +4,13 @@ import SwiftUI
 
 /// Corner radius style for `LemonadeUi.Button`.
 ///
-/// Use with the ``SwiftUICore/View/roundedCorner(_:)`` modifier to override the
-/// per-size corner radius applied by the button. This mirrors the Compose API
+/// Use with the `roundedCorner(_:)` modifier to override the per-size corner
+/// radius applied by the button. This mirrors the Compose API
 /// `Modifier.clip(Shape.Full)` available on Android.
 public enum LemonadeButtonCornerRadius: Sendable, Hashable {
+    /// Use the per-size default corner radius.
+    /// Useful for resetting an override applied higher up in the view hierarchy.
+    case `default`
     /// Pill shape — corners are clipped to a full half-height radius.
     case full
 }
