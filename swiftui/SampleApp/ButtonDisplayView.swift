@@ -103,22 +103,22 @@ struct ButtonDisplayView: View {
                     }
                 }
 
-                // Rounded Corner
-                sectionView(title: "Rounded Corner (.full)") {
+                // Full Shape (pill)
+                sectionView(title: "Full Shape (.fullShape())") {
                     VStack(spacing: 16) {
                         HStack(spacing: 12) {
                             LemonadeUi.Button(label: "XSmall", onClick: {}, size: .xSmall)
-                                .roundedCorner(.full)
+                                .fullShape()
                             LemonadeUi.Button(label: "Small", onClick: {}, size: .small)
-                                .roundedCorner(.full)
+                                .fullShape()
                             LemonadeUi.Button(label: "Medium", onClick: {}, size: .medium)
-                                .roundedCorner(.full)
+                                .fullShape()
                             LemonadeUi.Button(label: "Large", onClick: {}, size: .large)
-                                .roundedCorner(.full)
+                                .fullShape()
                         }
 
                         LemonadeUi.Button(label: "Pill with icon", onClick: {}, leadingIcon: .heart, variant: .secondary)
-                            .roundedCorner(.full)
+                            .fullShape()
                     }
                 }
             }

@@ -360,14 +360,11 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
     let leadingSlot: ((LemonadeButtonColors) -> LeadingSlot)?
     let trailingSlot: ((LemonadeButtonColors) -> TrailingSlot)?
 
-    @Environment(\.lemonadeButtonCornerRadius) private var cornerRadiusOverride
+    @Environment(\.lemonadeButtonFullShape) private var isFullShape
     @State private var isPressed = false
 
     private var cornerRadius: CGFloat {
-        switch cornerRadiusOverride {
-        case .full: return LemonadeTheme.radius.radiusFull
-        case .default, .none: return size.contentData.cornerRadius
-        }
+        isFullShape ? LemonadeTheme.radius.radiusFull : size.contentData.cornerRadius
     }
 
     var body: some View {

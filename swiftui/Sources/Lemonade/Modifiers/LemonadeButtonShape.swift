@@ -1,45 +1,34 @@
 import SwiftUI
 
-// MARK: - Button Corner Radius
-
-/// Corner radius style for `LemonadeUi.Button`.
-///
-/// Use with the `roundedCorner(_:)` modifier to override the per-size corner
-/// radius applied by the button. This mirrors the Compose API
-/// `Modifier.clip(Shape.Full)` available on Android.
-public enum LemonadeButtonCornerRadius: Sendable, Hashable {
-    /// Use the per-size default corner radius.
-    /// Useful for resetting an override applied higher up in the view hierarchy.
-    case `default`
-    /// Pill shape — corners are clipped to a full half-height radius.
-    case full
-}
-
 // MARK: - Environment
 
-private struct LemonadeButtonCornerRadiusKey: EnvironmentKey {
-    static let defaultValue: LemonadeButtonCornerRadius? = nil
+private struct LemonadeButtonFullShapeKey: EnvironmentKey {
+    static let defaultValue: Bool = false
 }
 
 extension EnvironmentValues {
-    var lemonadeButtonCornerRadius: LemonadeButtonCornerRadius? {
-        get { self[LemonadeButtonCornerRadiusKey.self] }
-        set { self[LemonadeButtonCornerRadiusKey.self] = newValue }
+    var lemonadeButtonFullShape: Bool {
+        get { self[LemonadeButtonFullShapeKey.self] }
+        set { self[LemonadeButtonFullShapeKey.self] = newValue }
     }
 }
 
 // MARK: - View Modifier
 
 public extension View {
-    /// Overrides the corner radius applied by `LemonadeUi.Button` views in this
-    /// hierarchy. No effect on other views.
+    /// Renders `LemonadeUi.Button` views in this hierarchy with a pill (full
+    /// corner radius) shape. Has no effect on other views.
+    ///
+    /// Mirrors the Compose API `Modifier.clip(Shape.Full)` available on Android.
+    /// Pass `false` to opt back into the per-size default radius after the
+    /// modifier has been applied higher up the hierarchy.
     ///
     /// ## Usage
     /// ```swift
     /// LemonadeUi.Button(label: "Pill", onClick: { })
-    ///     .roundedCorner(.full)
+    ///     .fullShape()
     /// ```
-    func roundedCorner(_ radius: LemonadeButtonCornerRadius) -> some View {
-        environment(\.lemonadeButtonCornerRadius, radius)
+    func fullShape(_ enabled: Bool = true) -> some View {
+        environment(\.lemonadeButtonFullShape, enabled)
     }
 }
