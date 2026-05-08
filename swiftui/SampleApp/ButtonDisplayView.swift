@@ -102,6 +102,25 @@ struct ButtonDisplayView: View {
                         LemonadeUi.Button(label: "Loading", onClick: {}, variant: .critical, type: .solid, size: .medium, loading: true)
                     }
                 }
+
+                // Full Shape (pill)
+                sectionView(title: "Full Shape (.fullShape())") {
+                    VStack(spacing: 16) {
+                        HStack(spacing: 12) {
+                            LemonadeUi.Button(label: "XSmall", onClick: {}, size: .xSmall)
+                                .fullShape()
+                            LemonadeUi.Button(label: "Small", onClick: {}, size: .small)
+                                .fullShape()
+                            LemonadeUi.Button(label: "Medium", onClick: {}, size: .medium)
+                                .fullShape()
+                            LemonadeUi.Button(label: "Large", onClick: {}, size: .large)
+                                .fullShape()
+                        }
+
+                        LemonadeUi.Button(label: "Pill with icon", onClick: {}, leadingIcon: .heart, variant: .secondary)
+                            .fullShape()
+                    }
+                }
             }
             .padding()
         }

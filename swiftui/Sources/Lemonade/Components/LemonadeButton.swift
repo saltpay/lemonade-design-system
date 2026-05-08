@@ -360,10 +360,16 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
     let leadingSlot: ((LemonadeButtonColors) -> LeadingSlot)?
     let trailingSlot: ((LemonadeButtonColors) -> TrailingSlot)?
 
+    @Environment(\.lemonadeButtonFullShape) private var isFullShape
     @State private var isPressed = false
+
+    private var cornerRadius: CGFloat {
+        isFullShape ? LemonadeTheme.radius.radiusFull : size.contentData.cornerRadius
+    }
 
     var body: some View {
         let colors = resolveButtonColors(variant: variant, type: type)
+        let buttonShape = RoundedRectangle(cornerRadius: cornerRadius)
 
         SwiftUI.Button(action: onClick) {
             HStack(spacing: 0) {
@@ -388,11 +394,8 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
             }
             .frame(height: size.contentData.requiredHeight)
             .frame(minWidth: size.contentData.minWidth)
-            .background(
-                RoundedRectangle(cornerRadius: size.contentData.cornerRadius)
-                    .fill(colors.backgroundColor)
-            )
-            .clipShape(RoundedRectangle(cornerRadius: size.contentData.cornerRadius))
+            .background(buttonShape.fill(colors.backgroundColor))
+            .clipShape(buttonShape)
         }
         .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
         .opacity(isPressed ? 1.0 - LemonadeTheme.opacity.state.opacityPressed : LemonadeTheme.opacity.base.opacity100)
