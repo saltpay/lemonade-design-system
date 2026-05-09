@@ -743,18 +743,15 @@ internal fun BoxScope.DefaultTextFieldWithSelector(
                     vertical = size.data.verticalPadding,
                 ),
         ) {
-            if (showPlaceholder && placeholderText != null) {
-                LemonadeUi.Text(
-                    text = placeholderText,
-                    textStyle = size.data.contentStyle,
-                    color = LocalColors.current.content.contentSecondary,
-                    modifier = Modifier.weight(weight = 1f),
-                )
-            } else {
-                Box(
-                    content = { innerTextField() },
-                    modifier = Modifier.weight(weight = 1f),
-                )
+            Box(modifier = Modifier.weight(weight = 1f)) {
+                if (showPlaceholder && placeholderText != null) {
+                    LemonadeUi.Text(
+                        text = placeholderText,
+                        textStyle = size.data.contentStyle,
+                        color = LocalColors.current.content.contentSecondary,
+                    )
+                }
+                innerTextField()
             }
 
             if (trailingContent != null) {
@@ -789,18 +786,15 @@ internal fun BoxScope.DefaultTextBox(
             leadingContent()
         }
 
-        if (showPlaceholder && placeholderText != null) {
-            LemonadeUi.Text(
-                text = placeholderText,
-                textStyle = size.data.contentStyle,
-                color = LocalColors.current.content.contentSecondary,
-                modifier = Modifier.weight(weight = 1f),
-            )
-        } else {
-            Box(
-                content = { innerTextField() },
-                modifier = Modifier.weight(weight = 1f),
-            )
+        Box(modifier = Modifier.weight(weight = 1f)) {
+            if (showPlaceholder && placeholderText != null) {
+                LemonadeUi.Text(
+                    text = placeholderText,
+                    textStyle = size.data.contentStyle,
+                    color = LocalColors.current.content.contentSecondary,
+                )
+            }
+            innerTextField()
         }
 
         if (trailingContent != null) {
