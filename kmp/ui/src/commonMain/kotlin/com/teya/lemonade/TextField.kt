@@ -641,12 +641,12 @@ internal fun CoreTextFieldDecorator(
                         Modifier.requiredHeight(height = minHeight)
                     }
                         ?: Modifier,
-                ).clip(shape = size.data.containerShape)
-                .shadowBorder(
+                ).shadowBorder(
                     width = focusShadowBorderWidth,
                     shape = size.data.containerShape,
                     color = LocalColors.current.background.bgElevated,
-                ).border(
+                ).clip(shape = size.data.containerShape)
+                .border(
                     color = animatedBorderColor,
                     width = LocalBorderWidths.current.base.border25,
                     shape = size.data.containerShape,
