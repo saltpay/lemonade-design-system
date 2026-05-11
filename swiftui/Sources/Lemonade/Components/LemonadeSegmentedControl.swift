@@ -328,6 +328,17 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
         }
     }
 
+    // Forward UISegmentedControl's intrinsic size so `.fixedSize()` callers hug content.
+    @available(iOS 16.0, *)
+    func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIView, context: Context) -> CGSize? {
+        guard let control = context.coordinator.control else { return nil }
+        let intrinsic = control.intrinsicContentSize
+        return CGSize(
+            width: intrinsic.width + containerPadding * 2,
+            height: intrinsic.height + containerPadding * 2
+        )
+    }
+
     class Coordinator: NSObject {
         var onSelectionChanged: (Int) -> Void
         weak var control: UISegmentedControl?
