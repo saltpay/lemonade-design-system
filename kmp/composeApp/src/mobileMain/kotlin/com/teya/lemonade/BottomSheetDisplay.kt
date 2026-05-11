@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.teya.lemonade.core.LemonadeBottomSheetVariant
 import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonVariant
 
@@ -25,6 +26,7 @@ import com.teya.lemonade.core.LemonadeButtonVariant
 internal fun BottomSheetSampleDisplay() {
     var showBasicSheet by remember { mutableStateOf(false) }
     var showNoDragHandleSheet by remember { mutableStateOf(false) }
+    var showSubtleSheet by remember { mutableStateOf(false) }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
@@ -55,6 +57,21 @@ internal fun BottomSheetSampleDisplay() {
             LemonadeUi.Button(
                 label = "Open Without Drag Handle",
                 onClick = { showNoDragHandleSheet = true },
+                variant = LemonadeButtonVariant.Secondary,
+                size = LemonadeButtonSize.Medium,
+            )
+        }
+
+        // Subtle Background
+        BottomSheetSection(title = "Subtle Background") {
+            LemonadeUi.Text(
+                text = "This bottom sheet uses the Subtle background variant (bgSubtle)",
+                textStyle = LemonadeTheme.typography.bodySmallRegular,
+                color = LemonadeTheme.colors.content.contentSecondary,
+            )
+            LemonadeUi.Button(
+                label = "Open Subtle Background",
+                onClick = { showSubtleSheet = true },
                 variant = LemonadeButtonVariant.Secondary,
                 size = LemonadeButtonSize.Medium,
             )
@@ -116,6 +133,38 @@ internal fun BottomSheetSampleDisplay() {
             LemonadeUi.Button(
                 label = "Close",
                 onClick = { showNoDragHandleSheet = false },
+                variant = LemonadeButtonVariant.Primary,
+                size = LemonadeButtonSize.Medium,
+            )
+            Spacer(
+                modifier = Modifier.height(LemonadeTheme.spaces.spacing400),
+            )
+        }
+    }
+
+    // Subtle Background
+    LemonadeUi.BottomSheet(
+        expanded = showSubtleSheet,
+        onDismissRequest = { showSubtleSheet = false },
+        background = LemonadeBottomSheetVariant.Subtle,
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(LemonadeTheme.spaces.spacing400),
+        ) {
+            LemonadeUi.Text(
+                text = "Subtle Background",
+                textStyle = LemonadeTheme.typography.headingSmall,
+            )
+            LemonadeUi.Text(
+                text = "This bottom sheet uses the Subtle background variant, applying bgSubtle from the Lemonade tokens.",
+                color = LemonadeTheme.colors.content.contentSecondary,
+            )
+            LemonadeUi.Button(
+                label = "Close",
+                onClick = { showSubtleSheet = false },
                 variant = LemonadeButtonVariant.Primary,
                 size = LemonadeButtonSize.Medium,
             )
