@@ -328,14 +328,14 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
         }
     }
 
-    // Forward UISegmentedControl's intrinsic size so `.fixedSize()` callers hug content.
+    // Forward intrinsic size so `.fixedSize()` callers hug content. Honor `proposal`
+    // when SwiftUI gives a concrete size so non-fixed-size callers still fill width.
     @available(iOS 16.0, *)
     func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIView, context: Context) -> CGSize? {
-        guard let control = context.coordinator.control else { return nil }
-        let intrinsic = control.intrinsicContentSize
+        let intrinsic = uiView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         return CGSize(
-            width: intrinsic.width + containerPadding * 2,
-            height: intrinsic.height + containerPadding * 2
+            width: proposal.width ?? intrinsic.width,
+            height: proposal.height ?? intrinsic.height
         )
     }
 
