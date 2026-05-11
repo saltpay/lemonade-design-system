@@ -10,6 +10,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.unit.dp
+import com.teya.lemonade.core.LemonadeBottomSheetVariant
 
 /**
  * A bottom sheet overlay following the Lemonade Design System.
@@ -31,6 +32,9 @@ import androidx.compose.ui.unit.dp
  * @param skipPartiallyExpanded Whether the partially expanded state should be skipped. If `true`,
  *   the bottom sheet will always expand to the full height, skipping the intermediate (half-expanded)
  *   state. Defaults to `false`.
+ * @param background The background variant of the bottom sheet. Defaults to
+ *   [LemonadeBottomSheetVariant.Default], which uses [LemonadeTheme.colors.background.bgDefault];
+ *   use [LemonadeBottomSheetVariant.Subtle] for [LemonadeTheme.colors.background.bgSubtle].
  * @param content A composable lambda with [ColumnScope] receiver that defines the sheet's content.
  *
  * ## Usage Example
@@ -57,7 +61,9 @@ import androidx.compose.ui.unit.dp
  * ## Design Notes
  *
  * - The sheet uses [LemonadeTheme.radius.radius500] for the top corners.
- * - Background color is [LemonadeTheme.colors.background.bgDefault].
+ * - Background color is resolved from [background]: [LemonadeBottomSheetVariant.Default] maps to
+ *   [LemonadeTheme.colors.background.bgDefault] and [LemonadeBottomSheetVariant.Subtle] maps to
+ *   [LemonadeTheme.colors.background.bgSubtle].
  * - Tonal elevation is set to 0.dp; the sheet relies on Lemonade color tokens for visual hierarchy.
  * - The drag handle uses the default [BottomSheetDefaults.DragHandle] styling.
  * - For overlay components with a unified visibility API, see also [LemonadeUi.Dialog] and
@@ -74,6 +80,7 @@ public fun LemonadeUi.BottomSheet(
     onDismissRequest: () -> Unit,
     showDragHandle: Boolean = true,
     skipPartiallyExpanded: Boolean = false,
+    background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     CoreBottomSheet(
@@ -81,6 +88,7 @@ public fun LemonadeUi.BottomSheet(
         onDismissRequest = onDismissRequest,
         showDragHandle = showDragHandle,
         skipPartiallyExpanded = skipPartiallyExpanded,
+        background = background,
         content = content,
     )
 }
@@ -92,6 +100,7 @@ internal fun CoreBottomSheet(
     onDismissRequest: () -> Unit,
     showDragHandle: Boolean = true,
     skipPartiallyExpanded: Boolean = false,
+    background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
     contentWindowInsets: @Composable () -> WindowInsets = { BottomSheetDefaults.windowInsets },
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -102,6 +111,11 @@ internal fun CoreBottomSheet(
         }
     }
 
+    val containerColor = when (background) {
+        LemonadeBottomSheetVariant.Default -> LemonadeTheme.colors.background.bgDefault
+        LemonadeBottomSheetVariant.Subtle -> LemonadeTheme.colors.background.bgSubtle
+    }
+
     if (expanded || sheetState.isVisible) {
         ModalBottomSheet(
             onDismissRequest = onDismissRequest,
@@ -110,7 +124,7 @@ internal fun CoreBottomSheet(
                 topStart = LemonadeTheme.radius.radius500,
                 topEnd = LemonadeTheme.radius.radius500,
             ),
-            containerColor = LemonadeTheme.colors.background.bgDefault,
+            containerColor = containerColor,
             tonalElevation = 0.dp,
             dragHandle = if (showDragHandle) {
                 { BottomSheetDefaults.DragHandle() }

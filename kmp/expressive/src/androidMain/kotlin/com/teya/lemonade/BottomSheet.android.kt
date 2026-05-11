@@ -13,6 +13,7 @@ import androidx.compose.ui.window.DialogWindowProvider
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.teya.lemonade.core.LemonadeBottomSheetVariant
 
 /**
  * Android-specific [BottomSheet][LemonadeUi.BottomSheet] variant that can hide the system
@@ -31,6 +32,8 @@ import androidx.core.view.WindowInsetsControllerCompat
  * @param hideNavigationBar Whether to hide the system navigation bar in the dialog window.
  * @param showDragHandle Whether to display the drag handle at the top of the sheet.
  * @param skipPartiallyExpanded Whether the partially expanded state should be skipped.
+ * @param background The background variant of the bottom sheet. Defaults to
+ *   [LemonadeBottomSheetVariant.Default].
  * @param content A composable lambda with [ColumnScope] receiver that defines the sheet's content.
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,6 +44,7 @@ public fun LemonadeUi.BottomSheet(
     hideNavigationBar: Boolean,
     showDragHandle: Boolean = true,
     skipPartiallyExpanded: Boolean = false,
+    background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     CoreBottomSheet(
@@ -48,6 +52,7 @@ public fun LemonadeUi.BottomSheet(
         onDismissRequest = onDismissRequest,
         showDragHandle = showDragHandle,
         skipPartiallyExpanded = skipPartiallyExpanded,
+        background = background,
         contentWindowInsets = if (hideNavigationBar) {
             { WindowInsets.statusBars }
         } else {
