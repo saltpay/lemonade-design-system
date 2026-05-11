@@ -8,10 +8,47 @@ struct SegmentedControlDisplayView: View {
     @State private var selectedTabMedium = 0
     @State private var selectedTabSmall = 0
     @State private var selectedTabIconOnly = 0
+    @State private var selectedTabHugContent = 0
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 32) {
+                // Hug content with .fixedSize() — for inline use alongside other content
+                sectionView(title: "Hug Content (.fixedSize)") {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Standalone .fixedSize():")
+                            .font(.caption)
+                        LemonadeUi.SegmentedControl(
+                            properties: [
+                                .label("Week"),
+                                .label("Day"),
+                            ],
+                            selectedTab: selectedTabHugContent,
+                            size: .small,
+                            onTabSelected: { selectedTabHugContent = $0 }
+                        )
+                        .fixedSize()
+                        Text("In HStack with Spacer:")
+                            .font(.caption)
+                        HStack {
+                            Text("Total spent")
+                                .font(.title2)
+                                .bold()
+                            Spacer()
+                            LemonadeUi.SegmentedControl(
+                                properties: [
+                                    .label("Week"),
+                                    .label("Day"),
+                                ],
+                                selectedTab: selectedTabHugContent,
+                                size: .small,
+                                onTabSelected: { selectedTabHugContent = $0 }
+                            )
+                            .fixedSize()
+                        }
+                    }
+                }
+
                 // Large (default)
                 sectionView(title: "Large (Default)") {
                     VStack(spacing: 16) {

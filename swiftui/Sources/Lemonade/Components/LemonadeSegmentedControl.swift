@@ -328,6 +328,18 @@ private struct LemonadeNativeSegmentedControl: UIViewRepresentable {
         }
     }
 
+    // Honor finite proposals (parent VStack width) so non-fixed-size callers fill.
+    // Fall back to intrinsic for nil (`.fixedSize()`) and `.infinity` probes,
+    // so `.fixedSize()` callers hug content instead of collapsing to `buttonMinWidth`.
+    @available(iOS 16.0, *)
+    func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIView, context: Context) -> CGSize? {
+        let intrinsic = uiView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        return CGSize(
+            width: proposal.width.flatMap { $0.isFinite ? $0 : nil } ?? intrinsic.width,
+            height: proposal.height.flatMap { $0.isFinite ? $0 : nil } ?? intrinsic.height
+        )
+    }
+
     class Coordinator: NSObject {
         var onSelectionChanged: (Int) -> Void
         weak var control: UISegmentedControl?
