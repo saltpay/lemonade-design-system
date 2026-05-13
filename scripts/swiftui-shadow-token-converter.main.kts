@@ -10,6 +10,7 @@ data class ShadowColorValue(
     val g: Float,
     val b: Float,
     val a: Float,
+    val aliasName: String? = null,
 )
 
 data class ShadowResourceValue(
@@ -54,6 +55,7 @@ fun main() {
                             g = resolvedValue.getDouble("g").toFloat(),
                             b = resolvedValue.getDouble("b").toFloat(),
                             a = resolvedValue.getDouble("a").toFloat(),
+                            aliasName = jsonObject.optString("aliasName").takeIf { it.isNotEmpty() },
                         )
                     )
                     else -> ShadowResourceValue()
@@ -109,6 +111,12 @@ private fun ShadowColorValue.toSwiftColor(): String {
     fun fmt(v: Float) = String.format(java.util.Locale.US, "%.2f", v)
     return "Color(red: ${fmt(r)}, green: ${fmt(g)}, blue: ${fmt(b)}, opacity: ${fmt(a)})"
 }
+
+private fun String.toSwiftAssetName(): String = "lemonade-" + lowercase().replace("/", "-")
+
+private fun ShadowColorValue.toSwiftColorExpression(): String =
+    if (aliasName != null) "Color(\"${aliasName.toSwiftAssetName()}\", bundle: .lemonade)"
+    else toSwiftColor()
 
 // The modifier body is static — no token data is interpolated — so it is kept
 // as a single string rather than per-line appendLine() calls.
@@ -225,7 +233,7 @@ private fun buildShadowCode(
             appendLine("        case .${caseName}:")
             appendLine("            return [")
             resource.levels.forEach { level ->
-                appendLine("                LemonadeShadowData(blur: ${level.blur}, spread: ${level.spread}, offsetX: ${level.offsetX}, offsetY: ${level.offsetY}, color: ${level.color.toSwiftColor()}),")
+                appendLine("                LemonadeShadowData(blur: ${level.blur}, spread: ${level.spread}, offsetX: ${level.offsetX}, offsetY: ${level.offsetY}, color: ${level.color.toSwiftColorExpression()}),")
             }
             appendLine("            ]")
         }

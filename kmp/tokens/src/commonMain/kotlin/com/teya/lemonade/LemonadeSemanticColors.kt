@@ -25,6 +25,7 @@ public interface LemonadeSemanticColors {
     public val border: BorderColors
     public val content: ContentColors
     public val background: BackgroundColors
+    public val shadow: ShadowColors
 
     public interface InteractionColors {
         public val bgNeutralSubtleInteractive: Color
@@ -144,5 +145,9 @@ public interface LemonadeSemanticColors {
         public val bgPositive: Color
         public val bgInfoSubtle: Color
         public val bgElevatedHigh: Color
+    }
+
+    public interface ShadowColors {
+        public val shadowDefault: Color
     }
 }

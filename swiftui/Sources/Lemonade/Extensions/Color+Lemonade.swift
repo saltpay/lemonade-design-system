@@ -144,6 +144,14 @@ public struct LemonadeBackgroundColorsShorthand {
     public var bgPositive: Color { Color("lemonade-background-voice-bg-positive", bundle: .lemonade) }
     public var bgInfoSubtle: Color { Color("lemonade-background-voice-bg-info-subtle", bundle: .lemonade) }
     public var bgElevatedHigh: Color { Color("lemonade-background-bg-elevated-high", bundle: .lemonade) }
+    public var bgTransparentLight: Color { Color("lemonade-background-fixed-bg-transparent-light", bundle: .lemonade) }
+    public var bgTransparentDark: Color { Color("lemonade-background-fixed-bg-transparent-dark", bundle: .lemonade) }
+}
+
+// MARK: - Shadow Colors Namespace
+
+public struct LemonadeShadowColorsShorthand {
+    public var shadowDefault: Color { Color("lemonade-shadow-shadow-default", bundle: .lemonade) }
 }
 
 // MARK: - ShapeStyle Extensions
@@ -164,5 +172,9 @@ public extension ShapeStyle where Self == Color {
     /// Background color tokens
     /// Usage: `.foregroundStyle(.bg.bgDefault)`
     static var bg: LemonadeBackgroundColorsShorthand { LemonadeBackgroundColorsShorthand() }
+
+    /// Shadow color tokens
+    /// Usage: `.foregroundStyle(.shadow.shadowDefault)`
+    static var shadow: LemonadeShadowColorsShorthand { LemonadeShadowColorsShorthand() }
 
 }
