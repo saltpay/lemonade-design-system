@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
@@ -31,6 +32,7 @@ import com.teya.lemonade.core.LemonadeTextStyle
  * @param maxLines Maximum number of lines to display.
  * @param minLines Minimum number of lines to display.
  * @param autoSize Optional auto-sizing configuration for the text.
+ * @param onTextLayout Callback invoked when text layout is computed.
  */
 @Composable
 public fun LemonadeUi.Text(
@@ -44,6 +46,7 @@ public fun LemonadeUi.Text(
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
     autoSize: TextAutoSize? = null,
+    onTextLayout: ((TextLayoutResult) -> Unit)? = null,
 ) {
     val finalText = if (textStyle == LocalTypographies.current.bodyXSmallOverline) {
         text.uppercase()
@@ -58,6 +61,7 @@ public fun LemonadeUi.Text(
         maxLines = maxLines,
         minLines = minLines,
         autoSize = autoSize,
+        onTextLayout = onTextLayout,
         style = textStyle.resolveStyle(
             fontSize = fontSize,
             color = color,
@@ -82,6 +86,7 @@ public fun LemonadeUi.Text(
  * @param maxLines Maximum number of lines to display.
  * @param minLines Minimum number of lines to display.
  * @param autoSize Optional auto-sizing configuration for the text.
+ * @param onTextLayout Callback invoked when text layout is computed.
  */
 @Composable
 public fun LemonadeUi.Text(
@@ -95,6 +100,7 @@ public fun LemonadeUi.Text(
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
     autoSize: TextAutoSize? = null,
+    onTextLayout: ((TextLayoutResult) -> Unit)? = null,
 ) {
     BasicText(
         text = text,
@@ -103,6 +109,7 @@ public fun LemonadeUi.Text(
         maxLines = maxLines,
         minLines = minLines,
         autoSize = autoSize,
+        onTextLayout = onTextLayout,
         style = textStyle.resolveStyle(
             fontSize = fontSize,
             color = color,
@@ -124,6 +131,7 @@ public fun LemonadeUi.Text(
  * @param maxLines Maximum number of lines to display.
  * @param minLines Minimum number of lines to display.
  * @param autoSize Optional auto-sizing configuration for the text.
+ * @param onTextLayout Callback invoked when text layout is computed.
  */
 @Composable
 public fun LemonadeUi.Text(
@@ -134,6 +142,7 @@ public fun LemonadeUi.Text(
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
     autoSize: TextAutoSize? = null,
+    onTextLayout: ((TextLayoutResult) -> Unit)? = null,
 ) {
     BasicText(
         text = text,
@@ -143,6 +152,7 @@ public fun LemonadeUi.Text(
         maxLines = maxLines,
         minLines = minLines,
         autoSize = autoSize,
+        onTextLayout = onTextLayout,
     )
 }
 
@@ -159,6 +169,7 @@ public fun LemonadeUi.Text(
  * @param maxLines Maximum number of lines to display.
  * @param minLines Minimum number of lines to display.
  * @param autoSize Optional auto-sizing configuration for the text.
+ * @param onTextLayout Callback invoked when text layout is computed.
  */
 @Composable
 public fun LemonadeUi.Text(
@@ -169,6 +180,7 @@ public fun LemonadeUi.Text(
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
     autoSize: TextAutoSize? = null,
+    onTextLayout: ((TextLayoutResult) -> Unit)? = null,
 ) {
     BasicText(
         text = text,
@@ -178,6 +190,7 @@ public fun LemonadeUi.Text(
         maxLines = maxLines,
         minLines = minLines,
         autoSize = autoSize,
+        onTextLayout = onTextLayout,
     )
 }
 
