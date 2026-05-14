@@ -142,6 +142,13 @@ public protocol BackgroundColors {
     var bgPositive: Color { get }
     var bgInfoSubtle: Color { get }
     var bgElevatedHigh: Color { get }
+    var bgTransparentLight: Color { get }
+    var bgTransparentDark: Color { get }
+}
+
+/// Shadow color definitions
+public protocol ShadowColors {
+    var shadowDefault: Color { get }
 }
 
 /// Protocol defining semantic color categories
@@ -150,4 +157,5 @@ public protocol LemonadeSemanticColors {
     var border: BorderColors { get }
     var content: ContentColors { get }
     var background: BackgroundColors { get }
+    var shadow: ShadowColors { get }
 }

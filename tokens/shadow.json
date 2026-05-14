@@ -219,10 +219,8 @@
       "type": "COLOR",
       "valuesByMode": {
         "3143:4": {
-          "r": 0,
-          "g": 0,
-          "b": 0,
-          "a": 0.10000000149011612
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:4668:13941"
         }
       },
       "resolvedValuesByMode": {
@@ -231,9 +229,10 @@
             "r": 0,
             "g": 0,
             "b": 0,
-            "a": 0.10000000149011612
+            "a": 0.05000000074505806
           },
-          "alias": null
+          "alias": "VariableID:4668:13941",
+          "aliasName": "Shadow/shadow-default"
         }
       },
       "scopes": [
@@ -409,10 +408,8 @@
       "type": "COLOR",
       "valuesByMode": {
         "3143:4": {
-          "r": 0,
-          "g": 0,
-          "b": 0,
-          "a": 0.10000000149011612
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:4668:13941"
         }
       },
       "resolvedValuesByMode": {
@@ -421,9 +418,10 @@
             "r": 0,
             "g": 0,
             "b": 0,
-            "a": 0.10000000149011612
+            "a": 0.05000000074505806
           },
-          "alias": null
+          "alias": "VariableID:4668:13941",
+          "aliasName": "Shadow/shadow-default"
         }
       },
       "scopes": [
@@ -439,10 +437,8 @@
       "type": "COLOR",
       "valuesByMode": {
         "3143:4": {
-          "r": 0,
-          "g": 0,
-          "b": 0,
-          "a": 0.10000000149011612
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:4668:13941"
         }
       },
       "resolvedValuesByMode": {
@@ -451,9 +447,10 @@
             "r": 0,
             "g": 0,
             "b": 0,
-            "a": 0.10000000149011612
+            "a": 0.05000000074505806
           },
-          "alias": null
+          "alias": "VariableID:4668:13941",
+          "aliasName": "Shadow/shadow-default"
         }
       },
       "scopes": [
@@ -469,10 +466,8 @@
       "type": "COLOR",
       "valuesByMode": {
         "3143:4": {
-          "r": 0,
-          "g": 0,
-          "b": 0,
-          "a": 0.10000000149011612
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:4668:13941"
         }
       },
       "resolvedValuesByMode": {
@@ -481,9 +476,10 @@
             "r": 0,
             "g": 0,
             "b": 0,
-            "a": 0.10000000149011612
+            "a": 0.05000000074505806
           },
-          "alias": null
+          "alias": "VariableID:4668:13941",
+          "aliasName": "Shadow/shadow-default"
         }
       },
       "scopes": [
@@ -499,10 +495,8 @@
       "type": "COLOR",
       "valuesByMode": {
         "3143:4": {
-          "r": 0,
-          "g": 0,
-          "b": 0,
-          "a": 0.10000000149011612
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:4668:13941"
         }
       },
       "resolvedValuesByMode": {
@@ -511,9 +505,10 @@
             "r": 0,
             "g": 0,
             "b": 0,
-            "a": 0.10000000149011612
+            "a": 0.05000000074505806
           },
-          "alias": null
+          "alias": "VariableID:4668:13941",
+          "aliasName": "Shadow/shadow-default"
         }
       },
       "scopes": [
@@ -529,10 +524,8 @@
       "type": "COLOR",
       "valuesByMode": {
         "3143:4": {
-          "r": 0,
-          "g": 0,
-          "b": 0,
-          "a": 0.10000000149011612
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:4668:13941"
         }
       },
       "resolvedValuesByMode": {
@@ -541,9 +534,10 @@
             "r": 0,
             "g": 0,
             "b": 0,
-            "a": 0.10000000149011612
+            "a": 0.05000000074505806
           },
-          "alias": null
+          "alias": "VariableID:4668:13941",
+          "aliasName": "Shadow/shadow-default"
         }
       },
       "scopes": [
@@ -719,10 +713,8 @@
       "type": "COLOR",
       "valuesByMode": {
         "3143:4": {
-          "r": 0,
-          "g": 0,
-          "b": 0,
-          "a": 0.10000000149011612
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:4668:13941"
         }
       },
       "resolvedValuesByMode": {
@@ -731,9 +723,10 @@
             "r": 0,
             "g": 0,
             "b": 0,
-            "a": 0.10000000149011612
+            "a": 0.05000000074505806
           },
-          "alias": null
+          "alias": "VariableID:4668:13941",
+          "aliasName": "Shadow/shadow-default"
         }
       },
       "scopes": [
@@ -829,10 +822,8 @@
       "type": "COLOR",
       "valuesByMode": {
         "3143:4": {
-          "r": 0,
-          "g": 0,
-          "b": 0,
-          "a": 0.10000000149011612
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:4668:13941"
         }
       },
       "resolvedValuesByMode": {
@@ -841,9 +832,10 @@
             "r": 0,
             "g": 0,
             "b": 0,
-            "a": 0.10000000149011612
+            "a": 0.05000000074505806
           },
-          "alias": null
+          "alias": "VariableID:4668:13941",
+          "aliasName": "Shadow/shadow-default"
         }
       },
       "scopes": [
@@ -859,10 +851,8 @@
       "type": "COLOR",
       "valuesByMode": {
         "3143:4": {
-          "r": 0,
-          "g": 0,
-          "b": 0,
-          "a": 0.10000000149011612
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:4668:13941"
         }
       },
       "resolvedValuesByMode": {
@@ -871,9 +861,10 @@
             "r": 0,
             "g": 0,
             "b": 0,
-            "a": 0.10000000149011612
+            "a": 0.05000000074505806
           },
-          "alias": null
+          "alias": "VariableID:4668:13941",
+          "aliasName": "Shadow/shadow-default"
         }
       },
       "scopes": [

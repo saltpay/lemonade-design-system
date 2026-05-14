@@ -18,10 +18,18 @@ import com.teya.lemonade.LemonadePrimitiveColors.Solid
 
 @Composable
 internal fun ColorsDisplay() {
+    val shadowColors = listOf(
+        ColorData(
+            title = "Shadow",
+            items = mapOf(
+                "shadowDefault" to LemonadeTheme.colors.shadow.shadowDefault,
+            ),
+        ),
+    )
     SampleScreenDisplayLazyColumn("Colors") {
         item {
             Column(verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)) {
-                allColorsLight.forEach { colorData ->
+                (allColorsLight + shadowColors).forEach { colorData ->
                     Column(
                         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100),
                     ) {

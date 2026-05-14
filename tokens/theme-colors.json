@@ -33,6 +33,8 @@
     "VariableID:3037:2029",
     "VariableID:3037:2028",
     "VariableID:3037:2027",
+    "VariableID:4664:26753",
+    "VariableID:4664:26754",
     "VariableID:3037:2054",
     "VariableID:3037:2047",
     "VariableID:3037:2030",
@@ -118,7 +120,8 @@
     "VariableID:3146:2420",
     "VariableID:3146:2421",
     "VariableID:3146:2422",
-    "VariableID:3146:2423"
+    "VariableID:3146:2423",
+    "VariableID:4668:13941"
   ],
   "variables": [
     {
@@ -177,33 +180,33 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:cd519cce5202dd4608f48c522bd2274976028603/76:405"
+          "id": "VariableID:94898b7cc1bd97ad6aa3503d1b34d63957fbcc26/76:383"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:cd519cce5202dd4608f48c522bd2274976028603/76:405"
+          "id": "VariableID:94898b7cc1bd97ad6aa3503d1b34d63957fbcc26/76:383"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.4872932434082031,
-            "g": 0.8099173903465271,
-            "b": 0,
+            "r": 0,
+            "g": 0.7871556282043457,
+            "b": 0.31562188267707825,
             "a": 0.20000000298023224
           },
-          "alias": "VariableID:cd519cce5202dd4608f48c522bd2274976028603/76:405",
-          "aliasName": "green-lime/alpha/200"
+          "alias": "VariableID:94898b7cc1bd97ad6aa3503d1b34d63957fbcc26/76:383",
+          "aliasName": "green/alpha/200"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.4872932434082031,
-            "g": 0.8099173903465271,
-            "b": 0,
+            "r": 0,
+            "g": 0.7871556282043457,
+            "b": 0.31562188267707825,
             "a": 0.20000000298023224
           },
-          "alias": "VariableID:cd519cce5202dd4608f48c522bd2274976028603/76:405",
-          "aliasName": "green-lime/alpha/200"
+          "alias": "VariableID:94898b7cc1bd97ad6aa3503d1b34d63957fbcc26/76:383",
+          "aliasName": "green/alpha/200"
         }
       },
       "scopes": [
@@ -703,33 +706,33 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:b32450d86a0a89b66789a934ac8c531e6fb946eb/76:407"
+          "id": "VariableID:10f488664318faf3dbc2f9aa376df1c8deeacc12/76:381"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:3a31fe7c2f800f242cf970893a61c258374e7110/76:409"
+          "id": "VariableID:419d0ff71fb4cc9581405584f1a981ac2ff97937/76:385"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.4872932434082031,
-            "g": 0.8099173903465271,
-            "b": 0,
-            "a": 0.30000001192092896
+            "r": 0,
+            "g": 0.7871556282043457,
+            "b": 0.31562188267707825,
+            "a": 0.10000000149011612
           },
-          "alias": "VariableID:b32450d86a0a89b66789a934ac8c531e6fb946eb/76:407",
-          "aliasName": "green-lime/alpha/300"
+          "alias": "VariableID:10f488664318faf3dbc2f9aa376df1c8deeacc12/76:381",
+          "aliasName": "green/alpha/100"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.4872932434082031,
-            "g": 0.8099173903465271,
-            "b": 0,
-            "a": 0.4000000059604645
+            "r": 0,
+            "g": 0.7871556282043457,
+            "b": 0.31562188267707825,
+            "a": 0.30000001192092896
           },
-          "alias": "VariableID:3a31fe7c2f800f242cf970893a61c258374e7110/76:409",
-          "aliasName": "green-lime/alpha/400"
+          "alias": "VariableID:419d0ff71fb4cc9581405584f1a981ac2ff97937/76:385",
+          "aliasName": "green/alpha/300"
         }
       },
       "scopes": [
@@ -751,11 +754,11 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:1c3bca3074c95cca953150dced0b68c56a5b4cf7/76:319"
+          "id": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:ec44840c558d507a2773117db925eed42be1eb50/76:321"
+          "id": "VariableID:1c3bca3074c95cca953150dced0b68c56a5b4cf7/76:319"
         }
       },
       "resolvedValuesByMode": {
@@ -764,20 +767,20 @@
             "r": 0.16933248937129974,
             "g": 0.49804946780204773,
             "b": 1,
-            "a": 0.30000001192092896
+            "a": 0.10000000149011612
           },
-          "alias": "VariableID:1c3bca3074c95cca953150dced0b68c56a5b4cf7/76:319",
-          "aliasName": "blue/alpha/300"
+          "alias": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315",
+          "aliasName": "blue/alpha/100"
         },
         "4431:0": {
           "resolvedValue": {
             "r": 0.16933248937129974,
             "g": 0.49804946780204773,
             "b": 1,
-            "a": 0.4000000059604645
+            "a": 0.30000001192092896
           },
-          "alias": "VariableID:ec44840c558d507a2773117db925eed42be1eb50/76:321",
-          "aliasName": "blue/alpha/400"
+          "alias": "VariableID:1c3bca3074c95cca953150dced0b68c56a5b4cf7/76:319",
+          "aliasName": "blue/alpha/300"
         }
       },
       "scopes": [
@@ -846,11 +849,11 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:e869f9472c1ba91cea0d0e2277ba1688beccb95c/76:459"
+          "id": "VariableID:798357b6c28271a579acd379d7528d833b57a34f/76:457"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:7e5f4284cf083efe3f2d72382355ca61b1c772d3/76:461"
+          "id": "VariableID:e869f9472c1ba91cea0d0e2277ba1688beccb95c/76:459"
         }
       },
       "resolvedValuesByMode": {
@@ -859,20 +862,20 @@
             "r": 1,
             "g": 0.4107343256473541,
             "b": 0,
-            "a": 0.30000001192092896
+            "a": 0.10000000149011612
           },
-          "alias": "VariableID:e869f9472c1ba91cea0d0e2277ba1688beccb95c/76:459",
-          "aliasName": "orange/alpha/300"
+          "alias": "VariableID:798357b6c28271a579acd379d7528d833b57a34f/76:457",
+          "aliasName": "orange/alpha/100"
         },
         "4431:0": {
           "resolvedValue": {
             "r": 1,
             "g": 0.4107343256473541,
             "b": 0,
-            "a": 0.4000000059604645
+            "a": 0.30000001192092896
           },
-          "alias": "VariableID:7e5f4284cf083efe3f2d72382355ca61b1c772d3/76:461",
-          "aliasName": "orange/alpha/400"
+          "alias": "VariableID:e869f9472c1ba91cea0d0e2277ba1688beccb95c/76:459",
+          "aliasName": "orange/alpha/300"
         }
       },
       "scopes": [
@@ -894,33 +897,33 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/76:452"
+          "id": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/559:13"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:ba001ae0027940eae0b840ad0b4d8dd7ee0edae1/76:447"
+          "id": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/559:15"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.9826614260673523,
-            "g": 0.17179709672927856,
-            "b": 0.21307030320167542,
-            "a": 0.30000001192092896
+            "r": 0.9686274528503418,
+            "g": 0.23529411852359772,
+            "b": 0.2823529541492462,
+            "a": 0.10000000149011612
           },
-          "alias": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/76:452",
-          "aliasName": "red/alpha/300"
+          "alias": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/559:13",
+          "aliasName": "red/alpha/100"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.9826614260673523,
-            "g": 0.17179709672927856,
-            "b": 0.21307030320167542,
-            "a": 0.4000000059604645
+            "r": 0.9686274528503418,
+            "g": 0.23529411852359772,
+            "b": 0.2823529541492462,
+            "a": 0.30000001192092896
           },
-          "alias": "VariableID:ba001ae0027940eae0b840ad0b4d8dd7ee0edae1/76:447",
-          "aliasName": "red/alpha/400"
+          "alias": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/559:15",
+          "aliasName": "red/alpha/300"
         }
       },
       "scopes": [
@@ -942,33 +945,33 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:a42113c6629bb91bae8d01d8fcc64054dc203a48/72:180"
+          "id": "VariableID:8c51290ae15a1290cab12aa6056843e544bf7a7b/72:161"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175"
+          "id": "VariableID:692bf5198f34c4fad1721e48162ad2dbbdbb9175/72:169"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.36872008442878723,
-            "g": 0.647489070892334,
-            "b": 0,
+            "r": 0,
+            "g": 0.6513022780418396,
+            "b": 0.24199268221855164,
             "a": 1
           },
-          "alias": "VariableID:a42113c6629bb91bae8d01d8fcc64054dc203a48/72:180",
-          "aliasName": "green-lime/600"
+          "alias": "VariableID:8c51290ae15a1290cab12aa6056843e544bf7a7b/72:161",
+          "aliasName": "green/600"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.6024433970451355,
-            "g": 0.9016712307929993,
-            "b": 0,
+            "r": 0.019869813695549965,
+            "g": 0.8753122687339783,
+            "b": 0.4485098123550415,
             "a": 1
           },
-          "alias": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175",
-          "aliasName": "green-lime/400"
+          "alias": "VariableID:692bf5198f34c4fad1721e48162ad2dbbdbb9175/72:169",
+          "aliasName": "green/400"
         }
       },
       "scopes": [
@@ -1523,7 +1526,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:87e56fb579d1d8ef5f71cfe5d05b242819f0184f/503:35"
+          "id": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/115:49"
         }
       },
       "resolvedValuesByMode": {
@@ -1539,13 +1542,13 @@
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.9472000002861023,
-            "g": 0.9423999786376953,
-            "b": 0.9327999949455261,
+            "r": 1,
+            "g": 1,
+            "b": 1,
             "a": 1
           },
-          "alias": "VariableID:87e56fb579d1d8ef5f71cfe5d05b242819f0184f/503:35",
-          "aliasName": "neutral/100"
+          "alias": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/115:49",
+          "aliasName": "white/950"
         }
       },
       "scopes": [
@@ -1567,33 +1570,33 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:278146ddbf77f7d3dbf67d4311ade5a56d494056/72:179"
+          "id": "VariableID:a9c6c1fb4e5c8036827ef3b6bbc86eddd00bee23/72:167"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:278146ddbf77f7d3dbf67d4311ade5a56d494056/72:179"
+          "id": "VariableID:a9c6c1fb4e5c8036827ef3b6bbc86eddd00bee23/72:167"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.4872932434082031,
-            "g": 0.8099173903465271,
-            "b": 0,
+            "r": 0,
+            "g": 0.7871556282043457,
+            "b": 0.31562188267707825,
             "a": 1
           },
-          "alias": "VariableID:278146ddbf77f7d3dbf67d4311ade5a56d494056/72:179",
-          "aliasName": "green-lime/500"
+          "alias": "VariableID:a9c6c1fb4e5c8036827ef3b6bbc86eddd00bee23/72:167",
+          "aliasName": "green/500"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.4872932434082031,
-            "g": 0.8099173903465271,
-            "b": 0,
+            "r": 0,
+            "g": 0.7871556282043457,
+            "b": 0.31562188267707825,
             "a": 1
           },
-          "alias": "VariableID:278146ddbf77f7d3dbf67d4311ade5a56d494056/72:179",
-          "aliasName": "green-lime/500"
+          "alias": "VariableID:a9c6c1fb4e5c8036827ef3b6bbc86eddd00bee23/72:167",
+          "aliasName": "green/500"
         }
       },
       "scopes": [
@@ -1759,7 +1762,7 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:41033fa93dfdd2518235ad4db6a7935a815f5e18/72:201"
+          "id": "VariableID:deae95126cb95b53a3cbd5871b992b3bfca35319/72:202"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
@@ -1769,13 +1772,13 @@
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.8837689161300659,
-            "g": 0.4433509111404419,
+            "r": 0.7317888140678406,
+            "g": 0.30102330446243286,
             "b": 0,
             "a": 1
           },
-          "alias": "VariableID:41033fa93dfdd2518235ad4db6a7935a815f5e18/72:201",
-          "aliasName": "amber/600"
+          "alias": "VariableID:deae95126cb95b53a3cbd5871b992b3bfca35319/72:202",
+          "aliasName": "amber/700"
         },
         "4431:0": {
           "resolvedValue": {
@@ -1806,32 +1809,32 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/76:449"
+          "id": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/559:13"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/76:452"
+          "id": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/559:15"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.9826614260673523,
-            "g": 0.17179709672927856,
-            "b": 0.21307030320167542,
+            "r": 0.9686274528503418,
+            "g": 0.23529411852359772,
+            "b": 0.2823529541492462,
             "a": 0.10000000149011612
           },
-          "alias": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/76:449",
+          "alias": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/559:13",
           "aliasName": "red/alpha/100"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.9826614260673523,
-            "g": 0.17179709672927856,
-            "b": 0.21307030320167542,
+            "r": 0.9686274528503418,
+            "g": 0.23529411852359772,
+            "b": 0.2823529541492462,
             "a": 0.30000001192092896
           },
-          "alias": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/76:452",
+          "alias": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/559:15",
           "aliasName": "red/alpha/300"
         }
       },
@@ -2194,7 +2197,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134"
+          "id": "VariableID:b8b810fa0c26ca11a9f631f05ae63ec646f8aab6/72:135"
         }
       },
       "resolvedValuesByMode": {
@@ -2210,13 +2213,13 @@
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.3157993257045746,
-            "g": 0.6355904340744019,
+            "r": 0.16933248937129974,
+            "g": 0.49804946780204773,
             "b": 1,
             "a": 1
           },
-          "alias": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134",
-          "aliasName": "blue/400"
+          "alias": "VariableID:b8b810fa0c26ca11a9f631f05ae63ec646f8aab6/72:135",
+          "aliasName": "blue/500"
         }
       },
       "scopes": [
@@ -2237,32 +2240,32 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/72:257"
+          "id": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/559:7"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/72:254"
+          "id": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.9064575433731079,
-            "g": 0,
-            "b": 0.04221484810113907,
+            "r": 0.8941176533699036,
+            "g": 0.11764705926179886,
+            "b": 0.16862745583057404,
             "a": 1
           },
-          "alias": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/72:257",
+          "alias": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/559:7",
           "aliasName": "red/600"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 1,
-            "g": 0.3911527395248413,
-            "b": 0.40385687351226807,
+            "r": 0.9960784316062927,
+            "g": 0.32549020648002625,
+            "b": 0.3686274588108063,
             "a": 1
           },
-          "alias": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/72:254",
+          "alias": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5",
           "aliasName": "red/400"
         }
       },
@@ -2476,32 +2479,32 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/72:255"
+          "id": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/559:6"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/72:254"
+          "id": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.9826614260673523,
-            "g": 0.17179709672927856,
-            "b": 0.21307030320167542,
+            "r": 0.9686274528503418,
+            "g": 0.23529411852359772,
+            "b": 0.2823529541492462,
             "a": 1
           },
-          "alias": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/72:255",
+          "alias": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/559:6",
           "aliasName": "red/500"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 1,
-            "g": 0.3911527395248413,
-            "b": 0.40385687351226807,
+            "r": 0.9960784316062927,
+            "g": 0.32549020648002625,
+            "b": 0.3686274588108063,
             "a": 1
           },
-          "alias": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/72:254",
+          "alias": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5",
           "aliasName": "red/400"
         }
       },
@@ -2762,32 +2765,32 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/72:255"
+          "id": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/559:6"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/72:255"
+          "id": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/559:6"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.9826614260673523,
-            "g": 0.17179709672927856,
-            "b": 0.21307030320167542,
+            "r": 0.9686274528503418,
+            "g": 0.23529411852359772,
+            "b": 0.2823529541492462,
             "a": 1
           },
-          "alias": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/72:255",
+          "alias": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/559:6",
           "aliasName": "red/500"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.9826614260673523,
-            "g": 0.17179709672927856,
-            "b": 0.21307030320167542,
+            "r": 0.9686274528503418,
+            "g": 0.23529411852359772,
+            "b": 0.2823529541492462,
             "a": 1
           },
-          "alias": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/72:255",
+          "alias": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/559:6",
           "aliasName": "red/500"
         }
       },
@@ -2814,7 +2817,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:e101b2da4e92f186cf4f636e7e0ac67eb6e5bd72/405:10"
+          "id": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87"
         }
       },
       "resolvedValuesByMode": {
@@ -2830,13 +2833,13 @@
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.7802666425704956,
-            "g": 0.7919999957084656,
-            "b": 0.08800001442432404,
+            "r": 0.8820960521697998,
+            "g": 0.8995633125305176,
+            "b": 0.10043667256832123,
             "a": 1
           },
-          "alias": "VariableID:e101b2da4e92f186cf4f636e7e0ac67eb6e5bd72/405:10",
-          "aliasName": "yellow-lime/600"
+          "alias": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87",
+          "aliasName": "yellow-lime/500"
         }
       },
       "scopes": [
@@ -3097,33 +3100,33 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181"
+          "id": "VariableID:cdfaf322851d9055db21e5c99f8aa75166d186d4/72:168"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175"
+          "id": "VariableID:a9c6c1fb4e5c8036827ef3b6bbc86eddd00bee23/72:167"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.2848081886768341,
-            "g": 0.49150213599205017,
-            "b": 0,
+            "r": 0,
+            "g": 0.5099976658821106,
+            "b": 0.20980969071388245,
             "a": 1
           },
-          "alias": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181",
-          "aliasName": "green-lime/700"
+          "alias": "VariableID:cdfaf322851d9055db21e5c99f8aa75166d186d4/72:168",
+          "aliasName": "green/700"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.6024433970451355,
-            "g": 0.9016712307929993,
-            "b": 0,
+            "r": 0,
+            "g": 0.7871556282043457,
+            "b": 0.31562188267707825,
             "a": 1
           },
-          "alias": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175",
-          "aliasName": "green-lime/400"
+          "alias": "VariableID:a9c6c1fb4e5c8036827ef3b6bbc86eddd00bee23/72:167",
+          "aliasName": "green/500"
         }
       },
       "scopes": [
@@ -3382,33 +3385,33 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:c97bf8aac4abe5f86d9d48fdf23be25e851540b1/554:1"
+          "id": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:42ee631b01d15ddd550816fb6216127c7593d71a/109:31"
+          "id": "VariableID:1cde25931e5330368f430707ddecf5da880df6d6/109:32"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.08235294371843338,
-            "g": 0.08235294371843338,
-            "b": 0.07450980693101883,
-            "a": 1
+            "r": 0.03529411926865578,
+            "g": 0.0313725508749485,
+            "b": 0.0235294122248888,
+            "a": 0.925000011920929
           },
-          "alias": "VariableID:c97bf8aac4abe5f86d9d48fdf23be25e851540b1/554:1",
-          "aliasName": "neutral/950"
+          "alias": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "aliasName": "neutral/alpha/900"
         },
         "4431:0": {
           "resolvedValue": {
             "r": 1,
             "g": 1,
             "b": 1,
-            "a": 0.800000011920929
+            "a": 0.8999999761581421
           },
-          "alias": "VariableID:42ee631b01d15ddd550816fb6216127c7593d71a/109:31",
-          "aliasName": "white/800"
+          "alias": "VariableID:1cde25931e5330368f430707ddecf5da880df6d6/109:32",
+          "aliasName": "white/900"
         }
       },
       "scopes": [
@@ -3529,7 +3532,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:6d9c92c71562a356221eeae95c51cd6962648e80/394:22"
+          "id": "VariableID:db0c89a3c7ec6dc8f937d204e16c7e56e408d8d8/121:68"
         }
       },
       "resolvedValuesByMode": {
@@ -3545,13 +3548,13 @@
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.42639997601509094,
-            "g": 0.46799999475479126,
-            "b": 0.052000001072883606,
+            "r": 0.2726779878139496,
+            "g": 0.32054421305656433,
+            "b": 0.05945578217506409,
             "a": 1
           },
-          "alias": "VariableID:6d9c92c71562a356221eeae95c51cd6962648e80/394:22",
-          "aliasName": "yellow-lime/700"
+          "alias": "VariableID:db0c89a3c7ec6dc8f937d204e16c7e56e408d8d8/121:68",
+          "aliasName": "yellow-lime/800"
         }
       },
       "scopes": [
@@ -3715,33 +3718,33 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/72:257"
+          "id": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/559:7"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/72:254"
+          "id": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/559:6"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.9064575433731079,
-            "g": 0,
-            "b": 0.04221484810113907,
+            "r": 0.8941176533699036,
+            "g": 0.11764705926179886,
+            "b": 0.16862745583057404,
             "a": 1
           },
-          "alias": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/72:257",
+          "alias": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/559:7",
           "aliasName": "red/600"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 1,
-            "g": 0.3911527395248413,
-            "b": 0.40385687351226807,
+            "r": 0.9686274528503418,
+            "g": 0.23529411852359772,
+            "b": 0.2823529541492462,
             "a": 1
           },
-          "alias": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/72:254",
-          "aliasName": "red/400"
+          "alias": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/559:6",
+          "aliasName": "red/500"
         }
       },
       "scopes": [
@@ -3766,7 +3769,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:72845254c7bccc8f752059ae8efdf45f5caa0a68/74:86"
+          "id": "VariableID:32edd553f4f45306d1ba866c5595851700a96c50/121:75"
         }
       },
       "resolvedValuesByMode": {
@@ -3782,13 +3785,13 @@
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.9479999542236328,
-            "g": 0.9479999542236328,
-            "b": 0.5320000052452087,
+            "r": 0.1595725268125534,
+            "g": 0.19419847428798676,
+            "b": 0.04580152779817581,
             "a": 1
           },
-          "alias": "VariableID:72845254c7bccc8f752059ae8efdf45f5caa0a68/74:86",
-          "aliasName": "yellow-lime/300"
+          "alias": "VariableID:32edd553f4f45306d1ba866c5595851700a96c50/121:75",
+          "aliasName": "yellow-lime/900"
         }
       },
       "scopes": [
@@ -3809,32 +3812,32 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:b1fe30e3320da67c3864e50f532848b06c78b19e/76:446"
+          "id": "VariableID:b1fe30e3320da67c3864e50f532848b06c78b19e/559:14"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:b1fe30e3320da67c3864e50f532848b06c78b19e/76:446"
+          "id": "VariableID:b1fe30e3320da67c3864e50f532848b06c78b19e/559:14"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.9826614260673523,
-            "g": 0.17179709672927856,
-            "b": 0.21307030320167542,
+            "r": 0.9686274528503418,
+            "g": 0.23529411852359772,
+            "b": 0.2823529541492462,
             "a": 0.20000000298023224
           },
-          "alias": "VariableID:b1fe30e3320da67c3864e50f532848b06c78b19e/76:446",
+          "alias": "VariableID:b1fe30e3320da67c3864e50f532848b06c78b19e/559:14",
           "aliasName": "red/alpha/200"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.9826614260673523,
-            "g": 0.17179709672927856,
-            "b": 0.21307030320167542,
+            "r": 0.9686274528503418,
+            "g": 0.23529411852359772,
+            "b": 0.2823529541492462,
             "a": 0.20000000298023224
           },
-          "alias": "VariableID:b1fe30e3320da67c3864e50f532848b06c78b19e/76:446",
+          "alias": "VariableID:b1fe30e3320da67c3864e50f532848b06c78b19e/559:14",
           "aliasName": "red/alpha/200"
         }
       },
@@ -4288,32 +4291,32 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:a17656e99cc45a002894f8a0fc808807399ae7f0/72:256"
+          "id": "VariableID:a17656e99cc45a002894f8a0fc808807399ae7f0/559:8"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:a17656e99cc45a002894f8a0fc808807399ae7f0/72:256"
+          "id": "VariableID:a17656e99cc45a002894f8a0fc808807399ae7f0/559:8"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.7568846940994263,
-            "g": 0,
-            "b": 0.02875453606247902,
+            "r": 0.7529411911964417,
+            "g": 0.08235294371843338,
+            "b": 0.125490203499794,
             "a": 1
           },
-          "alias": "VariableID:a17656e99cc45a002894f8a0fc808807399ae7f0/72:256",
+          "alias": "VariableID:a17656e99cc45a002894f8a0fc808807399ae7f0/559:8",
           "aliasName": "red/700"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.7568846940994263,
-            "g": 0,
-            "b": 0.02875453606247902,
+            "r": 0.7529411911964417,
+            "g": 0.08235294371843338,
+            "b": 0.125490203499794,
             "a": 1
           },
-          "alias": "VariableID:a17656e99cc45a002894f8a0fc808807399ae7f0/72:256",
+          "alias": "VariableID:a17656e99cc45a002894f8a0fc808807399ae7f0/559:8",
           "aliasName": "red/700"
         }
       },
@@ -4432,33 +4435,33 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181"
+          "id": "VariableID:8c51290ae15a1290cab12aa6056843e544bf7a7b/72:161"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181"
+          "id": "VariableID:8c51290ae15a1290cab12aa6056843e544bf7a7b/72:161"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.2848081886768341,
-            "g": 0.49150213599205017,
-            "b": 0,
+            "r": 0,
+            "g": 0.6513022780418396,
+            "b": 0.24199268221855164,
             "a": 1
           },
-          "alias": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181",
-          "aliasName": "green-lime/700"
+          "alias": "VariableID:8c51290ae15a1290cab12aa6056843e544bf7a7b/72:161",
+          "aliasName": "green/600"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.2848081886768341,
-            "g": 0.49150213599205017,
-            "b": 0,
+            "r": 0,
+            "g": 0.6513022780418396,
+            "b": 0.24199268221855164,
             "a": 1
           },
-          "alias": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181",
-          "aliasName": "green-lime/700"
+          "alias": "VariableID:8c51290ae15a1290cab12aa6056843e544bf7a7b/72:161",
+          "aliasName": "green/600"
         }
       },
       "scopes": [
@@ -4528,32 +4531,32 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/76:452"
+          "id": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/559:15"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/76:452"
+          "id": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/559:15"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.9826614260673523,
-            "g": 0.17179709672927856,
-            "b": 0.21307030320167542,
+            "r": 0.9686274528503418,
+            "g": 0.23529411852359772,
+            "b": 0.2823529541492462,
             "a": 0.30000001192092896
           },
-          "alias": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/76:452",
+          "alias": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/559:15",
           "aliasName": "red/alpha/300"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.9826614260673523,
-            "g": 0.17179709672927856,
-            "b": 0.21307030320167542,
+            "r": 0.9686274528503418,
+            "g": 0.23529411852359772,
+            "b": 0.2823529541492462,
             "a": 0.30000001192092896
           },
-          "alias": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/76:452",
+          "alias": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/559:15",
           "aliasName": "red/alpha/300"
         }
       },
@@ -4672,33 +4675,33 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:b32450d86a0a89b66789a934ac8c531e6fb946eb/76:407"
+          "id": "VariableID:419d0ff71fb4cc9581405584f1a981ac2ff97937/76:385"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:b32450d86a0a89b66789a934ac8c531e6fb946eb/76:407"
+          "id": "VariableID:419d0ff71fb4cc9581405584f1a981ac2ff97937/76:385"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.4872932434082031,
-            "g": 0.8099173903465271,
-            "b": 0,
+            "r": 0,
+            "g": 0.7871556282043457,
+            "b": 0.31562188267707825,
             "a": 0.30000001192092896
           },
-          "alias": "VariableID:b32450d86a0a89b66789a934ac8c531e6fb946eb/76:407",
-          "aliasName": "green-lime/alpha/300"
+          "alias": "VariableID:419d0ff71fb4cc9581405584f1a981ac2ff97937/76:385",
+          "aliasName": "green/alpha/300"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.4872932434082031,
-            "g": 0.8099173903465271,
-            "b": 0,
+            "r": 0,
+            "g": 0.7871556282043457,
+            "b": 0.31562188267707825,
             "a": 0.30000001192092896
           },
-          "alias": "VariableID:b32450d86a0a89b66789a934ac8c531e6fb946eb/76:407",
-          "aliasName": "green-lime/alpha/300"
+          "alias": "VariableID:419d0ff71fb4cc9581405584f1a981ac2ff97937/76:385",
+          "aliasName": "green/alpha/300"
         }
       },
       "scopes": [
@@ -4864,32 +4867,32 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/72:254"
+          "id": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/72:257"
+          "id": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/559:7"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 1,
-            "g": 0.3911527395248413,
-            "b": 0.40385687351226807,
+            "r": 0.9960784316062927,
+            "g": 0.32549020648002625,
+            "b": 0.3686274588108063,
             "a": 1
           },
-          "alias": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/72:254",
+          "alias": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5",
           "aliasName": "red/400"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.9064575433731079,
-            "g": 0,
-            "b": 0.04221484810113907,
+            "r": 0.8941176533699036,
+            "g": 0.11764705926179886,
+            "b": 0.16862745583057404,
             "a": 1
           },
-          "alias": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/72:257",
+          "alias": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/559:7",
           "aliasName": "red/600"
         }
       },
@@ -5005,33 +5008,33 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175"
+          "id": "VariableID:692bf5198f34c4fad1721e48162ad2dbbdbb9175/72:169"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181"
+          "id": "VariableID:cdfaf322851d9055db21e5c99f8aa75166d186d4/72:168"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.6024433970451355,
-            "g": 0.9016712307929993,
-            "b": 0,
+            "r": 0.019869813695549965,
+            "g": 0.8753122687339783,
+            "b": 0.4485098123550415,
             "a": 1
           },
-          "alias": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175",
-          "aliasName": "green-lime/400"
+          "alias": "VariableID:692bf5198f34c4fad1721e48162ad2dbbdbb9175/72:169",
+          "aliasName": "green/400"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.2848081886768341,
-            "g": 0.49150213599205017,
-            "b": 0,
+            "r": 0,
+            "g": 0.5099976658821106,
+            "b": 0.20980969071388245,
             "a": 1
           },
-          "alias": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181",
-          "aliasName": "green-lime/700"
+          "alias": "VariableID:cdfaf322851d9055db21e5c99f8aa75166d186d4/72:168",
+          "aliasName": "green/700"
         }
       },
       "scopes": [
@@ -5521,6 +5524,149 @@
         "ANDROID": "LemonadeTheme.colors.border.borderAlwaysDark",
         "iOS": "context.lemonade.colors.border.borderAlwaysDark"
       }
+    },
+    {
+      "id": "VariableID:4664:26753",
+      "name": "Background/Fixed/bg-transparent-light",
+      "description": "Use for transparent surfaces or when layering elements.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 0
+        },
+        "4431:0": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0
+          },
+          "alias": null
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0
+          },
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgTransparent",
+        "iOS": "context.lemonade.colors.background.bgTransparent"
+      }
+    },
+    {
+      "id": "VariableID:4664:26754",
+      "name": "Background/Fixed/bg-transparent-dark",
+      "description": "Use for transparent surfaces or when layering elements.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0
+        },
+        "4431:0": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 0
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0
+          },
+          "alias": null
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0
+          },
+          "alias": null
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgTransparent",
+        "iOS": "context.lemonade.colors.background.bgTransparent"
+      }
+    },
+    {
+      "id": "VariableID:4668:13941",
+      "name": "Shadow/shadow-default",
+      "description": "",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:9361a45884c4f1f76fa0596bbc86076f4663be21/109:38"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:a02ea9d633f4c2d9ed9202d4f4068bc6e8472efb/109:42"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.05000000074505806
+          },
+          "alias": "VariableID:9361a45884c4f1f76fa0596bbc86076f4663be21/109:38",
+          "aliasName": "black/50"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.5
+          },
+          "alias": "VariableID:a02ea9d633f4c2d9ed9202d4f4068bc6e8472efb/109:42",
+          "aliasName": "black/500"
+        }
+      },
+      "scopes": [
+        "ALL_SCOPES"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {}
     }
   ]
 }

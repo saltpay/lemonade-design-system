@@ -58,27 +58,27 @@ public enum LemonadeShadow: CaseIterable, Sendable {
         switch self {
         case .xsmall:
             return [
-                LemonadeShadowData(blur: 2.0, spread: 0.0, offsetX: 0.0, offsetY: 1.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
+                LemonadeShadowData(blur: 2.0, spread: 0.0, offsetX: 0.0, offsetY: 1.0, color: Color("lemonade-shadow-shadow-default", bundle: .lemonade)),
             ]
         case .small:
             return [
-                LemonadeShadowData(blur: 3.0, spread: 0.0, offsetX: 0.0, offsetY: 1.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
-                LemonadeShadowData(blur: 2.0, spread: -1.0, offsetX: 0.0, offsetY: 1.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
+                LemonadeShadowData(blur: 3.0, spread: 0.0, offsetX: 0.0, offsetY: 1.0, color: Color("lemonade-shadow-shadow-default", bundle: .lemonade)),
+                LemonadeShadowData(blur: 2.0, spread: -1.0, offsetX: 0.0, offsetY: 1.0, color: Color("lemonade-shadow-shadow-default", bundle: .lemonade)),
             ]
         case .medium:
             return [
-                LemonadeShadowData(blur: 3.0, spread: -2.0, offsetX: 0.0, offsetY: 2.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
-                LemonadeShadowData(blur: 6.0, spread: -2.0, offsetX: 0.0, offsetY: 4.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
+                LemonadeShadowData(blur: 3.0, spread: -2.0, offsetX: 0.0, offsetY: 2.0, color: Color("lemonade-shadow-shadow-default", bundle: .lemonade)),
+                LemonadeShadowData(blur: 6.0, spread: -2.0, offsetX: 0.0, offsetY: 4.0, color: Color("lemonade-shadow-shadow-default", bundle: .lemonade)),
             ]
         case .large:
             return [
-                LemonadeShadowData(blur: 6.0, spread: -4.0, offsetX: 0.0, offsetY: 4.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
-                LemonadeShadowData(blur: 15.0, spread: -3.0, offsetX: 0.0, offsetY: 10.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
+                LemonadeShadowData(blur: 6.0, spread: -4.0, offsetX: 0.0, offsetY: 4.0, color: Color("lemonade-shadow-shadow-default", bundle: .lemonade)),
+                LemonadeShadowData(blur: 15.0, spread: -3.0, offsetX: 0.0, offsetY: 10.0, color: Color("lemonade-shadow-shadow-default", bundle: .lemonade)),
             ]
         case .xlarge:
             return [
-                LemonadeShadowData(blur: 10.0, spread: -6.0, offsetX: 0.0, offsetY: 8.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
-                LemonadeShadowData(blur: 25.0, spread: -5.0, offsetX: 0.0, offsetY: 20.0, color: Color(red: 0.00, green: 0.00, blue: 0.00, opacity: 0.10)),
+                LemonadeShadowData(blur: 10.0, spread: -6.0, offsetX: 0.0, offsetY: 8.0, color: Color("lemonade-shadow-shadow-default", bundle: .lemonade)),
+                LemonadeShadowData(blur: 25.0, spread: -5.0, offsetX: 0.0, offsetY: 20.0, color: Color("lemonade-shadow-shadow-default", bundle: .lemonade)),
             ]
         case .none:
             return [LemonadeShadowData(blur: 0, spread: 0, offsetX: 0, offsetY: 0, color: .clear)]

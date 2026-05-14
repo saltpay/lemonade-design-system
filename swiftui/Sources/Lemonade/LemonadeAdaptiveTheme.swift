@@ -144,6 +144,12 @@ private struct AdaptiveBackgroundColors: BackgroundColors {
     var bgPositive: Color { Color("lemonade-background-voice-bg-positive", bundle: .lemonade) }
     var bgInfoSubtle: Color { Color("lemonade-background-voice-bg-info-subtle", bundle: .lemonade) }
     var bgElevatedHigh: Color { Color("lemonade-background-bg-elevated-high", bundle: .lemonade) }
+    var bgTransparentLight: Color { Color("lemonade-background-fixed-bg-transparent-light", bundle: .lemonade) }
+    var bgTransparentDark: Color { Color("lemonade-background-fixed-bg-transparent-dark", bundle: .lemonade) }
+}
+
+private struct AdaptiveShadowColors: ShadowColors {
+    var shadowDefault: Color { Color("lemonade-shadow-shadow-default", bundle: .lemonade) }
 }
 
 /// Adaptive theme implementation — colors resolve automatically via Asset Catalog
@@ -154,4 +160,5 @@ public struct LemonadeAdaptiveTheme: LemonadeSemanticColors {
     public let border: BorderColors = AdaptiveBorderColors()
     public let content: ContentColors = AdaptiveContentColors()
     public let background: BackgroundColors = AdaptiveBackgroundColors()
+    public let shadow: ShadowColors = AdaptiveShadowColors()
 }
