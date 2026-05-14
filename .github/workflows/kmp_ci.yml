@@ -72,6 +72,36 @@ jobs:
         run: ./gradlew checkDependencyAllowlist --no-daemon -Dorg.gradle.jvmargs="-Xmx3g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
         working-directory: ./kmp
 
+  api-compatibility:
+    name: Binary Compatibility (apiCheck)
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Gradle
+        uses: ./.github/actions/setup-gradle
+
+      - name: Cache Konan
+        uses: actions/cache@v4
+        with:
+          path: ~/.konan
+          key: konan-${{ runner.os }}-${{ hashFiles('kmp/gradle/libs.versions.toml') }}
+          restore-keys: |
+            konan-${{ runner.os }}-
+
+      - name: Verify public API has not drifted
+        run: ./gradlew apiCheck --no-daemon -Dorg.gradle.jvmargs="-Xmx3g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+        working-directory: ./kmp
+
+      - name: Explain failure
+        if: failure()
+        run: |
+          echo "::error::Public API of a published Lemonade module changed without an updated API baseline."
+          echo "::error::Run './gradlew apiDump' from ./kmp, review the diff in **/api/*.api and **/api/*.klib.api, and commit it."
+          echo "::error::This guard blocks accidental breaking changes AND silently-added public surface."
+
   build:
     name: Build
     runs-on: macos-latest
@@ -105,7 +135,7 @@ jobs:
   ci-status:
     name: CI Status
     if: always()
-    needs: [ detekt, ktlint, dependency-allowlist, build ]
+    needs: [ detekt, ktlint, dependency-allowlist, api-compatibility, build ]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -114,8 +144,9 @@ jobs:
           if [[ "${{ needs.detekt.result }}" != "success" || \
                 "${{ needs.ktlint.result }}" != "success" || \
                 "${{ needs['dependency-allowlist'].result }}" != "success" || \
+                "${{ needs['api-compatibility'].result }}" != "success" || \
                 "${{ needs.build.result }}" != "success" ]]; then
-            echo "CI did not succeed: detekt=${{ needs.detekt.result }}, ktlint=${{ needs.ktlint.result }}, dependency-allowlist=${{ needs['dependency-allowlist'].result }}, build=${{ needs.build.result }}"
+            echo "CI did not succeed: detekt=${{ needs.detekt.result }}, ktlint=${{ needs.ktlint.result }}, dependency-allowlist=${{ needs['dependency-allowlist'].result }}, api-compatibility=${{ needs['api-compatibility'].result }}, build=${{ needs.build.result }}"
             exit 1
           fi
           echo "All CI checks passed"

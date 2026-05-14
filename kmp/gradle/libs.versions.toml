@@ -21,6 +21,7 @@ detekt = "1.23.8"
 ktlint = "14.0.1"
 compose-rules = "0.5.6"
 runtime = "1.10.3"
+binaryCompatibilityValidator = "0.18.1"
 
 [libraries]
 components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "componentsResources" }
@@ -61,3 +62,4 @@ kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", versio
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+binaryCompatibilityValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binaryCompatibilityValidator" }
