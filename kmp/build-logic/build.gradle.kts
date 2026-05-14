@@ -8,6 +8,15 @@ dependencies {
     implementation(libs.gradle.kmp)
     implementation(libs.detekt.gradlePlugin)
     implementation(libs.ktlint.gradlePlugin)
+
+    testImplementation(kotlin("test"))
+    testImplementation(platform("org.junit:junit-bom:5.11.4"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 gradlePlugin {
@@ -19,6 +28,10 @@ gradlePlugin {
         register("LemonadeLintPlugin") {
             id = "lemonade-lint"
             implementationClass = "LemonadeLintPlugin"
+        }
+        register("LemonadeApiStabilityPlugin") {
+            id = "lemonade-api-stability"
+            implementationClass = "LemonadeApiStabilityPlugin"
         }
     }
 }

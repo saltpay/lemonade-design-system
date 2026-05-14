@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.binaryCompatibilityValidator)
+    id("lemonade-api-stability")
 }
 
 apiValidation {
@@ -27,6 +28,7 @@ apiValidation {
         enabled = true
     }
 }
+
 
 detekt {
     buildUponDefaultConfig = true
