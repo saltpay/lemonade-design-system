@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextRange
@@ -644,7 +645,8 @@ internal fun CoreTextFieldDecorator(
                     width = focusShadowBorderWidth,
                     shape = size.data.containerShape,
                     color = LocalColors.current.background.bgElevated,
-                ).border(
+                ).clip(shape = size.data.containerShape)
+                .border(
                     color = animatedBorderColor,
                     width = LocalBorderWidths.current.base.border25,
                     shape = size.data.containerShape,
@@ -741,18 +743,15 @@ internal fun BoxScope.DefaultTextFieldWithSelector(
                     vertical = size.data.verticalPadding,
                 ),
         ) {
-            if (showPlaceholder && placeholderText != null) {
-                LemonadeUi.Text(
-                    text = placeholderText,
-                    textStyle = size.data.contentStyle,
-                    color = LocalColors.current.content.contentSecondary,
-                    modifier = Modifier.weight(weight = 1f),
-                )
-            } else {
-                Box(
-                    content = { innerTextField() },
-                    modifier = Modifier.weight(weight = 1f),
-                )
+            Box(modifier = Modifier.weight(weight = 1f)) {
+                if (showPlaceholder && placeholderText != null) {
+                    LemonadeUi.Text(
+                        text = placeholderText,
+                        textStyle = size.data.contentStyle,
+                        color = LocalColors.current.content.contentSecondary,
+                    )
+                }
+                innerTextField()
             }
 
             if (trailingContent != null) {
@@ -787,18 +786,15 @@ internal fun BoxScope.DefaultTextBox(
             leadingContent()
         }
 
-        if (showPlaceholder && placeholderText != null) {
-            LemonadeUi.Text(
-                text = placeholderText,
-                textStyle = size.data.contentStyle,
-                color = LocalColors.current.content.contentSecondary,
-                modifier = Modifier.weight(weight = 1f),
-            )
-        } else {
-            Box(
-                content = { innerTextField() },
-                modifier = Modifier.weight(weight = 1f),
-            )
+        Box(modifier = Modifier.weight(weight = 1f)) {
+            if (showPlaceholder && placeholderText != null) {
+                LemonadeUi.Text(
+                    text = placeholderText,
+                    textStyle = size.data.contentStyle,
+                    color = LocalColors.current.content.contentSecondary,
+                )
+            }
+            innerTextField()
         }
 
         if (trailingContent != null) {
