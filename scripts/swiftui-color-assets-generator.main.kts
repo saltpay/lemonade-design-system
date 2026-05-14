@@ -250,7 +250,14 @@ fun generateColorShorthand(resources: List<ColorResource>): String {
                 else -> group.lowercase()
             }
             appendLine("    /// $group color tokens")
-            appendLine("    /// Usage: `.foregroundStyle(.$shorthandName.${if (group == "Content") "contentPrimary" else if (group == "Background") "bgDefault" else "borderNeutralMedium"})`")
+            val exampleToken = when (group) {
+                "Content" -> "contentPrimary"
+                "Background" -> "bgDefault"
+                "Border" -> "borderNeutralMedium"
+                "Shadow" -> "shadowDefault"
+                else -> "${shorthandName}Default"
+            }
+            appendLine("    /// Usage: `.foregroundStyle(.$shorthandName.$exampleToken)`")
             appendLine("    static var $shorthandName: Lemonade${group}ColorsShorthand { Lemonade${group}ColorsShorthand() }")
             appendLine()
         }
