@@ -72,6 +72,133 @@ jobs:
         run: ./gradlew checkDependencyAllowlist --no-daemon -Dorg.gradle.jvmargs="-Xmx3g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
         working-directory: ./kmp
 
+  api-compatibility:
+    name: Binary Compatibility (apiCheck)
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Gradle
+        uses: ./.github/actions/setup-gradle
+
+      - name: Cache Konan
+        uses: actions/cache@v4
+        with:
+          path: ~/.konan
+          key: konan-${{ runner.os }}-${{ hashFiles('kmp/gradle/libs.versions.toml') }}
+          restore-keys: |
+            konan-${{ runner.os }}-
+
+      - name: Verify public API has not drifted
+        run: ./gradlew apiCheck --no-daemon -Dorg.gradle.jvmargs="-Xmx3g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+        working-directory: ./kmp
+
+      - name: Explain failure
+        if: failure()
+        run: |
+          echo "::error::Public API of a published Lemonade module changed without an updated API baseline."
+          echo "::error::Run './gradlew apiDump' from ./kmp, review the diff in api/*.api and api/*.klib.api files, and commit it."
+          echo "::error::This guard blocks accidental breaking changes AND silently-added public surface."
+
+  api-stability-review:
+    # Classifies the PR's `.api` / `.klib.api` diff and — for ABI-breaking
+    # changes — requires an APPROVED review from one of the named maintainers
+    # tied to the latest commit. Pure additions auto-pass.
+    name: API Stability Review
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: read
+    env:
+      APPROVERS: caiqueslp williankl DevSrSouza
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Gradle
+        uses: ./.github/actions/setup-gradle
+
+      - name: Compute API diff against base
+        id: diff
+        run: |
+          BASE="${{ github.event.pull_request.base.ref }}"
+          # No --depth: the PR head SHA is fetched separately by actions/checkout,
+          # so we need enough of `$BASE`'s history to reach the merge base. A
+          # shallow fetch of just the base tip fails with "no merge base".
+          git fetch --no-tags origin "$BASE"
+          git diff -U999999 "origin/$BASE...HEAD" -- \
+            'kmp/*/api/*.klib.api' \
+            'kmp/*/api/*/*.api' \
+            > /tmp/api.diff
+          echo "diff_bytes=$(wc -c </tmp/api.diff | tr -d ' ')" >> "$GITHUB_OUTPUT"
+
+      - name: Classify diff
+        run: ./gradlew classifyApiDiff -PapiDiffFile=/tmp/api.diff -PapiVerdictFile=/tmp/verdict.txt --no-daemon -Dorg.gradle.jvmargs="-Xmx2g"
+        working-directory: ./kmp
+
+      - name: Read verdict
+        id: verdict
+        run: |
+          VERDICT=$(head -n1 /tmp/verdict.txt | tr -d '\r\n')
+          echo "verdict=$VERDICT" >> "$GITHUB_OUTPUT"
+          echo "Verdict: $VERDICT"
+          if [ "$VERDICT" = "BREAKING" ]; then
+            {
+              echo "reasons<<EOF"
+              tail -n +2 /tmp/verdict.txt
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Auto-pass (additions-only or no changes)
+        if: steps.verdict.outputs.verdict != 'BREAKING'
+        run: |
+          echo "::notice::Verdict=${{ steps.verdict.outputs.verdict }} — no maintainer approval required."
+
+      - name: Require maintainer approval (breaking change)
+        if: steps.verdict.outputs.verdict == 'BREAKING'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          echo "::warning::ABI-breaking change detected:"
+          echo "${{ steps.verdict.outputs.reasons }}"
+          echo
+
+          APPROVALS=$(gh api "repos/${{ github.repository }}/pulls/${PR_NUMBER}/reviews" \
+            --jq ".[] | select(.state == \"APPROVED\" and .commit_id == \"${HEAD_SHA}\") | .user.login" \
+            | sort -u || true)
+
+          echo "Approvals on commit ${HEAD_SHA}:"
+          echo "${APPROVALS:-(none)}"
+          echo
+
+          MATCHED=""
+          for handle in ${APPROVERS}; do
+            if echo "${APPROVALS}" | grep -qx "${handle}"; then
+              MATCHED="${handle}"
+              break
+            fi
+          done
+
+          if [ -n "${MATCHED}" ]; then
+            echo "::notice::Breaking API change approved by @${MATCHED} on ${HEAD_SHA}."
+            exit 0
+          fi
+
+          echo "::error::Breaking public API change requires an APPROVED review on commit ${HEAD_SHA} from one of: @caiqueslp, @williankl, @DevSrSouza."
+          echo "::error::Re-request review after every new push — approvals are matched against the latest commit SHA."
+          exit 1
+
   build:
     name: Build
     runs-on: macos-latest
@@ -105,17 +232,27 @@ jobs:
   ci-status:
     name: CI Status
     if: always()
-    needs: [ detekt, ktlint, dependency-allowlist, build ]
+    needs: [ detekt, ktlint, dependency-allowlist, api-compatibility, api-stability-review, build ]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Check CI results
         run: |
+          # `api-stability-review` is skipped on push events (PR-only); treat skipped as a pass.
+          ASR="${{ needs['api-stability-review'].result }}"
+          if [[ "$ASR" != "success" && "$ASR" != "skipped" ]]; then
+            ASR_BAD=1
+          else
+            ASR_BAD=0
+          fi
+
           if [[ "${{ needs.detekt.result }}" != "success" || \
                 "${{ needs.ktlint.result }}" != "success" || \
                 "${{ needs['dependency-allowlist'].result }}" != "success" || \
+                "${{ needs['api-compatibility'].result }}" != "success" || \
+                "$ASR_BAD" == "1" || \
                 "${{ needs.build.result }}" != "success" ]]; then
-            echo "CI did not succeed: detekt=${{ needs.detekt.result }}, ktlint=${{ needs.ktlint.result }}, dependency-allowlist=${{ needs['dependency-allowlist'].result }}, build=${{ needs.build.result }}"
+            echo "CI did not succeed: detekt=${{ needs.detekt.result }}, ktlint=${{ needs.ktlint.result }}, dependency-allowlist=${{ needs['dependency-allowlist'].result }}, api-compatibility=${{ needs['api-compatibility'].result }}, api-stability-review=$ASR, build=${{ needs.build.result }}"
             exit 1
           fi
           echo "All CI checks passed"

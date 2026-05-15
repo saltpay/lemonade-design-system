@@ -11,6 +11,22 @@ plugins {
     alias(libs.plugins.mavenPublish) apply false
     alias(libs.plugins.detekt)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.binaryCompatibilityValidator)
+    id("lemonade-api-stability")
+}
+
+apiValidation {
+    // Validate only the publishable modules. composeApp is the sample app and
+    // not published, so its API surface is irrelevant for consumers.
+    ignoredProjects += listOf("composeApp")
+
+    @OptIn(kotlinx.validation.ExperimentalBCVApi::class)
+    klib {
+        // Enables Kotlin/Native (and other non-JVM) ABI validation in addition
+        // to the JVM/Android API dump. Without this, additions/removals on
+        // iOS-only or common-only declarations would slip past CI.
+        enabled = true
+    }
 }
 
 detekt {
