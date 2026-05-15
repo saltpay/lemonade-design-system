@@ -29,7 +29,6 @@ apiValidation {
     }
 }
 
-
 detekt {
     buildUponDefaultConfig = true
     allRules = false
