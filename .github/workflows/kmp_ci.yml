@@ -129,11 +129,13 @@ jobs:
         id: diff
         run: |
           BASE="${{ github.event.pull_request.base.ref }}"
-          git fetch --no-tags --depth=1 origin "$BASE"
+          # No --depth: the PR head SHA is fetched separately by actions/checkout,
+          # so we need enough of `$BASE`'s history to reach the merge base. A
+          # shallow fetch of just the base tip fails with "no merge base".
+          git fetch --no-tags origin "$BASE"
           git diff -U999999 "origin/$BASE...HEAD" -- \
-            'kmp/*/api/*.api' \
-            'kmp/*/api/*/*.api' \
             'kmp/*/api/*.klib.api' \
+            'kmp/*/api/*/*.api' \
             > /tmp/api.diff
           echo "diff_bytes=$(wc -c </tmp/api.diff | tr -d ' ')" >> "$GITHUB_OUTPUT"
 
