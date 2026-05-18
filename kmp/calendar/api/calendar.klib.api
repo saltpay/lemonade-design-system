@@ -1,0 +1,62 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <Lemonade:calendar>
+final class com.teya.lemonade/DatePickerState { // com.teya.lemonade/DatePickerState|null[0]
+    final val maxDate // com.teya.lemonade/DatePickerState.maxDate|{}maxDate[0]
+        final fun <get-maxDate>(): kotlinx.datetime/LocalDate? // com.teya.lemonade/DatePickerState.maxDate.<get-maxDate>|<get-maxDate>(){}[0]
+    final val minDate // com.teya.lemonade/DatePickerState.minDate|{}minDate[0]
+        final fun <get-minDate>(): kotlinx.datetime/LocalDate? // com.teya.lemonade/DatePickerState.minDate.<get-minDate>|<get-minDate>(){}[0]
+
+    final var selectedDate // com.teya.lemonade/DatePickerState.selectedDate|{}selectedDate[0]
+        final fun <get-selectedDate>(): kotlinx.datetime/LocalDate? // com.teya.lemonade/DatePickerState.selectedDate.<get-selectedDate>|<get-selectedDate>(){}[0]
+}
+
+final class com.teya.lemonade/DateRangePickerState { // com.teya.lemonade/DateRangePickerState|null[0]
+    final val maxDate // com.teya.lemonade/DateRangePickerState.maxDate|{}maxDate[0]
+        final fun <get-maxDate>(): kotlinx.datetime/LocalDate? // com.teya.lemonade/DateRangePickerState.maxDate.<get-maxDate>|<get-maxDate>(){}[0]
+    final val maxRangeDays // com.teya.lemonade/DateRangePickerState.maxRangeDays|{}maxRangeDays[0]
+        final fun <get-maxRangeDays>(): kotlin/Int? // com.teya.lemonade/DateRangePickerState.maxRangeDays.<get-maxRangeDays>|<get-maxRangeDays>(){}[0]
+    final val minDate // com.teya.lemonade/DateRangePickerState.minDate|{}minDate[0]
+        final fun <get-minDate>(): kotlinx.datetime/LocalDate? // com.teya.lemonade/DateRangePickerState.minDate.<get-minDate>|<get-minDate>(){}[0]
+
+    final var selectedEndDate // com.teya.lemonade/DateRangePickerState.selectedEndDate|{}selectedEndDate[0]
+        final fun <get-selectedEndDate>(): kotlinx.datetime/LocalDate? // com.teya.lemonade/DateRangePickerState.selectedEndDate.<get-selectedEndDate>|<get-selectedEndDate>(){}[0]
+    final var selectedStartDate // com.teya.lemonade/DateRangePickerState.selectedStartDate|{}selectedStartDate[0]
+        final fun <get-selectedStartDate>(): kotlinx.datetime/LocalDate? // com.teya.lemonade/DateRangePickerState.selectedStartDate.<get-selectedStartDate>|<get-selectedStartDate>(){}[0]
+}
+
+final class com.teya.lemonade/InlineCalendarState { // com.teya.lemonade/InlineCalendarState|null[0]
+    final val firstDayOfWeek // com.teya.lemonade/InlineCalendarState.firstDayOfWeek|{}firstDayOfWeek[0]
+        final fun <get-firstDayOfWeek>(): kotlinx.datetime/DayOfWeek // com.teya.lemonade/InlineCalendarState.firstDayOfWeek.<get-firstDayOfWeek>|<get-firstDayOfWeek>(){}[0]
+    final val maxDate // com.teya.lemonade/InlineCalendarState.maxDate|{}maxDate[0]
+        final fun <get-maxDate>(): kotlinx.datetime/LocalDate? // com.teya.lemonade/InlineCalendarState.maxDate.<get-maxDate>|<get-maxDate>(){}[0]
+    final val minDate // com.teya.lemonade/InlineCalendarState.minDate|{}minDate[0]
+        final fun <get-minDate>(): kotlinx.datetime/LocalDate? // com.teya.lemonade/InlineCalendarState.minDate.<get-minDate>|<get-minDate>(){}[0]
+
+    final var displayedMonth // com.teya.lemonade/InlineCalendarState.displayedMonth|{}displayedMonth[0]
+        final fun <get-displayedMonth>(): kotlinx.datetime/YearMonth // com.teya.lemonade/InlineCalendarState.displayedMonth.<get-displayedMonth>|<get-displayedMonth>(){}[0]
+    final var selectedDate // com.teya.lemonade/InlineCalendarState.selectedDate|{}selectedDate[0]
+        final fun <get-selectedDate>(): kotlinx.datetime/LocalDate? // com.teya.lemonade/InlineCalendarState.selectedDate.<get-selectedDate>|<get-selectedDate>(){}[0]
+
+    final fun navigateToMonth(kotlinx.datetime/YearMonth) // com.teya.lemonade/InlineCalendarState.navigateToMonth|navigateToMonth(kotlinx.datetime.YearMonth){}[0]
+    final fun selectDate(kotlinx.datetime/LocalDate) // com.teya.lemonade/InlineCalendarState.selectDate|selectDate(kotlinx.datetime.LocalDate){}[0]
+}
+
+final val com.teya.lemonade/com_teya_lemonade_DatePickerState$stableprop // com.teya.lemonade/com_teya_lemonade_DatePickerState$stableprop|#static{}com_teya_lemonade_DatePickerState$stableprop[0]
+final val com.teya.lemonade/com_teya_lemonade_DateRangePickerState$stableprop // com.teya.lemonade/com_teya_lemonade_DateRangePickerState$stableprop|#static{}com_teya_lemonade_DateRangePickerState$stableprop[0]
+final val com.teya.lemonade/com_teya_lemonade_InlineCalendarState$stableprop // com.teya.lemonade/com_teya_lemonade_InlineCalendarState$stableprop|#static{}com_teya_lemonade_InlineCalendarState$stableprop[0]
+
+final fun (com.teya.lemonade/LemonadeUi).com.teya.lemonade/DatePicker(kotlin/Function1<kotlin/Int, kotlin/String>, kotlin.collections/List<kotlin/String>, androidx.compose.ui/Modifier?, com.teya.lemonade/DatePickerState?, kotlinx.datetime/DayOfWeek?, kotlin/Function1<kotlinx.datetime/YearMonth, kotlin/Unit>?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.teya.lemonade/DatePicker|DatePicker@com.teya.lemonade.LemonadeUi(kotlin.Function1<kotlin.Int,kotlin.String>;kotlin.collections.List<kotlin.String>;androidx.compose.ui.Modifier?;com.teya.lemonade.DatePickerState?;kotlinx.datetime.DayOfWeek?;kotlin.Function1<kotlinx.datetime.YearMonth,kotlin.Unit>?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun (com.teya.lemonade/LemonadeUi).com.teya.lemonade/DateRangePicker(kotlin/Function1<kotlin/Int, kotlin/String>, kotlin.collections/List<kotlin/String>, androidx.compose.ui/Modifier?, com.teya.lemonade/DateRangePickerState?, kotlinx.datetime/DayOfWeek?, kotlin/Function1<kotlinx.datetime/YearMonth, kotlin/Unit>?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.teya.lemonade/DateRangePicker|DateRangePicker@com.teya.lemonade.LemonadeUi(kotlin.Function1<kotlin.Int,kotlin.String>;kotlin.collections.List<kotlin.String>;androidx.compose.ui.Modifier?;com.teya.lemonade.DateRangePickerState?;kotlinx.datetime.DayOfWeek?;kotlin.Function1<kotlinx.datetime.YearMonth,kotlin.Unit>?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun (com.teya.lemonade/LemonadeUi).com.teya.lemonade/InlineCalendar(com.teya.lemonade/InlineCalendarState, androidx.compose.ui/Modifier?, com.teya.lemonade.core/DayLabelFormat?, kotlin.collections/List<kotlin/String>?, kotlin/Function1<kotlin/Int, kotlin/String>?, kotlin/Function1<kotlinx.datetime/LocalDate, kotlin/Unit>?, kotlin/Function1<kotlinx.datetime/YearMonth, kotlin/Unit>?, kotlin/Function1<kotlinx.datetime/LocalDate, kotlin/Boolean>?, kotlin/String?, kotlin/String?, kotlin.collections/List<kotlin/String>?, kotlin/Boolean, androidx.compose.ui.graphics/Color?, androidx.compose.ui.graphics/Color?, kotlin/Function4<kotlinx.datetime/LocalDate, kotlin/Boolean, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int, kotlin/Int) // com.teya.lemonade/InlineCalendar|InlineCalendar@com.teya.lemonade.LemonadeUi(com.teya.lemonade.InlineCalendarState;androidx.compose.ui.Modifier?;com.teya.lemonade.core.DayLabelFormat?;kotlin.collections.List<kotlin.String>?;kotlin.Function1<kotlin.Int,kotlin.String>?;kotlin.Function1<kotlinx.datetime.LocalDate,kotlin.Unit>?;kotlin.Function1<kotlinx.datetime.YearMonth,kotlin.Unit>?;kotlin.Function1<kotlinx.datetime.LocalDate,kotlin.Boolean>?;kotlin.String?;kotlin.String?;kotlin.collections.List<kotlin.String>?;kotlin.Boolean;androidx.compose.ui.graphics.Color?;androidx.compose.ui.graphics.Color?;kotlin.Function4<kotlinx.datetime.LocalDate,kotlin.Boolean,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int;kotlin.Int){}[0]
+final fun com.teya.lemonade/com_teya_lemonade_DatePickerState$stableprop_getter(): kotlin/Int // com.teya.lemonade/com_teya_lemonade_DatePickerState$stableprop_getter|com_teya_lemonade_DatePickerState$stableprop_getter(){}[0]
+final fun com.teya.lemonade/com_teya_lemonade_DateRangePickerState$stableprop_getter(): kotlin/Int // com.teya.lemonade/com_teya_lemonade_DateRangePickerState$stableprop_getter|com_teya_lemonade_DateRangePickerState$stableprop_getter(){}[0]
+final fun com.teya.lemonade/com_teya_lemonade_InlineCalendarState$stableprop_getter(): kotlin/Int // com.teya.lemonade/com_teya_lemonade_InlineCalendarState$stableprop_getter|com_teya_lemonade_InlineCalendarState$stableprop_getter(){}[0]
+final fun com.teya.lemonade/rememberDatePickerState(kotlinx.datetime/LocalDate?, kotlinx.datetime/LocalDate?, kotlinx.datetime/LocalDate?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int): com.teya.lemonade/DatePickerState // com.teya.lemonade/rememberDatePickerState|rememberDatePickerState(kotlinx.datetime.LocalDate?;kotlinx.datetime.LocalDate?;kotlinx.datetime.LocalDate?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.teya.lemonade/rememberDateRangePickerState(kotlinx.datetime/LocalDate?, kotlinx.datetime/LocalDate?, kotlinx.datetime/LocalDate?, kotlinx.datetime/LocalDate?, kotlin/Int?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int): com.teya.lemonade/DateRangePickerState // com.teya.lemonade/rememberDateRangePickerState|rememberDateRangePickerState(kotlinx.datetime.LocalDate?;kotlinx.datetime.LocalDate?;kotlinx.datetime.LocalDate?;kotlinx.datetime.LocalDate?;kotlin.Int?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.teya.lemonade/rememberInlineCalendarState(kotlinx.datetime/LocalDate?, kotlinx.datetime/YearMonth?, kotlinx.datetime/LocalDate?, kotlinx.datetime/LocalDate?, kotlinx.datetime/DayOfWeek?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int): com.teya.lemonade/InlineCalendarState // com.teya.lemonade/rememberInlineCalendarState|rememberInlineCalendarState(kotlinx.datetime.LocalDate?;kotlinx.datetime.YearMonth?;kotlinx.datetime.LocalDate?;kotlinx.datetime.LocalDate?;kotlinx.datetime.DayOfWeek?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
