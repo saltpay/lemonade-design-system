@@ -35,6 +35,18 @@ public enum SymbolContainerVoice {
         case .brandSubtle: return LemonadeTheme.colors.background.bgBrandSubtle
         }
     }
+
+    var borderColor: Color {
+        switch self {
+        case .neutral: return LemonadeTheme.colors.border.borderNeutralLow
+        case .critical: return LemonadeTheme.colors.border.borderCriticalSubtle
+        case .warning: return LemonadeTheme.colors.border.borderCautionSubtle
+        case .info: return LemonadeTheme.colors.border.borderInfoSubtle
+        case .positive: return LemonadeTheme.colors.border.borderPositiveSubtle
+        case .brand: return LemonadeTheme.colors.border.borderBrand
+        case .brandSubtle: return LemonadeTheme.colors.border.borderOnBrandLow
+        }
+    }
 }
 
 // MARK: - SymbolContainer Size
@@ -338,9 +350,19 @@ private struct LemonadeSymbolContainerView<Content: View, Badge: View>: View {
 
         switch shape {
         case .circle:
-            base.clipShape(Circle())
+            base
+                .clipShape(Circle())
+                .overlay(
+                    Circle()
+                        .stroke(voice.borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
+                )
         case .rounded:
-            base.clipShape(RoundedRectangle(cornerRadius: roundedRadius(for: size)))
+            base
+                .clipShape(RoundedRectangle(cornerRadius: roundedRadius(for: size)))
+                .overlay(
+                    RoundedRectangle(cornerRadius: roundedRadius(for: size))
+                        .stroke(voice.borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
+                )
         }
     }
 

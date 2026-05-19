@@ -2,6 +2,7 @@ package com.teya.lemonade
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.requiredSize
@@ -269,6 +270,11 @@ private fun CoreSymbolContainer(
                         modifier = Modifier
                             .clip(shape = resolvedShape)
                             .background(color = voice.containerColor)
+                            .border(
+                                width = LocalBorderWidths.current.base.border25,
+                                color = voice.borderColor,
+                                shape = resolvedShape,
+                            )
                             .requiredSize(size = dimensions.containerSize),
                     )
                 },
@@ -280,6 +286,11 @@ private fun CoreSymbolContainer(
                 modifier = modifier
                     .clip(shape = resolvedShape)
                     .background(color = voice.containerColor)
+                    .border(
+                        width = LocalBorderWidths.current.base.border25,
+                        color = voice.borderColor,
+                        shape = resolvedShape,
+                    )
                     .requiredSize(size = dimensions.containerSize),
             )
         }
@@ -314,6 +325,19 @@ private val SymbolContainerVoice.containerColor: Color
             SymbolContainerVoice.Positive -> LocalColors.current.background.bgPositiveSubtle
             SymbolContainerVoice.Brand -> LocalColors.current.background.bgBrand
             SymbolContainerVoice.BrandSubtle -> LocalColors.current.background.bgBrandSubtle
+        }
+    }
+
+private val SymbolContainerVoice.borderColor: Color
+    @Composable get() {
+        return when (this) {
+            SymbolContainerVoice.Neutral -> LocalColors.current.border.borderNeutralLow
+            SymbolContainerVoice.Critical -> LocalColors.current.border.borderCriticalSubtle
+            SymbolContainerVoice.Warning -> LocalColors.current.border.borderCautionSubtle
+            SymbolContainerVoice.Info -> LocalColors.current.border.borderInfoSubtle
+            SymbolContainerVoice.Positive -> LocalColors.current.border.borderPositiveSubtle
+            SymbolContainerVoice.Brand -> LocalColors.current.border.borderBrand
+            SymbolContainerVoice.BrandSubtle -> LocalColors.current.border.borderOnBrandLow
         }
     }
 
