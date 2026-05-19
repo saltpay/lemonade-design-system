@@ -270,7 +270,7 @@ private fun CoreSymbolContainer(
                         modifier = Modifier
                             .clip(shape = resolvedShape)
                             .background(color = voice.containerColor)
-                            .border(LocalBorderWidths.current.base.border25, voice.borderColor, resolvedShape)
+                            .border(width = LocalBorderWidths.current.base.border25, color = voice.borderColor, shape = resolvedShape)
                             .requiredSize(size = dimensions.containerSize),
                     )
                 },
@@ -282,7 +282,7 @@ private fun CoreSymbolContainer(
                 modifier = modifier
                     .clip(shape = resolvedShape)
                     .background(color = voice.containerColor)
-                    .border(LocalBorderWidths.current.base.border25, voice.borderColor, resolvedShape)
+                    .border(width = LocalBorderWidths.current.base.border25, color = voice.borderColor, shape = resolvedShape)
                     .requiredSize(size = dimensions.containerSize),
             )
         }
