@@ -269,9 +269,13 @@ private fun CoreSymbolContainer(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
                             .clip(shape = resolvedShape)
-                            .background(color = voice.containerColor)
-                            .border(width = LocalBorderWidths.current.base.border25, color = voice.borderColor, shape = resolvedShape)
-                            .requiredSize(size = dimensions.containerSize),
+                            .background(
+                                color = voice.containerColor,
+                            ).border(
+                                width = LocalBorderWidths.current.base.border25,
+                                color = voice.borderColor,
+                                shape = resolvedShape,
+                            ).requiredSize(size = dimensions.containerSize),
                     )
                 },
             )
@@ -281,9 +285,13 @@ private fun CoreSymbolContainer(
                 contentAlignment = Alignment.Center,
                 modifier = modifier
                     .clip(shape = resolvedShape)
-                    .background(color = voice.containerColor)
-                    .border(width = LocalBorderWidths.current.base.border25, color = voice.borderColor, shape = resolvedShape)
-                    .requiredSize(size = dimensions.containerSize),
+                    .background(
+                        color = voice.containerColor,
+                    ).border(
+                        width = LocalBorderWidths.current.base.border25,
+                        color = voice.borderColor,
+                        shape = resolvedShape,
+                    ).requiredSize(size = dimensions.containerSize),
             )
         }
     }
