@@ -345,25 +345,6 @@ private func resolveButtonColors(
     }
 }
 
-// MARK: - Button Full Shape Environment
-
-private struct LemonadeButtonFullShapeKey: EnvironmentKey {
-    static let defaultValue: Bool = false
-}
-
-extension EnvironmentValues {
-    var lemonadeButtonFullShape: Bool {
-        get { self[LemonadeButtonFullShapeKey.self] }
-        set { self[LemonadeButtonFullShapeKey.self] = newValue }
-    }
-}
-
-public extension View {
-    func fullShape(_ enabled: Bool = true) -> some View {
-        environment(\.lemonadeButtonFullShape, enabled)
-    }
-}
-
 // MARK: - Internal Core Button View
 
 private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: View {
