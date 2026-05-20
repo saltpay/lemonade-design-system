@@ -61,6 +61,7 @@ public extension LemonadeUi {
     ///   - isLoading: Shows a skeleton loading placeholder instead of content
     ///   - enabled: Flag to define if component is enabled
     ///   - showDivider: Flag to show a divider below the list item
+    ///   - leadingAlignment: Vertical alignment of the leading slot. Defaults to `.top`.
     ///   - trailingAlignment: Vertical alignment of the trailing slot and navigation indicator. Defaults to `.center`.
     ///   - onListItemClick: Optional callback triggered on click interaction
     ///   - leadingSlot: Slot content to be placed in leading position
@@ -76,6 +77,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        leadingAlignment: VerticalAlignment = .top,
         trailingAlignment: VerticalAlignment = .center,
         onListItemClick: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
@@ -90,6 +92,7 @@ public extension LemonadeUi {
                 navigationIndicator: navigationIndicator,
                 enabled: enabled,
                 showDivider: showDivider,
+                leadingAlignment: leadingAlignment,
                 trailingAlignment: trailingAlignment,
                 onListItemClick: onListItemClick,
                 leadingSlot: leadingSlot,
@@ -133,6 +136,7 @@ public extension LemonadeUi {
     ///   - navigationIndicator: Shows a chevron-right navigation indicator
     ///   - enabled: Flag to define if component is enabled
     ///   - showDivider: Flag to show a divider below the list item
+    ///   - leadingAlignment: Vertical alignment of the leading slot. Defaults to `.top`.
     ///   - trailingAlignment: Vertical alignment of the trailing slot and navigation indicator. Defaults to `.center`.
     ///   - onListItemClick: Optional callback triggered on click interaction
     ///   - leadingSlot: Slot content to be placed in leading position
@@ -144,6 +148,7 @@ public extension LemonadeUi {
         navigationIndicator: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
+        leadingAlignment: VerticalAlignment = .top,
         trailingAlignment: VerticalAlignment = .center,
         onListItemClick: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
@@ -156,6 +161,7 @@ public extension LemonadeUi {
             navigationIndicator: navigationIndicator,
             enabled: enabled,
             showDivider: showDivider,
+            leadingAlignment: leadingAlignment,
             trailingAlignment: trailingAlignment,
             onListItemClick: onListItemClick,
             leadingSlot: leadingSlot,
@@ -172,6 +178,7 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
     let navigationIndicator: Bool
     let enabled: Bool
     let showDivider: Bool
+    let leadingAlignment: VerticalAlignment
     let trailingAlignment: VerticalAlignment
     let onListItemClick: (() -> Void)?
     let leadingSlot: () -> LeadingContent
@@ -200,10 +207,10 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
     }
     
     private var listItemContent: some View {
-        HStack(alignment: .top, spacing: 0) {
+        HStack(alignment: leadingAlignment, spacing: 0) {
             if hasLeading {
                 leadingSlot()
-                    .frame(alignment: .top)
+                    .frame(alignment: Alignment(horizontal: .center, vertical: leadingAlignment))
                     .padding(.trailing, LemonadeTheme.spaces.spacing300)
                     .padding(.vertical, LemonadeTheme.spaces.spacing50)
                     .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)

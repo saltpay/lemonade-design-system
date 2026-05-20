@@ -173,6 +173,59 @@ internal fun ActionListItemDisplay() {
             )
         }
 
+        // ActionListItem - Leading Alignment
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "ActionListItem - Leading Alignment"),
+        ) {
+            LemonadeUi.ActionListItem(
+                label = "Top aligned (default)",
+                supportText = "leadingVerticalAlignment: Top\nSecond line",
+                showNavigationIndicator = true,
+                showDivider = true,
+                leadingVerticalAlignment = Alignment.Top,
+                onItemClicked = {},
+                leadingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.Gear,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                    )
+                },
+            )
+
+            LemonadeUi.ActionListItem(
+                label = "Center aligned",
+                supportText = "leadingVerticalAlignment: CenterVertically\nSecond line",
+                showNavigationIndicator = true,
+                showDivider = true,
+                leadingVerticalAlignment = Alignment.CenterVertically,
+                onItemClicked = {},
+                leadingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.Bell,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                    )
+                },
+            )
+
+            LemonadeUi.ActionListItem(
+                label = "Bottom aligned",
+                supportText = "leadingVerticalAlignment: Bottom\nSecond line",
+                showNavigationIndicator = true,
+                showDivider = false,
+                leadingVerticalAlignment = Alignment.Bottom,
+                onItemClicked = {},
+                leadingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.Padlock,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                    )
+                },
+            )
+        }
+
         // ActionListItem with Trailing Slot
         LemonadeUi.Card(
             header = CardHeaderConfig(title = "ActionListItem with Trailing"),

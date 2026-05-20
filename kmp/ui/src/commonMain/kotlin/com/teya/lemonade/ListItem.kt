@@ -127,6 +127,53 @@ public fun LemonadeUi.ResourceListItem(
     )
 }
 
+@Deprecated(
+    message = "Use the overload with leadingVerticalAlignment parameter.",
+    replaceWith = ReplaceWith(
+        expression = "ActionListItem(label, modifier, topLabel, supportText, leadingSlot, " +
+            "trailingSlot, voice, isLoading, enabled, onItemClicked, role, interactionSource, " +
+            "showNavigationIndicator, showDivider, trailingVerticalAlignment, Alignment.Top)",
+    ),
+)
+@Composable
+public fun LemonadeUi.ActionListItem(
+    label: String,
+    modifier: Modifier = Modifier,
+    topLabel: String? = null,
+    supportText: String? = null,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    isLoading: Boolean = false,
+    enabled: Boolean = true,
+    onItemClicked: (() -> Unit)? = null,
+    role: Role? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showNavigationIndicator: Boolean = false,
+    showDivider: Boolean = false,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+) {
+    @Suppress("DEPRECATION")
+    ActionListItem(
+        label = label,
+        modifier = modifier,
+        topLabel = topLabel,
+        supportText = supportText,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        voice = voice,
+        isLoading = isLoading,
+        enabled = enabled,
+        onItemClicked = onItemClicked,
+        role = role,
+        interactionSource = interactionSource,
+        showNavigationIndicator = showNavigationIndicator,
+        showDivider = showDivider,
+        trailingVerticalAlignment = trailingVerticalAlignment,
+        leadingVerticalAlignment = Alignment.Top,
+    )
+}
+
 /**
  * Basic building block for list items.
  *
@@ -160,6 +207,8 @@ public fun LemonadeUi.ResourceListItem(
  * @param showDivider - [Boolean] flag to show a divider below the list item.
  * @param trailingVerticalAlignment - Vertical alignment of the trailing slot and navigation
  *  indicator against the label/supportText column. Defaults to [Alignment.CenterVertically].
+ * @param leadingVerticalAlignment - Vertical alignment of the leading slot against the
+ *  label/supportText column. Defaults to [Alignment.Top].
  */
 @Composable
 public fun LemonadeUi.ActionListItem(
@@ -178,6 +227,7 @@ public fun LemonadeUi.ActionListItem(
     showNavigationIndicator: Boolean = false,
     showDivider: Boolean = false,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
 ) {
     LemonadeUi.ListItem(
         label = label,
@@ -210,7 +260,57 @@ public fun LemonadeUi.ActionListItem(
         modifier = modifier,
         showDivider = showDivider,
         interactionSource = interactionSource,
+        leadingVerticalAlignment = leadingVerticalAlignment,
         trailingVerticalAlignment = trailingVerticalAlignment,
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with leadingVerticalAlignment parameter.",
+    replaceWith = ReplaceWith(
+        expression = "ListItem(label, modifier, topLabel, supportText, onListItemClick, voice, " +
+            "navigationIndicator, isLoading, role, enabled, interactionSource, showDivider, " +
+            "leadingSlot, trailingSlot, slotContent, trailingVerticalAlignment, Alignment.Top)",
+    ),
+)
+@Composable
+public fun LemonadeUi.ListItem(
+    label: String,
+    modifier: Modifier = Modifier,
+    topLabel: String? = null,
+    supportText: String? = null,
+    onListItemClick: (() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    navigationIndicator: Boolean = false,
+    isLoading: Boolean = false,
+    role: Role? = null,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showDivider: Boolean = false,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+) {
+    @Suppress("DEPRECATION")
+    ListItem(
+        label = label,
+        modifier = modifier,
+        topLabel = topLabel,
+        supportText = supportText,
+        onListItemClick = onListItemClick,
+        voice = voice,
+        navigationIndicator = navigationIndicator,
+        isLoading = isLoading,
+        role = role,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        showDivider = showDivider,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        slotContent = slotContent,
+        trailingVerticalAlignment = trailingVerticalAlignment,
+        leadingVerticalAlignment = Alignment.Top,
     )
 }
 
@@ -235,6 +335,8 @@ public fun LemonadeUi.ActionListItem(
  * @param slotContent - Optional slot content below the label and support text.
  * @param trailingVerticalAlignment - Vertical alignment of the trailing slot and navigation
  *  indicator against the label/supportText column. Defaults to [Alignment.CenterVertically].
+ * @param leadingVerticalAlignment - Vertical alignment of the leading slot against the
+ *  label/supportText column. Defaults to [Alignment.Top].
  */
 @Composable
 public fun LemonadeUi.ListItem(
@@ -254,6 +356,7 @@ public fun LemonadeUi.ListItem(
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     slotContent: (@Composable ColumnScope.() -> Unit)? = null,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
 ) {
     if (isLoading) {
         ListItemSkeleton(
@@ -272,6 +375,7 @@ public fun LemonadeUi.ListItem(
             modifier = modifier,
             showDivider = showDivider,
             interactionSource = interactionSource,
+            leadingVerticalAlignment = leadingVerticalAlignment,
             trailingVerticalAlignment = trailingVerticalAlignment,
             contentSlot = {
                 if (topLabel != null) {
@@ -304,6 +408,47 @@ public fun LemonadeUi.ListItem(
     }
 }
 
+@Deprecated(
+    message = "Use the overload with leadingVerticalAlignment parameter.",
+    replaceWith = ReplaceWith(
+        expression = "ListItem(contentSlot, modifier, onListItemClick, voice, navigationIndicator, " +
+            "role, enabled, interactionSource, showDivider, leadingSlot, trailingSlot, " +
+            "trailingVerticalAlignment, Alignment.Top)",
+    ),
+)
+@Composable
+public fun LemonadeUi.ListItem(
+    contentSlot: @Composable ColumnScope.() -> Unit,
+    modifier: Modifier = Modifier,
+    onListItemClick: (() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    navigationIndicator: Boolean = false,
+    role: Role? = null,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showDivider: Boolean = false,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+) {
+    @Suppress("DEPRECATION")
+    ListItem(
+        contentSlot = contentSlot,
+        modifier = modifier,
+        onListItemClick = onListItemClick,
+        voice = voice,
+        navigationIndicator = navigationIndicator,
+        role = role,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        showDivider = showDivider,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        trailingVerticalAlignment = trailingVerticalAlignment,
+        leadingVerticalAlignment = Alignment.Top,
+    )
+}
+
 /**
  * Foundational list-item overload that accepts a generic content slot for custom content,
  * delegating layout and interaction handling to [CoreListItem].
@@ -322,6 +467,8 @@ public fun LemonadeUi.ListItem(
  * @param interactionSource - [MutableInteractionSource] for interaction events.
  * @param trailingVerticalAlignment - Vertical alignment of the trailing slot and navigation
  *  indicator against the content slot. Defaults to [Alignment.CenterVertically].
+ * @param leadingVerticalAlignment - Vertical alignment of the leading slot against the
+ *  content slot. Defaults to [Alignment.Top].
  */
 @Composable
 public fun LemonadeUi.ListItem(
@@ -337,6 +484,7 @@ public fun LemonadeUi.ListItem(
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
 ) {
     CoreListItem(
         contentSlot = contentSlot,
@@ -350,6 +498,7 @@ public fun LemonadeUi.ListItem(
         modifier = modifier,
         showDivider = showDivider,
         interactionSource = interactionSource,
+        leadingVerticalAlignment = leadingVerticalAlignment,
         trailingVerticalAlignment = trailingVerticalAlignment,
     )
 }
@@ -368,6 +517,7 @@ private fun CoreListItem(
     showDivider: Boolean,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
 ) {
     val isPressed by interactionSource.collectIsPressedAsState()
     val isHovering by interactionSource.collectIsHoveredAsState()
@@ -408,7 +558,7 @@ private fun CoreListItem(
             if (leadingSlot != null) {
                 Row(
                     modifier = Modifier
-                        .align(Alignment.Top)
+                        .align(leadingVerticalAlignment)
                         .padding(end = LocalSpaces.current.spacing300)
                         .padding(vertical = LocalSpaces.current.spacing50)
                         .then(

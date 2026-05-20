@@ -196,6 +196,62 @@ struct ActionListItemPreview: View {
                 )
             }
             
+            // MARK: - ActionListItem - Leading Alignment
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "ActionListItem - Leading Alignment"
+                )
+            ) {
+                LemonadeUi.ActionListItem(
+                    label: "Top aligned (default)",
+                    supportText: "leadingAlignment: .top\nSecond line",
+                    showNavigationIndicator: true,
+                    showDivider: true,
+                    leadingAlignment: .top,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .gear,
+                            contentDescription: nil,
+                            size: .medium
+                        )
+                    }
+                )
+
+                LemonadeUi.ActionListItem(
+                    label: "Center aligned",
+                    supportText: "leadingAlignment: .center\nSecond line",
+                    showNavigationIndicator: true,
+                    showDivider: true,
+                    leadingAlignment: .center,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .bell,
+                            contentDescription: nil,
+                            size: .medium
+                        )
+                    }
+                )
+
+                LemonadeUi.ActionListItem(
+                    label: "Bottom aligned",
+                    supportText: "leadingAlignment: .bottom\nSecond line",
+                    showNavigationIndicator: true,
+                    showDivider: false,
+                    leadingAlignment: .bottom,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .padlock,
+                            contentDescription: nil,
+                            size: .medium
+                        )
+                    }
+                )
+            }
+
             // MARK: - ActionListItem with Trailing
             LemonadeUi.Card(
                 contentPadding: .none,
