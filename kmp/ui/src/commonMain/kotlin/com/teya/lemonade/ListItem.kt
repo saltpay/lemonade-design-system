@@ -127,6 +127,53 @@ public fun LemonadeUi.ResourceListItem(
     )
 }
 
+@Deprecated(
+    message = "Use the overload with leadingVerticalAlignment parameter.",
+    replaceWith = ReplaceWith(
+        expression = "ActionListItem(label, modifier, topLabel, supportText, leadingSlot, " +
+            "trailingSlot, voice, isLoading, enabled, onItemClicked, role, interactionSource, " +
+            "showNavigationIndicator, showDivider, trailingVerticalAlignment, Alignment.Top)",
+    ),
+)
+@Composable
+public fun LemonadeUi.ActionListItem(
+    label: String,
+    modifier: Modifier = Modifier,
+    topLabel: String? = null,
+    supportText: String? = null,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    isLoading: Boolean = false,
+    enabled: Boolean = true,
+    onItemClicked: (() -> Unit)? = null,
+    role: Role? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showNavigationIndicator: Boolean = false,
+    showDivider: Boolean = false,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+) {
+    @Suppress("DEPRECATION")
+    ActionListItem(
+        label = label,
+        modifier = modifier,
+        topLabel = topLabel,
+        supportText = supportText,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        voice = voice,
+        isLoading = isLoading,
+        enabled = enabled,
+        onItemClicked = onItemClicked,
+        role = role,
+        interactionSource = interactionSource,
+        showNavigationIndicator = showNavigationIndicator,
+        showDivider = showDivider,
+        trailingVerticalAlignment = trailingVerticalAlignment,
+        leadingVerticalAlignment = Alignment.Top,
+    )
+}
+
 /**
  * Basic building block for list items.
  *
@@ -215,6 +262,55 @@ public fun LemonadeUi.ActionListItem(
         interactionSource = interactionSource,
         leadingVerticalAlignment = leadingVerticalAlignment,
         trailingVerticalAlignment = trailingVerticalAlignment,
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with leadingVerticalAlignment parameter.",
+    replaceWith = ReplaceWith(
+        expression = "ListItem(label, modifier, topLabel, supportText, onListItemClick, voice, " +
+            "navigationIndicator, isLoading, role, enabled, interactionSource, showDivider, " +
+            "leadingSlot, trailingSlot, slotContent, trailingVerticalAlignment, Alignment.Top)",
+    ),
+)
+@Composable
+public fun LemonadeUi.ListItem(
+    label: String,
+    modifier: Modifier = Modifier,
+    topLabel: String? = null,
+    supportText: String? = null,
+    onListItemClick: (() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    navigationIndicator: Boolean = false,
+    isLoading: Boolean = false,
+    role: Role? = null,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showDivider: Boolean = false,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+) {
+    @Suppress("DEPRECATION")
+    ListItem(
+        label = label,
+        modifier = modifier,
+        topLabel = topLabel,
+        supportText = supportText,
+        onListItemClick = onListItemClick,
+        voice = voice,
+        navigationIndicator = navigationIndicator,
+        isLoading = isLoading,
+        role = role,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        showDivider = showDivider,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        slotContent = slotContent,
+        trailingVerticalAlignment = trailingVerticalAlignment,
+        leadingVerticalAlignment = Alignment.Top,
     )
 }
 
@@ -310,6 +406,47 @@ public fun LemonadeUi.ListItem(
             },
         )
     }
+}
+
+@Deprecated(
+    message = "Use the overload with leadingVerticalAlignment parameter.",
+    replaceWith = ReplaceWith(
+        expression = "ListItem(contentSlot, modifier, onListItemClick, voice, navigationIndicator, " +
+            "role, enabled, interactionSource, showDivider, leadingSlot, trailingSlot, " +
+            "trailingVerticalAlignment, Alignment.Top)",
+    ),
+)
+@Composable
+public fun LemonadeUi.ListItem(
+    contentSlot: @Composable ColumnScope.() -> Unit,
+    modifier: Modifier = Modifier,
+    onListItemClick: (() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    navigationIndicator: Boolean = false,
+    role: Role? = null,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showDivider: Boolean = false,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+) {
+    @Suppress("DEPRECATION")
+    ListItem(
+        contentSlot = contentSlot,
+        modifier = modifier,
+        onListItemClick = onListItemClick,
+        voice = voice,
+        navigationIndicator = navigationIndicator,
+        role = role,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        showDivider = showDivider,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        trailingVerticalAlignment = trailingVerticalAlignment,
+        leadingVerticalAlignment = Alignment.Top,
+    )
 }
 
 /**
