@@ -158,6 +158,8 @@ public fun LemonadeUi.ResourceListItem(
  * @param role - [Role] interaction semantics.
  * @param interactionSource - [MutableInteractionSource] to be had within the component.
  * @param showDivider - [Boolean] flag to show a divider below the list item.
+ * @param leadingVerticalAlignment - Vertical alignment of the leading slot against the
+ *  label/supportText column. Defaults to [Alignment.Top].
  * @param trailingVerticalAlignment - Vertical alignment of the trailing slot and navigation
  *  indicator against the label/supportText column. Defaults to [Alignment.CenterVertically].
  */
@@ -177,6 +179,7 @@ public fun LemonadeUi.ActionListItem(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     showNavigationIndicator: Boolean = false,
     showDivider: Boolean = false,
+    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
 ) {
     LemonadeUi.ListItem(
@@ -210,6 +213,7 @@ public fun LemonadeUi.ActionListItem(
         modifier = modifier,
         showDivider = showDivider,
         interactionSource = interactionSource,
+        leadingVerticalAlignment = leadingVerticalAlignment,
         trailingVerticalAlignment = trailingVerticalAlignment,
     )
 }
@@ -233,6 +237,8 @@ public fun LemonadeUi.ActionListItem(
  * @param showDivider - Flag to show a divider below the list item.
  * @param interactionSource - [MutableInteractionSource] for interaction events.
  * @param slotContent - Optional slot content below the label and support text.
+ * @param leadingVerticalAlignment - Vertical alignment of the leading slot against the
+ *  label/supportText column. Defaults to [Alignment.Top].
  * @param trailingVerticalAlignment - Vertical alignment of the trailing slot and navigation
  *  indicator against the label/supportText column. Defaults to [Alignment.CenterVertically].
  */
@@ -253,6 +259,7 @@ public fun LemonadeUi.ListItem(
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
 ) {
     if (isLoading) {
@@ -272,6 +279,7 @@ public fun LemonadeUi.ListItem(
             modifier = modifier,
             showDivider = showDivider,
             interactionSource = interactionSource,
+            leadingVerticalAlignment = leadingVerticalAlignment,
             trailingVerticalAlignment = trailingVerticalAlignment,
             contentSlot = {
                 if (topLabel != null) {
@@ -320,6 +328,8 @@ public fun LemonadeUi.ListItem(
  * @param modifier - [Modifier] to be applied to the base container of the component.
  * @param showDivider - Flag to show a divider below the list item.
  * @param interactionSource - [MutableInteractionSource] for interaction events.
+ * @param leadingVerticalAlignment - Vertical alignment of the leading slot against the
+ *  content slot. Defaults to [Alignment.Top].
  * @param trailingVerticalAlignment - Vertical alignment of the trailing slot and navigation
  *  indicator against the content slot. Defaults to [Alignment.CenterVertically].
  */
@@ -336,6 +346,7 @@ public fun LemonadeUi.ListItem(
     showDivider: Boolean = false,
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
 ) {
     CoreListItem(
@@ -350,6 +361,7 @@ public fun LemonadeUi.ListItem(
         modifier = modifier,
         showDivider = showDivider,
         interactionSource = interactionSource,
+        leadingVerticalAlignment = leadingVerticalAlignment,
         trailingVerticalAlignment = trailingVerticalAlignment,
     )
 }
@@ -367,6 +379,7 @@ private fun CoreListItem(
     modifier: Modifier = Modifier,
     showDivider: Boolean,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
 ) {
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -408,7 +421,7 @@ private fun CoreListItem(
             if (leadingSlot != null) {
                 Row(
                     modifier = Modifier
-                        .align(Alignment.Top)
+                        .align(leadingVerticalAlignment)
                         .padding(end = LocalSpaces.current.spacing300)
                         .padding(vertical = LocalSpaces.current.spacing50)
                         .then(

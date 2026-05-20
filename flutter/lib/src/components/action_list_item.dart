@@ -32,6 +32,7 @@ class LemonadeActionListItem extends StatefulWidget {
     this.enabled = true,
     this.leadingSlot,
     this.trailingSlot,
+    this.leadingAlignment = CrossAxisAlignment.center,
     this.withNavigation = false,
     this.semanticIdentifier,
     this.semanticLabel,
@@ -66,6 +67,13 @@ class LemonadeActionListItem extends StatefulWidget {
   /// chevron icon.
   /// {@endtemplate}
   final WidgetBuilder? trailingSlot;
+
+  /// {@template LemonadeActionListItem.leadingAlignment}
+  /// Vertical alignment of the leading slot within the row.
+  ///
+  /// Defaults to [CrossAxisAlignment.center].
+  /// {@endtemplate}
+  final CrossAxisAlignment leadingAlignment;
 
   /// {@template LemonadeActionListItem.withNavigation}
   /// Whether to show a chevron icon indicating navigation.
@@ -133,6 +141,7 @@ class _LemonadeActionListItemState extends State<LemonadeActionListItem> {
       enabled: widget.enabled,
       leadingSlot: widget.leadingSlot,
       trailingSlot: finalTrailingSlot,
+      leadingAlignment: widget.leadingAlignment,
       onPressed: widget.onPressed,
       semanticIdentifier: widget.semanticIdentifier,
       semanticLabel: widget.semanticLabel,
