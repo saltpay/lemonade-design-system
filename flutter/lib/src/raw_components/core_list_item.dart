@@ -139,10 +139,16 @@ class _LemonadeCoreListItemState extends State<LemonadeCoreListItem> {
           child: Opacity(
             opacity: widget.enabled ? 1.0 : disabledOpacity,
             child: Row(
-              crossAxisAlignment: widget.leadingAlignment,
               children: <Widget>[
                 if (widget.leadingSlot != null) ...<Widget>[
-                  widget.leadingSlot!(context),
+                  Column(
+                    mainAxisAlignment: switch (widget.leadingAlignment) {
+                      CrossAxisAlignment.start => MainAxisAlignment.start,
+                      CrossAxisAlignment.end => MainAxisAlignment.end,
+                      _ => MainAxisAlignment.center,
+                    },
+                    children: <Widget>[widget.leadingSlot!(context)],
+                  ),
                   SizedBox(width: spaces.spacing300),
                 ],
 
