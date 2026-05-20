@@ -32,7 +32,6 @@ class LemonadeCoreListItem extends StatefulWidget {
     this.enabled = true,
     this.leadingSlot,
     this.trailingSlot,
-    this.leadingAlignment = CrossAxisAlignment.center,
     this.semanticIdentifier,
     this.semanticLabel,
     super.key,
@@ -64,13 +63,6 @@ class LemonadeCoreListItem extends StatefulWidget {
   /// Optional widget placed at the end of the row (e.g. a tag or chevron).
   /// {@endtemplate}
   final WidgetBuilder? trailingSlot;
-
-  /// {@template LemonadeCoreListItem.leadingAlignment}
-  /// Vertical alignment of the leading slot within the row.
-  ///
-  /// Defaults to [CrossAxisAlignment.center].
-  /// {@endtemplate}
-  final CrossAxisAlignment leadingAlignment;
 
   /// {@template LemonadeCoreListItem.onPressed}
   /// Called when the item is tapped.
@@ -141,14 +133,7 @@ class _LemonadeCoreListItemState extends State<LemonadeCoreListItem> {
             child: Row(
               children: <Widget>[
                 if (widget.leadingSlot != null) ...<Widget>[
-                  Column(
-                    mainAxisAlignment: switch (widget.leadingAlignment) {
-                      CrossAxisAlignment.start => MainAxisAlignment.start,
-                      CrossAxisAlignment.end => MainAxisAlignment.end,
-                      _ => MainAxisAlignment.center,
-                    },
-                    children: <Widget>[widget.leadingSlot!(context)],
-                  ),
+                  widget.leadingSlot!(context),
                   SizedBox(width: spaces.spacing300),
                 ],
 
