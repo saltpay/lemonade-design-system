@@ -314,21 +314,14 @@ internal data class TileData(
 )
 
 internal val LemonadeTileVariant.data: TileData
-    @Composable get() {
-        return when (this) {
-            LemonadeTileVariant.Filled -> TileData(
-                backgroundColor = LocalColors.current.background.bgElevated,
-                borderColor = LocalColors.current.border.borderNeutralLow,
-                borderWidth = LocalBorderWidths.current.base.border40,
-            )
-
-            LemonadeTileVariant.Outlined -> TileData(
-                backgroundColor = LocalColors.current.background.bgDefault,
-                borderColor = LocalColors.current.border.borderNeutralLow,
-                borderWidth = LocalBorderWidths.current.base.border40,
-            )
-        }
-    }
+    @Composable get() = TileData(
+        backgroundColor = when (this) {
+            LemonadeTileVariant.Filled -> LocalColors.current.background.bgElevated
+            LemonadeTileVariant.Outlined -> LocalColors.current.background.bgDefault
+        },
+        borderColor = LocalColors.current.border.borderNeutralLow,
+        borderWidth = LocalBorderWidths.current.base.border40,
+    )
 
 private data class TilePreviewData(
     val enabled: Boolean,

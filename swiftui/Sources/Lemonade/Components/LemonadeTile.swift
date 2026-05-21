@@ -22,17 +22,11 @@ public enum LemonadeTileVariant {
     }
     
     var borderColor: Color {
-        switch self {
-        case .filled: return LemonadeTheme.colors.border.borderNeutralLow
-        case .outlined: return LemonadeTheme.colors.border.borderNeutralLow
-        }
+        LemonadeTheme.colors.border.borderNeutralLow
     }
 
     var borderWidth: CGFloat {
-        switch self {
-        case .filled: return LemonadeTheme.borderWidth.base.border40
-        case .outlined: return LemonadeTheme.borderWidth.base.border40
-        }
+        LemonadeTheme.borderWidth.base.border40
     }
 }
 
@@ -289,10 +283,6 @@ private struct LemonadeTileView<TopAccessory: View>: View {
     private var effectiveBorderWidth: CGFloat {
         isSelected ? LemonadeTheme.borderWidth.base.border50 : variant.borderWidth
     }
-    
-    private var effectiveContentColor: Color {
-        LemonadeTheme.colors.content.contentPrimary
-    }
 
     private var tileContent: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing300) {
@@ -302,23 +292,23 @@ private struct LemonadeTileView<TopAccessory: View>: View {
                     icon: icon,
                     contentDescription: nil,
                     size: .medium,
-                    tint: effectiveContentColor
+                    tint: LemonadeTheme.colors.content.contentPrimary
                 )
-                
+
                 Spacer(minLength: 0)
-                
+
                 if let topAccessory {
                     topAccessory()
                 }
             }
-            
+
             Spacer(minLength: 0)
-            
+
             VStack(alignment: .leading, spacing: 0) {
                 LemonadeUi.Text(
                     label,
                     textStyle: LemonadeTypography.shared.bodySmallMedium,
-                    color: effectiveContentColor,
+                    color: LemonadeTheme.colors.content.contentPrimary,
                     overflow: .tail,
                     maxLines: 1
                 )
@@ -403,31 +393,27 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
     private var effectiveBorderWidth: CGFloat {
         isSelected ? LemonadeTheme.borderWidth.base.border50 : variant.borderWidth
     }
-    
-    private var effectiveContentColor: Color {
-        LemonadeTheme.colors.content.contentPrimary
-    }
 
     private var tileContent: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing300) {
             // Top row: leadingSlot + topAccessory
             HStack {
                 leadingSlot()
-                
+
                 Spacer(minLength: 0)
-                
+
                 if let topAccessory {
                     topAccessory()
                 }
             }
-            
+
             Spacer(minLength: 0)
-            
+
             VStack(alignment: .leading, spacing: 0) {
                 LemonadeUi.Text(
                     label,
                     textStyle: LemonadeTypography.shared.bodySmallMedium,
-                    color: effectiveContentColor,
+                    color: LemonadeTheme.colors.content.contentPrimary,
                     overflow: .tail,
                     maxLines: 1
                 )
