@@ -7,10 +7,10 @@ public enum LemonadeTileVariant {
     case filled
     case outlined
     
-    var backgroundColor: Color? {
+    var backgroundColor: Color {
         switch self {
         case .filled: return LemonadeTheme.colors.background.bgElevated
-        case .outlined: return nil
+        case .outlined: return .clear
         }
     }
     
@@ -21,9 +21,9 @@ public enum LemonadeTileVariant {
         }
     }
     
-    var borderColor: Color? {
+    var borderColor: Color {
         switch self {
-        case .filled: return nil
+        case .filled: return .clear
         case .outlined: return LemonadeTheme.colors.border.borderNeutralMedium
         }
     }
@@ -277,12 +277,12 @@ private struct LemonadeTileView<TopAccessory: View>: View {
     
     private var effectiveBackgroundColor: Color {
         if isSelected { return LemonadeTheme.colors.background.bgBrandSubtle }
-        return variant.backgroundColor ?? .clear
+        return variant.backgroundColor
     }
     
     private var effectiveBorderColor: Color {
         if isSelected { return LemonadeTheme.colors.border.borderSelected }
-        return variant.borderColor ?? .clear
+        return variant.borderColor
     }
     
     private var effectiveBorderWidth: CGFloat {
@@ -389,12 +389,12 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
     
     private var effectiveBackgroundColor: Color {
         if isSelected { return LemonadeTheme.colors.background.bgBrandSubtle }
-        return variant.backgroundColor ?? .clear
+        return variant.backgroundColor
     }
     
     private var effectiveBorderColor: Color {
         if isSelected { return LemonadeTheme.colors.border.borderSelected }
-        return variant.borderColor ?? .clear
+        return variant.borderColor
     }
     
     private var effectiveBorderWidth: CGFloat {
