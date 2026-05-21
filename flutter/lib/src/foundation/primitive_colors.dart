@@ -205,7 +205,7 @@ class _PinkSolid {
 class _NeutralSolid {
   final Color neutral600 = const Color(0xFF555450);
 
-  final Color neutral100 = const Color(0xFFF5F4F3);
+  final Color neutral100 = const Color(0xFFF1F0ED);
 
   final Color neutral400 = const Color(0xFFA5A3A0);
 
@@ -217,37 +217,37 @@ class _NeutralSolid {
 
   final Color neutral700 = const Color(0xFF42413E);
 
-  final Color neutral800 = const Color(0xFF282725);
+  final Color neutral800 = const Color(0xFF252422);
 
-  final Color neutral900 = const Color(0xFF1A1918);
+  final Color neutral900 = const Color(0xFF201F1D);
 
-  final Color neutral50 = const Color(0xFFF8F7F6);
+  final Color neutral50 = const Color(0xFFF6F5F3);
 
-  final Color neutral950 = const Color(0xFF0B0A0A);
+  final Color neutral950 = const Color(0xFF151513);
 }
 
 class _RedSolid {
-  final Color red300 = const Color(0xFFFFA1A2);
+  final Color red300 = const Color(0xFFFFC8CC);
 
-  final Color red100 = const Color(0xFFFEE1E1);
+  final Color red100 = const Color(0xFFFFE1E3);
 
-  final Color red700 = const Color(0xFFC10007);
+  final Color red700 = const Color(0xFFC01520);
 
-  final Color red900 = const Color(0xFF811719);
+  final Color red900 = const Color(0xFF831920);
 
-  final Color red400 = const Color(0xFFFF6366);
+  final Color red400 = const Color(0xFFFE535E);
 
-  final Color red800 = const Color(0xFF9E0711);
+  final Color red800 = const Color(0xFF9F151E);
 
-  final Color red500 = const Color(0xFFFA2B36);
+  final Color red500 = const Color(0xFFF73C48);
 
-  final Color red600 = const Color(0xFFE7000A);
+  final Color red600 = const Color(0xFFE41E2B);
 
-  final Color red200 = const Color(0xFFFFC9C9);
+  final Color red200 = const Color(0xFFFFC8CC);
 
-  final Color red50 = const Color(0xFFFEF2F2);
+  final Color red50 = const Color(0xFFFFF1F2);
 
-  final Color red950 = const Color(0xFF460808);
+  final Color red950 = const Color(0xFF48070B);
 }
 
 class _CyanSolid {
@@ -565,27 +565,27 @@ class _Alpha {
 }
 
 class _NeutralAlpha {
-  final Color neutral900 = const Color(0xE51B1A18);
+  final Color neutral900 = const Color(0xEB090806);
 
-  final Color neutral700 = const Color(0xB21B1A18);
+  final Color neutral700 = const Color(0xC60C0A07);
 
-  final Color neutral600 = const Color(0x991B1A18);
+  final Color neutral600 = const Color(0xB50F0E09);
 
-  final Color neutral300 = const Color(0x4C1B1A18);
+  final Color neutral300 = const Color(0x4C766F5F);
 
-  final Color neutral200 = const Color(0x331B1A18);
+  final Color neutral200 = const Color(0x338E8675);
 
-  final Color neutral500 = const Color(0x7F1B1A18);
+  final Color neutral500 = const Color(0x8C15140D);
 
-  final Color neutral800 = const Color(0xCC1B1A18);
+  final Color neutral800 = const Color(0xE1090805);
 
-  final Color neutral100 = const Color(0x191B1A18);
+  final Color neutral100 = const Color(0x19756B56);
 
-  final Color neutral400 = const Color(0x661B1A18);
+  final Color neutral400 = const Color(0x66211C11);
 
-  final Color neutral50 = const Color(0x0C1B1A18);
+  final Color neutral50 = const Color(0x0C5E4F2F);
 
-  final Color neutral950 = const Color(0xF21B1A18);
+  final Color neutral950 = const Color(0xF4080706);
 }
 
 class _YellowAlpha {
@@ -661,25 +661,25 @@ class _OrangeAlpha {
 }
 
 class _RedAlpha {
-  final Color red50 = const Color(0x0CFA2B36);
+  final Color red50 = const Color(0x0CF73C48);
 
-  final Color red100 = const Color(0x19FA2B36);
+  final Color red100 = const Color(0x19F73C48);
 
-  final Color red200 = const Color(0x33FA2B36);
+  final Color red200 = const Color(0x33F73C48);
 
-  final Color red300 = const Color(0x4CFA2B36);
+  final Color red300 = const Color(0x4CF73C48);
 
-  final Color red400 = const Color(0x66FA2B36);
+  final Color red400 = const Color(0x66F73C48);
 
-  final Color red500 = const Color(0x7FFA2B36);
+  final Color red500 = const Color(0x7FF73C48);
 
-  final Color red600 = const Color(0x99FA2B36);
+  final Color red600 = const Color(0x99F73C48);
 
-  final Color red700 = const Color(0xB2FA2B36);
+  final Color red700 = const Color(0xB2F73C48);
 
-  final Color red800 = const Color(0xCCFA2B36);
+  final Color red800 = const Color(0xCCF73C48);
 
-  final Color red900 = const Color(0xE5FA2B36);
+  final Color red900 = const Color(0xE5F73C48);
 
   final Color red950 = const Color(0xF2FA2B36);
 }
