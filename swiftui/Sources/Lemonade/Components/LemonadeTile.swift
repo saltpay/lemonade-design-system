@@ -23,14 +23,14 @@ public enum LemonadeTileVariant {
     
     var borderColor: Color {
         switch self {
-        case .filled: return LemonadeTheme.colors.border.borderNeutralMedium
-        case .outlined: return LemonadeTheme.colors.border.borderNeutralMedium
+        case .filled: return LemonadeTheme.colors.border.borderNeutralLow
+        case .outlined: return LemonadeTheme.colors.border.borderNeutralLow
         }
     }
-    
+
     var borderWidth: CGFloat {
         switch self {
-        case .filled: return 0
+        case .filled: return LemonadeTheme.borderWidth.base.border40
         case .outlined: return LemonadeTheme.borderWidth.base.border40
         }
     }
@@ -291,9 +291,9 @@ private struct LemonadeTileView<TopAccessory: View>: View {
     }
     
     private var effectiveContentColor: Color {
-        isSelected ? LemonadeTheme.colors.content.contentOnBrandHigh : LemonadeTheme.colors.content.contentPrimary
+        LemonadeTheme.colors.content.contentPrimary
     }
-    
+
     private var tileContent: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing300) {
             // Top row: icon + topAccessory
@@ -405,9 +405,9 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
     }
     
     private var effectiveContentColor: Color {
-        isSelected ? LemonadeTheme.colors.content.contentOnBrandHigh : LemonadeTheme.colors.content.contentPrimary
+        LemonadeTheme.colors.content.contentPrimary
     }
-    
+
     private var tileContent: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing300) {
             // Top row: leadingSlot + topAccessory

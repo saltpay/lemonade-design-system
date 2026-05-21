@@ -69,11 +69,7 @@ public fun LemonadeUi.Tile(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     variant: LemonadeTileVariant = LemonadeTileVariant.Filled,
 ) {
-    val contentColor = if (isSelected) {
-        LocalColors.current.content.contentOnBrandHigh
-    } else {
-        LocalColors.current.content.contentPrimary
-    }
+    val contentColor = LocalColors.current.content.contentPrimary
 
     CoreTile(
         modifier = modifier,
@@ -172,11 +168,7 @@ public fun LemonadeUi.Tile(
     variant: LemonadeTileVariant = LemonadeTileVariant.Filled,
     leadingSlot: @Composable () -> Unit,
 ) {
-    val contentColor = if (isSelected) {
-        LocalColors.current.content.contentOnBrandHigh
-    } else {
-        LocalColors.current.content.contentPrimary
-    }
+    val contentColor = LocalColors.current.content.contentPrimary
 
     CoreTile(
         modifier = modifier,
@@ -326,13 +318,13 @@ internal val LemonadeTileVariant.data: TileData
         return when (this) {
             LemonadeTileVariant.Filled -> TileData(
                 backgroundColor = LocalColors.current.background.bgElevated,
-                borderColor = LocalColors.current.border.borderNeutralMedium,
-                borderWidth = 0.dp,
+                borderColor = LocalColors.current.border.borderNeutralLow,
+                borderWidth = LocalBorderWidths.current.base.border40,
             )
 
             LemonadeTileVariant.Outlined -> TileData(
                 backgroundColor = LocalColors.current.background.bgDefault,
-                borderColor = LocalColors.current.border.borderNeutralMedium,
+                borderColor = LocalColors.current.border.borderNeutralLow,
                 borderWidth = LocalBorderWidths.current.base.border40,
             )
         }
