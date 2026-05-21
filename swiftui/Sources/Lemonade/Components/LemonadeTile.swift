@@ -7,10 +7,10 @@ public enum LemonadeTileVariant {
     case filled
     case outlined
     
-    var backgroundColor: Color {
+    var backgroundColor: Color? {
         switch self {
         case .filled: return LemonadeTheme.colors.background.bgElevated
-        case .outlined: return LemonadeTheme.colors.background.bgDefault
+        case .outlined: return nil
         }
     }
     
@@ -21,8 +21,11 @@ public enum LemonadeTileVariant {
         }
     }
     
-    var borderColor: Color {
-        LemonadeTheme.colors.border.borderNeutralLow
+    var borderColor: Color? {
+        switch self {
+        case .filled: return nil
+        case .outlined: return LemonadeTheme.colors.border.borderNeutralMedium
+        }
     }
 
     var borderWidth: CGFloat {
@@ -273,11 +276,13 @@ private struct LemonadeTileView<TopAccessory: View>: View {
     private let minWidth: CGFloat = 120
     
     private var effectiveBackgroundColor: Color {
-        isSelected ? LemonadeTheme.colors.background.bgBrandSubtle : variant.backgroundColor
+        if isSelected { return LemonadeTheme.colors.background.bgBrandSubtle }
+        return variant.backgroundColor ?? .clear
     }
     
     private var effectiveBorderColor: Color {
-        isSelected ? LemonadeTheme.colors.border.borderSelected : variant.borderColor
+        if isSelected { return LemonadeTheme.colors.border.borderSelected }
+        return variant.borderColor ?? .clear
     }
     
     private var effectiveBorderWidth: CGFloat {
@@ -383,11 +388,13 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
     private let minWidth: CGFloat = 120
     
     private var effectiveBackgroundColor: Color {
-        isSelected ? LemonadeTheme.colors.background.bgBrandSubtle : variant.backgroundColor
+        if isSelected { return LemonadeTheme.colors.background.bgBrandSubtle }
+        return variant.backgroundColor ?? .clear
     }
     
     private var effectiveBorderColor: Color {
-        isSelected ? LemonadeTheme.colors.border.borderSelected : variant.borderColor
+        if isSelected { return LemonadeTheme.colors.border.borderSelected }
+        return variant.borderColor ?? .clear
     }
     
     private var effectiveBorderWidth: CGFloat {
@@ -582,3 +589,4 @@ struct LemonadeTile_Previews: PreviewProvider {
     }
 }
 #endif
+
