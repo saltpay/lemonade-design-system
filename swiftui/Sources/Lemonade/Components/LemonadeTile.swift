@@ -29,7 +29,10 @@ public enum LemonadeTileVariant {
     }
 
     var borderWidth: CGFloat {
-        LemonadeTheme.borderWidth.base.border40
+        switch self {
+        case .filled: return 0
+        case .outlined: return LemonadeTheme.borderWidth.base.border40
+        }
     }
 }
 
@@ -260,6 +263,27 @@ private struct LemonadeTileButtonStyle: ButtonStyle {
     }
 }
 
+// MARK: - Tile Style
+
+private struct TileStyle {
+    let backgroundColor: Color
+    let borderColor: Color
+    let borderWidth: CGFloat
+}
+
+private extension LemonadeTileVariant {
+    func resolvedStyle(isSelected: Bool) -> TileStyle {
+        if isSelected {
+            return TileStyle(
+                backgroundColor: LemonadeTheme.colors.background.bgBrandSubtle,
+                borderColor: LemonadeTheme.colors.border.borderSelected,
+                borderWidth: LemonadeTheme.borderWidth.base.border50
+            )
+        }
+        return TileStyle(backgroundColor: backgroundColor, borderColor: borderColor, borderWidth: borderWidth)
+    }
+}
+
 // MARK: - Internal Tile View
 
 private struct LemonadeTileView<TopAccessory: View>: View {
@@ -275,19 +299,7 @@ private struct LemonadeTileView<TopAccessory: View>: View {
     
     private let minWidth: CGFloat = 120
     
-    private var effectiveBackgroundColor: Color {
-        if isSelected { return LemonadeTheme.colors.background.bgBrandSubtle }
-        return variant.backgroundColor
-    }
-    
-    private var effectiveBorderColor: Color {
-        if isSelected { return LemonadeTheme.colors.border.borderSelected }
-        return variant.borderColor
-    }
-    
-    private var effectiveBorderWidth: CGFloat {
-        isSelected ? LemonadeTheme.borderWidth.base.border50 : variant.borderWidth
-    }
+    private var tileStyle: TileStyle { variant.resolvedStyle(isSelected: isSelected) }
 
     private var tileContent: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing300) {
@@ -348,11 +360,11 @@ private struct LemonadeTileView<TopAccessory: View>: View {
         .applyIf(stretched) {
             $0.frame(maxWidth: .infinity, alignment: .leading)
         }
-        .background(effectiveBackgroundColor)
+        .background(tileStyle.backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
         .overlay(
             RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
-                .stroke(effectiveBorderColor, lineWidth: effectiveBorderWidth)
+                .stroke(tileStyle.borderColor, lineWidth: tileStyle.borderWidth)
         )
         .opacity(enabled ? .opacity.opacity100 : LemonadeTheme.opacity.state.opacityDisabled)
         .contentShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
@@ -387,19 +399,7 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
     
     private let minWidth: CGFloat = 120
     
-    private var effectiveBackgroundColor: Color {
-        if isSelected { return LemonadeTheme.colors.background.bgBrandSubtle }
-        return variant.backgroundColor
-    }
-    
-    private var effectiveBorderColor: Color {
-        if isSelected { return LemonadeTheme.colors.border.borderSelected }
-        return variant.borderColor
-    }
-    
-    private var effectiveBorderWidth: CGFloat {
-        isSelected ? LemonadeTheme.borderWidth.base.border50 : variant.borderWidth
-    }
+    private var tileStyle: TileStyle { variant.resolvedStyle(isSelected: isSelected) }
 
     private var tileContent: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing300) {
@@ -455,11 +455,11 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
         .applyIf(stretched) {
             $0.frame(maxWidth: .infinity, alignment: .leading)
         }
-        .background(effectiveBackgroundColor)
+        .background(tileStyle.backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
         .overlay(
             RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
-                .stroke(effectiveBorderColor, lineWidth: effectiveBorderWidth)
+                .stroke(tileStyle.borderColor, lineWidth: tileStyle.borderWidth)
         )
         .opacity(enabled ? .opacity.opacity100 : LemonadeTheme.opacity.state.opacityDisabled)
         .contentShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
