@@ -34,5 +34,9 @@ gradlePlugin {
             id = "lemonade-api-stability"
             implementationClass = "LemonadeApiStabilityPlugin"
         }
+        register("LemonadeScreenshotPlugin") {
+            id = "lemonade-screenshot"
+            implementationClass = "LemonadeScreenshotPlugin"
+        }
     }
 }
