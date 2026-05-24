@@ -8,6 +8,7 @@ dependencies {
     implementation(libs.gradle.kmp)
     implementation(libs.detekt.gradlePlugin)
     implementation(libs.ktlint.gradlePlugin)
+    implementation(libs.gradle.roborazzi)
 
     testImplementation(kotlin("test"))
     testImplementation(platform("org.junit:junit-bom:5.11.4"))
