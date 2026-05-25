@@ -7,8 +7,6 @@ import com.github.takahirom.roborazzi.ExperimentalRoborazziApi
 import com.github.takahirom.roborazzi.InternalRoborazziApi
 import com.github.takahirom.roborazzi.RoborazziRecordFilePathStrategy
 import com.github.takahirom.roborazzi.captureRoboImage
-import com.github.takahirom.roborazzi.composeTestRule
-import com.github.takahirom.roborazzi.manualAdvance
 import com.github.takahirom.roborazzi.provideRoborazziContext
 import com.github.takahirom.roborazzi.roborazziDefaultNamingStrategy
 import com.github.takahirom.roborazzi.roborazziRecordFilePathStrategy
@@ -37,13 +35,16 @@ import java.io.File
  *   unchanged, so the IDE still renders both RTL and LTR.
  * - **Light and dark.** Each kept preview is captured twice - once per theme -
  *   into two distinct golden paths suffixed `_Light` / `_Dark` before the file
- *   extension.
+ *   extension. Each capture launches its own fresh activity (the shared
+ *   single-use compose test rule cannot be reused across two captures), so the
+ *   two captures are independent.
  *
  * Roborazzi 1.46.1 has no content-wrapping hook (the `Capturer` interface was
  * added in a later release), so [test] injects the theme around the preview
- * content while mirroring the capture and naming logic of
- * `AndroidComposePreviewTester.test` (same public helpers, same option/clock
- * setup, same file-path derivation) for golden determinism.
+ * content while reusing the same preview-derived render options
+ * ([toRoborazziComposeOptions]: device/locale/fontScale/background) and the
+ * same file-path derivation as `AndroidComposePreviewTester.test` for golden
+ * determinism.
  *
  * TODO: When Roborazzi is upgraded to a version that exposes a content-wrapping
  * hook (the `Capturer` interface on `AndroidComposePreviewTester`), drop this
@@ -69,22 +70,21 @@ public class LemonadeComposePreviewTester :
         val preview = testParameter.preview
         val basePath = filePathFor(testParameter = testParameter)
 
-        val variation = testParameter.composeRoboComposePreviewOptionVariation
-        val optionsBuilder = preview
+        // We capture each preview twice (light + dark). The options are built
+        // WITHOUT binding the shared `testParameter.composeTestRule`: that rule
+        // exposes a single-use ActivityScenario which is closed after the first
+        // capture, so a second capture in the same test would NPE in
+        // RoborazziComposeBackgroundOption.configureWithActivityScenario
+        // ("Activity has been destroyed already"). Omitting the rule lets each
+        // captureRoboImage launch and tear down its own fresh activity, so both
+        // captures are independent.
+        //
+        // Trade-off: the manual-clock step (manualAdvance) needs that shared
+        // rule, so it cannot be honoured here. No `:ui` preview declares
+        // `@RoboComposePreviewOptions`, so this is latent; if one ever does, the
+        // single-capture default tester should drive its clock instead.
+        val roborazziComposeOptions = preview
             .toRoborazziComposeOptions()
-            .builder()
-        optionsBuilder.composeTestRule(testParameter.composeTestRule)
-        // Mirror AndroidComposePreviewTester.test: when the preview's
-        // @RoboComposePreviewOptions declares a manual clock, advance it by the
-        // requested amount before capture. Order matters - the compose test
-        // rule must be configured first.
-        variation.manualClockOptions?.let { clock ->
-            optionsBuilder.manualAdvance(
-                composeTestRule = testParameter.composeTestRule,
-                advanceTimeMillis = clock.advanceTimeMillis,
-            )
-        }
-        val roborazziComposeOptions = optionsBuilder.build()
 
         Theme.entries.forEach { theme ->
             captureRoboImage(
