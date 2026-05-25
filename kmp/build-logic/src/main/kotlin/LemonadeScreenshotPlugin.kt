@@ -76,7 +76,7 @@ class LemonadeScreenshotPlugin : Plugin<Project> {
                 packages.set(listOf(PREVIEW_PACKAGE))
                 includePrivatePreviews.set(true)
                 testerQualifiedClassName.set(TESTER_CLASS)
-                robolectricConfig.set(mapOf("sdk" to "[34]"))
+                robolectricConfig.set(mapOf("sdk" to ROBOLECTRIC_SDK))
             }
         }
     }
@@ -102,6 +102,11 @@ class LemonadeScreenshotPlugin : Plugin<Project> {
 private const val PREVIEW_PACKAGE = "com.teya.lemonade"
 private const val TESTER_CLASS =
     "com.teya.lemonade.screenshot.LemonadeComposePreviewTester"
+
+// Robolectric 4.16 ships no SDK 36 device jar, so the generated tests are
+// pinned to SDK 34 even though the module targets SDK 36. The value is the
+// literal passed to the generated `@Config(sdk = ...)` annotation.
+private const val ROBOLECTRIC_SDK = "[34]"
 
 private fun Project.lib(alias: String): Provider<MinimalExternalModuleDependency> {
     val catalog = extensions
