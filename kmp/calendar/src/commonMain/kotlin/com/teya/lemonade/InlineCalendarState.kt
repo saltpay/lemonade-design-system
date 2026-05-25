@@ -44,12 +44,12 @@ import kotlin.time.ExperimentalTime
  */
 @Stable
 public class InlineCalendarState internal constructor(
-    initialDate: LocalDate?,
-    initialDisplayedMonth: YearMonth?,
-    public val today: LocalDate,
-    public val minDate: LocalDate?,
-    public val maxDate: LocalDate?,
-    public val firstDayOfWeek: DayOfWeek,
+    initialDate: LocalDate? = null,
+    initialDisplayedMonth: YearMonth? = null,
+    public val today: LocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
+    public val minDate: LocalDate? = null,
+    public val maxDate: LocalDate? = null,
+    public val firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
 ) {
     /** The currently selected date. */
     public var selectedDate: LocalDate? by mutableStateOf(initialDate)
@@ -117,8 +117,8 @@ public class InlineCalendarState internal constructor(
             minDate: LocalDate?,
             maxDate: LocalDate?,
             firstDayOfWeek: DayOfWeek,
-        ): Saver<InlineCalendarState, *> {
-            return listSaver(
+        ): Saver<InlineCalendarState, *> =
+            listSaver(
                 save = { state ->
                     listOf(
                         state.selectedDate?.toString().orEmpty(),
@@ -147,7 +147,6 @@ public class InlineCalendarState internal constructor(
                     )
                 },
             )
-        }
     }
 }
 
@@ -157,10 +156,6 @@ public class InlineCalendarState internal constructor(
  *
  * @param initialDate The initially selected date.
  * @param initialDisplayedMonth The month to display initially.
- * @param today The date treated as "today". Defaults to the system clock in the
- *   system timezone. Override for tests, previews, or non-system timezones. The
- *   value is persisted across configuration changes; supplying a different value
- *   on recomposition does not retroactively change the restored state.
  * @param minDate Minimum selectable date (inclusive).
  * @param maxDate Maximum selectable date (inclusive).
  * @param firstDayOfWeek Reserved for future use (e.g. week-start snapping). Not currently
@@ -175,9 +170,50 @@ public fun rememberInlineCalendarState(
     minDate: LocalDate? = null,
     maxDate: LocalDate? = null,
     firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
-    today: LocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
-): InlineCalendarState {
-    return rememberSaveable(
+): InlineCalendarState =
+    rememberSaveable(
+        saver = InlineCalendarState.saver(
+            minDate = minDate,
+            maxDate = maxDate,
+            firstDayOfWeek = firstDayOfWeek,
+        ),
+    ) {
+        InlineCalendarState(
+            initialDate = initialDate,
+            initialDisplayedMonth = initialDisplayedMonth,
+            minDate = minDate,
+            maxDate = maxDate,
+            firstDayOfWeek = firstDayOfWeek,
+        )
+    }
+
+/**
+ * Overload of [rememberInlineCalendarState] that lets the host pin "today" — useful
+ * for tests, previews, screenshot diffs, and non-system-timezone scenarios. The value
+ * is persisted across configuration changes; supplying a different value on
+ * recomposition does not retroactively change the restored state.
+ *
+ * @param today The date treated as "today" — used to highlight the current day in the
+ *   strip and as the fallback displayed month.
+ * @param initialDate The initially selected date.
+ * @param initialDisplayedMonth The month to display initially.
+ * @param minDate Minimum selectable date (inclusive).
+ * @param maxDate Maximum selectable date (inclusive).
+ * @param firstDayOfWeek Reserved for future use (e.g. week-start snapping). Not currently
+ *   used by the inline calendar rendering - the inline calendar is a continuous day strip
+ *   with no grid columns, so week-start ordering does not affect the displayed layout.
+ *   Stored and persisted so the API can be extended without a breaking change.
+ */
+@Composable
+public fun rememberInlineCalendarState(
+    today: LocalDate,
+    initialDate: LocalDate? = null,
+    initialDisplayedMonth: YearMonth? = null,
+    minDate: LocalDate? = null,
+    maxDate: LocalDate? = null,
+    firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
+): InlineCalendarState =
+    rememberSaveable(
         saver = InlineCalendarState.saver(
             minDate = minDate,
             maxDate = maxDate,
@@ -193,4 +229,3 @@ public fun rememberInlineCalendarState(
             firstDayOfWeek = firstDayOfWeek,
         )
     }
-}

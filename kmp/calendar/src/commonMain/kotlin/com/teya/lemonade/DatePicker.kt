@@ -65,10 +65,10 @@ private const val CENTER_PAGE = PAGES_TOTAL / 2
  */
 @Stable
 public class DatePickerState internal constructor(
-    initialDate: LocalDate?,
-    public val today: LocalDate,
-    public val minDate: LocalDate?,
-    public val maxDate: LocalDate?,
+    initialDate: LocalDate? = null,
+    public val today: LocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
+    public val minDate: LocalDate? = null,
+    public val maxDate: LocalDate? = null,
 ) {
     public var selectedDate: LocalDate? by mutableStateOf(initialDate)
         internal set
@@ -80,17 +80,38 @@ public class DatePickerState internal constructor(
  * @param initialDate The initially selected date.
  * @param minDate Minimum selectable date.
  * @param maxDate Maximum selectable date.
- * @param today The date treated as "today". Defaults to the system clock in the
- * system timezone. Override for tests, previews, or non-system timezones.
  */
 @Composable
 public fun rememberDatePickerState(
     initialDate: LocalDate? = null,
     minDate: LocalDate? = null,
     maxDate: LocalDate? = null,
-    today: LocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
-): DatePickerState {
-    return remember(initialDate, minDate, maxDate, today) {
+): DatePickerState =
+    remember(initialDate, minDate, maxDate) {
+        DatePickerState(
+            initialDate = initialDate,
+            minDate = minDate,
+            maxDate = maxDate,
+        )
+    }
+
+/**
+ * Overload of [rememberDatePickerState] that lets the host pin "today" — useful
+ * for tests, previews, screenshot diffs, and non-system-timezone scenarios.
+ *
+ * @param today The date treated as "today" — used to highlight the current day in the grid.
+ * @param initialDate The initially selected date.
+ * @param minDate Minimum selectable date.
+ * @param maxDate Maximum selectable date.
+ */
+@Composable
+public fun rememberDatePickerState(
+    today: LocalDate,
+    initialDate: LocalDate? = null,
+    minDate: LocalDate? = null,
+    maxDate: LocalDate? = null,
+): DatePickerState =
+    remember(initialDate, minDate, maxDate, today) {
         DatePickerState(
             initialDate = initialDate,
             today = today,
@@ -98,7 +119,6 @@ public fun rememberDatePickerState(
             maxDate = maxDate,
         )
     }
-}
 
 /**
  * State holder for [LemonadeUi.DateRangePicker].
@@ -119,12 +139,12 @@ public fun rememberDatePickerState(
  */
 @Stable
 public class DateRangePickerState internal constructor(
-    initialStartDate: LocalDate?,
-    initialEndDate: LocalDate?,
-    public val today: LocalDate,
-    public val minDate: LocalDate?,
-    public val maxDate: LocalDate?,
-    public val maxRangeDays: Int?,
+    initialStartDate: LocalDate? = null,
+    initialEndDate: LocalDate? = null,
+    public val today: LocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
+    public val minDate: LocalDate? = null,
+    public val maxDate: LocalDate? = null,
+    public val maxRangeDays: Int? = null,
 ) {
     public var selectedStartDate: LocalDate? by mutableStateOf(initialStartDate)
         internal set
@@ -140,8 +160,6 @@ public class DateRangePickerState internal constructor(
  * @param minDate Minimum selectable date.
  * @param maxDate Maximum selectable date.
  * @param maxRangeDays Maximum number of days allowed in a date range selection.
- * @param today The date treated as "today". Defaults to the system clock in the
- * system timezone. Override for tests, previews, or non-system timezones.
  */
 @Composable
 public fun rememberDateRangePickerState(
@@ -150,9 +168,38 @@ public fun rememberDateRangePickerState(
     minDate: LocalDate? = null,
     maxDate: LocalDate? = null,
     maxRangeDays: Int? = null,
-    today: LocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
-): DateRangePickerState {
-    return remember(initialStartDate, initialEndDate, minDate, maxDate, maxRangeDays, today) {
+): DateRangePickerState =
+    remember(initialStartDate, initialEndDate, minDate, maxDate, maxRangeDays) {
+        DateRangePickerState(
+            initialStartDate = initialStartDate,
+            initialEndDate = initialEndDate,
+            minDate = minDate,
+            maxDate = maxDate,
+            maxRangeDays = maxRangeDays,
+        )
+    }
+
+/**
+ * Overload of [rememberDateRangePickerState] that lets the host pin "today" — useful
+ * for tests, previews, screenshot diffs, and non-system-timezone scenarios.
+ *
+ * @param today The date treated as "today" — used to highlight the current day in the grid.
+ * @param initialStartDate Initial start date for the range.
+ * @param initialEndDate Initial end date for the range.
+ * @param minDate Minimum selectable date.
+ * @param maxDate Maximum selectable date.
+ * @param maxRangeDays Maximum number of days allowed in a date range selection.
+ */
+@Composable
+public fun rememberDateRangePickerState(
+    today: LocalDate,
+    initialStartDate: LocalDate? = null,
+    initialEndDate: LocalDate? = null,
+    minDate: LocalDate? = null,
+    maxDate: LocalDate? = null,
+    maxRangeDays: Int? = null,
+): DateRangePickerState =
+    remember(initialStartDate, initialEndDate, minDate, maxDate, maxRangeDays, today) {
         DateRangePickerState(
             initialStartDate = initialStartDate,
             initialEndDate = initialEndDate,
@@ -162,7 +209,6 @@ public fun rememberDateRangePickerState(
             maxRangeDays = maxRangeDays,
         )
     }
-}
 
 /**
  * A single-date picker widget from the Lemonade Design System.
