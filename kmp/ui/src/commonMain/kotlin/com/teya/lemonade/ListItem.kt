@@ -581,17 +581,20 @@ private fun CoreListItem(
     SafeArea(modifier = modifier, showDivider = showDivider) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = if (onListItemClick != null) {
-                Modifier.interactiveBackground(
-                    interactionSource = interactionSource,
-                    voice = voice,
-                    enabled = enabled,
-                    role = role,
-                    onClick = onListItemClick,
-                )
-            } else {
-                Modifier
-            }.defaultMinSize(minHeight = LocalSizes.current.size1200)
+            modifier = Modifier
+                .then(
+                    other = if (onListItemClick != null) {
+                        Modifier.interactiveBackground(
+                            interactionSource = interactionSource,
+                            voice = voice,
+                            enabled = enabled,
+                            role = role,
+                            onClick = onListItemClick,
+                        )
+                    } else {
+                        Modifier
+                    },
+                ).defaultMinSize(minHeight = LocalSizes.current.size1200)
                 .padding(
                     horizontal = LocalSpaces.current.spacing300,
                     vertical = LocalSpaces.current.spacing300,
@@ -735,7 +738,10 @@ private fun SafeArea(
         return
     }
 
-    Column(modifier = modifier) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier,
+    ) {
         Column(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.padding(all = LocalSpaces.current.spacing100),
