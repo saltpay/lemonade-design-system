@@ -187,30 +187,40 @@ fun MyScreenContent() {
 
 ## Screenshot Testing
 
-The `:ui` module is covered by **Compose `@Preview` screenshot tests** (Roborazzi + Robolectric). Every `@Preview` is discovered automatically and captured in **both light and dark themes** — there is no per-preview boilerplate.
+The `:ui` module is covered by **Compose `@Preview` screenshot tests** (Roborazzi + Robolectric). Previews are discovered automatically and each is captured in **light and dark**. The tester wraps every preview in `LemonadeTheme` — do **not** wrap it yourself.
 
 ### Adding coverage
 
-Just write a `@Preview` (or annotate with `@LemonadePreview`). The tester finds it, wraps it in `LemonadeTheme`, and records one golden per theme (`…_Light.png` / `…_Dark.png`). To shape what gets captured:
+Annotate the preview function with `@LemonadePreview`. That multipreview stacks Light + Dark (`uiMode`), so one annotation yields both goldens (`…Light_DAY.png` / `…Dark_NIGHT.png`):
 
-- **Light + dark** are always captured automatically — you do **not** need to declare `uiMode`.
-- **Direction:** previews render in both LTR and RTL in the IDE, but only **LTR** is screenshot-tested.
-- **Keep `@PreviewParameter` providers representative**, not combinatorial. Vary one axis at a time from a sensible base (every enum value once, each boolean's non-default once) rather than a full cartesian product — this keeps the golden set and the IDE preview grid small and meaningful.
+```kotlin
+@LemonadePreview
+@Composable
+private fun MyComponentPreview(
+    @PreviewParameter(MyComponentPreviewProvider::class) data: MyComponentPreviewData,
+) {
+    LemonadeUi.MyComponent(/* data */)
+}
+```
+
+- **Do NOT wrap the body in `LemonadeTheme { … }`** — the tester does it, choosing the colour set from `uiMode`. A manual wrapper double-nests the theme and breaks the dark variant.
+- **Keep `@PreviewParameter` providers representative, not combinatorial.** Vary one axis at a time from a sensible base (every enum value once, each boolean's non-default once) rather than a full cartesian product — this keeps both the golden set and the IDE preview grid small and meaningful.
+- **Use realistic, deterministic sample data.** No wall-clock reads (`Clock.System.now()`) in a previewed composable — pass fixed values, or skip the preview for that one composable.
 
 ### Goldens are authored by CI — don't commit them by hand
 
-Golden images live in `kmp/ui/screenshots/` but are **recorded and committed by CI**, not by you. Pixel rasterisation is OS-dependent, so goldens are pinned to one authoritative environment: GitHub's `ubuntu-latest`.
+Golden images live at `kmp/ui/src/androidMain/screenshots/` but are **recorded and committed by CI**, not by you. Pixel rasterisation is OS-dependent, so goldens are pinned to one authoritative environment: GitHub's `ubuntu-latest`.
 
-- On a pull request, the **`Android Screenshots`** job runs `verifyRoborazziDebug`. If it fails (e.g. you added or changed a preview), CI re-records the goldens and pushes a `🤖 Update screenshots` commit back to your branch. Review the image diff inline in the PR.
+- On a (non-draft) pull request, the **`Android Screenshots`** job runs `verifyAndRecordRoborazziDebug`: it verifies, and for any preview whose **pixels** actually changed it re-records the golden in place (unchanged goldens are left untouched, so PNG byte-noise never churns the diff). On a same-repo PR it then pushes a signed `🤖 Update screenshots` commit back to your branch; review the image diff inline. The pushed commit re-triggers CI, which then passes.
 - **Do not commit locally-recorded PNGs** — goldens recorded on macOS will not match the Linux CI renderer and will just churn. Let CI own them.
-- Fork PRs and pushes to `main` can't be auto-committed; in those cases the job fails with instructions to record locally.
+- Fork PRs and pushes to `main` can't be auto-committed; there the job fails with instructions to record locally. A test that *crashes* (vs a pixel diff) also fails the job — recording can't fix a crash.
 
 ### Running it locally
 
 From `kmp/`:
 
 ```bash
-# Re-record goldens (writes to kmp/ui/screenshots/)
+# Re-record goldens (writes to kmp/ui/src/androidMain/screenshots/)
 ./gradlew :ui:recordRoborazziDebug
 
 # Verify current code against the recorded goldens
