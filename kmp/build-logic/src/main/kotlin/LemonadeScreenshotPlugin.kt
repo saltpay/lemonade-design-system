@@ -68,9 +68,16 @@ class LemonadeScreenshotPlugin : Plugin<Project> {
      *
      * Robolectric 4.16 ships no SDK 36 device jar, so the generated tests are
      * pinned to SDK 34 even though the module targets SDK 36.
+     *
+     * Goldens are written to the in-tree `screenshots/` folder (not under
+     * `build/`) so CI can commit them. Roborazzi propagates [outputDir] to the
+     * test JVM's `roborazzi.output.dir` system property as a project-relative
+     * path, which our [TESTER_CLASS] reads back when reconstructing golden paths
+     * under the default `RelativePathFromCurrentDirectory` record strategy.
      */
     private fun Project.configureRoborazziPreviewGeneration() {
         extensions.configure<RoborazziExtension> {
+            outputDir.set(layout.projectDirectory.dir(SCREENSHOTS_DIR))
             generateComposePreviewRobolectricTests.apply {
                 enable.set(true)
                 packages.set(listOf(PREVIEW_PACKAGE))
@@ -102,6 +109,9 @@ class LemonadeScreenshotPlugin : Plugin<Project> {
 private const val PREVIEW_PACKAGE = "com.teya.lemonade"
 private const val TESTER_CLASS =
     "com.teya.lemonade.screenshot.LemonadeComposePreviewTester"
+
+// Module-relative directory the goldens are recorded into and verified from.
+private const val SCREENSHOTS_DIR = "screenshots"
 
 // Robolectric 4.16 ships no SDK 36 device jar, so the generated tests are
 // pinned to SDK 34 even though the module targets SDK 36. The value is the
