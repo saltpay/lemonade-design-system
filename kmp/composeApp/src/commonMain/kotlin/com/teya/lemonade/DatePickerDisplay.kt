@@ -9,14 +9,12 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
-import kotlinx.datetime.todayIn
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
+
+// Pinned so screenshot diffs of this screen aren't flaky as the system date advances.
+private val DEMO_TODAY = LocalDate(year = 2025, month = 1, day = 15)
 
 private val monthNames = listOf(
     "January",
@@ -40,11 +38,7 @@ private fun formatMonth(month: Int): String = monthNames[month - 1]
 @Suppress("LongMethod")
 @Composable
 internal fun DatePickerDisplay() {
-    @OptIn(ExperimentalTime::class)
-    val today = remember {
-        Clock.System
-            .todayIn(TimeZone.currentSystemDefault())
-    }
+    val today = DEMO_TODAY
 
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
@@ -56,7 +50,10 @@ internal fun DatePickerDisplay() {
             .padding(LemonadeTheme.spaces.spacing400),
     ) {
         DatePickerSection(title = "Default (all dates selectable)") {
-            val state = rememberDatePickerState(initialDate = today)
+            val state = rememberDatePickerState(
+                today = today,
+                initialDate = today,
+            )
             LemonadeUi.DatePicker(
                 state = state,
                 monthFormatter = ::formatMonth,
@@ -70,7 +67,10 @@ internal fun DatePickerDisplay() {
         }
 
         DatePickerSection(title = "Future dates only (minDate: today)") {
-            val state = rememberDatePickerState(minDate = today)
+            val state = rememberDatePickerState(
+                today = today,
+                minDate = today,
+            )
             LemonadeUi.DatePicker(
                 state = state,
                 monthFormatter = ::formatMonth,
@@ -84,7 +84,10 @@ internal fun DatePickerDisplay() {
         }
 
         DatePickerSection(title = "Past dates only (maxDate: today)") {
-            val state = rememberDatePickerState(maxDate = today)
+            val state = rememberDatePickerState(
+                today = today,
+                maxDate = today,
+            )
             LemonadeUi.DatePicker(
                 state = state,
                 monthFormatter = ::formatMonth,
@@ -102,6 +105,7 @@ internal fun DatePickerDisplay() {
             val customMinDate = LocalDate(today.year, monthNumber, 1)
             val customMaxDate = LocalDate(today.year, monthNumber, daysInMonth(today.year, monthNumber))
             val state = rememberDatePickerState(
+                today = today,
                 minDate = customMinDate,
                 maxDate = customMaxDate,
             )
@@ -118,7 +122,7 @@ internal fun DatePickerDisplay() {
         }
 
         DatePickerSection(title = "Date Range Mode") {
-            val state = rememberDateRangePickerState()
+            val state = rememberDateRangePickerState(today = today)
             LemonadeUi.DateRangePicker(
                 state = state,
                 monthFormatter = ::formatMonth,
@@ -133,7 +137,10 @@ internal fun DatePickerDisplay() {
         }
 
         DatePickerSection(title = "Date Range with max 7 days") {
-            val state = rememberDateRangePickerState(maxRangeDays = 7)
+            val state = rememberDateRangePickerState(
+                today = today,
+                maxRangeDays = 7,
+            )
             LemonadeUi.DateRangePicker(
                 state = state,
                 monthFormatter = ::formatMonth,

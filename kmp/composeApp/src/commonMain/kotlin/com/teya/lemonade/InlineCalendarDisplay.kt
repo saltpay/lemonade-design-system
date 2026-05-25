@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalTime::class)
-
 package com.teya.lemonade
 
 import androidx.compose.foundation.background
@@ -21,16 +19,15 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.DayLabelFormat
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.plus
-import kotlinx.datetime.todayIn
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
+
+// Pinned so screenshot diffs of this screen aren't flaky as the system date advances.
+private val DEMO_TODAY = LocalDate(year = 2025, month = 1, day = 15)
 
 @Composable
 internal fun InlineCalendarDisplay() {
-    val today = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) }
+    val today = DEMO_TODAY
 
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
@@ -55,7 +52,10 @@ internal fun InlineCalendarDisplay() {
 @Composable
 private fun DefaultSection(today: LocalDate) {
     InlineCalendarSection(title = "Default (today selected)") {
-        val state = rememberInlineCalendarState(initialDate = today)
+        val state = rememberInlineCalendarState(
+            today = today,
+            initialDate = today,
+        )
         LemonadeUi.InlineCalendar(
             state = state,
             onDateSelected = { /* observe state.selectedDate */ },
@@ -68,7 +68,10 @@ private fun DefaultSection(today: LocalDate) {
 @Composable
 private fun TrailingDotsSection(today: LocalDate) {
     InlineCalendarSection(title = "With trailing content (dot on every 3rd day)") {
-        val state = rememberInlineCalendarState(initialDate = today)
+        val state = rememberInlineCalendarState(
+            today = today,
+            initialDate = today,
+        )
         LemonadeUi.InlineCalendar(
             state = state,
             onDateSelected = { /* observe state.selectedDate */ },
@@ -87,7 +90,10 @@ private fun TrailingDotsSection(today: LocalDate) {
 @Composable
 private fun ShortLabelsSection(today: LocalDate) {
     InlineCalendarSection(title = "Short day labels (Mon, Tue, Wed...)") {
-        val state = rememberInlineCalendarState(initialDate = today)
+        val state = rememberInlineCalendarState(
+            today = today,
+            initialDate = today,
+        )
         LemonadeUi.InlineCalendar(
             state = state,
             dayLabelFormat = DayLabelFormat.Short,
@@ -104,6 +110,7 @@ private fun ConstrainedRangeSection(today: LocalDate) {
         val minDate = remember { today.plus(-7, DateTimeUnit.DAY) }
         val maxDate = remember { today.plus(30, DateTimeUnit.DAY) }
         val state = rememberInlineCalendarState(
+            today = today,
             initialDate = today,
             minDate = minDate,
             maxDate = maxDate,
@@ -125,7 +132,10 @@ private fun ConstrainedRangeSection(today: LocalDate) {
 @Composable
 private fun CompactSelectionSection(today: LocalDate) {
     InlineCalendarSection(title = "Compact selection (day number only)") {
-        val state = rememberInlineCalendarState(initialDate = today)
+        val state = rememberInlineCalendarState(
+            today = today,
+            initialDate = today,
+        )
         LemonadeUi.InlineCalendar(
             state = state,
             expandSelectionToLabel = false,
@@ -139,7 +149,10 @@ private fun CompactSelectionSection(today: LocalDate) {
 @Composable
 private fun CompactDotsSection(today: LocalDate) {
     InlineCalendarSection(title = "Compact selection with trailing dots") {
-        val state = rememberInlineCalendarState(initialDate = today)
+        val state = rememberInlineCalendarState(
+            today = today,
+            initialDate = today,
+        )
         LemonadeUi.InlineCalendar(
             state = state,
             expandSelectionToLabel = false,
@@ -159,7 +172,10 @@ private fun CompactDotsSection(today: LocalDate) {
 @Composable
 private fun CustomColorsSection(today: LocalDate) {
     InlineCalendarSection(title = "Custom selection colors") {
-        val state = rememberInlineCalendarState(initialDate = today)
+        val state = rememberInlineCalendarState(
+            today = today,
+            initialDate = today,
+        )
         LemonadeUi.InlineCalendar(
             state = state,
             selectionBackgroundColor = LemonadeTheme.colors.interaction.bgInfoInteractive,
