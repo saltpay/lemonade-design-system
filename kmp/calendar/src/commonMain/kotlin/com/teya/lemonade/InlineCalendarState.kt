@@ -30,7 +30,11 @@ import kotlin.time.ExperimentalTime
  *
  * @param initialDate The initially selected date.
  * @param initialDisplayedMonth The month shown initially; defaults to the
- *   month of [initialDate] or today.
+ *   month of [initialDate] or [today].
+ * @param today The date treated as "today" — used to highlight the current day in the
+ *   strip and as the fallback displayed month. Defaults to the system clock in the
+ *   system timezone via [rememberInlineCalendarState]. Override for tests, previews,
+ *   or a non-system timezone. To change "today" at runtime, recreate the state.
  * @param minDate Minimum selectable date (inclusive).
  * @param maxDate Maximum selectable date (inclusive).
  * @param firstDayOfWeek Reserved for future use (e.g. week-start snapping). Not currently
@@ -40,11 +44,12 @@ import kotlin.time.ExperimentalTime
  */
 @Stable
 public class InlineCalendarState internal constructor(
-    initialDate: LocalDate? = null,
-    initialDisplayedMonth: YearMonth? = null,
-    public val minDate: LocalDate? = null,
-    public val maxDate: LocalDate? = null,
-    public val firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
+    initialDate: LocalDate?,
+    initialDisplayedMonth: YearMonth?,
+    public val today: LocalDate,
+    public val minDate: LocalDate?,
+    public val maxDate: LocalDate?,
+    public val firstDayOfWeek: DayOfWeek,
 ) {
     /** The currently selected date. */
     public var selectedDate: LocalDate? by mutableStateOf(initialDate)
@@ -58,10 +63,16 @@ public class InlineCalendarState internal constructor(
      */
     public var displayedMonth: YearMonth by mutableStateOf(
         initialDisplayedMonth
-            ?: initialDate?.let { YearMonth(it.year, it.month.number) }
-            ?: Clock.System.todayIn(TimeZone.currentSystemDefault()).let {
-                YearMonth(it.year, it.month.number)
-            },
+            ?: initialDate?.let { date ->
+                YearMonth(
+                    year = date.year,
+                    month = date.month.number,
+                )
+            }
+            ?: YearMonth(
+                year = today.year,
+                month = today.month.number,
+            ),
     )
         internal set
 
@@ -106,30 +117,37 @@ public class InlineCalendarState internal constructor(
             minDate: LocalDate?,
             maxDate: LocalDate?,
             firstDayOfWeek: DayOfWeek,
-        ): Saver<InlineCalendarState, *> =
-            listSaver(
+        ): Saver<InlineCalendarState, *> {
+            return listSaver(
                 save = { state ->
                     listOf(
                         state.selectedDate?.toString().orEmpty(),
                         state.displayedMonth.year,
                         state.displayedMonth.month.number,
+                        state.today.toString(),
                     )
                 },
                 restore = { list ->
                     val selectedStr = list[0] as String
                     val year = list[1] as Int
                     val month = list[2] as Int
+                    val savedToday = LocalDate.parse(list[3] as String)
                     InlineCalendarState(
                         initialDate = selectedStr
-                            .takeIf { it.isNotEmpty() }
-                            ?.let { LocalDate.parse(it) },
-                        initialDisplayedMonth = YearMonth(year, month),
+                            .takeIf { value -> value.isNotEmpty() }
+                            ?.let { value -> LocalDate.parse(value) },
+                        initialDisplayedMonth = YearMonth(
+                            year = year,
+                            month = month,
+                        ),
+                        today = savedToday,
                         minDate = minDate,
                         maxDate = maxDate,
                         firstDayOfWeek = firstDayOfWeek,
                     )
                 },
             )
+        }
     }
 }
 
@@ -139,6 +157,10 @@ public class InlineCalendarState internal constructor(
  *
  * @param initialDate The initially selected date.
  * @param initialDisplayedMonth The month to display initially.
+ * @param today The date treated as "today". Defaults to the system clock in the
+ *   system timezone. Override for tests, previews, or non-system timezones. The
+ *   value is persisted across configuration changes; supplying a different value
+ *   on recomposition does not retroactively change the restored state.
  * @param minDate Minimum selectable date (inclusive).
  * @param maxDate Maximum selectable date (inclusive).
  * @param firstDayOfWeek Reserved for future use (e.g. week-start snapping). Not currently
@@ -153,8 +175,9 @@ public fun rememberInlineCalendarState(
     minDate: LocalDate? = null,
     maxDate: LocalDate? = null,
     firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
-): InlineCalendarState =
-    rememberSaveable(
+    today: LocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
+): InlineCalendarState {
+    return rememberSaveable(
         saver = InlineCalendarState.saver(
             minDate = minDate,
             maxDate = maxDate,
@@ -164,8 +187,10 @@ public fun rememberInlineCalendarState(
         InlineCalendarState(
             initialDate = initialDate,
             initialDisplayedMonth = initialDisplayedMonth,
+            today = today,
             minDate = minDate,
             maxDate = maxDate,
             firstDayOfWeek = firstDayOfWeek,
         )
     }
+}

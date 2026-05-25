@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalTime::class)
-
 package com.teya.lemonade
 
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -36,17 +34,13 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.YearMonth
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import kotlinx.datetime.onDay
 import kotlinx.datetime.plus
-import kotlinx.datetime.todayIn
 import kotlinx.datetime.yearMonth
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 private const val TOTAL_DAYS = 3651
 private const val CENTER_INDEX = TOTAL_DAYS / 2
@@ -185,8 +179,8 @@ public fun LemonadeUi.InlineCalendar(
     selectionContentColor: Color? = null,
     trailingContent: @Composable ((LocalDate, Boolean) -> Unit)? = null,
 ) {
-    val today = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) }
-    val anchorDate = remember { today }
+    val today = state.today
+    val anchorDate = remember(today) { today }
 
     val density = LocalDensity.current
     val visibleCells = remember(density.fontScale) {
