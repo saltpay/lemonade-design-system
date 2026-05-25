@@ -41,6 +41,10 @@ class LemonadeScreenshotPlugin : Plugin<Project> {
                 // ActivityScenarioRule); roborazzi-compose declares these as
                 // compileOnly so the consumer must provide them.
                 add("androidUnitTestImplementation", lib("compose-ui-test-junit4"))
+                // The tester paints the themed surface (Box + Modifier.background)
+                // behind each preview; :ui exposes foundation only as
+                // implementation, so the test source set needs it directly.
+                add("androidUnitTestImplementation", lib("compose-foundation"))
             }
 
             extensions.configure<LibraryExtension> {
@@ -111,7 +115,8 @@ private const val TESTER_CLASS =
     "com.teya.lemonade.screenshot.LemonadeComposePreviewTester"
 
 // Module-relative directory the goldens are recorded into and verified from.
-private const val SCREENSHOTS_DIR = "screenshots"
+// Matches teya's convention: `<module>/src/androidMain/screenshots/`.
+private const val SCREENSHOTS_DIR = "src/androidMain/screenshots"
 
 // Robolectric 4.16 ships no SDK 36 device jar, so the generated tests are
 // pinned to SDK 34 even though the module targets SDK 36. The value is the
