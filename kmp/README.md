@@ -16,6 +16,7 @@ A shared **Kotlin Multiplatform** library for UI components, styling, and themin
 - [Components](#components)
 - [Design Tokens](#design-tokens)
 - [Assets](#assets)
+- [Screenshot Testing](#screenshot-testing)
 - [Contributing](#contributing)
   - [Documentation Standards](#documentation-standards)
 
@@ -181,6 +182,42 @@ fun MyScreenContent() {
 | **BrandLogo** | Brand logo assets |
 | **CountryFlag** | Country flag icons |
 | **SVG Icons** | Comprehensive icon library |
+
+---
+
+## Screenshot Testing
+
+The `:ui` module is covered by **Compose `@Preview` screenshot tests** (Roborazzi + Robolectric). Every `@Preview` is discovered automatically and captured in **both light and dark themes** — there is no per-preview boilerplate.
+
+### Adding coverage
+
+Just write a `@Preview` (or annotate with `@LemonadePreview`). The tester finds it, wraps it in `LemonadeTheme`, and records one golden per theme (`…_Light.png` / `…_Dark.png`). To shape what gets captured:
+
+- **Light + dark** are always captured automatically — you do **not** need to declare `uiMode`.
+- **Direction:** previews render in both LTR and RTL in the IDE, but only **LTR** is screenshot-tested.
+- **Keep `@PreviewParameter` providers representative**, not combinatorial. Vary one axis at a time from a sensible base (every enum value once, each boolean's non-default once) rather than a full cartesian product — this keeps the golden set and the IDE preview grid small and meaningful.
+
+### Goldens are authored by CI — don't commit them by hand
+
+Golden images live in `kmp/ui/screenshots/` but are **recorded and committed by CI**, not by you. Pixel rasterisation is OS-dependent, so goldens are pinned to one authoritative environment: GitHub's `ubuntu-latest`.
+
+- On a pull request, the **`Android Screenshots`** job runs `verifyRoborazziDebug`. If it fails (e.g. you added or changed a preview), CI re-records the goldens and pushes a `🤖 Update screenshots` commit back to your branch. Review the image diff inline in the PR.
+- **Do not commit locally-recorded PNGs** — goldens recorded on macOS will not match the Linux CI renderer and will just churn. Let CI own them.
+- Fork PRs and pushes to `main` can't be auto-committed; in those cases the job fails with instructions to record locally.
+
+### Running it locally
+
+From `kmp/`:
+
+```bash
+# Re-record goldens (writes to kmp/ui/screenshots/)
+./gradlew :ui:recordRoborazziDebug
+
+# Verify current code against the recorded goldens
+./gradlew :ui:verifyRoborazziDebug
+```
+
+Useful for iterating locally, but **Linux CI is authoritative** — only the goldens CI commits are trusted. The regular `Android` build does not pay the Robolectric render cost; screenshots run only in the dedicated job.
 
 ---
 
