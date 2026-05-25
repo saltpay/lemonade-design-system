@@ -782,33 +782,28 @@ private data class ActionListItemPreviewData(
 
 private class ActionListItemPreviewProvider :
     PreviewParameterProvider<ActionListItemPreviewData> {
-    override val values: Sequence<ActionListItemPreviewData> = buildAllVariants()
+    override val values: Sequence<ActionListItemPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<ActionListItemPreviewData> =
-        buildList {
-            listOf(true, false).forEach { voice ->
-                listOf(true, false).forEach { enabled ->
-                    listOf(true, false).forEach { topLabel ->
-                        listOf(true, false).forEach { withSupportText ->
-                            listOf(true, false).forEach { trailingSlot ->
-                                listOf(true, false).forEach { showNavigationIndicator ->
-                                    add(
-                                        ActionListItemPreviewData(
-                                            voice = voice,
-                                            enabled = enabled,
-                                            topLabel = topLabel,
-                                            supportText = withSupportText,
-                                            trailingSlot = trailingSlot,
-                                            showNavigationIndicator = showNavigationIndicator,
-                                        ),
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }.asSequence()
+    private fun buildRepresentativeVariants(): Sequence<ActionListItemPreviewData> {
+        val base = ActionListItemPreviewData(
+            voice = false,
+            enabled = true,
+            topLabel = false,
+            supportText = false,
+            trailingSlot = false,
+            showNavigationIndicator = false,
+        )
+        return buildList {
+            add(element = base)
+            add(element = base.copy(voice = true))
+            add(element = base.copy(enabled = false))
+            add(element = base.copy(topLabel = true))
+            add(element = base.copy(supportText = true))
+            add(element = base.copy(trailingSlot = true))
+            add(element = base.copy(showNavigationIndicator = true))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview

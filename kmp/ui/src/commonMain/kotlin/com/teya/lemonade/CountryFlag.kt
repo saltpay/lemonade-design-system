@@ -87,21 +87,24 @@ private data class CountryFlagPreviewData(
 )
 
 private class CountryFlagPreviewProvider : PreviewParameterProvider<CountryFlagPreviewData> {
-    override val values: Sequence<CountryFlagPreviewData> = buildAllVariants()
+    override val values: Sequence<CountryFlagPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<CountryFlagPreviewData> =
-        buildList {
+    private fun buildRepresentativeVariants(): Sequence<CountryFlagPreviewData> {
+        val base = CountryFlagPreviewData(
+            flag = LemonadeCountryFlags.entries.first(),
+            size = LemonadeAssetSize.Medium,
+        )
+        return buildList {
+            add(element = base)
             LemonadeCountryFlags.entries.take(5).forEach { flag ->
-                LemonadeAssetSize.entries.forEach { size ->
-                    add(
-                        CountryFlagPreviewData(
-                            flag = flag,
-                            size = size,
-                        ),
-                    )
-                }
+                add(element = base.copy(flag = flag))
             }
-        }.asSequence()
+            LemonadeAssetSize.entries.forEach { size ->
+                add(element = base.copy(size = size))
+            }
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview
