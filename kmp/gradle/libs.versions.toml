@@ -77,4 +77,3 @@ mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublis
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 binaryCompatibilityValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binaryCompatibilityValidator" }
-roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
