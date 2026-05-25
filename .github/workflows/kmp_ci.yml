@@ -231,52 +231,87 @@ jobs:
 
   android-screenshots:
     name: Android Screenshots
+    # Linux runner: Roborazzi renders deterministically on Linux, so we don't
+    # need teya's self-hosted macOS runners.
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    # Runs on PRs and on pushes to the default branch. Roborazzi renders
-    # deterministically on Linux, so this records/verifies goldens cheaply.
-    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+    # Run on non-draft PRs and on pushes to the default branch.
+    if: (github.event_name != 'pull_request' || github.event.pull_request.draft == false) && (github.event_name == 'pull_request' || github.ref == 'refs/heads/main')
     permissions:
       contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          # Check out the PR HEAD branch (not the merge ref) so the
-          # auto-commit step can push goldens back to the contributor's branch.
-          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          # Check out the PR HEAD branch (not the merge ref) and use the PAT so
+          # the bot's golden-update push re-triggers CI (the default
+          # GITHUB_TOKEN deliberately cannot, to avoid recursive runs).
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+          token: ${{ secrets.SCREENSHOT_AUTOMATION_TOKEN }}
 
       - name: Setup Gradle
         uses: ./.github/actions/setup-gradle
 
-      - name: Verify screenshots
-        id: verify
+      - name: Verify and record screenshots
+        id: vandr
         continue-on-error: true
-        run: ./gradlew :ui:verifyRoborazziDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx4g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+        # verifyAndRecord only overwrites goldens whose PIXELS actually changed,
+        # so PNG byte-noise can't churn the tree. The verify assertion still
+        # flips the step outcome to failure, which is what gates the commit step.
+        run: ./gradlew :ui:verifyAndRecordRoborazziDebug --continue --no-daemon -Dorg.gradle.jvmargs="-Xmx4g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
         working-directory: ./kmp
 
-      - name: Record screenshots
-        # Only re-record + auto-commit for same-repo PRs, where the token can
-        # push back. Fork PRs and pushes to main are handled by the fail step.
-        if: steps.verify.outcome == 'failure' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-        run: ./gradlew :ui:recordRoborazziDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx4g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+      - name: Verify screenshots (distinguish diffs from crashes)
+        id: verify
+        if: steps.vandr.outcome == 'failure'
+        continue-on-error: true
+        # After vandr recorded changed goldens in place, plain verify now passes
+        # for pixel-diff cases and only still-fails when a preview crashed.
+        run: ./gradlew :ui:verifyRoborazziDebug --continue --no-daemon -Dorg.gradle.jvmargs="-Xmx4g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
         working-directory: ./kmp
 
-      - name: Auto-commit goldens
-        if: steps.verify.outcome == 'failure' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "🤖 Update screenshots"
-          file_pattern: "kmp/ui/screenshots/**/*.png"
-
-      - name: Fail (cannot auto-commit)
-        # Verify failed but we can't safely auto-commit: never silently rewrite
-        # goldens on `main`, and fork PRs only have a read-only token.
-        if: steps.verify.outcome == 'failure' && !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+      - name: Import GPG signing key
+        id: import-gpg
+        if: steps.vandr.outcome == 'failure' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GPG_KEY_B64: ${{ secrets.SCREENSHOT_AUTOMATION_GPG_KEY }}
+          GPG_EMAIL: ${{ secrets.SCREENSHOT_AUTOMATION_GPG_EMAIL }}
         run: |
-          echo "::error::Screenshot goldens are out of date and cannot be auto-committed here (fork PR or push to main)."
-          echo "::error::Record them locally: run './gradlew :ui:recordRoborazziDebug' from ./kmp, then commit the changes under 'kmp/ui/screenshots/'."
+          set -euo pipefail
+          echo "$GPG_KEY_B64" | base64 --decode | gpg --batch --import
+          KEY_ID=$(gpg --list-secret-keys --with-colons "$GPG_EMAIL" | awk -F: '/^sec:/ { print $5; exit }')
+          echo "${KEY_ID}:6:" | gpg --batch --import-ownertrust
+          git config --global user.signingkey "$KEY_ID"
+          git config --global user.name "Lemonade Screenshots Bot"
+          git config --global user.email "$GPG_EMAIL"
+          git config --global commit.gpgsign true
+
+      - name: Commit updated screenshots
+        if: steps.vandr.outcome == 'failure' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          BRANCH: ${{ github.head_ref }}
+        run: ./scripts/commit-screenshot-updates.sh
+
+      - name: Upload screenshot diffs
+        if: steps.vandr.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-screenshot-diffs
+          path: kmp/ui/build/outputs/roborazzi/**
+
+      - name: Fail on screenshot failure
+        if: steps.verify.outcome == 'failure' || (steps.vandr.outcome == 'failure' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository))
+        run: |
+          if [[ "${{ steps.verify.outcome }}" == "failure" ]]; then
+            echo "::error::A screenshot test crashed (verify still failed after re-recording). This is not a pixel diff — inspect the 'android-screenshot-diffs' artifact and fix the preview."
+          else
+            echo "::error::Screenshot goldens are out of date and cannot be auto-committed here (fork PR or push to main)."
+            echo "::error::Record them locally: run './gradlew :ui:recordRoborazziDebug' from ./kmp, then commit the changes under 'kmp/ui/src/androidMain/screenshots/'."
+          fi
           exit 1
+      # NOTE: No GPG-key cleanup step — GitHub-hosted ubuntu runners are
+      # ephemeral and destroyed after the job, so the imported key never persists.
 
   ci-status:
     name: CI Status
