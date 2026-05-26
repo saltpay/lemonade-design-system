@@ -75,7 +75,7 @@ public final class com/teya/lemonade/ChipKt {
 public final class com/teya/lemonade/ComposableSingletons$CardKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$CardKt;
 	public fun <init> ()V
-	public final fun getLambda$-184555069$ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1352898212$ui_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$ContentListItemKt {
