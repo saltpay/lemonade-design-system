@@ -73,7 +73,7 @@ public object LemonadeLightTheme : LemonadeSemanticColors {
             override val borderCaution = LemonadePrimitiveColors.Solid.Amber.amber600
             override val borderOnBrandMedium = LemonadePrimitiveColors.Solid.White.white500
             override val borderBrand = LemonadePrimitiveColors.Solid.YellowLime.yellowLime600
-            override val borderSelected = LemonadePrimitiveColors.Alpha.Neutral.alpha900
+            override val borderSelected = LemonadePrimitiveColors.Solid.YellowLime.yellowLime900
             override val borderOnBrandLow = LemonadePrimitiveColors.Solid.White.white300
             override val borderOnBrandHigh = LemonadePrimitiveColors.Solid.White.white700
             override val borderCritical = LemonadePrimitiveColors.Solid.Red.red600
