@@ -115,6 +115,11 @@ public struct LemonadeContentColorsShorthand {
     public var contentPositiveOnColor: Color { Color("lemonade-content-voice-on color-content-positive-on-color", bundle: .lemonade) }
     public var contentNeutralOnColor: Color { Color("lemonade-content-voice-on color-content-neutral-on-color", bundle: .lemonade) }
     public var contentBrandHigh: Color { Color("lemonade-content-brand-content-brand-high", bundle: .lemonade) }
+    public var contentInfoAlwaysOnColor: Color { Color("lemonade-content-fixed-content-info-always-on-color", bundle: .lemonade) }
+    public var contentNeutralAlwaysOnColor: Color { Color("lemonade-content-fixed-content-neutral-always-on-color", bundle: .lemonade) }
+    public var contentPositiveAlwaysOnColor: Color { Color("lemonade-content-fixed-content-positive-always-on-color", bundle: .lemonade) }
+    public var contentCautionAlwaysOnColor: Color { Color("lemonade-content-fixed-content-caution-always-on-color", bundle: .lemonade) }
+    public var contentCriticalAlwaysOnColor: Color { Color("lemonade-content-fixed-content-critical-always-on-color", bundle: .lemonade) }
 }
 
 // MARK: - Background Colors Namespace
@@ -158,7 +163,7 @@ public struct LemonadeShadowColorsShorthand {
 
 public extension ShapeStyle where Self == Color {
     /// Interaction color tokens
-    /// Usage: `.foregroundStyle(.interaction.bgDefaultInteractive)`
+    /// Usage: `.foregroundStyle(.interaction.interactionDefault)`
     static var interaction: LemonadeInteractionColorsShorthand { LemonadeInteractionColorsShorthand() }
 
     /// Border color tokens
