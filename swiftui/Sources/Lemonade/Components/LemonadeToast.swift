@@ -147,12 +147,35 @@ private struct LemonadeToastView: View {
             )
         )
         .frame(minHeight: .size.size1100)
-        .background(.bg.bgDefaultInverse)
-        .clipShape(RoundedRectangle(cornerRadius: .radius.radiusFull))
+        .modifier(ToastBackgroundModifier())
         .lemonadeShadow(.large)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(voiceAccessibilityText): \(label)")
         .modifier(ToastAccessibilityActionModifier(actionLabel: actionLabel, onAction: onAction))
+    }
+}
+
+// MARK: - Style Helpers
+
+private struct ToastBackgroundModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        #if compiler(>=6.2)
+        if #available(iOS 26.0, macOS 26.0, *) {
+            content
+                .glassEffect(
+                    .regular.tint(Color.bg.bgAlwaysDark.opacity(.opacity.opacity90)),
+                    in: RoundedRectangle(cornerRadius: .radius.radiusFull)
+                )
+        } else {
+            content
+                .background(.bg.bgDefaultInverse)
+                .clipShape(RoundedRectangle(cornerRadius: .radius.radiusFull))
+        }
+        #else
+        content
+            .background(.bg.bgDefaultInverse)
+            .clipShape(RoundedRectangle(cornerRadius: .radius.radiusFull))
+        #endif
     }
 }
 
