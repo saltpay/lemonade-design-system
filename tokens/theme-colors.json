@@ -5676,7 +5676,7 @@
     {
       "id": "VariableID:4792:1951",
       "name": "Content/Fixed/content-info-always-on-color",
-      "description": "A clear background used to present informative messages or neutral system states that guide the user.",
+      "description": "A fixed foreground colour for text and icons placed on informative backgrounds, ensuring consistent visibility regardless of theme.",
       "type": "COLOR",
       "valuesByMode": {
         "3037:0": {
@@ -5723,7 +5723,7 @@
     {
       "id": "VariableID:4792:1961",
       "name": "Content/Fixed/content-neutral-always-on-color",
-      "description": "A strong background used to confirm success, completion, or positive feedback that needs visual emphasis.",
+      "description": "A fixed foreground colour for text and icons placed on neutral backgrounds, ensuring consistent visibility regardless of theme.",
       "type": "COLOR",
       "valuesByMode": {
         "3037:0": {
@@ -5770,7 +5770,7 @@
     {
       "id": "VariableID:4792:1962",
       "name": "Content/Fixed/content-positive-always-on-color",
-      "description": "A strong background used to confirm success, completion, or positive feedback that needs visual emphasis.",
+      "description": "A fixed foreground colour for text and icons placed on positive or success backgrounds, ensuring consistent visibility regardless of theme.",
       "type": "COLOR",
       "valuesByMode": {
         "3037:0": {
@@ -5817,7 +5817,7 @@
     {
       "id": "VariableID:4792:1963",
       "name": "Content/Fixed/content-caution-always-on-color",
-      "description": "A strong background used to signal warnings or cautionary states that require user attention without implying error.",
+      "description": "A fixed foreground colour for text and icons placed on cautionary backgrounds, ensuring consistent visibility regardless of theme.",
       "type": "COLOR",
       "valuesByMode": {
         "3037:0": {
@@ -5864,7 +5864,7 @@
     {
       "id": "VariableID:4792:1964",
       "name": "Content/Fixed/content-critical-always-on-color",
-      "description": "A strong background used for critical messages, errors, or destructive actions that require high visibility.",
+      "description": "A fixed foreground colour for text and icons placed on critical or error backgrounds, ensuring consistent visibility regardless of theme.",
       "type": "COLOR",
       "valuesByMode": {
         "3037:0": {
