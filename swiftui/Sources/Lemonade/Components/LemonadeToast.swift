@@ -45,27 +45,28 @@ public enum LemonadeToastVoice: Sendable {
 // MARK: - Toast Component
 
 public extension LemonadeUi {
-    /// Toast component for displaying brief feedback messages.
+    /// Toast component for displaying brief feedback messages with an optional tappable action.
     ///
     /// Displays a brief message with an icon in a pill-shaped container.
-    /// Used for non-intrusive feedback to user actions.
+    /// An optional action button can be shown at the trailing end of the toast.
     ///
     /// ## Usage
     /// ```swift
     /// // Success toast
     /// LemonadeUi.Toast(label: "Changes saved", voice: .success)
     ///
-    /// // Error toast
-    /// LemonadeUi.Toast(label: "Something went wrong", voice: .error)
-    ///
-    /// // Neutral toast with custom icon
-    /// LemonadeUi.Toast(label: "Added to favorites", voice: .neutral, icon: .heart)
+    /// // Toast with action button
+    /// LemonadeUi.Toast(label: "Item deleted", voice: .neutral, actionLabel: "Undo") {
+    ///     // handle undo
+    /// }
     /// ```
     ///
     /// - Parameters:
     ///   - label: The message to display in the toast
     ///   - voice: The voice/variant of the toast (success, error, neutral)
     ///   - icon: Custom icon for neutral toasts only. Ignored for success/error voices.
+    ///   - actionLabel: Optional label for the action button shown at the trailing end of the toast.
+    ///   - onAction: Optional callback invoked when the action button is tapped. The button is only shown when both `actionLabel` and `onAction` are non-nil.
     /// - Returns: A styled Toast view
     @ViewBuilder
     static func Toast(
@@ -168,12 +169,12 @@ private struct ToastBackgroundModifier: ViewModifier {
                 )
         } else {
             content
-                .background(.bg.bgDefaultInverse)
+                .background(.bg.bgAlwaysDark)
                 .clipShape(RoundedRectangle(cornerRadius: .radius.radiusFull))
         }
         #else
         content
-            .background(.bg.bgDefaultInverse)
+            .background(.bg.bgAlwaysDark)
             .clipShape(RoundedRectangle(cornerRadius: .radius.radiusFull))
         #endif
     }

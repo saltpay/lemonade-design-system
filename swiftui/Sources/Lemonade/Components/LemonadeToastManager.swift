@@ -151,6 +151,8 @@ public final class LemonadeToastManager: ObservableObject {
     ///   - icon: Custom icon for neutral toasts only.
     ///   - duration: How long the toast should be visible.
     ///   - dismissible: Whether the toast can be dismissed by swiping.
+    ///   - actionLabel: Optional label for the action button shown at the trailing end of the toast.
+    ///   - onAction: Optional callback invoked when the action button is tapped. The button is only shown when both `actionLabel` and `onAction` are non-nil.
     public func show(
         label: String,
         voice: LemonadeToastVoice = .neutral,

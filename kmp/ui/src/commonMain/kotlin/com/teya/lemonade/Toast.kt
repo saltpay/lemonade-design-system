@@ -109,7 +109,7 @@ public class LemonadeToastState {
      * @param duration How long the toast is displayed. Defaults to [ToastDuration.Short].
      * @param dismissible Whether the user can swipe to dismiss. Defaults to `true`.
      * @param actionLabel Optional label for the action button shown at the trailing end of the toast.
-     * @param onAction Callback invoked when the action button is tapped. Required when [actionLabel] is provided.
+     * @param onAction Optional callback invoked when the action button is tapped. The button is only shown when both [actionLabel] and [onAction] are non-null.
      */
     public fun show(
         label: String,
@@ -147,12 +147,14 @@ public val LocalLemonadeToastState: ProvidableCompositionLocal<LemonadeToastStat
 }
 
 /**
- * A transient, non-interactive notification that appears at the bottom of the screen.
+ * A brief notification that appears at the bottom of the screen. Supports an optional tappable
+ * action rendered at the trailing end of the toast.
  *
  * ## Usage
  * ```kotlin
  * val toastState = LocalLemonadeToastState.current
  * toastState.show(label = "Changes saved", voice = ToastVoice.Success)
+ * toastState.show(label = "Item deleted", voice = ToastVoice.Neutral, actionLabel = "Undo", onAction = { /* undo */ })
  * ```
  *
  * @param label The text to display.
@@ -160,7 +162,7 @@ public val LocalLemonadeToastState: ProvidableCompositionLocal<LemonadeToastStat
  * @param voice The tone — determines default icon and icon color. Defaults to [ToastVoice.Neutral].
  * @param icon Optional custom icon (only used when voice is [ToastVoice.Neutral]).
  * @param actionLabel Optional label for the action button shown at the trailing end of the toast.
- * @param onAction Callback invoked when the action button is tapped. Required when [actionLabel] is provided.
+ * @param onAction Optional callback invoked when the action button is tapped. The button is only shown when both [actionLabel] and [onAction] are non-null.
  */
 @Composable
 public fun LemonadeUi.Toast(
