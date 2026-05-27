@@ -28,11 +28,47 @@ struct ToastDisplayView: View {
                         voice: .neutral
                     )
                 }
-                
+
                 Button("Show Long Content Toast") {
                     toastManager.show(
                         label: "Really long label that should wrap onto multiple lines to demonstrate text wrapping in the toast component",
                         voice: .neutral
+                    )
+                }
+            }
+
+            Section("With Action") {
+                Button("Success Toast with Action") {
+                    toastManager.show(
+                        label: "Changes saved",
+                        voice: .success,
+                        actionLabel: "Undo",
+                        onAction: {
+                            toastManager.show(label: "Change undone", voice: .neutral)
+                        }
+                    )
+                }
+
+                Button("Error Toast with Action") {
+                    toastManager.show(
+                        label: "Something went wrong",
+                        voice: .error,
+                        actionLabel: "Retry",
+                        onAction: {
+                            toastManager.show(label: "Retrying…", voice: .neutral)
+                        }
+                    )
+                }
+
+                Button("Neutral Toast with Action") {
+                    toastManager.show(
+                        label: "Added to favorites",
+                        voice: .neutral,
+                        icon: .heart,
+                        actionLabel: "View",
+                        onAction: {
+                            toastManager.show(label: "Opening favorites", voice: .neutral)
+                        }
                     )
                 }
             }
@@ -99,18 +135,9 @@ struct ToastDisplayView: View {
                 }
 
                 Button("Queue Multiple Toasts") {
-                    toastManager.show(
-                        label: "First toast",
-                        voice: .success
-                    )
-                    toastManager.show(
-                        label: "Second toast",
-                        voice: .neutral
-                    )
-                    toastManager.show(
-                        label: "Third toast",
-                        voice: .error
-                    )
+                    toastManager.show(label: "First toast", voice: .success)
+                    toastManager.show(label: "Second toast", voice: .neutral)
+                    toastManager.show(label: "Third toast", voice: .error)
                 }
             }
 
@@ -140,6 +167,9 @@ struct ToastDisplayView: View {
                     LemonadeUi.Toast(label: "Error message", voice: .error)
                     LemonadeUi.Toast(label: "Neutral message", voice: .neutral)
                     LemonadeUi.Toast(label: "With custom icon", voice: .neutral, icon: .sparkles)
+                    LemonadeUi.Toast(label: "Success message", voice: .success, actionLabel: "Undo") {}
+                    LemonadeUi.Toast(label: "Error message", voice: .error, actionLabel: "Retry") {}
+                    LemonadeUi.Toast(label: "Neutral message", voice: .neutral, actionLabel: "View") {}
                 }
                 .padding(.vertical, 8)
             }

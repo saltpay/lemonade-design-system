@@ -9,10 +9,15 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
@@ -81,6 +86,8 @@ internal data class ToastData(
     val duration: ToastDuration,
     val dismissible: Boolean,
     val id: Int,
+    val actionLabel: String?,
+    val onAction: (() -> Unit)?,
 )
 
 /**
@@ -101,6 +108,8 @@ public class LemonadeToastState {
      * @param icon Optional custom icon. Only used when [voice] is [ToastVoice.Neutral].
      * @param duration How long the toast is displayed. Defaults to [ToastDuration.Short].
      * @param dismissible Whether the user can swipe to dismiss. Defaults to `true`.
+     * @param actionLabel Optional label for the action button shown at the trailing end of the toast.
+     * @param onAction Callback invoked when the action button is tapped. Required when [actionLabel] is provided.
      */
     public fun show(
         label: String,
@@ -108,6 +117,8 @@ public class LemonadeToastState {
         icon: LemonadeIcons? = null,
         duration: ToastDuration = ToastDuration.Short,
         dismissible: Boolean = true,
+        actionLabel: String? = null,
+        onAction: (() -> Unit)? = null,
     ) {
         currentToast = ToastData(
             label = label,
@@ -116,6 +127,8 @@ public class LemonadeToastState {
             duration = duration,
             dismissible = dismissible,
             id = nextId++,
+            actionLabel = actionLabel,
+            onAction = onAction,
         )
     }
 
@@ -146,6 +159,8 @@ public val LocalLemonadeToastState: ProvidableCompositionLocal<LemonadeToastStat
  * @param modifier Modifier to apply to the toast container.
  * @param voice The tone — determines default icon and icon color. Defaults to [ToastVoice.Neutral].
  * @param icon Optional custom icon (only used when voice is [ToastVoice.Neutral]).
+ * @param actionLabel Optional label for the action button shown at the trailing end of the toast.
+ * @param onAction Callback invoked when the action button is tapped. Required when [actionLabel] is provided.
  */
 @Composable
 public fun LemonadeUi.Toast(
@@ -153,11 +168,15 @@ public fun LemonadeUi.Toast(
     modifier: Modifier = Modifier,
     voice: ToastVoice = ToastVoice.Neutral,
     icon: LemonadeIcons? = null,
+    actionLabel: String? = null,
+    onAction: (() -> Unit)? = null,
 ) {
     CoreToast(
         label = label,
         voice = voice,
         icon = icon,
+        actionLabel = actionLabel,
+        onAction = onAction,
         modifier = modifier,
     )
 }
@@ -167,6 +186,8 @@ private fun CoreToast(
     label: String,
     voice: ToastVoice,
     icon: LemonadeIcons?,
+    actionLabel: String?,
+    onAction: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     val colors = LocalColors.current
@@ -192,7 +213,8 @@ private fun CoreToast(
             .lemonadeShadow(
                 shadow = LemonadeShadow.Large,
                 shape = shapes.radiusFull,
-            ).clip(shape = shapes.radiusFull)
+            )
+            .clip(shape = shapes.radiusFull)
             .background(color = colors.background.bgDefaultInverse)
             .padding(
                 horizontal = spaces.spacing400,
@@ -216,8 +238,25 @@ private fun CoreToast(
             color = colors.content.contentPrimaryInverse,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(horizontal = spaces.spacing100),
+            modifier = Modifier
+                .weight(weight = 1f)
+                .padding(horizontal = spaces.spacing100),
         )
+
+        if (actionLabel != null && onAction != null) {
+            LemonadeUi.Text(
+                text = actionLabel,
+                textStyle = LocalTypographies.current.bodySmallMedium,
+                color = colors.content.contentInfoAlwaysOnColor,
+                modifier = Modifier
+                    .semantics { role = Role.Button }
+                    .clickable(onClick = onAction)
+                    .padding(
+                        horizontal = spaces.spacing100,
+                        vertical = spaces.spacing100,
+                    ),
+            )
+        }
     }
 }
 
@@ -326,8 +365,11 @@ public fun LemonadeToastHost(
                         label = animatedToast.label,
                         voice = animatedToast.voice,
                         icon = animatedToast.icon,
+                        actionLabel = animatedToast.actionLabel,
+                        onAction = animatedToast.onAction,
                         modifier = swipeModifier
-                            .offset { IntOffset(0, offsetY.roundToInt()) }
+                            .fillMaxWidth()
+                            .offset { IntOffset(x = 0, y = offsetY.roundToInt()) }
                             .graphicsLayer {
                                 val fadeDistance =
                                     DRAG_DISMISS_THRESHOLD_DP.dp.toPx() * DRAG_FADE_MULTIPLIER

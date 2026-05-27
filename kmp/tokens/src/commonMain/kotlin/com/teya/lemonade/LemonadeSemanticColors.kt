@@ -119,6 +119,11 @@ public interface LemonadeSemanticColors {
         public val contentPositiveOnColor: Color
         public val contentNeutralOnColor: Color
         public val contentBrandHigh: Color
+        public val contentInfoAlwaysOnColor: Color
+        public val contentNeutralAlwaysOnColor: Color
+        public val contentPositiveAlwaysOnColor: Color
+        public val contentCautionAlwaysOnColor: Color
+        public val contentCriticalAlwaysOnColor: Color
     }
 
     public interface BackgroundColors {

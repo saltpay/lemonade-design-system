@@ -234,7 +234,9 @@ struct ToastItemView: View {
         LemonadeUi.Toast(
             label: toast.label,
             voice: toast.voice,
-            icon: toast.icon
+            icon: toast.icon,
+            actionLabel: toast.actionLabel,
+            onAction: toast.onAction
         )
         .frame(maxWidth: .infinity)
         .padding(.top, .space.spacing1800) // Extra space for dismiss gesture
@@ -252,7 +254,7 @@ struct ToastItemView: View {
             }
         )
         .contentShape(Rectangle())
-        .gesture(dismissGesture)
+        .simultaneousGesture(dismissGesture)
     }
 
     private var dismissGesture: some Gesture {

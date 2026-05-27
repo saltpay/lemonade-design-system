@@ -71,12 +71,16 @@ public extension LemonadeUi {
     static func Toast(
         label: String,
         voice: LemonadeToastVoice = .neutral,
-        icon: LemonadeIcon? = nil
+        icon: LemonadeIcon? = nil,
+        actionLabel: String? = nil,
+        onAction: (() -> Void)? = nil
     ) -> some View {
         LemonadeToastView(
             label: label,
             voice: voice,
-            customIcon: icon
+            customIcon: icon,
+            actionLabel: actionLabel,
+            onAction: onAction
         )
     }
 }
@@ -87,6 +91,8 @@ private struct LemonadeToastView: View {
     let label: String
     let voice: LemonadeToastVoice
     let customIcon: LemonadeIcon?
+    let actionLabel: String?
+    let onAction: (() -> Void)?
 
     private var displayIcon: LemonadeIcon? {
         switch voice {
@@ -121,6 +127,16 @@ private struct LemonadeToastView: View {
                 .foregroundStyle(.content.contentPrimaryInverse)
                 .lineLimit(nil)
                 .padding(.horizontal, .space.spacing100)
+                .layoutPriority(1)
+
+            if let actionLabel, let onAction {
+                Button(action: onAction) {
+                    Text(actionLabel)
+                        .font(LemonadeTypography.shared.bodySmallMedium.font)
+                        .foregroundStyle(.content.contentInfoAlwaysOnColor)
+                }
+                .buttonStyle(.plain)
+            }
         }
         .padding(
             EdgeInsets(
@@ -136,6 +152,22 @@ private struct LemonadeToastView: View {
         .lemonadeShadow(.large)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(voiceAccessibilityText): \(label)")
+        .modifier(ToastAccessibilityActionModifier(actionLabel: actionLabel, onAction: onAction))
+    }
+}
+
+// MARK: - Accessibility Helpers
+
+private struct ToastAccessibilityActionModifier: ViewModifier {
+    let actionLabel: String?
+    let onAction: (() -> Void)?
+
+    func body(content: Content) -> some View {
+        if let actionLabel, let onAction {
+            content.accessibilityAction(named: Text(actionLabel), onAction)
+        } else {
+            content
+        }
     }
 }
 
@@ -150,7 +182,9 @@ struct LemonadeToast_Previews: PreviewProvider {
             LemonadeUi.Toast(label: "Your session will expire soon", voice: .neutral, icon: .circleAlert)
             LemonadeUi.Toast(label: "Added to favorites", voice: .neutral, icon: .heart)
             LemonadeUi.Toast(label: "Toast without an icon", voice: .neutral)
-            LemonadeUi.Toast(label: "Really long label that should wrap onto multiple lines to demonstrate text wrapping in the toast component", voice: .neutral, icon: .heart)
+            LemonadeUi.Toast(label: "Changes saved", voice: .success, actionLabel: "Undo") {}
+            LemonadeUi.Toast(label: "Something went wrong", voice: .error, actionLabel: "Retry") {}
+            LemonadeUi.Toast(label: "Added to favorites", voice: .neutral, icon: .heart, actionLabel: "View") {}
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()

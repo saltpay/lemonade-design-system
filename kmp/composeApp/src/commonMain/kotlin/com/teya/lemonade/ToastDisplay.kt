@@ -50,6 +50,58 @@ internal fun ToastDisplay() {
             )
         }
 
+        ToastSection("With Action") {
+            LemonadeUi.Button(
+                label = "Success Toast with Action",
+                onClick = {
+                    toastState.show(
+                        label = "Changes saved",
+                        voice = ToastVoice.Success,
+                        actionLabel = "Undo",
+                        onAction = {
+                            toastState.show(
+                                label = "Change undone",
+                                voice = ToastVoice.Neutral,
+                            )
+                        },
+                    )
+                },
+            )
+            LemonadeUi.Button(
+                label = "Error Toast with Action",
+                onClick = {
+                    toastState.show(
+                        label = "Something went wrong",
+                        voice = ToastVoice.Error,
+                        actionLabel = "Retry",
+                        onAction = {
+                            toastState.show(
+                                label = "Retrying…",
+                                voice = ToastVoice.Neutral,
+                            )
+                        },
+                    )
+                },
+            )
+            LemonadeUi.Button(
+                label = "Neutral Toast with Action",
+                onClick = {
+                    toastState.show(
+                        label = "Added to favorites",
+                        voice = ToastVoice.Neutral,
+                        icon = LemonadeIcons.Heart,
+                        actionLabel = "View",
+                        onAction = {
+                            toastState.show(
+                                label = "Opening favorites",
+                                voice = ToastVoice.Neutral,
+                            )
+                        },
+                    )
+                },
+            )
+        }
+
         ToastSection("Durations") {
             LemonadeUi.Button(
                 label = "Short (3s)",
