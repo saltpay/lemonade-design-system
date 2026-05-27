@@ -27,7 +27,7 @@ import com.teya.lemonade.core.LemonadeTextStyle
  * Derived from font metrics: (ascender - descender + lineGap) / unitsPerEm
  * = (950 - (-250) + 0) / 1000 = 1.20
  */
-private const val NaturalLineHeightRatio: Float = 1.20f
+private const val NATURAL_LINE_HEIGHT_RATIO: Float = 1.20f
 
 /**
  * Displays styled text using the Lemonade Design System typography tokens.
@@ -229,7 +229,7 @@ private fun LemonadeTextStyle.resolveStyle(
         base.color
     }
     val resolvedLineHeight = if (lineSpacing.isSpecified) {
-        (resolvedFontSize.value * NaturalLineHeightRatio + lineSpacing.value).sp
+        (resolvedFontSize.value * NATURAL_LINE_HEIGHT_RATIO + lineSpacing.value).sp
     } else {
         base.lineHeight
     }
