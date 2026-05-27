@@ -280,9 +280,12 @@ jobs:
         run: |
           set -euo pipefail
           echo "$GPG_KEY_B64" | base64 --decode | gpg --batch --import
-          KEY_ID=$(gpg --list-secret-keys --with-colons "$GPG_EMAIL" | awk -F: '/^sec:/ { print $5; exit }')
-          echo "${KEY_ID}:6:" | gpg --batch --import-ownertrust
-          git config --global user.signingkey "$KEY_ID"
+          # import-ownertrust and git's signingkey want the 40-char fingerprint
+          # (fpr field), not the 16-char key id (sec field) — the latter is
+          # rejected as "invalid fingerprint".
+          FINGERPRINT=$(gpg --list-secret-keys --with-colons "$GPG_EMAIL" | awk -F: '$1 == "fpr" { print $10; exit }')
+          printf '%s:6:\n' "$FINGERPRINT" | gpg --batch --import-ownertrust
+          git config --global user.signingkey "$FINGERPRINT"
           git config --global user.name "Lemonade Screenshots Bot"
           git config --global user.email "$GPG_EMAIL"
           git config --global commit.gpgsign true
