@@ -17,7 +17,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
+import androidx.compose.ui.unit.isSpecified
+import androidx.compose.ui.unit.sp
 import com.teya.lemonade.core.LemonadeTextStyle
+
+/**
+ * Natural line-height multiplier for the font family.
+ *
+ * Derived from font metrics: (ascender - descender + lineGap) / unitsPerEm
+ * = (950 - (-250) + 0) / 1000 = 1.20
+ */
+private const val NATURAL_LINE_HEIGHT_RATIO: Float = 1.20f
 
 /**
  * Displays styled text using the Lemonade Design System typography tokens.
@@ -33,6 +44,7 @@ import com.teya.lemonade.core.LemonadeTextStyle
  * @param minLines Minimum number of lines to display.
  * @param autoSize Optional auto-sizing configuration for the text.
  * @param onTextLayout Callback invoked when text layout is computed.
+ * @param lineSpacing Optional additional space between lines, on top of the font's natural line height.
  */
 @Composable
 public fun LemonadeUi.Text(
@@ -47,6 +59,7 @@ public fun LemonadeUi.Text(
     minLines: Int = 1,
     autoSize: TextAutoSize? = null,
     onTextLayout: ((TextLayoutResult) -> Unit)? = null,
+    lineSpacing: TextUnit = TextUnit.Unspecified,
 ) {
     val finalText = if (textStyle == LocalTypographies.current.bodyXSmallOverline) {
         text.uppercase()
@@ -66,6 +79,7 @@ public fun LemonadeUi.Text(
             fontSize = fontSize,
             color = color,
             textAlign = textAlign,
+            lineSpacing = lineSpacing,
         ),
     )
 }
@@ -87,6 +101,7 @@ public fun LemonadeUi.Text(
  * @param minLines Minimum number of lines to display.
  * @param autoSize Optional auto-sizing configuration for the text.
  * @param onTextLayout Callback invoked when text layout is computed.
+ * @param lineSpacing Optional additional space between lines, on top of the font's natural line height.
  */
 @Composable
 public fun LemonadeUi.Text(
@@ -101,6 +116,7 @@ public fun LemonadeUi.Text(
     minLines: Int = 1,
     autoSize: TextAutoSize? = null,
     onTextLayout: ((TextLayoutResult) -> Unit)? = null,
+    lineSpacing: TextUnit = TextUnit.Unspecified,
 ) {
     BasicText(
         text = text,
@@ -114,6 +130,7 @@ public fun LemonadeUi.Text(
             fontSize = fontSize,
             color = color,
             textAlign = textAlign,
+            lineSpacing = lineSpacing,
         ),
     )
 }
@@ -199,6 +216,7 @@ private fun LemonadeTextStyle.resolveStyle(
     fontSize: TextUnit,
     color: Color,
     textAlign: TextAlign,
+    lineSpacing: TextUnit,
 ): TextStyle {
     val base = textStyle
     val resolvedFontSize = if (fontSize != TextUnit.Unspecified) {
@@ -211,8 +229,17 @@ private fun LemonadeTextStyle.resolveStyle(
     } else {
         base.color
     }
+    val resolvedLineHeight = if (lineSpacing.isSpecified) {
+        require(lineSpacing.type == TextUnitType.Sp && resolvedFontSize.type == TextUnitType.Sp) {
+            "lineSpacing and fontSize must be specified in sp"
+        }
+        (resolvedFontSize.value * NATURAL_LINE_HEIGHT_RATIO + lineSpacing.value).sp
+    } else {
+        base.lineHeight
+    }
     return base.copy(
         fontSize = resolvedFontSize,
+        lineHeight = resolvedLineHeight,
         lineHeightStyle = LineHeightStyle(
             alignment = LineHeightStyle.Alignment.Center,
             trim = LineHeightStyle.Trim.None,

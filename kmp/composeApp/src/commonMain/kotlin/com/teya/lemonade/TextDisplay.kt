@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
 import com.teya.lemonade.core.LemonadeTypography
 
 @Composable
@@ -83,6 +84,41 @@ internal fun TextDisplay() {
                     text = "Info",
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     color = LemonadeTheme.colors.content.contentInfo,
+                )
+            }
+        }
+
+        // Line Spacing — additional space between lines on top of the natural line height
+        TextSection(title = "Line Spacing") {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+            ) {
+                LemonadeUi.Text(
+                    text = "Default (no lineSpacing override).\n" +
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n" +
+                        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                )
+                LemonadeUi.Text(
+                    text = "lineSpacing = 0.sp\n" +
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n" +
+                        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    lineSpacing = 0.sp,
+                )
+                LemonadeUi.Text(
+                    text = "lineSpacing = 8.sp\n" +
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n" +
+                        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    lineSpacing = 8.sp,
+                )
+                LemonadeUi.Text(
+                    text = "lineSpacing = 16.sp\n" +
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n" +
+                        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    lineSpacing = 16.sp,
                 )
             }
         }

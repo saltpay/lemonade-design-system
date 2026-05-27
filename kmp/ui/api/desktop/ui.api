@@ -1095,8 +1095,8 @@ public final class com/teya/lemonade/TextFieldSize : java/lang/Enum {
 public final class com/teya/lemonade/TextKt {
 	public static final fun Text-VhcvRP8 (Lcom/teya/lemonade/LemonadeUi;Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;IIILandroidx/compose/foundation/text/TextAutoSize;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 	public static final fun Text-VhcvRP8 (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;IIILandroidx/compose/foundation/text/TextAutoSize;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
-	public static final fun Text-Zb-9Jy0 (Lcom/teya/lemonade/LemonadeUi;Landroidx/compose/ui/text/AnnotatedString;JLandroidx/compose/ui/Modifier;Lcom/teya/lemonade/core/LemonadeTextStyle;IJIIILandroidx/compose/foundation/text/TextAutoSize;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
-	public static final fun Text-Zb-9Jy0 (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;JLandroidx/compose/ui/Modifier;Lcom/teya/lemonade/core/LemonadeTextStyle;IJIIILandroidx/compose/foundation/text/TextAutoSize;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
+	public static final fun Text-hCnJeNg (Lcom/teya/lemonade/LemonadeUi;Landroidx/compose/ui/text/AnnotatedString;JLandroidx/compose/ui/Modifier;Lcom/teya/lemonade/core/LemonadeTextStyle;IJIIILandroidx/compose/foundation/text/TextAutoSize;Lkotlin/jvm/functions/Function1;JLandroidx/compose/runtime/Composer;III)V
+	public static final fun Text-hCnJeNg (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;JLandroidx/compose/ui/Modifier;Lcom/teya/lemonade/core/LemonadeTextStyle;IJIIILandroidx/compose/foundation/text/TextAutoSize;Lkotlin/jvm/functions/Function1;JLandroidx/compose/runtime/Composer;III)V
 	public static final fun toLemonadeMarkdown (Ljava/lang/String;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/text/AnnotatedString;
 }
 
