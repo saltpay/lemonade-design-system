@@ -22,9 +22,9 @@ public enum LemonadeToastVoice: Sendable {
 
     internal func iconColor(colors: LemonadeSemanticColors) -> Color {
         switch self {
-        case .success: return colors.content.contentPositiveOnColor
-        case .error: return colors.content.contentCriticalOnColor
-        case .neutral: return colors.content.contentNeutralOnColor
+        case .success: return colors.content.contentPositiveAlwaysOnColor
+        case .error: return colors.content.contentCriticalAlwaysOnColor
+        case .neutral: return colors.content.contentNeutralAlwaysOnColor
         }
     }
 
