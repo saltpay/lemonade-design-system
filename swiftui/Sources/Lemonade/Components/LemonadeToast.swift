@@ -124,7 +124,7 @@ private struct LemonadeToastView: View {
 
             Text(label)
                 .font(LemonadeTypography.shared.bodySmallMedium.font)
-                .foregroundStyle(.content.contentPrimaryInverse)
+                .foregroundStyle(.content.contentAlwaysLight)
                 .lineLimit(nil)
                 .padding(.horizontal, .space.spacing100)
                 .layoutPriority(1)
