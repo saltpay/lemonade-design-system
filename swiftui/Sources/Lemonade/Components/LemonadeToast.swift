@@ -163,7 +163,7 @@ private struct ToastBackgroundModifier: ViewModifier {
         if #available(iOS 26.0, macOS 26.0, *) {
             content
                 .glassEffect(
-                    .regular.tint(Color.bg.bgAlwaysDark.opacity(.opacity.opacity90)),
+                    .regular.tint(.bg.bgAlwaysDark.opacity(.opacity.opacity90)),
                     in: RoundedRectangle(cornerRadius: .radius.radiusFull)
                 )
         } else {
