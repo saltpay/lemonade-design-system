@@ -297,11 +297,13 @@ jobs:
         run: ./scripts/commit-screenshot-updates.sh
 
       - name: Upload screenshot diffs
-        if: steps.vandr.outcome == 'failure'
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: android-screenshot-diffs
-          path: kmp/ui/build/outputs/roborazzi/**
+          path: |
+            kmp/ui/build/outputs/roborazzi/**
+            kmp/ui/src/androidMain/screenshots/**
 
       - name: Fail on screenshot failure
         if: steps.verify.outcome == 'failure' || (steps.vandr.outcome == 'failure' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository))
