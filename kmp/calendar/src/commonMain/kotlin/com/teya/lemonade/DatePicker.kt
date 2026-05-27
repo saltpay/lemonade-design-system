@@ -182,6 +182,7 @@ public fun LemonadeUi.DatePicker(
     modifier: Modifier = Modifier,
     state: DatePickerState = rememberDatePickerState(),
     firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
+    today: LocalDate = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) },
     onMonthDisplayed: ((YearMonth) -> Unit)? = null,
 ) {
     CoreDatePicker(
@@ -193,6 +194,7 @@ public fun LemonadeUi.DatePicker(
         minDate = state.minDate,
         maxDate = state.maxDate,
         firstDayOfWeek = firstDayOfWeek,
+        today = today,
         onMonthDisplayed = onMonthDisplayed,
     )
 }
@@ -235,6 +237,7 @@ public fun LemonadeUi.DateRangePicker(
     modifier: Modifier = Modifier,
     state: DateRangePickerState = rememberDateRangePickerState(),
     firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
+    today: LocalDate = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) },
     onMonthDisplayed: ((YearMonth) -> Unit)? = null,
 ) {
     val isSelectingEndDate = state.selectedStartDate != null && state.selectedEndDate == null
@@ -295,6 +298,47 @@ public fun LemonadeUi.DateRangePicker(
         minDate = effectiveMin,
         maxDate = effectiveMax,
         firstDayOfWeek = firstDayOfWeek,
+        today = today,
+        onMonthDisplayed = onMonthDisplayed,
+    )
+}
+
+@Deprecated("Use the overload with `today` parameter.", level = DeprecationLevel.HIDDEN)
+@Composable
+public fun LemonadeUi.DatePicker(
+    monthFormatter: (month: Int) -> String,
+    weekdayAbbreviations: List<String>,
+    modifier: Modifier = Modifier,
+    state: DatePickerState = rememberDatePickerState(),
+    firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
+    onMonthDisplayed: ((YearMonth) -> Unit)? = null,
+) {
+    DatePicker(
+        monthFormatter = monthFormatter,
+        weekdayAbbreviations = weekdayAbbreviations,
+        modifier = modifier,
+        state = state,
+        firstDayOfWeek = firstDayOfWeek,
+        onMonthDisplayed = onMonthDisplayed,
+    )
+}
+
+@Deprecated("Use the overload with `today` parameter.", level = DeprecationLevel.HIDDEN)
+@Composable
+public fun LemonadeUi.DateRangePicker(
+    monthFormatter: (month: Int) -> String,
+    weekdayAbbreviations: List<String>,
+    modifier: Modifier = Modifier,
+    state: DateRangePickerState = rememberDateRangePickerState(),
+    firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
+    onMonthDisplayed: ((YearMonth) -> Unit)? = null,
+) {
+    DateRangePicker(
+        monthFormatter = monthFormatter,
+        weekdayAbbreviations = weekdayAbbreviations,
+        modifier = modifier,
+        state = state,
+        firstDayOfWeek = firstDayOfWeek,
         onMonthDisplayed = onMonthDisplayed,
     )
 }
@@ -309,11 +353,10 @@ private fun CoreDatePicker(
     minDate: LocalDate?,
     maxDate: LocalDate?,
     firstDayOfWeek: DayOfWeek,
+    today: LocalDate,
     onMonthDisplayed: ((YearMonth) -> Unit)?,
 ) {
-    val today = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) }
-
-    val startMonth = remember { YearMonth(today.year, today.month.number) }
+    val startMonth = remember(today) { YearMonth(today.year, today.month.number) }
 
     val pagerState = rememberPagerState(initialPage = CENTER_PAGE) { PAGES_TOTAL }
     val coroutineScope = rememberCoroutineScope()
@@ -407,6 +450,7 @@ private fun CoreDatePicker(
             MonthGrid(
                 yearMonth = startMonth.plus(pageIndex.toLong() - CENTER_PAGE, DateTimeUnit.MONTH),
                 selectedDates = selectedDates,
+                today = today,
                 minDate = minDate,
                 maxDate = maxDate,
                 firstDayOfWeek = firstDayOfWeek,
@@ -420,12 +464,12 @@ private fun CoreDatePicker(
 private fun MonthGrid(
     yearMonth: YearMonth,
     selectedDates: Set<LocalDate>,
+    today: LocalDate,
     minDate: LocalDate?,
     maxDate: LocalDate?,
     firstDayOfWeek: DayOfWeek,
     onDateSelected: (LocalDate) -> Unit,
 ) {
-    val today = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) }
 
     val days = remember(yearMonth, firstDayOfWeek) { daysForMonth(yearMonth, firstDayOfWeek = firstDayOfWeek) }
 
