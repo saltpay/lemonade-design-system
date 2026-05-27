@@ -43,7 +43,7 @@ struct ToastDisplayView: View {
                         label: "Changes saved",
                         voice: .success,
                         actionLabel: "Undo",
-                        onAction: {
+                        onAction: { @MainActor in
                             toastManager.show(label: "Change undone", voice: .neutral)
                         }
                     )
@@ -54,7 +54,7 @@ struct ToastDisplayView: View {
                         label: "Something went wrong",
                         voice: .error,
                         actionLabel: "Retry",
-                        onAction: {
+                        onAction: { @MainActor in
                             toastManager.show(label: "Retrying…", voice: .neutral)
                         }
                     )
@@ -66,7 +66,7 @@ struct ToastDisplayView: View {
                         voice: .neutral,
                         icon: .heart,
                         actionLabel: "View",
-                        onAction: {
+                        onAction: { @MainActor in
                             toastManager.show(label: "Opening favorites", voice: .neutral)
                         }
                     )
