@@ -53,6 +53,11 @@
     "VariableID:3037:2073",
     "VariableID:3037:2053",
     "VariableID:3037:2069",
+    "VariableID:4792:1964",
+    "VariableID:4792:1963",
+    "VariableID:4792:1951",
+    "VariableID:4792:1962",
+    "VariableID:4792:1961",
     "VariableID:3037:2061",
     "VariableID:3037:2065",
     "VariableID:3106:2190",
@@ -1427,33 +1432,33 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:e2ff829425d0c35a1fd5d5f7e58553fb93d8c5ec/503:32"
+          "id": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:e2ff829425d0c35a1fd5d5f7e58553fb93d8c5ec/503:32"
+          "id": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 0.03235294297337532,
-            "g": 0.030392156913876534,
-            "b": 0.026470588520169258,
-            "a": 0.9599999785423279
+            "r": 0.03529411926865578,
+            "g": 0.0313725508749485,
+            "b": 0.0235294122248888,
+            "a": 0.925000011920929
           },
-          "alias": "VariableID:e2ff829425d0c35a1fd5d5f7e58553fb93d8c5ec/503:32",
-          "aliasName": "neutral/alpha/950"
+          "alias": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "aliasName": "neutral/alpha/900"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.03235294297337532,
-            "g": 0.030392156913876534,
-            "b": 0.026470588520169258,
-            "a": 0.9599999785423279
+            "r": 0.03529411926865578,
+            "g": 0.0313725508749485,
+            "b": 0.0235294122248888,
+            "a": 0.925000011920929
           },
-          "alias": "VariableID:e2ff829425d0c35a1fd5d5f7e58553fb93d8c5ec/503:32",
-          "aliasName": "neutral/alpha/950"
+          "alias": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+          "aliasName": "neutral/alpha/900"
         }
       },
       "scopes": [
@@ -1670,7 +1675,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:51e3632fa986388868a89fd3aa4a4833f2febbf5/109:25"
+          "id": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24"
         }
       },
       "resolvedValuesByMode": {
@@ -1689,10 +1694,10 @@
             "r": 1,
             "g": 1,
             "b": 1,
-            "a": 0.20000000298023224
+            "a": 0.10000000149011612
           },
-          "alias": "VariableID:51e3632fa986388868a89fd3aa4a4833f2febbf5/109:25",
-          "aliasName": "white/200"
+          "alias": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24",
+          "aliasName": "white/100"
         }
       },
       "scopes": [
@@ -1718,7 +1723,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:f834d81784c5a60e2d3b1d8f7c9cd809d125f9cf/76:143"
+          "id": "VariableID:fc7c131fab81908c64be2fc60db89536ae0996bc/76:141"
         }
       },
       "resolvedValuesByMode": {
@@ -1737,10 +1742,10 @@
             "r": 0.994271457195282,
             "g": 0.6020927429199219,
             "b": 0,
-            "a": 0.30000001192092896
+            "a": 0.20000000298023224
           },
-          "alias": "VariableID:f834d81784c5a60e2d3b1d8f7c9cd809d125f9cf/76:143",
-          "aliasName": "amber/alpha/300"
+          "alias": "VariableID:fc7c131fab81908c64be2fc60db89536ae0996bc/76:141",
+          "aliasName": "amber/alpha/200"
         }
       },
       "scopes": [
@@ -1813,7 +1818,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/559:15"
+          "id": "VariableID:b1fe30e3320da67c3864e50f532848b06c78b19e/559:14"
         }
       },
       "resolvedValuesByMode": {
@@ -1832,10 +1837,10 @@
             "r": 0.9686274528503418,
             "g": 0.23529411852359772,
             "b": 0.2823529541492462,
-            "a": 0.30000001192092896
+            "a": 0.20000000298023224
           },
-          "alias": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/559:15",
-          "aliasName": "red/alpha/300"
+          "alias": "VariableID:b1fe30e3320da67c3864e50f532848b06c78b19e/559:14",
+          "aliasName": "red/alpha/200"
         }
       },
       "scopes": [
@@ -2197,7 +2202,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:b8b810fa0c26ca11a9f631f05ae63ec646f8aab6/72:135"
+          "id": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134"
         }
       },
       "resolvedValuesByMode": {
@@ -2213,13 +2218,13 @@
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.16933248937129974,
-            "g": 0.49804946780204773,
+            "r": 0.3157993257045746,
+            "g": 0.6355904340744019,
             "b": 1,
             "a": 1
           },
-          "alias": "VariableID:b8b810fa0c26ca11a9f631f05ae63ec646f8aab6/72:135",
-          "aliasName": "blue/500"
+          "alias": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134",
+          "aliasName": "blue/400"
         }
       },
       "scopes": [
@@ -2387,7 +2392,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:b32450d86a0a89b66789a934ac8c531e6fb946eb/76:407"
+          "id": "VariableID:cd519cce5202dd4608f48c522bd2274976028603/76:405"
         }
       },
       "resolvedValuesByMode": {
@@ -2406,10 +2411,10 @@
             "r": 0.4872932434082031,
             "g": 0.8099173903465271,
             "b": 0,
-            "a": 0.30000001192092896
+            "a": 0.20000000298023224
           },
-          "alias": "VariableID:b32450d86a0a89b66789a934ac8c531e6fb946eb/76:407",
-          "aliasName": "green-lime/alpha/300"
+          "alias": "VariableID:cd519cce5202dd4608f48c522bd2274976028603/76:405",
+          "aliasName": "green-lime/alpha/200"
         }
       },
       "scopes": [
@@ -3864,7 +3869,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:1c3bca3074c95cca953150dced0b68c56a5b4cf7/76:319"
+          "id": "VariableID:8f72eca7a9211f9081c968931c670339bf8a84a6/76:317"
         }
       },
       "resolvedValuesByMode": {
@@ -3880,13 +3885,13 @@
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.16933248937129974,
-            "g": 0.49804946780204773,
+            "r": 0.16862745583057404,
+            "g": 0.49803921580314636,
             "b": 1,
-            "a": 0.30000001192092896
+            "a": 0.20000000298023224
           },
-          "alias": "VariableID:1c3bca3074c95cca953150dced0b68c56a5b4cf7/76:319",
-          "aliasName": "blue/alpha/300"
+          "alias": "VariableID:8f72eca7a9211f9081c968931c670339bf8a84a6/76:317",
+          "aliasName": "blue/alpha/200"
         }
       },
       "scopes": [
@@ -5667,6 +5672,241 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:4792:1951",
+      "name": "Content/Fixed/content-info-always-on-color",
+      "description": "A fixed foreground colour for text and icons placed on informative backgrounds, ensuring consistent visibility regardless of theme.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.3157993257045746,
+            "g": 0.6355904340744019,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134",
+          "aliasName": "blue/400"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.3157993257045746,
+            "g": 0.6355904340744019,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134",
+          "aliasName": "blue/400"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentInfoAlwaysOnColor",
+        "iOS": "context.lemonade.colors.content.contentInfoAlwaysOnColor"
+      }
+    },
+    {
+      "id": "VariableID:4792:1961",
+      "name": "Content/Fixed/content-neutral-always-on-color",
+      "description": "A fixed foreground colour for text and icons placed on neutral backgrounds, ensuring consistent visibility regardless of theme.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:1cde25931e5330368f430707ddecf5da880df6d6/109:32"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:1cde25931e5330368f430707ddecf5da880df6d6/109:32"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.8999999761581421
+          },
+          "alias": "VariableID:1cde25931e5330368f430707ddecf5da880df6d6/109:32",
+          "aliasName": "white/900"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.8999999761581421
+          },
+          "alias": "VariableID:1cde25931e5330368f430707ddecf5da880df6d6/109:32",
+          "aliasName": "white/900"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentNeutralAlwaysOnColor",
+        "iOS": "context.lemonade.colors.content.contentNeutralAlwaysOnColor"
+      }
+    },
+    {
+      "id": "VariableID:4792:1962",
+      "name": "Content/Fixed/content-positive-always-on-color",
+      "description": "A fixed foreground colour for text and icons placed on positive or success backgrounds, ensuring consistent visibility regardless of theme.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.6024433970451355,
+            "g": 0.9016712307929993,
+            "b": 0,
+            "a": 1
+          },
+          "alias": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175",
+          "aliasName": "green-lime/400"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.6024433970451355,
+            "g": 0.9016712307929993,
+            "b": 0,
+            "a": 1
+          },
+          "alias": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175",
+          "aliasName": "green-lime/400"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentPositiveAlwaysOnColor",
+        "iOS": "context.lemonade.colors.content.contentPositiveAlwaysOnColor"
+      }
+    },
+    {
+      "id": "VariableID:4792:1963",
+      "name": "Content/Fixed/content-caution-always-on-color",
+      "description": "A fixed foreground colour for text and icons placed on cautionary backgrounds, ensuring consistent visibility regardless of theme.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:e37bef0d14979b03cf97c6b3c7608ebf73123a5c/72:200"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:e37bef0d14979b03cf97c6b3c7608ebf73123a5c/72:200"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.9930035471916199,
+            "g": 0.7819446325302124,
+            "b": 0,
+            "a": 1
+          },
+          "alias": "VariableID:e37bef0d14979b03cf97c6b3c7608ebf73123a5c/72:200",
+          "aliasName": "amber/400"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.9930035471916199,
+            "g": 0.7819446325302124,
+            "b": 0,
+            "a": 1
+          },
+          "alias": "VariableID:e37bef0d14979b03cf97c6b3c7608ebf73123a5c/72:200",
+          "aliasName": "amber/400"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentCautionAlwaysOnColor",
+        "iOS": "context.lemonade.colors.content.contentCautionAlwaysOnColor"
+      }
+    },
+    {
+      "id": "VariableID:4792:1964",
+      "name": "Content/Fixed/content-critical-always-on-color",
+      "description": "A fixed foreground colour for text and icons placed on critical or error backgrounds, ensuring consistent visibility regardless of theme.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.9960784316062927,
+            "g": 0.32549020648002625,
+            "b": 0.3686274588108063,
+            "a": 1
+          },
+          "alias": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5",
+          "aliasName": "red/400"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.9960784316062927,
+            "g": 0.32549020648002625,
+            "b": 0.3686274588108063,
+            "a": 1
+          },
+          "alias": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5",
+          "aliasName": "red/400"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentCriticalAlwaysOnColor",
+        "iOS": "context.lemonade.colors.content.contentCriticalAlwaysOnColor"
+      }
     }
   ]
 }
