@@ -32,6 +32,9 @@ public extension LemonadeUi {
     ///   - supportText: Text to be displayed below the label
     ///   - leadingSlot: Content to be placed in leading position
     ///   - trailingSlot: Content to be placed before the selection control
+    ///   - slotContent: Optional slot rendered below the support text, inside the label column.
+    ///     Use for secondary content like an inline status text, badge, or compact widget that
+    ///     should sit under the row's text.
     /// - Returns: A styled SelectListItem view
     @ViewBuilder
     static func SelectListItem<LeadingContent: View, TrailingContent: View, SlotContent: View>(
@@ -257,7 +260,7 @@ private struct PlainSelectListItem<LeadingContent: View, TrailingContent: View, 
                             enabled: enabled
                         )
                     }
-                    .frame(maxHeight:.infinity)
+                    .frame(maxHeight: .infinity)
             },
             slotContent: slotContent
         )
@@ -342,6 +345,7 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
                 enabled: enabled
             )
             .allowsHitTesting(false)
+            .accessibilityHidden(true)
             .padding(.leading, LemonadeTheme.spaces.spacing200)
         }
         .padding(
@@ -365,9 +369,11 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
             guard enabled else { return }
             handleSelectTap(type: type, checked: checked, onItemClicked: onItemClicked)
         }
+        // `children: .combine` gathers the label, support text, and slotContent into a single
+        // announcement. We intentionally do NOT override the label/value here so slotContent's
+        // own semantics are included; selection state is conveyed via the `.isSelected` trait
+        // (the control itself is `accessibilityHidden`).
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(label)
-        .accessibilityValue(supportText ?? "")
         .accessibilityAddTraits(checked ? .isSelected : [])
         .animation(.easeInOut(duration: 0.15), value: checked)
     }
