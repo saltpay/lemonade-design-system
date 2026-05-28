@@ -950,6 +950,7 @@ final enum class com.teya.lemonade.core/LemonadeSkeletonSize : kotlin/Enum<com.t
     enum entry XSmall // com.teya.lemonade.core/LemonadeSkeletonSize.XSmall|null[0]
     enum entry XXLarge // com.teya.lemonade.core/LemonadeSkeletonSize.XXLarge|null[0]
     enum entry XXXLarge // com.teya.lemonade.core/LemonadeSkeletonSize.XXXLarge|null[0]
+    enum entry XXXXLarge // com.teya.lemonade.core/LemonadeSkeletonSize.XXXXLarge|null[0]
 
     final val entries // com.teya.lemonade.core/LemonadeSkeletonSize.entries|#static{}entries[0]
         final fun <get-entries>(): kotlin.enums/EnumEntries<com.teya.lemonade.core/LemonadeSkeletonSize> // com.teya.lemonade.core/LemonadeSkeletonSize.entries.<get-entries>|<get-entries>#static(){}[0]

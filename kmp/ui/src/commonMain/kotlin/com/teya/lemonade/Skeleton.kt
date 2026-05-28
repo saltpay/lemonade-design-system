@@ -287,6 +287,7 @@ private fun LemonadeSkeletonSize.toLineDimensions(): SkeletonSizeDimensions {
         LemonadeSkeletonSize.XLarge -> LocalSizes.current.size800
         LemonadeSkeletonSize.XXLarge -> LocalSizes.current.size900
         LemonadeSkeletonSize.XXXLarge -> LocalSizes.current.size1000
+        LemonadeSkeletonSize.XXXXLarge -> LocalSizes.current.size1100
     }
     return SkeletonSizeDimensions(
         width = Dp.Unspecified,
@@ -311,6 +312,7 @@ private fun LemonadeSkeletonSize.toCircleDimensions(): SkeletonSizeDimensions {
         LemonadeSkeletonSize.XLarge -> LemonadeAssetSize.XLarge.dp
         LemonadeSkeletonSize.XXLarge -> LemonadeAssetSize.XXLarge.dp
         LemonadeSkeletonSize.XXXLarge -> LemonadeAssetSize.XXXLarge.dp
+        LemonadeSkeletonSize.XXXXLarge -> LemonadeAssetSize.XXXXLarge.dp
     }
     return SkeletonSizeDimensions(
         width = size,
