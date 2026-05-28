@@ -77,7 +77,7 @@ public fun LemonadeUi.CountryFlag(
 }
 
 @Composable
-internal fun CoreCountryFlag(
+private fun CoreCountryFlag(
     flag: LemonadeCountryFlags,
     size: LemonadeAssetSize,
     shape: CountryFlagShape,
