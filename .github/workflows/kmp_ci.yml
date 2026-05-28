@@ -15,9 +15,16 @@ on:
       - '.github/workflows/kmp_ci.yml'
       - '.github/actions/setup-gradle/**'
       - '!**/*.md'
+  pull_request_review:
+    # Re-evaluate api-stability-review when a maintainer adds/dismisses a
+    # review, so the gate flips automatically without a manual re-run.
+    types: [submitted, dismissed]
 
 concurrency:
-  group: kmp-ci-${{ github.ref }}
+  # push / pull_request: group per ref so a new commit cancels stale runs.
+  # pull_request_review: unique group per run so review-triggered runs never
+  # cancel an in-progress full CI run for the same PR.
+  group: ${{ github.event_name == 'pull_request_review' && format('kmp-ci-review-{0}', github.run_id) || format('kmp-ci-{0}', github.ref) }}
   cancel-in-progress: true
 
 jobs:
@@ -25,6 +32,7 @@ jobs:
     name: Detekt
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    if: github.event_name != 'pull_request_review'
     env:
       GRADLE_OPTS: -Xmx3g
     steps:
@@ -42,6 +50,7 @@ jobs:
     name: Ktlint
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    if: github.event_name != 'pull_request_review'
     env:
       GRADLE_OPTS: -Xmx3g
     steps:
@@ -59,6 +68,7 @@ jobs:
     name: Dependency Allowlist
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    if: github.event_name != 'pull_request_review'
     env:
       GRADLE_OPTS: -Xmx3g
     steps:
@@ -76,6 +86,7 @@ jobs:
     name: Binary Compatibility (apiCheck)
     runs-on: macos-latest
     timeout-minutes: 30
+    if: github.event_name != 'pull_request_review'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -109,7 +120,7 @@ jobs:
     name: API Stability Review
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || github.event_name == 'pull_request_review'
     permissions:
       contents: read
       pull-requests: read
@@ -203,6 +214,7 @@ jobs:
     name: Build
     runs-on: macos-latest
     timeout-minutes: 45
+    if: github.event_name != 'pull_request_review'
     permissions:
       contents: write
     steps:
@@ -231,28 +243,23 @@ jobs:
 
   ci-status:
     name: CI Status
-    if: always()
-    needs: [ detekt, ktlint, dependency-allowlist, api-compatibility, api-stability-review, build ]
+    # Skip on pull_request_review re-runs: those only re-evaluate
+    # api-stability-review (which reports its own check status) and skip every
+    # other job, so aggregating would either falsely pass or falsely fail.
+    # The CI Status check_run from the prior full-CI run stays valid.
+    if: always() && github.event_name != 'pull_request_review'
+    needs: [ detekt, ktlint, dependency-allowlist, api-compatibility, build ]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Check CI results
         run: |
-          # `api-stability-review` is skipped on push events (PR-only); treat skipped as a pass.
-          ASR="${{ needs['api-stability-review'].result }}"
-          if [[ "$ASR" != "success" && "$ASR" != "skipped" ]]; then
-            ASR_BAD=1
-          else
-            ASR_BAD=0
-          fi
-
           if [[ "${{ needs.detekt.result }}" != "success" || \
                 "${{ needs.ktlint.result }}" != "success" || \
                 "${{ needs['dependency-allowlist'].result }}" != "success" || \
                 "${{ needs['api-compatibility'].result }}" != "success" || \
-                "$ASR_BAD" == "1" || \
                 "${{ needs.build.result }}" != "success" ]]; then
-            echo "CI did not succeed: detekt=${{ needs.detekt.result }}, ktlint=${{ needs.ktlint.result }}, dependency-allowlist=${{ needs['dependency-allowlist'].result }}, api-compatibility=${{ needs['api-compatibility'].result }}, api-stability-review=$ASR, build=${{ needs.build.result }}"
+            echo "CI did not succeed: detekt=${{ needs.detekt.result }}, ktlint=${{ needs.ktlint.result }}, dependency-allowlist=${{ needs['dependency-allowlist'].result }}, api-compatibility=${{ needs['api-compatibility'].result }}, build=${{ needs.build.result }}"
             exit 1
           fi
           echo "All CI checks passed"
