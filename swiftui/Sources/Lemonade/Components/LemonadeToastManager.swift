@@ -75,7 +75,7 @@ public struct LemonadeToastItem: Identifiable, Equatable, Sendable {
     public let duration: LemonadeToastDuration
     public let isDismissible: Bool
     public let actionLabel: String?
-    public let onAction: (@Sendable () -> Void)?
+    public let onAction: (@MainActor @Sendable () -> Void)?
 
     public init(
         id: UUID = UUID(),
@@ -85,7 +85,7 @@ public struct LemonadeToastItem: Identifiable, Equatable, Sendable {
         duration: LemonadeToastDuration = .short,
         isDismissible: Bool = true,
         actionLabel: String? = nil,
-        onAction: (@Sendable () -> Void)? = nil
+        onAction: (@MainActor @Sendable () -> Void)? = nil
     ) {
         self.id = id
         self.label = label
@@ -160,7 +160,7 @@ public final class LemonadeToastManager: ObservableObject {
         duration: LemonadeToastDuration = .short,
         dismissible: Bool = true,
         actionLabel: String? = nil,
-        onAction: (@Sendable () -> Void)? = nil
+        onAction: (@MainActor @Sendable () -> Void)? = nil
     ) {
         let toast = LemonadeToastItem(
             label: label,

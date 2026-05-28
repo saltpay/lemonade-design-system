@@ -137,6 +137,8 @@ private struct LemonadeToastView: View {
                         .foregroundStyle(.content.contentInfoAlwaysOnColor)
                 }
                 .buttonStyle(.plain)
+                .padding(.vertical, .space.spacing100)
+                .contentShape(Rectangle())
             }
         }
         .padding(
