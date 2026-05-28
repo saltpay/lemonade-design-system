@@ -18,6 +18,17 @@ final enum class com.teya.lemonade.core/CheckboxStatus : kotlin/Enum<com.teya.le
     final fun values(): kotlin/Array<com.teya.lemonade.core/CheckboxStatus> // com.teya.lemonade.core/CheckboxStatus.values|values#static(){}[0]
 }
 
+final enum class com.teya.lemonade.core/CountryFlagShape : kotlin/Enum<com.teya.lemonade.core/CountryFlagShape> { // com.teya.lemonade.core/CountryFlagShape|null[0]
+    enum entry Circular // com.teya.lemonade.core/CountryFlagShape.Circular|null[0]
+    enum entry Rounded // com.teya.lemonade.core/CountryFlagShape.Rounded|null[0]
+
+    final val entries // com.teya.lemonade.core/CountryFlagShape.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.teya.lemonade.core/CountryFlagShape> // com.teya.lemonade.core/CountryFlagShape.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.teya.lemonade.core/CountryFlagShape // com.teya.lemonade.core/CountryFlagShape.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.teya.lemonade.core/CountryFlagShape> // com.teya.lemonade.core/CountryFlagShape.values|values#static(){}[0]
+}
+
 final enum class com.teya.lemonade.core/DayLabelFormat : kotlin/Enum<com.teya.lemonade.core/DayLabelFormat> { // com.teya.lemonade.core/DayLabelFormat|null[0]
     enum entry Narrow // com.teya.lemonade.core/DayLabelFormat.Narrow|null[0]
     enum entry Short // com.teya.lemonade.core/DayLabelFormat.Short|null[0]

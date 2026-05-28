@@ -7,6 +7,14 @@ public final class com/teya/lemonade/core/CheckboxStatus : java/lang/Enum {
 	public static fun values ()[Lcom/teya/lemonade/core/CheckboxStatus;
 }
 
+public final class com/teya/lemonade/core/CountryFlagShape : java/lang/Enum {
+	public static final field Circular Lcom/teya/lemonade/core/CountryFlagShape;
+	public static final field Rounded Lcom/teya/lemonade/core/CountryFlagShape;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/CountryFlagShape;
+	public static fun values ()[Lcom/teya/lemonade/core/CountryFlagShape;
+}
+
 public final class com/teya/lemonade/core/DayLabelFormat : java/lang/Enum {
 	public static final field Narrow Lcom/teya/lemonade/core/DayLabelFormat;
 	public static final field Short Lcom/teya/lemonade/core/DayLabelFormat;
