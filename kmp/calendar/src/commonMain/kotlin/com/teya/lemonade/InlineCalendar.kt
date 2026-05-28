@@ -1,4 +1,5 @@
 @file:OptIn(ExperimentalTime::class)
+@file:Suppress("TooManyFunctions")
 
 package com.teya.lemonade
 
@@ -183,10 +184,10 @@ public fun LemonadeUi.InlineCalendar(
     expandSelectionToLabel: Boolean = true,
     selectionBackgroundColor: Color? = null,
     selectionContentColor: Color? = null,
+    today: LocalDate = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) },
     trailingContent: @Composable ((LocalDate, Boolean) -> Unit)? = null,
 ) {
-    val today = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) }
-    val anchorDate = remember { today }
+    val anchorDate = remember(today) { today }
 
     val density = LocalDensity.current
     val visibleCells = remember(density.fontScale) {
@@ -397,6 +398,44 @@ public fun LemonadeUi.InlineCalendar(
             }
         }
     }
+}
+
+@ExperimentalLemonadeComponent
+@Composable
+public fun LemonadeUi.InlineCalendar(
+    state: InlineCalendarState,
+    modifier: Modifier = Modifier,
+    dayLabelFormat: DayLabelFormat = DayLabelFormat.Narrow,
+    weekdayLabels: List<String>? = null,
+    monthFormatter: ((month: Int) -> String)? = null,
+    onDateSelected: ((LocalDate) -> Unit)? = null,
+    onMonthDisplayed: ((YearMonth) -> Unit)? = null,
+    enabledDates: ((LocalDate) -> Boolean)? = null,
+    prevMonthContentDescription: String = "Previous month",
+    nextMonthContentDescription: String = "Next month",
+    weekdayAccessibilityLabels: List<String>? = null,
+    expandSelectionToLabel: Boolean = true,
+    selectionBackgroundColor: Color? = null,
+    selectionContentColor: Color? = null,
+    trailingContent: @Composable ((LocalDate, Boolean) -> Unit)? = null,
+) {
+    InlineCalendar(
+        state = state,
+        modifier = modifier,
+        dayLabelFormat = dayLabelFormat,
+        weekdayLabels = weekdayLabels,
+        monthFormatter = monthFormatter,
+        onDateSelected = onDateSelected,
+        onMonthDisplayed = onMonthDisplayed,
+        enabledDates = enabledDates,
+        prevMonthContentDescription = prevMonthContentDescription,
+        nextMonthContentDescription = nextMonthContentDescription,
+        weekdayAccessibilityLabels = weekdayAccessibilityLabels,
+        expandSelectionToLabel = expandSelectionToLabel,
+        selectionBackgroundColor = selectionBackgroundColor,
+        selectionContentColor = selectionContentColor,
+        trailingContent = trailingContent,
+    )
 }
 
 /**
