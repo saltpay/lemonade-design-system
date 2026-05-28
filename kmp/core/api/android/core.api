@@ -51,6 +51,7 @@ public final class com/teya/lemonade/core/LemonadeAssetSize : java/lang/Enum {
 	public static final field XSmall Lcom/teya/lemonade/core/LemonadeAssetSize;
 	public static final field XXLarge Lcom/teya/lemonade/core/LemonadeAssetSize;
 	public static final field XXXLarge Lcom/teya/lemonade/core/LemonadeAssetSize;
+	public static final field XXXXLarge Lcom/teya/lemonade/core/LemonadeAssetSize;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/LemonadeAssetSize;
 	public static fun values ()[Lcom/teya/lemonade/core/LemonadeAssetSize;
@@ -861,6 +862,7 @@ public final class com/teya/lemonade/core/LemonadeSkeletonSize : java/lang/Enum 
 	public static final field XSmall Lcom/teya/lemonade/core/LemonadeSkeletonSize;
 	public static final field XXLarge Lcom/teya/lemonade/core/LemonadeSkeletonSize;
 	public static final field XXXLarge Lcom/teya/lemonade/core/LemonadeSkeletonSize;
+	public static final field XXXXLarge Lcom/teya/lemonade/core/LemonadeSkeletonSize;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/LemonadeSkeletonSize;
 	public static fun values ()[Lcom/teya/lemonade/core/LemonadeSkeletonSize;
