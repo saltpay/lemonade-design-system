@@ -77,7 +77,7 @@ public fun LemonadeUi.CountryFlag(
 }
 
 @Composable
-public fun CoreCountryFlag(
+internal fun CoreCountryFlag(
     flag: LemonadeCountryFlags,
     size: LemonadeAssetSize,
     shape: CountryFlagShape,
@@ -96,29 +96,6 @@ public fun CoreCountryFlag(
                 color = LocalColors.current.border.borderNeutralMedium,
                 shape = resolvedShape,
             ).requiredSize(size = size.dp),
-    )
-}
-
-@Deprecated(
-    message = "Use the CoreCountryFlag overload with a shape parameter.",
-    replaceWith = ReplaceWith(
-        expression = "CoreCountryFlag(flag, size, CountryFlagShape.Circular, contentDescription, modifier)",
-    ),
-    level = DeprecationLevel.HIDDEN,
-)
-@Composable
-public fun CoreCountryFlag(
-    flag: LemonadeCountryFlags,
-    size: LemonadeAssetSize,
-    contentDescription: String?,
-    modifier: Modifier = Modifier,
-) {
-    CoreCountryFlag(
-        flag = flag,
-        size = size,
-        shape = CountryFlagShape.Circular,
-        contentDescription = contentDescription,
-        modifier = modifier,
     )
 }
 
