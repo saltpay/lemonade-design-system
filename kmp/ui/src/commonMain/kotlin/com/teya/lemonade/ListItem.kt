@@ -271,6 +271,56 @@ public fun LemonadeUi.ActionListItem(
 }
 
 @Deprecated(
+    message = "Use the overload with slotContent parameter.",
+    replaceWith = ReplaceWith(
+        expression = "ActionListItem(label, modifier, topLabel, supportText, leadingSlot, " +
+            "trailingSlot, voice, isLoading, enabled, onItemClicked, role, interactionSource, " +
+            "showNavigationIndicator, showDivider, trailingVerticalAlignment, " +
+            "leadingVerticalAlignment, null)",
+    ),
+)
+@Composable
+public fun LemonadeUi.ActionListItem(
+    label: String,
+    modifier: Modifier = Modifier,
+    topLabel: String? = null,
+    supportText: String? = null,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    isLoading: Boolean = false,
+    enabled: Boolean = true,
+    onItemClicked: (() -> Unit)? = null,
+    role: Role? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showNavigationIndicator: Boolean = false,
+    showDivider: Boolean = false,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
+) {
+    @Suppress("DEPRECATION")
+    ActionListItem(
+        label = label,
+        modifier = modifier,
+        topLabel = topLabel,
+        supportText = supportText,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        voice = voice,
+        isLoading = isLoading,
+        enabled = enabled,
+        onItemClicked = onItemClicked,
+        role = role,
+        interactionSource = interactionSource,
+        showNavigationIndicator = showNavigationIndicator,
+        showDivider = showDivider,
+        trailingVerticalAlignment = trailingVerticalAlignment,
+        leadingVerticalAlignment = leadingVerticalAlignment,
+        slotContent = null,
+    )
+}
+
+@Deprecated(
     message = "Use the overload with leadingVerticalAlignment parameter.",
     replaceWith = ReplaceWith(
         expression = "ListItem(label, modifier, topLabel, supportText, onListItemClick, voice, " +
