@@ -109,7 +109,8 @@ public class LemonadeToastState {
      * @param duration How long the toast is displayed. Defaults to [ToastDuration.Short].
      * @param dismissible Whether the user can swipe to dismiss. Defaults to `true`.
      * @param actionLabel Optional label for the action button shown at the trailing end of the toast.
-     * @param onAction Optional callback invoked when the action button is tapped. The button is only shown when both [actionLabel] and [onAction] are non-null.
+     * @param onAction Optional callback invoked when the action button is tapped. The button is only shown
+     *   when both [actionLabel] and [onAction] are non-null.
      */
     public fun show(
         label: String,
@@ -162,7 +163,8 @@ public val LocalLemonadeToastState: ProvidableCompositionLocal<LemonadeToastStat
  * @param voice The tone — determines default icon and icon color. Defaults to [ToastVoice.Neutral].
  * @param icon Optional custom icon (only used when voice is [ToastVoice.Neutral]).
  * @param actionLabel Optional label for the action button shown at the trailing end of the toast.
- * @param onAction Optional callback invoked when the action button is tapped. The button is only shown when both [actionLabel] and [onAction] are non-null.
+ * @param onAction Optional callback invoked when the action button is tapped. The button is only shown
+ *   when both [actionLabel] and [onAction] are non-null.
  */
 @Composable
 public fun LemonadeUi.Toast(
