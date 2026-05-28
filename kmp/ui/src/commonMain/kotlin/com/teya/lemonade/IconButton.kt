@@ -317,27 +317,30 @@ private data class IconButtonPreviewData(
 )
 
 private class IconButtonPreviewProvider : PreviewParameterProvider<IconButtonPreviewData> {
-    override val values: Sequence<IconButtonPreviewData> = buildAllVariants()
+    override val values: Sequence<IconButtonPreviewData> = buildRepresentativeVariants()
 
-    private fun buildAllVariants(): Sequence<IconButtonPreviewData> =
-        buildList {
-            listOf(true, false).forEach { enabled ->
-                LemonadeButtonSize.entries.forEach { size ->
-                    LemonadeButtonVariant.entries.forEach { variant ->
-                        LemonadeButtonType.entries.forEach { type ->
-                            add(
-                                element = IconButtonPreviewData(
-                                    size = size,
-                                    variant = variant,
-                                    type = type,
-                                    enabled = enabled,
-                                ),
-                            )
-                        }
-                    }
-                }
+    private fun buildRepresentativeVariants(): Sequence<IconButtonPreviewData> {
+        val base = IconButtonPreviewData(
+            size = LemonadeButtonSize.Medium,
+            variant = LemonadeButtonVariant.Neutral,
+            type = LemonadeButtonType.Subtle,
+            enabled = true,
+        )
+        return buildList {
+            add(element = base)
+            LemonadeButtonSize.entries.forEach { size ->
+                add(element = base.copy(size = size))
             }
-        }.asSequence()
+            LemonadeButtonVariant.entries.forEach { variant ->
+                add(element = base.copy(variant = variant))
+            }
+            LemonadeButtonType.entries.forEach { type ->
+                add(element = base.copy(type = type))
+            }
+            add(element = base.copy(enabled = false))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @Composable

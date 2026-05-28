@@ -211,28 +211,28 @@ private data class ContentListItemPreviewData(
 
 private class ContentListItemPreviewProvider :
     PreviewParameterProvider<ContentListItemPreviewData> {
-    override val values: Sequence<ContentListItemPreviewData> =
-        buildList {
+    override val values: Sequence<ContentListItemPreviewData> = buildRepresentativeVariants()
+
+    private fun buildRepresentativeVariants(): Sequence<ContentListItemPreviewData> {
+        val base = ContentListItemPreviewData(
+            layout = LemonadeContentListItemLayout.Horizontal,
+            hasLeading = false,
+            hasTrailing = false,
+            hasContentSlot = false,
+            showDivider = false,
+        )
+        return buildList {
+            add(element = base)
             LemonadeContentListItemLayout.entries.forEach { layout ->
-                listOf(true, false).forEach { leading ->
-                    listOf(true, false).forEach { trailing ->
-                        listOf(true, false).forEach { contentSlot ->
-                            listOf(true, false).forEach { divider ->
-                                add(
-                                    ContentListItemPreviewData(
-                                        layout = layout,
-                                        hasLeading = leading,
-                                        hasTrailing = trailing,
-                                        hasContentSlot = contentSlot,
-                                        showDivider = divider,
-                                    ),
-                                )
-                            }
-                        }
-                    }
-                }
+                add(element = base.copy(layout = layout))
             }
-        }.asSequence()
+            add(element = base.copy(hasLeading = true))
+            add(element = base.copy(hasTrailing = true))
+            add(element = base.copy(hasContentSlot = true))
+            add(element = base.copy(showDivider = true))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview

@@ -188,24 +188,26 @@ private data class HistoryItemPreviewData(
 )
 
 private class HistoryItemPreviewProvider : PreviewParameterProvider<HistoryItemPreviewData> {
-    override val values: Sequence<HistoryItemPreviewData> = buildList {
-        HistoryItemVoice.entries.forEach { voice ->
-            listOf(true, false).forEach { current ->
-                listOf(true, false).forEach { description ->
-                    listOf(true, false).forEach { contentSlot ->
-                        add(
-                            HistoryItemPreviewData(
-                                voice = voice,
-                                isCurrent = current,
-                                hasDescription = description,
-                                hasContentSlot = contentSlot,
-                            ),
-                        )
-                    }
-                }
+    override val values: Sequence<HistoryItemPreviewData> = buildRepresentativeVariants()
+
+    private fun buildRepresentativeVariants(): Sequence<HistoryItemPreviewData> {
+        val base = HistoryItemPreviewData(
+            voice = HistoryItemVoice.Neutral,
+            isCurrent = true,
+            hasDescription = false,
+            hasContentSlot = false,
+        )
+        return buildList {
+            add(element = base)
+            HistoryItemVoice.entries.forEach { voice ->
+                add(element = base.copy(voice = voice))
             }
-        }
-    }.asSequence()
+            add(element = base.copy(isCurrent = false))
+            add(element = base.copy(hasDescription = true))
+            add(element = base.copy(hasContentSlot = true))
+        }.distinct()
+            .asSequence()
+    }
 }
 
 @LemonadePreview
