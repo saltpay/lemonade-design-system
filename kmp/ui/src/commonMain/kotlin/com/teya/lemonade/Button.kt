@@ -362,20 +362,27 @@ private fun CoreButton(
             colors.solidBackgroundColor
         },
     )
+    // Layered backgrounds: an opaque [bgDefault] backdrop is drawn BEFORE the disabled-state
+    // [Modifier.alpha], the colored fill AFTER. Compose applies `Modifier.alpha` as a graphics
+    // layer that wraps subsequent draws only — so when disabled, the 50% alpha blends the
+    // coloured fill into the opaque `bgDefault` underneath instead of into whatever happens to
+    // be behind the button (e.g. a scrolling list under a floating footer). When enabled, the
+    // opaque colored fill fully covers the backdrop — no visible difference.
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
             .defaultMinSize(minWidth = size.contentData.minWidth)
             .requiredHeight(height = size.contentData.requiredHeight)
+            .clip(shape = size.contentData.shape)
+            .background(color = LocalColors.current.background.bgDefault)
             .then(
                 other = if (!enabled) {
                     Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
                 } else {
                     Modifier
                 },
-            ).clip(shape = size.contentData.shape)
-            .clickable(
+            ).clickable(
                 enabled = enabled && !loading,
                 onClick = onClick,
                 interactionSource = interactionSource,

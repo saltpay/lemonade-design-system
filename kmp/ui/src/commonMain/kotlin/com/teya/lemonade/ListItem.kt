@@ -209,6 +209,9 @@ public fun LemonadeUi.ActionListItem(
  *  indicator against the label/supportText column. Defaults to [Alignment.CenterVertically].
  * @param leadingVerticalAlignment - Vertical alignment of the leading slot against the
  *  label/supportText column. Defaults to [Alignment.Top].
+ * @param slotContent - Optional slot rendered below the support text, inside the label column
+ *  so it stays aligned with the leading/trailing slots. Use for secondary content like an
+ *  inline status text, badge, or compact widget that should sit under the row's text.
  */
 @Composable
 public fun LemonadeUi.ActionListItem(
@@ -228,6 +231,7 @@ public fun LemonadeUi.ActionListItem(
     showDivider: Boolean = false,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
 ) {
     LemonadeUi.ListItem(
         label = label,
@@ -252,6 +256,7 @@ public fun LemonadeUi.ActionListItem(
         } else {
             null
         },
+        slotContent = slotContent,
         navigationIndicator = showNavigationIndicator,
         voice = voice,
         onListItemClick = onItemClicked,

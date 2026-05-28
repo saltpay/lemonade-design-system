@@ -140,6 +140,40 @@ internal fun SelectListItemDisplay() {
         }
 
         LemonadeUi.Card(
+            header = CardHeaderConfig(title = "Plain — Slot Content"),
+        ) {
+            LemonadeUi.SelectListItem(
+                label = "Email digest",
+                type = SelectListItemType.Toggle,
+                checked = true,
+                onItemClicked = { /* Nothing */ },
+                supportText = "Weekly summary of your account",
+                showDivider = true,
+                slotContent = {
+                    LemonadeUi.Tag(
+                        label = "Recommended",
+                        voice = TagVoice.Positive,
+                    )
+                },
+            )
+
+            LemonadeUi.SelectListItem(
+                label = "Marketing emails",
+                type = SelectListItemType.Toggle,
+                checked = false,
+                onItemClicked = { /* Nothing */ },
+                supportText = "Offers from partners",
+                slotContent = {
+                    LemonadeUi.Text(
+                        text = "You can opt out at any time",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                        color = LemonadeTheme.colors.content.contentSecondary,
+                    )
+                },
+            )
+        }
+
+        LemonadeUi.Card(
             header = CardHeaderConfig(title = "Plain — Disabled"),
         ) {
             LemonadeUi.SelectListItem(
@@ -302,6 +336,46 @@ internal fun SelectListItemDisplay() {
                                 } else {
                                     SymbolContainerVoice.Neutral
                                 },
+                            )
+                        },
+                    )
+                }
+            }
+        }
+
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "Outlined — Slot Content"),
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing200),
+            ) {
+                outlinedOptionsFirstThree.forEachIndexed { index, option ->
+                    val isChecked = index == 0
+                    val preset = trailingPresets[index]
+                    LemonadeUi.SelectListItem(
+                        label = option.label,
+                        type = SelectListItemType.Single,
+                        variant = SelectListItemVariant.Outlined,
+                        checked = isChecked,
+                        onItemClicked = { /* Nothing */ },
+                        supportText = "Short description for ${option.label.lowercase()}",
+                        leadingSlot = {
+                            LemonadeUi.SymbolContainer(
+                                icon = option.icon,
+                                contentDescription = null,
+                                size = SymbolContainerSize.Large,
+                                shape = SymbolContainerShape.Rounded,
+                                voice = if (isChecked) {
+                                    SymbolContainerVoice.Positive
+                                } else {
+                                    SymbolContainerVoice.Neutral
+                                },
+                            )
+                        },
+                        slotContent = {
+                            LemonadeUi.Tag(
+                                label = preset.label,
+                                voice = preset.voice,
                             )
                         },
                     )

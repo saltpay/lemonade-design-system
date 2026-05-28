@@ -13,7 +13,8 @@ public extension LemonadeUi {
     ///     showDivider: true,
     ///     onItemClicked: { /* action */ },
     ///     leadingSlot: { LemonadeUi.Icon(icon: .heart, contentDescription: nil) },
-    ///     trailingSlot: { LemonadeUi.Tag(label: "New", voice: .warning) }
+    ///     trailingSlot: { LemonadeUi.Tag(label: "New", voice: .warning) },
+    ///     slotContent: { LemonadeUi.Text("Inline notice", textStyle: LemonadeTypography.shared.bodySmallRegular, color: LemonadeTheme.colors.content.contentCaution) }
     /// )
     /// ```
     ///
@@ -31,9 +32,12 @@ public extension LemonadeUi {
     ///   - onItemClicked: Callback called when component is tapped
     ///   - leadingSlot: Slot content to be placed in leading position
     ///   - trailingSlot: Slot content to be placed in trailing position
+    ///   - slotContent: Optional slot rendered below the support text, inside the label column.
+    ///     Use for secondary content like an inline status text, badge, or compact widget that should
+    ///     sit under the row's text.
     /// - Returns: A styled ActionListItem view
     @ViewBuilder
-    static func ActionListItem<LeadingContent: View, TrailingContent: View>(
+    static func ActionListItem<LeadingContent: View, TrailingContent: View, SlotContent: View>(
         label: String,
         topLabel: String? = nil,
         supportText: String? = nil,
@@ -46,7 +50,8 @@ public extension LemonadeUi {
         trailingAlignment: VerticalAlignment = .center,
         onItemClicked: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
-        @ViewBuilder trailingSlot: @escaping () -> TrailingContent
+        @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
+        @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
     ) -> some View {
         ListItem(
             label: label,
@@ -64,13 +69,14 @@ public extension LemonadeUi {
             trailingSlot: {
                 trailingSlot()
                     .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-            }
+            },
+            slotContent: slotContent
         )
     }
 
     /// ActionListItem without trailing slot.
     @ViewBuilder
-    static func ActionListItem<LeadingContent: View>(
+    static func ActionListItem<LeadingContent: View, SlotContent: View>(
         label: String,
         topLabel: String? = nil,
         supportText: String? = nil,
@@ -82,7 +88,8 @@ public extension LemonadeUi {
         leadingAlignment: VerticalAlignment = .top,
         trailingAlignment: VerticalAlignment = .center,
         onItemClicked: (() -> Void)? = nil,
-        @ViewBuilder leadingSlot: @escaping () -> LeadingContent
+        @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
+        @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
     ) -> some View {
         ActionListItem(
             label: label,
@@ -97,13 +104,14 @@ public extension LemonadeUi {
             trailingAlignment: trailingAlignment,
             onItemClicked: onItemClicked,
             leadingSlot: leadingSlot,
-            trailingSlot: { EmptyView() }
+            trailingSlot: { EmptyView() },
+            slotContent: slotContent
         )
     }
 
     /// ActionListItem without leading slot.
     @ViewBuilder
-    static func ActionListItem<TrailingContent: View>(
+    static func ActionListItem<TrailingContent: View, SlotContent: View>(
         label: String,
         topLabel: String? = nil,
         supportText: String? = nil,
@@ -115,7 +123,8 @@ public extension LemonadeUi {
         leadingAlignment: VerticalAlignment = .top,
         trailingAlignment: VerticalAlignment = .center,
         onItemClicked: (() -> Void)? = nil,
-        @ViewBuilder trailingSlot: @escaping () -> TrailingContent
+        @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
+        @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
     ) -> some View {
         ActionListItem(
             label: label,
@@ -130,13 +139,14 @@ public extension LemonadeUi {
             trailingAlignment: trailingAlignment,
             onItemClicked: onItemClicked,
             leadingSlot: { EmptyView() },
-            trailingSlot: trailingSlot
+            trailingSlot: trailingSlot,
+            slotContent: slotContent
         )
     }
 
     /// ActionListItem without slots.
     @ViewBuilder
-    static func ActionListItem(
+    static func ActionListItem<SlotContent: View>(
         label: String,
         topLabel: String? = nil,
         supportText: String? = nil,
@@ -147,7 +157,8 @@ public extension LemonadeUi {
         showDivider: Bool = false,
         leadingAlignment: VerticalAlignment = .top,
         trailingAlignment: VerticalAlignment = .center,
-        onItemClicked: (() -> Void)? = nil
+        onItemClicked: (() -> Void)? = nil,
+        @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
     ) -> some View {
         ActionListItem(
             label: label,
@@ -162,7 +173,8 @@ public extension LemonadeUi {
             trailingAlignment: trailingAlignment,
             onItemClicked: onItemClicked,
             leadingSlot: { EmptyView() },
-            trailingSlot: { EmptyView() }
+            trailingSlot: { EmptyView() },
+            slotContent: slotContent
         )
     }
 }

@@ -226,6 +226,75 @@ internal fun ActionListItemDisplay() {
             )
         }
 
+        // ActionListItem - Slot Content (below support text)
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "ActionListItem - Slot Content"),
+        ) {
+            LemonadeUi.ActionListItem(
+                label = "Account ***4236",
+                supportText = "PT50 0002 0123 1234…",
+                showNavigationIndicator = true,
+                showDivider = true,
+                onItemClicked = {},
+                leadingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.Bank,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                    )
+                },
+                slotContent = {
+                    LemonadeUi.Tag(
+                        label = "Settlements",
+                        voice = TagVoice.Positive,
+                    )
+                },
+            )
+
+            LemonadeUi.ActionListItem(
+                label = "Payout",
+                supportText = "Arrives tomorrow",
+                showNavigationIndicator = true,
+                showDivider = true,
+                onItemClicked = {},
+                leadingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.Coins,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                    )
+                },
+                slotContent = {
+                    LemonadeUi.Text(
+                        text = "Reference: PYT-00123 • EUR account",
+                        textStyle = LemonadeTheme.typography.bodySmallRegular,
+                        color = LemonadeTheme.colors.content.contentSecondary,
+                    )
+                },
+            )
+
+            LemonadeUi.ActionListItem(
+                label = "Updates Available",
+                supportText = "3 new features",
+                showNavigationIndicator = true,
+                showDivider = false,
+                onItemClicked = {},
+                leadingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.Download,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                    )
+                },
+                slotContent = {
+                    LemonadeUi.Badge(
+                        text = "3",
+                        size = LemonadeBadgeSize.Small,
+                    )
+                },
+            )
+        }
+
         // ActionListItem with Trailing Slot
         LemonadeUi.Card(
             header = CardHeaderConfig(title = "ActionListItem with Trailing"),

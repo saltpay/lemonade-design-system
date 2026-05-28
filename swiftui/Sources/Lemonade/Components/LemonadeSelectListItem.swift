@@ -34,7 +34,7 @@ public extension LemonadeUi {
     ///   - trailingSlot: Content to be placed before the selection control
     /// - Returns: A styled SelectListItem view
     @ViewBuilder
-    static func SelectListItem<LeadingContent: View, TrailingContent: View>(
+    static func SelectListItem<LeadingContent: View, TrailingContent: View, SlotContent: View>(
         label: String,
         type: SelectListItemType,
         checked: Bool,
@@ -45,7 +45,8 @@ public extension LemonadeUi {
         showDivider: Bool = false,
         supportText: String? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
-        @ViewBuilder trailingSlot: @escaping () -> TrailingContent
+        @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
+        @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
     ) -> some View {
         switch variant {
         case .plain:
@@ -59,7 +60,8 @@ public extension LemonadeUi {
                 showDivider: showDivider,
                 supportText: supportText,
                 leadingSlot: leadingSlot,
-                trailingSlot: trailingSlot
+                trailingSlot: trailingSlot,
+                slotContent: slotContent
             )
         case .outlined:
             OutlinedSelectListItem(
@@ -70,14 +72,15 @@ public extension LemonadeUi {
                 enabled: enabled,
                 supportText: supportText,
                 leadingSlot: leadingSlot,
-                trailingSlot: trailingSlot
+                trailingSlot: trailingSlot,
+                slotContent: slotContent
             )
         }
     }
 
     /// A list item with the sole purpose of selection without leading slot.
     @ViewBuilder
-    static func SelectListItem<TrailingContent: View>(
+    static func SelectListItem<TrailingContent: View, SlotContent: View>(
         label: String,
         type: SelectListItemType,
         checked: Bool,
@@ -87,7 +90,8 @@ public extension LemonadeUi {
         enabled: Bool = true,
         showDivider: Bool = false,
         supportText: String? = nil,
-        @ViewBuilder trailingSlot: @escaping () -> TrailingContent
+        @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
+        @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
     ) -> some View {
         SelectListItem(
             label: label,
@@ -100,13 +104,14 @@ public extension LemonadeUi {
             showDivider: showDivider,
             supportText: supportText,
             leadingSlot: { EmptyView() },
-            trailingSlot: trailingSlot
+            trailingSlot: trailingSlot,
+            slotContent: slotContent
         )
     }
 
     /// A list item with the sole purpose of selection without trailing slot.
     @ViewBuilder
-    static func SelectListItem<LeadingContent: View>(
+    static func SelectListItem<LeadingContent: View, SlotContent: View>(
         label: String,
         type: SelectListItemType,
         checked: Bool,
@@ -116,7 +121,8 @@ public extension LemonadeUi {
         enabled: Bool = true,
         showDivider: Bool = false,
         supportText: String? = nil,
-        @ViewBuilder leadingSlot: @escaping () -> LeadingContent
+        @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
+        @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
     ) -> some View {
         SelectListItem(
             label: label,
@@ -129,13 +135,14 @@ public extension LemonadeUi {
             showDivider: showDivider,
             supportText: supportText,
             leadingSlot: leadingSlot,
-            trailingSlot: { EmptyView() }
+            trailingSlot: { EmptyView() },
+            slotContent: slotContent
         )
     }
 
     /// A list item with the sole purpose of selection without slots.
     @ViewBuilder
-    static func SelectListItem(
+    static func SelectListItem<SlotContent: View>(
         label: String,
         type: SelectListItemType,
         checked: Bool,
@@ -144,7 +151,8 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
-        supportText: String? = nil
+        supportText: String? = nil,
+        @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
     ) -> some View {
         SelectListItem(
             label: label,
@@ -157,7 +165,8 @@ public extension LemonadeUi {
             showDivider: showDivider,
             supportText: supportText,
             leadingSlot: { EmptyView() },
-            trailingSlot: { EmptyView() }
+            trailingSlot: { EmptyView() },
+            slotContent: slotContent
         )
     }
 }
@@ -211,7 +220,7 @@ private struct SelectionControlView: View {
 
 // MARK: - Plain variant (delegates to ListItem)
 
-private struct PlainSelectListItem<LeadingContent: View, TrailingContent: View>: View {
+private struct PlainSelectListItem<LeadingContent: View, TrailingContent: View, SlotContent: View>: View {
     let label: String
     let type: SelectListItemType
     let checked: Bool
@@ -222,6 +231,7 @@ private struct PlainSelectListItem<LeadingContent: View, TrailingContent: View>:
     let supportText: String?
     let leadingSlot: () -> LeadingContent
     let trailingSlot: () -> TrailingContent
+    let slotContent: () -> SlotContent
 
     var body: some View {
         LemonadeUi.ListItem(
@@ -236,10 +246,10 @@ private struct PlainSelectListItem<LeadingContent: View, TrailingContent: View>:
             },
             leadingSlot: { leadingSlot() },
             trailingSlot: {
-                
+
                     HStack(spacing: LemonadeTheme.spaces.spacing200) {
                         trailingSlot()
-                        
+
                         SelectionControlView(
                             type: type,
                             checked: checked,
@@ -248,14 +258,15 @@ private struct PlainSelectListItem<LeadingContent: View, TrailingContent: View>:
                         )
                     }
                     .frame(maxHeight:.infinity)
-            }
+            },
+            slotContent: slotContent
         )
     }
 }
 
 // MARK: - Outlined variant
 
-private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: View>: View {
+private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: View, SlotContent: View>: View {
     let label: String
     let type: SelectListItemType
     let checked: Bool
@@ -264,6 +275,7 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
     let supportText: String?
     let leadingSlot: () -> LeadingContent
     let trailingSlot: () -> TrailingContent
+    let slotContent: () -> SlotContent
 
     private var backgroundColor: Color {
         checked
@@ -308,6 +320,10 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
                         textStyle: LemonadeTypography.shared.bodySmallRegular,
                         color: LemonadeTheme.colors.content.contentSecondary
                     )
+                }
+
+                if SlotContent.self != EmptyView.self {
+                    slotContent()
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
