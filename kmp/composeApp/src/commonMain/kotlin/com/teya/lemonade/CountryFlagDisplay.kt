@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
+import com.teya.lemonade.core.CountryFlagShape
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeCountryFlags
 
@@ -62,26 +63,34 @@ internal fun CountryFlagDisplay() {
                 }
             }
 
-            item(span = { GridItemSpan(3) }) {
-                LemonadeUi.Text(
-                    text = "Country Flags",
-                    textStyle = LemonadeTheme.typography.headingXXSmall,
-                    modifier = Modifier
-                        .padding(top = LemonadeTheme.spaces.spacing400),
-                )
-            }
-
-            items(
-                items = LemonadeCountryFlags.entries,
-                key = { it.ordinal },
-            ) { flag ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
+            CountryFlagShape.entries.forEach { shape ->
+                item(
+                    span = { GridItemSpan(3) },
+                    key = { "header-${shape.name}" },
                 ) {
-                    FlagBox(flag = flag)
+                    LemonadeUi.Text(
+                        text = "Country Flags - ${shape.name}",
+                        textStyle = LemonadeTheme.typography.headingXXSmall,
+                        modifier = Modifier
+                            .padding(top = LemonadeTheme.spaces.spacing400),
+                    )
+                }
+
+                items(
+                    items = LemonadeCountryFlags.entries,
+                    key = { flag -> "${shape.name}-${flag.ordinal}" },
+                ) { flag ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        FlagBox(
+                            flag = flag,
+                            shape = shape,
+                        )
+                    }
                 }
             }
         }
@@ -92,6 +101,7 @@ internal fun CountryFlagDisplay() {
 private fun FlagBox(
     flag: LemonadeCountryFlags,
     label: String? = null,
+    shape: CountryFlagShape = CountryFlagShape.Circular,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -111,6 +121,7 @@ private fun FlagBox(
         LemonadeUi.CountryFlag(
             flag = flag,
             size = LemonadeAssetSize.XXLarge,
+            shape = shape,
         )
         Spacer(
             modifier = Modifier
