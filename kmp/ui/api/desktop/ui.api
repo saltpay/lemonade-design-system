@@ -960,7 +960,9 @@ public final class com/teya/lemonade/LemonadeToastState {
 	public static final field $stable I
 	public fun <init> ()V
 	public final fun dismiss ()V
+	public final fun show (Ljava/lang/String;Lcom/teya/lemonade/ToastVoice;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/ToastDuration;Z)V
 	public final fun show (Ljava/lang/String;Lcom/teya/lemonade/ToastVoice;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/ToastDuration;ZLjava/lang/String;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun show$default (Lcom/teya/lemonade/LemonadeToastState;Ljava/lang/String;Lcom/teya/lemonade/ToastVoice;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/ToastDuration;ZILjava/lang/Object;)V
 	public static synthetic fun show$default (Lcom/teya/lemonade/LemonadeToastState;Ljava/lang/String;Lcom/teya/lemonade/ToastVoice;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/ToastDuration;ZLjava/lang/String;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
 }
 
@@ -1150,6 +1152,7 @@ public final class com/teya/lemonade/ToastDuration$Short : com/teya/lemonade/Toa
 
 public final class com/teya/lemonade/ToastKt {
 	public static final fun LemonadeToastHost (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun Toast (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/ToastVoice;Lcom/teya/lemonade/core/LemonadeIcons;Landroidx/compose/runtime/Composer;II)V
 	public static final fun Toast (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/ToastVoice;Lcom/teya/lemonade/core/LemonadeIcons;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 	public static final fun getLocalLemonadeToastState ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }

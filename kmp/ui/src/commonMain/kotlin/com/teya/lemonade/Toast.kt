@@ -108,6 +108,39 @@ public class LemonadeToastState {
      * @param icon Optional custom icon. Only used when [voice] is [ToastVoice.Neutral].
      * @param duration How long the toast is displayed. Defaults to [ToastDuration.Short].
      * @param dismissible Whether the user can swipe to dismiss. Defaults to `true`.
+     */
+    @Deprecated(
+        message = "Use show() with actionLabel and onAction to support an optional action button.",
+        replaceWith = ReplaceWith(
+            expression = "show(label, voice, icon, duration, dismissible, actionLabel = null, onAction = null)",
+        ),
+    )
+    public fun show(
+        label: String,
+        voice: ToastVoice = ToastVoice.Neutral,
+        icon: LemonadeIcons? = null,
+        duration: ToastDuration = ToastDuration.Short,
+        dismissible: Boolean = true,
+    ) {
+        show(
+            label = label,
+            voice = voice,
+            icon = icon,
+            duration = duration,
+            dismissible = dismissible,
+            actionLabel = null,
+            onAction = null,
+        )
+    }
+
+    /**
+     * Show a toast with an optional action button. If a toast is already visible, it is replaced immediately.
+     *
+     * @param label The text message to display.
+     * @param voice The tone of voice — determines icon and icon color. Defaults to [ToastVoice.Neutral].
+     * @param icon Optional custom icon. Only used when [voice] is [ToastVoice.Neutral].
+     * @param duration How long the toast is displayed. Defaults to [ToastDuration.Short].
+     * @param dismissible Whether the user can swipe to dismiss. Defaults to `true`.
      * @param actionLabel Optional label for the action button shown at the trailing end of the toast.
      * @param onAction Optional callback invoked when the action button is tapped. The button is only shown
      *   when both [actionLabel] and [onAction] are non-null.
@@ -145,6 +178,43 @@ public class LemonadeToastState {
  */
 public val LocalLemonadeToastState: ProvidableCompositionLocal<LemonadeToastState> = staticCompositionLocalOf {
     error("No LemonadeToastState provided. Wrap your content with LemonadeToastHost.")
+}
+
+/**
+ * A brief notification that appears at the bottom of the screen.
+ *
+ * ## Usage
+ * ```kotlin
+ * val toastState = LocalLemonadeToastState.current
+ * toastState.show(label = "Changes saved", voice = ToastVoice.Success)
+ * ```
+ *
+ * @param label The text to display.
+ * @param modifier Modifier to apply to the toast container.
+ * @param voice The tone — determines default icon and icon color. Defaults to [ToastVoice.Neutral].
+ * @param icon Optional custom icon (only used when voice is [ToastVoice.Neutral]).
+ */
+@Deprecated(
+    message = "Use Toast() with actionLabel and onAction to support an optional action button.",
+    replaceWith = ReplaceWith(
+        expression = "Toast(label, modifier, voice, icon, actionLabel = null, onAction = null)",
+    ),
+)
+@Composable
+public fun LemonadeUi.Toast(
+    label: String,
+    modifier: Modifier = Modifier,
+    voice: ToastVoice = ToastVoice.Neutral,
+    icon: LemonadeIcons? = null,
+) {
+    Toast(
+        label = label,
+        modifier = modifier,
+        voice = voice,
+        icon = icon,
+        actionLabel = null,
+        onAction = null,
+    )
 }
 
 /**
