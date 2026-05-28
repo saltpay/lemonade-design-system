@@ -303,7 +303,6 @@ public fun LemonadeUi.DateRangePicker(
     )
 }
 
-@Deprecated("Use the overload with `today` parameter.", level = DeprecationLevel.HIDDEN)
 @Composable
 public fun LemonadeUi.DatePicker(
     monthFormatter: (month: Int) -> String,
@@ -323,7 +322,6 @@ public fun LemonadeUi.DatePicker(
     )
 }
 
-@Deprecated("Use the overload with `today` parameter.", level = DeprecationLevel.HIDDEN)
 @Composable
 public fun LemonadeUi.DateRangePicker(
     monthFormatter: (month: Int) -> String,
@@ -470,7 +468,6 @@ private fun MonthGrid(
     firstDayOfWeek: DayOfWeek,
     onDateSelected: (LocalDate) -> Unit,
 ) {
-
     val days = remember(yearMonth, firstDayOfWeek) { daysForMonth(yearMonth, firstDayOfWeek = firstDayOfWeek) }
 
     val isRangeComplete = selectedDates.size >= 2

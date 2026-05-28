@@ -1,4 +1,5 @@
 @file:OptIn(ExperimentalTime::class)
+@file:Suppress("TooManyFunctions")
 
 package com.teya.lemonade
 
@@ -399,7 +400,6 @@ public fun LemonadeUi.InlineCalendar(
     }
 }
 
-@Deprecated("Use the overload with `today` parameter.", level = DeprecationLevel.HIDDEN)
 @ExperimentalLemonadeComponent
 @Composable
 public fun LemonadeUi.InlineCalendar(
