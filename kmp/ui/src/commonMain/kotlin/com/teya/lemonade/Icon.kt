@@ -85,6 +85,7 @@ private val LemonadeAssetSize.dp: Dp
             LemonadeAssetSize.XLarge -> LocalSizes.current.size800
             LemonadeAssetSize.XXLarge -> LocalSizes.current.size1000
             LemonadeAssetSize.XXXLarge -> LocalSizes.current.size1200
+            LemonadeAssetSize.XXXXLarge -> LocalSizes.current.size1400
         }
     }
 

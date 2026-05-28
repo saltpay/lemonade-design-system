@@ -12,6 +12,7 @@ public enum LemonadeUiIconSize {
     case xLarge
     case xxLarge
     case xxxLarge
+    case xxxxLarge
 
     /// Returns the CGFloat value for this icon size in points
     public var value: CGFloat {
@@ -23,6 +24,7 @@ public enum LemonadeUiIconSize {
         case .xLarge: return LemonadeTheme.sizes.size800
         case .xxLarge: return LemonadeTheme.sizes.size1000
         case .xxxLarge: return LemonadeTheme.sizes.size1200
+        case .xxxxLarge: return LemonadeTheme.sizes.size1400
         }
     }
 }

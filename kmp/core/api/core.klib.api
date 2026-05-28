@@ -71,6 +71,7 @@ final enum class com.teya.lemonade.core/LemonadeAssetSize : kotlin/Enum<com.teya
     enum entry XSmall // com.teya.lemonade.core/LemonadeAssetSize.XSmall|null[0]
     enum entry XXLarge // com.teya.lemonade.core/LemonadeAssetSize.XXLarge|null[0]
     enum entry XXXLarge // com.teya.lemonade.core/LemonadeAssetSize.XXXLarge|null[0]
+    enum entry XXXXLarge // com.teya.lemonade.core/LemonadeAssetSize.XXXXLarge|null[0]
 
     final val entries // com.teya.lemonade.core/LemonadeAssetSize.entries|#static{}entries[0]
         final fun <get-entries>(): kotlin.enums/EnumEntries<com.teya.lemonade.core/LemonadeAssetSize> // com.teya.lemonade.core/LemonadeAssetSize.entries.<get-entries>|<get-entries>#static(){}[0]
