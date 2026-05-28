@@ -14,7 +14,6 @@ import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
@@ -312,7 +311,7 @@ private fun CoreToast(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
-                .weight(weight = 1f)
+                .weight(weight = 1f, fill = false)
                 .padding(horizontal = spaces.spacing100),
         )
 
@@ -441,7 +440,6 @@ public fun LemonadeToastHost(
                         actionLabel = animatedToast.actionLabel,
                         onAction = animatedToast.onAction,
                         modifier = swipeModifier
-                            .fillMaxWidth()
                             .offset { IntOffset(x = 0, y = offsetY.roundToInt()) }
                             .graphicsLayer {
                                 val fadeDistance =
