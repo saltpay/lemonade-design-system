@@ -134,6 +134,7 @@ public fun LemonadeUi.ResourceListItem(
             "trailingSlot, voice, isLoading, enabled, onItemClicked, role, interactionSource, " +
             "showNavigationIndicator, showDivider, trailingVerticalAlignment, Alignment.Top)",
     ),
+    level = DeprecationLevel.HIDDEN,
 )
 @Composable
 public fun LemonadeUi.ActionListItem(
@@ -278,6 +279,7 @@ public fun LemonadeUi.ActionListItem(
             "showNavigationIndicator, showDivider, trailingVerticalAlignment, " +
             "leadingVerticalAlignment, null)",
     ),
+    level = DeprecationLevel.HIDDEN,
 )
 @Composable
 public fun LemonadeUi.ActionListItem(
@@ -327,6 +329,7 @@ public fun LemonadeUi.ActionListItem(
             "navigationIndicator, isLoading, role, enabled, interactionSource, showDivider, " +
             "leadingSlot, trailingSlot, slotContent, trailingVerticalAlignment, Alignment.Top)",
     ),
+    level = DeprecationLevel.HIDDEN,
 )
 @Composable
 public fun LemonadeUi.ListItem(
@@ -470,6 +473,7 @@ public fun LemonadeUi.ListItem(
             "role, enabled, interactionSource, showDivider, leadingSlot, trailingSlot, " +
             "trailingVerticalAlignment, Alignment.Top)",
     ),
+    level = DeprecationLevel.HIDDEN,
 )
 @Composable
 public fun LemonadeUi.ListItem(
