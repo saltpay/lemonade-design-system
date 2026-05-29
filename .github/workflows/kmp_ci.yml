@@ -180,10 +180,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          # Pass the reasons through the environment, never inline. Interpolating
+          # ${{ ... }} straight into the script lets the API signatures in the text
+          # (e.g. `Alignment$Vertical`, `foo$default`) be re-expanded by bash, and
+          # under `set -u` an unbound `$Vertical` aborts the whole step before the
+          # approval check runs. As an env var the value stays literal.
+          REASONS: ${{ steps.verdict.outputs.reasons }}
         run: |
           set -euo pipefail
           echo "::warning::ABI-breaking change detected:"
-          echo "${{ steps.verdict.outputs.reasons }}"
+          echo "$REASONS"
           echo
 
           APPROVALS=$(gh api "repos/${{ github.repository }}/pulls/${PR_NUMBER}/reviews" \
