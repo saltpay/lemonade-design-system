@@ -4,7 +4,7 @@ import SwiftUI
 
 enum TextFieldConstants {
     static var minHeight: CGFloat { LemonadeTheme.sizes.size1400 }
-    static let cornerRadius: CGFloat = LemonadeTheme.radius.radius300
+    static let cornerRadius: CGFloat = LemonadeTheme.radius.radius400
     static let horizontalPadding: CGFloat = LemonadeTheme.spaces.spacing300
     static let verticalPadding: CGFloat = LemonadeTheme.spaces.spacing300
 }
@@ -171,12 +171,11 @@ struct TextFieldContainerModifier: ViewModifier {
                     .stroke(borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius + 2)
+                RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(
-                        isFocused ? LemonadeTheme.colors.background.bgElevated : .clear,
-                        lineWidth: LemonadeTheme.borderWidth.base.border50
+                        isFocused ? LemonadeTheme.colors.border.borderSelected : .clear,
+                        lineWidth: LemonadeTheme.borderWidth.state.focusRing
                     )
-                    .padding(-2)
             )
             .opacity(applyOpacity && !enabled ? LemonadeTheme.opacity.state.opacityDisabled : 1.0)
             .onHover { hovering in
