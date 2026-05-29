@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.LemonadeTileOrientation
 import com.teya.lemonade.core.LemonadeTileVariant
 
 @Suppress("LongMethod")
@@ -199,6 +200,151 @@ internal fun TileDisplay() {
                     icon = LemonadeIcons.Padlock,
                     enabled = false,
                     variant = LemonadeTileVariant.Outlined,
+                )
+            }
+        }
+
+        // Horizontal — Variants
+        TileSection(title = "Horizontal / Variants") {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+            ) {
+                LemonadeUi.Tile(
+                    label = "Filled",
+                    icon = LemonadeIcons.Heart,
+                    variant = LemonadeTileVariant.Filled,
+                    orientation = LemonadeTileOrientation.Horizontal,
+                )
+                LemonadeUi.Tile(
+                    label = "Outlined",
+                    icon = LemonadeIcons.Star,
+                    variant = LemonadeTileVariant.Outlined,
+                    orientation = LemonadeTileOrientation.Horizontal,
+                )
+            }
+        }
+
+        // Horizontal — Selected
+        TileSection(title = "Horizontal / Selected") {
+            var isHorizontalSelected by remember { mutableStateOf(value = true) }
+            Column(
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+            ) {
+                LemonadeUi.Tile(
+                    label = "Filled",
+                    icon = LemonadeIcons.CircleCheck,
+                    variant = LemonadeTileVariant.Filled,
+                    isSelected = isHorizontalSelected,
+                    onClick = { isHorizontalSelected = !isHorizontalSelected },
+                    orientation = LemonadeTileOrientation.Horizontal,
+                )
+                LemonadeUi.Tile(
+                    label = "Outlined",
+                    icon = LemonadeIcons.CircleCheck,
+                    variant = LemonadeTileVariant.Outlined,
+                    isSelected = !isHorizontalSelected,
+                    onClick = { isHorizontalSelected = !isHorizontalSelected },
+                    orientation = LemonadeTileOrientation.Horizontal,
+                )
+            }
+        }
+
+        // Horizontal — Support Text
+        TileSection(title = "Horizontal / Support Text") {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+            ) {
+                LemonadeUi.Tile(
+                    label = "Transfer",
+                    icon = LemonadeIcons.ArrowLeftRight,
+                    supportText = "Send money instantly",
+                    variant = LemonadeTileVariant.Filled,
+                    orientation = LemonadeTileOrientation.Horizontal,
+                )
+                LemonadeUi.Tile(
+                    label = "Pay",
+                    icon = LemonadeIcons.Card,
+                    supportText = "Pay with card",
+                    variant = LemonadeTileVariant.Outlined,
+                    orientation = LemonadeTileOrientation.Horizontal,
+                )
+            }
+        }
+
+        // Horizontal — Leading Slot
+        TileSection(title = "Horizontal / Leading Slot") {
+            LemonadeUi.Tile(
+                label = "Custom slot",
+                variant = LemonadeTileVariant.Filled,
+                orientation = LemonadeTileOrientation.Horizontal,
+                leadingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.ShoppingBag,
+                        size = LemonadeAssetSize.Medium,
+                        contentDescription = null,
+                    )
+                },
+            )
+        }
+
+        // Horizontal — Disabled
+        TileSection(title = "Horizontal / Disabled") {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+            ) {
+                LemonadeUi.Tile(
+                    label = "Disabled",
+                    icon = LemonadeIcons.Padlock,
+                    enabled = false,
+                    variant = LemonadeTileVariant.Filled,
+                    orientation = LemonadeTileOrientation.Horizontal,
+                )
+                LemonadeUi.Tile(
+                    label = "Disabled",
+                    icon = LemonadeIcons.Padlock,
+                    enabled = false,
+                    variant = LemonadeTileVariant.Outlined,
+                    orientation = LemonadeTileOrientation.Horizontal,
+                )
+            }
+        }
+
+        // Use Case: Menu List
+        TileSection(title = "Use Case: Menu List") {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+            ) {
+                LemonadeUi.Tile(
+                    label = "Transfer",
+                    icon = LemonadeIcons.ArrowLeftRight,
+                    supportText = "Send money instantly",
+                    onClick = {},
+                    variant = LemonadeTileVariant.Filled,
+                    orientation = LemonadeTileOrientation.Horizontal,
+                )
+                LemonadeUi.Tile(
+                    label = "Pay",
+                    icon = LemonadeIcons.Card,
+                    supportText = "Pay with card",
+                    onClick = {},
+                    variant = LemonadeTileVariant.Filled,
+                    orientation = LemonadeTileOrientation.Horizontal,
+                )
+                LemonadeUi.Tile(
+                    label = "Top Up",
+                    icon = LemonadeIcons.Plus,
+                    supportText = "Add funds to your account",
+                    onClick = {},
+                    variant = LemonadeTileVariant.Filled,
+                    orientation = LemonadeTileOrientation.Horizontal,
+                )
+                LemonadeUi.Tile(
+                    label = "Statements",
+                    icon = LemonadeIcons.Chart,
+                    supportText = "View your transactions",
+                    onClick = {},
+                    variant = LemonadeTileVariant.Filled,
+                    orientation = LemonadeTileOrientation.Horizontal,
                 )
             }
         }

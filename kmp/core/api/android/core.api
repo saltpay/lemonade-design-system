@@ -916,6 +916,14 @@ public final class com/teya/lemonade/core/LemonadeTextStyle {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/teya/lemonade/core/LemonadeTileOrientation : java/lang/Enum {
+	public static final field Horizontal Lcom/teya/lemonade/core/LemonadeTileOrientation;
+	public static final field Vertical Lcom/teya/lemonade/core/LemonadeTileOrientation;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/LemonadeTileOrientation;
+	public static fun values ()[Lcom/teya/lemonade/core/LemonadeTileOrientation;
+}
+
 public final class com/teya/lemonade/core/LemonadeTileVariant : java/lang/Enum {
 	public static final field Filled Lcom/teya/lemonade/core/LemonadeTileVariant;
 	public static final field Outlined Lcom/teya/lemonade/core/LemonadeTileVariant;

@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.LemonadeTileOrientation
 import com.teya.lemonade.core.LemonadeTileVariant
 
 /**
@@ -45,15 +46,16 @@ import com.teya.lemonade.core.LemonadeTileVariant
  * )
  * ```
  * @param label - [String] to be displayed as the Tile's label.
- * @param icon - [LemonadeIcons] displayed above the label.
+ * @param icon - [LemonadeIcons] displayed in the leading position.
  * @param modifier - [Modifier] to be applied to the Tile.
  * @param enabled - [Boolean] flag to enable or disable the Tile.
  * @param isSelected - [Boolean] flag to apply selected styling to the Tile.
  * @param supportText - Optional [String] to be displayed below the label.
- * @param topAccessory - Optional composable rendered at the top-right of the tile, next to the icon.
+ * @param topAccessory - Optional composable rendered at the top-right of the tile. Only visible in [LemonadeTileOrientation.Vertical].
  * @param onClick - Callback to be invoked when the Tile is clicked.
  * @param interactionSource - [MutableInteractionSource] to be applied to the Tile.
  * @param variant - [LemonadeTileVariant] to style the Tile accordingly.
+ * @param orientation - [LemonadeTileOrientation] to set the layout direction. Defaults to [LemonadeTileOrientation.Vertical].
  */
 @Suppress("LongParameterList")
 @Composable
@@ -68,6 +70,7 @@ public fun LemonadeUi.Tile(
     onClick: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     variant: LemonadeTileVariant = LemonadeTileVariant.Filled,
+    orientation: LemonadeTileOrientation = LemonadeTileOrientation.Vertical,
 ) {
     val contentColor = LocalColors.current.content.contentPrimary
 
@@ -79,52 +82,67 @@ public fun LemonadeUi.Tile(
         isSelected = isSelected,
         interactionSource = interactionSource,
         content = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier
-                    .defaultMinSize(minWidth = 120.dp)
-                    .padding(all = LocalSpaces.current.spacing300),
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    LemonadeUi.Icon(
-                        icon = icon,
-                        size = LemonadeAssetSize.Medium,
-                        contentDescription = null,
-                        tint = contentColor,
-                    )
-
-                    if (topAccessory != null) {
-                        topAccessory()
-                    }
-                }
-
-                Spacer(modifier = Modifier.weight(weight = 1f))
-
-                Column(
+            when (orientation) {
+                LemonadeTileOrientation.Horizontal -> HorizontalTileContent(
+                    leadingSlot = {
+                        LemonadeUi.Icon(
+                            icon = icon,
+                            size = LemonadeAssetSize.Medium,
+                            contentDescription = null,
+                            tint = contentColor,
+                        )
+                    },
+                    label = label,
+                    supportText = supportText,
+                    contentColor = contentColor,
+                )
+                LemonadeTileOrientation.Vertical -> Column(
+                    verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
                     horizontalAlignment = Alignment.Start,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .defaultMinSize(minWidth = 120.dp)
+                        .padding(all = LocalSpaces.current.spacing300),
                 ) {
-                    LemonadeUi.Text(
-                        text = label,
-                        textStyle = LocalTypographies.current.bodySmallMedium,
-                        color = contentColor,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                    )
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        LemonadeUi.Icon(
+                            icon = icon,
+                            size = LemonadeAssetSize.Medium,
+                            contentDescription = null,
+                            tint = contentColor,
+                        )
 
-                    if (supportText != null) {
+                        if (topAccessory != null) {
+                            topAccessory()
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.weight(weight = 1f))
+
+                    Column(
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
                         LemonadeUi.Text(
-                            text = supportText,
-                            textStyle = LocalTypographies.current.bodySmallRegular,
-                            color = LocalColors.current.content.contentSecondary,
+                            text = label,
+                            textStyle = LocalTypographies.current.bodySmallMedium,
+                            color = contentColor,
                             overflow = TextOverflow.Ellipsis,
                             maxLines = 1,
                         )
+
+                        if (supportText != null) {
+                            LemonadeUi.Text(
+                                text = supportText,
+                                textStyle = LocalTypographies.current.bodySmallRegular,
+                                color = LocalColors.current.content.contentSecondary,
+                                overflow = TextOverflow.Ellipsis,
+                                maxLines = 1,
+                            )
+                        }
                     }
                 }
             }
@@ -149,10 +167,11 @@ public fun LemonadeUi.Tile(
  * @param enabled - [Boolean] flag to enable or disable the Tile.
  * @param isSelected - [Boolean] flag to apply selected styling to the Tile.
  * @param supportText - Optional [String] to be displayed below the label.
- * @param topAccessory - Optional composable rendered at the top-right of the Tile.
+ * @param topAccessory - Optional composable rendered at the top-right of the Tile. Only visible in [LemonadeTileOrientation.Vertical].
  * @param onClick - Callback to be invoked when the Tile is clicked.
  * @param interactionSource - [MutableInteractionSource] to be applied to the Tile.
  * @param variant - [LemonadeTileVariant] to style the Tile accordingly.
+ * @param orientation - [LemonadeTileOrientation] to set the layout direction. Defaults to [LemonadeTileOrientation.Vertical].
  */
 @Suppress("LongParameterList")
 @Composable
@@ -166,6 +185,7 @@ public fun LemonadeUi.Tile(
     onClick: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     variant: LemonadeTileVariant = LemonadeTileVariant.Filled,
+    orientation: LemonadeTileOrientation = LemonadeTileOrientation.Vertical,
     leadingSlot: @Composable () -> Unit,
 ) {
     val contentColor = LocalColors.current.content.contentPrimary
@@ -178,52 +198,102 @@ public fun LemonadeUi.Tile(
         isSelected = isSelected,
         interactionSource = interactionSource,
         content = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier
-                    .defaultMinSize(minWidth = 120.dp)
-                    .padding(all = LocalSpaces.current.spacing300),
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    leadingSlot()
-
-                    if (topAccessory != null) {
-                        topAccessory()
-                    }
-                }
-
-                Spacer(modifier = Modifier.weight(weight = 1f))
-
-                Column(
+            when (orientation) {
+                LemonadeTileOrientation.Horizontal -> HorizontalTileContent(
+                    leadingSlot = leadingSlot,
+                    label = label,
+                    supportText = supportText,
+                    contentColor = contentColor,
+                )
+                LemonadeTileOrientation.Vertical -> Column(
+                    verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
                     horizontalAlignment = Alignment.Start,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .defaultMinSize(minWidth = 120.dp)
+                        .padding(all = LocalSpaces.current.spacing300),
                 ) {
-                    LemonadeUi.Text(
-                        text = label,
-                        textStyle = LocalTypographies.current.bodySmallMedium,
-                        color = contentColor,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                    )
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        leadingSlot()
 
-                    if (supportText != null) {
+                        if (topAccessory != null) {
+                            topAccessory()
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.weight(weight = 1f))
+
+                    Column(
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
                         LemonadeUi.Text(
-                            text = supportText,
-                            textStyle = LocalTypographies.current.bodySmallRegular,
-                            color = LocalColors.current.content.contentSecondary,
+                            text = label,
+                            textStyle = LocalTypographies.current.bodySmallMedium,
+                            color = contentColor,
                             overflow = TextOverflow.Ellipsis,
                             maxLines = 1,
                         )
+
+                        if (supportText != null) {
+                            LemonadeUi.Text(
+                                text = supportText,
+                                textStyle = LocalTypographies.current.bodySmallRegular,
+                                color = LocalColors.current.content.contentSecondary,
+                                overflow = TextOverflow.Ellipsis,
+                                maxLines = 1,
+                            )
+                        }
                     }
                 }
             }
         },
     )
+}
+
+@Composable
+private fun HorizontalTileContent(
+    leadingSlot: @Composable () -> Unit,
+    label: String,
+    supportText: String?,
+    contentColor: Color,
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing200),
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .defaultMinSize(minWidth = 120.dp, minHeight = LocalSizes.current.size1600)
+            .fillMaxWidth()
+            .padding(all = LocalSpaces.current.spacing300),
+    ) {
+        leadingSlot()
+
+        Column(
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier.weight(weight = 1f),
+        ) {
+            LemonadeUi.Text(
+                text = label,
+                textStyle = LocalTypographies.current.bodySmallMedium,
+                color = contentColor,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+            )
+
+            if (supportText != null) {
+                LemonadeUi.Text(
+                    text = supportText,
+                    textStyle = LocalTypographies.current.bodySmallRegular,
+                    color = LocalColors.current.content.contentSecondary,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                )
+            }
+        }
+    }
 }
 
 @Suppress("LongMethod", "LongParameterList")
@@ -331,6 +401,7 @@ private data class TilePreviewData(
     val enabled: Boolean,
     val variant: LemonadeTileVariant,
     val isSelected: Boolean,
+    val orientation: LemonadeTileOrientation,
 )
 
 private class TilePreviewProvider : PreviewParameterProvider<TilePreviewData> {
@@ -344,13 +415,19 @@ private class TilePreviewProvider : PreviewParameterProvider<TilePreviewData> {
                     LemonadeTileVariant.Outlined,
                 ).forEach { variant ->
                     listOf(true, false).forEach { selected ->
-                        add(
-                            TilePreviewData(
-                                enabled = enabled,
-                                variant = variant,
-                                isSelected = selected,
-                            ),
-                        )
+                        listOf(
+                            LemonadeTileOrientation.Vertical,
+                            LemonadeTileOrientation.Horizontal,
+                        ).forEach { orientation ->
+                            add(
+                                TilePreviewData(
+                                    enabled = enabled,
+                                    variant = variant,
+                                    isSelected = selected,
+                                    orientation = orientation,
+                                ),
+                            )
+                        }
                     }
                 }
             }
@@ -378,6 +455,7 @@ private fun LemonadeTilePreview(
             enabled = previewData.enabled,
             isSelected = previewData.isSelected,
             variant = previewData.variant,
+            orientation = previewData.orientation,
         )
     }
 }
