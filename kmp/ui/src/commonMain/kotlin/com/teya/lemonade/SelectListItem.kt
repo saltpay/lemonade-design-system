@@ -129,6 +129,7 @@ public fun LemonadeUi.SelectListItem(
             "isLoading, enabled, interactionSource, showDivider, supportText, leadingSlot, " +
             "trailingSlot, null)",
     ),
+    level = DeprecationLevel.HIDDEN,
 )
 @Composable
 public fun LemonadeUi.SelectListItem(
