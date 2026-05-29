@@ -6,10 +6,12 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
+import com.teya.lemonade.core.CountryFlagShape
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeCountryFlags
 import org.jetbrains.compose.resources.painterResource
@@ -20,8 +22,9 @@ import org.jetbrains.compose.resources.painterResource
  * ## Usage
  * ```kotlin
  * LemonadeUi.CountryFlag(
- *     logo = LemonadeCountryFlags.BRBrazil,
- *     size = LemonadeBrandLogoSize.Medium,
+ *     flag = LemonadeCountryFlags.BRBrazil,
+ *     size = LemonadeAssetSize.Medium,
+ *     shape = CountryFlagShape.Rounded,
  *     modifier = Modifier.clickable{ ... },
  * )
  * ```
@@ -29,8 +32,9 @@ import org.jetbrains.compose.resources.painterResource
  * @param flag - The [LemonadeCountryFlags] to be displayed.
  * @param contentDescription - The localizable message to be shown as content
  *  description for the [flag]. Defaults to [LemonadeCountryFlags.name].
- * @param size - The [LemonadeAssetSize] to be applied to the flag. Defaults to [LemonadeAssetSize.Medium]
- * @param Modifier - Optional [Modifier] for additional styling and layout adjustments.
+ * @param size - The [LemonadeAssetSize] to be applied to the flag. Defaults to [LemonadeAssetSize.Medium].
+ * @param modifier - Optional [Modifier] for additional styling and layout adjustments.
+ * @param shape - The [CountryFlagShape] to be applied. Defaults to [CountryFlagShape.Circular].
  */
 @Composable
 public fun LemonadeUi.CountryFlag(
@@ -38,35 +42,77 @@ public fun LemonadeUi.CountryFlag(
     contentDescription: String = flag.name,
     size: LemonadeAssetSize = LemonadeAssetSize.Medium,
     modifier: Modifier = Modifier,
+    shape: CountryFlagShape = CountryFlagShape.Circular,
 ) {
     CoreCountryFlag(
         flag = flag,
         contentDescription = contentDescription,
         size = size,
+        shape = shape,
         modifier = modifier,
     )
 }
 
+@Deprecated(
+    message = "Use the overload with a shape parameter.",
+    replaceWith = ReplaceWith(
+        expression = "CountryFlag(flag, contentDescription, size, modifier, CountryFlagShape.Circular)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
 @Composable
-public fun CoreCountryFlag(
+public fun LemonadeUi.CountryFlag(
+    flag: LemonadeCountryFlags,
+    contentDescription: String = flag.name,
+    size: LemonadeAssetSize = LemonadeAssetSize.Medium,
+    modifier: Modifier = Modifier,
+) {
+    CountryFlag(
+        flag = flag,
+        contentDescription = contentDescription,
+        size = size,
+        modifier = modifier,
+        shape = CountryFlagShape.Circular,
+    )
+}
+
+@Composable
+private fun CoreCountryFlag(
     flag: LemonadeCountryFlags,
     size: LemonadeAssetSize,
+    shape: CountryFlagShape,
     contentDescription: String?,
     modifier: Modifier = Modifier,
 ) {
+    val resolvedShape = shape.resolveShape(size = size)
     Image(
         painter = painterResource(resource = flag.drawableResource),
         contentDescription = contentDescription,
         contentScale = ContentScale.Crop,
         modifier = modifier
-            .clip(shape = LocalShapes.current.radiusFull)
+            .clip(shape = resolvedShape)
             .border(
                 width = LocalBorderWidths.current.base.border25,
                 color = LocalColors.current.border.borderNeutralMedium,
-                shape = LocalShapes.current.radiusFull,
+                shape = resolvedShape,
             ).requiredSize(size = size.dp),
     )
 }
+
+@Composable
+private fun CountryFlagShape.resolveShape(size: LemonadeAssetSize): Shape =
+    when (this) {
+        CountryFlagShape.Circular -> LocalShapes.current.radiusFull
+        CountryFlagShape.Rounded -> when (size) {
+            LemonadeAssetSize.XSmall -> LocalShapes.current.radius100
+            LemonadeAssetSize.Small -> LocalShapes.current.radius100
+            LemonadeAssetSize.Medium -> LocalShapes.current.radius150
+            LemonadeAssetSize.Large -> LocalShapes.current.radius200
+            LemonadeAssetSize.XLarge -> LocalShapes.current.radius250
+            LemonadeAssetSize.XXLarge -> LocalShapes.current.radius300
+            LemonadeAssetSize.XXXLarge -> LocalShapes.current.radius400
+        }
+    }
 
 private val LemonadeAssetSize.dp: Dp
     @Composable get() {
@@ -84,6 +130,7 @@ private val LemonadeAssetSize.dp: Dp
 private data class CountryFlagPreviewData(
     val flag: LemonadeCountryFlags,
     val size: LemonadeAssetSize,
+    val shape: CountryFlagShape,
 )
 
 private class CountryFlagPreviewProvider : PreviewParameterProvider<CountryFlagPreviewData> {
@@ -93,12 +140,15 @@ private class CountryFlagPreviewProvider : PreviewParameterProvider<CountryFlagP
         buildList {
             LemonadeCountryFlags.entries.take(5).forEach { flag ->
                 LemonadeAssetSize.entries.forEach { size ->
-                    add(
-                        CountryFlagPreviewData(
-                            flag = flag,
-                            size = size,
-                        ),
-                    )
+                    CountryFlagShape.entries.forEach { shape ->
+                        add(
+                            CountryFlagPreviewData(
+                                flag = flag,
+                                size = size,
+                                shape = shape,
+                            ),
+                        )
+                    }
                 }
             }
         }.asSequence()
@@ -113,5 +163,6 @@ private fun CountryFlagPreview(
     LemonadeUi.CountryFlag(
         flag = previewData.flag,
         size = previewData.size,
+        shape = previewData.shape,
     )
 }

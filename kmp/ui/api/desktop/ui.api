@@ -130,8 +130,8 @@ public final class com/teya/lemonade/ContentListItemKt {
 }
 
 public final class com/teya/lemonade/CountryFlagKt {
-	public static final fun CoreCountryFlag (Lcom/teya/lemonade/core/LemonadeCountryFlags;Lcom/teya/lemonade/core/LemonadeAssetSize;Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
-	public static final fun CountryFlag (Lcom/teya/lemonade/LemonadeUi;Lcom/teya/lemonade/core/LemonadeCountryFlags;Ljava/lang/String;Lcom/teya/lemonade/core/LemonadeAssetSize;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final synthetic fun CountryFlag (Lcom/teya/lemonade/LemonadeUi;Lcom/teya/lemonade/core/LemonadeCountryFlags;Ljava/lang/String;Lcom/teya/lemonade/core/LemonadeAssetSize;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun CountryFlag (Lcom/teya/lemonade/LemonadeUi;Lcom/teya/lemonade/core/LemonadeCountryFlags;Ljava/lang/String;Lcom/teya/lemonade/core/LemonadeAssetSize;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/core/CountryFlagShape;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/teya/lemonade/DividerKt {
