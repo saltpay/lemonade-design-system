@@ -51,11 +51,13 @@ import com.teya.lemonade.core.LemonadeTileVariant
  * @param enabled - [Boolean] flag to enable or disable the Tile.
  * @param isSelected - [Boolean] flag to apply selected styling to the Tile.
  * @param supportText - Optional [String] to be displayed below the label.
- * @param topAccessory - Optional composable rendered at the top-right of the tile. Only visible in [LemonadeTileOrientation.Vertical].
+ * @param topAccessory - Optional composable rendered at the top-right of the tile.
+ *  Only visible in [LemonadeTileOrientation.Vertical].
  * @param onClick - Callback to be invoked when the Tile is clicked.
  * @param interactionSource - [MutableInteractionSource] to be applied to the Tile.
  * @param variant - [LemonadeTileVariant] to style the Tile accordingly.
- * @param orientation - [LemonadeTileOrientation] to set the layout direction. Defaults to [LemonadeTileOrientation.Vertical].
+ * @param orientation - [LemonadeTileOrientation] to set the layout direction.
+ *  Defaults to [LemonadeTileOrientation.Vertical].
  */
 @Suppress("LongParameterList")
 @Composable
@@ -167,11 +169,13 @@ public fun LemonadeUi.Tile(
  * @param enabled - [Boolean] flag to enable or disable the Tile.
  * @param isSelected - [Boolean] flag to apply selected styling to the Tile.
  * @param supportText - Optional [String] to be displayed below the label.
- * @param topAccessory - Optional composable rendered at the top-right of the Tile. Only visible in [LemonadeTileOrientation.Vertical].
+ * @param topAccessory - Optional composable rendered at the top-right of the Tile.
+ *  Only visible in [LemonadeTileOrientation.Vertical].
  * @param onClick - Callback to be invoked when the Tile is clicked.
  * @param interactionSource - [MutableInteractionSource] to be applied to the Tile.
  * @param variant - [LemonadeTileVariant] to style the Tile accordingly.
- * @param orientation - [LemonadeTileOrientation] to set the layout direction. Defaults to [LemonadeTileOrientation.Vertical].
+ * @param orientation - [LemonadeTileOrientation] to set the layout direction.
+ *  Defaults to [LemonadeTileOrientation.Vertical].
  */
 @Suppress("LongParameterList")
 @Composable
