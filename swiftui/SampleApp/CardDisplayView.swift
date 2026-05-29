@@ -61,6 +61,19 @@ struct CardDisplayView: View {
                         LemonadeUi.Card(
                             contentPadding: .medium,
                             header: CardHeaderConfig(
+                                title: "Default Heading",
+                                subtitle: "Subtitle",
+                                trailingSlot: {
+                                    LemonadeUi.Tag(label: "Tag", voice: .neutral)
+                                }
+                            )
+                        ) {
+                            LemonadeUi.Text("Card with default heading and subtitle.")
+                        }
+
+                        LemonadeUi.Card(
+                            contentPadding: .medium,
+                            header: CardHeaderConfig(
                                 title: "Overline Heading",
                                 headingStyle: .overline,
                                 trailingSlot: {
@@ -69,6 +82,20 @@ struct CardDisplayView: View {
                             )
                         ) {
                             LemonadeUi.Text("Card with overline heading style.")
+                        }
+
+                        LemonadeUi.Card(
+                            contentPadding: .medium,
+                            header: CardHeaderConfig(
+                                title: "Overline Heading",
+                                subtitle: "Subtitle",
+                                headingStyle: .overline,
+                                trailingSlot: {
+                                    LemonadeUi.Tag(label: "Tag", voice: .neutral)
+                                }
+                            )
+                        ) {
+                            LemonadeUi.Text("Card with overline heading and subtitle.")
                         }
                     }
                 }

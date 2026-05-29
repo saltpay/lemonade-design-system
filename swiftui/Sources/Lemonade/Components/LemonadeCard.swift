@@ -63,6 +63,7 @@ public enum LemonadeCardHeadingStyle {
 /// Configuration for the Card header.
 public struct CardHeaderConfig<LeadingContent: View, TrailingContent: View> {
     let title: String
+    let subtitle: String?
     let headingStyle: LemonadeCardHeadingStyle
     let leadingSlot: (() -> LeadingContent)?
     let trailingSlot: (() -> TrailingContent)?
@@ -70,12 +71,14 @@ public struct CardHeaderConfig<LeadingContent: View, TrailingContent: View> {
 
     public init(
         title: String,
+        subtitle: String? = nil,
         headingStyle: LemonadeCardHeadingStyle = .default,
         leadingSlot: (() -> LeadingContent)? = nil,
         trailingSlot: (() -> TrailingContent)? = nil,
         showNavigationIndicator: Bool = false
     ) {
         self.title = title
+        self.subtitle = subtitle
         self.headingStyle = headingStyle
         self.leadingSlot = leadingSlot
         self.trailingSlot = trailingSlot
@@ -87,10 +90,12 @@ public struct CardHeaderConfig<LeadingContent: View, TrailingContent: View> {
 extension CardHeaderConfig where LeadingContent == EmptyView, TrailingContent == EmptyView {
     public init(
         title: String,
+        subtitle: String? = nil,
         headingStyle: LemonadeCardHeadingStyle = .default,
         showNavigationIndicator: Bool = false
     ) {
         self.title = title
+        self.subtitle = subtitle
         self.headingStyle = headingStyle
         self.leadingSlot = nil
         self.trailingSlot = nil
@@ -102,11 +107,13 @@ extension CardHeaderConfig where LeadingContent == EmptyView, TrailingContent ==
 extension CardHeaderConfig where LeadingContent == EmptyView {
     public init(
         title: String,
+        subtitle: String? = nil,
         headingStyle: LemonadeCardHeadingStyle = .default,
         trailingSlot: (() -> TrailingContent)? = nil,
         showNavigationIndicator: Bool = false
     ) {
         self.title = title
+        self.subtitle = subtitle
         self.headingStyle = headingStyle
         self.leadingSlot = nil
         self.trailingSlot = trailingSlot
@@ -118,11 +125,13 @@ extension CardHeaderConfig where LeadingContent == EmptyView {
 extension CardHeaderConfig where TrailingContent == EmptyView {
     public init(
         title: String,
+        subtitle: String? = nil,
         headingStyle: LemonadeCardHeadingStyle = .default,
         leadingSlot: (() -> LeadingContent)? = nil,
         showNavigationIndicator: Bool = false
     ) {
         self.title = title
+        self.subtitle = subtitle
         self.headingStyle = headingStyle
         self.leadingSlot = leadingSlot
         self.trailingSlot = nil
@@ -230,18 +239,29 @@ private struct LemonadeCardHeader<LeadingContent: View, TrailingContent: View>: 
     let config: CardHeaderConfig<LeadingContent, TrailingContent>
 
     var body: some View {
-        HStack(spacing: LemonadeTheme.spaces.spacing200) {
+        HStack(alignment: .center, spacing: LemonadeTheme.spaces.spacing200) {
             if let leadingSlot = config.leadingSlot {
                 leadingSlot()
             }
 
-            LemonadeUi.Text(
-                config.title,
-                textStyle: config.headingStyle.textStyle,
-                color: config.headingStyle.textColor,
-                overflow: .tail,
-                maxLines: 1
-            )
+            VStack(alignment: .leading, spacing: 0) {
+                LemonadeUi.Text(
+                    config.title,
+                    textStyle: config.headingStyle.textStyle,
+                    color: config.headingStyle.textColor,
+                    overflow: .tail,
+                    maxLines: 1
+                )
+                if let subtitle = config.subtitle {
+                    LemonadeUi.Text(
+                        subtitle,
+                        textStyle: LemonadeTypography.shared.bodySmallRegular,
+                        color: LemonadeTheme.colors.content.contentSecondary,
+                        overflow: .tail,
+                        maxLines: 1
+                    )
+                }
+            }
             .frame(maxWidth: .infinity, alignment: .leading)
 
             if let trailingSlot = config.trailingSlot {
@@ -311,6 +331,35 @@ struct LemonadeCard_Previews: PreviewProvider {
                 )
             ) {
                 LemonadeUi.Text("Content with header and trailing tag")
+            }
+
+            // Card with subtitle
+            LemonadeUi.Card(
+                contentPadding: .medium,
+                header: CardHeaderConfig(
+                    title: "Card Title",
+                    subtitle: "Subtitle",
+                    trailingSlot: {
+                        LemonadeUi.Tag(label: "Label", voice: .positive)
+                    }
+                )
+            ) {
+                LemonadeUi.Text("Content with subtitle")
+            }
+
+            // Card with overline heading and subtitle
+            LemonadeUi.Card(
+                contentPadding: .medium,
+                header: CardHeaderConfig(
+                    title: "Overline Title",
+                    subtitle: "Subtitle",
+                    headingStyle: .overline,
+                    trailingSlot: {
+                        LemonadeUi.Tag(label: "Label", voice: .positive)
+                    }
+                )
+            ) {
+                LemonadeUi.Text("Content with overline heading and subtitle")
             }
 
             // Card with overline heading

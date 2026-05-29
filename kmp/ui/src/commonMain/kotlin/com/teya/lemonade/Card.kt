@@ -86,6 +86,7 @@ private fun CoreCard(
 
 public data class CardHeaderConfig(
     val title: String,
+    val subtitle: String? = null,
     val headingStyle: LemonadeCardHeadingStyle = LemonadeCardHeadingStyle.Default,
     val leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     val trailingSlot: (@Composable RowScope.() -> Unit)? = null,
@@ -115,14 +116,24 @@ private fun CardHeader(
             config.leadingSlot.invoke(this)
         }
 
-        LemonadeUi.Text(
-            text = config.title,
-            textStyle = titleTextStyle,
-            color = titleColor,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1F),
-        )
+        Column(modifier = Modifier.weight(1F)) {
+            LemonadeUi.Text(
+                text = config.title,
+                textStyle = titleTextStyle,
+                color = titleColor,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            if (config.subtitle != null) {
+                LemonadeUi.Text(
+                    text = config.subtitle,
+                    textStyle = LocalTypographies.current.bodySmallRegular,
+                    color = LocalColors.current.content.contentSecondary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
 
         if (config.trailingSlot != null) {
             config.trailingSlot.invoke(this)
@@ -243,6 +254,31 @@ private class CardPreviewProvider : PreviewParameterProvider<CardPreviewData> {
                 }
             }
         }.asSequence()
+}
+
+@LemonadePreview
+@Composable
+private fun CardHeadingSubtitlePreview() {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(LocalSpaces.current.spacing400),
+    ) {
+        LemonadeCardHeadingStyle.entries.forEach { headingStyle ->
+            LemonadeUi.Card(
+                header = CardHeaderConfig(
+                    title = "Card heading",
+                    subtitle = "Subtitle",
+                    headingStyle = headingStyle,
+                    trailingSlot = {
+                        LemonadeUi.Tag(
+                            label = "Tag label",
+                            voice = TagVoice.Neutral,
+                        )
+                    },
+                ),
+                content = {},
+            )
+        }
+    }
 }
 
 @OptIn(InternalLemonadeApi::class)
