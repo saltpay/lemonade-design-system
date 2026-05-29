@@ -119,6 +119,49 @@ class ApiStabilityClassifierTest {
     }
 
     @Test
+    fun `default-param add that keeps the old signature as synthetic is additions-only`() {
+        val diff = """
+            --- a/kmp/core/api/android/core.api
+            +++ b/kmp/core/api/android/core.api
+            @@ -1,3 +1,5 @@
+             public final class com/teya/lemonade/core/BcvKt {
+            -${"\t"}public static final fun bcvHiddenOverload (Ljava/lang/String;)Ljava/lang/String;
+            +${"\t"}public static final synthetic fun bcvHiddenOverload (Ljava/lang/String;)Ljava/lang/String;
+            +${"\t"}public static final fun bcvHiddenOverload (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+            +${"\t"}public static synthetic fun bcvHiddenOverload${'$'}default (Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
+             }
+        """.trimIndent()
+        assertEquals(Verdict.AdditionsOnly, ApiStabilityClassifier.classify(diff))
+    }
+
+    @Test
+    fun `real removal is not masked by a synthetic addition in a different file`() {
+        // android drops bcvGone entirely (a real break); desktop merely hides it.
+        // Per-file matching must keep the android removal flagged as breaking.
+        val diff = """
+            --- a/kmp/core/api/android/core.api
+            +++ b/kmp/core/api/android/core.api
+            @@ -1,2 +1,1 @@
+             public final class com/teya/lemonade/core/BcvKt {
+            -${"\t"}public static final fun bcvGone (Ljava/lang/String;)Ljava/lang/String;
+             }
+            --- a/kmp/core/api/desktop/core.api
+            +++ b/kmp/core/api/desktop/core.api
+            @@ -1,2 +1,2 @@
+             public final class com/teya/lemonade/core/BcvKt {
+            -${"\t"}public static final fun bcvGone (Ljava/lang/String;)Ljava/lang/String;
+            +${"\t"}public static final synthetic fun bcvGone (Ljava/lang/String;)Ljava/lang/String;
+             }
+        """.trimIndent()
+        val verdict = ApiStabilityClassifier.classify(diff)
+        assertIs<Verdict.Breaking>(verdict)
+        assertTrue(
+            verdict.reasons.any { it.contains("bcvGone") },
+            "Expected the android-only removal to be flagged. Reasons: ${verdict.reasons}",
+        )
+    }
+
+    @Test
     fun `empty input is NoChanges`() {
         assertEquals(Verdict.NoChanges, ApiStabilityClassifier.classify(""))
         assertEquals(Verdict.NoChanges, ApiStabilityClassifier.classify("   \n  \n"))

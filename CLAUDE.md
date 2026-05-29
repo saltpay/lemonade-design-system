@@ -1,0 +1,61 @@
+# Lemonade Design System
+
+## Binary compatibility (KMP) — read before changing public API
+
+The published modules — `core`, `tokens`, `ui`, `expressive`, `calendar` — ship to
+real consumers. Their public surface is locked by the Binary Compatibility
+Validator: every public symbol is dumped to `kmp/<module>/api/*.api` and
+`*.klib.api`, and CI fails if your change drifts from that baseline. The
+unpublished sample app (`composeApp`) is exempt.
+
+When a change touches public API, work through the **binary-compatibility** skill
+(`.claude/skills/binary-compatibility/SKILL.md`) — it has the diagnosis script and
+the full decision table. The short version:
+
+- **`apiCheck` failing** just means the baseline is stale. Run `./gradlew apiDump`
+  from `kmp/`, review the regenerated `api/` files, and commit them.
+- **Adding a default parameter, or renaming a function** → keep the old signature
+  as a `@Deprecated(level = DeprecationLevel.HIDDEN)` overload that delegates to
+  the new one. This preserves the binary symbol. Pattern lives in
+  `kmp/ui/.../CountryFlag.kt`. `HIDDEN` adds a `synthetic` flag; the classifier
+  recognises a `synthetic`-only change as additive (the descriptor is unchanged),
+  so this auto-passes. Still mention it in the PR.
+- **Adding an interface member** → give it a default implementation so it dumps as
+  `open`, not `abstract`. A new `abstract` member on an existing type breaks any
+  implementer. The interfaces here are local-only, so additions are acceptable,
+  but say so in the PR.
+- **Adding an enum entry** → fine for config enums (the component owns the
+  `when`). Make sure every internal `when` handles it. Auto-passes CI.
+- **Renaming/removing a property, an interface member, or an enum entry** → real
+  ABI break with no clean workaround. STOP. Don't reshape code to silence
+  `apiCheck`. Raise it with the user and get one of the required reviewers
+  (@caiqueslp, @williankl, @DevSrSouza) to sign off.
+
+Never move, rename, or delete a public declaration just to make the build green.
+
+## Opening a pull request
+
+CI runs `.github/workflows/kmp_ci.yml`. The **API Stability Review** job diffs the
+`api/*.api` / `*.klib.api` baseline against the base branch and classifies it as
+`NO_CHANGES`, `ADDITIONS_ONLY`, or `BREAKING`. A `BREAKING` verdict blocks merge
+until a named maintainer approves the exact head commit.
+
+Before opening or updating a PR, run the classifier locally so you know the verdict
+ahead of CI:
+
+```bash
+.claude/skills/binary-compatibility/scripts/bcv-check.sh --ci
+```
+
+Then fill in the **API Dump** section of the PR description. It is mandatory
+whenever the baseline files change, and it should let a reviewer approve without
+re-deriving the diff. Cover:
+
+- the verdict;
+- the changes that are *not* a concern, and why — interface additions (local-only
+  interfaces), enum entry additions (config-only enums the component switches on),
+  and any `@Deprecated(HIDDEN)` overload whose `-` line is just the `synthetic`
+  flag with an unchanged descriptor;
+- any genuine `BREAKING` change, who needs to approve it, and why it's acceptable.
+
+If the baseline didn't change, write "No public API changes" and leave it at that.

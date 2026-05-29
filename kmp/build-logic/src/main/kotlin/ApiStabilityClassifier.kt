@@ -11,6 +11,14 @@
  *  1. Any `-` line (excluding `---` file headers) — a declaration was removed,
  *     renamed, had its signature changed, or had its visibility narrowed.
  *
+ *     Exception: a `-` line that differs from a `+` line in the *same file* only
+ *     by the JVM `synthetic` modifier is NOT a break. `synthetic` is the bytecode
+ *     marker Kotlin emits for a `@Deprecated(level = HIDDEN)` member. The method
+ *     keeps its exact descriptor (owner, name, parameters, return type), so every
+ *     already-compiled consumer still links against it — only the source-level
+ *     visibility changes. This is the standard "add a default parameter / rename
+ *     a function while keeping the old binary symbol" pattern, and it auto-passes.
+ *
  *  2. A `+` line declaring an abstract member (`abstract fun|val|var`) inside
  *     a class/interface block whose declaration line is **not** also a `+`
  *     line — i.e. an abstract member added to a type that already existed.
@@ -45,12 +53,58 @@ public object ApiStabilityClassifier {
         return if (reasons.isEmpty()) Verdict.AdditionsOnly else Verdict.Breaking(reasons)
     }
 
-    private fun collectRemovedDeclarations(diff: String): List<String> =
-        diff.lineSequence()
-            .filter { it.startsWith("-") && !it.startsWith("---") }
-            .map { it.removePrefix("-").trim() }
-            .filter { it.isNotEmpty() }
-            .toList()
+    /**
+     * Collects declarations the diff removed or altered, but drops `-`/`+` pairs
+     * that differ only by the `synthetic` modifier (a `@Deprecated(HIDDEN)`
+     * transition — the descriptor is preserved, so it is not an ABI break).
+     *
+     * Lines are bucketed per file (a `---` header starts a new file in both the
+     * `git diff` and plain `diff -u` formats) so a genuine removal on one target
+     * can never be cancelled out by a synthetic addition on a different target.
+     */
+    private fun collectRemovedDeclarations(diff: String): List<String> {
+        val realRemovals = mutableListOf<String>()
+        var added = mutableListOf<String>()
+        var removed = mutableListOf<String>()
+
+        fun flushFile() {
+            for (removedLine in removed) {
+                val removedSignature = removedLine.stripSyntheticModifier()
+                val syntheticOnly = added.any { addedLine ->
+                    addedLine != removedLine && addedLine.stripSyntheticModifier() == removedSignature
+                }
+                if (!syntheticOnly) realRemovals += removedLine
+            }
+            added = mutableListOf()
+            removed = mutableListOf()
+        }
+
+        for (line in diff.lineSequence()) {
+            when {
+                line.startsWith("---") -> flushFile()
+                line.startsWith("+++") -> Unit
+                line.startsWith("+") -> {
+                    val body = line.removePrefix("+").trim()
+                    if (body.isNotEmpty()) added += body
+                }
+                line.startsWith("-") -> {
+                    val body = line.removePrefix("-").trim()
+                    if (body.isNotEmpty()) removed += body
+                }
+            }
+        }
+        flushFile()
+        return realRemovals
+    }
+
+    /**
+     * Removes the JVM `synthetic` modifier (only when it sits in front of `fun`
+     * or `field`, so a declaration literally named `synthetic` is left alone) and
+     * normalises whitespace. Two lines with the same result describe the same
+     * binary descriptor and differ only in whether the symbol is hidden.
+     */
+    private fun String.stripSyntheticModifier(): String =
+        replace(syntheticModifierRegex, "").replace(whitespaceRegex, " ").trim()
 
     private fun collectAbstractMembersAddedToExistingTypes(diff: String): List<String> {
         val results = mutableListOf<String>()
@@ -128,6 +182,10 @@ public object ApiStabilityClassifier {
     private val klibTypeDeclRegex = Regex(
         """^(?:final\s+|abstract\s+|sealed\s+|open\s+|enum\s+)*(?:interface|class|object)\s+"""
     )
+
+    private val syntheticModifierRegex = Regex("""synthetic (?=fun |field )""")
+
+    private val whitespaceRegex = Regex("""\s+""")
 
     private val jvmAbstractMemberRegex = Regex(
         """^public\s+abstract\s+(?:fun|field)\s+(\w+)"""

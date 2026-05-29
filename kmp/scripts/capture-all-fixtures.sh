@@ -82,6 +82,26 @@ public interface BcvIfaceWithDefault {
 EOF
 FIXTURE_BUCKET=additions-only ./scripts/capture-bcv-fixture.sh 06-add-default-method-existing-iface "$STAGES/06a.kt" "$STAGES/06b.kt"
 
+# Same default-param addition as the breaking fixture 08, but the old signature
+# is kept as a @Deprecated(HIDDEN) overload. The retained symbol keeps its exact
+# descriptor (only the `synthetic` flag is added), so this must auto-pass.
+cat > "$STAGES/14a.kt" <<'EOF'
+package com.teya.lemonade.core
+public fun bcvHiddenOverload(name: String): String = "hi $name"
+EOF
+cat > "$STAGES/14b.kt" <<'EOF'
+package com.teya.lemonade.core
+public fun bcvHiddenOverload(name: String, greeting: String = "hi"): String = "$greeting $name"
+
+@Deprecated(
+    message = "Use the overload with a greeting parameter.",
+    replaceWith = ReplaceWith("bcvHiddenOverload(name, \"hi\")"),
+    level = DeprecationLevel.HIDDEN,
+)
+public fun bcvHiddenOverload(name: String): String = bcvHiddenOverload(name, "hi")
+EOF
+FIXTURE_BUCKET=additions-only ./scripts/capture-bcv-fixture.sh 14-add-default-param-hidden-overload "$STAGES/14a.kt" "$STAGES/14b.kt"
+
 # ----- breaking fixtures (classifier must require approval) -----
 
 cat > "$STAGES/07a.kt" <<'EOF'
