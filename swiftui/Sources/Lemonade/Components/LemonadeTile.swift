@@ -298,7 +298,7 @@ private extension LemonadeTileVariant {
     func resolvedStyle(isSelected: Bool) -> TileStyle {
         if isSelected {
             return TileStyle(
-                backgroundColor: LemonadeTheme.colors.background.bgDefault,
+                backgroundColor: LemonadeTheme.colors.background.bgBrandSubtle,
                 borderColor: LemonadeTheme.colors.border.borderSelected,
                 borderWidth: LemonadeTheme.borderWidth.base.border50
             )
@@ -402,7 +402,9 @@ private struct LemonadeTileView<TopAccessory: View>: View {
         .applyIf(stretched || orientation == .horizontal) {
             $0.frame(maxWidth: .infinity, alignment: .leading)
         }
-        .frame(minHeight: minHeightHorizontal)
+        .applyIf(orientation == .horizontal) {
+            $0.frame(minHeight: minHeightHorizontal)
+        }
         .background(tileStyle.backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
         .overlay(
@@ -512,7 +514,9 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
         .applyIf(stretched || orientation == .horizontal) {
             $0.frame(maxWidth: .infinity, alignment: .leading)
         }
-        .frame(minHeight: minHeightHorizontal)
+        .applyIf(orientation == .horizontal) {
+            $0.frame(minHeight: minHeightHorizontal)
+        }
         .background(tileStyle.backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
         .overlay(
