@@ -15,8 +15,7 @@ package com.teya.lemonade.core
  * - [Large]: Large size for slightly more prominent skeletons
  * - [XLarge]: Extra large size for prominent skeletons
  * - [XXLarge]: Double extra large size for very prominent skeletons
- * - [XXXLarge]: Triple extra large size for very large skeletons
- * - [XXXXLarge]: Quadruple extra large size for the largest skeletons
+ * - [XXXLarge]: Triple extra large size for the largest skeletons
  *
  * Note: Concrete dp values for each size are derived from the design system sizing
  * tokens (for example, `LemonadeSizes`) and may change over time. Consumers should rely
@@ -36,5 +35,4 @@ public enum class LemonadeSkeletonSize {
     XLarge,
     XXLarge,
     XXXLarge,
-    XXXXLarge,
 }

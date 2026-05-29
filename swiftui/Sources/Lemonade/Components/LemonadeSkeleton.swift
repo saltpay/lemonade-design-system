@@ -10,7 +10,6 @@ public enum LemonadeSkeletonSize: CaseIterable {
     case xLarge
     case xxLarge
     case xxxLarge
-    case xxxxLarge
 }
 
 // MARK: - Skeleton Components
@@ -79,7 +78,6 @@ private extension LemonadeSkeletonSize {
         case .xLarge: return LemonadeTheme.sizes.size800
         case .xxLarge: return LemonadeTheme.sizes.size900
         case .xxxLarge: return LemonadeTheme.sizes.size1000
-        case .xxxxLarge: return LemonadeTheme.sizes.size1100
         }
     }
 
@@ -92,7 +90,6 @@ private extension LemonadeSkeletonSize {
         case .xLarge: return LemonadeTheme.sizes.size800
         case .xxLarge: return LemonadeTheme.sizes.size1000
         case .xxxLarge: return LemonadeTheme.sizes.size1200
-        case .xxxxLarge: return LemonadeTheme.sizes.size1400
         }
     }
 }
