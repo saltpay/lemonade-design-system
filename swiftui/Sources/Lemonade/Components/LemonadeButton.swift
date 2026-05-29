@@ -371,37 +371,47 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
         let colors = resolveButtonColors(variant: variant, type: type)
         let buttonShape = RoundedRectangle(cornerRadius: cornerRadius)
 
-        SwiftUI.Button(action: onClick) {
-            HStack(spacing: 0) {
-                if !loading, let leadingSlot = leadingSlot {
-                    leadingSlot(colors)
-                }
+        // The ZStack backdrop paints an opaque `bgDefault` rectangle behind the button. It sits
+        // OUTSIDE the `.opacity` modifier applied to the SwiftUI.Button, so the disabled 50%
+        // opacity (applied below) blends the colored fill into `bgDefault` instead of into
+        // whatever happens to be drawn behind (e.g. a scrolling list under a floating footer).
+        // When enabled, the fully-opaque button background hides the backdrop entirely.
+        ZStack {
+            buttonShape.fill(LemonadeTheme.colors.background.bgDefault)
 
+            SwiftUI.Button(action: onClick) {
                 HStack(spacing: 0) {
-                    Spacer(minLength: 0)
-                    contentSlot(colors)
-                    Spacer(minLength: 0)
-                }
-                .padding(.vertical, size.contentData.verticalPadding)
-                .padding(.horizontal, size.contentData.horizontalPadding)
-                .if(expandContents) { view in
-                    view.frame(maxWidth: .infinity)
-                }
+                    if !loading, let leadingSlot = leadingSlot {
+                        leadingSlot(colors)
+                    }
 
-                if !loading, let trailingSlot = trailingSlot {
-                    trailingSlot(colors)
+                    HStack(spacing: 0) {
+                        Spacer(minLength: 0)
+                        contentSlot(colors)
+                        Spacer(minLength: 0)
+                    }
+                    .padding(.vertical, size.contentData.verticalPadding)
+                    .padding(.horizontal, size.contentData.horizontalPadding)
+                    .if(expandContents) { view in
+                        view.frame(maxWidth: .infinity)
+                    }
+
+                    if !loading, let trailingSlot = trailingSlot {
+                        trailingSlot(colors)
+                    }
                 }
+                .frame(height: size.contentData.requiredHeight)
+                .frame(minWidth: size.contentData.minWidth)
+                .background(buttonShape.fill(colors.backgroundColor))
+                .clipShape(buttonShape)
             }
-            .frame(height: size.contentData.requiredHeight)
-            .frame(minWidth: size.contentData.minWidth)
-            .background(buttonShape.fill(colors.backgroundColor))
-            .clipShape(buttonShape)
+            .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
+            .opacity(isPressed ? 1.0 - LemonadeTheme.opacity.state.opacityPressed : LemonadeTheme.opacity.base.opacity100)
+            .animation(.easeInOut(duration: 0.1), value: isPressed)
+            .disabled(!enabled || loading)
+            .opacity((enabled || loading) ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
         }
-        .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
-        .opacity(isPressed ? 1.0 - LemonadeTheme.opacity.state.opacityPressed : LemonadeTheme.opacity.base.opacity100)
-        .animation(.easeInOut(duration: 0.1), value: isPressed)
-        .disabled(!enabled || loading)
-        .opacity((enabled || loading) ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+        .fixedSize(horizontal: false, vertical: true)
     }
 }
 

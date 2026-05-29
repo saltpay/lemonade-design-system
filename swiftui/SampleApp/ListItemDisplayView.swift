@@ -325,6 +325,75 @@ struct ActionListItemPreview: View {
                 )
             }
             
+            // MARK: - ActionListItem - Slot Content
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "ActionListItem - Slot Content"
+                )
+            ) {
+                LemonadeUi.ActionListItem(
+                    label: "Account ***4236",
+                    supportText: "PT50 0002 0123 1234…",
+                    showNavigationIndicator: true,
+                    showDivider: true,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .bank,
+                            contentDescription: nil,
+                            size: .medium
+                        )
+                    },
+                    slotContent: {
+                        LemonadeUi.Tag(
+                            label: "Settlements",
+                            voice: .positive
+                        )
+                    }
+                )
+
+                LemonadeUi.ActionListItem(
+                    label: "Payout",
+                    supportText: "Arrives tomorrow",
+                    showNavigationIndicator: true,
+                    showDivider: true,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .coins,
+                            contentDescription: nil,
+                            size: .medium
+                        )
+                    },
+                    slotContent: {
+                        LemonadeUi.Text(
+                            "Reference: PYT-00123 • EUR account",
+                            textStyle: LemonadeTypography.shared.bodySmallRegular,
+                            color: LemonadeTheme.colors.content.contentSecondary
+                        )
+                    }
+                )
+
+                LemonadeUi.ActionListItem(
+                    label: "Updates Available",
+                    supportText: "3 new features",
+                    showNavigationIndicator: true,
+                    showDivider: false,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .download,
+                            contentDescription: nil,
+                            size: .medium
+                        )
+                    },
+                    slotContent: {
+                        LemonadeUi.Badge(text: "3", size: .small)
+                    }
+                )
+            }
+
             // MARK: - ActionListItem - Critical Voice
             LemonadeUi.Card(
                 contentPadding: .none,
@@ -518,6 +587,41 @@ struct SelectListItemPreview: View {
                     }
                 )
             }
+            // MARK: - SelectListItem - Slot Content
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "SelectListItem - Slot Content"
+                )
+            ) {
+                LemonadeUi.SelectListItem(
+                    label: "Email digest",
+                    type: .toggle,
+                    checked: true,
+                    onItemClicked: {},
+                    showDivider: true,
+                    supportText: "Weekly summary of your account",
+                    slotContent: {
+                        LemonadeUi.Tag(label: "Recommended", voice: .positive)
+                    }
+                )
+
+                LemonadeUi.SelectListItem(
+                    label: "Marketing emails",
+                    type: .toggle,
+                    checked: false,
+                    onItemClicked: {},
+                    supportText: "Offers from partners",
+                    slotContent: {
+                        LemonadeUi.Text(
+                            "You can opt out at any time",
+                            textStyle: LemonadeTypography.shared.bodySmallRegular,
+                            color: LemonadeTheme.colors.content.contentSecondary
+                        )
+                    }
+                )
+            }
+
             // MARK: - Disabled States (Select)
             LemonadeUi.Card(
                 contentPadding: .none,
@@ -718,6 +822,48 @@ struct OutlinedSelectListItemPreview: View {
                 }
             }
             
+            // MARK: - Outlined — Slot Content
+            LemonadeUi.Card(
+                contentPadding: .xSmall,
+                header: CardHeaderConfig(
+                    title: "Outlined — Slot Content"
+                )
+            ) {
+                VStack(spacing: LemonadeTheme.spaces.spacing100) {
+                    ForEach(
+                        Array(outlinedOptions.prefix(3).enumerated()),
+                        id: \.element.id
+                    ) { index, option in
+                        let isChecked = index == 0
+                        let preset = trailingPresets[index]
+                        LemonadeUi.SelectListItem(
+                            label: option.label,
+                            type: .single,
+                            checked: isChecked,
+                            onItemClicked: {},
+                            variant: .outlined,
+                            supportText:
+                                "Short description for \(option.label.lowercased())",
+                            leadingSlot: {
+                                LemonadeUi.SymbolContainer(
+                                    icon: option.icon,
+                                    contentDescription: nil,
+                                    voice: isChecked ? .positive : .neutral,
+                                    size: .large,
+                                    shape: .rounded
+                                )
+                            },
+                            slotContent: {
+                                LemonadeUi.Tag(
+                                    label: preset.label,
+                                    voice: preset.voice
+                                )
+                            }
+                        )
+                    }
+                }
+            }
+
             // MARK: - Outlined — Disabled states
             LemonadeUi.Card(
                 contentPadding: .xSmall,

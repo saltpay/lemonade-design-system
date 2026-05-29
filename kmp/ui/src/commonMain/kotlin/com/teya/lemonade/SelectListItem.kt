@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
@@ -63,6 +64,9 @@ import com.teya.lemonade.core.SelectListItemVariant
  * @param supportText - Text to be displayed below the [label] as a support text.
  * @param leadingSlot - A Slot to be placed in the leading position of the list item.
  * @param trailingSlot - A Slot to be placed in the trailing position of the list item.
+ * @param slotContent - Optional slot rendered below the support text, inside the label column
+ *  so it stays aligned with the leading/trailing slots. Use for secondary content like an
+ *  inline status text, badge, or compact widget that should sit under the row's text.
  */
 @Composable
 public fun LemonadeUi.SelectListItem(
@@ -79,6 +83,7 @@ public fun LemonadeUi.SelectListItem(
     supportText: String? = null,
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
 ) {
     when (variant) {
         SelectListItemVariant.Plain -> {
@@ -95,6 +100,7 @@ public fun LemonadeUi.SelectListItem(
                 supportText = supportText,
                 leadingSlot = leadingSlot,
                 trailingSlot = trailingSlot,
+                slotContent = slotContent,
             )
         }
 
@@ -110,9 +116,53 @@ public fun LemonadeUi.SelectListItem(
                 supportText = supportText,
                 leadingSlot = leadingSlot,
                 trailingSlot = trailingSlot,
+                slotContent = slotContent,
             )
         }
     }
+}
+
+@Deprecated(
+    message = "Use the overload with slotContent parameter.",
+    replaceWith = ReplaceWith(
+        expression = "SelectListItem(label, type, checked, onItemClicked, modifier, variant, " +
+            "isLoading, enabled, interactionSource, showDivider, supportText, leadingSlot, " +
+            "trailingSlot, null)",
+    ),
+)
+@Composable
+public fun LemonadeUi.SelectListItem(
+    label: String,
+    type: SelectListItemType,
+    checked: Boolean,
+    onItemClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+    variant: SelectListItemVariant = SelectListItemVariant.Plain,
+    isLoading: Boolean = false,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showDivider: Boolean = false,
+    supportText: String? = null,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+) {
+    @Suppress("DEPRECATION")
+    SelectListItem(
+        label = label,
+        type = type,
+        checked = checked,
+        onItemClicked = onItemClicked,
+        modifier = modifier,
+        variant = variant,
+        isLoading = isLoading,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        showDivider = showDivider,
+        supportText = supportText,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        slotContent = null,
+    )
 }
 
 private val SelectListItemType.role: Role
@@ -199,6 +249,7 @@ private fun PlainSelectListItem(
     supportText: String?,
     leadingSlot: (@Composable RowScope.() -> Unit)?,
     trailingSlot: (@Composable RowScope.() -> Unit)?,
+    slotContent: (@Composable ColumnScope.() -> Unit)?,
 ) {
     LemonadeUi.ListItem(
         modifier = modifier,
@@ -235,6 +286,7 @@ private fun PlainSelectListItem(
                 )
             }
         },
+        slotContent = slotContent,
     )
 }
 
@@ -251,6 +303,7 @@ private fun OutlinedSelectListItem(
     supportText: String?,
     leadingSlot: (@Composable RowScope.() -> Unit)?,
     trailingSlot: (@Composable RowScope.() -> Unit)?,
+    slotContent: (@Composable ColumnScope.() -> Unit)?,
 ) {
     val colors = LocalColors.current
     val spaces = LocalSpaces.current
@@ -337,6 +390,10 @@ private fun OutlinedSelectListItem(
                     textStyle = typographies.bodySmallRegular,
                     color = colors.content.contentSecondary,
                 )
+            }
+
+            if (slotContent != null) {
+                slotContent()
             }
         }
 
