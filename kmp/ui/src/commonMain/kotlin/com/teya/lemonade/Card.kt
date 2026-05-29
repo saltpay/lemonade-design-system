@@ -86,11 +86,11 @@ private fun CoreCard(
 
 public data class CardHeaderConfig(
     val title: String,
-    val subtitle: String? = null,
     val headingStyle: LemonadeCardHeadingStyle = LemonadeCardHeadingStyle.Default,
     val leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     val trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     val showNavigationIndicator: Boolean = false,
+    val subtitle: String? = null,
 )
 
 @Composable
