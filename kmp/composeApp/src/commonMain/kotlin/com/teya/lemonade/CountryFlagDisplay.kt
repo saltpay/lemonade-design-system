@@ -64,10 +64,7 @@ internal fun CountryFlagDisplay() {
             }
 
             CountryFlagShape.entries.forEach { shape ->
-                item(
-                    span = { GridItemSpan(3) },
-                    key = { "header-${shape.name}" },
-                ) {
+                item(span = { GridItemSpan(3) }) {
                     LemonadeUi.Text(
                         text = "Country Flags - ${shape.name}",
                         textStyle = LemonadeTheme.typography.headingXXSmall,
@@ -81,10 +78,9 @@ internal fun CountryFlagDisplay() {
                     key = { flag -> "${shape.name}-${flag.ordinal}" },
                 ) { flag ->
                     Column(
-                        modifier = Modifier
-                            .fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         FlagBox(
                             flag = flag,
