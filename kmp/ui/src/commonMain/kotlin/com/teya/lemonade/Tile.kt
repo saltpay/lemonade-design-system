@@ -313,7 +313,7 @@ private fun CoreTile(
     val baseTileData = variant.data
     val tileData = if (isSelected) {
         baseTileData.copy(
-            backgroundColor = LocalColors.current.background.bgBrandSubtle,
+            backgroundColor = LocalColors.current.background.bgDefault,
             borderColor = LocalColors.current.border.borderSelected,
             borderWidth = LocalBorderWidths.current.base.border50,
         )

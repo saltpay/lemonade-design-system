@@ -298,7 +298,7 @@ private extension LemonadeTileVariant {
     func resolvedStyle(isSelected: Bool) -> TileStyle {
         if isSelected {
             return TileStyle(
-                backgroundColor: LemonadeTheme.colors.background.bgBrandSubtle,
+                backgroundColor: LemonadeTheme.colors.background.bgDefault,
                 borderColor: LemonadeTheme.colors.border.borderSelected,
                 borderWidth: LemonadeTheme.borderWidth.base.border50
             )
