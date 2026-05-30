@@ -162,6 +162,54 @@ class ApiStabilityClassifierTest {
     }
 
     @Test
+    fun `data class grown with HIDDEN constructor and copy shims is additions-only`() {
+        // Appended property `b`, with @Deprecated(HIDDEN) secondary constructor and a
+        // default-param copy() shim. Old <init>(String) and copy(String) flip to
+        // synthetic; the old copy$default(...) is regenerated unchanged (context line).
+        val diff = """
+            --- a/kmp/core/api/android/core.api
+            +++ b/kmp/core/api/android/core.api
+            @@ -1,6 +1,12 @@
+             public final class com/teya/lemonade/core/BcvDataModel {
+            -${"\t"}public fun <init> (Ljava/lang/String;)V
+            +${"\t"}public synthetic fun <init> (Ljava/lang/String;)V
+            +${"\t"}public fun <init> (Ljava/lang/String;I)V
+            +${"\t"}public synthetic fun <init> (Ljava/lang/String;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+             ${"\t"}public final fun component1 ()Ljava/lang/String;
+            +${"\t"}public final fun component2 ()I
+            -${"\t"}public final fun copy (Ljava/lang/String;)Lcom/teya/lemonade/core/BcvDataModel;
+            +${"\t"}public final synthetic fun copy (Ljava/lang/String;)Lcom/teya/lemonade/core/BcvDataModel;
+            +${"\t"}public final fun copy (Ljava/lang/String;I)Lcom/teya/lemonade/core/BcvDataModel;
+            +${"\t"}public static synthetic fun copy${'$'}default (Lcom/teya/lemonade/core/BcvDataModel;Ljava/lang/String;IILjava/lang/Object;)Lcom/teya/lemonade/core/BcvDataModel;
+             ${"\t"}public static synthetic fun copy${'$'}default (Lcom/teya/lemonade/core/BcvDataModel;Ljava/lang/String;ILjava/lang/Object;)Lcom/teya/lemonade/core/BcvDataModel;
+            +${"\t"}public final fun getB ()I
+             }
+        """.trimIndent()
+        assertEquals(Verdict.AdditionsOnly, ApiStabilityClassifier.classify(diff))
+    }
+
+    @Test
+    fun `data class grown WITHOUT the copy shim is still breaking`() {
+        // No copy shim: the generated copy(String) is replaced by copy(String, int),
+        // so the old copy descriptor is gone with no synthetic-only match. Breaking.
+        val diff = """
+            --- a/kmp/core/api/android/core.api
+            +++ b/kmp/core/api/android/core.api
+            @@ -1,4 +1,5 @@
+             public final class com/teya/lemonade/core/BcvDataModel {
+            -${"\t"}public final fun copy (Ljava/lang/String;)Lcom/teya/lemonade/core/BcvDataModel;
+            +${"\t"}public final fun copy (Ljava/lang/String;I)Lcom/teya/lemonade/core/BcvDataModel;
+             }
+        """.trimIndent()
+        val verdict = ApiStabilityClassifier.classify(diff)
+        assertIs<Verdict.Breaking>(verdict)
+        assertTrue(
+            verdict.reasons.any { it.contains("copy") },
+            "Expected the unshimmed copy change to be flagged. Reasons: ${verdict.reasons}",
+        )
+    }
+
+    @Test
     fun `empty input is NoChanges`() {
         assertEquals(Verdict.NoChanges, ApiStabilityClassifier.classify(""))
         assertEquals(Verdict.NoChanges, ApiStabilityClassifier.classify("   \n  \n"))

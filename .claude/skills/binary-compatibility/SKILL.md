@@ -136,6 +136,62 @@ backing accessor), and get sign-off from the required reviewers. This is exactly
 the case the maintainer-approval gate exists for. Never reshape a property to
 quiet `apiCheck`.
 
+### Adding a property to a public `data class`
+
+`data class` looks impossible to evolve and isn't — it just needs two shims. The
+compiler regenerates `<init>`, `copy()`, `copy$default()`, and `componentN()` from
+the primary constructor, so adding a property changes their signatures. Keep every
+old binary symbol by **appending** the property and restoring the old constructor
+and `copy` as `@Deprecated(HIDDEN)` overloads:
+
+```kotlin
+data class Foo(
+    val a: String,
+    val b: Int = 0,        // new — append it (never insert in the middle), give it a default
+) {
+    // Restores the old constructor symbol: <init>(String).
+    @Deprecated("kept for binary compatibility", level = DeprecationLevel.HIDDEN)
+    public constructor(a: String) : this(a, 0)
+
+    // Restores the old copy symbols: copy(String) AND copy$default(Foo, String, int, Object).
+    // The default on `a` is required — it's what regenerates the old copy$default.
+    @Deprecated("kept for binary compatibility", level = DeprecationLevel.HIDDEN)
+    public fun copy(a: String = this.a): Foo = copy(a = a, b = this.b)
+}
+```
+
+Verified against a real `apiDump`: this compiles with no warnings, every old symbol
+(`<init>(String)`, `copy(String)`, `copy$default(Foo, String, int, Object)`) is kept
+as `synthetic`, the new symbols are pure additions, and the verdict is
+`ADDITIONS_ONLY`. An old compiled consumer keeps linking whether it calls the
+constructor, `copy(a = …)`, or `copy()`.
+
+What makes or breaks it:
+
+- **Append, never insert.** Add the new property last. Inserting in the middle
+  renumbers `componentN()` (destructuring is positional) and the shim signatures stop
+  lining up with the old ones.
+- **The `copy` shim must take a default** (`a: String = this.a`). Without it the old
+  `copy$default(...)` isn't regenerated, and any consumer that called `copy()` with
+  defaulted arguments breaks.
+- **One shim pair per released shape.** If the class grows again (`a, b` → `a, b, c`),
+  keep a `@Deprecated(HIDDEN)` constructor and `copy` for the `(a)` shape *and* the
+  `(a, b)` shape. The BCV baseline is the source of truth: if `apiCheck` is green and
+  the verdict is additions-only, every symbol the baseline knows about is covered.
+- `equals`/`hashCode`/`toString` regenerate to include the new property — that's what
+  keeps the class stable for Compose, so leave them be.
+
+One caveat: Kotlin doesn't officially bless hand-declaring `copy` in a data class. It
+compiles cleanly on the current toolchain and BCV guards the symbols, so if a future
+compiler ever drops them `apiCheck` fails loudly rather than silently breaking a
+consumer. If carrying shims gets old, `@Poko` is the longer-term route — it generates
+`equals`/`hashCode`/`toString` for Compose stability but deliberately omits
+`copy`/`componentN`, so there's no compiler-owned surface to break and you write the
+constructors yourself. That's a migration, not a quick fix; raise it separately.
+
+Reordering or removing a constructor parameter is still a hard break with no shim.
+STOP and escalate.
+
 ### Adding to an `interface`
 
 Adding a property or function to an interface can be an API and ABI change in the

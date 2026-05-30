@@ -20,10 +20,14 @@ the full decision table. The short version:
   `kmp/ui/.../CountryFlag.kt`. `HIDDEN` adds a `synthetic` flag; the classifier
   recognises a `synthetic`-only change as additive (the descriptor is unchanged),
   so this auto-passes. Still mention it in the PR.
-- **Adding an interface member** → give it a default implementation so it dumps as
-  `open`, not `abstract`. A new `abstract` member on an existing type breaks any
-  implementer. The interfaces here are local-only, so additions are acceptable,
-  but say so in the PR.
+- **Adding a property to a public `data class`** → append it to the primary
+  constructor with a default, then restore the old symbols with two
+  `@Deprecated(HIDDEN)` shims: a secondary constructor for the old params, and a
+  `copy(...)` whose first arg has a default (`copy(a: String = this.a)`) — the
+  default is what regenerates the old `copy$default`. Verified additions-only and
+  fully ABI-safe (`<init>`, `copy`, `copy$default` all preserved). Append, never
+  insert; keep one shim pair per previously released shape. See the skill for the
+  full pattern and the `@Poko` alternative.
 - **Adding an enum entry** → fine for config enums (the component owns the
   `when`). Make sure every internal `when` handles it. Auto-passes CI.
 - **Renaming/removing a property, an interface member, or an enum entry** → real

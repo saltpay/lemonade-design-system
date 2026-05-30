@@ -102,6 +102,29 @@ public fun bcvHiddenOverload(name: String): String = bcvHiddenOverload(name, "hi
 EOF
 FIXTURE_BUCKET=additions-only ./scripts/capture-bcv-fixture.sh 14-add-default-param-hidden-overload "$STAGES/14a.kt" "$STAGES/14b.kt"
 
+# Adding a property to a public data class, kept ABI-safe with two @Deprecated(HIDDEN)
+# shims: a secondary constructor for the old params, and a default-param copy() that
+# regenerates the old copy()/copy$default(). Every old symbol survives as `synthetic`,
+# so the whole diff is synthetic flips + pure additions → must auto-pass.
+cat > "$STAGES/15a.kt" <<'EOF'
+package com.teya.lemonade.core
+public data class BcvDataModel(public val a: String)
+EOF
+cat > "$STAGES/15b.kt" <<'EOF'
+package com.teya.lemonade.core
+public data class BcvDataModel(
+    public val a: String,
+    public val b: Int = 0,
+) {
+    @Deprecated(message = "kept for binary compatibility", level = DeprecationLevel.HIDDEN)
+    public constructor(a: String) : this(a, 0)
+
+    @Deprecated(message = "kept for binary compatibility", level = DeprecationLevel.HIDDEN)
+    public fun copy(a: String = this.a): BcvDataModel = copy(a = a, b = this.b)
+}
+EOF
+FIXTURE_BUCKET=additions-only ./scripts/capture-bcv-fixture.sh 15-add-dataclass-prop-with-shims "$STAGES/15a.kt" "$STAGES/15b.kt"
+
 # ----- breaking fixtures (classifier must require approval) -----
 
 cat > "$STAGES/07a.kt" <<'EOF'
