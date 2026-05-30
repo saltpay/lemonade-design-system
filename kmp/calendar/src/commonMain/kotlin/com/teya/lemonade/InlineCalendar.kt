@@ -434,6 +434,7 @@ public fun LemonadeUi.InlineCalendar(
         expandSelectionToLabel = expandSelectionToLabel,
         selectionBackgroundColor = selectionBackgroundColor,
         selectionContentColor = selectionContentColor,
+        today = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) },
         trailingContent = trailingContent,
     )
 }
