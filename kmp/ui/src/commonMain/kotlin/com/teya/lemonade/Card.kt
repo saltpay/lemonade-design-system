@@ -119,8 +119,8 @@ public data class CardHeaderConfig(
         leadingSlot: (@Composable RowScope.() -> Unit)? = this.leadingSlot,
         trailingSlot: (@Composable RowScope.() -> Unit)? = this.trailingSlot,
         showNavigationIndicator: Boolean = this.showNavigationIndicator,
-    ): CardHeaderConfig {
-        return copy(
+    ): CardHeaderConfig =
+        copy(
             title = title,
             headingStyle = headingStyle,
             leadingSlot = leadingSlot,
@@ -128,7 +128,6 @@ public data class CardHeaderConfig(
             showNavigationIndicator = showNavigationIndicator,
             subtitle = this.subtitle,
         )
-    }
 }
 
 @Composable
