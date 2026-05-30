@@ -90,7 +90,45 @@ public data class CardHeaderConfig(
     val leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     val trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     val showNavigationIndicator: Boolean = false,
-)
+    val subtitle: String? = null,
+) {
+    // Restores the pre-subtitle constructor symbol <init>(String, LemonadeCardHeadingStyle,
+    // Function3, Function3, Z) so already-compiled consumers keep linking.
+    @Deprecated("kept for binary compatibility", level = DeprecationLevel.HIDDEN)
+    public constructor(
+        title: String,
+        headingStyle: LemonadeCardHeadingStyle = LemonadeCardHeadingStyle.Default,
+        leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+        trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+        showNavigationIndicator: Boolean = false,
+    ) : this(
+        title = title,
+        headingStyle = headingStyle,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        showNavigationIndicator = showNavigationIndicator,
+        subtitle = null,
+    )
+
+    // Restores the pre-subtitle copy(...) and copy$default(...) symbols. The default on the
+    // first parameter is what regenerates the old copy$default, keeping `copy()` callers linking.
+    @Deprecated("kept for binary compatibility", level = DeprecationLevel.HIDDEN)
+    public fun copy(
+        title: String = this.title,
+        headingStyle: LemonadeCardHeadingStyle = this.headingStyle,
+        leadingSlot: (@Composable RowScope.() -> Unit)? = this.leadingSlot,
+        trailingSlot: (@Composable RowScope.() -> Unit)? = this.trailingSlot,
+        showNavigationIndicator: Boolean = this.showNavigationIndicator,
+    ): CardHeaderConfig =
+        copy(
+            title = title,
+            headingStyle = headingStyle,
+            leadingSlot = leadingSlot,
+            trailingSlot = trailingSlot,
+            showNavigationIndicator = showNavigationIndicator,
+            subtitle = this.subtitle,
+        )
+}
 
 @Composable
 private fun CardHeader(
@@ -115,14 +153,24 @@ private fun CardHeader(
             config.leadingSlot.invoke(this)
         }
 
-        LemonadeUi.Text(
-            text = config.title,
-            textStyle = titleTextStyle,
-            color = titleColor,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1F),
-        )
+        Column(modifier = Modifier.weight(1F)) {
+            LemonadeUi.Text(
+                text = config.title,
+                textStyle = titleTextStyle,
+                color = titleColor,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            if (config.subtitle != null) {
+                LemonadeUi.Text(
+                    text = config.subtitle,
+                    textStyle = LocalTypographies.current.bodySmallRegular,
+                    color = LocalColors.current.content.contentSecondary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
 
         if (config.trailingSlot != null) {
             config.trailingSlot.invoke(this)
@@ -243,6 +291,31 @@ private class CardPreviewProvider : PreviewParameterProvider<CardPreviewData> {
                 }
             }
         }.asSequence()
+}
+
+@LemonadePreview
+@Composable
+private fun CardHeadingSubtitlePreview() {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(LocalSpaces.current.spacing400),
+    ) {
+        LemonadeCardHeadingStyle.entries.forEach { headingStyle ->
+            LemonadeUi.Card(
+                header = CardHeaderConfig(
+                    title = "Card heading",
+                    subtitle = "Subtitle",
+                    headingStyle = headingStyle,
+                    trailingSlot = {
+                        LemonadeUi.Tag(
+                            label = "Tag label",
+                            voice = TagVoice.Neutral,
+                        )
+                    },
+                ),
+                content = {},
+            )
+        }
+    }
 }
 
 @OptIn(InternalLemonadeApi::class)

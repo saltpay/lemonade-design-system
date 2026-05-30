@@ -107,6 +107,22 @@ internal fun CardDisplay() {
                 LemonadeUi.Card(
                     contentPadding = LemonadeCardPadding.Medium,
                     header = CardHeaderConfig(
+                        title = "Default Heading",
+                        subtitle = "Subtitle",
+                        trailingSlot = {
+                            LemonadeUi.Tag(label = "Tag", voice = TagVoice.Neutral)
+                        },
+                    ),
+                ) {
+                    LemonadeUi.Text(
+                        text = "Card with default heading and subtitle.",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    )
+                }
+
+                LemonadeUi.Card(
+                    contentPadding = LemonadeCardPadding.Medium,
+                    header = CardHeaderConfig(
                         title = "Overline Heading",
                         headingStyle = LemonadeCardHeadingStyle.Overline,
                         trailingSlot = {
@@ -116,6 +132,23 @@ internal fun CardDisplay() {
                 ) {
                     LemonadeUi.Text(
                         text = "Card with overline heading style.",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    )
+                }
+
+                LemonadeUi.Card(
+                    contentPadding = LemonadeCardPadding.Medium,
+                    header = CardHeaderConfig(
+                        title = "Overline Heading",
+                        subtitle = "Subtitle",
+                        headingStyle = LemonadeCardHeadingStyle.Overline,
+                        trailingSlot = {
+                            LemonadeUi.Tag(label = "Tag", voice = TagVoice.Neutral)
+                        },
+                    ),
+                ) {
+                    LemonadeUi.Text(
+                        text = "Card with overline heading and subtitle.",
                         textStyle = LemonadeTheme.typography.bodyMediumRegular,
                     )
                 }
