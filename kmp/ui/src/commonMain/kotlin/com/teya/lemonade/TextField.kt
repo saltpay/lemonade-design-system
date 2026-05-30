@@ -810,7 +810,7 @@ private val TextFieldSize?.data: TextFieldData
     @Composable get() {
         return when (this) {
             TextFieldSize.Small -> TextFieldData(
-                containerShape = LocalShapes.current.radius200,
+                containerShape = LocalShapes.current.radius400,
                 horizontalPadding = LocalSpaces.current.spacing200,
                 verticalPadding = LocalSpaces.current.spacing100,
                 itemsSpacing = LocalSpaces.current.spacing200,
@@ -819,7 +819,7 @@ private val TextFieldSize?.data: TextFieldData
             )
 
             TextFieldSize.Medium -> TextFieldData(
-                containerShape = LocalShapes.current.radius200,
+                containerShape = LocalShapes.current.radius400,
                 horizontalPadding = LocalSpaces.current.spacing300,
                 verticalPadding = LocalSpaces.current.spacing200,
                 itemsSpacing = LocalSpaces.current.spacing300,
@@ -828,7 +828,7 @@ private val TextFieldSize?.data: TextFieldData
             )
 
             TextFieldSize.Large -> TextFieldData(
-                containerShape = LocalShapes.current.radius300,
+                containerShape = LocalShapes.current.radius400,
                 horizontalPadding = LocalSpaces.current.spacing300,
                 verticalPadding = LocalSpaces.current.spacing300,
                 itemsSpacing = LocalSpaces.current.spacing300,
@@ -838,7 +838,7 @@ private val TextFieldSize?.data: TextFieldData
 
             null -> {
                 TextFieldData(
-                    containerShape = LocalShapes.current.radius300,
+                    containerShape = LocalShapes.current.radius400,
                     horizontalPadding = LocalSpaces.current.spacing300,
                     verticalPadding = LocalSpaces.current.spacing300,
                     itemsSpacing = LocalSpaces.current.spacing300,
