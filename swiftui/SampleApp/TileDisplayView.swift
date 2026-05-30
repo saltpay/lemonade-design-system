@@ -4,6 +4,7 @@ import Lemonade
 struct TileDisplayView: View {
     @State private var isFilledSelected = true
     @State private var isOutlinedSelected = true
+    @State private var isHorizontalSelected = true
 
     var body: some View {
         ScrollView {
@@ -221,6 +222,135 @@ struct TileDisplayView: View {
                         )
                     }
                     .frame(width: 200)
+                }
+
+                // MARK: - Horizontal Orientation
+                sectionView(title: "Horizontal / Variants") {
+                    VStack(spacing: LemonadeTheme.spaces.spacing300) {
+                        LemonadeUi.Tile(
+                            label: "Filled",
+                            icon: .heart,
+                            variant: .filled,
+                            orientation: .horizontal
+                        )
+                        LemonadeUi.Tile(
+                            label: "Outlined",
+                            icon: .star,
+                            variant: .outlined,
+                            orientation: .horizontal
+                        )
+                    }
+                }
+
+                sectionView(title: "Horizontal / Selected") {
+                    VStack(spacing: LemonadeTheme.spaces.spacing300) {
+                        LemonadeUi.Tile(
+                            label: "Filled",
+                            icon: .circleCheck,
+                            isSelected: isHorizontalSelected,
+                            onClick: { isHorizontalSelected.toggle() },
+                            variant: .filled,
+                            orientation: .horizontal
+                        )
+                        LemonadeUi.Tile(
+                            label: "Outlined",
+                            icon: .circleCheck,
+                            isSelected: !isHorizontalSelected,
+                            onClick: { isHorizontalSelected.toggle() },
+                            variant: .outlined,
+                            orientation: .horizontal
+                        )
+                    }
+                }
+
+                sectionView(title: "Horizontal / Support Text") {
+                    VStack(spacing: LemonadeTheme.spaces.spacing300) {
+                        LemonadeUi.Tile(
+                            label: "Transfer",
+                            icon: .arrowLeftRight,
+                            supportText: "Send money instantly",
+                            variant: .filled,
+                            orientation: .horizontal
+                        )
+                        LemonadeUi.Tile(
+                            label: "Pay",
+                            icon: .card,
+                            supportText: "Pay with card",
+                            variant: .outlined,
+                            orientation: .horizontal
+                        )
+                    }
+                }
+
+                sectionView(title: "Horizontal / Leading Slot") {
+                    LemonadeUi.Tile(
+                        label: "Custom slot",
+                        variant: .filled,
+                        orientation: .horizontal,
+                        leadingSlot: {
+                            LemonadeUi.Icon(
+                                icon: .shoppingBag,
+                                contentDescription: nil,
+                                size: .medium
+                            )
+                        }
+                    )
+                }
+
+                sectionView(title: "Horizontal / Disabled") {
+                    VStack(spacing: LemonadeTheme.spaces.spacing300) {
+                        LemonadeUi.Tile(
+                            label: "Disabled",
+                            icon: .padlock,
+                            enabled: false,
+                            variant: .filled,
+                            orientation: .horizontal
+                        )
+                        LemonadeUi.Tile(
+                            label: "Disabled",
+                            icon: .padlock,
+                            enabled: false,
+                            variant: .outlined,
+                            orientation: .horizontal
+                        )
+                    }
+                }
+
+                sectionView(title: "Use Case: Menu List") {
+                    VStack(spacing: LemonadeTheme.spaces.spacing300) {
+                        LemonadeUi.Tile(
+                            label: "Transfer",
+                            icon: .arrowLeftRight,
+                            supportText: "Send money instantly",
+                            onClick: {},
+                            variant: .filled,
+                            orientation: .horizontal
+                        )
+                        LemonadeUi.Tile(
+                            label: "Pay",
+                            icon: .card,
+                            supportText: "Pay with card",
+                            onClick: {},
+                            variant: .filled,
+                            orientation: .horizontal
+                        )
+                        LemonadeUi.Tile(
+                            label: "Top Up",
+                            icon: .plus,
+                            supportText: "Add funds to your account",
+                            onClick: {},
+                            variant: .filled,
+                            orientation: .horizontal
+                        )
+                        LemonadeUi.Tile(
+                            label: "Statements",
+                            icon: .chart,
+                            supportText: "View your transactions",
+                            onClick: {},
+                            variant: .filled,
+                            orientation: .horizontal
+                        )
+                    }
                 }
 
                 // MARK: - Use Cases

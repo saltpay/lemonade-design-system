@@ -6,3 +6,8 @@ public enum class LemonadeTileVariant {
     Filled,
     Outlined,
 }
+
+public enum class LemonadeTileOrientation {
+    Vertical,
+    Horizontal,
+}
