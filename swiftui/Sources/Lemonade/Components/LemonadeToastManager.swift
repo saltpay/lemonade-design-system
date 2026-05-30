@@ -74,6 +74,8 @@ public struct LemonadeToastItem: Identifiable, Equatable, Sendable {
     public let icon: LemonadeIcon?
     public let duration: LemonadeToastDuration
     public let isDismissible: Bool
+    public let actionLabel: String?
+    public let onAction: (@MainActor @Sendable () -> Void)?
 
     public init(
         id: UUID = UUID(),
@@ -81,7 +83,9 @@ public struct LemonadeToastItem: Identifiable, Equatable, Sendable {
         voice: LemonadeToastVoice = .neutral,
         icon: LemonadeIcon? = nil,
         duration: LemonadeToastDuration = .short,
-        isDismissible: Bool = true
+        isDismissible: Bool = true,
+        actionLabel: String? = nil,
+        onAction: (@MainActor @Sendable () -> Void)? = nil
     ) {
         self.id = id
         self.label = label
@@ -89,6 +93,8 @@ public struct LemonadeToastItem: Identifiable, Equatable, Sendable {
         self.icon = icon
         self.duration = duration
         self.isDismissible = isDismissible
+        self.actionLabel = actionLabel
+        self.onAction = onAction
     }
 
     public static func == (lhs: LemonadeToastItem, rhs: LemonadeToastItem) -> Bool {
@@ -145,19 +151,25 @@ public final class LemonadeToastManager: ObservableObject {
     ///   - icon: Custom icon for neutral toasts only.
     ///   - duration: How long the toast should be visible.
     ///   - dismissible: Whether the toast can be dismissed by swiping.
+    ///   - actionLabel: Optional label for the action button shown at the trailing end of the toast.
+    ///   - onAction: Optional callback invoked when the action button is tapped. The button is only shown when both `actionLabel` and `onAction` are non-nil.
     public func show(
         label: String,
         voice: LemonadeToastVoice = .neutral,
         icon: LemonadeIcon? = nil,
         duration: LemonadeToastDuration = .short,
-        dismissible: Bool = true
+        dismissible: Bool = true,
+        actionLabel: String? = nil,
+        onAction: (@MainActor @Sendable () -> Void)? = nil
     ) {
         let toast = LemonadeToastItem(
             label: label,
             voice: voice,
             icon: icon,
             duration: duration,
-            isDismissible: dismissible
+            isDismissible: dismissible,
+            actionLabel: actionLabel,
+            onAction: onAction
         )
 
         if currentToast != nil {

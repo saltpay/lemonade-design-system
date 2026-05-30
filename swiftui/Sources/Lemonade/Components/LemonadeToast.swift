@@ -22,9 +22,9 @@ public enum LemonadeToastVoice: Sendable {
 
     internal func iconColor(colors: LemonadeSemanticColors) -> Color {
         switch self {
-        case .success: return colors.content.contentPositiveOnColor
-        case .error: return colors.content.contentCriticalOnColor
-        case .neutral: return colors.content.contentNeutralOnColor
+        case .success: return colors.content.contentPositiveAlwaysOnColor
+        case .error: return colors.content.contentCriticalAlwaysOnColor
+        case .neutral: return colors.content.contentNeutralAlwaysOnColor
         }
     }
 
@@ -45,38 +45,43 @@ public enum LemonadeToastVoice: Sendable {
 // MARK: - Toast Component
 
 public extension LemonadeUi {
-    /// Toast component for displaying brief feedback messages.
+    /// Toast component for displaying brief feedback messages with an optional tappable action.
     ///
     /// Displays a brief message with an icon in a pill-shaped container.
-    /// Used for non-intrusive feedback to user actions.
+    /// An optional action button can be shown at the trailing end of the toast.
     ///
     /// ## Usage
     /// ```swift
     /// // Success toast
     /// LemonadeUi.Toast(label: "Changes saved", voice: .success)
     ///
-    /// // Error toast
-    /// LemonadeUi.Toast(label: "Something went wrong", voice: .error)
-    ///
-    /// // Neutral toast with custom icon
-    /// LemonadeUi.Toast(label: "Added to favorites", voice: .neutral, icon: .heart)
+    /// // Toast with action button
+    /// LemonadeUi.Toast(label: "Item deleted", voice: .neutral, actionLabel: "Undo") {
+    ///     // handle undo
+    /// }
     /// ```
     ///
     /// - Parameters:
     ///   - label: The message to display in the toast
     ///   - voice: The voice/variant of the toast (success, error, neutral)
     ///   - icon: Custom icon for neutral toasts only. Ignored for success/error voices.
+    ///   - actionLabel: Optional label for the action button shown at the trailing end of the toast.
+    ///   - onAction: Optional callback invoked when the action button is tapped. The button is only shown when both `actionLabel` and `onAction` are non-nil.
     /// - Returns: A styled Toast view
     @ViewBuilder
     static func Toast(
         label: String,
         voice: LemonadeToastVoice = .neutral,
-        icon: LemonadeIcon? = nil
+        icon: LemonadeIcon? = nil,
+        actionLabel: String? = nil,
+        onAction: (() -> Void)? = nil
     ) -> some View {
         LemonadeToastView(
             label: label,
             voice: voice,
-            customIcon: icon
+            customIcon: icon,
+            actionLabel: actionLabel,
+            onAction: onAction
         )
     }
 }
@@ -87,6 +92,8 @@ private struct LemonadeToastView: View {
     let label: String
     let voice: LemonadeToastVoice
     let customIcon: LemonadeIcon?
+    let actionLabel: String?
+    let onAction: (() -> Void)?
 
     private var displayIcon: LemonadeIcon? {
         switch voice {
@@ -118,9 +125,21 @@ private struct LemonadeToastView: View {
 
             Text(label)
                 .font(LemonadeTypography.shared.bodySmallMedium.font)
-                .foregroundStyle(.content.contentPrimaryInverse)
+                .foregroundStyle(.content.contentAlwaysLight)
                 .lineLimit(nil)
                 .padding(.horizontal, .space.spacing100)
+                .layoutPriority(1)
+
+            if let actionLabel, let onAction {
+                Button(action: onAction) {
+                    Text(actionLabel)
+                        .font(LemonadeTypography.shared.bodySmallMedium.font)
+                        .foregroundStyle(.content.contentInfoAlwaysOnColor)
+                }
+                .buttonStyle(.plain)
+                .padding(.vertical, .space.spacing100)
+                .contentShape(Rectangle())
+            }
         }
         .padding(
             EdgeInsets(
@@ -131,11 +150,50 @@ private struct LemonadeToastView: View {
             )
         )
         .frame(minHeight: .size.size1100)
-        .background(.bg.bgDefaultInverse)
-        .clipShape(RoundedRectangle(cornerRadius: .radius.radiusFull))
+        .modifier(ToastBackgroundModifier())
         .lemonadeShadow(.large)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(voiceAccessibilityText): \(label)")
+        .modifier(ToastAccessibilityActionModifier(actionLabel: actionLabel, onAction: onAction))
+    }
+}
+
+// MARK: - Style Helpers
+
+private struct ToastBackgroundModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        #if compiler(>=6.2)
+        if #available(iOS 26.0, macOS 26.0, *) {
+            content
+                .glassEffect(
+                    .regular.tint(.bg.bgAlwaysDark.opacity(.opacity.opacity90)),
+                    in: RoundedRectangle(cornerRadius: .radius.radiusFull)
+                )
+        } else {
+            content
+                .background(.bg.bgAlwaysDark)
+                .clipShape(RoundedRectangle(cornerRadius: .radius.radiusFull))
+        }
+        #else
+        content
+            .background(.bg.bgAlwaysDark)
+            .clipShape(RoundedRectangle(cornerRadius: .radius.radiusFull))
+        #endif
+    }
+}
+
+// MARK: - Accessibility Helpers
+
+private struct ToastAccessibilityActionModifier: ViewModifier {
+    let actionLabel: String?
+    let onAction: (() -> Void)?
+
+    func body(content: Content) -> some View {
+        if let actionLabel, let onAction {
+            content.accessibilityAction(named: Text(actionLabel), onAction)
+        } else {
+            content
+        }
     }
 }
 
@@ -150,7 +208,9 @@ struct LemonadeToast_Previews: PreviewProvider {
             LemonadeUi.Toast(label: "Your session will expire soon", voice: .neutral, icon: .circleAlert)
             LemonadeUi.Toast(label: "Added to favorites", voice: .neutral, icon: .heart)
             LemonadeUi.Toast(label: "Toast without an icon", voice: .neutral)
-            LemonadeUi.Toast(label: "Really long label that should wrap onto multiple lines to demonstrate text wrapping in the toast component", voice: .neutral, icon: .heart)
+            LemonadeUi.Toast(label: "Changes saved", voice: .success, actionLabel: "Undo") {}
+            LemonadeUi.Toast(label: "Something went wrong", voice: .error, actionLabel: "Retry") {}
+            LemonadeUi.Toast(label: "Added to favorites", voice: .neutral, icon: .heart, actionLabel: "View") {}
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()

@@ -9,6 +9,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,6 +36,9 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -81,6 +85,8 @@ internal data class ToastData(
     val duration: ToastDuration,
     val dismissible: Boolean,
     val id: Int,
+    val actionLabel: String?,
+    val onAction: (() -> Unit)?,
 )
 
 /**
@@ -102,12 +108,50 @@ public class LemonadeToastState {
      * @param duration How long the toast is displayed. Defaults to [ToastDuration.Short].
      * @param dismissible Whether the user can swipe to dismiss. Defaults to `true`.
      */
+    @Deprecated(
+        message = "Use show() with actionLabel and onAction to support an optional action button.",
+        replaceWith = ReplaceWith(
+            expression = "show(label, voice, icon, duration, dismissible, actionLabel = null, onAction = null)",
+        ),
+    )
     public fun show(
         label: String,
         voice: ToastVoice = ToastVoice.Neutral,
         icon: LemonadeIcons? = null,
         duration: ToastDuration = ToastDuration.Short,
         dismissible: Boolean = true,
+    ) {
+        show(
+            label = label,
+            voice = voice,
+            icon = icon,
+            duration = duration,
+            dismissible = dismissible,
+            actionLabel = null,
+            onAction = null,
+        )
+    }
+
+    /**
+     * Show a toast with an optional action button. If a toast is already visible, it is replaced immediately.
+     *
+     * @param label The text message to display.
+     * @param voice The tone of voice — determines icon and icon color. Defaults to [ToastVoice.Neutral].
+     * @param icon Optional custom icon. Only used when [voice] is [ToastVoice.Neutral].
+     * @param duration How long the toast is displayed. Defaults to [ToastDuration.Short].
+     * @param dismissible Whether the user can swipe to dismiss. Defaults to `true`.
+     * @param actionLabel Optional label for the action button shown at the trailing end of the toast.
+     * @param onAction Optional callback invoked when the action button is tapped. The button is only shown
+     *   when both [actionLabel] and [onAction] are non-null.
+     */
+    public fun show(
+        label: String,
+        voice: ToastVoice = ToastVoice.Neutral,
+        icon: LemonadeIcons? = null,
+        duration: ToastDuration = ToastDuration.Short,
+        dismissible: Boolean = true,
+        actionLabel: String? = null,
+        onAction: (() -> Unit)? = null,
     ) {
         currentToast = ToastData(
             label = label,
@@ -116,6 +160,8 @@ public class LemonadeToastState {
             duration = duration,
             dismissible = dismissible,
             id = nextId++,
+            actionLabel = actionLabel,
+            onAction = onAction,
         )
     }
 
@@ -134,7 +180,7 @@ public val LocalLemonadeToastState: ProvidableCompositionLocal<LemonadeToastStat
 }
 
 /**
- * A transient, non-interactive notification that appears at the bottom of the screen.
+ * A brief notification that appears at the bottom of the screen.
  *
  * ## Usage
  * ```kotlin
@@ -147,6 +193,12 @@ public val LocalLemonadeToastState: ProvidableCompositionLocal<LemonadeToastStat
  * @param voice The tone — determines default icon and icon color. Defaults to [ToastVoice.Neutral].
  * @param icon Optional custom icon (only used when voice is [ToastVoice.Neutral]).
  */
+@Deprecated(
+    message = "Use Toast() with actionLabel and onAction to support an optional action button.",
+    replaceWith = ReplaceWith(
+        expression = "Toast(label, modifier, voice, icon, actionLabel = null, onAction = null)",
+    ),
+)
 @Composable
 public fun LemonadeUi.Toast(
     label: String,
@@ -154,10 +206,50 @@ public fun LemonadeUi.Toast(
     voice: ToastVoice = ToastVoice.Neutral,
     icon: LemonadeIcons? = null,
 ) {
+    Toast(
+        label = label,
+        modifier = modifier,
+        voice = voice,
+        icon = icon,
+        actionLabel = null,
+        onAction = null,
+    )
+}
+
+/**
+ * A brief notification that appears at the bottom of the screen. Supports an optional tappable
+ * action rendered at the trailing end of the toast.
+ *
+ * ## Usage
+ * ```kotlin
+ * val toastState = LocalLemonadeToastState.current
+ * toastState.show(label = "Changes saved", voice = ToastVoice.Success)
+ * toastState.show(label = "Item deleted", voice = ToastVoice.Neutral, actionLabel = "Undo", onAction = { /* undo */ })
+ * ```
+ *
+ * @param label The text to display.
+ * @param modifier Modifier to apply to the toast container.
+ * @param voice The tone — determines default icon and icon color. Defaults to [ToastVoice.Neutral].
+ * @param icon Optional custom icon (only used when voice is [ToastVoice.Neutral]).
+ * @param actionLabel Optional label for the action button shown at the trailing end of the toast.
+ * @param onAction Optional callback invoked when the action button is tapped. The button is only shown
+ *   when both [actionLabel] and [onAction] are non-null.
+ */
+@Composable
+public fun LemonadeUi.Toast(
+    label: String,
+    modifier: Modifier = Modifier,
+    voice: ToastVoice = ToastVoice.Neutral,
+    icon: LemonadeIcons? = null,
+    actionLabel: String? = null,
+    onAction: (() -> Unit)? = null,
+) {
     CoreToast(
         label = label,
         voice = voice,
         icon = icon,
+        actionLabel = actionLabel,
+        onAction = onAction,
         modifier = modifier,
     )
 }
@@ -167,6 +259,8 @@ private fun CoreToast(
     label: String,
     voice: ToastVoice,
     icon: LemonadeIcons?,
+    actionLabel: String?,
+    onAction: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     val colors = LocalColors.current
@@ -216,8 +310,25 @@ private fun CoreToast(
             color = colors.content.contentPrimaryInverse,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(horizontal = spaces.spacing100),
+            modifier = Modifier
+                .weight(weight = 1f, fill = false)
+                .padding(horizontal = spaces.spacing100),
         )
+
+        if (actionLabel != null && onAction != null) {
+            LemonadeUi.Text(
+                text = actionLabel,
+                textStyle = LocalTypographies.current.bodySmallMedium,
+                color = colors.content.contentInfoAlwaysOnColor,
+                modifier = Modifier
+                    .semantics { role = Role.Button }
+                    .clickable(onClick = onAction)
+                    .padding(
+                        horizontal = spaces.spacing100,
+                        vertical = spaces.spacing100,
+                    ),
+            )
+        }
     }
 }
 
@@ -326,8 +437,10 @@ public fun LemonadeToastHost(
                         label = animatedToast.label,
                         voice = animatedToast.voice,
                         icon = animatedToast.icon,
+                        actionLabel = animatedToast.actionLabel,
+                        onAction = animatedToast.onAction,
                         modifier = swipeModifier
-                            .offset { IntOffset(0, offsetY.roundToInt()) }
+                            .offset { IntOffset(x = 0, y = offsetY.roundToInt()) }
                             .graphicsLayer {
                                 val fadeDistance =
                                     DRAG_DISMISS_THRESHOLD_DP.dp.toPx() * DRAG_FADE_MULTIPLIER

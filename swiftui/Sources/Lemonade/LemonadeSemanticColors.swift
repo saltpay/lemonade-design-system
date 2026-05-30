@@ -114,6 +114,11 @@ public protocol ContentColors {
     var contentPositiveOnColor: Color { get }
     var contentNeutralOnColor: Color { get }
     var contentBrandHigh: Color { get }
+    var contentInfoAlwaysOnColor: Color { get }
+    var contentNeutralAlwaysOnColor: Color { get }
+    var contentPositiveAlwaysOnColor: Color { get }
+    var contentCautionAlwaysOnColor: Color { get }
+    var contentCriticalAlwaysOnColor: Color { get }
 }
 
 /// Background color definitions

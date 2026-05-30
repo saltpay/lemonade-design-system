@@ -819,16 +819,21 @@ public abstract interface class com/teya/lemonade/LemonadeSemanticColors$Content
 	public abstract fun getContentBrandHigh-0d7_KjU ()J
 	public abstract fun getContentBrandInverse-0d7_KjU ()J
 	public abstract fun getContentCaution-0d7_KjU ()J
+	public abstract fun getContentCautionAlwaysOnColor-0d7_KjU ()J
 	public abstract fun getContentCautionOnColor-0d7_KjU ()J
 	public abstract fun getContentCritical-0d7_KjU ()J
+	public abstract fun getContentCriticalAlwaysOnColor-0d7_KjU ()J
 	public abstract fun getContentCriticalOnColor-0d7_KjU ()J
 	public abstract fun getContentInfo-0d7_KjU ()J
+	public abstract fun getContentInfoAlwaysOnColor-0d7_KjU ()J
 	public abstract fun getContentInfoOnColor-0d7_KjU ()J
 	public abstract fun getContentNeutral-0d7_KjU ()J
+	public abstract fun getContentNeutralAlwaysOnColor-0d7_KjU ()J
 	public abstract fun getContentNeutralOnColor-0d7_KjU ()J
 	public abstract fun getContentOnBrandHigh-0d7_KjU ()J
 	public abstract fun getContentOnBrandLow-0d7_KjU ()J
 	public abstract fun getContentPositive-0d7_KjU ()J
+	public abstract fun getContentPositiveAlwaysOnColor-0d7_KjU ()J
 	public abstract fun getContentPositiveOnColor-0d7_KjU ()J
 	public abstract fun getContentPrimary-0d7_KjU ()J
 	public abstract fun getContentPrimaryInverse-0d7_KjU ()J
