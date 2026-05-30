@@ -124,6 +124,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: read
+      checks: write
     env:
       APPROVERS: caiqueslp williankl DevSrSouza
     steps:
@@ -179,10 +180,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          # Pass the reasons through the environment, never inline. Interpolating
+          # ${{ ... }} straight into the script lets the API signatures in the text
+          # (e.g. `Alignment$Vertical`, `foo$default`) be re-expanded by bash, and
+          # under `set -u` an unbound `$Vertical` aborts the whole step before the
+          # approval check runs. As an env var the value stays literal.
+          REASONS: ${{ steps.verdict.outputs.reasons }}
         run: |
           set -euo pipefail
           echo "::warning::ABI-breaking change detected:"
-          echo "${{ steps.verdict.outputs.reasons }}"
+          echo "$REASONS"
           echo
 
           APPROVALS=$(gh api "repos/${{ github.repository }}/pulls/${PR_NUMBER}/reviews" \
@@ -209,6 +216,42 @@ jobs:
           echo "::error::Breaking public API change requires an APPROVED review on commit ${HEAD_SHA} from one of: @caiqueslp, @williankl, @DevSrSouza."
           echo "::error::Re-request review after every new push — approvals are matched against the latest commit SHA."
           exit 1
+
+      - name: Reconcile stale failed check on approval
+        # On a pull_request_review re-run, the original commit-triggered run left a
+        # FAILED "API Stability Review" check on this same head SHA. We only reach
+        # this step when the verdict now passes (additive, or breaking-but-approved),
+        # because the steps above exit non-zero otherwise and skip this one. Flip the
+        # stale failed check to success so the merge gate reflects the current verdict.
+        #
+        # The newly-created check from this run is the authoritative one, so this is
+        # belt-and-suspenders cleanup of the old one. It is allowed to fail soft: if
+        # the API ever rejects the cross-run update, we fall back to GitHub picking
+        # the latest check run of the same name.
+        if: github.event_name == 'pull_request_review'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -uo pipefail
+          STALE=$(gh api "repos/${{ github.repository }}/commits/${HEAD_SHA}/check-runs?per_page=100" \
+            --jq '.check_runs[] | select(.name == "API Stability Review" and .status == "completed" and .conclusion == "failure") | .id' || true)
+
+          if [ -z "${STALE}" ]; then
+            echo "No stale failed 'API Stability Review' check on ${HEAD_SHA} to reconcile."
+            exit 0
+          fi
+
+          for id in ${STALE}; do
+            echo "Flipping stale check run ${id} to success."
+            if ! gh api -X PATCH "repos/${{ github.repository }}/check-runs/${id}" \
+                -f status=completed \
+                -f conclusion=success \
+                -f 'output[title]=Superseded by approved review' \
+                -f 'output[summary]=A later API Stability Review run on this commit passed (additive change, or breaking change approved by a maintainer). This stale failed check was reconciled so it no longer blocks merge.'; then
+              echo "::warning::Could not update stale check run ${id}. Merge still relies on the latest passing check of the same name."
+            fi
+          done
 
   build:
     name: Build
