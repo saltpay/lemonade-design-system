@@ -152,6 +152,43 @@ public fun LemonadeUi.Tile(
     )
 }
 
+@Deprecated(
+    message = "Use the overload with an orientation parameter.",
+    replaceWith = ReplaceWith(
+        expression = "Tile(label, icon, modifier, enabled, isSelected, supportText, " +
+            "topAccessory, onClick, interactionSource, variant, LemonadeTileOrientation.Vertical)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Suppress("LongParameterList")
+@Composable
+public fun LemonadeUi.Tile(
+    label: String,
+    icon: LemonadeIcons,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    isSelected: Boolean = false,
+    supportText: String? = null,
+    topAccessory: (@Composable () -> Unit)? = null,
+    onClick: (() -> Unit)? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    variant: LemonadeTileVariant = LemonadeTileVariant.Filled,
+) {
+    Tile(
+        label = label,
+        icon = icon,
+        modifier = modifier,
+        enabled = enabled,
+        isSelected = isSelected,
+        supportText = supportText,
+        topAccessory = topAccessory,
+        onClick = onClick,
+        interactionSource = interactionSource,
+        variant = variant,
+        orientation = LemonadeTileOrientation.Vertical,
+    )
+}
+
 /**
  * Lemonade tile component with a custom leading slot instead of an icon.
  * ## Usage
@@ -255,6 +292,43 @@ public fun LemonadeUi.Tile(
                 }
             }
         },
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with an orientation parameter.",
+    replaceWith = ReplaceWith(
+        expression = "Tile(label, modifier, enabled, isSelected, supportText, topAccessory, " +
+            "onClick, interactionSource, variant, LemonadeTileOrientation.Vertical, leadingSlot)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Suppress("LongParameterList")
+@Composable
+public fun LemonadeUi.Tile(
+    label: String,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    isSelected: Boolean = false,
+    supportText: String? = null,
+    topAccessory: (@Composable () -> Unit)? = null,
+    onClick: (() -> Unit)? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    variant: LemonadeTileVariant = LemonadeTileVariant.Filled,
+    leadingSlot: @Composable () -> Unit,
+) {
+    Tile(
+        label = label,
+        modifier = modifier,
+        enabled = enabled,
+        isSelected = isSelected,
+        supportText = supportText,
+        topAccessory = topAccessory,
+        onClick = onClick,
+        interactionSource = interactionSource,
+        variant = variant,
+        orientation = LemonadeTileOrientation.Vertical,
+        leadingSlot = leadingSlot,
     )
 }
 

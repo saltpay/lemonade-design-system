@@ -1104,6 +1104,8 @@ public final class com/teya/lemonade/TextKt {
 
 public final class com/teya/lemonade/TileKt {
 	public static final fun Tile (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Landroidx/compose/ui/Modifier;ZZLjava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lcom/teya/lemonade/core/LemonadeTileVariant;Lcom/teya/lemonade/core/LemonadeTileOrientation;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
+	public static final synthetic fun Tile (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Landroidx/compose/ui/Modifier;ZZLjava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lcom/teya/lemonade/core/LemonadeTileVariant;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
+	public static final synthetic fun Tile (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lcom/teya/lemonade/core/LemonadeIcons;Landroidx/compose/ui/Modifier;ZZLjava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lcom/teya/lemonade/core/LemonadeTileVariant;Landroidx/compose/runtime/Composer;III)V
 	public static final fun Tile (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lcom/teya/lemonade/core/LemonadeIcons;Landroidx/compose/ui/Modifier;ZZLjava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lcom/teya/lemonade/core/LemonadeTileVariant;Lcom/teya/lemonade/core/LemonadeTileOrientation;Landroidx/compose/runtime/Composer;III)V
 }
 
