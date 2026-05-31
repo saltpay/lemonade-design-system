@@ -1,7 +1,6 @@
 package com.teya.lemonade
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
@@ -23,8 +22,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -578,37 +578,23 @@ private fun CoreListItem(
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
 ) {
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val isHovering by interactionSource.collectIsHoveredAsState()
-
-    val animatedBackgroundColor by animateColorAsState(
-        targetValue = if (isHovering || isPressed) {
-            voice.interactionBackground
-        } else {
-            voice.interactionBackground.copy(
-                alpha = LocalOpacities.current.base.opacity0,
-            )
-        },
-    )
     SafeArea(modifier = modifier, showDivider = showDivider) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .clip(shape = LocalShapes.current.radius500)
                 .then(
                     other = if (onListItemClick != null) {
-                        Modifier.clickable(
+                        Modifier.interactiveBackground(
+                            interactionSource = interactionSource,
+                            voice = voice,
                             enabled = enabled,
                             role = role,
                             onClick = onListItemClick,
-                            interactionSource = interactionSource,
-                            indication = LocalEffects.current.interactionIndication,
                         )
                     } else {
                         Modifier
                     },
-                ).background(color = animatedBackgroundColor)
-                .defaultMinSize(minHeight = LocalSizes.current.size1200)
+                ).defaultMinSize(minHeight = LocalSizes.current.size1200)
                 .padding(
                     horizontal = LocalSpaces.current.spacing300,
                     vertical = LocalSpaces.current.spacing300,
@@ -649,33 +635,92 @@ private fun CoreListItem(
                         ),
                 )
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    if (trailingSlot != null) {
-                        trailingSlot()
-                    }
+                if (trailingSlot != null || navigationIndicator) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        if (trailingSlot != null) {
+                            trailingSlot()
+                        }
 
-                    if (navigationIndicator) {
-                        LemonadeUi.Icon(
-                            icon = LemonadeIcons.ChevronRight,
-                            tint = LocalColors.current.content.contentTertiary,
-                            size = LemonadeAssetSize.Medium,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .then(
-                                    other = if (!enabled) {
-                                        Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                                    } else {
-                                        Modifier
-                                    },
-                                ).padding(start = LocalSpaces.current.spacing100),
-                        )
+                        if (navigationIndicator) {
+                            LemonadeUi.Icon(
+                                icon = LemonadeIcons.ChevronRight,
+                                tint = LocalColors.current.content.contentTertiary,
+                                size = LemonadeAssetSize.Medium,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .then(
+                                        other = if (!enabled) {
+                                            Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+                                        } else {
+                                            Modifier
+                                        },
+                                    ).padding(start = LocalSpaces.current.spacing100),
+                            )
+                        }
                     }
                 }
             }
         }
     }
+}
+
+/**
+ * Applies click handling and the animated press/hover highlight for interactive rows.
+ *
+ * Only used for clickable rows: a row without an `onListItemClick` can never be pressed or
+ * hovered, so it needs none of this apparatus and is left untouched.
+ *
+ * The highlight is painted directly in the draw phase via [drawWithCache], reading the animated
+ * colour at draw time (not composition time) and using the row's rounded [androidx.compose.ui.graphics.Shape]
+ * outline instead of a [androidx.compose.ui.draw.clip] graphics layer. During a scroll the colour is fully
+ * transparent, so the row draws nothing and pays no clip/background cost — this removes the
+ * per-row draw floor seen in the scroll-jank profiling. The click indication is `null` (no
+ * ripple); press feedback is the animated fill, mirroring the iOS `ListItemButtonStyle`.
+ */
+@Composable
+private fun Modifier.interactiveBackground(
+    interactionSource: MutableInteractionSource,
+    voice: LemonadeListItemVoice,
+    enabled: Boolean,
+    role: Role?,
+    onClick: () -> Unit,
+): Modifier {
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val isHovering by interactionSource.collectIsHoveredAsState()
+
+    val highlightShape = LocalShapes.current.radius500
+    val transparentColor = voice.interactionBackground.copy(
+        alpha = LocalOpacities.current.base.opacity0,
+    )
+    val highlightColor by animateColorAsState(
+        targetValue = if (isHovering || isPressed) {
+            voice.interactionBackground
+        } else {
+            transparentColor
+        },
+    )
+
+    return this
+        .clickable(
+            enabled = enabled,
+            role = role,
+            onClick = onClick,
+            interactionSource = interactionSource,
+            indication = null,
+        ).drawWithCache {
+            val outline = highlightShape.createOutline(
+                size = size,
+                layoutDirection = layoutDirection,
+                density = this,
+            )
+            onDrawBehind {
+                if (highlightColor.alpha > 0f) {
+                    drawOutline(outline = outline, color = highlightColor)
+                }
+            }
+        }
 }
 
 @Composable
@@ -684,24 +729,28 @@ private fun SafeArea(
     showDivider: Boolean,
     content: @Composable ColumnScope.() -> Unit,
 ) {
+    if (!showDivider) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            modifier = modifier.padding(all = LocalSpaces.current.spacing100),
+            content = content,
+        )
+        return
+    }
+
     Column(
         verticalArrangement = Arrangement.Center,
-        modifier = modifier.background(color = Color.Transparent),
+        modifier = modifier,
     ) {
         Column(
-            modifier = Modifier
-                .padding(LocalSpaces.current.spacing100)
-                .background(color = Color.Transparent),
             verticalArrangement = Arrangement.Center,
-        ) {
-            content()
-        }
+            modifier = Modifier.padding(all = LocalSpaces.current.spacing100),
+            content = content,
+        )
 
-        if (showDivider) {
-            LemonadeUi.HorizontalDivider(
-                modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing400),
-            )
-        }
+        LemonadeUi.HorizontalDivider(
+            modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing400),
+        )
     }
 }
 
