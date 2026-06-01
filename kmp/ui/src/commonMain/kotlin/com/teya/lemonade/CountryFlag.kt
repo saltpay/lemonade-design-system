@@ -111,6 +111,7 @@ private fun CountryFlagShape.resolveShape(size: LemonadeAssetSize): Shape =
             LemonadeAssetSize.XLarge -> LocalShapes.current.radius250
             LemonadeAssetSize.XXLarge -> LocalShapes.current.radius300
             LemonadeAssetSize.XXXLarge -> LocalShapes.current.radius400
+            LemonadeAssetSize.XXXXLarge -> LocalShapes.current.radius500
         }
     }
 
@@ -124,6 +125,7 @@ private val LemonadeAssetSize.dp: Dp
             LemonadeAssetSize.XLarge -> LocalSizes.current.size800
             LemonadeAssetSize.XXLarge -> LocalSizes.current.size1000
             LemonadeAssetSize.XXXLarge -> LocalSizes.current.size1200
+            LemonadeAssetSize.XXXXLarge -> LocalSizes.current.size1400
         }
     }
 

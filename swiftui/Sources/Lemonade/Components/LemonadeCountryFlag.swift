@@ -10,6 +10,7 @@ public enum LemonadeCountryFlagSize {
     case xLarge
     case xxLarge
     case xxxLarge
+    case xxxxLarge
 
     /// Returns the CGFloat value for this size
     public var value: CGFloat {
@@ -20,6 +21,7 @@ public enum LemonadeCountryFlagSize {
         case .xLarge: return LemonadeTheme.sizes.size800     // 32
         case .xxLarge: return LemonadeTheme.sizes.size1000   // 40
         case .xxxLarge: return LemonadeTheme.sizes.size1200  // 48
+        case .xxxxLarge: return LemonadeTheme.sizes.size1400 // 56
         }
     }
 }

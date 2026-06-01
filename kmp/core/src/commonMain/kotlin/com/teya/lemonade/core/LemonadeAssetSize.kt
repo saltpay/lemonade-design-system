@@ -8,4 +8,5 @@ public enum class LemonadeAssetSize {
     XLarge,
     XXLarge,
     XXXLarge,
+    XXXXLarge,
 }
