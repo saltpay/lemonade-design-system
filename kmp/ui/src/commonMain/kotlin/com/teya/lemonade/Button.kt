@@ -51,9 +51,6 @@ import com.teya.lemonade.core.LemonadeTextStyle
  * @param modifier - [Modifier] to be applied to the Button.
  * @param enabled - [Boolean] flag to enable or disable the Button.
  * @param loading - [Boolean] flag to enable the loading state.
- * @param surfaceColor - opaque [Color] of the surface the Button sits on. The disabled state blends
- *   its translucent fill into this colour, so pass the host screen's background (e.g. `bgSubtle`)
- *   when the Button isn't on the default surface. Defaults to `bgDefault`.
  * @param interactionSource - [MutableInteractionSource] to be applied to the Button.
  */
 @Composable
@@ -68,7 +65,6 @@ public fun LemonadeUi.Button(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     loading: Boolean = false,
-    surfaceColor: Color = LocalColors.current.background.bgDefault,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val colors = resolveButtonColors(
@@ -80,7 +76,6 @@ public fun LemonadeUi.Button(
         size = size,
         modifier = modifier,
         enabled = enabled,
-        surfaceColor = surfaceColor,
         interactionSource = interactionSource,
         onClick = onClick,
         loading = loading,
@@ -135,9 +130,6 @@ public fun LemonadeUi.Button(
  * @param expandContents - [Boolean] flag to expand the content area.
  * @param enabled - [Boolean] flag to enable or disable the Button.
  * @param loading - [Boolean] flag to enable the loading state.
- * @param surfaceColor - opaque [Color] of the surface the Button sits on. The disabled state blends
- *   its translucent fill into this colour, so pass the host screen's background (e.g. `bgSubtle`)
- *   when the Button isn't on the default surface. Defaults to `bgDefault`.
  * @param interactionSource - [MutableInteractionSource] to be applied to the Button.
  */
 @Composable
@@ -153,7 +145,6 @@ public fun LemonadeUi.Button(
     expandContents: Boolean = false,
     enabled: Boolean = true,
     loading: Boolean = false,
-    surfaceColor: Color = LocalColors.current.background.bgDefault,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val colors = resolveButtonColors(
@@ -164,7 +155,6 @@ public fun LemonadeUi.Button(
         colors = colors,
         size = size,
         enabled = enabled,
-        surfaceColor = surfaceColor,
         interactionSource = interactionSource,
         onClick = onClick,
         loading = loading,
@@ -361,7 +351,6 @@ private fun CoreButton(
     expandContents: Boolean,
     enabled: Boolean,
     loading: Boolean,
-    surfaceColor: Color,
     interactionSource: MutableInteractionSource,
     modifier: Modifier = Modifier,
 ) {
@@ -373,14 +362,17 @@ private fun CoreButton(
             colors.solidBackgroundColor
         },
     )
-    // Layered backgrounds: an opaque [surfaceColor] backdrop is drawn BEFORE the disabled-state
-    // [Modifier.alpha], the colored fill AFTER. Compose applies `Modifier.alpha` as a graphics
-    // layer that wraps subsequent draws only — so when disabled, the 50% alpha blends the
-    // coloured fill into the opaque backdrop underneath instead of into whatever happens to
-    // be behind the button (e.g. a scrolling list under a floating footer). [surfaceColor]
-    // defaults to `bgDefault`; callers on a different surface pass theirs so the disabled fill
-    // doesn't read inverted (a white backdrop on a `bgSubtle` screen makes it lighter, not
-    // darker). When enabled, the opaque colored fill fully covers the backdrop — no difference.
+    // `bgSubtle` backdrop is drawn BEFORE the disabled [Modifier.alpha] scope. Compose applies
+    // alpha as a graphics layer wrapping subsequent draws only — so when disabled, the 50% alpha
+    // blends the colored fill into the opaque backdrop instead of into whatever is behind the
+    // button. When enabled, the opaque colored fill fully covers the backdrop.
+    val disabledModifier = if (!enabled) {
+        Modifier
+            .background(color = LocalColors.current.background.bgSubtle)
+            .alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+    } else {
+        Modifier
+    }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -388,14 +380,8 @@ private fun CoreButton(
             .defaultMinSize(minWidth = size.contentData.minWidth)
             .requiredHeight(height = size.contentData.requiredHeight)
             .clip(shape = size.contentData.shape)
-            .background(color = surfaceColor)
-            .then(
-                other = if (!enabled) {
-                    Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                } else {
-                    Modifier
-                },
-            ).clickable(
+            .then(other = disabledModifier)
+            .clickable(
                 enabled = enabled && !loading,
                 onClick = onClick,
                 interactionSource = interactionSource,

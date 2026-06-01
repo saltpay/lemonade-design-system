@@ -40,9 +40,6 @@ public extension LemonadeUi {
     ///   - size: LemonadeButtonSize to size the Button accordingly
     ///   - enabled: Boolean flag to enable or disable the Button
     ///   - loading: Boolean flag to show a loading spinner and disable interaction. Unlike `enabled`, loading keeps full opacity.
-    ///   - surfaceColor: Opaque color of the surface the Button sits on. The disabled state blends its
-    ///     translucent fill into this color, so pass the host screen's background (e.g. `bgSubtle`) when
-    ///     the Button isn't on the default surface. Defaults to `bgDefault`.
     /// - Returns: A styled Button view
     @ViewBuilder
     static func Button(
@@ -54,8 +51,7 @@ public extension LemonadeUi {
         type: LemonadeButtonType = .solid,
         size: LemonadeButtonSize = .large,
         enabled: Bool = true,
-        loading: Bool = false,
-        surfaceColor: Color = LemonadeTheme.colors.background.bgDefault
+        loading: Bool = false
     ) -> some View {
         LemonadeButtonView(
             label: label,
@@ -66,8 +62,7 @@ public extension LemonadeUi {
             type: type,
             size: size,
             enabled: enabled,
-            loading: loading,
-            surfaceColor: surfaceColor
+            loading: loading
         )
     }
 }
@@ -116,8 +111,7 @@ public extension LemonadeUi {
         type: LemonadeButtonType = .solid,
         size: LemonadeButtonSize = .large,
         enabled: Bool = true,
-        loading: Bool = false,
-        surfaceColor: Color = LemonadeTheme.colors.background.bgDefault
+        loading: Bool = false
     ) -> some View {
         LemonadeSlotButtonView(
             label: label,
@@ -127,7 +121,6 @@ public extension LemonadeUi {
             size: size,
             enabled: enabled,
             loading: loading,
-            surfaceColor: surfaceColor,
             expandContents: expandContents,
             leadingSlot: leadingSlot,
             trailingSlot: trailingSlot
@@ -145,8 +138,7 @@ public extension LemonadeUi {
         type: LemonadeButtonType = .solid,
         size: LemonadeButtonSize = .large,
         enabled: Bool = true,
-        loading: Bool = false,
-        surfaceColor: Color = LemonadeTheme.colors.background.bgDefault
+        loading: Bool = false
     ) -> some View {
         LemonadeSlotButtonView(
             label: label,
@@ -156,7 +148,6 @@ public extension LemonadeUi {
             size: size,
             enabled: enabled,
             loading: loading,
-            surfaceColor: surfaceColor,
             expandContents: expandContents,
             leadingSlot: nil as ((LemonadeButtonColors) -> EmptyView)?,
             trailingSlot: trailingSlot
@@ -174,8 +165,7 @@ public extension LemonadeUi {
         type: LemonadeButtonType = .solid,
         size: LemonadeButtonSize = .large,
         enabled: Bool = true,
-        loading: Bool = false,
-        surfaceColor: Color = LemonadeTheme.colors.background.bgDefault
+        loading: Bool = false
     ) -> some View {
         LemonadeSlotButtonView(
             label: label,
@@ -185,7 +175,6 @@ public extension LemonadeUi {
             size: size,
             enabled: enabled,
             loading: loading,
-            surfaceColor: surfaceColor,
             expandContents: expandContents,
             leadingSlot: leadingSlot,
             trailingSlot: nil as ((LemonadeButtonColors) -> EmptyView)?
@@ -366,7 +355,6 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
     let size: LemonadeButtonSize
     let enabled: Bool
     let loading: Bool
-    let surfaceColor: Color
     let expandContents: Bool
     let contentSlot: (LemonadeButtonColors) -> AnyView
     let leadingSlot: ((LemonadeButtonColors) -> LeadingSlot)?
@@ -383,15 +371,16 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
         let colors = resolveButtonColors(variant: variant, type: type)
         let buttonShape = RoundedRectangle(cornerRadius: cornerRadius)
 
-        // The ZStack backdrop paints an opaque `surfaceColor` rectangle behind the button. It sits
+        // The ZStack backdrop paints an opaque `bgSubtle` rectangle behind the button. It sits
         // OUTSIDE the `.opacity` modifier applied to the SwiftUI.Button, so the disabled 50%
-        // opacity (applied below) blends the colored fill into the backdrop instead of into
-        // whatever happens to be drawn behind (e.g. a scrolling list under a floating footer).
-        // `surfaceColor` defaults to `bgDefault`; callers on another surface pass theirs so the
-        // disabled fill doesn't read inverted (a white backdrop on a `bgSubtle` screen makes it
-        // lighter, not darker). When enabled, the opaque button background hides the backdrop.
+        // opacity blends the colored fill into the backdrop instead of into whatever happens to
+        // be drawn behind (e.g. a scrolling list under a floating footer).
+        let pressedOpacity = isPressed ? 1.0 - LemonadeTheme.opacity.state.opacityPressed : LemonadeTheme.opacity.base.opacity100
+        let disabledOpacity = (enabled || loading) ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled
         ZStack {
-            buttonShape.fill(surfaceColor)
+            if !enabled {
+                buttonShape.fill(LemonadeTheme.colors.background.bgSubtle)
+            }
 
             SwiftUI.Button(action: onClick) {
                 HStack(spacing: 0) {
@@ -420,10 +409,9 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
                 .clipShape(buttonShape)
             }
             .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
-            .opacity(isPressed ? 1.0 - LemonadeTheme.opacity.state.opacityPressed : LemonadeTheme.opacity.base.opacity100)
+            .opacity(pressedOpacity * disabledOpacity)
             .animation(.easeInOut(duration: 0.1), value: isPressed)
             .disabled(!enabled || loading)
-            .opacity((enabled || loading) ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
         }
         .fixedSize(horizontal: false, vertical: true)
     }
@@ -454,7 +442,6 @@ private struct LemonadeButtonView: View {
     let size: LemonadeButtonSize
     let enabled: Bool
     let loading: Bool
-    let surfaceColor: Color
 
     var body: some View {
         LemonadeCoreButtonView(
@@ -465,7 +452,6 @@ private struct LemonadeButtonView: View {
             size: size,
             enabled: enabled,
             loading: loading,
-            surfaceColor: surfaceColor,
             expandContents: false,
             contentSlot: { colors in
                 AnyView(Group {
@@ -517,7 +503,6 @@ private struct LemonadeSlotButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
     let size: LemonadeButtonSize
     let enabled: Bool
     let loading: Bool
-    let surfaceColor: Color
     let expandContents: Bool
     let leadingSlot: ((LemonadeButtonColors) -> LeadingSlot)?
     let trailingSlot: ((LemonadeButtonColors) -> TrailingSlot)?
@@ -531,7 +516,6 @@ private struct LemonadeSlotButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
             size: size,
             enabled: enabled,
             loading: loading,
-            surfaceColor: surfaceColor,
             expandContents: expandContents,
             contentSlot: { colors in
                 AnyView(Group {
