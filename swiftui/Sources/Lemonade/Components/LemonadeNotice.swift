@@ -101,11 +101,11 @@ private struct LemonadeNoticeView: View {
                 )
                 .frame(
                     width: LemonadeTheme.sizes.size500,
-                    height: LemonadeTheme.sizes.size600
+                    height: title != nil ? LemonadeTheme.sizes.size600 : LemonadeTheme.sizes.size500
                 )
             }
 
-            VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing100) {
+            VStack(alignment: .leading, spacing: 0) {
                 if let title {
                     LemonadeUi.Text(
                         title,
@@ -116,32 +116,13 @@ private struct LemonadeNoticeView: View {
 
                 LemonadeUi.Text(
                     content,
-                    textStyle: title != nil
-                        ? LemonadeTypography.shared.bodySmallRegular
-                        : LemonadeTypography.shared.bodyMediumRegular,
+                    textStyle: LemonadeTypography.shared.bodySmallRegular,
                     color: LemonadeTheme.colors.content.contentPrimary
                 )
 
                 if let actionLabel {
-                    Spacer()
-                        .frame(height: LemonadeTheme.spaces.spacing200)
-
-                    if let onActionClick {
-                        SwiftUI.Button(action: onActionClick) {
-                            LemonadeUi.Text(
-                                actionLabel,
-                                textStyle: LemonadeTypography.shared.bodyMediumSemiBold,
-                                color: voice.actionTextColor
-                            )
-                        }
-                        .buttonStyle(.plain)
-                    } else {
-                        LemonadeUi.Text(
-                            actionLabel,
-                            textStyle: LemonadeTypography.shared.bodyMediumSemiBold,
-                            color: voice.actionTextColor
-                        )
-                    }
+                    actionLabelView(actionLabel)
+                        .padding(.top, LemonadeTheme.spaces.spacing200)
                 }
             }
         }
@@ -149,6 +130,26 @@ private struct LemonadeNoticeView: View {
         .padding(LemonadeTheme.spaces.spacing400)
         .background(voice.containerColor)
         .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
+    }
+
+    @ViewBuilder
+    private func actionLabelView(_ label: String) -> some View {
+        if let onActionClick {
+            SwiftUI.Button(action: onActionClick) {
+                LemonadeUi.Text(
+                    label,
+                    textStyle: LemonadeTypography.shared.bodySmallSemiBold,
+                    color: voice.actionTextColor
+                )
+            }
+            .buttonStyle(.plain)
+        } else {
+            LemonadeUi.Text(
+                label,
+                textStyle: LemonadeTypography.shared.bodySmallSemiBold,
+                color: voice.actionTextColor
+            )
+        }
     }
 }
 
