@@ -1,0 +1,130 @@
+name: KMP API Gate Re-run on Review
+
+# The "API Stability Review" gate in kmp_ci.yml goes red on an ABI-breaking
+# change until a named maintainer approves the head commit. That check runs on
+# `pull_request`, so it has no way to notice an approval that lands afterwards.
+#
+# The old fix re-triggered the job as a brand-new run, which left the original
+# red check behind and needed a flaky cross-run check-run PATCH to "reconcile"
+# it. This workflow drops that approach entirely: on a new review it re-runs the
+# already-failed job IN PLACE on the original CI run, so the SAME check flips
+# red -> green once the approval is visible. No second check_run, no
+# reconciliation.
+#
+# Flow:
+#   1. Find the "KMP CI" run for the PR's current head SHA.
+#   2. If that run is still in progress, WAIT for it to finish — a run can only
+#      be re-run once it has concluded.
+#   3. If a binary-compatibility gate job failed, re-run the failed jobs in
+#      place. If nothing relevant failed, do nothing.
+#
+# Concurrency is keyed per-PR with cancel-in-progress, so when a second review
+# lands while we are still waiting, the stale waiter is cancelled and a fresh
+# run starts — by then every review (and its approval) is already visible.
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+concurrency:
+  group: kmp-api-review-rerun-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  actions: write        # re-run the failed jobs of an existing run
+  checks: read          # read job/check conclusions
+  pull-requests: read
+
+jobs:
+  rerun-failed-api-gate:
+    name: Re-run failed API gate on review
+    runs-on: ubuntu-latest
+    # Generous: the original CI Build job can take ~45 min and we may have to
+    # wait for it before anything can be re-run.
+    timeout-minutes: 60
+    # Nothing to gate on draft or already-closed PRs.
+    if: github.event.pull_request.state == 'open' && github.event.pull_request.draft == false
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPO: ${{ github.repository }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      # CI workflow whose run we inspect and re-run.
+      CI_WORKFLOW_FILE: kmp_ci.yml
+    steps:
+      - name: Find the KMP CI run for this commit
+        id: find
+        run: |
+          set -euo pipefail
+          echo "Looking for '${CI_WORKFLOW_FILE}' run on ${HEAD_SHA} (PR #${PR_NUMBER})."
+
+          RUN_ID=$(gh api \
+            "repos/${REPO}/actions/workflows/${CI_WORKFLOW_FILE}/runs?head_sha=${HEAD_SHA}&event=pull_request&per_page=1" \
+            --jq '.workflow_runs[0].id // empty')
+
+          if [ -z "${RUN_ID}" ]; then
+            echo "::notice::No KMP CI run found for ${HEAD_SHA} (PR may not touch kmp/**). Nothing to re-run."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "Found run ${RUN_ID}."
+          echo "found=true" >> "$GITHUB_OUTPUT"
+          echo "run_id=${RUN_ID}" >> "$GITHUB_OUTPUT"
+
+      - name: Wait for the run to finish
+        id: wait
+        if: steps.find.outputs.found == 'true'
+        run: |
+          set -euo pipefail
+          RUN_ID="${{ steps.find.outputs.run_id }}"
+
+          # Poll until the run completes. ~50 min cap (150 * 20s) covers the
+          # slowest Build job; if it is still going we bail out and let the next
+          # review (or a manual re-run) reconcile it.
+          for _ in $(seq 1 150); do
+            STATUS=$(gh api "repos/${REPO}/actions/runs/${RUN_ID}" --jq '.status')
+            echo "Run ${RUN_ID} status: ${STATUS}"
+            if [ "${STATUS}" = "completed" ]; then
+              CONCLUSION=$(gh api "repos/${REPO}/actions/runs/${RUN_ID}" --jq '.conclusion')
+              echo "Run ${RUN_ID} conclusion: ${CONCLUSION}"
+              echo "conclusion=${CONCLUSION}" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            sleep 20
+          done
+
+          echo "::warning::KMP CI run ${RUN_ID} did not finish within the wait window. Skipping; a later review or manual re-run will reconcile."
+          echo "conclusion=timed_out" >> "$GITHUB_OUTPUT"
+
+      - name: Re-run the failed API gate (if it failed)
+        if: steps.find.outputs.found == 'true' && steps.wait.outputs.conclusion == 'failure'
+        run: |
+          set -euo pipefail
+          RUN_ID="${{ steps.find.outputs.run_id }}"
+
+          # Which binary-compatibility gate job(s) actually failed on this run?
+          # "API Stability Review" is the one a new approval flips; the apiCheck
+          # baseline job is included so a co-failure is re-run alongside it.
+          # jq compares exact strings, so the literal "(apiCheck)" needs no
+          # escaping (unlike a regex).
+          FAILED_GATE=$(gh api "repos/${REPO}/actions/runs/${RUN_ID}/jobs?per_page=100" \
+            --jq '.jobs[]
+                  | select(.conclusion == "failure")
+                  | select(.name == "API Stability Review" or .name == "Binary Compatibility (apiCheck)")
+                  | .name')
+
+          if [ -z "${FAILED_GATE}" ]; then
+            echo "::notice::Run ${RUN_ID} failed, but no binary-compatibility gate job did. A review cannot fix the other failures, so nothing to re-run."
+            exit 0
+          fi
+
+          echo "Failed gate job(s) on run ${RUN_ID}:"
+          echo "${FAILED_GATE}"
+          echo "Re-running the failed jobs in place so the existing check re-evaluates against the new approval."
+          gh api -X POST "repos/${REPO}/actions/runs/${RUN_ID}/rerun-failed-jobs"
+
+      - name: Nothing to do
+        if: steps.find.outputs.found == 'true' && steps.wait.outputs.conclusion != 'failure'
+        run: |
+          echo "KMP CI run for ${HEAD_SHA} concluded '${{ steps.wait.outputs.conclusion }}' — the API gate is not red, skipping re-run."
