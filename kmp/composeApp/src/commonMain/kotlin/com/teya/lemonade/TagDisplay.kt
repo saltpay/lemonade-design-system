@@ -53,6 +53,10 @@ internal fun TagDisplay() {
                     LemonadeUi.Tag(label = "Info", voice = TagVoice.Info)
                     LemonadeUi.Tag(label = "Positive", voice = TagVoice.Positive)
                 }
+
+                OnColorContainer {
+                    LemonadeUi.Tag(label = "Neutral On Color", voice = TagVoice.NeutralOnColor)
+                }
             }
         }
 
@@ -66,6 +70,9 @@ internal fun TagDisplay() {
                 LemonadeUi.Tag(label = "Warning", icon = LemonadeIcons.TriangleAlert, voice = TagVoice.Warning)
                 LemonadeUi.Tag(label = "Info", icon = LemonadeIcons.CircleInfo, voice = TagVoice.Info)
                 LemonadeUi.Tag(label = "Success", icon = LemonadeIcons.CircleCheck, voice = TagVoice.Positive)
+                OnColorContainer {
+                    LemonadeUi.Tag(label = "Neutral On Color", icon = LemonadeIcons.Heart, voice = TagVoice.NeutralOnColor)
+                }
             }
         }
 
@@ -175,6 +182,20 @@ internal fun TagDisplay() {
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun OnColorContainer(content: @Composable () -> Unit) {
+    Box(
+        modifier = Modifier
+            .background(
+                color = LemonadeTheme.colors.background.bgAlwaysDark,
+                shape = LocalShapes.current.radius150,
+            )
+            .padding(LemonadeTheme.spaces.spacing200),
+    ) {
+        content()
     }
 }
 

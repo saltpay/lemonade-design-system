@@ -8,4 +8,5 @@ public enum class TagVoice {
     Warning,
     Info,
     Positive,
+    NeutralOnColor,
 }

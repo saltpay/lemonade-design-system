@@ -17,6 +17,7 @@ struct TagDisplayView: View {
                         HStack(spacing: 8) {
                             LemonadeUi.Tag(label: "Info", voice: .info)
                             LemonadeUi.Tag(label: "Positive", voice: .positive)
+                            LemonadeUi.Tag(label: "Neutral On Color", voice: .neutralOnColor)
                         }
                     }
                 }
