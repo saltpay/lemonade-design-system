@@ -193,11 +193,11 @@ internal fun TagDisplay() {
 private fun OnColorContainer(content: @Composable () -> Unit) {
     Box(
         modifier = Modifier
+            .padding(LemonadeTheme.spaces.spacing200)
             .background(
                 color = LemonadeTheme.colors.background.bgAlwaysDark,
                 shape = LocalShapes.current.radius150,
-            ).padding(LemonadeTheme.spaces.spacing200),
-    ) {
+            ),
         content()
     }
 }
