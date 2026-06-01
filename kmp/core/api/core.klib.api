@@ -1141,6 +1141,7 @@ final enum class com.teya.lemonade.core/TagVoice : kotlin/Enum<com.teya.lemonade
     enum entry Critical // com.teya.lemonade.core/TagVoice.Critical|null[0]
     enum entry Info // com.teya.lemonade.core/TagVoice.Info|null[0]
     enum entry Neutral // com.teya.lemonade.core/TagVoice.Neutral|null[0]
+    enum entry NeutralOnColor // com.teya.lemonade.core/TagVoice.NeutralOnColor|null[0]
     enum entry Positive // com.teya.lemonade.core/TagVoice.Positive|null[0]
     enum entry Warning // com.teya.lemonade.core/TagVoice.Warning|null[0]
 
