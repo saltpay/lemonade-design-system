@@ -116,7 +116,8 @@ public extension LemonadeUi {
         type: LemonadeButtonType = .solid,
         size: LemonadeButtonSize = .large,
         enabled: Bool = true,
-        loading: Bool = false
+        loading: Bool = false,
+        surfaceColor: Color = LemonadeTheme.colors.background.bgDefault
     ) -> some View {
         LemonadeSlotButtonView(
             label: label,
@@ -126,6 +127,7 @@ public extension LemonadeUi {
             size: size,
             enabled: enabled,
             loading: loading,
+            surfaceColor: surfaceColor,
             expandContents: expandContents,
             leadingSlot: leadingSlot,
             trailingSlot: trailingSlot
@@ -143,7 +145,8 @@ public extension LemonadeUi {
         type: LemonadeButtonType = .solid,
         size: LemonadeButtonSize = .large,
         enabled: Bool = true,
-        loading: Bool = false
+        loading: Bool = false,
+        surfaceColor: Color = LemonadeTheme.colors.background.bgDefault
     ) -> some View {
         LemonadeSlotButtonView(
             label: label,
@@ -153,6 +156,7 @@ public extension LemonadeUi {
             size: size,
             enabled: enabled,
             loading: loading,
+            surfaceColor: surfaceColor,
             expandContents: expandContents,
             leadingSlot: nil as ((LemonadeButtonColors) -> EmptyView)?,
             trailingSlot: trailingSlot
@@ -170,7 +174,8 @@ public extension LemonadeUi {
         type: LemonadeButtonType = .solid,
         size: LemonadeButtonSize = .large,
         enabled: Bool = true,
-        loading: Bool = false
+        loading: Bool = false,
+        surfaceColor: Color = LemonadeTheme.colors.background.bgDefault
     ) -> some View {
         LemonadeSlotButtonView(
             label: label,
@@ -180,6 +185,7 @@ public extension LemonadeUi {
             size: size,
             enabled: enabled,
             loading: loading,
+            surfaceColor: surfaceColor,
             expandContents: expandContents,
             leadingSlot: leadingSlot,
             trailingSlot: nil as ((LemonadeButtonColors) -> EmptyView)?
@@ -364,7 +370,7 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
     let contentSlot: (LemonadeButtonColors) -> AnyView
     let leadingSlot: ((LemonadeButtonColors) -> LeadingSlot)?
     let trailingSlot: ((LemonadeButtonColors) -> TrailingSlot)?
-    var surfaceColor: Color = LemonadeTheme.colors.background.bgDefault
+    let surfaceColor: Color
 
     @Environment(\.lemonadeButtonFullShape) private var isFullShape
     @State private var isPressed = false
@@ -448,7 +454,7 @@ private struct LemonadeButtonView: View {
     let size: LemonadeButtonSize
     let enabled: Bool
     let loading: Bool
-    var surfaceColor: Color = LemonadeTheme.colors.background.bgDefault
+    let surfaceColor: Color
 
     var body: some View {
         LemonadeCoreButtonView(
@@ -514,6 +520,7 @@ private struct LemonadeSlotButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
     let expandContents: Bool
     let leadingSlot: ((LemonadeButtonColors) -> LeadingSlot)?
     let trailingSlot: ((LemonadeButtonColors) -> TrailingSlot)?
+    let surfaceColor: Color
 
     var body: some View {
         LemonadeCoreButtonView(
@@ -524,6 +531,7 @@ private struct LemonadeSlotButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
             size: size,
             enabled: enabled,
             loading: loading,
+            surfaceColor: surfaceColor,
             expandContents: expandContents,
             contentSlot: { colors in
                 AnyView(Group {
