@@ -192,8 +192,7 @@ private fun OnColorContainer(content: @Composable () -> Unit) {
             .background(
                 color = LemonadeTheme.colors.background.bgAlwaysDark,
                 shape = LocalShapes.current.radius150,
-            )
-            .padding(LemonadeTheme.spaces.spacing200),
+            ).padding(LemonadeTheme.spaces.spacing200),
     ) {
         content()
     }
