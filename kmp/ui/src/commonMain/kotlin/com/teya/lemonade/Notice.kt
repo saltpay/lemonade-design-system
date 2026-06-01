@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -107,7 +105,7 @@ private fun CoreNotice(
             Box(
                 modifier = Modifier.size(
                     width = LocalSizes.current.size500,
-                    height = LocalSizes.current.size600,
+                    height = if (title != null) LocalSizes.current.size600 else LocalSizes.current.size500,
                 ),
                 contentAlignment = Alignment.Center,
             ) {
@@ -121,7 +119,6 @@ private fun CoreNotice(
         }
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing100),
             modifier = Modifier.weight(weight = 1f),
         ) {
             if (title != null) {
@@ -135,21 +132,16 @@ private fun CoreNotice(
             LemonadeUi.Text(
                 text = content,
                 color = LocalColors.current.content.contentPrimary,
-                textStyle = if (title != null) {
-                    LocalTypographies.current.bodySmallRegular
-                } else {
-                    LocalTypographies.current.bodyMediumRegular
-                },
+                textStyle = LocalTypographies.current.bodySmallRegular,
             )
 
             if (actionLabel != null) {
-                Spacer(modifier = Modifier.height(LocalSpaces.current.spacing200))
-
                 LemonadeUi.Text(
                     text = actionLabel,
-                    textStyle = LocalTypographies.current.bodyMediumSemiBold,
+                    textStyle = LocalTypographies.current.bodySmallSemiBold,
                     color = colors.actionTextColor,
                     modifier = Modifier
+                        .padding(top = LocalSpaces.current.spacing200)
                         .clickable(
                             onClick = { onActionClick?.invoke() },
                             role = Role.Button,
