@@ -371,13 +371,16 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
         let colors = resolveButtonColors(variant: variant, type: type)
         let buttonShape = RoundedRectangle(cornerRadius: cornerRadius)
 
-        // The ZStack backdrop paints an opaque `bgDefault` rectangle behind the button. It sits
+        // The ZStack backdrop paints an opaque `bgSubtle` rectangle behind the button. It sits
         // OUTSIDE the `.opacity` modifier applied to the SwiftUI.Button, so the disabled 50%
-        // opacity (applied below) blends the colored fill into `bgDefault` instead of into
-        // whatever happens to be drawn behind (e.g. a scrolling list under a floating footer).
-        // When enabled, the fully-opaque button background hides the backdrop entirely.
+        // opacity blends the colored fill into the backdrop instead of into whatever happens to
+        // be drawn behind (e.g. a scrolling list under a floating footer).
+        let pressedOpacity = isPressed ? 1.0 - LemonadeTheme.opacity.state.opacityPressed : LemonadeTheme.opacity.base.opacity100
+        let disabledOpacity = (enabled || loading) ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled
         ZStack {
-            buttonShape.fill(LemonadeTheme.colors.background.bgDefault)
+            if !enabled {
+                buttonShape.fill(LemonadeTheme.colors.background.bgSubtle)
+            }
 
             SwiftUI.Button(action: onClick) {
                 HStack(spacing: 0) {
@@ -406,10 +409,9 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
                 .clipShape(buttonShape)
             }
             .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
-            .opacity(isPressed ? 1.0 - LemonadeTheme.opacity.state.opacityPressed : LemonadeTheme.opacity.base.opacity100)
+            .opacity(pressedOpacity * disabledOpacity)
             .animation(.easeInOut(duration: 0.1), value: isPressed)
             .disabled(!enabled || loading)
-            .opacity((enabled || loading) ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
         }
         .fixedSize(horizontal: false, vertical: true)
     }

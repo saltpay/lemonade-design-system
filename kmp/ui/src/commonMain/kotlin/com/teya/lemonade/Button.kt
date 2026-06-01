@@ -362,12 +362,17 @@ private fun CoreButton(
             colors.solidBackgroundColor
         },
     )
-    // Layered backgrounds: an opaque [bgDefault] backdrop is drawn BEFORE the disabled-state
-    // [Modifier.alpha], the colored fill AFTER. Compose applies `Modifier.alpha` as a graphics
-    // layer that wraps subsequent draws only — so when disabled, the 50% alpha blends the
-    // coloured fill into the opaque `bgDefault` underneath instead of into whatever happens to
-    // be behind the button (e.g. a scrolling list under a floating footer). When enabled, the
-    // opaque colored fill fully covers the backdrop — no visible difference.
+    // `bgSubtle` backdrop is drawn BEFORE the disabled [Modifier.alpha] scope. Compose applies
+    // alpha as a graphics layer wrapping subsequent draws only — so when disabled, the 50% alpha
+    // blends the colored fill into the opaque backdrop instead of into whatever is behind the
+    // button. When enabled, the opaque colored fill fully covers the backdrop.
+    val disabledModifier = if (!enabled) {
+        Modifier
+            .background(color = LocalColors.current.background.bgSubtle)
+            .alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+    } else {
+        Modifier
+    }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -375,14 +380,8 @@ private fun CoreButton(
             .defaultMinSize(minWidth = size.contentData.minWidth)
             .requiredHeight(height = size.contentData.requiredHeight)
             .clip(shape = size.contentData.shape)
-            .background(color = LocalColors.current.background.bgDefault)
-            .then(
-                other = if (!enabled) {
-                    Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                } else {
-                    Modifier
-                },
-            ).clickable(
+            .then(other = disabledModifier)
+            .clickable(
                 enabled = enabled && !loading,
                 onClick = onClick,
                 interactionSource = interactionSource,
