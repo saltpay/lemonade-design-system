@@ -71,7 +71,11 @@ internal fun TagDisplay() {
                 LemonadeUi.Tag(label = "Info", icon = LemonadeIcons.CircleInfo, voice = TagVoice.Info)
                 LemonadeUi.Tag(label = "Success", icon = LemonadeIcons.CircleCheck, voice = TagVoice.Positive)
                 OnColorContainer {
-                    LemonadeUi.Tag(label = "Neutral On Color", icon = LemonadeIcons.Heart, voice = TagVoice.NeutralOnColor)
+                    LemonadeUi.Tag(
+                        label = "Neutral On Color",
+                        icon = LemonadeIcons.Heart,
+                        voice = TagVoice.NeutralOnColor,
+                    )
                 }
             }
         }
