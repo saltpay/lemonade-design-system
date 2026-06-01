@@ -198,6 +198,7 @@ private fun OnColorContainer(content: @Composable () -> Unit) {
                 color = LemonadeTheme.colors.background.bgAlwaysDark,
                 shape = LocalShapes.current.radius150,
             ),
+    ) {
         content()
     }
 }
