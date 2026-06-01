@@ -19,8 +19,8 @@ public final class com/teya/lemonade/BrandLogoKt {
 }
 
 public final class com/teya/lemonade/ButtonKt {
-	public static final fun Button-5luvWPE (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/core/LemonadeButtonVariant;Lcom/teya/lemonade/core/LemonadeButtonType;Lcom/teya/lemonade/core/LemonadeButtonSize;Landroidx/compose/ui/Modifier;ZZJLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
-	public static final fun Button-bcLT7KE (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/core/LemonadeButtonVariant;Lcom/teya/lemonade/core/LemonadeButtonType;Lcom/teya/lemonade/core/LemonadeButtonSize;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;ZZZJLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
+	public static final fun Button (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/core/LemonadeButtonVariant;Lcom/teya/lemonade/core/LemonadeButtonType;Lcom/teya/lemonade/core/LemonadeButtonSize;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;ZZZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
+	public static final fun Button (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/core/LemonadeButtonVariant;Lcom/teya/lemonade/core/LemonadeButtonType;Lcom/teya/lemonade/core/LemonadeButtonSize;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
 }
 
 public final class com/teya/lemonade/CardFooterActionConfig {

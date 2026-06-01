@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonType
 import com.teya.lemonade.core.LemonadeButtonVariant
-import com.teya.lemonade.core.LemonadeCardBackground
 import com.teya.lemonade.core.LemonadeCardPadding
 import com.teya.lemonade.core.LemonadeIcons
 
@@ -162,7 +161,7 @@ internal fun ButtonDisplay() {
 @Composable
 private fun ButtonCard(content: @Composable () -> Unit) {
     LemonadeUi.Card(
-        contentPadding = LemonadeCardPadding.Medium
+        contentPadding = LemonadeCardPadding.Medium,
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(
