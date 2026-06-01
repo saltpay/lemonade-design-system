@@ -318,6 +318,7 @@ public fun LemonadeUi.DatePicker(
         modifier = modifier,
         state = state,
         firstDayOfWeek = firstDayOfWeek,
+        today = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) },
         onMonthDisplayed = onMonthDisplayed,
     )
 }
@@ -337,6 +338,7 @@ public fun LemonadeUi.DateRangePicker(
         modifier = modifier,
         state = state,
         firstDayOfWeek = firstDayOfWeek,
+        today = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) },
         onMonthDisplayed = onMonthDisplayed,
     )
 }

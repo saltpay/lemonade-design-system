@@ -996,6 +996,17 @@ final enum class com.teya.lemonade.core/LemonadeSpinnerSize : kotlin/Enum<com.te
     final fun values(): kotlin/Array<com.teya.lemonade.core/LemonadeSpinnerSize> // com.teya.lemonade.core/LemonadeSpinnerSize.values|values#static(){}[0]
 }
 
+final enum class com.teya.lemonade.core/LemonadeTileOrientation : kotlin/Enum<com.teya.lemonade.core/LemonadeTileOrientation> { // com.teya.lemonade.core/LemonadeTileOrientation|null[0]
+    enum entry Horizontal // com.teya.lemonade.core/LemonadeTileOrientation.Horizontal|null[0]
+    enum entry Vertical // com.teya.lemonade.core/LemonadeTileOrientation.Vertical|null[0]
+
+    final val entries // com.teya.lemonade.core/LemonadeTileOrientation.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.teya.lemonade.core/LemonadeTileOrientation> // com.teya.lemonade.core/LemonadeTileOrientation.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.teya.lemonade.core/LemonadeTileOrientation // com.teya.lemonade.core/LemonadeTileOrientation.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.teya.lemonade.core/LemonadeTileOrientation> // com.teya.lemonade.core/LemonadeTileOrientation.values|values#static(){}[0]
+}
+
 final enum class com.teya.lemonade.core/LemonadeTileVariant : kotlin/Enum<com.teya.lemonade.core/LemonadeTileVariant> { // com.teya.lemonade.core/LemonadeTileVariant|null[0]
     enum entry Filled // com.teya.lemonade.core/LemonadeTileVariant.Filled|null[0]
     enum entry Outlined // com.teya.lemonade.core/LemonadeTileVariant.Outlined|null[0]

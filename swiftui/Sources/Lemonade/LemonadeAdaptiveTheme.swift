@@ -117,6 +117,11 @@ private struct AdaptiveContentColors: ContentColors {
     var contentPositiveOnColor: Color { Color("lemonade-content-voice-on color-content-positive-on-color", bundle: .lemonade) }
     var contentNeutralOnColor: Color { Color("lemonade-content-voice-on color-content-neutral-on-color", bundle: .lemonade) }
     var contentBrandHigh: Color { Color("lemonade-content-brand-content-brand-high", bundle: .lemonade) }
+    var contentInfoAlwaysOnColor: Color { Color("lemonade-content-fixed-content-info-always-on-color", bundle: .lemonade) }
+    var contentNeutralAlwaysOnColor: Color { Color("lemonade-content-fixed-content-neutral-always-on-color", bundle: .lemonade) }
+    var contentPositiveAlwaysOnColor: Color { Color("lemonade-content-fixed-content-positive-always-on-color", bundle: .lemonade) }
+    var contentCautionAlwaysOnColor: Color { Color("lemonade-content-fixed-content-caution-always-on-color", bundle: .lemonade) }
+    var contentCriticalAlwaysOnColor: Color { Color("lemonade-content-fixed-content-critical-always-on-color", bundle: .lemonade) }
 }
 
 private struct AdaptiveBackgroundColors: BackgroundColors {
