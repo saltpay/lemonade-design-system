@@ -366,11 +366,11 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
     let size: LemonadeButtonSize
     let enabled: Bool
     let loading: Bool
+    let surfaceColor: Color
     let expandContents: Bool
     let contentSlot: (LemonadeButtonColors) -> AnyView
     let leadingSlot: ((LemonadeButtonColors) -> LeadingSlot)?
     let trailingSlot: ((LemonadeButtonColors) -> TrailingSlot)?
-    let surfaceColor: Color
 
     @Environment(\.lemonadeButtonFullShape) private var isFullShape
     @State private var isPressed = false
@@ -517,10 +517,10 @@ private struct LemonadeSlotButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
     let size: LemonadeButtonSize
     let enabled: Bool
     let loading: Bool
+    let surfaceColor: Color
     let expandContents: Bool
     let leadingSlot: ((LemonadeButtonColors) -> LeadingSlot)?
     let trailingSlot: ((LemonadeButtonColors) -> TrailingSlot)?
-    let surfaceColor: Color
 
     var body: some View {
         LemonadeCoreButtonView(
