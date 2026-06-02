@@ -68,7 +68,6 @@ public enum class LemonadeIcons : LemonadeAsset {
     Calculator,
     Calendar,
     CalendarArrowRight,
-    CalendarArrowRight1,
     CalendarArrowRightDown,
     CalendarArrowRightUp,
     CalendarArrowUp,
@@ -201,7 +200,6 @@ public enum class LemonadeIcons : LemonadeAsset {
     Megaphone,
     Menu,
     MenuTwoLines,
-    MenuTwoLines1,
     Microphone,
     MicrophoneSlash,
     Minus,
@@ -290,6 +288,5 @@ public enum class LemonadeIcons : LemonadeAsset {
     VoiceWaveHigh,
     Wallet,
     WalletSolid,
-    WalletSolid1,
     Wifi,
 }

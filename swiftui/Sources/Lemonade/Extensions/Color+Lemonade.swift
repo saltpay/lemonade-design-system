@@ -163,7 +163,7 @@ public struct LemonadeShadowColorsShorthand {
 
 public extension ShapeStyle where Self == Color {
     /// Interaction color tokens
-    /// Usage: `.foregroundStyle(.interaction.bgDefaultInteractive)`
+    /// Usage: `.foregroundStyle(.interaction.interactionDefault)`
     static var interaction: LemonadeInteractionColorsShorthand { LemonadeInteractionColorsShorthand() }
 
     /// Border color tokens

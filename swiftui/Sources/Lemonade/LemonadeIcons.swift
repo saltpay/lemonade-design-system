@@ -75,7 +75,6 @@ public enum LemonadeIcon: String, CaseIterable {
     case calculator = "calculator"
     case calendar = "calendar"
     case calendarArrowRight = "calendar-arrow-right"
-    case calendarArrowRight1 = "calendar-arrow-right-1"
     case calendarArrowRightDown = "calendar-arrow-right-down"
     case calendarArrowRightUp = "calendar-arrow-right-up"
     case calendarArrowUp = "calendar-arrow-up"
@@ -208,7 +207,6 @@ public enum LemonadeIcon: String, CaseIterable {
     case megaphone = "megaphone"
     case menu = "menu"
     case menuTwoLines = "menu-two-lines"
-    case menuTwoLines1 = "menu-two-lines-1"
     case microphone = "microphone"
     case microphoneSlash = "microphone-slash"
     case minus = "minus"
@@ -297,7 +295,6 @@ public enum LemonadeIcon: String, CaseIterable {
     case voiceWaveHigh = "voice-wave-high"
     case wallet = "wallet"
     case walletSolid = "wallet-solid"
-    case walletSolid1 = "wallet-solid-1"
     case wifi = "wifi"
 
     /// Returns the Image for this icon from the Lemonade bundle's asset catalog

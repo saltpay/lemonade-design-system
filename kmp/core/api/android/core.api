@@ -531,7 +531,6 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field Calculator Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Calendar Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CalendarArrowRight Lcom/teya/lemonade/core/LemonadeIcons;
-	public static final field CalendarArrowRight1 Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CalendarArrowRightDown Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CalendarArrowRightUp Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CalendarArrowUp Lcom/teya/lemonade/core/LemonadeIcons;
@@ -664,7 +663,6 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field Megaphone Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Menu Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field MenuTwoLines Lcom/teya/lemonade/core/LemonadeIcons;
-	public static final field MenuTwoLines1 Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Microphone Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field MicrophoneSlash Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Minus Lcom/teya/lemonade/core/LemonadeIcons;
@@ -753,7 +751,6 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field VoiceWaveHigh Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Wallet Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field WalletSolid Lcom/teya/lemonade/core/LemonadeIcons;
-	public static final field WalletSolid1 Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Wifi Lcom/teya/lemonade/core/LemonadeIcons;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/LemonadeIcons;

@@ -597,7 +597,6 @@ final enum class com.teya.lemonade.core/LemonadeIcons : com.teya.lemonade.core/L
     enum entry Calculator // com.teya.lemonade.core/LemonadeIcons.Calculator|null[0]
     enum entry Calendar // com.teya.lemonade.core/LemonadeIcons.Calendar|null[0]
     enum entry CalendarArrowRight // com.teya.lemonade.core/LemonadeIcons.CalendarArrowRight|null[0]
-    enum entry CalendarArrowRight1 // com.teya.lemonade.core/LemonadeIcons.CalendarArrowRight1|null[0]
     enum entry CalendarArrowRightDown // com.teya.lemonade.core/LemonadeIcons.CalendarArrowRightDown|null[0]
     enum entry CalendarArrowRightUp // com.teya.lemonade.core/LemonadeIcons.CalendarArrowRightUp|null[0]
     enum entry CalendarArrowUp // com.teya.lemonade.core/LemonadeIcons.CalendarArrowUp|null[0]
@@ -730,7 +729,6 @@ final enum class com.teya.lemonade.core/LemonadeIcons : com.teya.lemonade.core/L
     enum entry Megaphone // com.teya.lemonade.core/LemonadeIcons.Megaphone|null[0]
     enum entry Menu // com.teya.lemonade.core/LemonadeIcons.Menu|null[0]
     enum entry MenuTwoLines // com.teya.lemonade.core/LemonadeIcons.MenuTwoLines|null[0]
-    enum entry MenuTwoLines1 // com.teya.lemonade.core/LemonadeIcons.MenuTwoLines1|null[0]
     enum entry Microphone // com.teya.lemonade.core/LemonadeIcons.Microphone|null[0]
     enum entry MicrophoneSlash // com.teya.lemonade.core/LemonadeIcons.MicrophoneSlash|null[0]
     enum entry Minus // com.teya.lemonade.core/LemonadeIcons.Minus|null[0]
@@ -819,7 +817,6 @@ final enum class com.teya.lemonade.core/LemonadeIcons : com.teya.lemonade.core/L
     enum entry VoiceWaveHigh // com.teya.lemonade.core/LemonadeIcons.VoiceWaveHigh|null[0]
     enum entry Wallet // com.teya.lemonade.core/LemonadeIcons.Wallet|null[0]
     enum entry WalletSolid // com.teya.lemonade.core/LemonadeIcons.WalletSolid|null[0]
-    enum entry WalletSolid1 // com.teya.lemonade.core/LemonadeIcons.WalletSolid1|null[0]
     enum entry Wifi // com.teya.lemonade.core/LemonadeIcons.Wifi|null[0]
 
     final val entries // com.teya.lemonade.core/LemonadeIcons.entries|#static{}entries[0]

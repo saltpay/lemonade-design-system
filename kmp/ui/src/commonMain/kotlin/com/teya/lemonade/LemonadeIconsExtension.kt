@@ -69,7 +69,6 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.Calculator -> LemonadeRes.drawable.gen_calculator
         LemonadeIcons.Calendar -> LemonadeRes.drawable.gen_calendar
         LemonadeIcons.CalendarArrowRight -> LemonadeRes.drawable.gen_calendar_arrow_right
-        LemonadeIcons.CalendarArrowRight1 -> LemonadeRes.drawable.gen_calendar_arrow_right_1
         LemonadeIcons.CalendarArrowRightDown -> LemonadeRes.drawable.gen_calendar_arrow_right_down
         LemonadeIcons.CalendarArrowRightUp -> LemonadeRes.drawable.gen_calendar_arrow_right_up
         LemonadeIcons.CalendarArrowUp -> LemonadeRes.drawable.gen_calendar_arrow_up
@@ -202,7 +201,6 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.Megaphone -> LemonadeRes.drawable.gen_megaphone
         LemonadeIcons.Menu -> LemonadeRes.drawable.gen_menu
         LemonadeIcons.MenuTwoLines -> LemonadeRes.drawable.gen_menu_two_lines
-        LemonadeIcons.MenuTwoLines1 -> LemonadeRes.drawable.gen_menu_two_lines_1
         LemonadeIcons.Microphone -> LemonadeRes.drawable.gen_microphone
         LemonadeIcons.MicrophoneSlash -> LemonadeRes.drawable.gen_microphone_slash
         LemonadeIcons.Minus -> LemonadeRes.drawable.gen_minus
@@ -291,6 +289,5 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.VoiceWaveHigh -> LemonadeRes.drawable.gen_voice_wave_high
         LemonadeIcons.Wallet -> LemonadeRes.drawable.gen_wallet
         LemonadeIcons.WalletSolid -> LemonadeRes.drawable.gen_wallet_solid
-        LemonadeIcons.WalletSolid1 -> LemonadeRes.drawable.gen_wallet_solid_1
         LemonadeIcons.Wifi -> LemonadeRes.drawable.gen_wifi
     }
