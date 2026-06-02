@@ -84,10 +84,10 @@ private fun buildSpacingImplementationCode(
     return buildString {
         appendLine("package com.teya.lemonade")
         appendLine()
+        appendLine("import androidx.compose.runtime.Stable")
         appendLine("import androidx.compose.ui.unit.Dp")
         appendLine("import androidx.compose.ui.unit.dp")
         appendLine("import com.teya.lemonade.core.LemonadeSizes")
-        appendLine("import androidx.compose.runtime.Stable")
         appendLine()
         appendLine("/**")
         appendLine(" * Lemonade Design System Size tokens.")
@@ -115,7 +115,7 @@ private fun buildSpacingImplementationCode(
         resources.forEach { resource ->
             appendLine("    override val ${resource.name}: Dp = LemonadeSizes.${resource.groupFullName}.dp,")
         }
-        appendLine("): LemonadeSizeValues")
+        appendLine(") : LemonadeSizeValues")
     }
 }
 

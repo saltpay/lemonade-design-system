@@ -128,6 +128,7 @@ private fun buildRadiusImplementationCode(
             appendLine("    public val ${groupName.replaceFirstChar { it.lowercase() }}: $groupName")
         }
         groupedResources.forEach { (groupName, groupTokens) ->
+            appendLine()
             appendLine("    public interface $groupName {")
             groupTokens.forEach { token ->
                 appendLine("        public val ${token.name}: Dp")
@@ -146,6 +147,7 @@ private fun buildRadiusImplementationCode(
             appendLine("    public val ${groupName.replaceFirstChar { it.lowercase() }}: $groupName")
         }
         groupedResources.forEach { (groupName, groupTokens) ->
+            appendLine()
             appendLine("    public interface $groupName {")
             groupTokens.forEach { token ->
                 appendLine("        public val ${token.name}: Shape")
@@ -162,14 +164,14 @@ private fun buildRadiusImplementationCode(
             groupTokens.forEach { token ->
                 appendLine("    override val ${token.name}: Dp = ${token.value.radiusValue}.dp,")
             }
-            appendLine("): LemonadeRadiusValues.$groupName")
+            appendLine(") : LemonadeRadiusValues.$groupName")
             appendLine()
             appendLine("@Stable")
             appendLine("internal data class InternalLemonade${groupName}Shapes(")
             groupTokens.forEach { token ->
                 appendLine("    override val ${token.name}: Shape = RoundedCornerShape(size = ${token.value.radiusValue}.dp),")
             }
-            appendLine("): LemonadeShapes.$groupName")
+            appendLine(") : LemonadeShapes.$groupName")
             appendLine()
         }
 
@@ -182,7 +184,7 @@ private fun buildRadiusImplementationCode(
         groupedResources.forEach { (groupName, _) ->
             appendLine("    override val ${groupName.replaceFirstChar { it.lowercase() }}: LemonadeRadiusValues.$groupName = InternalLemonade${groupName}RadiusValues(),")
         }
-        appendLine("): LemonadeRadiusValues")
+        appendLine(") : LemonadeRadiusValues")
         appendLine()
 
         // InternalLemonadeShapes
@@ -194,7 +196,7 @@ private fun buildRadiusImplementationCode(
         groupedResources.forEach { (groupName, _) ->
             appendLine("    override val ${groupName.replaceFirstChar { it.lowercase() }}: LemonadeShapes.$groupName = InternalLemonade${groupName}Shapes(),")
         }
-        appendLine("): LemonadeShapes")
+        appendLine(") : LemonadeShapes")
     }
 }
 

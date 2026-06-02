@@ -1,9 +1,9 @@
 package com.teya.lemonade
 
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeSpaces
-import androidx.compose.runtime.Stable
 
 /**
  * Lemonade Design System Space tokens.
@@ -78,4 +78,4 @@ internal data class InternalLemonadeSpaceValues(
     override val spacing1600: Dp = LemonadeSpaces.Spacing1600.dp,
     override val spacing1800: Dp = LemonadeSpaces.Spacing1800.dp,
     override val spacing2000: Dp = LemonadeSpaces.Spacing2000.dp,
-): LemonadeSpaceValues
+) : LemonadeSpaceValues

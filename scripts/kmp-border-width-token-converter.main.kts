@@ -85,6 +85,7 @@ private fun buildBorderWidthDefinitionCode(
             appendLine("    public val ${groupName?.sanitizedValueName()}: $groupName")
         }
         groupedResources.forEach { (groupName, groupResources) ->
+            appendLine()
             appendLine("    public interface $groupName {")
             groupResources.forEach { resource ->
                 appendLine("        public val ${resource.name}: Dp")
@@ -99,12 +100,12 @@ private fun buildBorderWidthImplementationCode(
     resources: List<ResourceData<BorderWidthResource>>,
 ): String {
     return buildString {
-        appendLine("internal class InternalLemonadeBorderWidth: LemonadeBorderWidth {")
+        appendLine("internal class InternalLemonadeBorderWidth : LemonadeBorderWidth {")
         resources
             .groupBy { resource -> resource.groupFullName }
             .forEach { (groupName, groupResources) ->
                 if (groupName != null) {
-                    appendLine("    override val ${groupName.sanitizedValueName()} = object: LemonadeBorderWidth.$groupName {")
+                    appendLine("    override val ${groupName.sanitizedValueName()} = object : LemonadeBorderWidth.$groupName {")
                     groupResources.forEach { resource ->
                         appendLine("        override val ${resource.name}: Dp = ${resource.value.borderWidthValue}.dp")
                     }
