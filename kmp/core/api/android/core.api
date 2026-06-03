@@ -501,6 +501,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field ArrowRotateCw Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ArrowRotateRightLeft Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ArrowSplit Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field ArrowSplitRight Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ArrowUp Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ArrowUpLeft Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ArrowUpRight Lcom/teya/lemonade/core/LemonadeIcons;
@@ -529,6 +530,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field BuildingsCheck Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Calculator Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Calendar Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field CalendarArrowRight Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CalendarArrowRightDown Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CalendarArrowRightUp Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CalendarArrowUp Lcom/teya/lemonade/core/LemonadeIcons;
@@ -536,7 +538,9 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field CalendarCheckSolid Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CalendarClock Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CalendarDay Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field CalendarDayTimeline Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CalendarEdit Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field CalendarLightning Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CalendarRepeat Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CalendarSearch Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Camera Lcom/teya/lemonade/core/LemonadeIcons;
@@ -610,6 +614,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field FileCheck Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field FileGear Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field FileMoney Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field FilePdf Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field FileSpreadsheet Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field FileText Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Filter Lcom/teya/lemonade/core/LemonadeIcons;
@@ -724,6 +729,8 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field SupportChat Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ThumbDown Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ThumbUp Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field ThumbsDownSolid Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field ThumbsUpSolid Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Thumbtack Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Times Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Translate Lcom/teya/lemonade/core/LemonadeIcons;
@@ -732,6 +739,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field Trophy Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Truck Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Undo Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field Unlink Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field User Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field UserCoins Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field UserGear Lcom/teya/lemonade/core/LemonadeIcons;
