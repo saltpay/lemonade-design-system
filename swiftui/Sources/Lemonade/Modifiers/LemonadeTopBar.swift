@@ -14,14 +14,10 @@ import CoreImage.CIFilterBuiltins
 ///   if you need to run logic when the user dismisses the screen.
 public enum TopBarAction {
     /// Native back affordance (chevron + swipe-to-go-back). `NavigationAction.onAction` is NOT
-    /// invoked — use `.backButton` if you need to run logic or block the gesture.
+    /// invoked — the system handles the pop.
     case back
     /// Leading close (X) button. Calls `NavigationAction.onAction`; hides the native back button.
     case close
-    /// Leading back (chevron) button that calls `NavigationAction.onAction` and HIDES the native
-    /// back affordance (including swipe-to-go-back). Use for guarded / in-flight flows that must
-    /// intercept or disable back. Honours `NavigationAction.isEnabled`.
-    case backButton
 }
 
 // MARK: - LemonadeTopBarVariant
@@ -82,11 +78,9 @@ public struct TopBarActionItem: Identifiable {
 public struct NavigationAction {
     public let action: TopBarAction
     let onAction: () -> Void
-    let isEnabled: Bool
 
-    public init(action: TopBarAction, isEnabled: Bool = true, onAction: @escaping () -> Void) {
+    public init(action: TopBarAction, onAction: @escaping () -> Void) {
         self.action = action
-        self.isEnabled = isEnabled
         self.onAction = onAction
     }
 }
@@ -104,26 +98,23 @@ private struct LemonadeEmptyToolbarContent: ToolbarContent {
 
 // MARK: - Shared toolbar pieces
 
-/// True when the native back affordance must be hidden — `.close` and `.backButton` render their
-/// own leading control.
+/// True when the native back affordance must be hidden — only `.close` renders its own leading control.
 private func lemonadeHidesNativeBack(_ navigationAction: NavigationAction?) -> Bool {
-    guard let action = navigationAction?.action else { return false }
-    return action == .close || action == .backButton
+    navigationAction?.action == .close
 }
 
-/// The leading slot. `.close` / `.backButton` render a circular ghost `IconButton` (matching the
-/// Figma controls) wired to `onAction` and disable-able; `.back` (or nil) renders nothing so the
-/// native back affordance (chevron + swipe) shows. Always emits one leading `ToolbarItem` (an empty
-/// one coexists with the native back button) so we avoid the iOS-16-only `@ToolbarContentBuilder` `if`.
+/// The leading slot. `.close` renders a circular ghost `IconButton` (matching the Figma controls)
+/// wired to `onAction`; `.back` (or nil) renders nothing so the native back affordance (chevron +
+/// swipe) shows. Always emits one leading `ToolbarItem` (an empty one coexists with the native back
+/// button) so we avoid the iOS-16-only `@ToolbarContentBuilder` `if`.
 @ToolbarContentBuilder
 private func lemonadeLeadingToolbarItem(_ navigationAction: NavigationAction?) -> some ToolbarContent {
     ToolbarItem(placement: .navigationBarLeading) {
-        if let navigationAction, navigationAction.action != .back {
+        if let navigationAction, navigationAction.action == .close {
             LemonadeUi.IconButton(
-                icon: navigationAction.action == .close ? .times : .chevronLeft,
-                contentDescription: navigationAction.action == .close ? "Close" : "Back",
+                icon: .times,
+                contentDescription: "Close",
                 onClick: navigationAction.onAction,
-                enabled: navigationAction.isEnabled,
                 variant: .neutral,
                 type: .ghost,
                 shape: .circular
