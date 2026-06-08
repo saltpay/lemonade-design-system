@@ -17,6 +17,19 @@ public enum TopBarAction {
     case close
 }
 
+// MARK: - LemonadeTopBarVariant
+
+/// The title display variant of a Lemonade top bar, mirroring the Figma `Variant` property.
+///
+/// - `large`: a big, left-aligned title on its own row below the leading/trailing controls
+///   (collapses to a small inline title on scroll). The default.
+/// - `compact`: a small, centred title on the same row as the leading/trailing controls
+///   (the iOS `.inline` display mode) — use for detail and form screens.
+public enum LemonadeTopBarVariant {
+    case large
+    case compact
+}
+
 // MARK: - NavigationAction
 
 /// Configuration for the navigation action in the leading slot of a top bar.
@@ -51,13 +64,14 @@ private struct BasicTopBarModifier<Toolbar: ToolbarContent, BottomContent: View>
     let label: String
     let subheading: String?
     let collapsedLabel: String?
+    let variant: LemonadeTopBarVariant
     let navigationAction: NavigationAction?
     let toolbarContent: Toolbar
     let bottomSlot: (() -> BottomContent)?
 
     func body(content: Content) -> some View {
         content
-            .lemonadeNavigationTitle(title: collapsedLabel ?? label, subheading: subheading)
+            .lemonadeNavigationTitle(title: collapsedLabel ?? label, subheading: subheading, variant: variant)
             .navigationBarBackButtonHidden(navigationAction?.action == .close)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -638,18 +652,22 @@ private extension View {
     /// bars at the cost of losing the large-title morph. The native `.navigationTitle`
     /// is kept (not emptied) so pushed screens still inherit a back button label.
     @ViewBuilder
-    func lemonadeNavigationTitle(title: String, subheading: String?) -> some View {
+    func lemonadeNavigationTitle(title: String, subheading: String?, variant: LemonadeTopBarVariant = .large) -> some View {
+        // `.compact` always renders inline (small centred title, matching the Figma Compact
+        // variant). `.large` keeps the version-/subheading-dependent large-title behaviour; on
+        // iOS < 26 a non-nil subheading falls back to inline so the stacked title + subheading
+        // can render via `lemonadeFallbackPrincipalTitle`.
         #if compiler(>=6.2)
         if #available(iOS 26, *), let subheading {
             self
                 .navigationTitle(title)
                 .navigationSubtitle(subheading)
-                .navigationBarTitleDisplayMode(.large)
+                .navigationBarTitleDisplayMode(variant == .compact ? .inline : .large)
         } else if #available(iOS 26, *) {
             self
                 .navigationTitle(title)
-                .navigationBarTitleDisplayMode(.large)
-        } else if subheading != nil {
+                .navigationBarTitleDisplayMode(variant == .compact ? .inline : .large)
+        } else if variant == .compact || subheading != nil {
             self
                 .navigationTitle(title)
                 .navigationBarTitleDisplayMode(.inline)
@@ -659,7 +677,7 @@ private extension View {
                 .navigationBarTitleDisplayMode(.large)
         }
         #else
-        if subheading != nil {
+        if variant == .compact || subheading != nil {
             self
                 .navigationTitle(title)
                 .navigationBarTitleDisplayMode(.inline)
@@ -926,6 +944,7 @@ public extension View {
         label: String,
         subheading: String? = nil,
         collapsedLabel: String? = nil,
+        variant: LemonadeTopBarVariant = .large,
         navigationAction: NavigationAction? = nil,
         @ViewBuilder bottomSlot: @escaping () -> BottomContent,
         @ToolbarContentBuilder toolbar: () -> Toolbar
@@ -934,6 +953,7 @@ public extension View {
             label: label,
             subheading: subheading,
             collapsedLabel: collapsedLabel,
+            variant: variant,
             navigationAction: navigationAction,
             toolbarContent: toolbar(),
             bottomSlot: bottomSlot
@@ -945,6 +965,7 @@ public extension View {
         label: String,
         subheading: String? = nil,
         collapsedLabel: String? = nil,
+        variant: LemonadeTopBarVariant = .large,
         navigationAction: NavigationAction? = nil,
         @ToolbarContentBuilder toolbar: () -> Toolbar
     ) -> some View {
@@ -952,23 +973,27 @@ public extension View {
             label: label,
             subheading: subheading,
             collapsedLabel: collapsedLabel,
+            variant: variant,
             navigationAction: navigationAction,
             toolbarContent: toolbar(),
             bottomSlot: nil as (() -> EmptyView)?
         ))
     }
 
-    /// Applies a Lemonade-styled navigation bar with a collapsible large title (no toolbar or bottom slot).
+    /// Applies a Lemonade-styled navigation bar with a `variant`-controlled title
+    /// (`.large` collapsible big title, or `.compact` inline title), no toolbar or bottom slot.
     func lemonadeTopBar(
         label: String,
         subheading: String? = nil,
         collapsedLabel: String? = nil,
+        variant: LemonadeTopBarVariant = .large,
         navigationAction: NavigationAction? = nil
     ) -> some View {
         modifier(BasicTopBarModifier(
             label: label,
             subheading: subheading,
             collapsedLabel: collapsedLabel,
+            variant: variant,
             navigationAction: navigationAction,
             toolbarContent: LemonadeEmptyToolbarContent(),
             bottomSlot: nil as (() -> EmptyView)?

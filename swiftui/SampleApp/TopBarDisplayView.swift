@@ -13,6 +13,7 @@ struct TopBarDisplayView: View {
 
     private let demos: [DemoItem] = [
         DemoItem(title: "Basic (native back)", destination: AnyView(BasicTopBarDemo())),
+        DemoItem(title: "Basic (compact variant)", destination: AnyView(BasicCompactDemo())),
         DemoItem(title: "Basic (close button)", destination: AnyView(BasicCloseDemo())),
         DemoItem(title: "Basic with Trailing Slot", destination: AnyView(BasicTrailingSlotDemo())),
         DemoItem(title: "Basic with Bottom Slot", destination: AnyView(BasicBottomSlotDemo())),
@@ -89,6 +90,19 @@ private struct BasicTopBarDemo: View {
         }
         .lemonadeTopBar(
             label: "Settings",
+            navigationAction: NavigationAction(action: .back, onAction: {})
+        )
+    }
+}
+
+private struct BasicCompactDemo: View {
+    var body: some View {
+        ScrollView {
+            SampleListContent()
+        }
+        .lemonadeTopBar(
+            label: "Card settings",
+            variant: .compact,
             navigationAction: NavigationAction(action: .back, onAction: {})
         )
     }
