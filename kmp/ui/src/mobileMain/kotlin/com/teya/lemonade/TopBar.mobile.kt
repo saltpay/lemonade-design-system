@@ -50,11 +50,14 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonType
@@ -83,6 +86,7 @@ public class TopBarState internal constructor(
     private val coroutineScope: CoroutineScope,
     private val startCollapsed: Boolean = false,
     lockGestureAnimation: Boolean = false,
+    private val scrolledFadeDistancePx: Float = DEFAULT_SCROLLED_FADE_DISTANCE_PX_FALLBACK,
 ) {
     private var lockGestureAnimation by mutableStateOf(lockGestureAnimation)
 
@@ -132,12 +136,19 @@ public class TopBarState internal constructor(
      * Updated by [nestedScrollConnection] regardless of `lockGestureAnimation`, so a top bar
      * that's permanently collapsed can still react to scroll — see the
      * `scrolledBackgroundColor` parameter on [TopBar][LemonadeUi.TopBar].
+     *
+     * Tracked from `onPostScroll(consumed)`, so only the delta the content actually consumed
+     * advances the fade — bar-consumed deltas (collapse) and overscroll do not.
      */
     public val scrolledFadeProgress: Float by derivedStateOf {
-        (scrolledFadeOffsetPx / SCROLLED_FADE_DISTANCE_PX).coerceIn(
-            minimumValue = 0f,
-            maximumValue = 1f,
-        )
+        if (scrolledFadeDistancePx <= 0f) {
+            0f
+        } else {
+            (scrolledFadeOffsetPx / scrolledFadeDistancePx).coerceIn(
+                minimumValue = 0f,
+                maximumValue = 1f,
+            )
+        }
     }
 
     internal val heightOffset: Float by derivedStateOf {
@@ -217,7 +228,6 @@ public class TopBarState internal constructor(
             available: Offset,
             source: NestedScrollSource,
         ): Offset {
-            accumulateScrolledFade(deltaY = available.y)
             if (lockGestureAnimation) {
                 return Offset.Zero
             }
@@ -245,7 +255,7 @@ public class TopBarState internal constructor(
             available: Offset,
             source: NestedScrollSource,
         ): Offset {
-            accumulateScrolledFade(deltaY = available.y)
+            accumulateScrolledFade(deltaY = consumed.y)
             if (lockGestureAnimation) {
                 return Offset.Zero
             }
@@ -273,13 +283,19 @@ public class TopBarState internal constructor(
         if (deltaY == 0f) return
         scrolledFadeOffsetPx = (scrolledFadeOffsetPx - deltaY).coerceIn(
             minimumValue = 0f,
-            maximumValue = SCROLLED_FADE_DISTANCE_PX,
+            maximumValue = scrolledFadeDistancePx,
         )
     }
 }
 
-// ~16dp at xxhdpi; the bar reaches its scrolled appearance after a short flick.
-private const val SCROLLED_FADE_DISTANCE_PX: Float = 48f
+// Fallback for direct internal `TopBarState(...)` construction without a Density-aware caller.
+// 48px ≈ 16dp at xxhdpi, ≈ 48dp at mdpi — densities diverge, hence the fallback label. Real callers
+// go through `rememberTopBarState`, which converts a Dp default via LocalDensity.
+private const val DEFAULT_SCROLLED_FADE_DISTANCE_PX_FALLBACK: Float = 48f
+
+// The density-independent default surfaced to consumers via rememberTopBarState. Short distance
+// so the bar reaches its scrolled appearance after a short flick.
+private val DefaultScrolledFadeDistance: Dp = 24.dp
 
 /**
  * Creates and remembers a [TopBarState] instance.
@@ -322,14 +338,17 @@ public fun rememberTopBarState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     startCollapsed: Boolean = false,
     lockGestureAnimation: Boolean = false,
-): TopBarState =
-    remember(startCollapsed, lockGestureAnimation) {
+): TopBarState {
+    val scrolledFadeDistancePx = with(LocalDensity.current) { DefaultScrolledFadeDistance.toPx() }
+    return remember(startCollapsed, lockGestureAnimation, scrolledFadeDistancePx) {
         TopBarState(
             coroutineScope = coroutineScope,
             startCollapsed = startCollapsed,
             lockGestureAnimation = lockGestureAnimation,
+            scrolledFadeDistancePx = scrolledFadeDistancePx,
         )
     }
+}
 
 /**
  * Holds the configuration for the navigation action displayed in the leading slot of a [TopBar][LemonadeUi.TopBar].
