@@ -495,7 +495,8 @@ private fun effectiveBackgroundColor(
 @Deprecated(
     message = "Use the overload with a scrolledBackgroundColor parameter.",
     replaceWith = ReplaceWith(
-        expression = "TopBar(label, modifier, state, backgroundColor, null, collapsedLabel, subtitle, navigationAction, trailingSlot, bottomSlot)",
+        expression = "TopBar(label, modifier, state, backgroundColor, null, collapsedLabel, subtitle, " +
+            "navigationAction, trailingSlot, bottomSlot)",
     ),
     level = DeprecationLevel.HIDDEN,
 )
@@ -719,7 +720,8 @@ public fun LemonadeUi.TopBar(
 @Deprecated(
     message = "Use the overload with a scrolledBackgroundColor parameter.",
     replaceWith = ReplaceWith(
-        expression = "TopBar(label, searchInput, onSearchChanged, modifier, state, backgroundColor, null, expandedLabel, subtitle, navigationAction, trailingSlot, bottomSlot)",
+        expression = "TopBar(label, searchInput, onSearchChanged, modifier, state, backgroundColor, null, " +
+            "expandedLabel, subtitle, navigationAction, trailingSlot, bottomSlot)",
     ),
     level = DeprecationLevel.HIDDEN,
 )
