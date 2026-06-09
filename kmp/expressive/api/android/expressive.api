@@ -1,9 +1,11 @@
 public final class com/teya/lemonade/BottomSheetKt {
-	public static final fun BottomSheet (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;ZZLcom/teya/lemonade/core/LemonadeBottomSheetVariant;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun BottomSheet (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;ZZLcom/teya/lemonade/core/LemonadeBottomSheetVariant;Lcom/teya/lemonade/LemonadeBottomSheetProperties;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final synthetic fun BottomSheet (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;ZZLcom/teya/lemonade/core/LemonadeBottomSheetVariant;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/teya/lemonade/BottomSheet_androidKt {
-	public static final fun BottomSheet (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;ZZZLcom/teya/lemonade/core/LemonadeBottomSheetVariant;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun BottomSheet (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;ZZZLcom/teya/lemonade/core/LemonadeBottomSheetVariant;Lcom/teya/lemonade/LemonadeBottomSheetProperties;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final synthetic fun BottomSheet (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;ZZZLcom/teya/lemonade/core/LemonadeBottomSheetVariant;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/teya/lemonade/BottomTabBarItem {
@@ -30,7 +32,7 @@ public final class com/teya/lemonade/BottomTabBarKt {
 public final class com/teya/lemonade/ComposableSingletons$BottomSheetKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$BottomSheetKt;
 	public fun <init> ()V
-	public final fun getLambda$-968066332$expressive_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1980115960$expressive_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/teya/lemonade/DialogKt {
@@ -40,6 +42,17 @@ public final class com/teya/lemonade/DialogKt {
 public final class com/teya/lemonade/DropdownKt {
 	public static final fun Dropdown (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;ZZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun DropdownItem (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/core/LemonadeIcons;ZLandroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/teya/lemonade/LemonadeBottomSheetProperties {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (ZZ)V
+	public synthetic fun <init> (ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDismissOnBackPress ()Z
+	public final fun getDismissOnClickOutside ()Z
+	public fun hashCode ()I
 }
 
 public final class com/teya/lemonade/LemonadeExpressiveThemeKt {
