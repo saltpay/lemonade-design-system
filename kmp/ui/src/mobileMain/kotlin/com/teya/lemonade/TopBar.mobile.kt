@@ -242,6 +242,14 @@ public class TopBarState internal constructor(
             source: NestedScrollSource,
         ): Offset {
             accumulateScrolledFade(deltaY = consumed.y)
+            // `available.y > 0f` after the child has run means the child stopped consuming an
+            // upward gesture — the content has reached its top edge. The delta-accumulator can
+            // drift on fling (the down + up passes don't always net to exactly 0 in practice), so
+            // hard-pin to 0 here. `isScrolled` flips false the moment the user bottoms out at the
+            // top, even after asymmetric scroll/fling sessions.
+            if (available.y > 0f) {
+                scrolledOffsetPx = 0f
+            }
             if (lockGestureAnimation) {
                 return Offset.Zero
             }
