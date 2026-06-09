@@ -23,7 +23,8 @@ public class LemonadeBottomSheetProperties(
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun LemonadeBottomSheetProperties.toMaterial(): ModalBottomSheetProperties = ModalBottomSheetProperties(
-    shouldDismissOnBackPress = dismissOnBackPress,
-    shouldDismissOnClickOutside = dismissOnClickOutside,
-)
+internal fun LemonadeBottomSheetProperties.toMaterial(): ModalBottomSheetProperties =
+    ModalBottomSheetProperties(
+        shouldDismissOnBackPress = dismissOnBackPress,
+        shouldDismissOnClickOutside = dismissOnClickOutside,
+    )
