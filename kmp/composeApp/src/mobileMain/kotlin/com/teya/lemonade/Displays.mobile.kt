@@ -38,6 +38,11 @@ internal data object CompactLargeSearchTopBarDisplay : Displays {
 }
 
 @Serializable
+internal data object ScrolledFadeTopBarDisplay : Displays {
+    override val label: String = "ScrolledFadeTopBar"
+}
+
+@Serializable
 internal data object BottomSheetDisplay : Displays {
     override val label: String = "BottomSheet"
 }
@@ -48,6 +53,7 @@ internal actual val platformSpecificEntries: List<Displays> = listOf(
     CollapsedTopBarDisplay,
     CompactLargeTopBarDisplay,
     CompactLargeSearchTopBarDisplay,
+    ScrolledFadeTopBarDisplay,
     DropdownDisplay,
     DialogDisplay,
     BottomSheetDisplay,

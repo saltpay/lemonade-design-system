@@ -14,6 +14,8 @@ import com.teya.lemonade.DialogSampleDisplay
 import com.teya.lemonade.Displays
 import com.teya.lemonade.DropdownDisplay
 import com.teya.lemonade.DropdownSampleDisplay
+import com.teya.lemonade.ScrolledFadeTopBarDisplay
+import com.teya.lemonade.ScrolledFadeTopBarSampleDisplay
 import com.teya.lemonade.SearchTopBarDisplay
 import com.teya.lemonade.SearchTopBarSampleDisplay
 import com.teya.lemonade.TopBarDisplay
@@ -34,4 +36,5 @@ internal actual val platformScreens: Map<Displays, @Composable ((onNavigate: (Di
         CollapsedTopBarDisplay to { _ -> CollapsedTopBarSampleDisplay() },
         CompactLargeTopBarDisplay to { _ -> CompactLargeTopBarSampleDisplay() },
         CompactLargeSearchTopBarDisplay to { _ -> CompactLargeSearchTopBarSampleDisplay() },
+        ScrolledFadeTopBarDisplay to { _ -> ScrolledFadeTopBarSampleDisplay() },
     )
