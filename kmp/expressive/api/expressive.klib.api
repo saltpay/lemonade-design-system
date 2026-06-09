@@ -32,9 +32,6 @@ final class com.teya.lemonade/LemonadeBottomSheetProperties { // com.teya.lemona
         final fun <get-dismissOnBackPress>(): kotlin/Boolean // com.teya.lemonade/LemonadeBottomSheetProperties.dismissOnBackPress.<get-dismissOnBackPress>|<get-dismissOnBackPress>(){}[0]
     final val dismissOnClickOutside // com.teya.lemonade/LemonadeBottomSheetProperties.dismissOnClickOutside|{}dismissOnClickOutside[0]
         final fun <get-dismissOnClickOutside>(): kotlin/Boolean // com.teya.lemonade/LemonadeBottomSheetProperties.dismissOnClickOutside.<get-dismissOnClickOutside>|<get-dismissOnClickOutside>(){}[0]
-
-    final fun equals(kotlin/Any?): kotlin/Boolean // com.teya.lemonade/LemonadeBottomSheetProperties.equals|equals(kotlin.Any?){}[0]
-    final fun hashCode(): kotlin/Int // com.teya.lemonade/LemonadeBottomSheetProperties.hashCode|hashCode(){}[0]
 }
 
 final val com.teya.lemonade/com_teya_lemonade_BottomTabBarItem$stableprop // com.teya.lemonade/com_teya_lemonade_BottomTabBarItem$stableprop|#static{}com_teya_lemonade_BottomTabBarItem$stableprop[0]
