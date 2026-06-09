@@ -1,6 +1,7 @@
 package com.teya.lemonade
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -45,19 +46,15 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonType
@@ -86,7 +83,6 @@ public class TopBarState internal constructor(
     private val coroutineScope: CoroutineScope,
     private val startCollapsed: Boolean = false,
     lockGestureAnimation: Boolean = false,
-    private val scrolledFadeDistancePx: Float = DEFAULT_SCROLLED_FADE_DISTANCE_PX_FALLBACK,
 ) {
     private var lockGestureAnimation by mutableStateOf(lockGestureAnimation)
 
@@ -108,7 +104,7 @@ public class TopBarState internal constructor(
         get() = scrollOffsetAnimatable.value
     internal var maxScrollOffset: Float by mutableFloatStateOf(0f)
 
-    private var scrolledFadeOffsetPx: Float by mutableFloatStateOf(0f)
+    private var scrolledOffsetPx: Float by mutableFloatStateOf(0f)
 
     /** Whether the top bar is fully collapsed (`collapseProgress == 1f`). */
     public val isCollapsed: Boolean by derivedStateOf {
@@ -130,25 +126,15 @@ public class TopBarState internal constructor(
     }
 
     /**
-     * Scroll-driven fade progress between `0f` (content is at the top) and `1f`
-     * (content has scrolled past the fade distance), independent of [collapseProgress].
+     * `true` when the scrollable content has moved off its top, `false` when it sits at the top.
      *
-     * Updated by [nestedScrollConnection] regardless of `lockGestureAnimation`, so a top bar
-     * that's permanently collapsed can still react to scroll — see the
-     * `scrolledBackgroundColor` parameter on [TopBar][LemonadeUi.TopBar].
-     *
-     * Tracked from `onPostScroll(consumed)`, so only the delta the content actually consumed
-     * advances the fade — bar-consumed deltas (collapse) and overscroll do not.
+     * Tracked from `onPostScroll(consumed)` so it follows the content, not bar-consumed scroll
+     * or overscroll. Independent of [collapseProgress] and updated regardless of
+     * `lockGestureAnimation`, so a permanently-collapsed bar can still react to scroll — see
+     * the `scrolledBackgroundColor` parameter on [TopBar][LemonadeUi.TopBar].
      */
-    public val scrolledFadeProgress: Float by derivedStateOf {
-        if (scrolledFadeDistancePx <= 0f) {
-            0f
-        } else {
-            (scrolledFadeOffsetPx / scrolledFadeDistancePx).coerceIn(
-                minimumValue = 0f,
-                maximumValue = 1f,
-            )
-        }
+    public val isScrolled: Boolean by derivedStateOf {
+        scrolledOffsetPx > 0f
     }
 
     internal val heightOffset: Float by derivedStateOf {
@@ -281,21 +267,9 @@ public class TopBarState internal constructor(
 
     private fun accumulateScrolledFade(deltaY: Float) {
         if (deltaY == 0f) return
-        scrolledFadeOffsetPx = (scrolledFadeOffsetPx - deltaY).coerceIn(
-            minimumValue = 0f,
-            maximumValue = scrolledFadeDistancePx,
-        )
+        scrolledOffsetPx = (scrolledOffsetPx - deltaY).coerceAtLeast(minimumValue = 0f)
     }
 }
-
-// Fallback for direct internal `TopBarState(...)` construction without a Density-aware caller.
-// 48px ≈ 16dp at xxhdpi, ≈ 48dp at mdpi — densities diverge, hence the fallback label. Real callers
-// go through `rememberTopBarState`, which converts a Dp default via LocalDensity.
-private const val DEFAULT_SCROLLED_FADE_DISTANCE_PX_FALLBACK: Float = 48f
-
-// The density-independent default surfaced to consumers via rememberTopBarState. Short distance
-// so the bar reaches its scrolled appearance after a short flick.
-private val DefaultScrolledFadeDistance: Dp = 24.dp
 
 /**
  * Creates and remembers a [TopBarState] instance.
@@ -338,17 +312,14 @@ public fun rememberTopBarState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     startCollapsed: Boolean = false,
     lockGestureAnimation: Boolean = false,
-): TopBarState {
-    val scrolledFadeDistancePx = with(LocalDensity.current) { DefaultScrolledFadeDistance.toPx() }
-    return remember(startCollapsed, lockGestureAnimation, scrolledFadeDistancePx) {
+): TopBarState =
+    remember(startCollapsed, lockGestureAnimation) {
         TopBarState(
             coroutineScope = coroutineScope,
             startCollapsed = startCollapsed,
             lockGestureAnimation = lockGestureAnimation,
-            scrolledFadeDistancePx = scrolledFadeDistancePx,
         )
     }
-}
 
 /**
  * Holds the configuration for the navigation action displayed in the leading slot of a [TopBar][LemonadeUi.TopBar].
@@ -410,7 +381,7 @@ public data class NavigationAction(
  * @param backgroundColor The background color of the top bar when the scrollable content is at the top.
  * @param scrolledBackgroundColor Optional background color the top bar fades to once the
  *        scrollable content has moved off the top. When `null` (default) the bar keeps [backgroundColor]
- *        at all times. The fade is driven by [TopBarState.scrolledFadeProgress] and works even when
+ *        at all times. The fade is driven by [TopBarState.isScrolled] and works even when
  *        `lockGestureAnimation = true`, so a permanently-collapsed bar can sit on a transparent gradient
  *        at the top and switch to a solid theme color while the user scrolls.
  * @param modifier [Modifier] applied to the top bar container.
@@ -425,17 +396,16 @@ public fun LemonadeUi.TopBar(
     modifier: Modifier = Modifier,
     state: TopBarState = rememberTopBarState(),
     backgroundColor: Color = LocalColors.current.background.bgDefault,
-    scrolledBackgroundColor: Color? = null,
+    scrolledBackgroundColor: Color = backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0),
     collapsedLabel: String? = null,
     subtitle: String? = null,
     navigationAction: NavigationAction? = null,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
-    val effectiveBackgroundColor = effectiveBackgroundColor(
-        backgroundColor = backgroundColor,
-        scrolledBackgroundColor = scrolledBackgroundColor,
-        state = state,
+    val effectiveBackgroundColor by animateColorAsState(
+        targetValue = if (state.isScrolled) scrolledBackgroundColor else backgroundColor,
+        label = "TopBarBackgroundColor",
     )
     CoreTopBar(
         state = state,
@@ -495,28 +465,14 @@ public fun LemonadeUi.TopBar(
     )
 }
 
-@Composable
-private fun effectiveBackgroundColor(
-    backgroundColor: Color,
-    scrolledBackgroundColor: Color?,
-    state: TopBarState,
-): Color =
-    if (scrolledBackgroundColor != null) {
-        lerp(
-            start = backgroundColor,
-            stop = scrolledBackgroundColor,
-            fraction = state.scrolledFadeProgress,
-        )
-    } else {
-        backgroundColor
-    }
-
 @Deprecated(
     message = "Use the overload with a scrolledBackgroundColor parameter.",
     replaceWith = ReplaceWith(
-        expression = "TopBar(label, modifier, state, backgroundColor, null, collapsedLabel, subtitle, " +
-            "navigationAction, trailingSlot, bottomSlot)",
+        expression = "TopBar(label, modifier, state, backgroundColor, " +
+            "backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0), collapsedLabel, " +
+            "subtitle, navigationAction, trailingSlot, bottomSlot)",
     ),
+    level = DeprecationLevel.HIDDEN,
 )
 @Composable
 public fun LemonadeUi.TopBar(
@@ -634,7 +590,7 @@ public fun LemonadeUi.TopBar(
  * @param backgroundColor The background color of the top bar when the scrollable content is at the top.
  * @param scrolledBackgroundColor Optional background color the top bar fades to once the
  *        scrollable content has moved off the top. When `null` (default) the bar keeps [backgroundColor]
- *        at all times. See [TopBarState.scrolledFadeProgress].
+ *        at all times. See [TopBarState.isScrolled].
  * @param expandedLabel Optional large title displayed above the search field in the collapsable area.
  * @param subtitle Optional secondary text displayed below the title in both expanded (below [expandedLabel], left-aligned) and collapsed (below [label], centered) states.
  * @param navigationAction Optional [NavigationAction] displayed in the leading slot (e.g. back or close button).
@@ -651,7 +607,7 @@ public fun LemonadeUi.TopBar(
     modifier: Modifier = Modifier,
     state: TopBarState = rememberTopBarState(),
     backgroundColor: Color = LocalColors.current.background.bgDefault,
-    scrolledBackgroundColor: Color? = null,
+    scrolledBackgroundColor: Color = backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0),
     expandedLabel: String? = null,
     subtitle: String? = null,
     navigationAction: NavigationAction? = null,
@@ -662,10 +618,9 @@ public fun LemonadeUi.TopBar(
     var isSearchFocused by remember {
         mutableStateOf(false)
     }
-    val effectiveBackgroundColor = effectiveBackgroundColor(
-        backgroundColor = backgroundColor,
-        scrolledBackgroundColor = scrolledBackgroundColor,
-        state = state,
+    val effectiveBackgroundColor by animateColorAsState(
+        targetValue = if (state.isScrolled) scrolledBackgroundColor else backgroundColor,
+        label = "TopBarBackgroundColor",
     )
     CoreTopBar(
         state = state,
@@ -782,9 +737,11 @@ public fun LemonadeUi.TopBar(
 @Deprecated(
     message = "Use the overload with a scrolledBackgroundColor parameter.",
     replaceWith = ReplaceWith(
-        expression = "TopBar(label, searchInput, onSearchChanged, modifier, state, backgroundColor, null, " +
-            "expandedLabel, subtitle, navigationAction, trailingSlot, bottomSlot)",
+        expression = "TopBar(label, searchInput, onSearchChanged, modifier, state, backgroundColor, " +
+            "backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0), expandedLabel, " +
+            "subtitle, navigationAction, trailingSlot, bottomSlot)",
     ),
+    level = DeprecationLevel.HIDDEN,
 )
 @Composable
 @OptIn(ExperimentalLemonadeComponent::class)
@@ -966,7 +923,7 @@ public fun LemonadeUi.TopBar(
  * @param state The [TopBarState] that manages scroll behavior. Create with [rememberTopBarState].
  * @param backgroundColor The background color of the top bar when the scrollable content is at the top.
  * @param scrolledBackgroundColor Optional background color the top bar fades to once the
- *        scrollable content has moved off the top. See [TopBarState.scrolledFadeProgress].
+ *        scrollable content has moved off the top. See [TopBarState.isScrolled].
  * @param trailingSlot Optional composable displayed at the end of the title row (typically action buttons).
  * @param bottomSlot Optional composable displayed below the title. When provided, the title scrolls
  *        away and this slot becomes sticky. When `null`, the title is fixed.
@@ -978,14 +935,13 @@ public fun LemonadeUi.TopBar(
     modifier: Modifier = Modifier,
     state: TopBarState = rememberTopBarState(),
     backgroundColor: Color = LocalColors.current.background.bgDefault,
-    scrolledBackgroundColor: Color? = null,
+    scrolledBackgroundColor: Color = backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0),
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
-    val effectiveBackgroundColor = effectiveBackgroundColor(
-        backgroundColor = backgroundColor,
-        scrolledBackgroundColor = scrolledBackgroundColor,
-        state = state,
+    val effectiveBackgroundColor by animateColorAsState(
+        targetValue = if (state.isScrolled) scrolledBackgroundColor else backgroundColor,
+        label = "TopBarBackgroundColor",
     )
     CoreTopBar(
         state = state,
@@ -1024,8 +980,10 @@ public fun LemonadeUi.TopBar(
 @Deprecated(
     message = "Use the overload with a scrolledBackgroundColor parameter.",
     replaceWith = ReplaceWith(
-        expression = "TopBar(label, subheading, modifier, state, backgroundColor, null, trailingSlot, bottomSlot)",
+        expression = "TopBar(label, subheading, modifier, state, backgroundColor, " +
+            "backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0), trailingSlot, bottomSlot)",
     ),
+    level = DeprecationLevel.HIDDEN,
 )
 @Composable
 public fun LemonadeUi.TopBar(
@@ -1116,7 +1074,7 @@ public fun LemonadeUi.TopBar(
  * @param state The [TopBarState] that manages scroll behavior. Create with [rememberTopBarState].
  * @param backgroundColor The background color of the top bar when the scrollable content is at the top.
  * @param scrolledBackgroundColor Optional background color the top bar fades to once the
- *        scrollable content has moved off the top. See [TopBarState.scrolledFadeProgress].
+ *        scrollable content has moved off the top. See [TopBarState.isScrolled].
  * @param trailingSlot Optional composable displayed at the end of the title row (typically action buttons).
  */
 @Composable
@@ -1129,17 +1087,16 @@ public fun LemonadeUi.TopBar(
     modifier: Modifier = Modifier,
     state: TopBarState = rememberTopBarState(),
     backgroundColor: Color = LocalColors.current.background.bgDefault,
-    scrolledBackgroundColor: Color? = null,
+    scrolledBackgroundColor: Color = backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0),
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
 ) {
     val focusManager = LocalFocusManager.current
     var isSearchFocused by remember {
         mutableStateOf(false)
     }
-    val effectiveBackgroundColor = effectiveBackgroundColor(
-        backgroundColor = backgroundColor,
-        scrolledBackgroundColor = scrolledBackgroundColor,
-        state = state,
+    val effectiveBackgroundColor by animateColorAsState(
+        targetValue = if (state.isScrolled) scrolledBackgroundColor else backgroundColor,
+        label = "TopBarBackgroundColor",
     )
     CoreTopBar(
         state = state,
@@ -1194,8 +1151,10 @@ public fun LemonadeUi.TopBar(
     message = "Use the overload with a scrolledBackgroundColor parameter.",
     replaceWith = ReplaceWith(
         expression = "TopBar(label, subheading, searchInput, onSearchChanged, modifier, state, " +
-            "backgroundColor, null, trailingSlot)",
+            "backgroundColor, backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0), " +
+            "trailingSlot)",
     ),
+    level = DeprecationLevel.HIDDEN,
 )
 @Composable
 @OptIn(ExperimentalLemonadeComponent::class)
