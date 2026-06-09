@@ -27,6 +27,7 @@ internal fun BottomSheetSampleDisplay() {
     var showBasicSheet by remember { mutableStateOf(false) }
     var showNoDragHandleSheet by remember { mutableStateOf(false) }
     var showSubtleSheet by remember { mutableStateOf(false) }
+    var showNonDismissibleSheet by remember { mutableStateOf(false) }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
@@ -72,6 +73,21 @@ internal fun BottomSheetSampleDisplay() {
             LemonadeUi.Button(
                 label = "Open Subtle Background",
                 onClick = { showSubtleSheet = true },
+                variant = LemonadeButtonVariant.Secondary,
+                size = LemonadeButtonSize.Medium,
+            )
+        }
+
+        // Non-dismissible scrim / back press
+        BottomSheetSection(title = "Non-dismissible") {
+            LemonadeUi.Text(
+                text = "Scrim taps and back presses are ignored; the sheet must be closed via the button.",
+                textStyle = LemonadeTheme.typography.bodySmallRegular,
+                color = LemonadeTheme.colors.content.contentSecondary,
+            )
+            LemonadeUi.Button(
+                label = "Open Non-dismissible",
+                onClick = { showNonDismissibleSheet = true },
                 variant = LemonadeButtonVariant.Secondary,
                 size = LemonadeButtonSize.Medium,
             )
@@ -165,6 +181,41 @@ internal fun BottomSheetSampleDisplay() {
             LemonadeUi.Button(
                 label = "Close",
                 onClick = { showSubtleSheet = false },
+                variant = LemonadeButtonVariant.Primary,
+                size = LemonadeButtonSize.Medium,
+            )
+            Spacer(
+                modifier = Modifier.height(LemonadeTheme.spaces.spacing400),
+            )
+        }
+    }
+
+    // Non-dismissible (custom properties)
+    LemonadeUi.BottomSheet(
+        expanded = showNonDismissibleSheet,
+        onDismissRequest = { showNonDismissibleSheet = false },
+        properties = LemonadeBottomSheetProperties(
+            dismissOnBackPress = false,
+            dismissOnClickOutside = false,
+        ),
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(LemonadeTheme.spaces.spacing400),
+        ) {
+            LemonadeUi.Text(
+                text = "Non-dismissible",
+                textStyle = LemonadeTheme.typography.headingSmall,
+            )
+            LemonadeUi.Text(
+                text = "Scrim taps and back presses are ignored. Use the button below to close.",
+                color = LemonadeTheme.colors.content.contentSecondary,
+            )
+            LemonadeUi.Button(
+                label = "Close",
+                onClick = { showNonDismissibleSheet = false },
                 variant = LemonadeButtonVariant.Primary,
                 size = LemonadeButtonSize.Medium,
             )
