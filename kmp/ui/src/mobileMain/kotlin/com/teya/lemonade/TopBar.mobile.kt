@@ -279,6 +279,15 @@ public class TopBarState internal constructor(
     }
 }
 
+// 400ms tween over FastOutSlowInEasing — gentle enough that high-contrast transitions
+// (e.g. Color.Transparent → bgDefault on a details screen) read as a fade rather than a snap.
+// The default `animateColorAsState` spring (StiffnessMedium = 1500f) completes in ~150ms which
+// looked like a hard jump on the bar background.
+private val TopBarBackgroundAnimationSpec: AnimationSpec<Color> = tween(
+    durationMillis = 400,
+    easing = FastOutSlowInEasing,
+)
+
 /**
  * Creates and remembers a [TopBarState] instance.
  *
@@ -413,6 +422,7 @@ public fun LemonadeUi.TopBar(
 ) {
     val effectiveBackgroundColor by animateColorAsState(
         targetValue = if (state.isScrolled) scrolledBackgroundColor else backgroundColor,
+        animationSpec = TopBarBackgroundAnimationSpec,
         label = "TopBarBackgroundColor",
     )
     CoreTopBar(
@@ -435,7 +445,6 @@ public fun LemonadeUi.TopBar(
                 subtitle = subtitle,
                 isCollapsed = state.isCollapsed,
                 modifier = fixedHeaderModifier
-                    .background(color = effectiveBackgroundColor)
                     .zIndex(zIndex = 1f)
                     .padding(
                         horizontal = LocalSpaces.current.spacing200,
@@ -514,7 +523,6 @@ public fun LemonadeUi.TopBar(
                 subtitle = subtitle,
                 isCollapsed = state.isCollapsed,
                 modifier = fixedHeaderModifier
-                    .background(color = backgroundColor)
                     .zIndex(zIndex = 1f)
                     .padding(
                         horizontal = LocalSpaces.current.spacing200,
@@ -628,6 +636,7 @@ public fun LemonadeUi.TopBar(
     }
     val effectiveBackgroundColor by animateColorAsState(
         targetValue = if (state.isScrolled) scrolledBackgroundColor else backgroundColor,
+        animationSpec = TopBarBackgroundAnimationSpec,
         label = "TopBarBackgroundColor",
     )
     CoreTopBar(
@@ -636,7 +645,6 @@ public fun LemonadeUi.TopBar(
         fixedHeaderSlot = { fixedHeaderModifier ->
             AnimatedContent(
                 modifier = fixedHeaderModifier
-                    .background(color = effectiveBackgroundColor)
                     .zIndex(zIndex = 1f)
                     .padding(
                         horizontal = LocalSpaces.current.spacing200,
@@ -776,7 +784,6 @@ public fun LemonadeUi.TopBar(
         fixedHeaderSlot = { fixedHeaderModifier ->
             AnimatedContent(
                 modifier = fixedHeaderModifier
-                    .background(color = backgroundColor)
                     .zIndex(zIndex = 1f)
                     .padding(
                         horizontal = LocalSpaces.current.spacing200,
@@ -949,6 +956,7 @@ public fun LemonadeUi.TopBar(
 ) {
     val effectiveBackgroundColor by animateColorAsState(
         targetValue = if (state.isScrolled) scrolledBackgroundColor else backgroundColor,
+        animationSpec = TopBarBackgroundAnimationSpec,
         label = "TopBarBackgroundColor",
     )
     CoreTopBar(
@@ -964,7 +972,6 @@ public fun LemonadeUi.TopBar(
                     subheading = subheading,
                     trailingSlot = trailingSlot,
                     modifier = fixedHeaderModifier
-                        .background(color = effectiveBackgroundColor)
                         .zIndex(zIndex = 1f),
                 )
             }
@@ -1016,7 +1023,6 @@ public fun LemonadeUi.TopBar(
                     subheading = subheading,
                     trailingSlot = trailingSlot,
                     modifier = fixedHeaderModifier
-                        .background(color = backgroundColor)
                         .zIndex(zIndex = 1f),
                 )
             }
@@ -1104,6 +1110,7 @@ public fun LemonadeUi.TopBar(
     }
     val effectiveBackgroundColor by animateColorAsState(
         targetValue = if (state.isScrolled) scrolledBackgroundColor else backgroundColor,
+        animationSpec = TopBarBackgroundAnimationSpec,
         label = "TopBarBackgroundColor",
     )
     CoreTopBar(
@@ -1113,7 +1120,6 @@ public fun LemonadeUi.TopBar(
         fixedHeaderSlot = { fixedHeaderModifier ->
             AnimatedContent(
                 modifier = fixedHeaderModifier
-                    .background(color = effectiveBackgroundColor)
                     .zIndex(zIndex = 1f),
                 targetState = isSearchFocused,
                 transitionSpec = { expandVertically() togetherWith shrinkVertically() },
@@ -1187,7 +1193,6 @@ public fun LemonadeUi.TopBar(
         fixedHeaderSlot = { fixedHeaderModifier ->
             AnimatedContent(
                 modifier = fixedHeaderModifier
-                    .background(color = backgroundColor)
                     .zIndex(zIndex = 1f),
                 targetState = isSearchFocused,
                 transitionSpec = { expandVertically() togetherWith shrinkVertically() },
@@ -1344,6 +1349,11 @@ internal fun TopBarLayout(
             collapsableSlot(
                 Modifier
                     .layoutId(layoutId = LAYOUT_ID_COLLAPSABLE_SLOT)
+                    // Clip before translating: the slot's top edge is the fixed header's bottom
+                    // edge, so the title disappears under the header without the header needing
+                    // its own background coat. A second translucent coat on the header would
+                    // alpha-stack over the root background and desync the fade above/below it.
+                    .clipToBounds()
                     .graphicsLayer {
                         translationY = state.heightOffset
                         alpha = 1f - state.collapseProgress
