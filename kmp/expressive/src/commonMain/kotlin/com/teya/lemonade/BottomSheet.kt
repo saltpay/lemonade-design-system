@@ -35,6 +35,8 @@ import com.teya.lemonade.core.LemonadeBottomSheetVariant
  * @param background The background variant of the bottom sheet. Defaults to
  *   [LemonadeBottomSheetVariant.Default], which uses [LemonadeTheme.colors.background.bgDefault];
  *   use [LemonadeBottomSheetVariant.Subtle] for [LemonadeTheme.colors.background.bgSubtle].
+ * @param properties Dismissal behaviour for the bottom sheet (back press / scrim tap). Defaults
+ *   to [LemonadeBottomSheetProperties] with both flags enabled.
  * @param content A composable lambda with [ColumnScope] receiver that defines the sheet's content.
  *
  * ## Usage Example
@@ -81,6 +83,7 @@ public fun LemonadeUi.BottomSheet(
     showDragHandle: Boolean = true,
     skipPartiallyExpanded: Boolean = false,
     background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
+    properties: LemonadeBottomSheetProperties = LemonadeBottomSheetProperties(),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     CoreBottomSheet(
@@ -89,6 +92,35 @@ public fun LemonadeUi.BottomSheet(
         showDragHandle = showDragHandle,
         skipPartiallyExpanded = skipPartiallyExpanded,
         background = background,
+        properties = properties,
+        content = content,
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with a properties parameter.",
+    replaceWith = ReplaceWith(
+        "BottomSheet(expanded, onDismissRequest, showDragHandle, skipPartiallyExpanded, " +
+            "background, LemonadeBottomSheetProperties(), content)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.BottomSheet(
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+    showDragHandle: Boolean = true,
+    skipPartiallyExpanded: Boolean = false,
+    background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    BottomSheet(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest,
+        showDragHandle = showDragHandle,
+        skipPartiallyExpanded = skipPartiallyExpanded,
+        background = background,
+        properties = LemonadeBottomSheetProperties(),
         content = content,
     )
 }
@@ -101,6 +133,7 @@ internal fun CoreBottomSheet(
     showDragHandle: Boolean = true,
     skipPartiallyExpanded: Boolean = false,
     background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
+    properties: LemonadeBottomSheetProperties = LemonadeBottomSheetProperties(),
     contentWindowInsets: @Composable () -> WindowInsets = { BottomSheetDefaults.windowInsets },
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -132,6 +165,7 @@ internal fun CoreBottomSheet(
                 null
             },
             contentWindowInsets = contentWindowInsets,
+            properties = properties.toMaterial(),
             content = content,
         )
     }

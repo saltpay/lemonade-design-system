@@ -31,17 +31,19 @@ Two rules decide `BREAKING`, and they are blunt on purpose:
 
 1. **Any `-` line** in the diff (other than the `---` file header). A removal, a
    rename, a return-type change, a narrowed visibility — anything that deletes or
-   alters an existing line counts. One carve-out: a `-`/`+` pair in the same file
-   that differs *only* by the `synthetic` modifier is treated as additive, because
-   that's a `@Deprecated(HIDDEN)` symbol keeping its exact descriptor (more below).
+   alters an existing line counts. There are two carve-outs:
+   - A `-`/`+` pair in the same file that differs *only* by the `synthetic`
+     modifier is treated as additive, because that's a `@Deprecated(HIDDEN)` symbol
+     keeping its exact descriptor (more below).
+   - A `-` line for a name-mangled `internal` member is treated as additive,
+     because it was never public ABI in the first place (more below).
 2. **A `+` abstract member added inside a type that already existed.** That looks
    additive in the diff but throws `AbstractMethodError` on consumers who already
    implement the type. A brand-new type with abstract members is fine — nobody
    implements it yet.
 
-That's the whole model. The classifier reads text, not intent, so it stays
-deliberately strict — the `synthetic` carve-out is the only place it reasons about
-what a change actually means for the binary.
+That's the whole model. The classifier reads text, not intent, so outside those
+two carve-outs it stays deliberately strict.
 
 ## Step 1 — see what actually changed
 
@@ -227,6 +229,58 @@ entry, and call the addition out in the PR so a reviewer can confirm the enum is
 really config-only and not something a consumer branches on. Renaming or removing
 an entry is a `-` line and a real break — STOP and escalate.
 
+### A `getLambda$<hash>` line moved and you never touched it
+
+You'll see this when a `@Composable` you edited gains a parameter, and a `-`/`+`
+pair like this shows up in a file you didn't think you changed:
+
+```
+- public final fun getLambda$-968066332$expressive ()Lkotlin/jvm/functions/Function2;
++ public final fun getLambda$1980115960$expressive ()Lkotlin/jvm/functions/Function2;
+```
+
+There is no `getLambda` in your source. It's a Compose-compiler-generated
+singleton in `ComposableSingletons$<File>Kt` that holds a composable lambda which
+captures nothing, for example the `{ BottomSheetDefaults.DragHandle() }` passed
+as `dragHandle`. The `$<hash>` part is the compiler's lambda key, derived from the
+shape of the enclosing composable, so adding a parameter to that composable
+re-hashes it even though the lambda body is identical.
+
+The trailing `$expressive` (or `$expressive_release` on Android) is Kotlin's
+name-mangling for an `internal` symbol. It's bytecode-public only so the module's
+own call sites can link, the module name in the suffix stops any other module from
+resolving it, and it never appears in the `.klib.api` dump (which honours Kotlin
+visibility). A consumer calls `LemonadeUi.BottomSheet(...)` and passes its own
+content; it never names `getLambda$<hash>`. So the hash flip cannot
+`NoSuchMethodError` anyone downstream.
+
+This is not really a Compose rule. The carve-out keys on the `$<module>` mangling,
+which is how Kotlin marks any `internal` member that has to stay public in
+bytecode, so in principle it covers every mangled-internal symbol, not just
+Compose's. In practice Compose is the only case you actually see. BCV already drops
+hand-written `internal` declarations from the dump using Kotlin metadata, so the
+`internal fun CoreBottomSheet`, `internal fun CoreTextField`, and the dozens like
+them never produce a `-`/`+` line no matter how you change them. The
+`ComposableSingletons` lambdas slip past that filter because the compiler emits
+them as public, and they re-hash on their own, so they are the one internal symbol
+you watch move without touching its source.
+
+The classifier knows this: a `-` line whose member name ends in `$<module>` (the
+module is read from the `…/<module>/api/…` path in the diff header) is treated as
+additive, so a lone hash flip lands as `ADDITIONS_ONLY`. You don't need a shim or a
+maintainer gate for it. Trying to "fix" the hash by moving the lambda to another
+file only makes things worse: the singleton just reappears on a different class,
+which is a real removal from the original one. Leave it.
+
+This is scoped tightly: only the trailing `$`-segment is matched against the
+module name, so the genuine default-argument symbols (`copy$default`,
+`show$default`, and the like, whose suffix is `default`) stay flagged as the real
+ABI they are. So does an `internal` member you deliberately publish with
+`@PublishedApi`: that one is emitted unmangled, with no `$<module>` suffix, so the
+carve-out leaves it flagged. That's correct, because a consumer's inlined code can
+call it. Still note the moved line in the PR's API Dump section so a reviewer sees
+it was the mangled singleton and not something load-bearing.
+
 ## Step 3 — regenerate, re-check, then write the PR section
 
 After any of the above:
@@ -246,6 +300,8 @@ exists so a reviewer can read the API delta without re-deriving it. State:
   additive;
 - any interface or enum addition, with a line confirming the type is local-only /
   config-only;
+- any `getLambda$<hash>` line that moved (it's the mangled Compose singleton
+  re-hashing, which the classifier counts as additive);
 - if the verdict is `BREAKING` for a real reason, who needs to approve and why the
   break is acceptable.
 

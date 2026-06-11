@@ -34,6 +34,8 @@ import com.teya.lemonade.core.LemonadeBottomSheetVariant
  * @param skipPartiallyExpanded Whether the partially expanded state should be skipped.
  * @param background The background variant of the bottom sheet. Defaults to
  *   [LemonadeBottomSheetVariant.Default].
+ * @param properties Dismissal behaviour for the bottom sheet (back press / scrim tap). Defaults
+ *   to [LemonadeBottomSheetProperties] with both flags enabled.
  * @param content A composable lambda with [ColumnScope] receiver that defines the sheet's content.
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,6 +47,7 @@ public fun LemonadeUi.BottomSheet(
     showDragHandle: Boolean = true,
     skipPartiallyExpanded: Boolean = false,
     background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
+    properties: LemonadeBottomSheetProperties = LemonadeBottomSheetProperties(),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     CoreBottomSheet(
@@ -53,6 +56,7 @@ public fun LemonadeUi.BottomSheet(
         showDragHandle = showDragHandle,
         skipPartiallyExpanded = skipPartiallyExpanded,
         background = background,
+        properties = properties,
         contentWindowInsets = if (hideNavigationBar) {
             { WindowInsets.statusBars }
         } else {
@@ -64,6 +68,36 @@ public fun LemonadeUi.BottomSheet(
             }
             content()
         },
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with a properties parameter.",
+    replaceWith = ReplaceWith(
+        "BottomSheet(expanded, onDismissRequest, hideNavigationBar, showDragHandle, " +
+            "skipPartiallyExpanded, background, LemonadeBottomSheetProperties(), content)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.BottomSheet(
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+    hideNavigationBar: Boolean,
+    showDragHandle: Boolean = true,
+    skipPartiallyExpanded: Boolean = false,
+    background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    BottomSheet(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest,
+        hideNavigationBar = hideNavigationBar,
+        showDragHandle = showDragHandle,
+        skipPartiallyExpanded = skipPartiallyExpanded,
+        background = background,
+        properties = LemonadeBottomSheetProperties(),
+        content = content,
     )
 }
 

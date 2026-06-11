@@ -210,6 +210,74 @@ class ApiStabilityClassifierTest {
     }
 
     @Test
+    fun `re-hashed Compose getLambda singleton on desktop is additions-only`() {
+        // The PR #224 scenario: adding a parameter to the @Composable that encloses
+        // `{ BottomSheetDefaults.DragHandle() }` re-hashes the ComposableSingletons
+        // lambda key. The symbol is internal (mangled `$expressive`), so it is not a break.
+        val diff = """
+            --- a/kmp/expressive/api/desktop/expressive.api
+            +++ b/kmp/expressive/api/desktop/expressive.api
+            @@ -1,4 +1,4 @@
+             public final class com/teya/lemonade/ComposableSingletons${'$'}BottomSheetKt {
+             ${"\t"}public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons${'$'}BottomSheetKt;
+            -${"\t"}public final fun getLambda${'$'}-968066332${'$'}expressive ()Lkotlin/jvm/functions/Function2;
+            +${"\t"}public final fun getLambda${'$'}1980115960${'$'}expressive ()Lkotlin/jvm/functions/Function2;
+             }
+        """.trimIndent()
+        assertEquals(Verdict.AdditionsOnly, ApiStabilityClassifier.classify(diff))
+    }
+
+    @Test
+    fun `re-hashed Compose getLambda singleton on android (variant-suffixed module) is additions-only`() {
+        // Android mangles with the build variant: `$expressive_release`. Still internal.
+        val diff = """
+            --- a/kmp/expressive/api/android/expressive.api
+            +++ b/kmp/expressive/api/android/expressive.api
+            @@ -1,3 +1,3 @@
+             public final class com/teya/lemonade/ComposableSingletons${'$'}BottomSheetKt {
+            -${"\t"}public final fun getLambda${'$'}-968066332${'$'}expressive_release ()Lkotlin/jvm/functions/Function2;
+            +${"\t"}public final fun getLambda${'$'}1980115960${'$'}expressive_release ()Lkotlin/jvm/functions/Function2;
+             }
+        """.trimIndent()
+        assertEquals(Verdict.AdditionsOnly, ApiStabilityClassifier.classify(diff))
+    }
+
+    @Test
+    fun `removing a mangled internal symbol outright is additions-only`() {
+        // Even with no replacement, dropping an internal-mangled member is not a
+        // consumer-visible ABI break.
+        val diff = """
+            --- a/kmp/core/api/desktop/core.api
+            +++ b/kmp/core/api/desktop/core.api
+            @@ -1,3 +1,2 @@
+             public final class com/teya/lemonade/core/ComposableSingletons${'$'}WidgetKt {
+            -${"\t"}public final fun getLambda${'$'}123456${'$'}core ()Lkotlin/jvm/functions/Function2;
+             }
+        """.trimIndent()
+        assertEquals(Verdict.AdditionsOnly, ApiStabilityClassifier.classify(diff))
+    }
+
+    @Test
+    fun `removing a default-argument synthetic is still breaking (not mistaken for mangling)`() {
+        // `foo$default` ends in `default`, not the module name, so the mangling
+        // carve-out must NOT swallow it — removing it breaks defaulted call sites.
+        val diff = """
+            --- a/kmp/core/api/android/core.api
+            +++ b/kmp/core/api/android/core.api
+            @@ -1,3 +1,2 @@
+             public final class com/teya/lemonade/core/BcvKt {
+            -${"\t"}public static synthetic fun foo${'$'}default (Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
+             }
+        """.trimIndent()
+        val verdict = ApiStabilityClassifier.classify(diff)
+        assertIs<Verdict.Breaking>(verdict)
+        assertTrue(
+            verdict.reasons.any { it.contains("foo\$default") },
+            "Expected the removed default-arg synthetic to stay flagged. Reasons: ${verdict.reasons}",
+        )
+    }
+
+    @Test
     fun `empty input is NoChanges`() {
         assertEquals(Verdict.NoChanges, ApiStabilityClassifier.classify(""))
         assertEquals(Verdict.NoChanges, ApiStabilityClassifier.classify("   \n  \n"))
