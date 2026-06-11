@@ -83,7 +83,7 @@ private struct LemonadeTabsView: View {
     @State private var didInitialScroll = false
     @State private var contentWrapperWidths: [Int: CGFloat] = [:]
 
-    // Mirrors KMP's `scrollState.canScrollForward`: the fade only paints when
+    // Mirrors KMP's `scrollState.canScrollForward`: the fade only applies when
     // the strip is scrollable AND there is still content beyond the trailing
     // edge. `scrollOffset` is observed live from the underlying UIScrollView
     // via `ScrollViewOffsetObserver`, since SwiftUI's ScrollView doesn't
@@ -122,16 +122,17 @@ private struct LemonadeTabsView: View {
                                 .onChange(of: geo.size.width) { containerWidth = $0 }
                         }
                     )
-                    .overlay(alignment: .trailing) {
-                        if showTrailingFade {
+                    .mask(alignment: .leading) {
+                        HStack(spacing: 0) {
+                            Rectangle().fill(Color.black)
                             LinearGradient(
-                                colors: [.clear, LemonadeTheme.colors.background.bgDefault],
+                                colors: [.black, .clear],
                                 startPoint: .leading,
                                 endPoint: .trailing
                             )
-                            .frame(width: max(containerWidth * 0.15, 0))
-                            .allowsHitTesting(false)
+                            .frame(width: showTrailingFade ? max(containerWidth * 0.15, 0) : 0)
                         }
+                        .animation(.easeInOut(duration: 0.2), value: showTrailingFade)
                     }
                     .onChange(of: selectedIndex) { newIndex in
                         // Any intentional selection change supersedes the
