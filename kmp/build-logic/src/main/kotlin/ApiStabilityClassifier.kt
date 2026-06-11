@@ -11,13 +11,24 @@
  *  1. Any `-` line (excluding `---` file headers) — a declaration was removed,
  *     renamed, had its signature changed, or had its visibility narrowed.
  *
- *     Exception: a `-` line that differs from a `+` line in the *same file* only
+ *     Exception A: a `-` line that differs from a `+` line in the *same file* only
  *     by the JVM `synthetic` modifier is NOT a break. `synthetic` is the bytecode
  *     marker Kotlin emits for a `@Deprecated(level = HIDDEN)` member. The method
  *     keeps its exact descriptor (owner, name, parameters, return type), so every
  *     already-compiled consumer still links against it — only the source-level
  *     visibility changes. This is the standard "add a default parameter / rename
  *     a function while keeping the old binary symbol" pattern, and it auto-passes.
+ *
+ *     Exception B: a `-` line for a member carrying Kotlin's internal
+ *     name-mangling suffix `$<module>` (Android variants append `_<variant>`, e.g.
+ *     `$expressive_release`) is NOT a break. Kotlin mangles `internal` members
+ *     that must stay public in bytecode with the module name so no other module
+ *     can resolve them. They leak into the JVM `.api` dump as that artifact — the
+ *     Kotlin-visibility-aware `.klib.api` dump omits them — and only the module's
+ *     own compiled call sites reference them, always recompiling in lockstep. The
+ *     usual case is a Compose `ComposableSingletons$<File>Kt.getLambda$<hash>` whose
+ *     key re-hashes when a surrounding `@Composable` changes shape. See
+ *     [String.isInternalMangled].
  *
  *  2. A `+` line declaring an abstract member (`abstract fun|val|var`) inside
  *     a class/interface block whose declaration line is **not** also a `+`
@@ -66,9 +77,12 @@ public object ApiStabilityClassifier {
         val realRemovals = mutableListOf<String>()
         var added = mutableListOf<String>()
         var removed = mutableListOf<String>()
+        var module = ""
 
         fun flushFile() {
             for (removedLine in removed) {
+                // Mangled internal members are not part of the public ABI (Exception B).
+                if (removedLine.isInternalMangled(module)) continue
                 val removedSignature = removedLine.stripSyntheticModifier()
                 val syntheticOnly = added.any { addedLine ->
                     addedLine != removedLine && addedLine.stripSyntheticModifier() == removedSignature
@@ -81,8 +95,11 @@ public object ApiStabilityClassifier {
 
         for (line in diff.lineSequence()) {
             when {
-                line.startsWith("---") -> flushFile()
-                line.startsWith("+++") -> Unit
+                line.startsWith("---") -> {
+                    flushFile()
+                    moduleFromHeader(line)?.let { module = it }
+                }
+                line.startsWith("+++") -> moduleFromHeader(line)?.let { module = it }
                 line.startsWith("+") -> {
                     val body = line.removePrefix("+").trim()
                     if (body.isNotEmpty()) added += body
@@ -95,6 +112,38 @@ public object ApiStabilityClassifier {
         }
         flushFile()
         return realRemovals
+    }
+
+    /**
+     * Pulls the module name out of a diff file-header line such as
+     * `--- a/kmp/expressive/api/desktop/expressive.api` (→ `expressive`). The
+     * regex keys on the `<module>/api/` segment, so it works whether the path is
+     * repo-relative (`a/kmp/expressive/api/…`) or module-relative
+     * (`a/expressive/api/…`). Returns null for headers with no such path (e.g.
+     * `/dev/null`), leaving the previously seen module in place.
+     */
+    private fun moduleFromHeader(headerLine: String): String? =
+        modulePathRegex.find(headerLine)?.groupValues?.get(1)
+
+    /**
+     * True when this `.api` line declares a member carrying Kotlin's internal
+     * name-mangling suffix `$<module>` (Android variants append `_<variant>`, e.g.
+     * `$expressive_release`). Such a member is `internal`: bytecode-public only so
+     * the same module's own call sites can link, name-mangled so no other module
+     * can resolve it, and absent from the `.klib.api` dump. Renaming or removing
+     * one — e.g. a Compose `getLambda$<hash>$<module>` singleton re-hashing when a
+     * surrounding `@Composable` gains a parameter — can never break an external
+     * consumer, so it is not an ABI break.
+     *
+     * Only the trailing `$`-segment is compared to the module name, so the real
+     * default-argument symbols (`copy$default`, `show$default`, …) are left
+     * flagged: their suffix is `default`, never the module name.
+     */
+    private fun String.isInternalMangled(module: String): Boolean {
+        if (module.isEmpty()) return false
+        val name = jvmMemberNameRegex.find(trim())?.groupValues?.get(1) ?: return false
+        val mangleSuffix = name.substringAfterLast('$', missingDelimiterValue = "")
+        return mangleSuffix == module || mangleSuffix.startsWith("${module}_")
     }
 
     /**
@@ -186,6 +235,10 @@ public object ApiStabilityClassifier {
     private val syntheticModifierRegex = Regex("""synthetic (?=fun |field )""")
 
     private val whitespaceRegex = Regex("""\s+""")
+
+    private val modulePathRegex = Regex("""(?:^|/)([\w.\-]+)/api/""")
+
+    private val jvmMemberNameRegex = Regex("""\b(?:fun|field)\s+([^\s(]+)""")
 
     private val jvmAbstractMemberRegex = Regex(
         """^public\s+abstract\s+(?:fun|field)\s+(\w+)"""

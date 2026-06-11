@@ -58,8 +58,11 @@ re-deriving the diff. Cover:
 - the verdict;
 - the changes that are *not* a concern, and why — interface additions (local-only
   interfaces), enum entry additions (config-only enums the component switches on),
-  and any `@Deprecated(HIDDEN)` overload whose `-` line is just the `synthetic`
-  flag with an unchanged descriptor;
+  any `@Deprecated(HIDDEN)` overload whose `-` line is just the `synthetic`
+  flag with an unchanged descriptor, and any name-mangled `internal` line that
+  moved (e.g. a Compose `getLambda$<hash>$<module>` singleton re-hashing when a
+  `@Composable` gains a parameter); these are internal and never consumer-visible,
+  so the classifier counts them as additive;
 - any genuine `BREAKING` change, who needs to approve it, and why it's acceptable.
 
 If the baseline didn't change, write "No public API changes" and leave it at that.
