@@ -14,13 +14,13 @@ struct ContentListItemDisplayView: View {
                         value: "John Doe",
                         showDivider: true
                     )
-
+                    
                     LemonadeUi.ContentListItem(
                         label: "Account number",
                         value: "1234-5678"
                     )
                 }
-
+                
                 // MARK: - Horizontal Simple (Long Text)
                 LemonadeUi.Card(
                     header: CardHeaderConfig(title: "Horizontal Simple — Long Text")
@@ -30,21 +30,21 @@ struct ContentListItemDisplayView: View {
                         value: "This value is intentionally very long to demonstrate how the horizontal simple layout handles multi-line text wrapping across several lines in a constrained width",
                         showDivider: true
                     )
-
+                    
                     LemonadeUi.ContentListItem(
                         label: "Short label",
                         value: "A much longer value that should wrap onto multiple lines to test alignment behavior when only one side is long",
                         showDivider: true,
                         verticalAlignment: .top
                     )
-
+                    
                     LemonadeUi.ContentListItem(
                         label: "Address",
                         value: "Westminster, London SW1A 2HQ, United Kingdom",
                         verticalAlignment: .top
                     )
                 }
-
+                
                 // MARK: - Horizontal with Leading + Trailing
                 LemonadeUi.Card(
                     header: CardHeaderConfig(title: "Horizontal with Leading + Trailing")
@@ -69,7 +69,7 @@ struct ContentListItemDisplayView: View {
                         }
                     )
                 }
-
+                
                 // MARK: - Horizontal with Content Slot
                 LemonadeUi.Card(
                     header: CardHeaderConfig(title: "Horizontal with Content Slot")
@@ -82,7 +82,7 @@ struct ContentListItemDisplayView: View {
                         }
                     )
                 }
-
+                
                 // MARK: - Vertical Small
                 LemonadeUi.Card(
                     header: CardHeaderConfig(title: "Vertical Small")
@@ -93,7 +93,7 @@ struct ContentListItemDisplayView: View {
                         layout: .vertical
                     )
                 }
-
+                
                 // MARK: - Vertical Small with Leading + Trailing
                 LemonadeUi.Card(
                     header: CardHeaderConfig(title: "Vertical Small with Leading + Trailing")
@@ -119,7 +119,7 @@ struct ContentListItemDisplayView: View {
                         }
                     )
                 }
-
+                
                 // MARK: - Vertical Large (with Content Slot)
                 LemonadeUi.Card(
                     header: CardHeaderConfig(title: "Vertical Large")
@@ -133,7 +133,7 @@ struct ContentListItemDisplayView: View {
                         }
                     )
                 }
-
+                
                 // MARK: - Vertical Large with All Slots
                 LemonadeUi.Card(
                     header: CardHeaderConfig(title: "Vertical Large with All Slots")
@@ -162,6 +162,44 @@ struct ContentListItemDisplayView: View {
                         }
                     )
                 }
+                
+                // MARK: - Density — Comfortable (default)
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(title: "Density — Comfortable (default)")
+                ) {
+                    LemonadeUi.ContentListItem(
+                        label: "Account holder",
+                        value: "John Doe",
+                        showDivider: true,
+                        density: .comfortable
+                    )
+
+                    LemonadeUi.ContentListItem(
+                        label: "Balance",
+                        value: "$1,234.56",
+                        layout: .vertical,
+                        density: .comfortable
+                    )
+                }
+
+                // MARK: - Density — Compact
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(title: "Density — Compact")
+                ) {
+                    LemonadeUi.ContentListItem(
+                        label: "Account holder",
+                        value: "John Doe",
+                        showDivider: true,
+                        density: .compact
+                    )
+
+                    LemonadeUi.ContentListItem(
+                        label: "Balance",
+                        value: "$1,234.56",
+                        layout: .vertical,
+                        density: .compact
+                    )
+                }
 
                 // MARK: - Mixed List with Dividers
                 LemonadeUi.Card(
@@ -172,14 +210,14 @@ struct ContentListItemDisplayView: View {
                         value: "Value",
                         showDivider: true
                     )
-
+                    
                     LemonadeUi.ContentListItem(
                         label: "Label",
                         value: "Value",
                         layout: .vertical,
                         showDivider: true
                     )
-
+                    
                     LemonadeUi.ContentListItem(
                         label: "Label",
                         value: "Value",

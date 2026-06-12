@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.teya.lemonade.core.LemonadeAssetSize
+import com.teya.lemonade.core.LemonadeContentListItemDensity
 import com.teya.lemonade.core.LemonadeContentListItemLayout
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.SymbolContainerSize
@@ -44,6 +45,8 @@ import com.teya.lemonade.core.SymbolContainerVoice
  * @param layout - [LemonadeContentListItemLayout] horizontal or vertical arrangement.
  * @param modifier - [Modifier] to be applied to the root container.
  * @param showDivider - Whether to display a bottom divider below the item.
+ * @param density - [LemonadeContentListItemDensity] controlling the vertical padding. Defaults to
+ *   [LemonadeContentListItemDensity.Comfortable].
  * @param leadingSlot - Optional slot for a leading element (e.g. SymbolContainer).
  * @param trailingSlot - Optional slot for a trailing element (e.g. icon action).
  * @param contentSlot - Optional slot for additional content. In vertical layout, this also
@@ -57,12 +60,20 @@ public fun LemonadeUi.ContentListItem(
     layout: LemonadeContentListItemLayout = LemonadeContentListItemLayout.Horizontal,
     modifier: Modifier = Modifier,
     showDivider: Boolean = false,
+    density: LemonadeContentListItemDensity = LemonadeContentListItemDensity.Comfortable,
     verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     contentSlot: (@Composable ColumnScope.() -> Unit)? = null,
 ) {
-    val contentModifier = Modifier.padding(all = LocalSpaces.current.spacing400)
+    val verticalPadding = when (density) {
+        LemonadeContentListItemDensity.Comfortable -> LocalSpaces.current.spacing400
+        LemonadeContentListItemDensity.Compact -> LocalSpaces.current.spacing200
+    }
+    val contentModifier = Modifier.padding(
+        horizontal = LocalSpaces.current.spacing400,
+        vertical = verticalPadding,
+    )
 
     Column(modifier = modifier) {
         when (layout) {
@@ -92,6 +103,41 @@ public fun LemonadeUi.ContentListItem(
             )
         }
     }
+}
+
+@Deprecated(
+    message = "Use the overload with a density parameter.",
+    replaceWith = ReplaceWith(
+        expression = "ContentListItem(label, value, layout, modifier, showDivider, " +
+            "LemonadeContentListItemDensity.Comfortable, verticalAlignment, " +
+            "leadingSlot, trailingSlot, contentSlot)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.ContentListItem(
+    label: String,
+    value: String,
+    layout: LemonadeContentListItemLayout = LemonadeContentListItemLayout.Horizontal,
+    modifier: Modifier = Modifier,
+    showDivider: Boolean = false,
+    verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    contentSlot: (@Composable ColumnScope.() -> Unit)? = null,
+) {
+    ContentListItem(
+        label = label,
+        value = value,
+        layout = layout,
+        modifier = modifier,
+        showDivider = showDivider,
+        density = LemonadeContentListItemDensity.Comfortable,
+        verticalAlignment = verticalAlignment,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        contentSlot = contentSlot,
+    )
 }
 
 @Composable
@@ -203,6 +249,7 @@ private fun VerticalContentListItem(
 
 private data class ContentListItemPreviewData(
     val layout: LemonadeContentListItemLayout,
+    val density: LemonadeContentListItemDensity,
     val hasLeading: Boolean,
     val hasTrailing: Boolean,
     val hasContentSlot: Boolean,
@@ -214,19 +261,22 @@ private class ContentListItemPreviewProvider :
     override val values: Sequence<ContentListItemPreviewData> =
         buildList {
             LemonadeContentListItemLayout.entries.forEach { layout ->
-                listOf(true, false).forEach { leading ->
-                    listOf(true, false).forEach { trailing ->
-                        listOf(true, false).forEach { contentSlot ->
-                            listOf(true, false).forEach { divider ->
-                                add(
-                                    ContentListItemPreviewData(
-                                        layout = layout,
-                                        hasLeading = leading,
-                                        hasTrailing = trailing,
-                                        hasContentSlot = contentSlot,
-                                        showDivider = divider,
-                                    ),
-                                )
+                LemonadeContentListItemDensity.entries.forEach { density ->
+                    listOf(true, false).forEach { leading ->
+                        listOf(true, false).forEach { trailing ->
+                            listOf(true, false).forEach { contentSlot ->
+                                listOf(true, false).forEach { divider ->
+                                    add(
+                                        ContentListItemPreviewData(
+                                            layout = layout,
+                                            density = density,
+                                            hasLeading = leading,
+                                            hasTrailing = trailing,
+                                            hasContentSlot = contentSlot,
+                                            showDivider = divider,
+                                        ),
+                                    )
+                                }
                             }
                         }
                     }
@@ -246,6 +296,7 @@ private fun ContentListItemPreview(
         value = "Value",
         layout = previewData.layout,
         showDivider = previewData.showDivider,
+        density = previewData.density,
         leadingSlot = if (previewData.hasLeading) {
             {
                 LemonadeUi.SymbolContainer(

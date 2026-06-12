@@ -152,6 +152,14 @@ public final class com/teya/lemonade/core/LemonadeCardPadding : java/lang/Enum {
 	public static fun values ()[Lcom/teya/lemonade/core/LemonadeCardPadding;
 }
 
+public final class com/teya/lemonade/core/LemonadeContentListItemDensity : java/lang/Enum {
+	public static final field Comfortable Lcom/teya/lemonade/core/LemonadeContentListItemDensity;
+	public static final field Compact Lcom/teya/lemonade/core/LemonadeContentListItemDensity;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/LemonadeContentListItemDensity;
+	public static fun values ()[Lcom/teya/lemonade/core/LemonadeContentListItemDensity;
+}
+
 public final class com/teya/lemonade/core/LemonadeContentListItemLayout : java/lang/Enum {
 	public static final field Horizontal Lcom/teya/lemonade/core/LemonadeContentListItemLayout;
 	public static final field Vertical Lcom/teya/lemonade/core/LemonadeContentListItemLayout;
