@@ -109,6 +109,11 @@ public fun LemonadeUi.BottomSheet(
  * obtained via [DialogWindowProvider] and configured independently from the Activity window.
  * [DisposableEffect] with key [Unit] runs once when the dialog enters composition, which
  * is early enough — layout happens after composition.
+ *
+ * No cleanup is performed in [onDispose]: the dialog window is destroyed on dismiss, and
+ * the Activity window beneath it was never modified. Calling `show(navigationBars())` here
+ * would tell the OS to animate the navigation bar back into the dying dialog window,
+ * producing a brief visible flicker on close.
  */
 @Composable
 private fun HideNavigationBarEffect() {
@@ -130,11 +135,6 @@ private fun HideNavigationBarEffect() {
             hide(WindowInsetsCompat.Type.navigationBars())
             systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
-        onDispose {
-            with(insetsController) {
-                show(WindowInsetsCompat.Type.navigationBars())
-                systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
-            }
-        }
+        onDispose { /* Dialog window is destroyed on dismiss; no restore needed. */ }
     }
 }
