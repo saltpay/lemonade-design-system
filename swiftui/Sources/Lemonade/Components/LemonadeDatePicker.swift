@@ -293,6 +293,7 @@ private struct CoreDatePickerView: View {
             
             Spacer().frame(height: LemonadeTheme.spaces.spacing100)
             
+            #if os(iOS)
             TabView(selection: $displayedMonthOffset) {
                 ForEach(-centerPage..<centerPage, id: \.self) { offset in
                     MonthGridView(
@@ -309,6 +310,18 @@ private struct CoreDatePickerView: View {
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .frame(height: 300)
+            #else
+            MonthGridView(
+                monthOffset: displayedMonthOffset,
+                baseDate: today,
+                selectedDates: selectedDates,
+                minDate: minDate,
+                maxDate: maxDate,
+                onDateSelected: onDateSelected
+            )
+            .padding(.horizontal, LemonadeTheme.spaces.spacing400)
+            .frame(height: 300)
+            #endif
         }
         .onChange(of: displayedMonthOffset) { _ in
             onMonthDisplayed?(currentYearMonth)
