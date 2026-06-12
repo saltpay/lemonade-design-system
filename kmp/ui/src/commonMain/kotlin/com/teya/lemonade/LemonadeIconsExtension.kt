@@ -56,6 +56,8 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.BasketRemove -> LemonadeRes.drawable.gen_basket_remove
         LemonadeIcons.BatteryHalf -> LemonadeRes.drawable.gen_battery_half
         LemonadeIcons.Bell -> LemonadeRes.drawable.gen_bell
+        LemonadeIcons.BlocksFitting -> LemonadeRes.drawable.gen_blocks_fitting
+        LemonadeIcons.Board -> LemonadeRes.drawable.gen_board
         LemonadeIcons.BrandAndroid -> LemonadeRes.drawable.gen_brand_android
         LemonadeIcons.BrandApple -> LemonadeRes.drawable.gen_brand_apple
         LemonadeIcons.BrandTeyaSquare -> LemonadeRes.drawable.gen_brand_teya_square
@@ -64,6 +66,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.Bubble -> LemonadeRes.drawable.gen_bubble
         LemonadeIcons.Bubbles -> LemonadeRes.drawable.gen_bubbles
         LemonadeIcons.Bug -> LemonadeRes.drawable.gen_bug
+        LemonadeIcons.BuildingBlocks -> LemonadeRes.drawable.gen_building_blocks
         LemonadeIcons.Buildings -> LemonadeRes.drawable.gen_buildings
         LemonadeIcons.BuildingsCheck -> LemonadeRes.drawable.gen_buildings_check
         LemonadeIcons.Calculator -> LemonadeRes.drawable.gen_calculator
@@ -126,6 +129,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.ClockArrowUpRight -> LemonadeRes.drawable.gen_clock_arrow_up_right
         LemonadeIcons.ClockCross -> LemonadeRes.drawable.gen_clock_cross
         LemonadeIcons.ClockTimer -> LemonadeRes.drawable.gen_clock_timer
+        LemonadeIcons.CloudOffline -> LemonadeRes.drawable.gen_cloud_offline
         LemonadeIcons.Coins -> LemonadeRes.drawable.gen_coins
         LemonadeIcons.CoinsDoubleStack -> LemonadeRes.drawable.gen_coins_double_stack
         LemonadeIcons.CoinsStack -> LemonadeRes.drawable.gen_coins_stack
@@ -240,6 +244,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.RescueRing -> LemonadeRes.drawable.gen_rescue_ring
         LemonadeIcons.RotateMoney -> LemonadeRes.drawable.gen_rotate_money
         LemonadeIcons.ScanFace -> LemonadeRes.drawable.gen_scan_face
+        LemonadeIcons.ScriptSparkle -> LemonadeRes.drawable.gen_script_sparkle
         LemonadeIcons.Search -> LemonadeRes.drawable.gen_search
         LemonadeIcons.SearchAi -> LemonadeRes.drawable.gen_search_ai
         LemonadeIcons.Send -> LemonadeRes.drawable.gen_send

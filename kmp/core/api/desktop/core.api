@@ -518,6 +518,8 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field BasketRemove Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field BatteryHalf Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Bell Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field BlocksFitting Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field Board Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field BrandAndroid Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field BrandApple Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field BrandTeyaSquare Lcom/teya/lemonade/core/LemonadeIcons;
@@ -526,6 +528,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field Bubble Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Bubbles Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Bug Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field BuildingBlocks Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Buildings Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field BuildingsCheck Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Calculator Lcom/teya/lemonade/core/LemonadeIcons;
@@ -588,6 +591,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field ClockArrowUpRight Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ClockCross Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ClockTimer Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field CloudOffline Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Coins Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CoinsDoubleStack Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CoinsStack Lcom/teya/lemonade/core/LemonadeIcons;
@@ -702,6 +706,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field RescueRing Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field RotateMoney Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field ScanFace Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field ScriptSparkle Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Search Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field SearchAi Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Send Lcom/teya/lemonade/core/LemonadeIcons;
