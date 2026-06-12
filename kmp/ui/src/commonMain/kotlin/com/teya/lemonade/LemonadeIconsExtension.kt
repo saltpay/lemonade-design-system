@@ -129,6 +129,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.ClockArrowUpRight -> LemonadeRes.drawable.gen_clock_arrow_up_right
         LemonadeIcons.ClockCross -> LemonadeRes.drawable.gen_clock_cross
         LemonadeIcons.ClockTimer -> LemonadeRes.drawable.gen_clock_timer
+        LemonadeIcons.CloudOffline -> LemonadeRes.drawable.gen_cloud_offline
         LemonadeIcons.Coins -> LemonadeRes.drawable.gen_coins
         LemonadeIcons.CoinsDoubleStack -> LemonadeRes.drawable.gen_coins_double_stack
         LemonadeIcons.CoinsStack -> LemonadeRes.drawable.gen_coins_stack
