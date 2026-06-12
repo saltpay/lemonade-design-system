@@ -116,7 +116,7 @@ private fun HideNavigationBarEffect() {
     DisposableEffect(Unit) {
         val dialogWindow = (view.parent as? DialogWindowProvider)
             ?.window
-            ?: return@DisposableEffect onDispose { /* Nothing */ }
+            ?: return@DisposableEffect onDispose { }
 
         val insetsController = WindowCompat.getInsetsController(
             dialogWindow,
@@ -130,11 +130,6 @@ private fun HideNavigationBarEffect() {
             hide(WindowInsetsCompat.Type.navigationBars())
             systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
-        onDispose {
-            with(insetsController) {
-                show(WindowInsetsCompat.Type.navigationBars())
-                systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
-            }
-        }
+        onDispose { }
     }
 }
