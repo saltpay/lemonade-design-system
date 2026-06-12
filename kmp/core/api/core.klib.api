@@ -202,6 +202,17 @@ final enum class com.teya.lemonade.core/LemonadeCardPadding : kotlin/Enum<com.te
     final fun values(): kotlin/Array<com.teya.lemonade.core/LemonadeCardPadding> // com.teya.lemonade.core/LemonadeCardPadding.values|values#static(){}[0]
 }
 
+final enum class com.teya.lemonade.core/LemonadeContentListItemDensity : kotlin/Enum<com.teya.lemonade.core/LemonadeContentListItemDensity> { // com.teya.lemonade.core/LemonadeContentListItemDensity|null[0]
+    enum entry Comfortable // com.teya.lemonade.core/LemonadeContentListItemDensity.Comfortable|null[0]
+    enum entry Compact // com.teya.lemonade.core/LemonadeContentListItemDensity.Compact|null[0]
+
+    final val entries // com.teya.lemonade.core/LemonadeContentListItemDensity.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.teya.lemonade.core/LemonadeContentListItemDensity> // com.teya.lemonade.core/LemonadeContentListItemDensity.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.teya.lemonade.core/LemonadeContentListItemDensity // com.teya.lemonade.core/LemonadeContentListItemDensity.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.teya.lemonade.core/LemonadeContentListItemDensity> // com.teya.lemonade.core/LemonadeContentListItemDensity.values|values#static(){}[0]
+}
+
 final enum class com.teya.lemonade.core/LemonadeContentListItemLayout : kotlin/Enum<com.teya.lemonade.core/LemonadeContentListItemLayout> { // com.teya.lemonade.core/LemonadeContentListItemLayout|null[0]
     enum entry Horizontal // com.teya.lemonade.core/LemonadeContentListItemLayout.Horizontal|null[0]
     enum entry Vertical // com.teya.lemonade.core/LemonadeContentListItemLayout.Vertical|null[0]

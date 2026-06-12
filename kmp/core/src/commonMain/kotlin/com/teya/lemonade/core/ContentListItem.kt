@@ -12,3 +12,14 @@ public enum class LemonadeContentListItemLayout {
     Horizontal,
     Vertical,
 }
+
+/**
+ * Defines the vertical density for ContentListItem.
+ *
+ * [Comfortable] applies a larger vertical padding (spacing400).
+ * [Compact] applies a reduced vertical padding (spacing200).
+ */
+public enum class LemonadeContentListItemDensity {
+    Comfortable,
+    Compact,
+}

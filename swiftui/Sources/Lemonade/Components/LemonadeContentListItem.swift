@@ -10,6 +10,16 @@ public enum LemonadeContentListItemLayout {
     case vertical
 }
 
+// MARK: - LemonadeContentListItemDensity
+
+/// Defines the vertical density for ContentListItem.
+/// - `comfortable`: Larger vertical padding (spacing400)
+/// - `compact`: Reduced vertical padding (spacing200)
+public enum LemonadeContentListItemDensity {
+    case comfortable
+    case compact
+}
+
 // MARK: - Public API
 
 public extension LemonadeUi {
@@ -39,6 +49,7 @@ public extension LemonadeUi {
     ///   - value: Value String to display
     ///   - layout: Horizontal or vertical arrangement
     ///   - showDivider: Whether to display a bottom divider below the item
+    ///   - density: Controls the vertical padding. Defaults to `.comfortable`
     ///   - leadingSlot: Optional leading element (e.g. SymbolContainer)
     ///   - trailingSlot: Optional trailing element (e.g. icon action)
     ///   - contentSlot: Optional additional content. In vertical layout, switches value to larger typography
@@ -49,6 +60,7 @@ public extension LemonadeUi {
         value: String,
         layout: LemonadeContentListItemLayout = .horizontal,
         showDivider: Bool = false,
+        density: LemonadeContentListItemDensity = .comfortable,
         verticalAlignment: VerticalAlignment = .center,
         @ViewBuilder leadingSlot: @escaping () -> Leading = { EmptyView() },
         @ViewBuilder trailingSlot: @escaping () -> Trailing = { EmptyView() },
@@ -59,6 +71,7 @@ public extension LemonadeUi {
             value: value,
             layout: layout,
             showDivider: showDivider,
+            density: density,
             verticalAlignment: verticalAlignment,
             leadingSlot: leadingSlot,
             trailingSlot: trailingSlot,
@@ -74,10 +87,20 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
     let value: String
     let layout: LemonadeContentListItemLayout
     let showDivider: Bool
+    let density: LemonadeContentListItemDensity
     let verticalAlignment: VerticalAlignment
     @ViewBuilder let leadingSlot: () -> Leading
     @ViewBuilder let trailingSlot: () -> Trailing
     @ViewBuilder let contentSlot: () -> Content
+
+    private var verticalPadding: CGFloat {
+        switch density {
+        case .comfortable:
+            LemonadeTheme.spaces.spacing400
+        case .compact:
+            LemonadeTheme.spaces.spacing200
+        }
+    }
 
     private var hasContentSlot: Bool {
         Content.self != EmptyView.self
@@ -101,7 +124,8 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
                     verticalLayout
                 }
             }
-            .padding(LemonadeTheme.spaces.spacing400)
+            .padding(.horizontal, LemonadeTheme.spaces.spacing400)
+            .padding(.vertical, verticalPadding)
 
             if showDivider {
                 LemonadeUi.HorizontalDivider()
@@ -263,6 +287,27 @@ struct LemonadeContentListItem_Previews: PreviewProvider {
                     LemonadeUi.ContentListItem(
                         label: "Label",
                         value: "Value"
+                    )
+                }
+                
+                // Stacked compact list with dividers
+                VStack(spacing: 0) {
+                    LemonadeUi.ContentListItem(
+                        label: "Label",
+                        value: "Value",
+                        showDivider: true,
+                        density: .compact
+                    )
+                    LemonadeUi.ContentListItem(
+                        label: "Label",
+                        value: "Value",
+                        showDivider: true,
+                        density: .compact
+                    )
+                    LemonadeUi.ContentListItem(
+                        label: "Label",
+                        value: "Value",
+                        density: .compact
                     )
                 }
             }

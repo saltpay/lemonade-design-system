@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeAssetSize
+import com.teya.lemonade.core.LemonadeContentListItemDensity
 import com.teya.lemonade.core.LemonadeContentListItemLayout
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.SymbolContainerSize
@@ -207,6 +208,44 @@ internal fun ContentListItemDisplay() {
                         voice = TagVoice.Positive,
                     )
                 },
+            )
+        }
+
+        // Density — Comfortable (default)
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "Density — Comfortable (default)"),
+        ) {
+            LemonadeUi.ContentListItem(
+                label = "Account holder",
+                value = "John Doe",
+                layout = LemonadeContentListItemLayout.Horizontal,
+                density = LemonadeContentListItemDensity.Comfortable,
+                showDivider = true,
+            )
+            LemonadeUi.ContentListItem(
+                label = "Balance",
+                value = "$1,234.56",
+                layout = LemonadeContentListItemLayout.Vertical,
+                density = LemonadeContentListItemDensity.Comfortable,
+            )
+        }
+
+        // Density — Compact
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "Density — Compact"),
+        ) {
+            LemonadeUi.ContentListItem(
+                label = "Account holder",
+                value = "John Doe",
+                layout = LemonadeContentListItemLayout.Horizontal,
+                density = LemonadeContentListItemDensity.Compact,
+                showDivider = true,
+            )
+            LemonadeUi.ContentListItem(
+                label = "Balance",
+                value = "$1,234.56",
+                layout = LemonadeContentListItemLayout.Vertical,
+                density = LemonadeContentListItemDensity.Compact,
             )
         }
 
