@@ -52,7 +52,12 @@ dependencies {
 
 compose.resources {
     generateResClass = ResourcesExtension.ResourceClassGeneration.Always
-    publicResClass = true
+    // Keep the generated LemonadeRes accessors internal: consumers use the typed
+    // LemonadeIcons / LemonadeCountryFlags / LemonadeBrandLogos APIs, never the raw
+    // gen_* drawables. Marking the class internal removes the auto-partitioned
+    // Drawable*_commonMainKt facades from the public ABI, so adding icons no longer
+    // reshuffles public symbols and trips the API Stability gate.
+    publicResClass = false
     nameOfResClass = "LemonadeRes"
     packageOfResClass = "com.teya.lemonade"
 }
