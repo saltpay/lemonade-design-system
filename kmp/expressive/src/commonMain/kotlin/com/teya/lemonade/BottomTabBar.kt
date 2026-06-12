@@ -3,10 +3,16 @@
 
 package com.teya.lemonade
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,26 +21,36 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingToolbarDefaults
 import androidx.compose.material3.HorizontalFloatingToolbar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeShadow
+import kotlin.math.roundToInt
 
 /**
  * Represents a single item in a [LemonadeUi.BottomTabBar].
@@ -55,9 +71,9 @@ public data class BottomTabBarItem(
  * A floating, pill-shaped bottom navigation bar for top-level destinations.
  *
  * Built on Material3's [HorizontalFloatingToolbar] so the bar inherits its elevation, motion and
- * interaction styling. Items are distributed equally across the bar; the selected item is
- * highlighted with an elevated background pill. The component paints a soft scroll-edge gradient
- * behind itself so it floats nicely over scrollable content.
+ * interaction styling. Items are distributed equally across the bar; the selected item is marked by
+ * a single elevated pill that slides between slots as the selection changes. The component paints a
+ * soft scroll-edge gradient behind itself so it floats nicely over scrollable content.
  *
  * The component already applies `Modifier.navigationBarsPadding`, so callers do not need to pad
  * around the system navigation bar themselves.
@@ -79,6 +95,7 @@ public data class BottomTabBarItem(
  *
  * @param items A non-empty list of [BottomTabBarItem] to display.
  * @param selectedIndex The index of the currently selected item. Must be within [items] indices.
+ *   The pill animates to this slot when it changes.
  * @param onItemSelected A callback invoked with the index of the item the user selected.
  * @param modifier The [Modifier] to be applied to the root container of the component.
  */
@@ -89,9 +106,48 @@ public fun LemonadeUi.BottomTabBar(
     onItemSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    require(
+        value = selectedIndex in items.indices,
+        lazyMessage = {
+            "Selected index ($selectedIndex) is out of bounds for items list of size ${items.size}."
+        },
+    )
+    val selectionPosition by animateFloatAsState(
+        targetValue = selectedIndex.toFloat(),
+        animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
+        label = "bottomTabBarSelection",
+    )
     CoreBottomTabBar(
         items = items,
-        selectedIndex = selectedIndex,
+        selectionPosition = selectionPosition,
+        onItemSelected = onItemSelected,
+        modifier = modifier,
+    )
+}
+
+/**
+ * Bottom tab bar whose selection pill is driven by a fractional slot position rather than a discrete
+ * index — drive [selectionPosition] from a gesture or transition (e.g. Android predictive back) to
+ * slide the pill in lock-step with the finger.
+ *
+ * At rest, pass the selected index as a float. The discrete selection used for the icon variant and
+ * accessibility is derived by rounding [selectionPosition].
+ *
+ * @param items A non-empty list of [BottomTabBarItem] to display.
+ * @param selectionPosition The fractional slot index of the pill (resting = the selected index).
+ * @param onItemSelected A callback invoked with the index of the item the user selected.
+ * @param modifier The [Modifier] to be applied to the root container of the component.
+ */
+@Composable
+public fun LemonadeUi.BottomTabBar(
+    items: List<BottomTabBarItem>,
+    selectionPosition: Float,
+    onItemSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    CoreBottomTabBar(
+        items = items,
+        selectionPosition = selectionPosition,
         onItemSelected = onItemSelected,
         modifier = modifier,
     )
@@ -99,11 +155,13 @@ public fun LemonadeUi.BottomTabBar(
 
 private val MaxBarWidth: Dp = 500.dp
 private val ItemHeight: Dp = 54.dp
+private const val SelectedIconScale = 1.12f
+private const val IconCrossfadeMs = 200
 
 @Composable
 internal fun CoreBottomTabBar(
     items: List<BottomTabBarItem>,
-    selectedIndex: Int,
+    selectionPosition: Float,
     onItemSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -111,13 +169,8 @@ internal fun CoreBottomTabBar(
         value = items.isNotEmpty(),
         lazyMessage = { "BottomTabBar items list should not be empty." },
     )
-    require(
-        value = selectedIndex in items.indices,
-        lazyMessage = {
-            "Selected index ($selectedIndex) is out of bounds for items list of size ${items.size}."
-        },
-    )
 
+    val selectedIndex = selectionPosition.roundToInt().coerceIn(0, items.size - 1)
     val edgeColor = LemonadeTheme.colors.background.bgSubtle
 
     Row(
@@ -150,13 +203,41 @@ internal fun CoreBottomTabBar(
             ),
             contentPadding = PaddingValues(all = LemonadeTheme.spaces.spacing100),
         ) {
-            items.forEachIndexed { index, item ->
-                BottomTabBarItemContent(
-                    item = item,
-                    isSelected = index == selectedIndex,
-                    onClick = { onItemSelected(index) },
-                    modifier = Modifier.weight(weight = 1f),
-                )
+            // Plain Box (not BoxWithConstraints): HorizontalFloatingToolbar queries the intrinsic widths
+            // of its content, and a SubcomposeLayout throws on intrinsic queries. The row width is
+            // captured via onSizeChanged so the pill can be positioned in pixels.
+            var rowWidthPx by remember { mutableIntStateOf(0) }
+            Box(
+                modifier = Modifier
+                    .weight(weight = 1f)
+                    .height(height = ItemHeight)
+                    .onSizeChanged { rowWidthPx = it.width },
+            ) {
+                if (rowWidthPx > 0) {
+                    val slotWidthPx = rowWidthPx.toFloat() / items.size
+                    val slotWidthDp = with(LocalDensity.current) { slotWidthPx.toDp() }
+                    val clampedPosition = selectionPosition.coerceIn(0f, (items.size - 1).toFloat())
+
+                    Box(
+                        modifier = Modifier
+                            .offset { IntOffset(x = (slotWidthPx * clampedPosition).roundToInt(), y = 0) }
+                            .width(width = slotWidthDp)
+                            .height(height = ItemHeight)
+                            .clip(shape = LemonadeTheme.shapes.radiusFull)
+                            .background(color = LemonadeTheme.colors.background.bgElevated),
+                    )
+                }
+
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    items.forEachIndexed { index, item ->
+                        BottomTabBarItemContent(
+                            item = item,
+                            isSelected = index == selectedIndex,
+                            onClick = { onItemSelected(index) },
+                            modifier = Modifier.weight(weight = 1f),
+                        )
+                    }
+                }
             }
         }
     }
@@ -169,12 +250,6 @@ private fun BottomTabBarItemContent(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val backgroundColor = if (isSelected) {
-        LemonadeTheme.colors.background.bgElevated
-    } else {
-        LemonadeTheme.colors.background.bgDefault
-    }
-
     val interactionSource = remember { MutableInteractionSource() }
 
     Column(
@@ -183,7 +258,6 @@ private fun BottomTabBarItemContent(
         modifier = modifier
             .height(height = ItemHeight)
             .clip(shape = LemonadeTheme.shapes.radiusFull)
-            .background(color = backgroundColor)
             .clickable(
                 onClick = onClick,
                 role = Role.Tab,
@@ -198,13 +272,35 @@ private fun BottomTabBarItemContent(
         } else {
             item.icon
         }
-
-        LemonadeUi.Icon(
-            icon = displayedIcon,
-            contentDescription = null,
-            size = LemonadeAssetSize.Medium,
-            tint = LemonadeTheme.colors.content.contentPrimary,
+        // Selected icon pops (spring) and crossfades to its variant.
+        val iconScale by animateFloatAsState(
+            targetValue = if (isSelected) SelectedIconScale else 1f,
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+                stiffness = Spring.StiffnessMediumLow,
+            ),
+            label = "tabIconScale",
         )
+
+        Box(
+            modifier = Modifier.graphicsLayer {
+                scaleX = iconScale
+                scaleY = iconScale
+            },
+        ) {
+            Crossfade(
+                targetState = displayedIcon,
+                animationSpec = tween(durationMillis = IconCrossfadeMs),
+                label = "tabIcon",
+            ) { icon ->
+                LemonadeUi.Icon(
+                    icon = icon,
+                    contentDescription = null,
+                    size = LemonadeAssetSize.Medium,
+                    tint = LemonadeTheme.colors.content.contentPrimary,
+                )
+            }
+        }
 
         Spacer(modifier = Modifier.height(height = LemonadeTheme.spaces.spacing50))
 
