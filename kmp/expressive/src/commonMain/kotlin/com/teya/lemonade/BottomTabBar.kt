@@ -155,8 +155,8 @@ public fun LemonadeUi.BottomTabBar(
 
 private val MaxBarWidth: Dp = 500.dp
 private val ItemHeight: Dp = 54.dp
-private const val SelectedIconScale = 1.12f
-private const val IconCrossfadeMs = 200
+private const val SELECTED_ICON_SCALE = 1.12f
+private const val ICON_CROSSFADE_MS = 200
 
 @Composable
 internal fun CoreBottomTabBar(
@@ -274,7 +274,7 @@ private fun BottomTabBarItemContent(
         }
         // Selected icon pops (spring) and crossfades to its variant.
         val iconScale by animateFloatAsState(
-            targetValue = if (isSelected) SelectedIconScale else 1f,
+            targetValue = if (isSelected) SELECTED_ICON_SCALE else 1f,
             animationSpec = spring(
                 dampingRatio = Spring.DampingRatioMediumBouncy,
                 stiffness = Spring.StiffnessMediumLow,
@@ -290,7 +290,7 @@ private fun BottomTabBarItemContent(
         ) {
             Crossfade(
                 targetState = displayedIcon,
-                animationSpec = tween(durationMillis = IconCrossfadeMs),
+                animationSpec = tween(durationMillis = ICON_CROSSFADE_MS),
                 label = "tabIcon",
             ) { icon ->
                 LemonadeUi.Icon(
