@@ -459,7 +459,7 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
                 leadingSlot()
                 tileTextContent
             }
-            .frame(minWidth: minWidth, maxWidth: .infinity, minHeight: minHeightHorizontal, alignment: .leading)
+            .frame(minWidth: minWidth, maxWidth: .infinity, alignment: .leading)
             .padding(LemonadeTheme.spaces.spacing300)
         case .vertical:
             VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing300) {
