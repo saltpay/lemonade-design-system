@@ -220,6 +220,7 @@ private struct LemonadeSegmentedControlView: View {
                     }
                     .padding(.horizontal, size.buttonHorizontalPadding)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(SegmentPressStyle())
                 .frame(maxWidth: .infinity)
