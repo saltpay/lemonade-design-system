@@ -130,14 +130,12 @@ private fun HorizontalContentListItem(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
-            modifier = Modifier.weight(weight = 1f),
         ) {
             LemonadeUi.Text(
                 text = value,
                 textStyle = LocalTypographies.current.bodyMediumMedium,
                 color = LocalColors.current.content.contentPrimary,
                 textAlign = TextAlign.End,
-                modifier = Modifier.weight(weight = 1f),
             )
 
             if (trailingSlot != null) {
