@@ -173,21 +173,25 @@ private fun HorizontalContentListItem(
             }
         }
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
-            modifier = Modifier.weight(weight = 1f),
-        ) {
-            LemonadeUi.Text(
-                text = value,
-                textStyle = LocalTypographies.current.bodyMediumMedium,
-                color = LocalColors.current.content.contentPrimary,
-                textAlign = TextAlign.End,
+        // Only reserve space for the value/trailing side when there is something to
+        // show; otherwise the label fills the full available width.
+        if (value.isNotEmpty() || trailingSlot != null) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing300),
                 modifier = Modifier.weight(weight = 1f),
-            )
+            ) {
+                LemonadeUi.Text(
+                    text = value,
+                    textStyle = LocalTypographies.current.bodyMediumMedium,
+                    color = LocalColors.current.content.contentPrimary,
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.weight(weight = 1f),
+                )
 
-            if (trailingSlot != null) {
-                trailingSlot()
+                if (trailingSlot != null) {
+                    trailingSlot()
+                }
             }
         }
     }
@@ -220,23 +224,27 @@ private fun VerticalContentListItem(
                 color = LocalColors.current.content.contentSecondary,
             )
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing100),
-            ) {
-                LemonadeUi.Text(
-                    text = value,
-                    textStyle = if (contentSlot != null) {
-                        LocalTypographies.current.bodyXLargeSemiBold
-                    } else {
-                        LocalTypographies.current.bodyMediumMedium
-                    },
-                    color = LocalColors.current.content.contentPrimary,
-                    modifier = Modifier.weight(weight = 1f),
-                )
+            // Skip the value/trailing row entirely when there is nothing to show, so a
+            // label-only item doesn't leave a blank line under the label.
+            if (value.isNotEmpty() || trailingSlot != null) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing100),
+                ) {
+                    LemonadeUi.Text(
+                        text = value,
+                        textStyle = if (contentSlot != null) {
+                            LocalTypographies.current.bodyXLargeSemiBold
+                        } else {
+                            LocalTypographies.current.bodyMediumMedium
+                        },
+                        color = LocalColors.current.content.contentPrimary,
+                        modifier = Modifier.weight(weight = 1f),
+                    )
 
-                if (trailingSlot != null) {
-                    trailingSlot()
+                    if (trailingSlot != null) {
+                        trailingSlot()
+                    }
                 }
             }
 
