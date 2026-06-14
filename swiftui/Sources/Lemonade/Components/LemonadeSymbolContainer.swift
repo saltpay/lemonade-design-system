@@ -235,7 +235,7 @@ public extension LemonadeUi {
         shape: SymbolContainerShape = .circle,
         @ViewBuilder badgeSlot: @escaping () -> Badge
     ) -> some View {
-        LemonadeSymbolContainerView(voice: voice, size: size, shape: shape, badgeSlot: badgeSlot) {
+        LemonadeSymbolContainerView(voice: voice, size: size, shape: shape, clipsContent: fill, badgeSlot: badgeSlot) {
             SymbolContainerImageContent(
                 image: image,
                 contentDescription: contentDescription,
@@ -339,30 +339,39 @@ private struct LemonadeSymbolContainerView<Content: View, Badge: View>: View {
     let voice: SymbolContainerVoice
     let size: SymbolContainerSize
     let shape: SymbolContainerShape
+    // Only fill-image content overflows the container; icon/text/custom content is inset and
+    // centered, so it never reaches the corners. Clipping is therefore opt-in: the common path
+    // draws a rounded background instead of masking the whole container, and masking is what
+    // forces an offscreen render pass per symbol (one per row in every list).
+    var clipsContent: Bool = false
     let badgeSlot: () -> Badge
     let content: () -> Content
 
     @ViewBuilder
     private var containerView: some View {
-        let base = content()
+        let sized = content()
             .frame(width: size.containerSize, height: size.containerSize)
-            .background(voice.containerColor)
 
         switch shape {
         case .circle:
-            base
-                .clipShape(Circle())
-                .overlay(
-                    Circle()
-                        .stroke(voice.borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
-                )
+            let cornerShape = Circle()
+            clippedIfNeeded(sized, to: cornerShape)
+                .background(voice.containerColor, in: cornerShape)
+                .overlay(cornerShape.stroke(voice.borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25))
         case .rounded:
-            base
-                .clipShape(RoundedRectangle(cornerRadius: roundedRadius(for: size)))
-                .overlay(
-                    RoundedRectangle(cornerRadius: roundedRadius(for: size))
-                        .stroke(voice.borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
-                )
+            let cornerShape = RoundedRectangle(cornerRadius: roundedRadius(for: size))
+            clippedIfNeeded(sized, to: cornerShape)
+                .background(voice.containerColor, in: cornerShape)
+                .overlay(cornerShape.stroke(voice.borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25))
+        }
+    }
+
+    @ViewBuilder
+    private func clippedIfNeeded<S: Shape>(_ view: some View, to shape: S) -> some View {
+        if clipsContent {
+            view.clipShape(shape)
+        } else {
+            view
         }
     }
 
