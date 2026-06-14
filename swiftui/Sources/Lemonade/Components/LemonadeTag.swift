@@ -109,8 +109,13 @@ private struct LemonadeTagView: View {
         }
         .padding(.vertical, LemonadeTheme.spaces.spacing50)
         .padding(.horizontal, LemonadeTheme.spaces.spacing100)
-        .background(voice.containerColor)
-        .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius150))
+        // Drawn rounded background instead of clipShape: the label is inset by padding and never
+        // reaches the corners, so masking only adds an offscreen render pass (one per tag, and
+        // tags render once per row in lists).
+        .background(
+            voice.containerColor,
+            in: RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius150)
+        )
         .overlay(
             RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius150)
                 .stroke(voice.borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)

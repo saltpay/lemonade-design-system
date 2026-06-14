@@ -185,13 +185,15 @@ private struct LemonadeTabsView: View {
                     )
 
                     if index == selectedIndex {
-                        Rectangle()
+                        // Fill the top-rounded shape directly instead of clipping a Rectangle:
+                        // clipShape masks the bar into an offscreen pass on every indicator
+                        // animation frame; filling the shape is identical and mask-free.
+                        TopRoundedRectangle(radius: 2)
                             .fill(LemonadeTheme.colors.background.bgBrandHigh)
                             .frame(
                                 width: contentWrapperWidths[selectedIndex],
                                 height: LemonadeTheme.borderWidth.base.border75
                             )
-                            .clipShape(TopRoundedRectangle(radius: 2))
                             .matchedGeometryEffect(id: "indicator", in: tabNamespace)
                             // TODO: Add .glassEffect(.regular.interactive()) when building with Xcode 26+ SDK
                     } else {
