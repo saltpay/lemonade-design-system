@@ -36,6 +36,11 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.keyboardType = keyboardType
         textField.text = value.text
 
+        // Let SwiftUI compress the field to the available width instead of growing it to the
+        // text's intrinsic width. Without this, long input pushes the layout past the screen edge.
+        textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
+
         // Set initial cursor position (clamped to valid range)
         let clampedPosition = clampedCursorPosition(value.cursorPosition, for: value.text)
         if let position = textField.position(
