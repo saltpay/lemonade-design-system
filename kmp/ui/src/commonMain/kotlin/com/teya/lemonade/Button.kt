@@ -73,6 +73,7 @@ public fun LemonadeUi.Button(
     )
     CoreButton(
         colors = colors,
+        type = type,
         size = size,
         modifier = modifier,
         enabled = enabled,
@@ -153,6 +154,7 @@ public fun LemonadeUi.Button(
     )
     CoreButton(
         colors = colors,
+        type = type,
         size = size,
         enabled = enabled,
         interactionSource = interactionSource,
@@ -347,6 +349,7 @@ private fun CoreButton(
     trailingSlot: (@Composable RowScope.(LemonadeButtonColors) -> Unit)?,
     onClick: () -> Unit,
     colors: LemonadeButtonColors,
+    type: LemonadeButtonType,
     size: LemonadeButtonSize,
     expandContents: Boolean,
     enabled: Boolean,
@@ -365,11 +368,15 @@ private fun CoreButton(
     // `bgSubtle` backdrop is drawn BEFORE the disabled [Modifier.alpha] scope. Compose applies
     // alpha as a graphics layer wrapping subsequent draws only — so when disabled, the 50% alpha
     // blends the colored fill into the opaque backdrop instead of into whatever is behind the
-    // button. When enabled, the opaque colored fill fully covers the backdrop.
+    // button. When enabled, the opaque colored fill fully covers the backdrop. Ghost buttons have
+    // no fill, so they skip the backdrop entirely and stay transparent when disabled.
     val disabledModifier = if (!enabled) {
-        Modifier
-            .background(color = LocalColors.current.background.bgSubtle)
-            .alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+        val backdrop = if (type == LemonadeButtonType.Ghost) {
+            Modifier
+        } else {
+            Modifier.background(color = LocalColors.current.background.bgSubtle)
+        }
+        backdrop.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
     } else {
         Modifier
     }

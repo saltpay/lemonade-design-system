@@ -250,35 +250,45 @@ private struct LemonadeIconButtonView: View {
         let bgColor: Color = isHovering ? colors.backgroundHoverColor : colors.backgroundColor
         let buttonShape = RoundedRectangle(cornerRadius: cornerRadius)
 
-        SwiftUI.Button(action: onClick) {
-            Group {
-                if loading {
-                    LemonadeUi.Spinner(tint: colors.contentColor)
-                } else {
-                    LemonadeUi.Icon(
-                        icon: icon,
-                        contentDescription: contentDescription,
-                        size: size.iconButtonSizeData.iconSize,
-                        tint: colors.contentColor
-                    )
-                }
+        // The ZStack backdrop paints an opaque `bgSubtle` rectangle behind the button. It sits
+        // OUTSIDE the `.opacity` modifier applied to the SwiftUI.Button, so the disabled 50%
+        // opacity blends the colored fill into the backdrop instead of into whatever happens to
+        // be drawn behind. Ghost buttons have no fill, so they skip the backdrop entirely.
+        ZStack {
+            if !enabled, type != .ghost {
+                buttonShape.fill(LemonadeTheme.colors.background.bgSubtle)
             }
-            .padding(size.iconButtonSizeData.innerPadding)
-            .background(
-                buttonShape
-                    .fill(bgColor)
-                    .animation(.easeInOut(duration: 0.1), value: bgColor)
-            )
-            .clipShape(buttonShape)
+
+            SwiftUI.Button(action: onClick) {
+                Group {
+                    if loading {
+                        LemonadeUi.Spinner(tint: colors.contentColor)
+                    } else {
+                        LemonadeUi.Icon(
+                            icon: icon,
+                            contentDescription: contentDescription,
+                            size: size.iconButtonSizeData.iconSize,
+                            tint: colors.contentColor
+                        )
+                    }
+                }
+                .padding(size.iconButtonSizeData.innerPadding)
+                .background(
+                    buttonShape
+                        .fill(bgColor)
+                        .animation(.easeInOut(duration: 0.1), value: bgColor)
+                )
+                .clipShape(buttonShape)
+            }
+            .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
+            .opacity(isPressed ? .opacity.opacityPressed : .opacity.opacity100)
+            .animation(.easeInOut(duration: 0.1), value: isPressed)
+            .onHover { hovering in
+                isHovering = hovering
+            }
+            .disabled(!enabled || loading)
+            .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
         }
-        .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
-        .opacity(isPressed ? .opacity.opacityPressed : .opacity.opacity100)
-        .animation(.easeInOut(duration: 0.1), value: isPressed)
-        .onHover { hovering in
-            isHovering = hovering
-        }
-        .disabled(!enabled || loading)
-        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
     }
 }
 

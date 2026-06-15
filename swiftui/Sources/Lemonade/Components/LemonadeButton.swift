@@ -375,10 +375,10 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
         // OUTSIDE the `.opacity` modifier applied to the SwiftUI.Button, so the disabled 50%
         // opacity blends the colored fill into the backdrop instead of into whatever happens to
         // be drawn behind (e.g. a scrolling list under a floating footer).
-        let pressedOpacity = isPressed ? 1.0 - LemonadeTheme.opacity.state.opacityPressed : LemonadeTheme.opacity.base.opacity100
+        let pressedOpacity = isPressed ? LemonadeTheme.opacity.state.opacityPressed : LemonadeTheme.opacity.base.opacity100
         let disabledOpacity = (enabled || loading) ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled
         ZStack {
-            if !enabled {
+            if !enabled, type != .ghost {
                 buttonShape.fill(LemonadeTheme.colors.background.bgSubtle)
             }
 
@@ -561,6 +561,14 @@ struct LemonadeButton_Previews: PreviewProvider {
                 label: "Neutral",
                 onClick: {},
                 variant: .neutral
+            )
+
+            LemonadeUi.Button(
+                label: "Ghost Disabled",
+                onClick: {},
+                variant: .neutral,
+                type: .ghost,
+                enabled: false
             )
 
             LemonadeUi.Button(

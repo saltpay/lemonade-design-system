@@ -62,6 +62,22 @@ struct ButtonDisplayView: View {
                         LemonadeUi.Button(label: "Loading", onClick: {}, variant: .neutral, size: .medium, loading: true)
                     }
                 }
+                
+                // Neutral Ghost Variant
+                sectionView(title: "Neutral Ghost") {
+                    VStack(spacing: 16) {
+                        HStack(spacing: 12) {
+                            LemonadeUi.Button(label: "XSmall", onClick: {}, variant: .neutral, type: .ghost, size: .xSmall)
+                            LemonadeUi.Button(label: "Small", onClick: {}, variant: .neutral, type: .ghost, size: .small)
+                            LemonadeUi.Button(label: "Medium", onClick: {}, variant: .neutral, type: .ghost, size: .medium)
+                            LemonadeUi.Button(label: "Large", onClick: {}, variant: .neutral, type: .ghost, size: .large)
+                        }
+
+                        LemonadeUi.Button(label: "Disabled", onClick: {}, variant: .neutral, type: .ghost, size: .medium, enabled: false)
+
+                        LemonadeUi.Button(label: "Loading", onClick: {}, variant: .neutral, type: .ghost, size: .medium, loading: true)
+                    }
+                }
 
                 // Critical Variant
                 sectionView(title: "Critical") {
