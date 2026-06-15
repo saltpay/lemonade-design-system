@@ -68,6 +68,7 @@ internal fun SearchTopBarSampleDisplay() {
             label = "Top Bar",
             state = topBarState,
             searchInput = searchInput,
+            searchPlaceholder = "Search",
             onSearchChanged = { searchInput = it },
             navigationAction = NavigationAction(
                 navigationAction = TopBarAction.Close,
