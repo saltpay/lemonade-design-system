@@ -396,9 +396,10 @@ public data class NavigationAction(
  * @param subtitle Optional secondary text displayed below the title in both expanded (left-aligned) and collapsed (centered) states.
  * @param state The [TopBarState] that manages collapse behavior. Create with [rememberTopBarState].
  * @param backgroundColor The background color of the top bar when the scrollable content is at the top.
- * @param scrolledBackgroundColor Optional background color the top bar fades to once the
- *        scrollable content has moved off the top. When `null` (default) the bar keeps [backgroundColor]
- *        at all times. The fade is driven by [TopBarState.isScrolled] and works even when
+ * @param scrolledBackgroundColor The background color the top bar fades to once the scrollable
+ *        content has moved off the top. Defaults to a fully transparent copy of [backgroundColor];
+ *        pass [backgroundColor] to keep the bar opaque at all times and disable the fade.
+ *        The fade is driven by [TopBarState.isScrolled] and works even when
  *        `lockGestureAnimation = true`, so a permanently-collapsed bar can sit on a transparent gradient
  *        at the top and switch to a solid theme color while the user scrolls.
  * @param modifier [Modifier] applied to the top bar container.
@@ -604,9 +605,10 @@ public fun LemonadeUi.TopBar(
  * @param modifier [Modifier] applied to the top bar container.
  * @param state The [TopBarState] that manages collapse behavior. Create with [rememberTopBarState].
  * @param backgroundColor The background color of the top bar when the scrollable content is at the top.
- * @param scrolledBackgroundColor Optional background color the top bar fades to once the
- *        scrollable content has moved off the top. When `null` (default) the bar keeps [backgroundColor]
- *        at all times. See [TopBarState.isScrolled].
+ * @param scrolledBackgroundColor The background color the top bar fades to once the scrollable
+ *        content has moved off the top. Defaults to a fully transparent copy of [backgroundColor];
+ *        pass [backgroundColor] to keep the bar opaque at all times and disable the fade.
+ *        See [TopBarState.isScrolled].
  * @param expandedLabel Optional large title displayed above the search field in the collapsable area.
  * @param subtitle Optional secondary text displayed below the title in both expanded (below [expandedLabel], left-aligned) and collapsed (below [label], centered) states.
  * @param searchPlaceholder Optional placeholder text shown in the search field while it is empty.
@@ -884,8 +886,10 @@ public fun LemonadeUi.TopBar(
  * @param modifier [Modifier] applied to the top bar container.
  * @param state The [TopBarState] that manages scroll behavior. Create with [rememberTopBarState].
  * @param backgroundColor The background color of the top bar when the scrollable content is at the top.
- * @param scrolledBackgroundColor Optional background color the top bar fades to once the
- *        scrollable content has moved off the top. See [TopBarState.isScrolled].
+ * @param scrolledBackgroundColor The background color the top bar fades to once the scrollable
+ *        content has moved off the top. Defaults to a fully transparent copy of [backgroundColor];
+ *        pass [backgroundColor] to keep the bar opaque at all times and disable the fade.
+ *        See [TopBarState.isScrolled].
  * @param trailingSlot Optional composable displayed at the end of the title row (typically action buttons).
  * @param bottomSlot Optional composable displayed below the title. When provided, the title scrolls
  *        away and this slot becomes sticky. When `null`, the title is fixed.
@@ -1034,8 +1038,10 @@ public fun LemonadeUi.TopBar(
  * @param modifier [Modifier] applied to the top bar container.
  * @param state The [TopBarState] that manages scroll behavior. Create with [rememberTopBarState].
  * @param backgroundColor The background color of the top bar when the scrollable content is at the top.
- * @param scrolledBackgroundColor Optional background color the top bar fades to once the
- *        scrollable content has moved off the top. See [TopBarState.isScrolled].
+ * @param scrolledBackgroundColor The background color the top bar fades to once the scrollable
+ *        content has moved off the top. Defaults to a fully transparent copy of [backgroundColor];
+ *        pass [backgroundColor] to keep the bar opaque at all times and disable the fade.
+ *        See [TopBarState.isScrolled].
  * @param searchPlaceholder Optional placeholder text shown in the search field while it is empty.
  * @param trailingSlot Optional composable displayed at the end of the title row (typically action buttons).
  */
