@@ -66,6 +66,7 @@ internal fun CompactLargeSearchTopBarSampleDisplay() {
             label = "Discover",
             subheading = "Find your favorite fruit",
             searchInput = searchInput,
+            searchPlaceholder = "Search fruits",
             onSearchChanged = { value ->
                 searchInput = value
             },

@@ -396,9 +396,10 @@ public data class NavigationAction(
  * @param subtitle Optional secondary text displayed below the title in both expanded (left-aligned) and collapsed (centered) states.
  * @param state The [TopBarState] that manages collapse behavior. Create with [rememberTopBarState].
  * @param backgroundColor The background color of the top bar when the scrollable content is at the top.
- * @param scrolledBackgroundColor Optional background color the top bar fades to once the
- *        scrollable content has moved off the top. When `null` (default) the bar keeps [backgroundColor]
- *        at all times. The fade is driven by [TopBarState.isScrolled] and works even when
+ * @param scrolledBackgroundColor The background color the top bar fades to once the scrollable
+ *        content has moved off the top. Defaults to a fully transparent copy of [backgroundColor];
+ *        pass [backgroundColor] to keep the bar opaque at all times and disable the fade.
+ *        The fade is driven by [TopBarState.isScrolled] and works even when
  *        `lockGestureAnimation = true`, so a permanently-collapsed bar can sit on a transparent gradient
  *        at the top and switch to a solid theme color while the user scrolls.
  * @param modifier [Modifier] applied to the top bar container.
@@ -604,11 +605,13 @@ public fun LemonadeUi.TopBar(
  * @param modifier [Modifier] applied to the top bar container.
  * @param state The [TopBarState] that manages collapse behavior. Create with [rememberTopBarState].
  * @param backgroundColor The background color of the top bar when the scrollable content is at the top.
- * @param scrolledBackgroundColor Optional background color the top bar fades to once the
- *        scrollable content has moved off the top. When `null` (default) the bar keeps [backgroundColor]
- *        at all times. See [TopBarState.isScrolled].
+ * @param scrolledBackgroundColor The background color the top bar fades to once the scrollable
+ *        content has moved off the top. Defaults to a fully transparent copy of [backgroundColor];
+ *        pass [backgroundColor] to keep the bar opaque at all times and disable the fade.
+ *        See [TopBarState.isScrolled].
  * @param expandedLabel Optional large title displayed above the search field in the collapsable area.
  * @param subtitle Optional secondary text displayed below the title in both expanded (below [expandedLabel], left-aligned) and collapsed (below [label], centered) states.
+ * @param searchPlaceholder Optional placeholder text shown in the search field while it is empty.
  * @param navigationAction Optional [NavigationAction] displayed in the leading slot (e.g. back or close button).
  * @param trailingSlot Optional composable displayed at the end of the fixed header.
  * @param bottomSlot Optional composable shown below the search field when focused
@@ -626,6 +629,7 @@ public fun LemonadeUi.TopBar(
     scrolledBackgroundColor: Color = backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0),
     expandedLabel: String? = null,
     subtitle: String? = null,
+    searchPlaceholder: String? = null,
     navigationAction: NavigationAction? = null,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
@@ -717,6 +721,7 @@ public fun LemonadeUi.TopBar(
                 CoreSearchField(
                     input = searchInput,
                     onInputChanged = onSearchChanged,
+                    placeholder = searchPlaceholder,
                     leadingIcon = if (isSearchFocused) {
                         LemonadeIcons.ArrowLeft
                     } else {
@@ -774,118 +779,62 @@ public fun LemonadeUi.TopBar(
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
-    val focusManager = LocalFocusManager.current
-    var isSearchFocused by remember {
-        mutableStateOf(false)
-    }
-    CoreTopBar(
+    TopBar(
+        label = label,
+        searchInput = searchInput,
+        onSearchChanged = onSearchChanged,
+        modifier = modifier,
         state = state,
         backgroundColor = backgroundColor,
-        fixedHeaderSlot = { fixedHeaderModifier ->
-            AnimatedContent(
-                modifier = fixedHeaderModifier
-                    .zIndex(zIndex = 1f)
-                    .padding(
-                        horizontal = LocalSpaces.current.spacing200,
-                        vertical = LocalSpaces.current.spacing50,
-                    ),
-                targetState = isSearchFocused,
-                transitionSpec = { expandVertically() togetherWith shrinkVertically() },
-                content = { searchFocused ->
-                    if (!searchFocused) {
-                        CoreTopBarContent(
-                            leadingSlot = {
-                                if (navigationAction != null) {
-                                    CoreTopBarActionContent(
-                                        navigationAction = navigationAction,
-                                        modifier = Modifier.matchParentSize(),
-                                    )
-                                }
-                            },
-                            isCollapsed = state.isCollapsed,
-                            trailingSlot = trailingSlot,
-                            label = label,
-                            subtitle = subtitle,
-                        )
-                    }
-                },
-            )
-        },
-        collapsableSlot = { collapsableSlotModifier ->
-            Column(
-                modifier = Modifier
-                    .clipToBounds()
-                    .then(other = collapsableSlotModifier)
-                    .fillMaxWidth()
-                    .padding(horizontal = LocalSpaces.current.spacing400)
-                    .padding(
-                        top = LocalSpaces.current.spacing50,
-                        bottom = LocalSpaces.current.spacing200,
-                    ),
-            ) {
-                AnimatedContent(
-                    targetState = expandedLabel != null && !isSearchFocused,
-                    transitionSpec = { expandVertically() togetherWith shrinkVertically() + fadeOut() },
-                    content = { shouldShow ->
-                        if (shouldShow) {
-                            Column(
-                                modifier = Modifier.padding(bottom = LocalSpaces.current.spacing100),
-                            ) {
-                                LemonadeUi.Text(
-                                    text = expandedLabel.orEmpty(),
-                                    textStyle = LocalTypographies.current.headingLarge,
-                                    overflow = TextOverflow.Ellipsis,
-                                    maxLines = 2,
-                                )
-                                if (subtitle != null) {
-                                    LemonadeUi.Text(
-                                        text = subtitle,
-                                        textStyle = LocalTypographies.current.bodySmallRegular,
-                                        color = LocalColors.current.content.contentSecondary,
-                                        overflow = TextOverflow.Ellipsis,
-                                        maxLines = 1,
-                                    )
-                                }
-                            }
-                        } else {
-                            Spacer(modifier = Modifier.fillMaxWidth())
-                        }
-                    },
-                )
+        scrolledBackgroundColor = backgroundColor,
+        expandedLabel = expandedLabel,
+        subtitle = subtitle,
+        searchPlaceholder = null,
+        navigationAction = navigationAction,
+        trailingSlot = trailingSlot,
+        bottomSlot = bottomSlot,
+    )
+}
 
-                CoreSearchField(
-                    input = searchInput,
-                    onInputChanged = onSearchChanged,
-                    leadingIcon = if (isSearchFocused) {
-                        LemonadeIcons.ArrowLeft
-                    } else {
-                        LemonadeIcons.Search
-                    },
-                    onLeadingIconClicked = focusManager::clearFocus,
-                    modifier = Modifier.onFocusChanged { focusState ->
-                        isSearchFocused = focusState.isFocused
-                        state.setAnimationGesturesLock(locked = focusState.isFocused)
-                        if (focusState.isFocused) {
-                            state.expand()
-                        }
-                    },
-                )
-            }
-        },
-        bottomSlot = bottomSlot?.let {
-            {
-                AnimatedContent(
-                    targetState = isSearchFocused,
-                    transitionSpec = { expandVertically() togetherWith shrinkVertically() },
-                    content = { searchFocused ->
-                        if (searchFocused) {
-                            bottomSlot()
-                        }
-                    },
-                )
-            }
-        },
+@Deprecated(
+    message = "Use the overload with a searchPlaceholder parameter.",
+    replaceWith = ReplaceWith(
+        expression = "TopBar(label, searchInput, onSearchChanged, modifier, state, backgroundColor, " +
+            "scrolledBackgroundColor, expandedLabel, subtitle, null, navigationAction, trailingSlot, " +
+            "bottomSlot)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+@OptIn(ExperimentalLemonadeComponent::class)
+public fun LemonadeUi.TopBar(
+    label: String,
+    searchInput: String,
+    onSearchChanged: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    state: TopBarState = rememberTopBarState(),
+    backgroundColor: Color = LocalColors.current.background.bgDefault,
+    scrolledBackgroundColor: Color = backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0),
+    expandedLabel: String? = null,
+    subtitle: String? = null,
+    navigationAction: NavigationAction? = null,
+    trailingSlot: @Composable (RowScope.() -> Unit)? = null,
+    bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
+) {
+    TopBar(
+        label = label,
+        searchInput = searchInput,
+        onSearchChanged = onSearchChanged,
         modifier = modifier,
+        state = state,
+        backgroundColor = backgroundColor,
+        scrolledBackgroundColor = scrolledBackgroundColor,
+        expandedLabel = expandedLabel,
+        subtitle = subtitle,
+        searchPlaceholder = null,
+        navigationAction = navigationAction,
+        trailingSlot = trailingSlot,
+        bottomSlot = bottomSlot,
     )
 }
 
@@ -937,8 +886,10 @@ public fun LemonadeUi.TopBar(
  * @param modifier [Modifier] applied to the top bar container.
  * @param state The [TopBarState] that manages scroll behavior. Create with [rememberTopBarState].
  * @param backgroundColor The background color of the top bar when the scrollable content is at the top.
- * @param scrolledBackgroundColor Optional background color the top bar fades to once the
- *        scrollable content has moved off the top. See [TopBarState.isScrolled].
+ * @param scrolledBackgroundColor The background color the top bar fades to once the scrollable
+ *        content has moved off the top. Defaults to a fully transparent copy of [backgroundColor];
+ *        pass [backgroundColor] to keep the bar opaque at all times and disable the fade.
+ *        See [TopBarState.isScrolled].
  * @param trailingSlot Optional composable displayed at the end of the title row (typically action buttons).
  * @param bottomSlot Optional composable displayed below the title. When provided, the title scrolls
  *        away and this slot becomes sticky. When `null`, the title is fixed.
@@ -1087,8 +1038,11 @@ public fun LemonadeUi.TopBar(
  * @param modifier [Modifier] applied to the top bar container.
  * @param state The [TopBarState] that manages scroll behavior. Create with [rememberTopBarState].
  * @param backgroundColor The background color of the top bar when the scrollable content is at the top.
- * @param scrolledBackgroundColor Optional background color the top bar fades to once the
- *        scrollable content has moved off the top. See [TopBarState.isScrolled].
+ * @param scrolledBackgroundColor The background color the top bar fades to once the scrollable
+ *        content has moved off the top. Defaults to a fully transparent copy of [backgroundColor];
+ *        pass [backgroundColor] to keep the bar opaque at all times and disable the fade.
+ *        See [TopBarState.isScrolled].
+ * @param searchPlaceholder Optional placeholder text shown in the search field while it is empty.
  * @param trailingSlot Optional composable displayed at the end of the title row (typically action buttons).
  */
 @Composable
@@ -1102,6 +1056,7 @@ public fun LemonadeUi.TopBar(
     state: TopBarState = rememberTopBarState(),
     backgroundColor: Color = LocalColors.current.background.bgDefault,
     scrolledBackgroundColor: Color = backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0),
+    searchPlaceholder: String? = null,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
 ) {
     val focusManager = LocalFocusManager.current
@@ -1138,6 +1093,7 @@ public fun LemonadeUi.TopBar(
             CoreSearchField(
                 input = searchInput,
                 onInputChanged = onSearchChanged,
+                placeholder = searchPlaceholder,
                 leadingIcon = if (isSearchFocused) {
                     LemonadeIcons.ArrowLeft
                 } else {
@@ -1182,55 +1138,52 @@ public fun LemonadeUi.TopBar(
     backgroundColor: Color = LocalColors.current.background.bgDefault,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
 ) {
-    val focusManager = LocalFocusManager.current
-    var isSearchFocused by remember {
-        mutableStateOf(false)
-    }
-    CoreTopBar(
+    TopBar(
+        label = label,
+        subheading = subheading,
+        searchInput = searchInput,
+        onSearchChanged = onSearchChanged,
+        modifier = modifier,
         state = state,
         backgroundColor = backgroundColor,
+        scrolledBackgroundColor = backgroundColor,
+        searchPlaceholder = null,
+        trailingSlot = trailingSlot,
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with a searchPlaceholder parameter.",
+    replaceWith = ReplaceWith(
+        expression = "TopBar(label, subheading, searchInput, onSearchChanged, modifier, state, " +
+            "backgroundColor, scrolledBackgroundColor, null, trailingSlot)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+@OptIn(ExperimentalLemonadeComponent::class)
+public fun LemonadeUi.TopBar(
+    label: String,
+    subheading: String?,
+    searchInput: String,
+    onSearchChanged: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    state: TopBarState = rememberTopBarState(),
+    backgroundColor: Color = LocalColors.current.background.bgDefault,
+    scrolledBackgroundColor: Color = backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0),
+    trailingSlot: @Composable (RowScope.() -> Unit)? = null,
+) {
+    TopBar(
+        label = label,
+        subheading = subheading,
+        searchInput = searchInput,
+        onSearchChanged = onSearchChanged,
         modifier = modifier,
-        fixedHeaderSlot = { fixedHeaderModifier ->
-            AnimatedContent(
-                modifier = fixedHeaderModifier
-                    .zIndex(zIndex = 1f),
-                targetState = isSearchFocused,
-                transitionSpec = { expandVertically() togetherWith shrinkVertically() },
-                content = { searchFocused ->
-                    if (!searchFocused) {
-                        CompactLargeTopBarHeading(
-                            label = label,
-                            subheading = subheading,
-                            trailingSlot = trailingSlot,
-                        )
-                    }
-                },
-            )
-        },
-        collapsableSlot = { collapsableSlotModifier ->
-            CoreSearchField(
-                input = searchInput,
-                onInputChanged = onSearchChanged,
-                leadingIcon = if (isSearchFocused) {
-                    LemonadeIcons.ArrowLeft
-                } else {
-                    LemonadeIcons.Search
-                },
-                onLeadingIconClicked = focusManager::clearFocus,
-                modifier = collapsableSlotModifier
-                    .fillMaxWidth()
-                    .padding(horizontal = LocalSpaces.current.spacing400)
-                    .padding(vertical = LocalSpaces.current.spacing300)
-                    .onFocusChanged { focusState ->
-                        isSearchFocused = focusState.isFocused
-                        state.setAnimationGesturesLock(locked = focusState.isFocused)
-                        if (focusState.isFocused) {
-                            state.expand()
-                        }
-                    },
-            )
-        },
-        bottomSlot = null,
+        state = state,
+        backgroundColor = backgroundColor,
+        scrolledBackgroundColor = scrolledBackgroundColor,
+        searchPlaceholder = null,
+        trailingSlot = trailingSlot,
     )
 }
 
