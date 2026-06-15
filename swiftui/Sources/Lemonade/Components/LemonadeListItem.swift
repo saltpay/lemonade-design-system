@@ -63,6 +63,10 @@ public extension LemonadeUi {
     ///   - showDivider: Flag to show a divider below the list item
     ///   - leadingAlignment: Vertical alignment of the leading slot. Defaults to `.top`.
     ///   - trailingAlignment: Vertical alignment of the trailing slot and navigation indicator. Defaults to `.center`.
+    ///   - labelMaxLines: Maximum number of lines for the label before it truncates. Defaults to `nil` (no limit).
+    ///   - labelOverflow: Truncation mode applied to the label when it exceeds `labelMaxLines`. Defaults to `.tail`.
+    ///   - supportTextMaxLines: Maximum number of lines for the support text before it truncates. Defaults to `nil` (no limit).
+    ///   - supportTextOverflow: Truncation mode applied to the support text when it exceeds `supportTextMaxLines`. Defaults to `.tail`.
     ///   - onListItemClick: Optional callback triggered on click interaction
     ///   - leadingSlot: Slot content to be placed in leading position
     ///   - trailingSlot: Slot content to be placed in trailing position
@@ -79,6 +83,10 @@ public extension LemonadeUi {
         showDivider: Bool = false,
         leadingAlignment: VerticalAlignment = .top,
         trailingAlignment: VerticalAlignment = .center,
+        labelMaxLines: Int? = nil,
+        labelOverflow: Text.TruncationMode = .tail,
+        supportTextMaxLines: Int? = nil,
+        supportTextOverflow: Text.TruncationMode = .tail,
         onListItemClick: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
@@ -109,14 +117,18 @@ public extension LemonadeUi {
                     LemonadeUi.Text(
                         label,
                         textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                        color: voice.contentColor
+                        color: voice.contentColor,
+                        overflow: labelOverflow,
+                        maxLines: labelMaxLines
                     )
-                    
+
                     if let supportText = supportText {
                         LemonadeUi.Text(
                             supportText,
                             textStyle: LemonadeTypography.shared.bodySmallRegular,
-                            color: LemonadeTheme.colors.content.contentSecondary
+                            color: LemonadeTheme.colors.content.contentSecondary,
+                            overflow: supportTextOverflow,
+                            maxLines: supportTextMaxLines
                         )
                     }
                     

@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.teya.lemonade.core.LemonadeAssetSize
@@ -52,6 +53,14 @@ import com.teya.lemonade.core.SymbolContainerVoice
  * @param contentSlot - Optional slot for additional content. In vertical layout, this also
  *   switches the value typography to bodyXLargeSemiBold.
  * @param verticalAlignment - Vertical alignment for horizontal layout (default [Alignment.CenterVertically]).
+ * @param labelMaxLines - Maximum number of lines for the [label] before it truncates. Defaults to
+ *   [Int.MAX_VALUE] (no limit).
+ * @param labelOverflow - [TextOverflow] strategy applied to the [label] when it exceeds
+ *   [labelMaxLines]. Defaults to [TextOverflow.Clip].
+ * @param valueMaxLines - Maximum number of lines for the [value] before it truncates. Defaults to
+ *   [Int.MAX_VALUE] (no limit).
+ * @param valueOverflow - [TextOverflow] strategy applied to the [value] when it exceeds
+ *   [valueMaxLines]. Defaults to [TextOverflow.Clip].
  */
 @Composable
 public fun LemonadeUi.ContentListItem(
@@ -65,6 +74,10 @@ public fun LemonadeUi.ContentListItem(
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     contentSlot: (@Composable ColumnScope.() -> Unit)? = null,
+    labelMaxLines: Int = Int.MAX_VALUE,
+    labelOverflow: TextOverflow = TextOverflow.Clip,
+    valueMaxLines: Int = Int.MAX_VALUE,
+    valueOverflow: TextOverflow = TextOverflow.Clip,
 ) {
     val verticalPadding = when (density) {
         LemonadeContentListItemDensity.Comfortable -> LocalSpaces.current.spacing400
@@ -85,6 +98,10 @@ public fun LemonadeUi.ContentListItem(
                 leadingSlot = leadingSlot,
                 trailingSlot = trailingSlot,
                 contentSlot = contentSlot,
+                labelMaxLines = labelMaxLines,
+                labelOverflow = labelOverflow,
+                valueMaxLines = valueMaxLines,
+                valueOverflow = valueOverflow,
             )
 
             LemonadeContentListItemLayout.Vertical -> VerticalContentListItem(
@@ -94,6 +111,10 @@ public fun LemonadeUi.ContentListItem(
                 leadingSlot = leadingSlot,
                 trailingSlot = trailingSlot,
                 contentSlot = contentSlot,
+                labelMaxLines = labelMaxLines,
+                labelOverflow = labelOverflow,
+                valueMaxLines = valueMaxLines,
+                valueOverflow = valueOverflow,
             )
         }
 
@@ -140,6 +161,46 @@ public fun LemonadeUi.ContentListItem(
     )
 }
 
+@Deprecated(
+    message = "Use the overload with label/value truncation parameters.",
+    replaceWith = ReplaceWith(
+        expression = "ContentListItem(label, value, layout, modifier, showDivider, density, " +
+            "verticalAlignment, leadingSlot, trailingSlot, contentSlot, Int.MAX_VALUE, " +
+            "TextOverflow.Clip, Int.MAX_VALUE, TextOverflow.Clip)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.ContentListItem(
+    label: String,
+    value: String,
+    layout: LemonadeContentListItemLayout = LemonadeContentListItemLayout.Horizontal,
+    modifier: Modifier = Modifier,
+    showDivider: Boolean = false,
+    density: LemonadeContentListItemDensity = LemonadeContentListItemDensity.Comfortable,
+    verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    contentSlot: (@Composable ColumnScope.() -> Unit)? = null,
+) {
+    ContentListItem(
+        label = label,
+        value = value,
+        layout = layout,
+        modifier = modifier,
+        showDivider = showDivider,
+        density = density,
+        verticalAlignment = verticalAlignment,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        contentSlot = contentSlot,
+        labelMaxLines = Int.MAX_VALUE,
+        labelOverflow = TextOverflow.Clip,
+        valueMaxLines = Int.MAX_VALUE,
+        valueOverflow = TextOverflow.Clip,
+    )
+}
+
 @Composable
 private fun HorizontalContentListItem(
     label: String,
@@ -149,6 +210,10 @@ private fun HorizontalContentListItem(
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     contentSlot: (@Composable ColumnScope.() -> Unit)? = null,
+    labelMaxLines: Int = Int.MAX_VALUE,
+    labelOverflow: TextOverflow = TextOverflow.Clip,
+    valueMaxLines: Int = Int.MAX_VALUE,
+    valueOverflow: TextOverflow = TextOverflow.Clip,
 ) {
     Row(
         verticalAlignment = verticalAlignment,
@@ -166,6 +231,8 @@ private fun HorizontalContentListItem(
                 text = label,
                 textStyle = LocalTypographies.current.bodyMediumRegular,
                 color = LocalColors.current.content.contentSecondary,
+                maxLines = labelMaxLines,
+                overflow = labelOverflow,
             )
 
             if (contentSlot != null) {
@@ -186,6 +253,8 @@ private fun HorizontalContentListItem(
                     textStyle = LocalTypographies.current.bodyMediumMedium,
                     color = LocalColors.current.content.contentPrimary,
                     textAlign = TextAlign.End,
+                    maxLines = valueMaxLines,
+                    overflow = valueOverflow,
                     modifier = Modifier.weight(weight = 1f),
                 )
 
@@ -205,6 +274,10 @@ private fun VerticalContentListItem(
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     contentSlot: (@Composable ColumnScope.() -> Unit)? = null,
+    labelMaxLines: Int = Int.MAX_VALUE,
+    labelOverflow: TextOverflow = TextOverflow.Clip,
+    valueMaxLines: Int = Int.MAX_VALUE,
+    valueOverflow: TextOverflow = TextOverflow.Clip,
 ) {
     Row(
         verticalAlignment = Alignment.Top,
@@ -222,6 +295,8 @@ private fun VerticalContentListItem(
                 text = label,
                 textStyle = LocalTypographies.current.bodySmallRegular,
                 color = LocalColors.current.content.contentSecondary,
+                maxLines = labelMaxLines,
+                overflow = labelOverflow,
             )
 
             // Skip the value/trailing row entirely when there is nothing to show, so a
@@ -239,6 +314,8 @@ private fun VerticalContentListItem(
                             LocalTypographies.current.bodyMediumMedium
                         },
                         color = LocalColors.current.content.contentPrimary,
+                        maxLines = valueMaxLines,
+                        overflow = valueOverflow,
                         modifier = Modifier.weight(weight = 1f),
                     )
 

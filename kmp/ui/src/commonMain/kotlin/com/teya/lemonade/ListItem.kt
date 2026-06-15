@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package com.teya.lemonade
 
 import androidx.compose.animation.animateColorAsState
@@ -27,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
@@ -175,6 +178,62 @@ public fun LemonadeUi.ActionListItem(
     )
 }
 
+@Deprecated(
+    message = "Use the overload with label/support-text truncation parameters.",
+    replaceWith = ReplaceWith(
+        expression = "ActionListItem(label, modifier, topLabel, supportText, leadingSlot, " +
+            "trailingSlot, voice, isLoading, enabled, onItemClicked, role, interactionSource, " +
+            "showNavigationIndicator, showDivider, trailingVerticalAlignment, " +
+            "leadingVerticalAlignment, slotContent, Int.MAX_VALUE, TextOverflow.Clip, " +
+            "Int.MAX_VALUE, TextOverflow.Clip)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.ActionListItem(
+    label: String,
+    modifier: Modifier = Modifier,
+    topLabel: String? = null,
+    supportText: String? = null,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    isLoading: Boolean = false,
+    enabled: Boolean = true,
+    onItemClicked: (() -> Unit)? = null,
+    role: Role? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showNavigationIndicator: Boolean = false,
+    showDivider: Boolean = false,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+) {
+    LemonadeUi.ActionListItem(
+        label = label,
+        modifier = modifier,
+        topLabel = topLabel,
+        supportText = supportText,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        voice = voice,
+        isLoading = isLoading,
+        enabled = enabled,
+        onItemClicked = onItemClicked,
+        role = role,
+        interactionSource = interactionSource,
+        showNavigationIndicator = showNavigationIndicator,
+        showDivider = showDivider,
+        trailingVerticalAlignment = trailingVerticalAlignment,
+        leadingVerticalAlignment = leadingVerticalAlignment,
+        slotContent = slotContent,
+        labelMaxLines = Int.MAX_VALUE,
+        labelOverflow = TextOverflow.Clip,
+        supportTextMaxLines = Int.MAX_VALUE,
+        supportTextOverflow = TextOverflow.Clip,
+    )
+}
+
 /**
  * Basic building block for list items.
  *
@@ -213,6 +272,14 @@ public fun LemonadeUi.ActionListItem(
  * @param slotContent - Optional slot rendered below the support text, inside the label column
  *  so it stays aligned with the leading/trailing slots. Use for secondary content like an
  *  inline status text, badge, or compact widget that should sit under the row's text.
+ * @param labelMaxLines - Maximum number of lines for the [label] before it truncates. Defaults to
+ *  [Int.MAX_VALUE] (no limit).
+ * @param labelOverflow - [TextOverflow] strategy applied to the [label] when it exceeds
+ *  [labelMaxLines]. Defaults to [TextOverflow.Clip].
+ * @param supportTextMaxLines - Maximum number of lines for the [supportText] before it truncates.
+ *  Defaults to [Int.MAX_VALUE] (no limit).
+ * @param supportTextOverflow - [TextOverflow] strategy applied to the [supportText] when it exceeds
+ *  [supportTextMaxLines]. Defaults to [TextOverflow.Clip].
  */
 @Composable
 public fun LemonadeUi.ActionListItem(
@@ -233,12 +300,20 @@ public fun LemonadeUi.ActionListItem(
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
     slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+    labelMaxLines: Int = Int.MAX_VALUE,
+    labelOverflow: TextOverflow = TextOverflow.Clip,
+    supportTextMaxLines: Int = Int.MAX_VALUE,
+    supportTextOverflow: TextOverflow = TextOverflow.Clip,
 ) {
     LemonadeUi.ListItem(
         label = label,
         topLabel = topLabel,
         supportText = supportText,
         isLoading = isLoading,
+        labelMaxLines = labelMaxLines,
+        labelOverflow = labelOverflow,
+        supportTextMaxLines = supportTextMaxLines,
+        supportTextOverflow = supportTextOverflow,
         leadingSlot = leadingSlot,
         trailingSlot = if (trailingSlot != null) {
             {
@@ -372,6 +447,62 @@ public fun LemonadeUi.ListItem(
     )
 }
 
+@Deprecated(
+    message = "Use the overload with label/support-text truncation parameters.",
+    replaceWith = ReplaceWith(
+        expression = "ListItem(label, modifier, topLabel, supportText, onListItemClick, voice, " +
+            "navigationIndicator, isLoading, role, enabled, interactionSource, showDivider, " +
+            "leadingSlot, trailingSlot, slotContent, trailingVerticalAlignment, " +
+            "leadingVerticalAlignment, Int.MAX_VALUE, TextOverflow.Clip, Int.MAX_VALUE, " +
+            "TextOverflow.Clip)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.ListItem(
+    label: String,
+    modifier: Modifier = Modifier,
+    topLabel: String? = null,
+    supportText: String? = null,
+    onListItemClick: (() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    navigationIndicator: Boolean = false,
+    isLoading: Boolean = false,
+    role: Role? = null,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showDivider: Boolean = false,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
+) {
+    LemonadeUi.ListItem(
+        label = label,
+        modifier = modifier,
+        topLabel = topLabel,
+        supportText = supportText,
+        onListItemClick = onListItemClick,
+        voice = voice,
+        navigationIndicator = navigationIndicator,
+        isLoading = isLoading,
+        role = role,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        showDivider = showDivider,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        slotContent = slotContent,
+        trailingVerticalAlignment = trailingVerticalAlignment,
+        leadingVerticalAlignment = leadingVerticalAlignment,
+        labelMaxLines = Int.MAX_VALUE,
+        labelOverflow = TextOverflow.Clip,
+        supportTextMaxLines = Int.MAX_VALUE,
+        supportTextOverflow = TextOverflow.Clip,
+    )
+}
+
 /**
  * Convenience overload that composes standard label and support-text content from string parameters
  * and delegates to the content-slot variant of [ListItem].
@@ -395,6 +526,14 @@ public fun LemonadeUi.ListItem(
  *  indicator against the label/supportText column. Defaults to [Alignment.CenterVertically].
  * @param leadingVerticalAlignment - Vertical alignment of the leading slot against the
  *  label/supportText column. Defaults to [Alignment.Top].
+ * @param labelMaxLines - Maximum number of lines for the [label] before it truncates. Defaults to
+ *  [Int.MAX_VALUE] (no limit).
+ * @param labelOverflow - [TextOverflow] strategy applied to the [label] when it exceeds
+ *  [labelMaxLines]. Defaults to [TextOverflow.Clip].
+ * @param supportTextMaxLines - Maximum number of lines for the [supportText] before it truncates.
+ *  Defaults to [Int.MAX_VALUE] (no limit).
+ * @param supportTextOverflow - [TextOverflow] strategy applied to the [supportText] when it exceeds
+ *  [supportTextMaxLines]. Defaults to [TextOverflow.Clip].
  */
 @Composable
 public fun LemonadeUi.ListItem(
@@ -415,6 +554,10 @@ public fun LemonadeUi.ListItem(
     slotContent: (@Composable ColumnScope.() -> Unit)? = null,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
+    labelMaxLines: Int = Int.MAX_VALUE,
+    labelOverflow: TextOverflow = TextOverflow.Clip,
+    supportTextMaxLines: Int = Int.MAX_VALUE,
+    supportTextOverflow: TextOverflow = TextOverflow.Clip,
 ) {
     if (isLoading) {
         ListItemSkeleton(
@@ -448,6 +591,8 @@ public fun LemonadeUi.ListItem(
                     text = label,
                     textStyle = LocalTypographies.current.bodyMediumMedium,
                     color = voice.contentColor,
+                    maxLines = labelMaxLines,
+                    overflow = labelOverflow,
                 )
 
                 if (supportText != null) {
@@ -455,6 +600,8 @@ public fun LemonadeUi.ListItem(
                         text = supportText,
                         textStyle = LocalTypographies.current.bodySmallRegular,
                         color = LocalColors.current.content.contentSecondary,
+                        maxLines = supportTextMaxLines,
+                        overflow = supportTextOverflow,
                     )
                 }
 

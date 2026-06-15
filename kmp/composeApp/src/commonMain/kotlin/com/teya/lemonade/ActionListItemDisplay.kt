@@ -12,6 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeBadgeSize
 import com.teya.lemonade.core.LemonadeIcons
@@ -31,6 +32,47 @@ internal fun ActionListItemDisplay() {
             .navigationBarsPadding()
             .padding(all = LemonadeTheme.spaces.spacing400),
     ) {
+        // ActionListItem - Truncation
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "ActionListItem - Truncation"),
+        ) {
+            LemonadeUi.ActionListItem(
+                label = "This is a very long label that should be truncated to a single line with an ellipsis",
+                supportText = "And this is an even longer support text that wraps across multiple lines " +
+                    "before it gets truncated, so we can clearly see the maxLines and overflow props " +
+                    "doing their job on the second line of the row",
+                labelMaxLines = 1,
+                labelOverflow = TextOverflow.Ellipsis,
+                supportTextMaxLines = 2,
+                supportTextOverflow = TextOverflow.Ellipsis,
+                showNavigationIndicator = true,
+                onItemClicked = {},
+                showDivider = true,
+                leadingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.Bell,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                    )
+                },
+            )
+
+            LemonadeUi.ActionListItem(
+                label = "Same long label without truncation wraps onto as many lines as it needs",
+                supportText = "Default behaviour: no maxLines set, so this support text wraps freely " +
+                    "instead of being clipped",
+                onItemClicked = {},
+                showDivider = false,
+                leadingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.Bell,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                    )
+                },
+            )
+        }
+
         // ActionListItem
         LemonadeUi.Card(
             header = CardHeaderConfig(title = "ActionListItem"),
