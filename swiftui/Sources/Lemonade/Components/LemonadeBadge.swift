@@ -102,6 +102,11 @@ private struct LemonadeBadgeView: View {
             .padding(.vertical, size.textVerticalPadding)
             .padding(.horizontal, size.horizontalPadding)
             .frame(height: size.height)
+            // The two Capsule fills already define the pill, and the label is inset by padding
+            // so it never reaches the ends. A clipShape over this gradient background only adds
+            // an offscreen render pass (the composited subtree can't fold into a layer corner
+            // radius), so the shaped fills do the rounding instead. Badges render densely
+            // (one per notification dot/count), so the per-instance pass adds up while scrolling.
             .background(
                 ZStack {
                     Capsule()
@@ -117,7 +122,6 @@ private struct LemonadeBadgeView: View {
                         )
                 }
             )
-            .clipShape(Capsule())
     }
 }
 
