@@ -111,16 +111,27 @@ private fun CoreIconButton(
     )
     val sizeData = size.toSizeData(shape = shape)
 
+    // `bgSubtle` backdrop is drawn BEFORE the disabled [Modifier.alpha] scope. Compose applies
+    // alpha as a graphics layer wrapping subsequent draws only — so when disabled, the 50% alpha
+    // blends the colored fill into the opaque backdrop instead of into whatever is behind the
+    // button. When enabled, the opaque colored fill fully covers the backdrop. Ghost buttons have
+    // no fill, so they skip the backdrop entirely and stay transparent when disabled.
+    val disabledModifier = if (!enabled) {
+        val backdrop = if (type == LemonadeButtonType.Ghost) {
+            Modifier
+        } else {
+            Modifier.background(color = LocalColors.current.background.bgSubtle)
+        }
+        backdrop.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+    } else {
+        Modifier
+    }
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .then(
-                other = if (!enabled) {
-                    Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                } else {
-                    Modifier
-                },
-            ).clip(shape = sizeData.shape)
+            .clip(shape = sizeData.shape)
+            .then(other = disabledModifier)
             .clickable(
                 onClick = onClick,
                 role = Role.Button,
