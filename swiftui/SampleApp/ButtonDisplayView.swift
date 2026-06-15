@@ -62,7 +62,7 @@ struct ButtonDisplayView: View {
                         LemonadeUi.Button(label: "Loading", onClick: {}, variant: .neutral, size: .medium, loading: true)
                     }
                 }
-                
+
                 // Neutral Ghost Variant
                 sectionView(title: "Neutral Ghost") {
                     VStack(spacing: 16) {
