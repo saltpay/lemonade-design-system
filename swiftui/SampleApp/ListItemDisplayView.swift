@@ -104,6 +104,50 @@ struct ActionListItemPreview: View {
     var body: some View {
         VStack(alignment: .leading, spacing: .space.spacing400) {
             LemonadeUi.Text("ActionListItem", font: .headingXSmall)
+
+            // MARK: - ActionListItem - Truncation
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(title: "ActionListItem - Truncation")
+            ) {
+                LemonadeUi.ActionListItem(
+                    label: "This is a very long label that should be truncated to a single line with an ellipsis",
+                    supportText: "And this is an even longer support text that wraps across multiple lines "
+                        + "before it gets truncated, so we can clearly see the maxLines and overflow props "
+                        + "doing their job on the second line of the row",
+                    showNavigationIndicator: true,
+                    showDivider: true,
+                    labelMaxLines: 1,
+                    labelOverflow: .tail,
+                    supportTextMaxLines: 2,
+                    supportTextOverflow: .tail,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .bell,
+                            contentDescription: nil,
+                            size: .medium
+                        )
+                    }
+                )
+
+                LemonadeUi.ActionListItem(
+                    label: "Same long label without truncation wraps onto as many lines as it needs",
+                    supportText: "Default behaviour: no maxLines set, so this support text wraps freely "
+                        + "instead of being clipped",
+                    showNavigationIndicator: true,
+                    showDivider: false,
+                    onItemClicked: {},
+                    leadingSlot: {
+                        LemonadeUi.Icon(
+                            icon: .bell,
+                            contentDescription: nil,
+                            size: .medium
+                        )
+                    }
+                )
+            }
+
             LemonadeUi.Card(
                 contentPadding: .none,
                 header: CardHeaderConfig(title: "ActionListItem")

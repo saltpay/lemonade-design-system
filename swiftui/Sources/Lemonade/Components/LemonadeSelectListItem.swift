@@ -30,6 +30,10 @@ public extension LemonadeUi {
     ///   - enabled: Flag that defines if component is enabled. Defaults to true
     ///   - showDivider: Flag to show a divider below the list item. Only honored by `.plain`.
     ///   - supportText: Text to be displayed below the label
+    ///   - labelMaxLines: Maximum number of lines for the label before it truncates. Defaults to `nil` (no limit).
+    ///   - labelOverflow: Truncation mode applied to the label when it exceeds `labelMaxLines`. Defaults to `.tail`.
+    ///   - supportTextMaxLines: Maximum number of lines for the support text before it truncates. Defaults to `nil` (no limit).
+    ///   - supportTextOverflow: Truncation mode applied to the support text when it exceeds `supportTextMaxLines`. Defaults to `.tail`.
     ///   - leadingSlot: Content to be placed in leading position
     ///   - trailingSlot: Content to be placed before the selection control
     ///   - slotContent: Optional slot rendered below the support text, inside the label column.
@@ -47,6 +51,10 @@ public extension LemonadeUi {
         enabled: Bool = true,
         showDivider: Bool = false,
         supportText: String? = nil,
+        labelMaxLines: Int? = nil,
+        labelOverflow: Text.TruncationMode = .tail,
+        supportTextMaxLines: Int? = nil,
+        supportTextOverflow: Text.TruncationMode = .tail,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
         @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
@@ -62,6 +70,10 @@ public extension LemonadeUi {
                 enabled: enabled,
                 showDivider: showDivider,
                 supportText: supportText,
+                labelMaxLines: labelMaxLines,
+                labelOverflow: labelOverflow,
+                supportTextMaxLines: supportTextMaxLines,
+                supportTextOverflow: supportTextOverflow,
                 leadingSlot: leadingSlot,
                 trailingSlot: trailingSlot,
                 slotContent: slotContent
@@ -74,6 +86,10 @@ public extension LemonadeUi {
                 onItemClicked: onItemClicked,
                 enabled: enabled,
                 supportText: supportText,
+                labelMaxLines: labelMaxLines,
+                labelOverflow: labelOverflow,
+                supportTextMaxLines: supportTextMaxLines,
+                supportTextOverflow: supportTextOverflow,
                 leadingSlot: leadingSlot,
                 trailingSlot: trailingSlot,
                 slotContent: slotContent
@@ -93,6 +109,10 @@ public extension LemonadeUi {
         enabled: Bool = true,
         showDivider: Bool = false,
         supportText: String? = nil,
+        labelMaxLines: Int? = nil,
+        labelOverflow: Text.TruncationMode = .tail,
+        supportTextMaxLines: Int? = nil,
+        supportTextOverflow: Text.TruncationMode = .tail,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
         @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
     ) -> some View {
@@ -106,6 +126,10 @@ public extension LemonadeUi {
             enabled: enabled,
             showDivider: showDivider,
             supportText: supportText,
+            labelMaxLines: labelMaxLines,
+            labelOverflow: labelOverflow,
+            supportTextMaxLines: supportTextMaxLines,
+            supportTextOverflow: supportTextOverflow,
             leadingSlot: { EmptyView() },
             trailingSlot: trailingSlot,
             slotContent: slotContent
@@ -124,6 +148,10 @@ public extension LemonadeUi {
         enabled: Bool = true,
         showDivider: Bool = false,
         supportText: String? = nil,
+        labelMaxLines: Int? = nil,
+        labelOverflow: Text.TruncationMode = .tail,
+        supportTextMaxLines: Int? = nil,
+        supportTextOverflow: Text.TruncationMode = .tail,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
     ) -> some View {
@@ -137,6 +165,10 @@ public extension LemonadeUi {
             enabled: enabled,
             showDivider: showDivider,
             supportText: supportText,
+            labelMaxLines: labelMaxLines,
+            labelOverflow: labelOverflow,
+            supportTextMaxLines: supportTextMaxLines,
+            supportTextOverflow: supportTextOverflow,
             leadingSlot: leadingSlot,
             trailingSlot: { EmptyView() },
             slotContent: slotContent
@@ -155,6 +187,10 @@ public extension LemonadeUi {
         enabled: Bool = true,
         showDivider: Bool = false,
         supportText: String? = nil,
+        labelMaxLines: Int? = nil,
+        labelOverflow: Text.TruncationMode = .tail,
+        supportTextMaxLines: Int? = nil,
+        supportTextOverflow: Text.TruncationMode = .tail,
         @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
     ) -> some View {
         SelectListItem(
@@ -167,6 +203,10 @@ public extension LemonadeUi {
             enabled: enabled,
             showDivider: showDivider,
             supportText: supportText,
+            labelMaxLines: labelMaxLines,
+            labelOverflow: labelOverflow,
+            supportTextMaxLines: supportTextMaxLines,
+            supportTextOverflow: supportTextOverflow,
             leadingSlot: { EmptyView() },
             trailingSlot: { EmptyView() },
             slotContent: slotContent
@@ -232,6 +272,10 @@ private struct PlainSelectListItem<LeadingContent: View, TrailingContent: View, 
     let enabled: Bool
     let showDivider: Bool
     let supportText: String?
+    let labelMaxLines: Int?
+    let labelOverflow: Text.TruncationMode
+    let supportTextMaxLines: Int?
+    let supportTextOverflow: Text.TruncationMode
     let leadingSlot: () -> LeadingContent
     let trailingSlot: () -> TrailingContent
     let slotContent: () -> SlotContent
@@ -244,6 +288,10 @@ private struct PlainSelectListItem<LeadingContent: View, TrailingContent: View, 
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
+            labelMaxLines: labelMaxLines,
+            labelOverflow: labelOverflow,
+            supportTextMaxLines: supportTextMaxLines,
+            supportTextOverflow: supportTextOverflow,
             onListItemClick: {
                 handleSelectTap(type: type, checked: checked, onItemClicked: onItemClicked)
             },
@@ -276,6 +324,10 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
     let onItemClicked: () -> Void
     let enabled: Bool
     let supportText: String?
+    let labelMaxLines: Int?
+    let labelOverflow: Text.TruncationMode
+    let supportTextMaxLines: Int?
+    let supportTextOverflow: Text.TruncationMode
     let leadingSlot: () -> LeadingContent
     let trailingSlot: () -> TrailingContent
     let slotContent: () -> SlotContent
@@ -314,14 +366,18 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
                 LemonadeUi.Text(
                     label,
                     textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                    color: LemonadeTheme.colors.content.contentPrimary
+                    color: LemonadeTheme.colors.content.contentPrimary,
+                    overflow: labelOverflow,
+                    maxLines: labelMaxLines
                 )
 
                 if let supportText = supportText {
                     LemonadeUi.Text(
                         supportText,
                         textStyle: LemonadeTypography.shared.bodySmallRegular,
-                        color: LemonadeTheme.colors.content.contentSecondary
+                        color: LemonadeTheme.colors.content.contentSecondary,
+                        overflow: supportTextOverflow,
+                        maxLines: supportTextMaxLines
                     )
                 }
 

@@ -29,6 +29,10 @@ public extension LemonadeUi {
     ///   - showDivider: Flag to show a divider below the list item. Defaults to false
     ///   - leadingAlignment: Vertical alignment of the leading slot. Defaults to `.top`.
     ///   - trailingAlignment: Vertical alignment of the trailing slot and navigation indicator. Defaults to `.center`.
+    ///   - labelMaxLines: Maximum number of lines for the label before it truncates. Defaults to `nil` (no limit).
+    ///   - labelOverflow: Truncation mode applied to the label when it exceeds `labelMaxLines`. Defaults to `.tail`.
+    ///   - supportTextMaxLines: Maximum number of lines for the support text before it truncates. Defaults to `nil` (no limit).
+    ///   - supportTextOverflow: Truncation mode applied to the support text when it exceeds `supportTextMaxLines`. Defaults to `.tail`.
     ///   - onItemClicked: Callback called when component is tapped
     ///   - leadingSlot: Slot content to be placed in leading position
     ///   - trailingSlot: Slot content to be placed in trailing position
@@ -48,6 +52,10 @@ public extension LemonadeUi {
         showDivider: Bool = false,
         leadingAlignment: VerticalAlignment = .top,
         trailingAlignment: VerticalAlignment = .center,
+        labelMaxLines: Int? = nil,
+        labelOverflow: Text.TruncationMode = .tail,
+        supportTextMaxLines: Int? = nil,
+        supportTextOverflow: Text.TruncationMode = .tail,
         onItemClicked: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
@@ -64,6 +72,10 @@ public extension LemonadeUi {
             showDivider: showDivider,
             leadingAlignment: leadingAlignment,
             trailingAlignment: trailingAlignment,
+            labelMaxLines: labelMaxLines,
+            labelOverflow: labelOverflow,
+            supportTextMaxLines: supportTextMaxLines,
+            supportTextOverflow: supportTextOverflow,
             onListItemClick: onItemClicked,
             leadingSlot: leadingSlot,
             trailingSlot: {
@@ -87,6 +99,10 @@ public extension LemonadeUi {
         showDivider: Bool = false,
         leadingAlignment: VerticalAlignment = .top,
         trailingAlignment: VerticalAlignment = .center,
+        labelMaxLines: Int? = nil,
+        labelOverflow: Text.TruncationMode = .tail,
+        supportTextMaxLines: Int? = nil,
+        supportTextOverflow: Text.TruncationMode = .tail,
         onItemClicked: (() -> Void)? = nil,
         @ViewBuilder leadingSlot: @escaping () -> LeadingContent,
         @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
@@ -102,6 +118,10 @@ public extension LemonadeUi {
             showDivider: showDivider,
             leadingAlignment: leadingAlignment,
             trailingAlignment: trailingAlignment,
+            labelMaxLines: labelMaxLines,
+            labelOverflow: labelOverflow,
+            supportTextMaxLines: supportTextMaxLines,
+            supportTextOverflow: supportTextOverflow,
             onItemClicked: onItemClicked,
             leadingSlot: leadingSlot,
             trailingSlot: { EmptyView() },
@@ -122,6 +142,10 @@ public extension LemonadeUi {
         showDivider: Bool = false,
         leadingAlignment: VerticalAlignment = .top,
         trailingAlignment: VerticalAlignment = .center,
+        labelMaxLines: Int? = nil,
+        labelOverflow: Text.TruncationMode = .tail,
+        supportTextMaxLines: Int? = nil,
+        supportTextOverflow: Text.TruncationMode = .tail,
         onItemClicked: (() -> Void)? = nil,
         @ViewBuilder trailingSlot: @escaping () -> TrailingContent,
         @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
@@ -137,6 +161,10 @@ public extension LemonadeUi {
             showDivider: showDivider,
             leadingAlignment: leadingAlignment,
             trailingAlignment: trailingAlignment,
+            labelMaxLines: labelMaxLines,
+            labelOverflow: labelOverflow,
+            supportTextMaxLines: supportTextMaxLines,
+            supportTextOverflow: supportTextOverflow,
             onItemClicked: onItemClicked,
             leadingSlot: { EmptyView() },
             trailingSlot: trailingSlot,
@@ -157,6 +185,10 @@ public extension LemonadeUi {
         showDivider: Bool = false,
         leadingAlignment: VerticalAlignment = .top,
         trailingAlignment: VerticalAlignment = .center,
+        labelMaxLines: Int? = nil,
+        labelOverflow: Text.TruncationMode = .tail,
+        supportTextMaxLines: Int? = nil,
+        supportTextOverflow: Text.TruncationMode = .tail,
         onItemClicked: (() -> Void)? = nil,
         @ViewBuilder slotContent: @escaping () -> SlotContent = { EmptyView() }
     ) -> some View {
@@ -171,6 +203,10 @@ public extension LemonadeUi {
             showDivider: showDivider,
             leadingAlignment: leadingAlignment,
             trailingAlignment: trailingAlignment,
+            labelMaxLines: labelMaxLines,
+            labelOverflow: labelOverflow,
+            supportTextMaxLines: supportTextMaxLines,
+            supportTextOverflow: supportTextOverflow,
             onItemClicked: onItemClicked,
             leadingSlot: { EmptyView() },
             trailingSlot: { EmptyView() },

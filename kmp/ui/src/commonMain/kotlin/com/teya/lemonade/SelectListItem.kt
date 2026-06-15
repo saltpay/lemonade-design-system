@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.teya.lemonade.core.CheckboxStatus
@@ -67,6 +68,14 @@ import com.teya.lemonade.core.SelectListItemVariant
  * @param slotContent - Optional slot rendered below the support text, inside the label column
  *  so it stays aligned with the leading/trailing slots. Use for secondary content like an
  *  inline status text, badge, or compact widget that should sit under the row's text.
+ * @param labelMaxLines - Maximum number of lines for the [label] before it truncates. Defaults to
+ *  [Int.MAX_VALUE] (no limit).
+ * @param labelOverflow - [TextOverflow] strategy applied to the [label] when it exceeds
+ *  [labelMaxLines]. Defaults to [TextOverflow.Clip].
+ * @param supportTextMaxLines - Maximum number of lines for the [supportText] before it truncates.
+ *  Defaults to [Int.MAX_VALUE] (no limit).
+ * @param supportTextOverflow - [TextOverflow] strategy applied to the [supportText] when it exceeds
+ *  [supportTextMaxLines]. Defaults to [TextOverflow.Clip].
  */
 @Composable
 public fun LemonadeUi.SelectListItem(
@@ -84,6 +93,10 @@ public fun LemonadeUi.SelectListItem(
     leadingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+    labelMaxLines: Int = Int.MAX_VALUE,
+    labelOverflow: TextOverflow = TextOverflow.Clip,
+    supportTextMaxLines: Int = Int.MAX_VALUE,
+    supportTextOverflow: TextOverflow = TextOverflow.Clip,
 ) {
     when (variant) {
         SelectListItemVariant.Plain -> {
@@ -101,6 +114,10 @@ public fun LemonadeUi.SelectListItem(
                 leadingSlot = leadingSlot,
                 trailingSlot = trailingSlot,
                 slotContent = slotContent,
+                labelMaxLines = labelMaxLines,
+                labelOverflow = labelOverflow,
+                supportTextMaxLines = supportTextMaxLines,
+                supportTextOverflow = supportTextOverflow,
             )
         }
 
@@ -117,9 +134,62 @@ public fun LemonadeUi.SelectListItem(
                 leadingSlot = leadingSlot,
                 trailingSlot = trailingSlot,
                 slotContent = slotContent,
+                labelMaxLines = labelMaxLines,
+                labelOverflow = labelOverflow,
+                supportTextMaxLines = supportTextMaxLines,
+                supportTextOverflow = supportTextOverflow,
             )
         }
     }
+}
+
+@Deprecated(
+    message = "Use the overload with label/support-text truncation parameters.",
+    replaceWith = ReplaceWith(
+        expression = "SelectListItem(label, type, checked, onItemClicked, modifier, variant, " +
+            "isLoading, enabled, interactionSource, showDivider, supportText, leadingSlot, " +
+            "trailingSlot, slotContent, Int.MAX_VALUE, TextOverflow.Clip, Int.MAX_VALUE, " +
+            "TextOverflow.Clip)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.SelectListItem(
+    label: String,
+    type: SelectListItemType,
+    checked: Boolean,
+    onItemClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+    variant: SelectListItemVariant = SelectListItemVariant.Plain,
+    isLoading: Boolean = false,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showDivider: Boolean = false,
+    supportText: String? = null,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+) {
+    LemonadeUi.SelectListItem(
+        label = label,
+        type = type,
+        checked = checked,
+        onItemClicked = onItemClicked,
+        modifier = modifier,
+        variant = variant,
+        isLoading = isLoading,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        showDivider = showDivider,
+        supportText = supportText,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        slotContent = slotContent,
+        labelMaxLines = Int.MAX_VALUE,
+        labelOverflow = TextOverflow.Clip,
+        supportTextMaxLines = Int.MAX_VALUE,
+        supportTextOverflow = TextOverflow.Clip,
+    )
 }
 
 @Deprecated(
@@ -251,12 +321,20 @@ private fun PlainSelectListItem(
     leadingSlot: (@Composable RowScope.() -> Unit)?,
     trailingSlot: (@Composable RowScope.() -> Unit)?,
     slotContent: (@Composable ColumnScope.() -> Unit)?,
+    labelMaxLines: Int,
+    labelOverflow: TextOverflow,
+    supportTextMaxLines: Int,
+    supportTextOverflow: TextOverflow,
 ) {
     LemonadeUi.ListItem(
         modifier = modifier,
         label = label,
         supportText = supportText,
         isLoading = isLoading,
+        labelMaxLines = labelMaxLines,
+        labelOverflow = labelOverflow,
+        supportTextMaxLines = supportTextMaxLines,
+        supportTextOverflow = supportTextOverflow,
         interactionSource = interactionSource,
         showDivider = showDivider,
         role = type.role,
@@ -305,6 +383,10 @@ private fun OutlinedSelectListItem(
     leadingSlot: (@Composable RowScope.() -> Unit)?,
     trailingSlot: (@Composable RowScope.() -> Unit)?,
     slotContent: (@Composable ColumnScope.() -> Unit)?,
+    labelMaxLines: Int,
+    labelOverflow: TextOverflow,
+    supportTextMaxLines: Int,
+    supportTextOverflow: TextOverflow,
 ) {
     val colors = LocalColors.current
     val spaces = LocalSpaces.current
@@ -383,6 +465,8 @@ private fun OutlinedSelectListItem(
                 text = label,
                 textStyle = typographies.bodyMediumMedium,
                 color = colors.content.contentPrimary,
+                maxLines = labelMaxLines,
+                overflow = labelOverflow,
             )
 
             if (supportText != null) {
@@ -390,6 +474,8 @@ private fun OutlinedSelectListItem(
                     text = supportText,
                     textStyle = typographies.bodySmallRegular,
                     color = colors.content.contentSecondary,
+                    maxLines = supportTextMaxLines,
+                    overflow = supportTextOverflow,
                 )
             }
 
