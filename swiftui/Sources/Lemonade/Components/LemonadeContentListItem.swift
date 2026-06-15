@@ -54,6 +54,10 @@ public extension LemonadeUi {
     ///   - trailingSlot: Optional trailing element (e.g. icon action)
     ///   - contentSlot: Optional additional content. In vertical layout, switches value to larger typography
     ///   - verticalAlignment: Vertical alignment for horizontal layout (default `.center`)
+    ///   - labelMaxLines: Maximum number of lines for the label before it truncates. Defaults to `nil` (no limit).
+    ///   - labelOverflow: Truncation mode applied to the label when it exceeds `labelMaxLines`. Defaults to `.tail`.
+    ///   - valueMaxLines: Maximum number of lines for the value before it truncates. Defaults to `nil` (no limit).
+    ///   - valueOverflow: Truncation mode applied to the value when it exceeds `valueMaxLines`. Defaults to `.tail`.
     @ViewBuilder
     static func ContentListItem<Leading: View, Trailing: View, Content: View>(
         label: String,
@@ -62,6 +66,10 @@ public extension LemonadeUi {
         showDivider: Bool = false,
         density: LemonadeContentListItemDensity = .comfortable,
         verticalAlignment: VerticalAlignment = .center,
+        labelMaxLines: Int? = nil,
+        labelOverflow: Text.TruncationMode = .tail,
+        valueMaxLines: Int? = nil,
+        valueOverflow: Text.TruncationMode = .tail,
         @ViewBuilder leadingSlot: @escaping () -> Leading = { EmptyView() },
         @ViewBuilder trailingSlot: @escaping () -> Trailing = { EmptyView() },
         @ViewBuilder contentSlot: @escaping () -> Content = { EmptyView() }
@@ -73,6 +81,10 @@ public extension LemonadeUi {
             showDivider: showDivider,
             density: density,
             verticalAlignment: verticalAlignment,
+            labelMaxLines: labelMaxLines,
+            labelOverflow: labelOverflow,
+            valueMaxLines: valueMaxLines,
+            valueOverflow: valueOverflow,
             leadingSlot: leadingSlot,
             trailingSlot: trailingSlot,
             contentSlot: contentSlot
@@ -89,6 +101,10 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
     let showDivider: Bool
     let density: LemonadeContentListItemDensity
     let verticalAlignment: VerticalAlignment
+    let labelMaxLines: Int?
+    let labelOverflow: Text.TruncationMode
+    let valueMaxLines: Int?
+    let valueOverflow: Text.TruncationMode
     @ViewBuilder let leadingSlot: () -> Leading
     @ViewBuilder let trailingSlot: () -> Trailing
     @ViewBuilder let contentSlot: () -> Content
@@ -144,7 +160,9 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
                 LemonadeUi.Text(
                     label,
                     textStyle: LemonadeTypography.shared.bodyMediumRegular,
-                    color: LemonadeTheme.colors.content.contentSecondary
+                    color: LemonadeTheme.colors.content.contentSecondary,
+                    overflow: labelOverflow,
+                    maxLines: labelMaxLines
                 )
 
                 if hasContentSlot {
@@ -158,7 +176,9 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
                     value,
                     textStyle: LemonadeTypography.shared.bodyMediumMedium,
                     textAlign: .trailing,
-                    color: LemonadeTheme.colors.content.contentPrimary
+                    color: LemonadeTheme.colors.content.contentPrimary,
+                    overflow: valueOverflow,
+                    maxLines: valueMaxLines
                 )
 
                 if hasTrailingSlot {
@@ -178,7 +198,9 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
                 LemonadeUi.Text(
                     label,
                     textStyle: LemonadeTypography.shared.bodySmallRegular,
-                    color: LemonadeTheme.colors.content.contentSecondary
+                    color: LemonadeTheme.colors.content.contentSecondary,
+                    overflow: labelOverflow,
+                    maxLines: labelMaxLines
                 )
 
                 HStack(spacing: LemonadeTheme.spaces.spacing100) {
@@ -187,7 +209,9 @@ private struct LemonadeContentListItemView<Leading: View, Trailing: View, Conten
                         textStyle: hasContentSlot
                             ? LemonadeTypography.shared.bodyXLargeSemiBold
                             : LemonadeTypography.shared.bodyMediumMedium,
-                        color: LemonadeTheme.colors.content.contentPrimary
+                        color: LemonadeTheme.colors.content.contentPrimary,
+                        overflow: valueOverflow,
+                        maxLines: valueMaxLines
                     )
                     .frame(maxWidth: .infinity, alignment: .leading)
 

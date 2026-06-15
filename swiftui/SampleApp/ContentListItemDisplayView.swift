@@ -5,6 +5,41 @@ struct ContentListItemDisplayView: View {
     var body: some View {
         ScrollView(.vertical) {
             VStack(spacing: .space.spacing400) {
+                // MARK: - Truncation
+                LemonadeUi.Card(
+                    header: CardHeaderConfig(title: "Truncation")
+                ) {
+                    // Horizontal: both sides clamped to a single line + ellipsis
+                    LemonadeUi.ContentListItem(
+                        label: "Beneficiary account holder full legal name",
+                        value: "International Business Holdings Limited Partnership",
+                        showDivider: true,
+                        labelMaxLines: 1,
+                        labelOverflow: .tail,
+                        valueMaxLines: 1,
+                        valueOverflow: .tail
+                    )
+
+                    // Vertical: label 1 line, value clamped to 2 lines + ellipsis
+                    LemonadeUi.ContentListItem(
+                        label: "Registered business address for correspondence and billing",
+                        value: "Floor 12, One Canada Square, Canary Wharf, London E14 5AB, United Kingdom",
+                        layout: .vertical,
+                        showDivider: true,
+                        labelMaxLines: 1,
+                        labelOverflow: .tail,
+                        valueMaxLines: 2,
+                        valueOverflow: .tail
+                    )
+
+                    // Default (no truncation) for comparison — wraps freely
+                    LemonadeUi.ContentListItem(
+                        label: "Registered business address for correspondence and billing",
+                        value: "Floor 12, One Canada Square, Canary Wharf, London E14 5AB, United Kingdom",
+                        layout: .vertical
+                    )
+                }
+
                 // MARK: - Horizontal Simple (stacked with dividers)
                 LemonadeUi.Card(
                     header: CardHeaderConfig(title: "Horizontal Simple")
