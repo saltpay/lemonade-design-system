@@ -50,6 +50,61 @@ internal fun ContentListItemDisplay() {
             )
         }
 
+        // Horizontal — label only (no value, no trailing): label fills available width
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "Horizontal — Label Only"),
+        ) {
+            LemonadeUi.ContentListItem(
+                label = "Account holder",
+                value = "",
+                layout = LemonadeContentListItemLayout.Horizontal,
+                showDivider = true,
+            )
+            LemonadeUi.ContentListItem(
+                label = "Terms and conditions agreement for the account holder " +
+                    "regarding international transfers and currency exchange policies",
+                value = "",
+                layout = LemonadeContentListItemLayout.Horizontal,
+            )
+        }
+
+        // Horizontal — label only with leading (still no trailing)
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "Horizontal — Label Only & Leading"),
+        ) {
+            LemonadeUi.ContentListItem(
+                label = "Favourite",
+                value = "",
+                layout = LemonadeContentListItemLayout.Horizontal,
+                leadingSlot = {
+                    LemonadeUi.SymbolContainer(
+                        icon = LemonadeIcons.Heart,
+                        voice = SymbolContainerVoice.Neutral,
+                        size = SymbolContainerSize.Medium,
+                        contentDescription = null,
+                    )
+                },
+            )
+        }
+
+        // Vertical — label only (no value, no trailing)
+        LemonadeUi.Card(
+            header = CardHeaderConfig(title = "Vertical — Label Only"),
+        ) {
+            LemonadeUi.ContentListItem(
+                label = "Balance",
+                value = "",
+                layout = LemonadeContentListItemLayout.Vertical,
+                showDivider = true,
+            )
+            LemonadeUi.ContentListItem(
+                label = "A much longer label that should fill the available width " +
+                    "when there is no value or trailing element to share the row with",
+                value = "",
+                layout = LemonadeContentListItemLayout.Vertical,
+            )
+        }
+
         // Horizontal simple — long text
         LemonadeUi.Card(
             header = CardHeaderConfig(title = "Horizontal Simple — Long Text"),
