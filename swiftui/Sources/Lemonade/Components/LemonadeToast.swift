@@ -11,12 +11,16 @@ public enum LemonadeToastVoice: Sendable {
     case error
     /// Neutral toast with a customizable icon.
     case neutral
+    /// Loading toast communicating an ongoing action. Shows an animated spinner as the leading
+    /// element and persists until it is explicitly dismissed or replaced (no auto-dismiss, not
+    /// swipe-dismissible).
+    case loading
 
     internal var icon: LemonadeIcon? {
         switch self {
         case .success: return .circleCheck
         case .error: return .circleX
-        case .neutral: return nil
+        case .neutral, .loading: return nil
         }
     }
 
@@ -24,7 +28,7 @@ public enum LemonadeToastVoice: Sendable {
         switch self {
         case .success: return colors.content.contentPositiveAlwaysOnColor
         case .error: return colors.content.contentCriticalAlwaysOnColor
-        case .neutral: return colors.content.contentNeutralAlwaysOnColor
+        case .neutral, .loading: return colors.content.contentNeutralAlwaysOnColor
         }
     }
 
@@ -36,7 +40,7 @@ public enum LemonadeToastVoice: Sendable {
             return .success
         case .error:
             return .error
-        case .neutral:
+        case .neutral, .loading:
             return .impact
         }
     }
@@ -101,6 +105,9 @@ private struct LemonadeToastView: View {
             return customIcon
         case .success, .error:
             return voice.icon
+        case .loading:
+            // The leading element is a spinner, not a static icon.
+            return nil
         }
     }
 
@@ -109,12 +116,17 @@ private struct LemonadeToastView: View {
         case .success: return "Success"
         case .error: return "Error"
         case .neutral: return "Notice"
+        case .loading: return "Loading"
         }
     }
 
     var body: some View {
         HStack(spacing: .space.spacing200) {
-            if let icon = displayIcon {
+            if voice == .loading {
+                LemonadeUi.Spinner(
+                    tint: voice.iconColor(colors: LemonadeTheme.colors)
+                )
+            } else if let icon = displayIcon {
                 LemonadeUi.Icon(
                     icon: icon,
                     contentDescription: nil,
@@ -208,6 +220,7 @@ struct LemonadeToast_Previews: PreviewProvider {
             LemonadeUi.Toast(label: "Your session will expire soon", voice: .neutral, icon: .circleAlert)
             LemonadeUi.Toast(label: "Added to favorites", voice: .neutral, icon: .heart)
             LemonadeUi.Toast(label: "Toast without an icon", voice: .neutral)
+            LemonadeUi.Toast(label: "Downloading your document…", voice: .loading)
             LemonadeUi.Toast(label: "Changes saved", voice: .success, actionLabel: "Undo") {}
             LemonadeUi.Toast(label: "Something went wrong", voice: .error, actionLabel: "Retry") {}
             LemonadeUi.Toast(label: "Added to favorites", voice: .neutral, icon: .heart, actionLabel: "View") {}

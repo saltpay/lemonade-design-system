@@ -37,6 +37,26 @@ struct ToastDisplayView: View {
                 }
             }
 
+            Section("Loading") {
+                Button("Show Loading Toast") {
+                    toastManager.show(
+                        label: "Downloading your document…",
+                        voice: .loading
+                    )
+                }
+
+                Button("Complete Loading (replace)") {
+                    toastManager.show(
+                        label: "Download complete",
+                        voice: .success
+                    )
+                }
+
+                Button("Dismiss Loading") {
+                    toastManager.dismiss()
+                }
+            }
+
             Section("With Action") {
                 Button("Success Toast with Action") {
                     toastManager.show(
@@ -167,6 +187,7 @@ struct ToastDisplayView: View {
                     LemonadeUi.Toast(label: "Error message", voice: .error)
                     LemonadeUi.Toast(label: "Neutral message", voice: .neutral)
                     LemonadeUi.Toast(label: "With custom icon", voice: .neutral, icon: .sparkles)
+                    LemonadeUi.Toast(label: "Downloading your document…", voice: .loading)
                     LemonadeUi.Toast(label: "Success message", voice: .success, actionLabel: "Undo") {}
                     LemonadeUi.Toast(label: "Error message", voice: .error, actionLabel: "Retry") {}
                     LemonadeUi.Toast(label: "Neutral message", voice: .neutral, actionLabel: "View") {}

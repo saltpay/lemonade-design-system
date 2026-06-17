@@ -55,6 +55,13 @@ public enum class ToastVoice {
     Success,
     Error,
     Neutral,
+
+    /**
+     * Communicates an ongoing action (e.g. "Downloading your document…"). The leading element is an
+     * animated [LemonadeUi.Spinner] instead of a static icon. A loading toast persists until it is
+     * explicitly dismissed or replaced — it does not auto-dismiss and cannot be swiped away.
+     */
+    Loading,
 }
 
 /**
@@ -135,11 +142,17 @@ public class LemonadeToastState {
     /**
      * Show a toast with an optional action button. If a toast is already visible, it is replaced immediately.
      *
+     * Use [ToastVoice.Loading] to communicate an ongoing action (e.g. "Downloading your document…"). A
+     * loading toast shows a spinner and persists until you call [dismiss] or replace it with another
+     * [show] — [duration] and [dismissible] are ignored for it.
+     *
      * @param label The text message to display.
      * @param voice The tone of voice — determines icon and icon color. Defaults to [ToastVoice.Neutral].
      * @param icon Optional custom icon. Only used when [voice] is [ToastVoice.Neutral].
-     * @param duration How long the toast is displayed. Defaults to [ToastDuration.Short].
-     * @param dismissible Whether the user can swipe to dismiss. Defaults to `true`.
+     * @param duration How long the toast is displayed. Defaults to [ToastDuration.Short]. Ignored when
+     *   [voice] is [ToastVoice.Loading].
+     * @param dismissible Whether the user can swipe to dismiss. Defaults to `true`. Ignored (forced off)
+     *   when [voice] is [ToastVoice.Loading].
      * @param actionLabel Optional label for the action button shown at the trailing end of the toast.
      * @param onAction Optional callback invoked when the action button is tapped. The button is only shown
      *   when both [actionLabel] and [onAction] are non-null.
@@ -272,12 +285,13 @@ private fun CoreToast(
         ToastVoice.Success -> LemonadeIcons.CircleCheck
         ToastVoice.Error -> LemonadeIcons.CircleX
         ToastVoice.Neutral -> icon
+        ToastVoice.Loading -> null
     }
 
     val iconTint = when (voice) {
         ToastVoice.Success -> colors.content.contentPositiveOnColor
         ToastVoice.Error -> colors.content.contentCriticalOnColor
-        ToastVoice.Neutral -> colors.content.contentNeutralOnColor
+        ToastVoice.Neutral, ToastVoice.Loading -> colors.content.contentNeutralOnColor
     }
 
     Row(
@@ -295,7 +309,12 @@ private fun CoreToast(
         horizontalArrangement = Arrangement.spacedBy(spaces.spacing200),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (resolvedIcon != null) {
+        if (voice == ToastVoice.Loading) {
+            LemonadeUi.Spinner(
+                size = LemonadeAssetSize.Medium,
+                tint = iconTint,
+            )
+        } else if (resolvedIcon != null) {
             LemonadeUi.Icon(
                 icon = resolvedIcon,
                 contentDescription = null,
@@ -369,14 +388,17 @@ public fun LemonadeToastHost(
             // Haptic feedback + auto-dismiss timer
             LaunchedEffect(toast?.id) {
                 if (toast != null) {
-                    val feedbackType = if (toast.voice == ToastVoice.Neutral) {
-                        HapticFeedbackType.TextHandleMove
-                    } else {
-                        HapticFeedbackType.LongPress
+                    val feedbackType = when (toast.voice) {
+                        ToastVoice.Neutral, ToastVoice.Loading -> HapticFeedbackType.TextHandleMove
+                        ToastVoice.Success, ToastVoice.Error -> HapticFeedbackType.LongPress
                     }
                     haptic.performHapticFeedback(feedbackType)
-                    delay(toast.duration.millis)
-                    toastState.dismiss()
+                    // A loading toast describes an ongoing action: it persists until explicitly
+                    // dismissed or replaced, so skip the auto-dismiss timer.
+                    if (toast.voice != ToastVoice.Loading) {
+                        delay(toast.duration.millis)
+                        toastState.dismiss()
+                    }
                 }
             }
 
@@ -410,7 +432,11 @@ public fun LemonadeToastHost(
                 if (animatedToast != null) {
                     var offsetY by remember(animatedToast.id) { mutableStateOf(0f) }
 
-                    val swipeModifier = if (animatedToast.dismissible) {
+                    // A loading toast cannot be swiped away — it stays until the action completes.
+                    val swipeDismissible = animatedToast.dismissible &&
+                        animatedToast.voice != ToastVoice.Loading
+
+                    val swipeModifier = if (swipeDismissible) {
                         Modifier.pointerInput(animatedToast.id) {
                             detectVerticalDragGestures(
                                 onDragEnd = {

@@ -50,6 +50,31 @@ internal fun ToastDisplay() {
             )
         }
 
+        ToastSection("Loading") {
+            LemonadeUi.Button(
+                label = "Loading Toast",
+                onClick = {
+                    toastState.show(
+                        label = "Downloading your document…",
+                        voice = ToastVoice.Loading,
+                    )
+                },
+            )
+            LemonadeUi.Button(
+                label = "Complete Loading (replace)",
+                onClick = {
+                    toastState.show(
+                        label = "Download complete",
+                        voice = ToastVoice.Success,
+                    )
+                },
+            )
+            LemonadeUi.Button(
+                label = "Dismiss Loading",
+                onClick = { toastState.dismiss() },
+            )
+        }
+
         ToastSection("With Action") {
             LemonadeUi.Button(
                 label = "Success Toast with Action",

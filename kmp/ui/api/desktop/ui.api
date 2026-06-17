@@ -561,6 +561,7 @@ public final class com/teya/lemonade/ToastKt {
 
 public final class com/teya/lemonade/ToastVoice : java/lang/Enum {
 	public static final field Error Lcom/teya/lemonade/ToastVoice;
+	public static final field Loading Lcom/teya/lemonade/ToastVoice;
 	public static final field Neutral Lcom/teya/lemonade/ToastVoice;
 	public static final field Success Lcom/teya/lemonade/ToastVoice;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
