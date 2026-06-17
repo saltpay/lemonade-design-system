@@ -147,12 +147,15 @@ public final class LemonadeToastManager: ObservableObject {
     ///
     /// - Parameters:
     ///   - label: The message to display.
-    ///   - voice: The toast variant (success, error, neutral).
+    ///   - voice: The toast variant (success, error, neutral, loading).
     ///   - icon: Custom icon for neutral toasts only.
-    ///   - duration: How long the toast should be visible.
-    ///   - dismissible: Whether the toast can be dismissed by swiping.
+    ///   - duration: How long the toast should be visible. Ignored when `voice` is `.loading`.
+    ///   - dismissible: Whether the toast can be dismissed by swiping. Ignored (forced off) when `voice` is `.loading`.
     ///   - actionLabel: Optional label for the action button shown at the trailing end of the toast.
     ///   - onAction: Optional callback invoked when the action button is tapped. The button is only shown when both `actionLabel` and `onAction` are non-nil.
+    ///
+    /// Use `.loading` to communicate an ongoing action (e.g. "Downloading your document…"). A loading
+    /// toast shows a spinner and persists until you call ``dismiss()`` or replace it with another `show`.
     public func show(
         label: String,
         voice: LemonadeToastVoice = .neutral,
@@ -167,7 +170,8 @@ public final class LemonadeToastManager: ObservableObject {
             voice: voice,
             icon: icon,
             duration: duration,
-            isDismissible: dismissible,
+            // A loading toast describes an ongoing action: it cannot be swiped away.
+            isDismissible: voice == .loading ? false : dismissible,
             actionLabel: actionLabel,
             onAction: onAction
         )
@@ -200,6 +204,9 @@ public final class LemonadeToastManager: ObservableObject {
     private func displayToast(_ toast: LemonadeToastItem) {
         dismissTask?.cancel()
         currentToast = toast
+
+        // A loading toast persists until explicitly dismissed or replaced — skip the auto-dismiss timer.
+        guard toast.voice != .loading else { return }
 
         // Wait for entry animation to complete, then start visibility timer
         let totalDelay = ToastAnimationConfig.duration + toast.duration.timeInterval

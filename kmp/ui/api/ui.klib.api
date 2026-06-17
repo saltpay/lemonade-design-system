@@ -35,6 +35,7 @@ final enum class com.teya.lemonade/TextFieldSize : kotlin/Enum<com.teya.lemonade
 
 final enum class com.teya.lemonade/ToastVoice : kotlin/Enum<com.teya.lemonade/ToastVoice> { // com.teya.lemonade/ToastVoice|null[0]
     enum entry Error // com.teya.lemonade/ToastVoice.Error|null[0]
+    enum entry Loading // com.teya.lemonade/ToastVoice.Loading|null[0]
     enum entry Neutral // com.teya.lemonade/ToastVoice.Neutral|null[0]
     enum entry Success // com.teya.lemonade/ToastVoice.Success|null[0]
 
