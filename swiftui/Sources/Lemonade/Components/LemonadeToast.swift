@@ -20,8 +20,7 @@ public enum LemonadeToastVoice: Sendable {
         switch self {
         case .success: return .circleCheck
         case .error: return .circleX
-        case .neutral: return nil
-        case .loading: return nil
+        case .neutral, .loading: return nil
         }
     }
 
@@ -29,8 +28,7 @@ public enum LemonadeToastVoice: Sendable {
         switch self {
         case .success: return colors.content.contentPositiveAlwaysOnColor
         case .error: return colors.content.contentCriticalAlwaysOnColor
-        case .neutral: return colors.content.contentNeutralAlwaysOnColor
-        case .loading: return colors.content.contentNeutralAlwaysOnColor
+        case .neutral, .loading: return colors.content.contentNeutralAlwaysOnColor
         }
     }
 
@@ -42,9 +40,7 @@ public enum LemonadeToastVoice: Sendable {
             return .success
         case .error:
             return .error
-        case .neutral:
-            return .impact
-        case .loading:
+        case .neutral, .loading:
             return .impact
         }
     }

@@ -291,8 +291,7 @@ private fun CoreToast(
     val iconTint = when (voice) {
         ToastVoice.Success -> colors.content.contentPositiveOnColor
         ToastVoice.Error -> colors.content.contentCriticalOnColor
-        ToastVoice.Neutral -> colors.content.contentNeutralOnColor
-        ToastVoice.Loading -> colors.content.contentNeutralOnColor
+        ToastVoice.Neutral, ToastVoice.Loading -> colors.content.contentNeutralOnColor
     }
 
     Row(
