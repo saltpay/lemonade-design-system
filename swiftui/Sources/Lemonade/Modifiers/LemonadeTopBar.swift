@@ -784,8 +784,7 @@ private struct LemonadeCompactLargeTitle: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             SwiftUI.Text(label)
-                .font(titleFont)
-                .fontWeight(.bold)
+                .font(.headingLarge)
                 .fixedSize(horizontal: true, vertical: false)
             if let subheading {
                 SwiftUI.Text(subheading)
@@ -795,15 +794,6 @@ private struct LemonadeCompactLargeTitle: View {
                     .padding(.bottom, LemonadeSpacing.spacing200.value)
             }
         }
-    }
-
-    private var titleFont: Font {
-        #if compiler(>=6.2)
-        if #available(iOS 26, *) {
-            return .largeTitle
-        }
-        #endif
-        return .title2
     }
 }
 
