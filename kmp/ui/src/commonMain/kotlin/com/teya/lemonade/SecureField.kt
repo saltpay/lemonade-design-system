@@ -24,8 +24,7 @@ import androidx.compose.ui.Modifier
  *   can flip it from state.
  */
 @Composable
-public fun Modifier.secureField(enabled: Boolean = true): Modifier =
-    secureFieldModifier(enabled)
+public fun Modifier.secureField(enabled: Boolean = true): Modifier = secureFieldModifier(enabled)
 
 @Composable
 internal expect fun Modifier.secureFieldModifier(enabled: Boolean): Modifier
