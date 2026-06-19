@@ -181,6 +181,33 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             }
         }
 
+        func textField(
+            _ textField: UITextField,
+            shouldChangeCharactersIn range: NSRange,
+            replacementString string: String
+        ) -> Bool {
+            // A secure UITextField wipes all of its text on the first edit after the
+            // text was assigned programmatically — which we do when restoring content
+            // across a secure-entry toggle. Apply the edit ourselves and return false
+            // so UIKit never runs that auto-clear, keeping the field stable when the
+            // user keeps typing after a show/hide toggle.
+            guard textField.isSecureTextEntry else { return true }
+            guard let oldText = textField.text,
+                  let replaceRange = Range(range, in: oldText) else { return true }
+
+            textField.text = oldText.replacingCharacters(in: replaceRange, with: string)
+
+            // Place the cursor right after the inserted text (UTF-16 offset).
+            let newOffset = range.location + (string as NSString).length
+            if let position = textField.position(from: textField.beginningOfDocument, offset: newOffset) {
+                textField.selectedTextRange = textField.textRange(from: position, to: position)
+            }
+
+            // Programmatic text changes don't fire `.editingChanged`, so propagate manually.
+            textFieldDidChange(textField)
+            return false
+        }
+
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
             textField.resignFirstResponder()
             return true

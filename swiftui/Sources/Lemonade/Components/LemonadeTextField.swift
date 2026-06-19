@@ -475,19 +475,74 @@ public extension LemonadeUi {
 
 // MARK: - Internal TextField View
 
-/// The inner editable control shared by the string-based text field variants.
-/// Renders a `SecureField` when secure entry is requested via
-/// `secureTextEntry()`, otherwise a plain `TextField`, with the common styling.
+/// The inner editable control shared by the string-based text field variants,
+/// switching between secure (masked) and plain entry.
+///
+/// On iOS it is backed by a `UITextField` (via `LemonadeUITextField`) that
+/// toggles `isSecureTextEntry` *in place*. Flipping secure mode therefore keeps
+/// the same field instance — and so the keyboard and first responder stay alive,
+/// letting a show/hide toggle run mid-edit without interruption. A SwiftUI
+/// `SecureField`/`TextField` swap would instead rebuild the field and dismiss the
+/// keyboard. macOS (no UIKit) falls back to that SwiftUI pair.
+#if canImport(UIKit)
 private struct LemonadeTextInputField: View {
     @Binding var input: String
     let isSecure: Bool
     let enabled: Bool
-    @FocusState.Binding var isFocused: Bool
+    @Binding var isFocused: Bool
     let onInputChanged: ((String) -> Void)?
 
+    // `input` (the public String binding) stays the source of truth; this local
+    // value only carries the live cursor position that LemonadeUITextField needs.
+    @State private var fieldValue: LemonadeTextFieldValue
+
+    init(
+        input: Binding<String>,
+        isSecure: Bool,
+        enabled: Bool,
+        isFocused: Binding<Bool>,
+        onInputChanged: ((String) -> Void)?
+    ) {
+        _input = input
+        self.isSecure = isSecure
+        self.enabled = enabled
+        _isFocused = isFocused
+        self.onInputChanged = onInputChanged
+        _fieldValue = State(initialValue: LemonadeTextFieldValue(text: input.wrappedValue))
+    }
+
     var body: some View {
-        // A SecureField provides native masking + exclusion from
-        // screenshots/recordings when `.secureTextEntry()` is applied.
+        LemonadeUITextField(
+            value: $fieldValue,
+            isFocused: $isFocused,
+            isEnabled: enabled,
+            textStyle: LemonadeTypography.shared.bodyMediumRegular,
+            textColor: LemonadeTheme.colors.content.contentPrimary,
+            isSecure: isSecure,
+            onValueChange: { newValue in
+                if newValue.text != input { input = newValue.text }
+                onInputChanged?(newValue.text)
+            }
+        )
+        .onChange(of: input) { newText in
+            // External text change (e.g. a programmatic reset): re-sync, cursor to end.
+            if newText != fieldValue.text {
+                fieldValue = LemonadeTextFieldValue(text: newText)
+            }
+        }
+    }
+}
+#else
+private struct LemonadeTextInputField: View {
+    @Binding var input: String
+    let isSecure: Bool
+    let enabled: Bool
+    @Binding var isFocused: Bool
+    let onInputChanged: ((String) -> Void)?
+
+    @FocusState private var fieldFocused: Bool
+
+    var body: some View {
         Group {
             if isSecure {
                 SwiftUI.SecureField("", text: $input)
@@ -498,13 +553,18 @@ private struct LemonadeTextInputField: View {
         .font(LemonadeTypography.shared.bodyMediumRegular.font)
         .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
         .tint(LemonadeTheme.colors.content.contentPrimary)
-        .focused($isFocused)
+        .focused($fieldFocused)
         .disabled(!enabled)
         .onChange(of: input) { newValue in
             onInputChanged?(newValue)
         }
+        .onChange(of: fieldFocused) { isFocused = $0 }
+        .onChange(of: isFocused) { newValue in
+            if fieldFocused != newValue { fieldFocused = newValue }
+        }
     }
 }
+#endif
 
 private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View>: View {
     @Binding var input: String
@@ -519,7 +579,7 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
     let leadingContent: (() -> LeadingContent)?
     let trailingContent: (() -> TrailingContent)?
 
-    @FocusState private var isFocused: Bool
+    @State private var isFocused = false
     @State private var isHovered = false
     @Environment(\.lemonadeSecureTextEntry) private var isSecure
 
@@ -589,7 +649,7 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
     let enabled: Bool
     let trailingContent: (() -> TrailingContent)?
 
-    @FocusState private var isFocused: Bool
+    @State private var isFocused = false
     @State private var isHovered = false
     @Environment(\.lemonadeSecureTextEntry) private var isSecure
 
