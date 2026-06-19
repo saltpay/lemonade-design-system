@@ -47,13 +47,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
         // Set initial cursor position (clamped to valid range)
-        let clampedPosition = clampedCursorPosition(value.cursorPosition, for: value.text)
-        if let position = textField.position(
-            from: textField.beginningOfDocument,
-            offset: clampedPosition
-        ) {
-            textField.selectedTextRange = textField.textRange(from: position, to: position)
-        }
+        textField.setCaret(toUTF16Offset: clampedCursorPosition(value.cursorPosition, for: value.text))
 
         // Add target for text changes
         textField.addTarget(
@@ -90,18 +84,13 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         // Update cursor position (clamped to valid range for current text)
         let textForCursor = textField.text ?? ""
         let clampedPosition = clampedCursorPosition(value.cursorPosition, for: textForCursor)
-        if let newPosition = textField.position(
-            from: textField.beginningOfDocument,
-            offset: clampedPosition
-        ) {
-            let currentOffset = textField.selectedTextRange.map {
-                textField.offset(from: textField.beginningOfDocument, to: $0.start)
-            } ?? -1
+        let currentOffset = textField.selectedTextRange.map {
+            textField.offset(from: textField.beginningOfDocument, to: $0.start)
+        } ?? -1
 
-            // Only update if different to avoid cursor jumping
-            if currentOffset != clampedPosition {
-                textField.selectedTextRange = textField.textRange(from: newPosition, to: newPosition)
-            }
+        // Only update if different to avoid cursor jumping
+        if currentOffset != clampedPosition {
+            textField.setCaret(toUTF16Offset: clampedPosition)
         }
 
         textField.isEnabled = isEnabled
@@ -198,10 +187,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             textField.text = oldText.replacingCharacters(in: replaceRange, with: string)
 
             // Place the cursor right after the inserted text (UTF-16 offset).
-            let newOffset = range.location + (string as NSString).length
-            if let position = textField.position(from: textField.beginningOfDocument, offset: newOffset) {
-                textField.selectedTextRange = textField.textRange(from: position, to: position)
-            }
+            textField.setCaret(toUTF16Offset: range.location + (string as NSString).length)
 
             // Programmatic text changes don't fire `.editingChanged`, so propagate manually.
             textFieldDidChange(textField)
@@ -218,6 +204,14 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             guard let selectedRange = textField.selectedTextRange else { return 0 }
             return textField.offset(from: textField.beginningOfDocument, to: selectedRange.start)
         }
+    }
+}
+
+private extension UITextField {
+    /// Places the caret (a collapsed selection) at the given UTF-16 code unit offset.
+    func setCaret(toUTF16Offset offset: Int) {
+        guard let position = position(from: beginningOfDocument, offset: offset) else { return }
+        selectedTextRange = textRange(from: position, to: position)
     }
 }
 #endif
