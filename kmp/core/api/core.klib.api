@@ -871,6 +871,17 @@ final enum class com.teya.lemonade.core/LemonadeLineHeights : kotlin/Enum<com.te
     final fun values(): kotlin/Array<com.teya.lemonade.core/LemonadeLineHeights> // com.teya.lemonade.core/LemonadeLineHeights.values|values#static(){}[0]
 }
 
+final enum class com.teya.lemonade.core/LemonadeListItemPriority : kotlin/Enum<com.teya.lemonade.core/LemonadeListItemPriority> { // com.teya.lemonade.core/LemonadeListItemPriority|null[0]
+    enum entry Label // com.teya.lemonade.core/LemonadeListItemPriority.Label|null[0]
+    enum entry Trailing // com.teya.lemonade.core/LemonadeListItemPriority.Trailing|null[0]
+
+    final val entries // com.teya.lemonade.core/LemonadeListItemPriority.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.teya.lemonade.core/LemonadeListItemPriority> // com.teya.lemonade.core/LemonadeListItemPriority.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.teya.lemonade.core/LemonadeListItemPriority // com.teya.lemonade.core/LemonadeListItemPriority.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.teya.lemonade.core/LemonadeListItemPriority> // com.teya.lemonade.core/LemonadeListItemPriority.values|values#static(){}[0]
+}
+
 final enum class com.teya.lemonade.core/LemonadeListItemVoice : kotlin/Enum<com.teya.lemonade.core/LemonadeListItemVoice> { // com.teya.lemonade.core/LemonadeListItemVoice|null[0]
     enum entry Critical // com.teya.lemonade.core/LemonadeListItemVoice.Critical|null[0]
     enum entry Neutral // com.teya.lemonade.core/LemonadeListItemVoice.Neutral|null[0]

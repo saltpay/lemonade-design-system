@@ -10,6 +10,7 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -35,6 +37,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.LemonadeListItemPriority
 import com.teya.lemonade.core.LemonadeListItemVoice
 import com.teya.lemonade.core.LemonadeSkeletonSize
 import com.teya.lemonade.core.SymbolContainerSize
@@ -503,6 +506,67 @@ public fun LemonadeUi.ListItem(
     )
 }
 
+@Deprecated(
+    message = "Use the overload with priority parameter.",
+    replaceWith = ReplaceWith(
+        expression = "ListItem(label, modifier, topLabel, supportText, onListItemClick, voice, " +
+            "navigationIndicator, isLoading, role, enabled, interactionSource, showDivider, " +
+            "leadingSlot, trailingSlot, slotContent, trailingVerticalAlignment, " +
+            "leadingVerticalAlignment, labelMaxLines, labelOverflow, supportTextMaxLines, " +
+            "supportTextOverflow, LemonadeListItemPriority.Trailing)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.ListItem(
+    label: String,
+    modifier: Modifier = Modifier,
+    topLabel: String? = null,
+    supportText: String? = null,
+    onListItemClick: (() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    navigationIndicator: Boolean = false,
+    isLoading: Boolean = false,
+    role: Role? = null,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showDivider: Boolean = false,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
+    labelMaxLines: Int = Int.MAX_VALUE,
+    labelOverflow: TextOverflow = TextOverflow.Clip,
+    supportTextMaxLines: Int = Int.MAX_VALUE,
+    supportTextOverflow: TextOverflow = TextOverflow.Clip,
+) {
+    ListItem(
+        label = label,
+        modifier = modifier,
+        topLabel = topLabel,
+        supportText = supportText,
+        onListItemClick = onListItemClick,
+        voice = voice,
+        navigationIndicator = navigationIndicator,
+        isLoading = isLoading,
+        role = role,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        showDivider = showDivider,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        slotContent = slotContent,
+        trailingVerticalAlignment = trailingVerticalAlignment,
+        leadingVerticalAlignment = leadingVerticalAlignment,
+        labelMaxLines = labelMaxLines,
+        labelOverflow = labelOverflow,
+        supportTextMaxLines = supportTextMaxLines,
+        supportTextOverflow = supportTextOverflow,
+        priority = LemonadeListItemPriority.Trailing,
+    )
+}
+
 /**
  * Convenience overload that composes standard label and support-text content from string parameters
  * and delegates to the content-slot variant of [ListItem].
@@ -534,6 +598,8 @@ public fun LemonadeUi.ListItem(
  *  Defaults to [Int.MAX_VALUE] (no limit).
  * @param supportTextOverflow - [TextOverflow] strategy applied to the [supportText] when it exceeds
  *  [supportTextMaxLines]. Defaults to [TextOverflow.Clip].
+ * @param priority - [LemonadeListItemPriority] deciding which slot claims layout space first when
+ *  the label and trailing slots compete for width. Defaults to [LemonadeListItemPriority.Trailing].
  */
 @Composable
 public fun LemonadeUi.ListItem(
@@ -558,6 +624,7 @@ public fun LemonadeUi.ListItem(
     labelOverflow: TextOverflow = TextOverflow.Clip,
     supportTextMaxLines: Int = Int.MAX_VALUE,
     supportTextOverflow: TextOverflow = TextOverflow.Clip,
+    priority: LemonadeListItemPriority = LemonadeListItemPriority.Trailing,
 ) {
     if (isLoading) {
         ListItemSkeleton(
@@ -578,6 +645,7 @@ public fun LemonadeUi.ListItem(
             interactionSource = interactionSource,
             leadingVerticalAlignment = leadingVerticalAlignment,
             trailingVerticalAlignment = trailingVerticalAlignment,
+            priority = priority,
             contentSlot = {
                 if (topLabel != null) {
                     LemonadeUi.Text(
@@ -655,6 +723,49 @@ public fun LemonadeUi.ListItem(
     )
 }
 
+@Deprecated(
+    message = "Use the overload with priority parameter.",
+    replaceWith = ReplaceWith(
+        expression = "ListItem(contentSlot, modifier, onListItemClick, voice, navigationIndicator, " +
+            "role, enabled, interactionSource, showDivider, leadingSlot, trailingSlot, " +
+            "trailingVerticalAlignment, leadingVerticalAlignment, LemonadeListItemPriority.Trailing)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeUi.ListItem(
+    contentSlot: @Composable ColumnScope.() -> Unit,
+    modifier: Modifier = Modifier,
+    onListItemClick: (() -> Unit)? = null,
+    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
+    navigationIndicator: Boolean = false,
+    role: Role? = null,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    showDivider: Boolean = false,
+    leadingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingSlot: (@Composable RowScope.() -> Unit)? = null,
+    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
+) {
+    ListItem(
+        contentSlot = contentSlot,
+        modifier = modifier,
+        onListItemClick = onListItemClick,
+        voice = voice,
+        navigationIndicator = navigationIndicator,
+        role = role,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        showDivider = showDivider,
+        leadingSlot = leadingSlot,
+        trailingSlot = trailingSlot,
+        trailingVerticalAlignment = trailingVerticalAlignment,
+        leadingVerticalAlignment = leadingVerticalAlignment,
+        priority = LemonadeListItemPriority.Trailing,
+    )
+}
+
 /**
  * Foundational list-item overload that accepts a generic content slot for custom content,
  * delegating layout and interaction handling to [CoreListItem].
@@ -675,6 +786,8 @@ public fun LemonadeUi.ListItem(
  *  indicator against the content slot. Defaults to [Alignment.CenterVertically].
  * @param leadingVerticalAlignment - Vertical alignment of the leading slot against the
  *  content slot. Defaults to [Alignment.Top].
+ * @param priority - [LemonadeListItemPriority] deciding which slot claims layout space first when
+ *  the content and trailing slots compete for width. Defaults to [LemonadeListItemPriority.Trailing].
  */
 @Composable
 public fun LemonadeUi.ListItem(
@@ -691,6 +804,7 @@ public fun LemonadeUi.ListItem(
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
+    priority: LemonadeListItemPriority = LemonadeListItemPriority.Trailing,
 ) {
     CoreListItem(
         contentSlot = contentSlot,
@@ -706,6 +820,7 @@ public fun LemonadeUi.ListItem(
         interactionSource = interactionSource,
         leadingVerticalAlignment = leadingVerticalAlignment,
         trailingVerticalAlignment = trailingVerticalAlignment,
+        priority = priority,
     )
 }
 
@@ -724,6 +839,7 @@ private fun CoreListItem(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
+    priority: LemonadeListItemPriority = LemonadeListItemPriority.Trailing,
 ) {
     SafeArea(modifier = modifier, showDivider = showDivider) {
         Row(
@@ -765,51 +881,106 @@ private fun CoreListItem(
                 }
             }
 
-            Row(
-                modifier = Modifier.weight(weight = 1f),
-                verticalAlignment = trailingVerticalAlignment,
-            ) {
-                Column(
-                    content = contentSlot,
-                    modifier = Modifier
-                        .weight(weight = 1f)
-                        .then(
-                            other = if (!enabled) {
-                                Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                            } else {
-                                Modifier
-                            },
-                        ),
-                )
+            val contentAlpha: Modifier = if (!enabled) {
+                Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+            } else {
+                Modifier
+            }
 
-                if (trailingSlot != null || navigationIndicator) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        if (trailingSlot != null) {
-                            trailingSlot()
-                        }
+            if (priority == LemonadeListItemPriority.Label) {
+                // Content keeps its width; the trailing slot yields and truncates. The content is
+                // capped so the trailing slot always retains a readable floor instead of vanishing —
+                // but only when there is trailing content to keep visible.
+                val hasTrailingContent = trailingSlot != null || navigationIndicator
+                BoxWithConstraints(modifier = Modifier.weight(weight = 1f)) {
+                    val trailingFloor = LocalSizes.current.size2000
+                    val gap = LocalSpaces.current.spacing300
+                    val contentMaxWidth = if (hasTrailingContent) {
+                        (maxWidth - trailingFloor - gap).coerceAtLeast(0.dp)
+                    } else {
+                        maxWidth
+                    }
 
-                        if (navigationIndicator) {
-                            LemonadeUi.Icon(
-                                icon = LemonadeIcons.ChevronRight,
-                                tint = LocalColors.current.content.contentTertiary,
-                                size = LemonadeAssetSize.Medium,
-                                contentDescription = null,
+                    Row(verticalAlignment = trailingVerticalAlignment) {
+                        Column(
+                            content = contentSlot,
+                            modifier = Modifier
+                                .widthIn(max = contentMaxWidth)
+                                .then(other = contentAlpha),
+                        )
+
+                        if (hasTrailingContent) {
+                            Row(
+                                horizontalArrangement = Arrangement.End,
+                                verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
-                                    .then(
-                                        other = if (!enabled) {
-                                            Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                                        } else {
-                                            Modifier
-                                        },
-                                    ).padding(start = LocalSpaces.current.spacing100),
+                                    .weight(weight = 1f)
+                                    .padding(start = gap),
+                            ) {
+                                ListItemTrailingContent(
+                                    trailingSlot = trailingSlot,
+                                    navigationIndicator = navigationIndicator,
+                                    enabled = enabled,
+                                )
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Default: the trailing slot keeps its width; the content column truncates to fit.
+                Row(
+                    modifier = Modifier.weight(weight = 1f),
+                    verticalAlignment = trailingVerticalAlignment,
+                ) {
+                    Column(
+                        content = contentSlot,
+                        modifier = Modifier
+                            .weight(weight = 1f)
+                            .then(other = contentAlpha),
+                    )
+
+                    if (trailingSlot != null || navigationIndicator) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            ListItemTrailingContent(
+                                trailingSlot = trailingSlot,
+                                navigationIndicator = navigationIndicator,
+                                enabled = enabled,
                             )
                         }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun RowScope.ListItemTrailingContent(
+    trailingSlot: (@Composable RowScope.() -> Unit)?,
+    navigationIndicator: Boolean,
+    enabled: Boolean,
+) {
+    if (trailingSlot != null) {
+        trailingSlot()
+    }
+
+    if (navigationIndicator) {
+        LemonadeUi.Icon(
+            icon = LemonadeIcons.ChevronRight,
+            tint = LocalColors.current.content.contentTertiary,
+            size = LemonadeAssetSize.Medium,
+            contentDescription = null,
+            modifier = Modifier
+                .then(
+                    other = if (!enabled) {
+                        Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+                    } else {
+                        Modifier
+                    },
+                ).padding(start = LocalSpaces.current.spacing100),
+        )
     }
 }
 

@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeBadgeSize
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.LemonadeListItemPriority
 import com.teya.lemonade.core.LemonadeListItemVoice
 import com.teya.lemonade.core.TagVoice
 
@@ -32,6 +33,69 @@ internal fun ActionListItemDisplay() {
             .navigationBarsPadding()
             .padding(all = LemonadeTheme.spaces.spacing400),
     ) {
+        // ListItem - Layout Priority (priority = Trailing, default)
+        LemonadeUi.Card(
+            header = CardHeaderConfig(
+                title = "priority: Trailing (default)",
+                subtitle = "Trailing keeps its full width; the label truncates to fit.",
+            ),
+        ) {
+            LemonadeUi.ListItem(
+                label = "Beneficiary account holder",
+                labelMaxLines = 1,
+                labelOverflow = TextOverflow.Ellipsis,
+                trailingSlot = {
+                    LemonadeUi.Text(
+                        text = "International Holdings Ltd Partnership",
+                        textStyle = LemonadeTheme.typography.bodyMediumMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                },
+            )
+        }
+
+        // ListItem - Layout Priority (priority = Label)
+        LemonadeUi.Card(
+            header = CardHeaderConfig(
+                title = "priority: Label",
+                subtitle = "Label keeps its full width; the trailing content truncates to fit.",
+            ),
+        ) {
+            LemonadeUi.ListItem(
+                label = "Beneficiary account holder",
+                showDivider = true,
+                priority = LemonadeListItemPriority.Label,
+                labelMaxLines = 1,
+                labelOverflow = TextOverflow.Ellipsis,
+                trailingSlot = {
+                    LemonadeUi.Text(
+                        text = "International Holdings Ltd Partnership",
+                        textStyle = LemonadeTheme.typography.bodyMediumMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                },
+            )
+
+            // Edge case: a label long enough to fill the row keeps the trailing at its
+            // readable floor instead of letting it vanish.
+            LemonadeUi.ListItem(
+                label = "Beneficiary account holder full legal registered name",
+                priority = LemonadeListItemPriority.Label,
+                labelMaxLines = 1,
+                labelOverflow = TextOverflow.Ellipsis,
+                trailingSlot = {
+                    LemonadeUi.Text(
+                        text = "International Holdings Ltd Partnership",
+                        textStyle = LemonadeTheme.typography.bodyMediumMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                },
+            )
+        }
+
         // ActionListItem - Truncation
         LemonadeUi.Card(
             header = CardHeaderConfig(title = "ActionListItem - Truncation"),
