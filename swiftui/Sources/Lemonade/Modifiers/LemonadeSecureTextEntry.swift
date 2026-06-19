@@ -16,8 +16,10 @@ extension EnvironmentValues {
 // MARK: - View Modifier
 
 public extension View {
-    /// Marks `LemonadeUi.TextField` views in this hierarchy as secure entry
-    /// fields, suitable for passwords and other sensitive input.
+    /// Marks the Lemonade text fields in this hierarchy as secure entry fields,
+    /// suitable for passwords and other sensitive input. Applies to every
+    /// variant — `LemonadeUi.TextField`, `TextFieldWithSelector`, and their
+    /// `LemonadeTextFieldValue`-based forms.
     ///
     /// Secure entry is backed by the platform — on iOS it uses native secure
     /// text entry (`SecureField` / `UITextField.isSecureTextEntry`), which masks
