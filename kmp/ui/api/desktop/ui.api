@@ -411,6 +411,10 @@ public final class com/teya/lemonade/SearchFieldKt {
 	public static final fun SearchField (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/foundation/text/KeyboardActions;Landroidx/compose/foundation/text/KeyboardOptions;ZLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/teya/lemonade/SecureFieldKt {
+	public static final fun secureField (Landroidx/compose/ui/Modifier;ZLandroidx/compose/runtime/Composer;II)Landroidx/compose/ui/Modifier;
+}
+
 public final class com/teya/lemonade/SegmentedControlKt {
 	public static final fun SegmentedControl (Lcom/teya/lemonade/LemonadeUi;Ljava/util/List;ILkotlin/jvm/functions/Function1;Lcom/teya/lemonade/core/LemonadeSegmentedControlSize;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }

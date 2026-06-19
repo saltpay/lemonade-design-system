@@ -1,5 +1,6 @@
 package com.teya.lemonade
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,8 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 
@@ -32,6 +36,8 @@ internal fun TextFieldDisplay() {
     var leadingText by remember { mutableStateOf("") }
     var trailingText by remember { mutableStateOf("") }
     var selectorText by remember { mutableStateOf("") }
+    var passwordText by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
 
     // Example of TextFieldValue-based usage for cursor control
     var phoneDisplayText by remember { mutableStateOf("") }
@@ -125,6 +131,38 @@ internal fun TextFieldDisplay() {
                         icon = LemonadeIcons.CircleInfo,
                         contentDescription = null,
                         tint = LemonadeTheme.colors.content.contentSecondary,
+                    )
+                },
+            )
+        }
+
+        // Secure / Password with show-hide toggle
+        TextFieldSection(title = "Secure (Password)") {
+            LemonadeUi.TextField(
+                input = passwordText,
+                onInputChanged = { passwordText = it },
+                label = "Password",
+                placeholderText = "Enter password",
+                visualTransformation = if (passwordVisible) {
+                    VisualTransformation.None
+                } else {
+                    PasswordVisualTransformation()
+                },
+                leadingContent = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.Padlock,
+                        contentDescription = null,
+                        tint = LemonadeTheme.colors.content.contentSecondary,
+                    )
+                },
+                trailingContent = {
+                    LemonadeUi.Icon(
+                        icon = if (passwordVisible) LemonadeIcons.EyeOpen else LemonadeIcons.EyeClosed,
+                        contentDescription = if (passwordVisible) "Hide password" else "Show password",
+                        tint = LemonadeTheme.colors.content.contentSecondary,
+                        modifier = Modifier.clickable(role = Role.Button) {
+                            passwordVisible = !passwordVisible
+                        },
                     )
                 },
             )
