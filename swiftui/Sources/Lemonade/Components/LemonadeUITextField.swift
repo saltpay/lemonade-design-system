@@ -15,10 +15,9 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     var textStyle: LemonadeTextStyle
     var textColor: Color
     var keyboardType: UIKeyboardType = .default
-    /// Enables native secure text entry (masking + screenshot/recording
-    /// exclusion). Note: iOS clears a secure field's contents when editing
-    /// resumes, which can interact awkwardly with programmatic cursor
-    /// positioning — expected for password input.
+    /// Enables native secure text entry (character masking). Note: UIKit clears
+    /// the field's text and selection when this flips, so `updateUIView` applies
+    /// it before re-synchronizing text and cursor to keep them stable on toggle.
     var isSecure: Bool = false
     var onValueChange: ((LemonadeTextFieldValue) -> Void)?
     var onEditingChanged: ((Bool) -> Void)?
@@ -74,6 +73,13 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         context.coordinator.isUpdating = true
         defer { context.coordinator.isUpdating = false }
 
+        // Toggle secure entry *before* synchronizing text/cursor: UIKit clears a
+        // field's contents and selection when isSecureTextEntry flips, so the text +
+        // cursor sync below must run afterwards to restore them.
+        if textField.isSecureTextEntry != isSecure {
+            textField.isSecureTextEntry = isSecure
+        }
+
         let currentText = textField.text ?? ""
 
         // Update text if changed externally
@@ -102,10 +108,6 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.font = textStyle.uiFont
         textField.textColor = UIColor(textColor)
         textField.tintColor = UIColor(textColor)
-
-        if textField.isSecureTextEntry != isSecure {
-            textField.isSecureTextEntry = isSecure
-        }
 
         // Update keyboard type and reload if changed while focused
         if textField.keyboardType != keyboardType {

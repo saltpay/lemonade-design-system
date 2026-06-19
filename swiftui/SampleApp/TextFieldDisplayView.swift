@@ -104,13 +104,17 @@ struct TextFieldDisplayView: View {
                             tint: .content.contentSecondary
                         )
                     } trailingContent: {
-                        LemonadeUi.Icon(
-                            icon: isPasswordVisible ? .eyeOpen : .eyeClosed,
-                            contentDescription: isPasswordVisible ? "Hide password" : "Show password",
-                            size: .medium,
-                            tint: .content.contentSecondary
-                        )
-                        .onTapGesture { isPasswordVisible.toggle() }
+                        Button {
+                            isPasswordVisible.toggle()
+                        } label: {
+                            LemonadeUi.Icon(
+                                icon: isPasswordVisible ? .eyeOpen : .eyeClosed,
+                                contentDescription: isPasswordVisible ? "Hide password" : "Show password",
+                                size: .medium,
+                                tint: .content.contentSecondary
+                            )
+                        }
+                        .buttonStyle(.plain)
                     }
                     .secureTextEntry(!isPasswordVisible)
                 }

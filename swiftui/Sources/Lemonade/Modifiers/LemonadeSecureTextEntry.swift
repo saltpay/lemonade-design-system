@@ -20,10 +20,11 @@ public extension View {
     /// fields, suitable for passwords and other sensitive input.
     ///
     /// Secure entry is backed by the platform — on iOS it uses native secure
-    /// text entry (`SecureField` / `UITextField.isSecureTextEntry`), so it
-    /// provides character masking, exclusion from screenshots and screen
-    /// recordings, and disables keyboard caching/autofill leakage. Has no
-    /// effect on views other than Lemonade text fields.
+    /// text entry (`SecureField` / `UITextField.isSecureTextEntry`), which masks
+    /// the field's characters and reduces keyboard learning/predictive caching of
+    /// the input. iOS may also apply additional protections (e.g. excluding the
+    /// field from some screen captures), but these are platform-controlled and
+    /// not guaranteed. Has no effect on views other than Lemonade text fields.
     ///
     /// Because the parameter is dynamic, a show/hide toggle is a one-liner —
     /// flip it from your own state.
@@ -41,11 +42,13 @@ public extension View {
     /// LemonadeUi.TextField(input: $password) {
     ///     LemonadeUi.Icon(icon: .padlock, contentDescription: nil)
     /// } trailingContent: {
-    ///     LemonadeUi.Icon(
-    ///         icon: isVisible ? .eyeOpen : .eyeClosed,
-    ///         contentDescription: isVisible ? "Hide password" : "Show password"
-    ///     )
-    ///     .onTapGesture { isVisible.toggle() }
+    ///     Button { isVisible.toggle() } label: {
+    ///         LemonadeUi.Icon(
+    ///             icon: isVisible ? .eyeOpen : .eyeClosed,
+    ///             contentDescription: isVisible ? "Hide password" : "Show password"
+    ///         )
+    ///     }
+    ///     .buttonStyle(.plain)
     /// }
     /// .secureTextEntry(!isVisible)
     /// ```
