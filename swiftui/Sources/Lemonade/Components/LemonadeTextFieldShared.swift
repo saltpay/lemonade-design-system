@@ -173,7 +173,7 @@ struct TextFieldContainerModifier: ViewModifier {
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(
-                        isFocused ? LemonadeTheme.colors.border.borderSelected : .clear,
+                        isFocused && enabled ? LemonadeTheme.colors.border.borderSelected : .clear,
                         lineWidth: LemonadeTheme.borderWidth.state.focusRing
                     )
             )

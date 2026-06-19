@@ -15,6 +15,10 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     var textStyle: LemonadeTextStyle
     var textColor: Color
     var keyboardType: UIKeyboardType = .default
+    /// Enables native secure text entry (character masking). Note: UIKit clears
+    /// the field's text and selection when this flips, so `updateUIView` applies
+    /// it before re-synchronizing text and cursor to keep them stable on toggle.
+    var isSecure: Bool = false
     var onValueChange: ((LemonadeTextFieldValue) -> Void)?
     var onEditingChanged: ((Bool) -> Void)?
 
@@ -34,6 +38,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.tintColor = UIColor(textColor)
         textField.isEnabled = isEnabled
         textField.keyboardType = keyboardType
+        textField.isSecureTextEntry = isSecure
         textField.text = value.text
 
         // Let SwiftUI compress the field to the available width instead of growing it to the
@@ -42,13 +47,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
         // Set initial cursor position (clamped to valid range)
-        let clampedPosition = clampedCursorPosition(value.cursorPosition, for: value.text)
-        if let position = textField.position(
-            from: textField.beginningOfDocument,
-            offset: clampedPosition
-        ) {
-            textField.selectedTextRange = textField.textRange(from: position, to: position)
-        }
+        textField.setCaret(toUTF16Offset: clampedCursorPosition(value.cursorPosition, for: value.text))
 
         // Add target for text changes
         textField.addTarget(
@@ -68,6 +67,13 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         context.coordinator.isUpdating = true
         defer { context.coordinator.isUpdating = false }
 
+        // Toggle secure entry *before* synchronizing text/cursor: UIKit clears a
+        // field's contents and selection when isSecureTextEntry flips, so the text +
+        // cursor sync below must run afterwards to restore them.
+        if textField.isSecureTextEntry != isSecure {
+            textField.isSecureTextEntry = isSecure
+        }
+
         let currentText = textField.text ?? ""
 
         // Update text if changed externally
@@ -78,18 +84,13 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         // Update cursor position (clamped to valid range for current text)
         let textForCursor = textField.text ?? ""
         let clampedPosition = clampedCursorPosition(value.cursorPosition, for: textForCursor)
-        if let newPosition = textField.position(
-            from: textField.beginningOfDocument,
-            offset: clampedPosition
-        ) {
-            let currentOffset = textField.selectedTextRange.map {
-                textField.offset(from: textField.beginningOfDocument, to: $0.start)
-            } ?? -1
+        let currentOffset = textField.selectedTextRange.map {
+            textField.offset(from: textField.beginningOfDocument, to: $0.start)
+        } ?? -1
 
-            // Only update if different to avoid cursor jumping
-            if currentOffset != clampedPosition {
-                textField.selectedTextRange = textField.textRange(from: newPosition, to: newPosition)
-            }
+        // Only update if different to avoid cursor jumping
+        if currentOffset != clampedPosition {
+            textField.setCaret(toUTF16Offset: clampedPosition)
         }
 
         textField.isEnabled = isEnabled
@@ -143,6 +144,12 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             parent.onValueChange?(newValue)
         }
 
+        func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+            // A disabled field must never enter editing, even if a focus attempt
+            // reaches it — otherwise it would gain first responder and a focus ring.
+            parent.isEnabled
+        }
+
         func textFieldDidBeginEditing(_ textField: UITextField) {
             parent.isFocused = true
             parent.onEditingChanged?(true)
@@ -169,6 +176,30 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             }
         }
 
+        func textField(
+            _ textField: UITextField,
+            shouldChangeCharactersIn range: NSRange,
+            replacementString string: String
+        ) -> Bool {
+            // A secure UITextField wipes all of its text on the first edit after the
+            // text was assigned programmatically — which we do when restoring content
+            // across a secure-entry toggle. Apply the edit ourselves and return false
+            // so UIKit never runs that auto-clear, keeping the field stable when the
+            // user keeps typing after a show/hide toggle.
+            guard textField.isSecureTextEntry else { return true }
+            guard let oldText = textField.text,
+                  let replaceRange = Range(range, in: oldText) else { return true }
+
+            textField.text = oldText.replacingCharacters(in: replaceRange, with: string)
+
+            // Place the cursor right after the inserted text (UTF-16 offset).
+            textField.setCaret(toUTF16Offset: range.location + (string as NSString).length)
+
+            // Programmatic text changes don't fire `.editingChanged`, so propagate manually.
+            textFieldDidChange(textField)
+            return false
+        }
+
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
             textField.resignFirstResponder()
             return true
@@ -179,6 +210,14 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             guard let selectedRange = textField.selectedTextRange else { return 0 }
             return textField.offset(from: textField.beginningOfDocument, to: selectedRange.start)
         }
+    }
+}
+
+private extension UITextField {
+    /// Places the caret (a collapsed selection) at the given UTF-16 code unit offset.
+    func setCaret(toUTF16Offset offset: Int) {
+        guard let position = position(from: beginningOfDocument, offset: offset) else { return }
+        selectedTextRange = textRange(from: position, to: position)
     }
 }
 #endif
