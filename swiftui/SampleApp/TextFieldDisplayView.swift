@@ -10,6 +10,8 @@ struct TextFieldDisplayView: View {
     @State private var trailingText = ""
     @State private var selectorText = ""
     @State private var selectedPrefix = "+1"
+    @State private var passwordText = ""
+    @State private var isPasswordVisible = false
 
     var body: some View {
         ScrollView {
@@ -86,6 +88,31 @@ struct TextFieldDisplayView: View {
                             tint: .content.contentSecondary
                         )
                     }
+                }
+
+                // Secure / Password with show-hide toggle
+                sectionView(title: "Secure (Password)") {
+                    LemonadeUi.TextField(
+                        input: $passwordText,
+                        label: "Password",
+                        placeholderText: "Enter password"
+                    ) {
+                        LemonadeUi.Icon(
+                            icon: .padlock,
+                            contentDescription: nil,
+                            size: .medium,
+                            tint: .content.contentSecondary
+                        )
+                    } trailingContent: {
+                        LemonadeUi.Icon(
+                            icon: isPasswordVisible ? .eyeOpen : .eyeClosed,
+                            contentDescription: isPasswordVisible ? "Hide password" : "Show password",
+                            size: .medium,
+                            tint: .content.contentSecondary
+                        )
+                        .onTapGesture { isPasswordVisible.toggle() }
+                    }
+                    .secureTextEntry(!isPasswordVisible)
                 }
 
                 // With Selector

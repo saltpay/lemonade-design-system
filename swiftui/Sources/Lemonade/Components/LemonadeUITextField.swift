@@ -15,6 +15,11 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     var textStyle: LemonadeTextStyle
     var textColor: Color
     var keyboardType: UIKeyboardType = .default
+    /// Enables native secure text entry (masking + screenshot/recording
+    /// exclusion). Note: iOS clears a secure field's contents when editing
+    /// resumes, which can interact awkwardly with programmatic cursor
+    /// positioning — expected for password input.
+    var isSecure: Bool = false
     var onValueChange: ((LemonadeTextFieldValue) -> Void)?
     var onEditingChanged: ((Bool) -> Void)?
 
@@ -34,6 +39,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.tintColor = UIColor(textColor)
         textField.isEnabled = isEnabled
         textField.keyboardType = keyboardType
+        textField.isSecureTextEntry = isSecure
         textField.text = value.text
 
         // Let SwiftUI compress the field to the available width instead of growing it to the
@@ -96,6 +102,10 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.font = textStyle.uiFont
         textField.textColor = UIColor(textColor)
         textField.tintColor = UIColor(textColor)
+
+        if textField.isSecureTextEntry != isSecure {
+            textField.isSecureTextEntry = isSecure
+        }
 
         // Update keyboard type and reload if changed while focused
         if textField.keyboardType != keyboardType {

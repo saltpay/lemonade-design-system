@@ -69,6 +69,7 @@ public extension LemonadeUi {
     /// } trailingContent: {
     ///     LemonadeUi.Icon(icon: .eyeClosed, contentDescription: nil)
     /// }
+    /// .secureTextEntry() // native masking for password input
     /// ```
     ///
     /// - Parameters:
@@ -474,6 +475,37 @@ public extension LemonadeUi {
 
 // MARK: - Internal TextField View
 
+/// The inner editable control shared by the string-based text field variants.
+/// Renders a `SecureField` when secure entry is requested via
+/// `secureTextEntry()`, otherwise a plain `TextField`, with the common styling.
+private struct LemonadeTextInputField: View {
+    @Binding var input: String
+    let isSecure: Bool
+    let enabled: Bool
+    @FocusState.Binding var isFocused: Bool
+    let onInputChanged: ((String) -> Void)?
+
+    var body: some View {
+        // A SecureField provides native masking + exclusion from
+        // screenshots/recordings when `.secureTextEntry()` is applied.
+        Group {
+            if isSecure {
+                SwiftUI.SecureField("", text: $input)
+            } else {
+                SwiftUI.TextField("", text: $input)
+            }
+        }
+        .font(LemonadeTypography.shared.bodyMediumRegular.font)
+        .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
+        .tint(LemonadeTheme.colors.content.contentPrimary)
+        .focused($isFocused)
+        .disabled(!enabled)
+        .onChange(of: input) { newValue in
+            onInputChanged?(newValue)
+        }
+    }
+}
+
 private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View>: View {
     @Binding var input: String
     let onInputChanged: ((String) -> Void)?
@@ -489,6 +521,7 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
 
     @FocusState private var isFocused: Bool
     @State private var isHovered = false
+    @Environment(\.lemonadeSecureTextEntry) private var isSecure
 
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
@@ -509,15 +542,13 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
                         )
                     }
 
-                    SwiftUI.TextField("", text: $input)
-                        .font(LemonadeTypography.shared.bodyMediumRegular.font)
-                        .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
-                        .tint(LemonadeTheme.colors.content.contentPrimary)
-                        .focused($isFocused)
-                        .disabled(!enabled)
-                        .onChange(of: input) { newValue in
-                            onInputChanged?(newValue)
-                        }
+                    LemonadeTextInputField(
+                        input: $input,
+                        isSecure: isSecure,
+                        enabled: enabled,
+                        isFocused: $isFocused,
+                        onInputChanged: onInputChanged
+                    )
                 }
 
                 if let trailingContent = trailingContent {
@@ -560,6 +591,7 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
 
     @FocusState private var isFocused: Bool
     @State private var isHovered = false
+    @Environment(\.lemonadeSecureTextEntry) private var isSecure
 
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
@@ -593,15 +625,13 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
                             )
                         }
 
-                        SwiftUI.TextField("", text: $input)
-                            .font(LemonadeTypography.shared.bodyMediumRegular.font)
-                            .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
-                            .tint(LemonadeTheme.colors.content.contentPrimary)
-                            .focused($isFocused)
-                            .disabled(!enabled)
-                            .onChange(of: input) { newValue in
-                                onInputChanged?(newValue)
-                            }
+                        LemonadeTextInputField(
+                            input: $input,
+                            isSecure: isSecure,
+                            enabled: enabled,
+                            isFocused: $isFocused,
+                            onInputChanged: onInputChanged
+                        )
                     }
 
                     if let trailingContent = trailingContent {
@@ -649,6 +679,7 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
 
     @State private var isFocused = false
     @State private var isHovered = false
+    @Environment(\.lemonadeSecureTextEntry) private var isSecure
 
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
@@ -676,6 +707,7 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
                         textStyle: LemonadeTypography.shared.bodyMediumRegular,
                         textColor: LemonadeTheme.colors.content.contentPrimary,
                         keyboardType: keyboardType,
+                        isSecure: isSecure,
                         onValueChange: onValueChange
                     )
                 }
@@ -768,6 +800,7 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
 
     @State private var isFocused = false
     @State private var isHovered = false
+    @Environment(\.lemonadeSecureTextEntry) private var isSecure
 
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
@@ -808,6 +841,7 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
                             textStyle: LemonadeTypography.shared.bodyMediumRegular,
                             textColor: LemonadeTheme.colors.content.contentPrimary,
                             keyboardType: keyboardType,
+                            isSecure: isSecure,
                             onValueChange: onValueChange
                         )
                     }
@@ -940,6 +974,16 @@ struct LemonadeTextField_Previews: PreviewProvider {
                         tint: LemonadeTheme.colors.content.contentSecondary
                     )
                 }
+            }
+
+            // Secure / password field (native masking)
+            StatefulPreviewWrapper("hunter2") { input in
+                LemonadeUi.TextField(
+                    input: input,
+                    label: "Password",
+                    placeholderText: "Enter password"
+                )
+                .secureTextEntry()
             }
 
             // TextField with selector
