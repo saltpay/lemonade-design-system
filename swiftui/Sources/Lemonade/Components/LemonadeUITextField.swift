@@ -144,6 +144,12 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             parent.onValueChange?(newValue)
         }
 
+        func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+            // A disabled field must never enter editing, even if a focus attempt
+            // reaches it — otherwise it would gain first responder and a focus ring.
+            parent.isEnabled
+        }
+
         func textFieldDidBeginEditing(_ textField: UITextField) {
             parent.isFocused = true
             parent.onEditingChanged?(true)
