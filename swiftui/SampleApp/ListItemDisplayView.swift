@@ -18,6 +18,73 @@ private let trailingPresets: [TrailingPreset] = [
     TrailingPreset(label: "Popular", voice: .neutral),
 ]
 
+struct ListItemPriorityPreview: View {
+    // Both sides are long enough to compete for width, so flipping `priority`
+    // visibly swaps which one truncates while the other keeps its full width.
+    private let label = "Beneficiary account holder"
+    private let value = "International Holdings Ltd Partnership"
+
+    @ViewBuilder
+    private func valueText() -> some View {
+        LemonadeUi.Text(
+            value,
+            textStyle: LemonadeTypography.shared.bodyMediumMedium,
+            maxLines: 1
+        )
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: .space.spacing400) {
+            LemonadeUi.Text("ListItem — Layout Priority", font: .headingXSmall)
+
+            // MARK: - priority: .trailing (default)
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "priority: .trailing (default)",
+                    subtitle: "Trailing keeps its full width; the label truncates to fit."
+                )
+            ) {
+                LemonadeUi.ListItem(
+                    label: label,
+                    labelMaxLines: 1,
+                    leadingSlot: { EmptyView() },
+                    trailingSlot: { valueText() }
+                )
+            }
+
+            // MARK: - priority: .label
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "priority: .label",
+                    subtitle: "Label keeps its full width; the trailing content truncates to fit."
+                )
+            ) {
+                LemonadeUi.ListItem(
+                    label: label,
+                    showDivider: true,
+                    priority: .label,
+                    labelMaxLines: 1,
+                    leadingSlot: { EmptyView() },
+                    trailingSlot: { valueText() }
+                )
+
+                // Edge case: when the label is long enough to fill the whole row, it
+                // truncates rather than starving the trailing slot — the trailing keeps
+                // its minimum readable width.
+                LemonadeUi.ListItem(
+                    label: "Beneficiary account holder full legal registered name",
+                    priority: .label,
+                    labelMaxLines: 1,
+                    leadingSlot: { EmptyView() },
+                    trailingSlot: { valueText() }
+                )
+            }
+        }
+    }
+}
+
 struct ResourceListItemPreview: View {
     var body: some View {
         VStack(alignment: .leading, spacing: .space.spacing400) {
@@ -973,6 +1040,7 @@ struct ListItemDisplayView: View {
     var body: some View {
         ScrollView(.vertical) {
             VStack(spacing: .space.spacing800) {
+                ListItemPriorityPreview()
                 ResourceListItemPreview()
                 SelectListItemPreview()
                 OutlinedSelectListItemPreview()

@@ -795,6 +795,14 @@ public final class com/teya/lemonade/core/LemonadeLineHeights : java/lang/Enum {
 	public static fun values ()[Lcom/teya/lemonade/core/LemonadeLineHeights;
 }
 
+public final class com/teya/lemonade/core/LemonadeListItemPriority : java/lang/Enum {
+	public static final field Label Lcom/teya/lemonade/core/LemonadeListItemPriority;
+	public static final field Trailing Lcom/teya/lemonade/core/LemonadeListItemPriority;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/LemonadeListItemPriority;
+	public static fun values ()[Lcom/teya/lemonade/core/LemonadeListItemPriority;
+}
+
 public final class com/teya/lemonade/core/LemonadeListItemVoice : java/lang/Enum {
 	public static final field Critical Lcom/teya/lemonade/core/LemonadeListItemVoice;
 	public static final field Neutral Lcom/teya/lemonade/core/LemonadeListItemVoice;
