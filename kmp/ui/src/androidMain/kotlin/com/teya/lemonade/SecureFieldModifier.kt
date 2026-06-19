@@ -12,7 +12,10 @@ import androidx.compose.ui.platform.LocalView
 
 @Composable
 internal actual fun Modifier.secureFieldModifier(enabled: Boolean): Modifier {
-    val window = LocalView.current.context.findActivity()?.window
+    val window =
+        LocalView.current.context
+            .findActivity()
+            ?.window
     DisposableEffect(window, enabled) {
         if (enabled && window != null) {
             SecureFlag.acquire(window)
@@ -50,12 +53,12 @@ private object SecureFlag {
     }
 
     fun release(window: Window) {
-        when (val count = (counts[window] ?: 0) - 1) {
-            in Int.MIN_VALUE..0 -> {
-                counts.remove(window)
-                window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
-            }
-            else -> counts[window] = count
+        val count = counts[window] ?: return // never acquired here — leave the host's flag untouched
+        if (count <= 1) {
+            counts.remove(window)
+            window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        } else {
+            counts[window] = count - 1
         }
     }
 }
