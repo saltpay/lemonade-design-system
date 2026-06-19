@@ -1,5 +1,6 @@
 package com.teya.lemonade
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,8 +18,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
@@ -136,6 +136,38 @@ internal fun TextFieldDisplay() {
             )
         }
 
+        // Secure / Password with show-hide toggle
+        TextFieldSection(title = "Secure (Password)") {
+            LemonadeUi.TextField(
+                input = passwordText,
+                onInputChanged = { passwordText = it },
+                label = "Password",
+                placeholderText = "Enter password",
+                visualTransformation = if (passwordVisible) {
+                    VisualTransformation.None
+                } else {
+                    PasswordVisualTransformation()
+                },
+                leadingContent = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.Padlock,
+                        contentDescription = null,
+                        tint = LemonadeTheme.colors.content.contentSecondary,
+                    )
+                },
+                trailingContent = {
+                    LemonadeUi.Icon(
+                        icon = if (passwordVisible) LemonadeIcons.EyeOpen else LemonadeIcons.EyeClosed,
+                        contentDescription = if (passwordVisible) "Hide password" else "Show password",
+                        tint = LemonadeTheme.colors.content.contentSecondary,
+                        modifier = Modifier.clickable(role = Role.Button) {
+                            passwordVisible = !passwordVisible
+                        },
+                    )
+                },
+            )
+        }
+
         // TextField With Selector (String-based)
         TextFieldSection(title = "TextField With Selector") {
             LemonadeUi.TextFieldWithSelector(
@@ -194,39 +226,6 @@ internal fun TextFieldDisplay() {
                 label = "Phone (with cursor control)",
                 placeholderText = "Enter phone number",
                 supportText = "Try typing - cursor stays at end after formatting",
-            )
-        }
-
-        // Secure (Password) — Modifier.secureField() applies FLAG_SECURE on Android;
-        // visualTransformation masks the characters Compose draws.
-        TextFieldSection(title = "Secure (Password)") {
-            LemonadeUi.TextField(
-                input = passwordText,
-                onInputChanged = { passwordText = it },
-                label = "Password",
-                placeholderText = "Enter password",
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                visualTransformation = if (passwordVisible) {
-                    VisualTransformation.None
-                } else {
-                    PasswordVisualTransformation()
-                },
-                leadingContent = {
-                    LemonadeUi.Icon(
-                        icon = LemonadeIcons.PadlockOpen,
-                        contentDescription = null,
-                        tint = LemonadeTheme.colors.content.contentSecondary,
-                    )
-                },
-                trailingContent = {
-                    LemonadeUi.Icon(
-                        icon = if (passwordVisible) LemonadeIcons.EyeOpen else LemonadeIcons.EyeClosed,
-                        contentDescription = if (passwordVisible) "Hide password" else "Show password",
-                        tint = LemonadeTheme.colors.content.contentSecondary,
-                        modifier = Modifier.clickable(onClick = { passwordVisible = !passwordVisible }),
-                    )
-                },
-                modifier = Modifier.secureField(),
             )
         }
 
