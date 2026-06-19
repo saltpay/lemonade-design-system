@@ -49,10 +49,11 @@
 |-----------|--------|-------|
 | Tile | ✅ Complete | Icon + label with addon badge, 3 variants |
 | Border modifier | ✅ Complete | Shadow-based border utility with shape support |
+| Secure entry modifier | ✅ Complete | `secureTextEntry()` — native masking for password/sensitive fields, dynamic show/hide |
 
 ## Summary
-- Total Components: 19
-- Completed: 19
+- Total Components: 20
+- Completed: 20
 - In Progress: 0
 - Pending: 0
 - Blocked: 0
@@ -82,6 +83,7 @@
 
 ### Modifiers
 - `swiftui/Sources/Lemonade/Modifiers/LemonadeBorder.swift`
+- `swiftui/Sources/Lemonade/Modifiers/LemonadeSecureTextEntry.swift`
 
 ## API Pattern
 
