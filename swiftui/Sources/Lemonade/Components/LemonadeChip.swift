@@ -257,8 +257,7 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
                     .foregroundStyle(LemonadeTheme.colors.content.contentOnBrandHigh)
                     .padding(.horizontal, LemonadeTheme.spaces.spacing100)
                     .frame(minWidth: .size.size450, minHeight: .size.size400)
-                    .background(.bg.bgBrand)
-                    .clipShape(Capsule())
+                    .background(Capsule().fill(.bg.bgBrand))
                     .padding(.trailing, .space.spacing50)
             }
 
@@ -274,8 +273,7 @@ private struct LemonadeChipView<LeadingContent: View, TrailingContent: View>: Vi
         }
         .padding(.space.spacing200)
         .frame(minWidth: minWidth, minHeight: minHeight)
-        .background(backgroundColor)
-        .clipShape(RoundedRectangle(cornerRadius: .radius.radiusFull))
+        .background(RoundedRectangle(cornerRadius: .radius.radiusFull).fill(backgroundColor))
         .overlay {
             if error {
                 RoundedRectangle(cornerRadius: .radius.radiusFull)

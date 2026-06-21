@@ -278,7 +278,9 @@ private struct LemonadeIconButtonView: View {
                         .fill(bgColor)
                         .animation(.easeInOut(duration: 0.1), value: bgColor)
                 )
-                .clipShape(buttonShape)
+                // Keep the rounded hit target the removed .clipShape used to provide, without
+                // reintroducing its offscreen pass.
+                .contentShape(buttonShape)
             }
             .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
             .opacity(isPressed ? .opacity.opacityPressed : .opacity.opacity100)

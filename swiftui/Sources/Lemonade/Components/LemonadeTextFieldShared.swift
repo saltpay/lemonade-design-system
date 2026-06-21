@@ -150,7 +150,7 @@ struct TextFieldSupportText: View {
 
 // MARK: - Container Decoration Modifier
 
-/// Applies the standard text field container styling: background, clip, border overlay,
+/// Applies the standard text field container styling: rounded fill background, border overlay,
 /// focus ring overlay, opacity, and hover tracking.
 struct TextFieldContainerModifier: ViewModifier {
     let backgroundColor: Color
@@ -164,8 +164,7 @@ struct TextFieldContainerModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .frame(minHeight: TextFieldConstants.minHeight)
-            .background(backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .background(RoundedRectangle(cornerRadius: cornerRadius).fill(backgroundColor))
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
@@ -195,8 +194,7 @@ struct SelectFieldContainerModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .frame(minHeight: TextFieldConstants.minHeight)
-            .background(backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .background(RoundedRectangle(cornerRadius: cornerRadius).fill(backgroundColor))
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)

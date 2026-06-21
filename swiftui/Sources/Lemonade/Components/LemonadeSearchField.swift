@@ -118,8 +118,7 @@ private struct LemonadeSearchFieldView: View {
         }
         .padding(.horizontal, horizontalPadding)
         .frame(height: height)
-        .background(backgroundColor)
-        .clipShape(Capsule())
+        .background(Capsule().fill(backgroundColor))
         .overlay(
             Capsule()
                 .stroke(borderColor, lineWidth: LemonadeTheme.borderWidth.state.borderSelected)

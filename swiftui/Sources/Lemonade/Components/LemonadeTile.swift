@@ -405,8 +405,7 @@ private struct LemonadeTileView<TopAccessory: View>: View {
         .applyIf(orientation == .horizontal) {
             $0.frame(minHeight: minHeightHorizontal)
         }
-        .background(tileStyle.backgroundColor)
-        .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
+        .background(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500).fill(tileStyle.backgroundColor))
         .overlay(
             RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
                 .stroke(tileStyle.borderColor, lineWidth: tileStyle.borderWidth)
@@ -517,8 +516,7 @@ private struct LemonadeTileSlotView<LeadingContent: View, TopAccessory: View>: V
         .applyIf(orientation == .horizontal) {
             $0.frame(minHeight: minHeightHorizontal)
         }
-        .background(tileStyle.backgroundColor)
-        .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
+        .background(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500).fill(tileStyle.backgroundColor))
         .overlay(
             RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
                 .stroke(tileStyle.borderColor, lineWidth: tileStyle.borderWidth)

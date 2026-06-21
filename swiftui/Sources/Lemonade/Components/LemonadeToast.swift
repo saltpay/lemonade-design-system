@@ -183,8 +183,7 @@ private struct ToastBackgroundModifier: ViewModifier {
                 )
         } else {
             content
-                .background(.bg.bgAlwaysDark)
-                .clipShape(RoundedRectangle(cornerRadius: .radius.radiusFull))
+                .background(RoundedRectangle(cornerRadius: .radius.radiusFull).fill(.bg.bgAlwaysDark))
         }
         #else
         content
