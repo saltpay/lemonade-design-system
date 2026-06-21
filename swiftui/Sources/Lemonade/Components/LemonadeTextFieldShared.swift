@@ -164,8 +164,7 @@ struct TextFieldContainerModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .frame(minHeight: TextFieldConstants.minHeight)
-            .background(backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .background(RoundedRectangle(cornerRadius: cornerRadius).fill(backgroundColor))
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)
@@ -195,8 +194,7 @@ struct SelectFieldContainerModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .frame(minHeight: TextFieldConstants.minHeight)
-            .background(backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .background(RoundedRectangle(cornerRadius: cornerRadius).fill(backgroundColor))
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(borderColor, lineWidth: LemonadeTheme.borderWidth.base.border25)

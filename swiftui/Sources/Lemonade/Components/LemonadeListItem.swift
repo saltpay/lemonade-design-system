@@ -328,11 +328,13 @@ struct ListItemButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .background(
-                configuration.isPressed
-                ? voice.interactionBackground
-                : Color.clear
+                RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500)
+                    .fill(
+                        configuration.isPressed
+                        ? voice.interactionBackground
+                        : Color.clear
+                    )
             )
-            .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
             .contentShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
             .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
     }

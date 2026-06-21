@@ -128,8 +128,7 @@ private struct LemonadeNoticeView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(LemonadeTheme.spaces.spacing400)
-        .background(voice.containerColor)
-        .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500))
+        .background(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius500).fill(voice.containerColor))
     }
 
     @ViewBuilder

@@ -278,7 +278,6 @@ private struct LemonadeIconButtonView: View {
                         .fill(bgColor)
                         .animation(.easeInOut(duration: 0.1), value: bgColor)
                 )
-                .clipShape(buttonShape)
             }
             .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
             .opacity(isPressed ? .opacity.opacityPressed : .opacity.opacity100)

@@ -406,7 +406,6 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
                 .frame(height: size.contentData.requiredHeight)
                 .frame(minWidth: size.contentData.minWidth)
                 .background(buttonShape.fill(colors.backgroundColor))
-                .clipShape(buttonShape)
             }
             .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
             .opacity(pressedOpacity * disabledOpacity)
