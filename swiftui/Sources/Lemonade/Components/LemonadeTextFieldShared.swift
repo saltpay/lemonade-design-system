@@ -150,7 +150,7 @@ struct TextFieldSupportText: View {
 
 // MARK: - Container Decoration Modifier
 
-/// Applies the standard text field container styling: background, clip, border overlay,
+/// Applies the standard text field container styling: rounded fill background, border overlay,
 /// focus ring overlay, opacity, and hover tracking.
 struct TextFieldContainerModifier: ViewModifier {
     let backgroundColor: Color
