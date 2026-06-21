@@ -7,6 +7,7 @@
 
 // Library unique name: <Lemonade:expressive>
 final class com.teya.lemonade/BottomTabBarItem { // com.teya.lemonade/BottomTabBarItem|null[0]
+    constructor <init>(kotlin/String, com.teya.lemonade.core/LemonadeIcons, com.teya.lemonade.core/LemonadeIcons? = ...) // com.teya.lemonade/BottomTabBarItem.<init>|<init>(kotlin.String;com.teya.lemonade.core.LemonadeIcons;com.teya.lemonade.core.LemonadeIcons?){}[0]
     constructor <init>(kotlin/String, com.teya.lemonade.core/LemonadeIcons, com.teya.lemonade.core/LemonadeIcons? = ..., kotlin/String? = ...) // com.teya.lemonade/BottomTabBarItem.<init>|<init>(kotlin.String;com.teya.lemonade.core.LemonadeIcons;com.teya.lemonade.core.LemonadeIcons?;kotlin.String?){}[0]
 
     final val badge // com.teya.lemonade/BottomTabBarItem.badge|{}badge[0]
@@ -22,6 +23,7 @@ final class com.teya.lemonade/BottomTabBarItem { // com.teya.lemonade/BottomTabB
     final fun component2(): com.teya.lemonade.core/LemonadeIcons // com.teya.lemonade/BottomTabBarItem.component2|component2(){}[0]
     final fun component3(): com.teya.lemonade.core/LemonadeIcons? // com.teya.lemonade/BottomTabBarItem.component3|component3(){}[0]
     final fun component4(): kotlin/String? // com.teya.lemonade/BottomTabBarItem.component4|component4(){}[0]
+    final fun copy(kotlin/String = ..., com.teya.lemonade.core/LemonadeIcons = ..., com.teya.lemonade.core/LemonadeIcons? = ...): com.teya.lemonade/BottomTabBarItem // com.teya.lemonade/BottomTabBarItem.copy|copy(kotlin.String;com.teya.lemonade.core.LemonadeIcons;com.teya.lemonade.core.LemonadeIcons?){}[0]
     final fun copy(kotlin/String = ..., com.teya.lemonade.core/LemonadeIcons = ..., com.teya.lemonade.core/LemonadeIcons? = ..., kotlin/String? = ...): com.teya.lemonade/BottomTabBarItem // com.teya.lemonade/BottomTabBarItem.copy|copy(kotlin.String;com.teya.lemonade.core.LemonadeIcons;com.teya.lemonade.core.LemonadeIcons?;kotlin.String?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // com.teya.lemonade/BottomTabBarItem.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // com.teya.lemonade/BottomTabBarItem.hashCode|hashCode(){}[0]

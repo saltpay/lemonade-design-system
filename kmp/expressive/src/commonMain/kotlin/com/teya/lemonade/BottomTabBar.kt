@@ -70,7 +70,26 @@ public data class BottomTabBarItem(
     val icon: LemonadeIcons,
     val selectedIcon: LemonadeIcons? = null,
     val badge: String? = null,
-)
+) {
+    // Binary-compat shim: restores the pre-badge constructor symbols
+    // `<init>(String, LemonadeIcons, LemonadeIcons)` and its `$default` variant, so already
+    // compiled consumers keep linking. HIDDEN keeps the bytecode while hiding it from source.
+    @Deprecated("kept for binary compatibility", level = DeprecationLevel.HIDDEN)
+    public constructor(
+        label: String,
+        icon: LemonadeIcons,
+        selectedIcon: LemonadeIcons? = null,
+    ) : this(label, icon, selectedIcon, badge = null)
+
+    // Binary-compat shim: restores the pre-badge `copy(...)` and `copy$default(...)` symbols.
+    // The defaults are required — they are what regenerate the old `copy$default`.
+    @Deprecated("kept for binary compatibility", level = DeprecationLevel.HIDDEN)
+    public fun copy(
+        label: String = this.label,
+        icon: LemonadeIcons = this.icon,
+        selectedIcon: LemonadeIcons? = this.selectedIcon,
+    ): BottomTabBarItem = copy(label = label, icon = icon, selectedIcon = selectedIcon, badge = this.badge)
+}
 
 /**
  * A floating, pill-shaped bottom navigation bar for top-level destinations.
