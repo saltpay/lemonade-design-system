@@ -51,7 +51,6 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeShadow
-import com.teya.lemonade.core.TagVoice
 import kotlin.math.roundToInt
 
 /**
@@ -309,7 +308,7 @@ private fun BottomTabBarItemContent(
         BadgedBox(
             badge = {
                 item.badge?.let { badge ->
-                    LemonadeUi.Tag(label = badge, voice = TagVoice.Neutral)
+                    LemonadeUi.Badge(text = badge)
                 }
             },
         ) {
