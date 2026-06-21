@@ -59,6 +59,7 @@ private fun LazyListScope.defaultBottomTabBarSection() {
                     label = "Teya AI",
                     icon = LemonadeIcons.SparklesSoft,
                     selectedIcon = LemonadeIcons.SparklesSoftSolid,
+                    badge = "Soon",
                 ),
             ),
             selectedIndex = 0,

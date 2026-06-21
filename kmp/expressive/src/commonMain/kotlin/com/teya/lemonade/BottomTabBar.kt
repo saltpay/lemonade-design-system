@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingToolbarDefaults
 import androidx.compose.material3.HorizontalFloatingToolbar
@@ -50,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeShadow
+import com.teya.lemonade.core.TagVoice
 import kotlin.math.roundToInt
 
 /**
@@ -60,11 +62,14 @@ import kotlin.math.roundToInt
  * @param selectedIcon Optional [LemonadeIcons] rendered while the item is selected. A common
  *   pattern is to pair an outline `icon` with its solid variant here (e.g. `Wallet` /
  *   `WalletSolid`). When `null`, [icon] is used for both states.
+ * @param badge Optional short text rendered as a small [LemonadeUi.Tag] over the icon's
+ *   top-trailing corner (e.g. "Soon" / "New"). When `null`, no badge is shown.
  */
 public data class BottomTabBarItem(
     val label: String,
     val icon: LemonadeIcons,
     val selectedIcon: LemonadeIcons? = null,
+    val badge: String? = null,
 )
 
 /**
@@ -282,23 +287,31 @@ private fun BottomTabBarItemContent(
             label = "tabIconScale",
         )
 
-        Box(
-            modifier = Modifier.graphicsLayer {
-                scaleX = iconScale
-                scaleY = iconScale
+        BadgedBox(
+            badge = {
+                item.badge?.let { badge ->
+                    LemonadeUi.Tag(label = badge, voice = TagVoice.Neutral)
+                }
             },
         ) {
-            Crossfade(
-                targetState = displayedIcon,
-                animationSpec = tween(durationMillis = ICON_CROSSFADE_MS),
-                label = "tabIcon",
-            ) { icon ->
-                LemonadeUi.Icon(
-                    icon = icon,
-                    contentDescription = null,
-                    size = LemonadeAssetSize.Medium,
-                    tint = LemonadeTheme.colors.content.contentPrimary,
-                )
+            Box(
+                modifier = Modifier.graphicsLayer {
+                    scaleX = iconScale
+                    scaleY = iconScale
+                },
+            ) {
+                Crossfade(
+                    targetState = displayedIcon,
+                    animationSpec = tween(durationMillis = ICON_CROSSFADE_MS),
+                    label = "tabIcon",
+                ) { icon ->
+                    LemonadeUi.Icon(
+                        icon = icon,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                        tint = LemonadeTheme.colors.content.contentPrimary,
+                    )
+                }
             }
         }
 
