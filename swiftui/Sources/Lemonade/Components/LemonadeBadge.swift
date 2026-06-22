@@ -85,12 +85,18 @@ private struct LemonadeBadgeView: View {
     let text: String
     let size: LemonadeBadgeSize
 
-    private var gradientColors: [Color] {
-        let brandHighlight = LemonadeTheme.colors.background.bgBrandHigh
-        return [
-            brandHighlight,
-            brandHighlight.opacity(0)
-        ]
+    private var overlayGradient: LinearGradient {
+        let highlight = LemonadeTheme.colors.background.bgDefault
+        return LinearGradient(
+            stops: [
+                .init(color: highlight, location: 0),
+                .init(color: highlight.opacity(0), location: 1)
+            ],
+            // The design specifies a ~106.6° sweep; topLeading→bottomTrailing approximates
+            // that on the badge's short, wide shape without size-dependent angle math.
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
     }
 
     var body: some View {
@@ -108,19 +114,20 @@ private struct LemonadeBadgeView: View {
             // radius), so the shaped fills do the rounding instead. Badges render densely
             // (one per notification dot/count), so the per-instance pass adds up while scrolling.
             .background(
+                // Per design: brand fill with a bg-default → transparent highlight composited
+                // in `.overlay` blend mode. compositingGroup() isolates the blend so the gradient
+                // reacts to the brand fill below it, not whatever sits behind the badge. This is a
+                // bounded compositing pass over two coincident capsules — much cheaper than the
+                // clipShape avoided above, which would composite the whole shaped subtree.
                 ZStack {
                     Capsule()
                         .fill(LemonadeTheme.colors.background.bgBrand)
 
                     Capsule()
-                        .fill(
-                            LinearGradient(
-                                colors: gradientColors,
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
+                        .fill(overlayGradient)
+                        .blendMode(.overlay)
                 }
+                .compositingGroup()
             )
     }
 }

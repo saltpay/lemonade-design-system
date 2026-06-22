@@ -1,6 +1,5 @@
 package com.teya.lemonade
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -11,8 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.FirstBaseline
 import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.layout.Layout
@@ -55,7 +56,7 @@ public fun LemonadeUi.Badge(
     CoreBadge(
         text = text,
         modifier = modifier,
-        size = size,
+        badgeSize = size,
     )
 }
 
@@ -63,16 +64,35 @@ public fun LemonadeUi.Badge(
 private fun CoreBadge(
     text: String,
     modifier: Modifier,
-    size: LemonadeBadgeSize,
+    badgeSize: LemonadeBadgeSize,
 ) {
-    val props = size.badgeProps
+    val props = badgeSize.badgeProps
+    val brandColor = LocalColors.current.background.bgBrand
+    val overlayColor = LocalColors.current.background.bgDefault
     Row(
         modifier = modifier
             .height(props.height)
             .clip(LocalShapes.current.radiusFull)
-            .background(LocalColors.current.background.bgBrand)
-            .background(gradientOverlay)
-            .padding(horizontal = props.horizontalPadding),
+            .drawWithCache {
+                // Per design: a bg-default → transparent highlight composited over the brand
+                // fill in Overlay blend mode. The design specifies a ~106.6° sweep; a
+                // corner-to-corner gradient approximates that closely on the badge's short,
+                // wide shape without size-dependent angle math. drawWithCache rebuilds the
+                // brush only when the size changes, not every frame.
+                val overlay = Brush.linearGradient(
+                    0f to overlayColor,
+                    1f to overlayColor.copy(alpha = 0f),
+                    start = Offset.Zero,
+                    end = Offset(x = size.width, y = size.height),
+                )
+                onDrawBehind {
+                    drawRect(color = brandColor)
+                    drawRect(
+                        brush = overlay,
+                        blendMode = BlendMode.Overlay,
+                    )
+                }
+            }.padding(horizontal = props.horizontalPadding),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         LemonadeUi.Text(
@@ -85,17 +105,6 @@ private fun CoreBadge(
         )
     }
 }
-
-// todo can we replace with themed colors? ask designer
-private val gradientOverlay: Brush
-    get() {
-        return Brush.linearGradient(
-            colors = listOf(
-                Color(0xFFD6F25A),
-                Color(0xD6F25A00).copy(alpha = 0.0f),
-            ),
-        )
-    }
 
 private data class BadgeProps(
     val height: Dp,
