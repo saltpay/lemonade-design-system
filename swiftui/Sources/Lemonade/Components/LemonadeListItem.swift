@@ -262,6 +262,18 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
         priority == .trailing ? 1 : 0
     }
 
+    // `.top` is documented as "keep the label and trailing slot on the same
+    // first line when one wraps". Frame-top alignment can't deliver that:
+    // `LemonadeUi.Text` pads a single line to its line-height box and centers
+    // the glyphs within it, while a wrapping slot lays its first line flush to
+    // the top — so the two first lines end up offset by the half-leading
+    // (~2-3pt). Aligning on the first text baseline lines the glyphs up exactly,
+    // regardless of how many lines each slot wraps to. Other alignments pass
+    // through unchanged so `.center`/`.bottom` keep their literal meaning.
+    private var contentRowAlignment: VerticalAlignment {
+        trailingAlignment == .top ? .firstTextBaseline : trailingAlignment
+    }
+
     var body: some View {
         ListItemSafeArea(showDivider: showDivider) {
             if let onClick = onListItemClick, enabled {
@@ -286,7 +298,7 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
                     .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
             }
             
-            HStack(alignment: trailingAlignment, spacing: 0) {
+            HStack(alignment: contentRowAlignment, spacing: 0) {
                 // The non-prioritized slot becomes the flexible filler: it expands to
                 // claim the remaining width and truncates first, pinning the prioritized
                 // (intrinsically-sized) slot to its edge.
