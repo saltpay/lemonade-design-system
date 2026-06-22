@@ -46,6 +46,12 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
+        // Pin the field to its intrinsic (single-line) height. A UITextField defaults to low
+        // vertical hugging, so when SwiftUI offers unbounded height (e.g. inside a flexible
+        // VStack) the field grows to fill it. SwiftUI's own TextField never does this.
+        textField.setContentHuggingPriority(.required, for: .vertical)
+        textField.setContentCompressionResistancePriority(.required, for: .vertical)
+
         // Set initial cursor position (clamped to valid range)
         textField.setCaret(toUTF16Offset: clampedCursorPosition(value.cursorPosition, for: value.text))
 
