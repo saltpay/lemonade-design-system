@@ -54,9 +54,12 @@ public enum LemonadeListItemVoice {
 ///   trailing slot compresses or truncates to fit.
 /// - `trailing`: The trailing slot claims its intrinsic width first; the label
 ///   compresses or truncates to fit. This is the default.
+/// - `both`: Neither slot is prioritized; the available width is split evenly so
+///   the label and trailing content each occupy half, truncating together.
 public enum LemonadeListItemPriority {
     case label
     case trailing
+    case both
 }
 
 // MARK: - ListItem
@@ -75,8 +78,8 @@ public extension LemonadeUi {
     ///   - enabled: Flag to define if component is enabled
     ///   - showDivider: Flag to show a divider below the list item
     ///   - leadingAlignment: Vertical alignment of the leading slot. Defaults to `.top`.
-    ///   - trailingAlignment: Vertical alignment of the trailing slot and navigation indicator. Defaults to `.center`.
-    ///   - priority: Which slot claims layout space first when label and trailing content compete for width. Defaults to `.trailing`.
+    ///   - trailingAlignment: Vertical alignment of the content row — both the label/content and the trailing slot align to it (e.g. `.top` keeps them on the same first line when one wraps). Defaults to `.center`.
+    ///   - priority: Which slot claims layout space first when label and trailing content compete for width. Use `.both` to split the width evenly. Defaults to `.trailing`.
     ///   - labelMaxLines: Maximum number of lines for the label before it truncates. Defaults to `nil` (no limit).
     ///   - labelOverflow: Truncation mode applied to the label when it exceeds `labelMaxLines`. Defaults to `.tail`.
     ///   - supportTextMaxLines: Maximum number of lines for the support text before it truncates. Defaults to `nil` (no limit).
@@ -165,8 +168,8 @@ public extension LemonadeUi {
     ///   - enabled: Flag to define if component is enabled
     ///   - showDivider: Flag to show a divider below the list item
     ///   - leadingAlignment: Vertical alignment of the leading slot. Defaults to `.top`.
-    ///   - trailingAlignment: Vertical alignment of the trailing slot and navigation indicator. Defaults to `.center`.
-    ///   - priority: Which slot claims layout space first when content and trailing slots compete for width. Defaults to `.trailing`.
+    ///   - trailingAlignment: Vertical alignment of the content row — both the label/content and the trailing slot align to it (e.g. `.top` keeps them on the same first line when one wraps). Defaults to `.center`.
+    ///   - priority: Which slot claims layout space first when content and trailing slots compete for width. Use `.both` to split the width evenly. Defaults to `.trailing`.
     ///   - onListItemClick: Optional callback triggered on click interaction
     ///   - leadingSlot: Slot content to be placed in leading position
     ///   - trailingSlot: Slot content to be placed in trailing position
@@ -223,7 +226,42 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
     private var hasTrailing: Bool {
         TrailingContent.self != EmptyView.self
     }
-    
+
+    // The minimum width the filler (non-prioritized) slot keeps so a long
+    // prioritized slot can't squeeze it down to just an ellipsis.
+    private var minReadableSlotWidth: CGFloat { LemonadeTheme.sizes.size2000 }
+
+    // The content slot is intrinsically sized only when the label is prioritized;
+    // otherwise it expands to fill (and, for `.both`, shares the fill equally).
+    private var contentMaxWidth: CGFloat? {
+        priority == .label ? nil : .infinity
+    }
+
+    // When the trailing slot is prioritized, the content becomes the filler.
+    private var contentMinWidth: CGFloat? {
+        priority == .trailing ? minReadableSlotWidth : nil
+    }
+
+    private var contentLayoutPriority: Double {
+        priority == .label ? 1 : 0
+    }
+
+    // The trailing slot is intrinsically sized only when it is prioritized;
+    // otherwise it expands to fill (and, for `.both`, shares the fill equally).
+    private var trailingMinWidth: CGFloat? {
+        priority == .label && (hasTrailing || navigationIndicator)
+            ? minReadableSlotWidth
+            : nil
+    }
+
+    private var trailingMaxWidth: CGFloat? {
+        priority == .trailing ? nil : .infinity
+    }
+
+    private var trailingLayoutPriority: Double {
+        priority == .trailing ? 1 : 0
+    }
+
     var body: some View {
         ListItemSafeArea(showDivider: showDivider) {
             if let onClick = onListItemClick, enabled {
@@ -256,12 +294,13 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
                     contentSlot()
                 }
                 .frame(
-                    maxWidth: priority == .label ? nil : .infinity,
+                    minWidth: contentMinWidth,
+                    maxWidth: contentMaxWidth,
                     maxHeight: .infinity,
-                    alignment: .leading
+                    alignment: Alignment(horizontal: .leading, vertical: trailingAlignment)
                 )
                 .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-                .layoutPriority(priority == .label ? 1 : 0)
+                .layoutPriority(contentLayoutPriority)
 
                 HStack(spacing: 0) {
                     if hasTrailing {
@@ -280,17 +319,15 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
                     }
                 }
                 .frame(
-                    minWidth: priority == .label && (hasTrailing || navigationIndicator)
-                        ? LemonadeTheme.sizes.size2000
-                        : nil,
-                    maxWidth: priority == .label ? .infinity : nil,
+                    minWidth: trailingMinWidth,
+                    maxWidth: trailingMaxWidth,
                     alignment: .trailing
                 )
                 .padding(
                     .leading,
                     hasTrailing || navigationIndicator ? LemonadeTheme.spaces.spacing300 : 0
                 )
-                .layoutPriority(priority == .trailing ? 1 : 0)
+                .layoutPriority(trailingLayoutPriority)
             }
         }
         .padding(.horizontal, LemonadeTheme.spaces.spacing300)
@@ -405,6 +442,38 @@ struct LemonadeListItem_Previews: PreviewProvider {
                         "International Holdings Ltd Partnership",
                         textStyle: LemonadeTypography.shared.bodyMediumMedium,
                         maxLines: 1
+                    )
+                }
+            )
+
+            // Priority .both — label and trailing each take half, truncating together
+            LemonadeUi.ListItem(
+                label: "Beneficiary account holder",
+                showDivider: true,
+                priority: .both,
+                labelMaxLines: 1,
+                leadingSlot: { EmptyView() },
+                trailingSlot: {
+                    LemonadeUi.Text(
+                        "International Holdings Ltd Partnership",
+                        textStyle: LemonadeTypography.shared.bodyMediumMedium,
+                        maxLines: 1
+                    )
+                }
+            )
+
+            // Top alignment — label keeps first-line alignment when trailing wraps
+            LemonadeUi.ListItem(
+                label: "Delivery to",
+                showDivider: true,
+                trailingAlignment: .top,
+                priority: .label,
+                leadingSlot: { EmptyView() },
+                trailingSlot: {
+                    LemonadeUi.Text(
+                        "Rua de Olivenca, 55, esq 2, Algés, OX20 1PP",
+                        textStyle: LemonadeTypography.shared.bodyMediumRegular,
+                        textAlign: .trailing
                     )
                 }
             )
