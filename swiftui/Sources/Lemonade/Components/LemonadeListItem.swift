@@ -237,9 +237,15 @@ struct LemonadeCoreListItemView<ContentSlot: View, LeadingContent: View, Trailin
         priority == .label ? nil : .infinity
     }
 
-    // When the trailing slot is prioritized, the content becomes the filler.
+    // When the trailing slot is prioritized, the content becomes the filler and
+    // keeps a readable floor so a long trailing value can't squeeze it to an
+    // ellipsis. Only applies when there's actually a trailing slot competing for
+    // width — otherwise a label-only row would be forced wider than a narrow
+    // container and overflow.
     private var contentMinWidth: CGFloat? {
-        priority == .trailing ? minReadableSlotWidth : nil
+        priority == .trailing && (hasTrailing || navigationIndicator)
+            ? minReadableSlotWidth
+            : nil
     }
 
     private var contentLayoutPriority: Double {
