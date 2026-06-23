@@ -33,6 +33,15 @@ struct ListItemPriorityPreview: View {
         )
     }
 
+    @ViewBuilder
+    private func addressText() -> some View {
+        LemonadeUi.Text(
+            "Rua de Olivenca, 55, esq 2, Algés, OX20 1PP",
+            textAlign: .trailing,
+            color: LemonadeTheme.colors.content.contentSecondary
+        )
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: .space.spacing400) {
             LemonadeUi.Text("ListItem — Layout Priority", font: .headingXSmall)
@@ -41,10 +50,18 @@ struct ListItemPriorityPreview: View {
             LemonadeUi.Card(
                 contentPadding: .none,
                 header: CardHeaderConfig(
-                    title: "priority: .trailing (default)",
+                    title: "Priority: .trailing (default)",
                     subtitle: "Trailing keeps its full width; the label truncates to fit."
                 )
             ) {
+                LemonadeUi.ListItem(
+                    label: "Delivery to",
+                    showDivider: true,
+                    trailingAlignment: .top,
+                    labelMaxLines: 1,
+                    leadingSlot: { EmptyView() },
+                    trailingSlot: { addressText() }
+                )
                 LemonadeUi.ListItem(
                     label: label,
                     labelMaxLines: 1,
@@ -57,7 +74,7 @@ struct ListItemPriorityPreview: View {
             LemonadeUi.Card(
                 contentPadding: .none,
                 header: CardHeaderConfig(
-                    title: "priority: .label",
+                    title: "Priority: .label",
                     subtitle: "Label keeps its full width; the trailing content truncates to fit."
                 )
             ) {
@@ -79,6 +96,70 @@ struct ListItemPriorityPreview: View {
                     labelMaxLines: 1,
                     leadingSlot: { EmptyView() },
                     trailingSlot: { valueText() }
+                )
+            }
+
+            // MARK: - priority: .both
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "Priority: .both",
+                    subtitle: "Neither side wins — the width splits 50/50 and both truncate together."
+                )
+            ) {
+                LemonadeUi.ListItem(
+                    label: label,
+                    priority: .both,
+                    labelMaxLines: 1,
+                    leadingSlot: { EmptyView() },
+                    trailingSlot: { valueText() }
+                )
+            }
+
+            // MARK: - priority: .trailing — label keeps a minimum width
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "Priority: .trailing — label floor",
+                    subtitle: "Even with a very long trailing value, the label keeps a readable minimum width instead of collapsing to just an ellipsis."
+                )
+            ) {
+                LemonadeUi.ListItem(
+                    label: "Beneficiary",
+                    labelMaxLines: 1,
+                    leadingSlot: { EmptyView() },
+                    trailingSlot: {
+                        LemonadeUi.Text(
+                            "International Holdings Ltd Partnership and Subsidiaries",
+                            textStyle: LemonadeTypography.shared.bodyMediumMedium,
+                            maxLines: 1
+                        )
+                    }
+                )
+            }
+
+            // MARK: - First-line (top) alignment
+            LemonadeUi.Card(
+                contentPadding: .none,
+                header: CardHeaderConfig(
+                    title: "First-line alignment",
+                    subtitle: "trailingAlignment: .top keeps the label aligned with the trailing's first line when it wraps; .center is the default."
+                )
+            ) {
+                LemonadeUi.ListItem(
+                    label: "Delivery to",
+                    showDivider: true,
+                    trailingAlignment: .top,
+                    priority: .label,
+                    leadingSlot: { EmptyView() },
+                    trailingSlot: { addressText() }
+                )
+                LemonadeUi.ListItem(
+                    label: "Delivery to",
+                    trailingAlignment: .center,
+                    priority: .label,
+                    leadingSlot: { EmptyView() },
+                    trailingSlot: { addressText() }
                 )
             }
         }
