@@ -12,6 +12,10 @@ struct TextFieldDisplayView: View {
     @State private var selectedPrefix = "+1"
     @State private var passwordText = ""
     @State private var isPasswordVisible = false
+    @State private var emailText = ""
+    @State private var pinText = ""
+    @State private var amountValue = LemonadeTextFieldValue(text: "")
+    @State private var urlText = ""
 
     var body: some View {
         ScrollView {
@@ -117,6 +121,49 @@ struct TextFieldDisplayView: View {
                         .buttonStyle(.plain)
                     }
                     .secureTextEntry(!isPasswordVisible)
+                }
+
+                // Keyboard Type — email (via modifier, String binding)
+                sectionView(title: "Keyboard Type — Email") {
+                    LemonadeUi.TextField(
+                        input: $emailText,
+                        label: "Email Address",
+                        supportText: "Shows the email keyboard with @ and .",
+                        placeholderText: "you@example.com"
+                    )
+                    .lemonadeKeyboardType(.emailAddress)
+                }
+
+                // Keyboard Type — numeric PIN (via modifier, String binding)
+                sectionView(title: "Keyboard Type — Number Pad") {
+                    LemonadeUi.TextField(
+                        input: $pinText,
+                        label: "PIN",
+                        supportText: "Digits-only number pad",
+                        placeholderText: "0000"
+                    )
+                    .lemonadeKeyboardType(.numberPad)
+                }
+
+                // Keyboard Type — URL (via modifier, String binding)
+                sectionView(title: "Keyboard Type — URL") {
+                    LemonadeUi.TextField(
+                        input: $urlText,
+                        label: "Website",
+                        placeholderText: "https://example.com"
+                    )
+                    .lemonadeKeyboardType(.URL)
+                }
+
+                // Keyboard Type — decimal (via explicit parameter, value binding)
+                sectionView(title: "Keyboard Type — Decimal (parameter)") {
+                    LemonadeUi.TextField(
+                        value: $amountValue,
+                        label: "Amount",
+                        supportText: "Set via the keyboardType: parameter",
+                        placeholderText: "0.00",
+                        keyboardType: .decimalPad
+                    )
                 }
 
                 // With Selector

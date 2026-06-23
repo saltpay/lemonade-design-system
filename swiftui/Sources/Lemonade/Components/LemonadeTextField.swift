@@ -166,7 +166,7 @@ public extension LemonadeUi {
         errorMessage: String? = nil,
         error: Bool = false,
         enabled: Bool = true,
-        keyboardType: UIKeyboardType = .default
+        keyboardType: UIKeyboardType? = nil
     ) -> some View {
         LemonadeTextFieldValueView<EmptyView, EmptyView>(
             value: value,
@@ -210,7 +210,7 @@ public extension LemonadeUi {
         errorMessage: String? = nil,
         error: Bool = false,
         enabled: Bool = true,
-        keyboardType: UIKeyboardType = .default,
+        keyboardType: UIKeyboardType? = nil,
         @ViewBuilder leadingContent: @escaping () -> LeadingContent,
         @ViewBuilder trailingContent: @escaping () -> TrailingContent
     ) -> some View {
@@ -403,7 +403,7 @@ public extension LemonadeUi {
         errorMessage: String? = nil,
         error: Bool = false,
         enabled: Bool = true,
-        keyboardType: UIKeyboardType = .default
+        keyboardType: UIKeyboardType? = nil
     ) -> some View {
         LemonadeTextFieldWithSelectorValueView<LeadingContent, EmptyView>(
             value: value,
@@ -451,7 +451,7 @@ public extension LemonadeUi {
         errorMessage: String? = nil,
         error: Bool = false,
         enabled: Bool = true,
-        keyboardType: UIKeyboardType = .default,
+        keyboardType: UIKeyboardType? = nil,
         @ViewBuilder trailingContent: @escaping () -> TrailingContent
     ) -> some View {
         LemonadeTextFieldWithSelectorValueView(
@@ -492,6 +492,11 @@ private struct LemonadeTextInputField: View {
     @Binding var isFocused: Bool
     let onInputChanged: ((String) -> Void)?
 
+    // The String-binding overloads expose no `keyboardType:` parameter, so the
+    // `.lemonadeKeyboardType()` modifier (read from the environment here) is the
+    // only way to drive their keyboard.
+    @Environment(\.lemonadeKeyboardType) private var keyboardType
+
     // `input` (the public String binding) stays the source of truth; this local
     // value only carries the live cursor position that LemonadeUITextField needs.
     @State private var fieldValue: LemonadeTextFieldValue
@@ -518,6 +523,7 @@ private struct LemonadeTextInputField: View {
             isEnabled: enabled,
             textStyle: LemonadeTypography.shared.bodyMediumRegular,
             textColor: LemonadeTheme.colors.content.contentPrimary,
+            keyboardType: keyboardType,
             isSecure: isSecure,
             onValueChange: { newValue in
                 if newValue.text != input { input = newValue.text }
@@ -733,13 +739,19 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
     let errorMessage: String?
     let error: Bool
     let enabled: Bool
-    let keyboardType: UIKeyboardType
+    // An explicit per-call keyboard type; `nil` falls back to the environment value
+    // set by `.lemonadeKeyboardType()`.
+    let keyboardType: UIKeyboardType?
     let leadingContent: (() -> LeadingContent)?
     let trailingContent: (() -> TrailingContent)?
 
     @State private var isFocused = false
     @State private var isHovered = false
     @Environment(\.lemonadeSecureTextEntry) private var isSecure
+    @Environment(\.lemonadeKeyboardType) private var environmentKeyboardType
+
+    // The explicit per-call type wins; otherwise fall back to the environment value.
+    private var resolvedKeyboardType: UIKeyboardType { keyboardType ?? environmentKeyboardType }
 
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
@@ -766,7 +778,7 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
                         isEnabled: enabled,
                         textStyle: LemonadeTypography.shared.bodyMediumRegular,
                         textColor: LemonadeTheme.colors.content.contentPrimary,
-                        keyboardType: keyboardType,
+                        keyboardType: resolvedKeyboardType,
                         isSecure: isSecure,
                         onValueChange: onValueChange
                     )
@@ -855,12 +867,18 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
     let errorMessage: String?
     let error: Bool
     let enabled: Bool
-    let keyboardType: UIKeyboardType
+    // An explicit per-call keyboard type; `nil` falls back to the environment value
+    // set by `.lemonadeKeyboardType()`.
+    let keyboardType: UIKeyboardType?
     let trailingContent: (() -> TrailingContent)?
 
     @State private var isFocused = false
     @State private var isHovered = false
     @Environment(\.lemonadeSecureTextEntry) private var isSecure
+    @Environment(\.lemonadeKeyboardType) private var environmentKeyboardType
+
+    // The explicit per-call type wins; otherwise fall back to the environment value.
+    private var resolvedKeyboardType: UIKeyboardType { keyboardType ?? environmentKeyboardType }
 
     var body: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing50) {
@@ -900,7 +918,7 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
                             isEnabled: enabled,
                             textStyle: LemonadeTypography.shared.bodyMediumRegular,
                             textColor: LemonadeTheme.colors.content.contentPrimary,
-                            keyboardType: keyboardType,
+                            keyboardType: resolvedKeyboardType,
                             isSecure: isSecure,
                             onValueChange: onValueChange
                         )
