@@ -15,6 +15,11 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     var textStyle: LemonadeTextStyle
     var textColor: Color
     var keyboardType: UIKeyboardType = .default
+    /// Drives iOS AutoFill (username/password/one-time-code/…) via
+    /// `UITextField.textContentType`. `nil` leaves it unset.
+    var textContentType: UITextContentType?
+    var autocapitalizationType: UITextAutocapitalizationType = .sentences
+    var autocorrectionType: UITextAutocorrectionType = .default
     /// Enables native secure text entry (character masking). Note: UIKit clears
     /// the field's text and selection when this flips, so `updateUIView` applies
     /// it before re-synchronizing text and cursor to keep them stable on toggle.
@@ -38,6 +43,9 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.tintColor = UIColor(textColor)
         textField.isEnabled = isEnabled
         textField.keyboardType = keyboardType
+        textField.textContentType = textContentType
+        textField.autocapitalizationType = autocapitalizationType
+        textField.autocorrectionType = autocorrectionType
         textField.isSecureTextEntry = isSecure
         textField.text = value.text
 
@@ -110,6 +118,20 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             if textField.isFirstResponder {
                 textField.reloadInputViews()
             }
+        }
+
+        // Match the guarded keyboardType update above: only reassign when the
+        // value actually changed to avoid needless per-keystroke trait churn on
+        // the focused field. Unlike keyboardType, these traits take effect
+        // without reloadInputViews().
+        if textField.textContentType != textContentType {
+            textField.textContentType = textContentType
+        }
+        if textField.autocapitalizationType != autocapitalizationType {
+            textField.autocapitalizationType = autocapitalizationType
+        }
+        if textField.autocorrectionType != autocorrectionType {
+            textField.autocorrectionType = autocorrectionType
         }
 
         // Handle focus state

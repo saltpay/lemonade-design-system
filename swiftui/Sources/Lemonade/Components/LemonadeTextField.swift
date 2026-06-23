@@ -494,8 +494,12 @@ private struct LemonadeTextInputField: View {
 
     // The String-binding overloads expose no `keyboardType:` parameter, so the
     // `.lemonadeKeyboardType()` modifier (read from the environment here) is the
-    // only way to drive their keyboard.
+    // only way to drive their keyboard. The same applies to the text-input traits
+    // below.
     @Environment(\.lemonadeKeyboardType) private var keyboardType
+    @Environment(\.lemonadeTextContentType) private var textContentType
+    @Environment(\.lemonadeAutocapitalizationType) private var autocapitalizationType
+    @Environment(\.lemonadeAutocorrectionType) private var autocorrectionType
 
     // `input` (the public String binding) stays the source of truth; this local
     // value only carries the live cursor position that LemonadeUITextField needs.
@@ -524,6 +528,9 @@ private struct LemonadeTextInputField: View {
             textStyle: LemonadeTypography.shared.bodyMediumRegular,
             textColor: LemonadeTheme.colors.content.contentPrimary,
             keyboardType: keyboardType,
+            textContentType: textContentType,
+            autocapitalizationType: autocapitalizationType,
+            autocorrectionType: autocorrectionType,
             isSecure: isSecure,
             onValueChange: { newValue in
                 if newValue.text != input { input = newValue.text }
@@ -749,6 +756,9 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
     @State private var isHovered = false
     @Environment(\.lemonadeSecureTextEntry) private var isSecure
     @Environment(\.lemonadeKeyboardType) private var environmentKeyboardType
+    @Environment(\.lemonadeTextContentType) private var textContentType
+    @Environment(\.lemonadeAutocapitalizationType) private var autocapitalizationType
+    @Environment(\.lemonadeAutocorrectionType) private var autocorrectionType
 
     // The explicit per-call type wins; otherwise fall back to the environment value.
     private var resolvedKeyboardType: UIKeyboardType { keyboardType ?? environmentKeyboardType }
@@ -779,6 +789,9 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
                         textStyle: LemonadeTypography.shared.bodyMediumRegular,
                         textColor: LemonadeTheme.colors.content.contentPrimary,
                         keyboardType: resolvedKeyboardType,
+                        textContentType: textContentType,
+                        autocapitalizationType: autocapitalizationType,
+                        autocorrectionType: autocorrectionType,
                         isSecure: isSecure,
                         onValueChange: onValueChange
                     )
@@ -876,6 +889,9 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
     @State private var isHovered = false
     @Environment(\.lemonadeSecureTextEntry) private var isSecure
     @Environment(\.lemonadeKeyboardType) private var environmentKeyboardType
+    @Environment(\.lemonadeTextContentType) private var textContentType
+    @Environment(\.lemonadeAutocapitalizationType) private var autocapitalizationType
+    @Environment(\.lemonadeAutocorrectionType) private var autocorrectionType
 
     // The explicit per-call type wins; otherwise fall back to the environment value.
     private var resolvedKeyboardType: UIKeyboardType { keyboardType ?? environmentKeyboardType }
@@ -919,6 +935,9 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
                             textStyle: LemonadeTypography.shared.bodyMediumRegular,
                             textColor: LemonadeTheme.colors.content.contentPrimary,
                             keyboardType: resolvedKeyboardType,
+                            textContentType: textContentType,
+                            autocapitalizationType: autocapitalizationType,
+                            autocorrectionType: autocorrectionType,
                             isSecure: isSecure,
                             onValueChange: onValueChange
                         )
