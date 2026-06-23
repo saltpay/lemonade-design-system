@@ -15,6 +15,11 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     var textStyle: LemonadeTextStyle
     var textColor: Color
     var keyboardType: UIKeyboardType = .default
+    /// Drives iOS AutoFill (username/password/one-time-code/…) via
+    /// `UITextField.textContentType`. `nil` leaves it unset.
+    var textContentType: UITextContentType?
+    var autocapitalizationType: UITextAutocapitalizationType = .sentences
+    var autocorrectionType: UITextAutocorrectionType = .default
     /// Enables native secure text entry (character masking). Note: UIKit clears
     /// the field's text and selection when this flips, so `updateUIView` applies
     /// it before re-synchronizing text and cursor to keep them stable on toggle.
@@ -38,6 +43,9 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         textField.tintColor = UIColor(textColor)
         textField.isEnabled = isEnabled
         textField.keyboardType = keyboardType
+        textField.textContentType = textContentType
+        textField.autocapitalizationType = autocapitalizationType
+        textField.autocorrectionType = autocorrectionType
         textField.isSecureTextEntry = isSecure
         textField.text = value.text
 
@@ -111,6 +119,10 @@ internal struct LemonadeUITextField: UIViewRepresentable {
                 textField.reloadInputViews()
             }
         }
+
+        textField.textContentType = textContentType
+        textField.autocapitalizationType = autocapitalizationType
+        textField.autocorrectionType = autocorrectionType
 
         // Handle focus state
         updateFocus(textField)

@@ -16,6 +16,9 @@ struct TextFieldDisplayView: View {
     @State private var pinText = ""
     @State private var amountValue = LemonadeTextFieldValue(text: "")
     @State private var urlText = ""
+    @State private var usernameText = ""
+    @State private var autofillPasswordText = ""
+    @State private var isAutofillPasswordVisible = false
 
     var body: some View {
         ScrollView {
@@ -189,6 +192,45 @@ struct TextFieldDisplayView: View {
                         label: "Phone Number",
                         placeholderText: "Enter phone number"
                     )
+                }
+
+                // AutoFill + capitalization — username (String binding, via modifiers)
+                sectionView(title: "AutoFill — Username") {
+                    LemonadeUi.TextField(
+                        input: $usernameText,
+                        label: "Username",
+                        supportText: "AutoFill, no capitalization, no autocorrect",
+                        placeholderText: "you@example.com"
+                    )
+                    .lemonadeTextContentType(.username)
+                    .lemonadeKeyboardType(.emailAddress)
+                    .lemonadeTextInputAutocapitalization(.none)
+                    .lemonadeAutocorrectionDisabled()
+                }
+
+                // AutoFill — password with show/hide toggle
+                sectionView(title: "AutoFill — Password") {
+                    LemonadeUi.TextField(
+                        input: $autofillPasswordText,
+                        label: "Password",
+                        placeholderText: "Enter password"
+                    ) {
+                        EmptyView()
+                    } trailingContent: {
+                        Button {
+                            isAutofillPasswordVisible.toggle()
+                        } label: {
+                            LemonadeUi.Icon(
+                                icon: isAutofillPasswordVisible ? .eyeOpen : .eyeClosed,
+                                contentDescription: isAutofillPasswordVisible ? "Hide password" : "Show password",
+                                size: .medium,
+                                tint: LemonadeTheme.colors.content.contentSecondary
+                            )
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    .lemonadeTextContentType(.password)
+                    .secureTextEntry(!isAutofillPasswordVisible)
                 }
 
                 // Disabled
