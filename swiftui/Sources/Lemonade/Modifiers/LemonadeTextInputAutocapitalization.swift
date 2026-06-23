@@ -5,15 +5,15 @@ import UIKit
 
 // MARK: - Environment
 
-private struct LemonadeAutocapitalizationKey: EnvironmentKey {
+private struct LemonadeAutocapitalizationTypeKey: EnvironmentKey {
     // Matches UITextField's own default so an un-modified field behaves identically.
     static let defaultValue: UITextAutocapitalizationType = .sentences
 }
 
 extension EnvironmentValues {
-    var lemonadeAutocapitalization: UITextAutocapitalizationType {
-        get { self[LemonadeAutocapitalizationKey.self] }
-        set { self[LemonadeAutocapitalizationKey.self] = newValue }
+    var lemonadeAutocapitalizationType: UITextAutocapitalizationType {
+        get { self[LemonadeAutocapitalizationTypeKey.self] }
+        set { self[LemonadeAutocapitalizationTypeKey.self] = newValue }
     }
 }
 
@@ -55,7 +55,7 @@ public extension View {
     /// - Returns: A view whose Lemonade text fields use the given
     ///   autocapitalization.
     func lemonadeTextInputAutocapitalization(_ type: UITextAutocapitalizationType) -> some View {
-        environment(\.lemonadeAutocapitalization, type)
+        environment(\.lemonadeAutocapitalizationType, type)
     }
 }
 #endif

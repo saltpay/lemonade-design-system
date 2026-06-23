@@ -498,7 +498,7 @@ private struct LemonadeTextInputField: View {
     // below.
     @Environment(\.lemonadeKeyboardType) private var keyboardType
     @Environment(\.lemonadeTextContentType) private var textContentType
-    @Environment(\.lemonadeAutocapitalization) private var autocapitalization
+    @Environment(\.lemonadeAutocapitalizationType) private var autocapitalizationType
     @Environment(\.lemonadeAutocorrectionType) private var autocorrectionType
 
     // `input` (the public String binding) stays the source of truth; this local
@@ -529,7 +529,7 @@ private struct LemonadeTextInputField: View {
             textColor: LemonadeTheme.colors.content.contentPrimary,
             keyboardType: keyboardType,
             textContentType: textContentType,
-            autocapitalizationType: autocapitalization,
+            autocapitalizationType: autocapitalizationType,
             autocorrectionType: autocorrectionType,
             isSecure: isSecure,
             onValueChange: { newValue in
@@ -757,7 +757,7 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
     @Environment(\.lemonadeSecureTextEntry) private var isSecure
     @Environment(\.lemonadeKeyboardType) private var environmentKeyboardType
     @Environment(\.lemonadeTextContentType) private var textContentType
-    @Environment(\.lemonadeAutocapitalization) private var autocapitalization
+    @Environment(\.lemonadeAutocapitalizationType) private var autocapitalizationType
     @Environment(\.lemonadeAutocorrectionType) private var autocorrectionType
 
     // The explicit per-call type wins; otherwise fall back to the environment value.
@@ -790,7 +790,7 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
                         textColor: LemonadeTheme.colors.content.contentPrimary,
                         keyboardType: resolvedKeyboardType,
                         textContentType: textContentType,
-                        autocapitalizationType: autocapitalization,
+                        autocapitalizationType: autocapitalizationType,
                         autocorrectionType: autocorrectionType,
                         isSecure: isSecure,
                         onValueChange: onValueChange
@@ -890,7 +890,7 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
     @Environment(\.lemonadeSecureTextEntry) private var isSecure
     @Environment(\.lemonadeKeyboardType) private var environmentKeyboardType
     @Environment(\.lemonadeTextContentType) private var textContentType
-    @Environment(\.lemonadeAutocapitalization) private var autocapitalization
+    @Environment(\.lemonadeAutocapitalizationType) private var autocapitalizationType
     @Environment(\.lemonadeAutocorrectionType) private var autocorrectionType
 
     // The explicit per-call type wins; otherwise fall back to the environment value.
@@ -936,7 +936,7 @@ private struct LemonadeTextFieldWithSelectorValueView<LeadingContent: View, Trai
                             textColor: LemonadeTheme.colors.content.contentPrimary,
                             keyboardType: resolvedKeyboardType,
                             textContentType: textContentType,
-                            autocapitalizationType: autocapitalization,
+                            autocapitalizationType: autocapitalizationType,
                             autocorrectionType: autocorrectionType,
                             isSecure: isSecure,
                             onValueChange: onValueChange
