@@ -120,9 +120,19 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             }
         }
 
-        textField.textContentType = textContentType
-        textField.autocapitalizationType = autocapitalizationType
-        textField.autocorrectionType = autocorrectionType
+        // Match the guarded keyboardType update above: only reassign when the
+        // value actually changed to avoid needless per-keystroke trait churn on
+        // the focused field. Unlike keyboardType, these traits take effect
+        // without reloadInputViews().
+        if textField.textContentType != textContentType {
+            textField.textContentType = textContentType
+        }
+        if textField.autocapitalizationType != autocapitalizationType {
+            textField.autocapitalizationType = autocapitalizationType
+        }
+        if textField.autocorrectionType != autocorrectionType {
+            textField.autocorrectionType = autocorrectionType
+        }
 
         // Handle focus state
         updateFocus(textField)

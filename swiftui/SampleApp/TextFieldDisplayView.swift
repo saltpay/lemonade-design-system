@@ -111,17 +111,7 @@ struct TextFieldDisplayView: View {
                             tint: .content.contentSecondary
                         )
                     } trailingContent: {
-                        Button {
-                            isPasswordVisible.toggle()
-                        } label: {
-                            LemonadeUi.Icon(
-                                icon: isPasswordVisible ? .eyeOpen : .eyeClosed,
-                                contentDescription: isPasswordVisible ? "Hide password" : "Show password",
-                                size: .medium,
-                                tint: .content.contentSecondary
-                            )
-                        }
-                        .buttonStyle(.plain)
+                        passwordVisibilityToggle($isPasswordVisible)
                     }
                     .secureTextEntry(!isPasswordVisible)
                 }
@@ -217,17 +207,7 @@ struct TextFieldDisplayView: View {
                     ) {
                         EmptyView()
                     } trailingContent: {
-                        Button {
-                            isAutofillPasswordVisible.toggle()
-                        } label: {
-                            LemonadeUi.Icon(
-                                icon: isAutofillPasswordVisible ? .eyeOpen : .eyeClosed,
-                                contentDescription: isAutofillPasswordVisible ? "Hide password" : "Show password",
-                                size: .medium,
-                                tint: LemonadeTheme.colors.content.contentSecondary
-                            )
-                        }
-                        .buttonStyle(.plain)
+                        passwordVisibilityToggle($isAutofillPasswordVisible)
                     }
                     .lemonadeTextContentType(.password)
                     .secureTextEntry(!isAutofillPasswordVisible)
@@ -256,6 +236,20 @@ struct TextFieldDisplayView: View {
 
             content()
         }
+    }
+
+    private func passwordVisibilityToggle(_ isVisible: Binding<Bool>) -> some View {
+        Button {
+            isVisible.wrappedValue.toggle()
+        } label: {
+            LemonadeUi.Icon(
+                icon: isVisible.wrappedValue ? .eyeOpen : .eyeClosed,
+                contentDescription: isVisible.wrappedValue ? "Hide password" : "Show password",
+                size: .medium,
+                tint: .content.contentSecondary
+            )
+        }
+        .buttonStyle(.plain)
     }
 }
 
