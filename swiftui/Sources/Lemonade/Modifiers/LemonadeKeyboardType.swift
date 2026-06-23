@@ -27,8 +27,13 @@ public extension View {
     /// Backed by the platform: on iOS it maps to `UITextField.keyboardType`. The
     /// field reloads its input view if the keyboard type changes while the field
     /// is focused, so a dynamic switch takes effect without dropping focus. Has no
-    /// effect on views other than Lemonade text fields, and is a no-op on macOS
-    /// (which has no on-screen keyboard).
+    /// effect on views other than Lemonade text fields.
+    ///
+    /// Availability: this modifier (and `UIKeyboardType`) only exists where UIKit
+    /// does — iOS, iPadOS, and Mac Catalyst. It is not compiled for native macOS
+    /// (AppKit), where the Lemonade text fields fall back to a plain field with no
+    /// keyboard-type concept, so guard cross-platform call sites with
+    /// `#if canImport(UIKit)`.
     ///
     /// - Note: This is deliberately *not* named `keyboardType(_:)`. SwiftUI already
     ///   ships a `View.keyboardType(_:)` with the same signature; declaring another
