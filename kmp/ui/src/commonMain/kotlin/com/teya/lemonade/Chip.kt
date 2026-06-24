@@ -223,6 +223,87 @@ public fun LemonadeUi.Chip(
     )
 }
 
+/**
+ * A compact element used to display information, trigger actions, or represent selections.
+ *  Commonly used for tags, filters, or interactive choices in dense interfaces.
+ *
+ * This overload exposes a fully custom [leadingSlot] for cases where the leading content is
+ *  not a plain icon or image — for example a [LemonadeUi.SymbolContainer] showing initials.
+ *
+ * ## Usage
+ * ```kotlin
+ * LemonadeUi.Chip(
+ *     label = "joe@teya.com",
+ *     selected = false,
+ *     trailingIcon = LemonadeIcons.Times,
+ *     onTrailingIconClick = { /* remove */ },
+ *     leadingSlot = {
+ *         LemonadeUi.SymbolContainer(
+ *             text = "JO",
+ *             voice = SymbolContainerVoice.Neutral,
+ *             size = SymbolContainerSize.Small,
+ *             shape = SymbolContainerShape.Circle,
+ *         )
+ *     },
+ * )
+ * ```
+ *
+ * ## Parameters
+ * @param label: The text to be displayed in the chip.
+ * @param selected: Set to 'true' if the chip is in the selected state.
+ * @param leadingSlot: Composable rendered in the leading position of the chip.
+ * @param modifier: Optional - [Modifier] to be applied to the root container of the chip.
+ * @param trailingIcon: Optional - [LemonadeIcons] to be displayed in the trailing position.
+ * @param counter: Optional - [Int] number to be displayed in the chip.
+ * @param enabled: Optional - controls the enabled state of the chip. Defaults to true.
+ * @param error: Optional - set to `true` to display the chip in an error state. Defaults to false.
+ * @param onChipClicked: Optional - callback for when the chip is clicked.
+ * @param onTrailingIconClick: Optional - callback for when the [trailingIcon] is clicked.
+ * @param interactionSource: Optional - [MutableInteractionSource] for interaction states.
+ */
+@Composable
+public fun LemonadeUi.Chip(
+    label: String,
+    selected: Boolean,
+    leadingSlot: @Composable BoxScope.() -> Unit,
+    modifier: Modifier = Modifier,
+    trailingIcon: LemonadeIcons? = null,
+    counter: Int? = null,
+    enabled: Boolean = true,
+    error: Boolean = false,
+    onChipClicked: (() -> Unit)? = null,
+    onTrailingIconClick: (() -> Unit)? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+) {
+    CoreChip(
+        label = label,
+        selected = selected,
+        enabled = enabled,
+        error = error,
+        counter = counter,
+        leadingSlot = leadingSlot,
+        trailingSlot = if (trailingIcon != null) {
+            {
+                LemonadeUi.Icon(
+                    icon = trailingIcon,
+                    tint = LocalChipContentColor.current.invoke(),
+                    size = LemonadeAssetSize.Small,
+                    contentDescription = null,
+                )
+            }
+        } else {
+            null
+        },
+        onChipClicked = onChipClicked,
+        onTrailingIconClick = onTrailingIconClick,
+        modifier = modifier,
+        // A custom leading slot (e.g. a SymbolContainer avatar) is larger than the icon-sized
+        // actions box, so let it size to its content instead of being clipped into it.
+        leadingSlotConstrained = false,
+        interactionSource = interactionSource,
+    )
+}
+
 @Suppress("LongMethod", "LongParameterList")
 @Composable
 internal fun CoreChip(
@@ -236,6 +317,7 @@ internal fun CoreChip(
     onChipClicked: (() -> Unit)?,
     onTrailingIconClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
+    leadingSlotConstrained: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val platformDimensions = defaultChipDimensions()
@@ -291,8 +373,11 @@ internal fun CoreChip(
                 Box(
                     contentAlignment = Alignment.Center,
                     content = leadingSlot,
-                    modifier = Modifier
-                        .requiredSize(size = platformDimensions.actionsSize),
+                    modifier = if (leadingSlotConstrained) {
+                        Modifier.requiredSize(size = platformDimensions.actionsSize)
+                    } else {
+                        Modifier
+                    },
                 )
             }
 
