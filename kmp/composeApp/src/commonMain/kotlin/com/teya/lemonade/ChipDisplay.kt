@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.teya.lemonade.core.LemonadeCountryFlags
 import com.teya.lemonade.core.LemonadeIcons
 
 @Suppress("LongMethod")
@@ -99,6 +100,24 @@ internal fun ChipDisplay() {
                         trailingIcon = LemonadeIcons.CircleX,
                     )
                 }
+            }
+        }
+
+        // With Custom Leading
+        ChipSection(title = "With Custom Leading") {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+            ) {
+                LemonadeUi.Chip(
+                    label = "GBP",
+                    selected = false,
+                    leadingContent = {
+                        LemonadeUi.CountryFlag(flag = LemonadeCountryFlags.GBUnitedKingdom)
+                    },
+                    trailingContent = {
+                        LemonadeUi.Icon(icon = LemonadeIcons.ChevronDown, contentDescription = null)
+                    },
+                )
             }
         }
 

@@ -68,6 +68,7 @@ public final class com/teya/lemonade/CheckboxKt {
 public final class com/teya/lemonade/ChipKt {
 	public static final fun Chip (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;ZLandroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/painter/Painter;Lcom/teya/lemonade/core/LemonadeIcons;Ljava/lang/Integer;ZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
 	public static final fun Chip (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;ZLandroidx/compose/ui/Modifier;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/core/LemonadeIcons;Ljava/lang/Integer;ZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
+	public static final fun Chip (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;ZLkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/ui/Modifier;Ljava/lang/Integer;ZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
 }
 
 public final class com/teya/lemonade/ComposableSingletons$CardKt {
