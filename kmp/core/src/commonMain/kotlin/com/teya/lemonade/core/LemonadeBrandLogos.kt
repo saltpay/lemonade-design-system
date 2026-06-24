@@ -26,6 +26,7 @@ public enum class LemonadeBrandLogos : LemonadeAsset {
     Jcb,
     Mastercard,
     Multibanco,
+    NfcLogo,
     PagoBancomat,
     Pluxee,
     Sepa,

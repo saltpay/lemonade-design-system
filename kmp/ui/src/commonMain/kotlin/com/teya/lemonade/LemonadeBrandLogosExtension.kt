@@ -27,6 +27,7 @@ public val LemonadeBrandLogos.drawableResource: DrawableResource
         LemonadeBrandLogos.Jcb -> LemonadeRes.drawable.gen_jcb
         LemonadeBrandLogos.Mastercard -> LemonadeRes.drawable.gen_mastercard
         LemonadeBrandLogos.Multibanco -> LemonadeRes.drawable.gen_multibanco
+        LemonadeBrandLogos.NfcLogo -> LemonadeRes.drawable.gen_nfc_logo
         LemonadeBrandLogos.PagoBancomat -> LemonadeRes.drawable.gen_pago_bancomat
         LemonadeBrandLogos.Pluxee -> LemonadeRes.drawable.gen_pluxee
         LemonadeBrandLogos.Sepa -> LemonadeRes.drawable.gen_sepa

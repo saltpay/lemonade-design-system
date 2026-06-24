@@ -290,6 +290,7 @@ enum LemonadeBrandLogos {
   jcb('packages/lemonade_design_system/assets/svg/brandLogos/jcb.svg'),
   mastercard('packages/lemonade_design_system/assets/svg/brandLogos/mastercard.svg'),
   multibanco('packages/lemonade_design_system/assets/svg/brandLogos/multibanco.svg'),
+  nfcLogo('packages/lemonade_design_system/assets/svg/brandLogos/nfc-logo.svg'),
   pagoBancomat('packages/lemonade_design_system/assets/svg/brandLogos/pago-bancomat.svg'),
   pluxee('packages/lemonade_design_system/assets/svg/brandLogos/pluxee.svg'),
   sepa('packages/lemonade_design_system/assets/svg/brandLogos/sepa.svg'),
