@@ -31,6 +31,7 @@ public enum LemonadeBrandLogo: String, CaseIterable {
     case jcb = "jcb"
     case mastercard = "mastercard"
     case multibanco = "multibanco"
+    case nfcLogo = "nfc-logo"
     case pagoBancomat = "pago-bancomat"
     case pluxee = "pluxee"
     case sepa = "sepa"
