@@ -227,23 +227,27 @@ public fun LemonadeUi.Chip(
  * A compact element used to display information, trigger actions, or represent selections.
  *  Commonly used for tags, filters, or interactive choices in dense interfaces.
  *
- * This overload exposes a fully custom [leadingSlot] for cases where the leading content is
- *  not a plain icon or image — for example a [LemonadeUi.SymbolContainer] showing initials.
+ * This overload exposes generic [leadingContent] and [trailingContent] slots, mirroring the
+ *  SwiftUI `LemonadeUi.Chip(leadingContent:trailingContent:)` initialiser, so callers can place
+ *  any composable in either position — for example a [LemonadeUi.SymbolContainer] avatar as the
+ *  leading content and a close icon as the trailing content.
  *
  * ## Usage
  * ```kotlin
  * LemonadeUi.Chip(
  *     label = "joe@teya.com",
  *     selected = false,
- *     trailingIcon = LemonadeIcons.Times,
  *     onTrailingIconClick = { /* remove */ },
- *     leadingSlot = {
+ *     leadingContent = {
  *         LemonadeUi.SymbolContainer(
- *             text = "JO",
+ *             text = "J",
  *             voice = SymbolContainerVoice.Neutral,
- *             size = SymbolContainerSize.Small,
+ *             size = SymbolContainerSize.XSmall,
  *             shape = SymbolContainerShape.Circle,
  *         )
+ *     },
+ *     trailingContent = {
+ *         LemonadeUi.Icon(icon = LemonadeIcons.Times, contentDescription = null)
  *     },
  * )
  * ```
@@ -251,23 +255,23 @@ public fun LemonadeUi.Chip(
  * ## Parameters
  * @param label: The text to be displayed in the chip.
  * @param selected: Set to 'true' if the chip is in the selected state.
- * @param leadingSlot: Composable rendered in the leading position of the chip.
+ * @param leadingContent: Composable rendered in the leading position of the chip.
+ * @param trailingContent: Composable rendered in the trailing position of the chip.
  * @param modifier: Optional - [Modifier] to be applied to the root container of the chip.
- * @param trailingIcon: Optional - [LemonadeIcons] to be displayed in the trailing position.
  * @param counter: Optional - [Int] number to be displayed in the chip.
  * @param enabled: Optional - controls the enabled state of the chip. Defaults to true.
  * @param error: Optional - set to `true` to display the chip in an error state. Defaults to false.
  * @param onChipClicked: Optional - callback for when the chip is clicked.
- * @param onTrailingIconClick: Optional - callback for when the [trailingIcon] is clicked.
+ * @param onTrailingIconClick: Optional - callback for when [trailingContent] is clicked.
  * @param interactionSource: Optional - [MutableInteractionSource] for interaction states.
  */
 @Composable
 public fun LemonadeUi.Chip(
     label: String,
     selected: Boolean,
-    leadingSlot: @Composable BoxScope.() -> Unit,
+    leadingContent: @Composable BoxScope.() -> Unit,
+    trailingContent: @Composable BoxScope.() -> Unit,
     modifier: Modifier = Modifier,
-    trailingIcon: LemonadeIcons? = null,
     counter: Int? = null,
     enabled: Boolean = true,
     error: Boolean = false,
@@ -281,24 +285,14 @@ public fun LemonadeUi.Chip(
         enabled = enabled,
         error = error,
         counter = counter,
-        leadingSlot = leadingSlot,
-        trailingSlot = if (trailingIcon != null) {
-            {
-                LemonadeUi.Icon(
-                    icon = trailingIcon,
-                    tint = LocalChipContentColor.current.invoke(),
-                    size = LemonadeAssetSize.Small,
-                    contentDescription = null,
-                )
-            }
-        } else {
-            null
-        },
+        leadingSlot = leadingContent,
+        trailingSlot = trailingContent,
         onChipClicked = onChipClicked,
         onTrailingIconClick = onTrailingIconClick,
         modifier = modifier,
-        // A custom leading slot (e.g. a SymbolContainer avatar) is larger than the icon-sized
-        // actions box, so let it size to its content instead of being clipped into it.
+        // Custom leading content (e.g. a SymbolContainer avatar) is larger than the icon-sized
+        // actions box, so let it size to its content instead of being clipped into it — matching
+        // the SwiftUI Chip, whose leadingContent is also unconstrained.
         leadingSlotConstrained = false,
         interactionSource = interactionSource,
     )
