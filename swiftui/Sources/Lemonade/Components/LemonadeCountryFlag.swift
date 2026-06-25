@@ -24,19 +24,6 @@ public enum LemonadeCountryFlagSize {
         case .xxxxLarge: return LemonadeTheme.sizes.size1400 // 56
         }
     }
-
-    /// Corner radius applied when the flag uses `LemonadeCountryFlagShape.rounded`.
-    var roundedRadius: CGFloat {
-        switch self {
-        case .small: return LemonadeTheme.radius.radius100      // 4
-        case .medium: return LemonadeTheme.radius.radius150     // 6
-        case .large: return LemonadeTheme.radius.radius200      // 8
-        case .xLarge: return LemonadeTheme.radius.radius250     // 10
-        case .xxLarge: return LemonadeTheme.radius.radius300    // 12
-        case .xxxLarge: return LemonadeTheme.radius.radius400   // 16
-        case .xxxxLarge: return LemonadeTheme.radius.radius500  // 20
-        }
-    }
 }
 
 // MARK: - Country Flag Shape
@@ -94,7 +81,7 @@ private struct LemonadeCountryFlagView: View {
         case .circular:
             styled(sized, with: Circle())
         case .rounded:
-            styled(sized, with: RoundedRectangle(cornerRadius: size.roundedRadius))
+            styled(sized, with: RoundedRectangle(cornerRadius: roundedRadius(for: size)))
         }
     }
 
@@ -106,12 +93,24 @@ private struct LemonadeCountryFlagView: View {
     private func styled<S: Shape>(_ view: some View, with shape: S) -> some View {
         view
             .clipShape(shape)
-            .overlay(
-                shape.stroke(
-                    LemonadeTheme.colors.border.borderNeutralMedium,
-                    lineWidth: LemonadeTheme.borderWidth.base.border25
-                )
+            .shadowBorder(
+                width: LemonadeTheme.borderWidth.base.border25,
+                color: LemonadeTheme.colors.border.borderNeutralMedium,
+                shape: shape
             )
+    }
+
+    /// Corner radius applied when the flag uses `LemonadeCountryFlagShape.rounded`.
+    private func roundedRadius(for size: LemonadeCountryFlagSize) -> CGFloat {
+        switch size {
+        case .small: return LemonadeTheme.radius.radius100      // 4
+        case .medium: return LemonadeTheme.radius.radius150     // 6
+        case .large: return LemonadeTheme.radius.radius200      // 8
+        case .xLarge: return LemonadeTheme.radius.radius250     // 10
+        case .xxLarge: return LemonadeTheme.radius.radius300    // 12
+        case .xxxLarge: return LemonadeTheme.radius.radius400   // 16
+        case .xxxxLarge: return LemonadeTheme.radius.radius500  // 20
+        }
     }
 
     private var flagImage: Image {
