@@ -232,11 +232,14 @@ private struct SystemKeyboardTraits: ViewModifier {
         #if os(iOS)
         switch variant {
         case .numeric:
-            content.keyboardType(.numberPad)
+            content
+                .keyboardType(.numberPad)
+                .textContentType(.oneTimeCode)
         case .alphanumeric:
             content
                 .keyboardType(.asciiCapable)
                 .textInputAutocapitalization(.never)
+                .textContentType(.oneTimeCode)
         }
         #else
         content
