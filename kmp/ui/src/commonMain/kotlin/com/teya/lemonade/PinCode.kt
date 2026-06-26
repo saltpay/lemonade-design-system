@@ -189,10 +189,10 @@ private fun PinCodeBox(
     )
     val borderColor by animateColorAsState(
         targetValue = when {
-            !enabled -> LocalColors.current.border.borderNeutralMedium.copy(
-                alpha = LocalOpacities.current.base.opacity0,
-            )
-
+            // Keep a muted but visible outline when disabled — the boxes have no label/content to
+            // fall back on, so a transparent border (as the text field uses) makes them vanish into
+            // the page. The dimmed fill still reads as disabled.
+            !enabled -> LocalColors.current.border.borderNeutralLow
             isActive -> LocalColors.current.border.borderSelected
             error && !isActive -> LocalColors.current.border.borderCritical
             else -> LocalColors.current.border.borderNeutralMedium
@@ -231,7 +231,11 @@ private fun PinCodeBox(
             LemonadeUi.Text(
                 text = character.toString(),
                 textStyle = LocalTypographies.current.bodyMediumMedium,
-                color = LocalColors.current.content.contentPrimary,
+                color = if (enabled) {
+                    LocalColors.current.content.contentPrimary
+                } else {
+                    LocalColors.current.content.contentTertiary
+                },
             )
         }
     }

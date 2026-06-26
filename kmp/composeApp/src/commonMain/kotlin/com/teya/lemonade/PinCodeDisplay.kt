@@ -16,7 +16,10 @@ private const val SAMPLE_PIN = "159999"
 
 @Composable
 internal fun PinCodeDisplay() {
-    SampleScreenDisplayColumn("PinCode") {
+    SampleScreenDisplayColumn(
+        title = "PinCode",
+        background = LemonadeTheme.colors.background.bgDefault,
+    ) {
         PinCodeSection("Numeric") {
             var pin by remember { mutableStateOf("") }
             var error by remember { mutableStateOf(false) }

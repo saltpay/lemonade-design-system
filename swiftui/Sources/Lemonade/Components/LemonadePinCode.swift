@@ -165,16 +165,24 @@ private struct PinCodeIndicator: View, Equatable {
                     LemonadeUi.Text(
                         String(character),
                         textStyle: LemonadeTypography.shared.bodyMediumMedium,
-                        color: LemonadeTheme.colors.content.contentPrimary
+                        color: enabled
+                            ? LemonadeTheme.colors.content.contentPrimary
+                            : LemonadeTheme.colors.content.contentTertiary
                     )
                 }
             }
             .modifier(TextFieldContainerModifier(
                 backgroundColor: textFieldBackgroundColor(enabled: enabled, error: error, isFocused: isActive, isHovered: false),
-                borderColor: textFieldBorderColor(enabled: enabled, isFocused: isActive, error: error),
+                // Keep a muted but visible outline when disabled — the boxes have no label/content
+                // to fall back on, so the text field's transparent disabled border would make them
+                // merge into the page. Skip the container's disabled opacity for the same reason.
+                borderColor: enabled
+                    ? textFieldBorderColor(enabled: enabled, isFocused: isActive, error: error)
+                    : LemonadeTheme.colors.border.borderNeutralLow,
                 enabled: enabled,
                 isFocused: isActive,
                 cornerRadius: TextFieldConstants.cornerRadius,
+                applyOpacity: false,
                 isHovered: .constant(false)
             ))
     }
