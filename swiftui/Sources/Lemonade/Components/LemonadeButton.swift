@@ -392,11 +392,11 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
                         Spacer(minLength: 0)
                         ZStack {
                             // Hide the content with opacity while loading instead of removing it
-                            // from the hierarchy. A removed view fades at its old absolute position,
-                            // so if the button's frame animates at the same time (a footer button
-                            // sliding down as the keyboard dismisses on submit) the content detaches
-                            // and fades mid-screen while the spinner rides the button down. Kept in
-                            // the layout, it moves with the button.
+                            // from the hierarchy. A removed view fades out at its old absolute
+                            // position, so if the button's frame animates at the same time the
+                            // content detaches and fades mid-screen while the spinner rides the
+                            // button to its new position. Kept in the layout, it moves with the
+                            // button.
                             contentSlot(colors)
                                 .opacity(loading ? 0 : 1)
 
