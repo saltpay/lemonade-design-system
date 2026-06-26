@@ -63,7 +63,8 @@ struct HomeView: View {
                 items: [
                     DemoItem(title: "TextField", destination: AnyView(TextFieldDisplayView())),
                     DemoItem(title: "SearchField", destination: AnyView(SearchFieldDisplayView())),
-                    DemoItem(title: "SelectField", destination: AnyView(SelectFieldDisplayView()))
+                    DemoItem(title: "SelectField", destination: AnyView(SelectFieldDisplayView())),
+                    DemoItem(title: "PinCode", destination: AnyView(PinCodeDisplayView()))
                 ]
             ),
             DemoSection(

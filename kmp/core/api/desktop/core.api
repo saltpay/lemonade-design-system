@@ -812,6 +812,14 @@ public final class com/teya/lemonade/core/LemonadeListItemVoice : java/lang/Enum
 	public static fun values ()[Lcom/teya/lemonade/core/LemonadeListItemVoice;
 }
 
+public final class com/teya/lemonade/core/LemonadePinCodeVariant : java/lang/Enum {
+	public static final field Alphanumeric Lcom/teya/lemonade/core/LemonadePinCodeVariant;
+	public static final field Numeric Lcom/teya/lemonade/core/LemonadePinCodeVariant;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/LemonadePinCodeVariant;
+	public static fun values ()[Lcom/teya/lemonade/core/LemonadePinCodeVariant;
+}
+
 public final class com/teya/lemonade/core/LemonadeRadius : java/lang/Enum {
 	public static final field Radius0 Lcom/teya/lemonade/core/LemonadeRadius;
 	public static final field Radius100 Lcom/teya/lemonade/core/LemonadeRadius;
