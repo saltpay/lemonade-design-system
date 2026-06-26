@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -100,10 +102,18 @@ public fun LemonadeUi.SelectListItem(
     supportTextMaxLines: Int = Int.MAX_VALUE,
     supportTextOverflow: TextOverflow = TextOverflow.Clip,
 ) {
+    // Fire a selection haptic when the checked state actually transitions, rather than on
+    // click dispatch. This keeps parity with the SwiftUI implementation (which triggers on
+    // the `checked` value change) and also covers programmatic selection changes. The first
+    // emission seeds the initial state without buzzing.
     val haptic = LocalHapticFeedback.current
-    val onItemClickedWithHaptic: () -> Unit = {
-        haptic.performHapticFeedback(HapticFeedbackType.Confirm)
-        onItemClicked()
+    val hasEmittedInitial = remember { mutableStateOf(false) }
+    LaunchedEffect(checked) {
+        if (hasEmittedInitial.value) {
+            haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+        } else {
+            hasEmittedInitial.value = true
+        }
     }
 
     when (variant) {
@@ -112,7 +122,7 @@ public fun LemonadeUi.SelectListItem(
                 label = label,
                 type = type,
                 checked = checked,
-                onItemClicked = onItemClickedWithHaptic,
+                onItemClicked = onItemClicked,
                 modifier = modifier,
                 isLoading = isLoading,
                 enabled = enabled,
@@ -134,7 +144,7 @@ public fun LemonadeUi.SelectListItem(
                 label = label,
                 type = type,
                 checked = checked,
-                onItemClicked = onItemClickedWithHaptic,
+                onItemClicked = onItemClicked,
                 modifier = modifier,
                 enabled = enabled,
                 interactionSource = interactionSource,
