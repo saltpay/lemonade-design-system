@@ -271,7 +271,7 @@ private const val FIELD_TEST_ID = "pin_code_field"
 
 private val ShakeKeyframes = listOf(-10f, 10f, -8f, 8f, -5f, 5f, 0f)
 
-private const val SHAKE_STEP_MILLIS = 50
+private const val SHAKE_STEP_MILLIS = 35
 
 @LemonadePreview
 @Composable

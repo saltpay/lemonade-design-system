@@ -113,7 +113,7 @@ private struct LemonadePinCodeView: View {
             #if canImport(UIKit)
             UINotificationFeedbackGenerator().notificationOccurred(.error)
             #endif
-            withAnimation(.linear(duration: 0.4)) { shakeTrigger += 1 }
+            withAnimation(.linear(duration: 0.3)) { shakeTrigger += 1 }
         }
         .onAppear { clampAndReport(value) }
         .onChange(of: value) { clampAndReport($0) }
