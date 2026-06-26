@@ -109,7 +109,12 @@ public fun LemonadeUi.PinCode(
         // Keep [value] clamped to [length] even when set externally (e.g. restoring state),
         // then report completion off the clamped result.
         val clamped = value.take(n = length)
-        if (clamped != value) onValueChange(clamped)
+        if (clamped != value) {
+            // The write-back re-runs this effect with the clamped value and reports there;
+            // returning avoids firing onComplete twice for one externally-set oversized value.
+            onValueChange(clamped)
+            return@LaunchedEffect
+        }
         if (clamped.length == length) onComplete?.invoke(clamped)
     }
 

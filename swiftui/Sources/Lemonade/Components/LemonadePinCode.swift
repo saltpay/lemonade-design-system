@@ -123,7 +123,12 @@ private struct LemonadePinCodeView: View {
     /// externally (e.g. restoring state) — then reports completion off the clamped result.
     private func clampAndReport(_ newValue: String) {
         let clamped = String(newValue.prefix(length))
-        if clamped != newValue { value = clamped }
+        if clamped != newValue {
+            // The write-back re-enters via .onChange and reports completion there; returning here
+            // avoids firing onComplete twice for a single externally-set oversized value.
+            value = clamped
+            return
+        }
         if clamped.count == length { onComplete?(clamped) }
     }
 }
