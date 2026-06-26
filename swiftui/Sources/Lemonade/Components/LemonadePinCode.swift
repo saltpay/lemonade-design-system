@@ -51,7 +51,6 @@ public extension LemonadeUi {
     ///   - submitting: When true the boxes show the disabled style and input is disabled.
     ///   - onComplete: Called once when `value` reaches `length`.
     /// - Returns: A styled PinCode view.
-    @ViewBuilder
     static func PinCode(
         value: Binding<String>,
         variant: LemonadePinCodeVariant = .numeric,
@@ -60,7 +59,8 @@ public extension LemonadeUi {
         submitting: Bool = false,
         onComplete: ((String) -> Void)? = nil
     ) -> some View {
-        LemonadePinCodeView(
+        precondition(length > 0, "PinCode length must be greater than zero.")
+        return LemonadePinCodeView(
             value: value,
             variant: variant,
             length: length,
@@ -115,9 +115,16 @@ private struct LemonadePinCodeView: View {
             #endif
             withAnimation(.linear(duration: 0.4)) { shakeTrigger += 1 }
         }
-        .onChange(of: value) { newValue in
-            if newValue.count == length { onComplete?(newValue) }
-        }
+        .onAppear { clampAndReport(value) }
+        .onChange(of: value) { clampAndReport($0) }
+    }
+
+    /// Enforces the "`value` stays clamped to `length`" contract for any value — including one set
+    /// externally (e.g. restoring state) — then reports completion off the clamped result.
+    private func clampAndReport(_ newValue: String) {
+        let clamped = String(newValue.prefix(length))
+        if clamped != newValue { value = clamped }
+        if clamped.count == length { onComplete?(clamped) }
     }
 }
 

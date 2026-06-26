@@ -106,7 +106,11 @@ public fun LemonadeUi.PinCode(
     }
 
     LaunchedEffect(value) {
-        if (value.length == length) onComplete?.invoke(value)
+        // Keep [value] clamped to [length] even when set externally (e.g. restoring state),
+        // then report completion off the clamped result.
+        val clamped = value.take(n = length)
+        if (clamped != value) onValueChange(clamped)
+        if (clamped.length == length) onComplete?.invoke(clamped)
     }
 
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
@@ -244,7 +248,7 @@ private fun PinCodeHiddenField(
     modifier: Modifier = Modifier,
 ) {
     val keyboardType = when (variant) {
-        LemonadePinCodeVariant.Numeric -> KeyboardType.NumberPassword
+        LemonadePinCodeVariant.Numeric -> KeyboardType.Number
         LemonadePinCodeVariant.Alphanumeric -> KeyboardType.Ascii
     }
 
