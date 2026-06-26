@@ -456,11 +456,8 @@ private struct LemonadeButtonView: View {
             loading: loading,
             expandContents: false,
             contentSlot: { colors in
-                AnyView(Group {
-                    if loading {
-                        ProgressView()
-                            .tint(colors.contentColor)
-                    } else {
+                AnyView(ZStack {
+                    HStack(spacing: 0) {
                         if let leadingIcon = leadingIcon {
                             LemonadeUi.Icon(
                                 icon: leadingIcon,
@@ -486,6 +483,18 @@ private struct LemonadeButtonView: View {
                                 tint: colors.contentColor
                             )
                         }
+                    }
+                    // Hide the label with opacity while loading instead of removing it from the
+                    // hierarchy. A removed view fades at its old absolute position, so if the
+                    // button's frame animates at the same time (a footer button sliding down as
+                    // the keyboard dismisses on submit) the label detaches and fades mid-screen
+                    // while the spinner rides the button down. Kept in the layout, it moves with
+                    // the button.
+                    .opacity(loading ? 0 : 1)
+
+                    if loading {
+                        ProgressView()
+                            .tint(colors.contentColor)
                     }
                 })
             },
@@ -520,18 +529,22 @@ private struct LemonadeSlotButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
             loading: loading,
             expandContents: expandContents,
             contentSlot: { colors in
-                AnyView(Group {
+                AnyView(ZStack {
+                    LemonadeUi.Text(
+                        label,
+                        textStyle: size.contentData.textStyle,
+                        color: colors.contentColor
+                    )
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, LemonadeTheme.spaces.spacing200)
+                    // Kept in the layout (hidden, not removed) while loading so the label moves
+                    // with the button instead of fading off at its old position when the frame
+                    // animates. See LemonadeButtonView for the full rationale.
+                    .opacity(loading ? 0 : 1)
+
                     if loading {
                         ProgressView()
                             .tint(colors.contentColor)
-                    } else {
-                        LemonadeUi.Text(
-                            label,
-                            textStyle: size.contentData.textStyle,
-                            color: colors.contentColor
-                        )
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, LemonadeTheme.spaces.spacing200)
                     }
                 })
             },
