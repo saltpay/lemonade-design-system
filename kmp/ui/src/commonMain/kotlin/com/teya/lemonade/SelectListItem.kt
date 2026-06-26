@@ -17,6 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -98,13 +100,19 @@ public fun LemonadeUi.SelectListItem(
     supportTextMaxLines: Int = Int.MAX_VALUE,
     supportTextOverflow: TextOverflow = TextOverflow.Clip,
 ) {
+    val haptic = LocalHapticFeedback.current
+    val onItemClickedWithHaptic: () -> Unit = {
+        haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+        onItemClicked()
+    }
+
     when (variant) {
         SelectListItemVariant.Plain -> {
             PlainSelectListItem(
                 label = label,
                 type = type,
                 checked = checked,
-                onItemClicked = onItemClicked,
+                onItemClicked = onItemClickedWithHaptic,
                 modifier = modifier,
                 isLoading = isLoading,
                 enabled = enabled,
@@ -126,7 +134,7 @@ public fun LemonadeUi.SelectListItem(
                 label = label,
                 type = type,
                 checked = checked,
-                onItemClicked = onItemClicked,
+                onItemClicked = onItemClickedWithHaptic,
                 modifier = modifier,
                 enabled = enabled,
                 interactionSource = interactionSource,
