@@ -390,7 +390,20 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
 
                     HStack(spacing: 0) {
                         Spacer(minLength: 0)
-                        contentSlot(colors)
+                        ZStack {
+                            // Hide the content with opacity while loading instead of removing it
+                            // from the hierarchy. A removed view fades out at its old absolute
+                            // position, so if the button's frame animates at the same time the
+                            // content detaches and fades mid-screen while the spinner rides the
+                            // button to its new position. Kept in the layout, it moves with the
+                            // button.
+                            contentSlot(colors)
+                                .opacity(loading ? 0 : 1)
+
+                            if loading {
+                                LemonadeUi.Spinner(tint: colors.contentColor)
+                            }
+                        }
                         Spacer(minLength: 0)
                     }
                     .padding(.vertical, size.contentData.verticalPadding)
@@ -456,36 +469,31 @@ private struct LemonadeButtonView: View {
             loading: loading,
             expandContents: false,
             contentSlot: { colors in
-                AnyView(Group {
-                    if loading {
-                        ProgressView()
-                            .tint(colors.contentColor)
-                    } else {
-                        if let leadingIcon = leadingIcon {
-                            LemonadeUi.Icon(
-                                icon: leadingIcon,
-                                contentDescription: nil,
-                                size: .medium,
-                                tint: colors.contentColor
-                            )
-                        }
-
-                        LemonadeUi.Text(
-                            label,
-                            textStyle: size.contentData.textStyle,
-                            color: colors.contentColor
+                AnyView(HStack(spacing: 0) {
+                    if let leadingIcon = leadingIcon {
+                        LemonadeUi.Icon(
+                            icon: leadingIcon,
+                            contentDescription: nil,
+                            size: .medium,
+                            tint: colors.contentColor
                         )
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, LemonadeTheme.spaces.spacing200)
+                    }
 
-                        if let trailingIcon = trailingIcon {
-                            LemonadeUi.Icon(
-                                icon: trailingIcon,
-                                contentDescription: nil,
-                                size: .medium,
-                                tint: colors.contentColor
-                            )
-                        }
+                    LemonadeUi.Text(
+                        label,
+                        textStyle: size.contentData.textStyle,
+                        color: colors.contentColor
+                    )
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, LemonadeTheme.spaces.spacing200)
+
+                    if let trailingIcon = trailingIcon {
+                        LemonadeUi.Icon(
+                            icon: trailingIcon,
+                            contentDescription: nil,
+                            size: .medium,
+                            tint: colors.contentColor
+                        )
                     }
                 })
             },
@@ -520,20 +528,15 @@ private struct LemonadeSlotButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
             loading: loading,
             expandContents: expandContents,
             contentSlot: { colors in
-                AnyView(Group {
-                    if loading {
-                        ProgressView()
-                            .tint(colors.contentColor)
-                    } else {
-                        LemonadeUi.Text(
-                            label,
-                            textStyle: size.contentData.textStyle,
-                            color: colors.contentColor
-                        )
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, LemonadeTheme.spaces.spacing200)
-                    }
-                })
+                AnyView(
+                    LemonadeUi.Text(
+                        label,
+                        textStyle: size.contentData.textStyle,
+                        color: colors.contentColor
+                    )
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, LemonadeTheme.spaces.spacing200)
+                )
             },
             leadingSlot: leadingSlot,
             trailingSlot: trailingSlot
