@@ -99,7 +99,7 @@ public fun LemonadeUi.PinCode(
             ShakeKeyframes.forEach { target ->
                 shakeOffset.animateTo(
                     targetValue = target,
-                    animationSpec = tween(durationMillis = ShakeStepMillis, easing = LinearEasing),
+                    animationSpec = tween(durationMillis = SHAKE_STEP_MILLIS, easing = LinearEasing),
                 )
             }
         }
@@ -262,16 +262,16 @@ private fun PinCodeHiddenField(
             .copy(color = Color.Transparent),
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         modifier = modifier
-            .testTag(tag = FieldTestId)
+            .testTag(tag = FIELD_TEST_ID)
             .onFocusChanged { onFocusChanged(it.isFocused) },
     )
 }
 
-private const val FieldTestId = "pin_code_field"
+private const val FIELD_TEST_ID = "pin_code_field"
 
 private val ShakeKeyframes = listOf(-10f, 10f, -8f, 8f, -5f, 5f, 0f)
 
-private const val ShakeStepMillis = 50
+private const val SHAKE_STEP_MILLIS = 50
 
 @LemonadePreview
 @Composable

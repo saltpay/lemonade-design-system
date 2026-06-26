@@ -12,7 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadePinCodeVariant
 
-private const val SamplePin = "159999"
+private const val SAMPLE_PIN = "159999"
 
 @Composable
 internal fun PinCodeDisplay() {
@@ -28,7 +28,7 @@ internal fun PinCodeDisplay() {
                     error = false
                 },
                 error = error,
-                onComplete = { code -> error = code != SamplePin },
+                onComplete = { code -> error = code != SAMPLE_PIN },
             )
             LemonadeUi.Text(
                 text = "Entered: ${pin.length} digit(s)",
@@ -47,7 +47,7 @@ internal fun PinCodeDisplay() {
 
         PinCodeSection("Submitting") {
             LemonadeUi.PinCode(
-                value = SamplePin,
+                value = SAMPLE_PIN,
                 onValueChange = { /* no-op */ },
                 submitting = true,
             )
