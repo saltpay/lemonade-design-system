@@ -25,6 +25,7 @@ import com.teya.lemonade.LinkDisplay
 import com.teya.lemonade.MarkdownDisplay
 import com.teya.lemonade.NoticeDisplay
 import com.teya.lemonade.OpacityDisplay
+import com.teya.lemonade.PinCodeDisplay
 import com.teya.lemonade.RadioButtonDisplay
 import com.teya.lemonade.RadiusDisplay
 import com.teya.lemonade.ResourceListItemDisplay
@@ -67,6 +68,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.ContentListItem to { _ -> ContentListItemDisplay() },
     Displays.Chip to { _ -> ChipDisplay() },
     Displays.SegmentedControl to { _ -> SegmentedControlDisplay() },
+    Displays.PinCode to { _ -> PinCodeDisplay() },
     Displays.Text to { _ -> TextDisplay() },
     Displays.SymbolContainer to { _ -> SymbolContainerDisplay() },
     Displays.Tag to { _ -> TagDisplay() },

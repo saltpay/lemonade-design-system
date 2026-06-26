@@ -431,6 +431,10 @@ public final class com/teya/lemonade/NoticeKt {
 	public static final fun Notice (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lcom/teya/lemonade/core/NoticeVoice;Landroidx/compose/ui/Modifier;Ljava/lang/String;ZLjava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/teya/lemonade/PinCodeKt {
+	public static final fun PinCode (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lcom/teya/lemonade/core/LemonadePinCodeVariant;IZZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/teya/lemonade/RadioButtonKt {
 	public static final fun RadioButton (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/interaction/MutableInteractionSource;ZLandroidx/compose/runtime/Composer;II)V
 	public static final fun RadioButton (Lcom/teya/lemonade/LemonadeUi;ZLkotlin/jvm/functions/Function0;Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/interaction/MutableInteractionSource;Ljava/lang/String;ZLandroidx/compose/runtime/Composer;II)V

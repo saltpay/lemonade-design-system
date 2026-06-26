@@ -106,6 +106,7 @@ internal object DisplayRegistry {
                 Displays.TextField,
                 Displays.SearchField,
                 Displays.SelectField,
+                Displays.PinCode,
             ),
         ),
         DisplayData(

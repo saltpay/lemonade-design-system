@@ -24,6 +24,7 @@ internal interface Displays {
             ContentListItem,
             Chip,
             SegmentedControl,
+            PinCode,
             SymbolContainer,
             Text,
             Tag,
@@ -128,6 +129,11 @@ internal interface Displays {
     @Serializable
     data object SegmentedControl : Displays {
         override val label: String = "SegmentedControl"
+    }
+
+    @Serializable
+    data object PinCode : Displays {
+        override val label: String = "PinCode"
     }
 
     @Serializable

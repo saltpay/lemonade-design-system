@@ -894,6 +894,17 @@ final enum class com.teya.lemonade.core/LemonadeListItemVoice : kotlin/Enum<com.
     final fun values(): kotlin/Array<com.teya.lemonade.core/LemonadeListItemVoice> // com.teya.lemonade.core/LemonadeListItemVoice.values|values#static(){}[0]
 }
 
+final enum class com.teya.lemonade.core/LemonadePinCodeVariant : kotlin/Enum<com.teya.lemonade.core/LemonadePinCodeVariant> { // com.teya.lemonade.core/LemonadePinCodeVariant|null[0]
+    enum entry Alphanumeric // com.teya.lemonade.core/LemonadePinCodeVariant.Alphanumeric|null[0]
+    enum entry Numeric // com.teya.lemonade.core/LemonadePinCodeVariant.Numeric|null[0]
+
+    final val entries // com.teya.lemonade.core/LemonadePinCodeVariant.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.teya.lemonade.core/LemonadePinCodeVariant> // com.teya.lemonade.core/LemonadePinCodeVariant.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.teya.lemonade.core/LemonadePinCodeVariant // com.teya.lemonade.core/LemonadePinCodeVariant.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.teya.lemonade.core/LemonadePinCodeVariant> // com.teya.lemonade.core/LemonadePinCodeVariant.values|values#static(){}[0]
+}
+
 final enum class com.teya.lemonade.core/LemonadeRadius : kotlin/Enum<com.teya.lemonade.core/LemonadeRadius> { // com.teya.lemonade.core/LemonadeRadius|null[0]
     enum entry Radius0 // com.teya.lemonade.core/LemonadeRadius.Radius0|null[0]
     enum entry Radius100 // com.teya.lemonade.core/LemonadeRadius.Radius100|null[0]
