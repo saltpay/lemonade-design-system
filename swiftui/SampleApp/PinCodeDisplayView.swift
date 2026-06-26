@@ -6,19 +6,19 @@ struct PinCodeDisplayView: View {
 
     @State private var numericPin = ""
     @State private var numericError = false
-    @State private var unmaskedPin = ""
-    @State private var alphaMaskedPin = ""
-    @State private var alphaUnmaskedPin = ""
+    @State private var alphaPin = ""
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 32) {
-                sectionView(title: "Numeric (masked) with biometry") {
+                sectionView(title: "Numeric") {
                     VStack(spacing: 16) {
                         LemonadeUi.PinCode(
-                            value: $numericPin,
+                            value: Binding(
+                                get: { numericPin },
+                                set: { numericPin = $0; numericError = false }
+                            ),
                             error: numericError,
-                            onBiometryClick: { numericPin = samplePin },
                             onComplete: { numericError = $0 != samplePin }
                         )
                         Text("Entered: \(numericPin.count) digit(s)")
@@ -27,16 +27,8 @@ struct PinCodeDisplayView: View {
                     }
                 }
 
-                sectionView(title: "Numeric (unmasked)") {
-                    LemonadeUi.PinCode(value: $unmaskedPin, masked: false)
-                }
-
-                sectionView(title: "Alphanumeric (system keyboard, masked)") {
-                    LemonadeUi.PinCode(value: $alphaMaskedPin, variant: .alphanumeric)
-                }
-
-                sectionView(title: "Alphanumeric (system keyboard, unmasked)") {
-                    LemonadeUi.PinCode(value: $alphaUnmaskedPin, variant: .alphanumeric, masked: false)
+                sectionView(title: "Alphanumeric (system keyboard)") {
+                    LemonadeUi.PinCode(value: $alphaPin, variant: .alphanumeric)
                 }
 
                 sectionView(title: "Submitting") {

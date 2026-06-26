@@ -17,7 +17,7 @@ private const val SamplePin = "159999"
 @Composable
 internal fun PinCodeDisplay() {
     SampleScreenDisplayColumn("PinCode") {
-        PinCodeSection("Numeric (masked) with biometry") {
+        PinCodeSection("Numeric") {
             var pin by remember { mutableStateOf("") }
             var error by remember { mutableStateOf(false) }
 
@@ -28,7 +28,6 @@ internal fun PinCodeDisplay() {
                     error = false
                 },
                 error = error,
-                onBiometryClick = { pin = SamplePin },
                 onComplete = { code -> error = code != SamplePin },
             )
             LemonadeUi.Text(
@@ -37,31 +36,12 @@ internal fun PinCodeDisplay() {
             )
         }
 
-        PinCodeSection("Numeric (unmasked)") {
-            var pin by remember { mutableStateOf("") }
-            LemonadeUi.PinCode(
-                value = pin,
-                onValueChange = { pin = it },
-                masked = false,
-            )
-        }
-
-        PinCodeSection("Alphanumeric (system keyboard, masked)") {
+        PinCodeSection("Alphanumeric (system keyboard)") {
             var pin by remember { mutableStateOf("") }
             LemonadeUi.PinCode(
                 value = pin,
                 onValueChange = { pin = it },
                 variant = LemonadePinCodeVariant.Alphanumeric,
-            )
-        }
-
-        PinCodeSection("Alphanumeric (system keyboard, unmasked)") {
-            var pin by remember { mutableStateOf("") }
-            LemonadeUi.PinCode(
-                value = pin,
-                onValueChange = { pin = it },
-                variant = LemonadePinCodeVariant.Alphanumeric,
-                masked = false,
             )
         }
 

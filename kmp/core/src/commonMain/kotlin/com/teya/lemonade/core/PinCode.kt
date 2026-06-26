@@ -1,10 +1,10 @@
 package com.teya.lemonade.core
 
 /**
- * Input modes for the PIN code component.
+ * Input modes for the PIN code component. Selects which system keyboard is requested.
  *
- * @property Numeric Digits only, entered through the component's built-in on-screen numpad.
- * @property Alphanumeric Any character, entered through the device's system keyboard.
+ * @property Numeric Requests a numeric keyboard.
+ * @property Alphanumeric Requests the full keyboard.
  */
 public enum class LemonadePinCodeVariant {
     Numeric,
