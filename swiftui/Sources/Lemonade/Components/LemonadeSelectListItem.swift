@@ -231,6 +231,23 @@ private func handleSelectTap(
     }
 }
 
+private extension View {
+    /// Plays a selection haptic whenever `trigger` changes.
+    ///
+    /// Uses a heavy `impact` rather than `.selection`: the plain selection tick reads
+    /// too faintly for a list-row commit. Relies on the iOS 17+ `sensoryFeedback` API
+    /// with a graceful no-op fallback on older versions, matching
+    /// `ToastSensoryFeedbackModifier`.
+    @ViewBuilder
+    func selectionImpactFeedback(trigger: Bool) -> some View {
+        if #available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *) {
+            sensoryFeedback(.impact(weight: .heavy), trigger: trigger)
+        } else {
+            self
+        }
+    }
+}
+
 private struct SelectionControlView: View {
     let type: SelectListItemType
     let checked: Bool
@@ -312,6 +329,7 @@ private struct PlainSelectListItem<LeadingContent: View, TrailingContent: View, 
             },
             slotContent: slotContent
         )
+        .selectionImpactFeedback(trigger: checked)
     }
 }
 
@@ -432,6 +450,7 @@ private struct OutlinedSelectListItem<LeadingContent: View, TrailingContent: Vie
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(checked ? .isSelected : [])
         .animation(.easeInOut(duration: 0.15), value: checked)
+        .selectionImpactFeedback(trigger: checked)
     }
 }
 

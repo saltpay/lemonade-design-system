@@ -11,12 +11,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -98,6 +102,20 @@ public fun LemonadeUi.SelectListItem(
     supportTextMaxLines: Int = Int.MAX_VALUE,
     supportTextOverflow: TextOverflow = TextOverflow.Clip,
 ) {
+    // Fire a selection haptic when the checked state actually transitions, rather than on
+    // click dispatch. This keeps parity with the SwiftUI implementation (which triggers on
+    // the `checked` value change) and also covers programmatic selection changes. The first
+    // emission seeds the initial state without buzzing.
+    val haptic = LocalHapticFeedback.current
+    val hasEmittedInitial = remember { mutableStateOf(false) }
+    LaunchedEffect(checked) {
+        if (hasEmittedInitial.value) {
+            haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+        } else {
+            hasEmittedInitial.value = true
+        }
+    }
+
     when (variant) {
         SelectListItemVariant.Plain -> {
             PlainSelectListItem(
