@@ -49,8 +49,9 @@ public extension LemonadeUi {
     ///   - length: The number of characters to enter. Defaults to 6.
     ///   - error: When true the boxes turn critical and shake. Re-triggers on each rising edge.
     ///   - submitting: When true the boxes show the disabled style and input is disabled.
-    ///   - autoFocus: When true the field requests focus when it appears, opening the keyboard
-    ///     without a tap. Use for a screen whose only purpose is entering this code.
+    ///   - autoFocus: When true the field requests focus, opening the keyboard without a tap. Focus
+    ///     is requested when it appears and again whenever the field becomes enabled (e.g. after
+    ///     `submitting` clears). Use for a screen whose only purpose is entering this code.
     ///   - onComplete: Called once when `value` reaches `length`.
     /// - Returns: A styled PinCode view.
     static func PinCode(
