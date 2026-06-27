@@ -4,7 +4,7 @@ import SwiftUI
 import UIKit
 #endif
 
-/// Input modes for ``LemonadeUi/PinCode(value:variant:length:error:submitting:onComplete:)``.
+/// Input modes for ``LemonadeUi/PinCode(value:variant:length:error:submitting:autoFocus:onComplete:)``.
 /// Selects which system keyboard is requested.
 public enum LemonadePinCodeVariant {
     /// Requests a numeric keyboard.
@@ -49,6 +49,8 @@ public extension LemonadeUi {
     ///   - length: The number of characters to enter. Defaults to 6.
     ///   - error: When true the boxes turn critical and shake. Re-triggers on each rising edge.
     ///   - submitting: When true the boxes show the disabled style and input is disabled.
+    ///   - autoFocus: When true the field requests focus when it appears, opening the keyboard
+    ///     without a tap. Use for a screen whose only purpose is entering this code.
     ///   - onComplete: Called once when `value` reaches `length`.
     /// - Returns: A styled PinCode view.
     static func PinCode(
@@ -57,6 +59,7 @@ public extension LemonadeUi {
         length: Int = 6,
         error: Bool = false,
         submitting: Bool = false,
+        autoFocus: Bool = false,
         onComplete: ((String) -> Void)? = nil
     ) -> some View {
         precondition(length > 0, "PinCode length must be greater than zero.")
@@ -66,6 +69,7 @@ public extension LemonadeUi {
             length: length,
             error: error,
             submitting: submitting,
+            autoFocus: autoFocus,
             onComplete: onComplete
         )
     }
@@ -79,6 +83,7 @@ private struct LemonadePinCodeView: View {
     let length: Int
     let error: Bool
     let submitting: Bool
+    let autoFocus: Bool
     let onComplete: ((String) -> Void)?
 
     @State private var shakeTrigger: CGFloat = 0
@@ -115,7 +120,14 @@ private struct LemonadePinCodeView: View {
             #endif
             withAnimation(.linear(duration: 0.3)) { shakeTrigger += 1 }
         }
-        .onAppear { clampAndReport(value) }
+        .onAppear {
+            clampAndReport(value)
+            // Defer a frame so the field is in the hierarchy; setting @FocusState in onAppear
+            // directly is dropped on first appearance.
+            if autoFocus, !submitting {
+                DispatchQueue.main.async { focused = true }
+            }
+        }
         .onChange(of: value) { clampAndReport($0) }
     }
 
