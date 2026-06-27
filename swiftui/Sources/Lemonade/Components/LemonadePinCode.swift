@@ -122,13 +122,21 @@ private struct LemonadePinCodeView: View {
         }
         .onAppear {
             clampAndReport(value)
-            // Defer a frame so the field is in the hierarchy; setting @FocusState in onAppear
-            // directly is dropped on first appearance.
-            if autoFocus, !submitting {
-                DispatchQueue.main.async { focused = true }
-            }
+            requestAutoFocusIfNeeded()
         }
         .onChange(of: value) { clampAndReport($0) }
+        // Mirror the KMP `LaunchedEffect(autoFocus, enabled)`: (re)request focus when the field
+        // becomes enabled (e.g. `submitting` clears) or `autoFocus` turns on, not just on appear.
+        .onChange(of: submitting) { _ in requestAutoFocusIfNeeded() }
+        .onChange(of: autoFocus) { _ in requestAutoFocusIfNeeded() }
+    }
+
+    /// Focuses the hidden field when auto-focus is on and input is enabled, opening the keyboard.
+    private func requestAutoFocusIfNeeded() {
+        guard autoFocus, !submitting else { return }
+        // Defer a frame so the field is in the hierarchy; setting @FocusState synchronously (e.g.
+        // from onAppear) is dropped on first appearance.
+        DispatchQueue.main.async { focused = true }
     }
 
     /// Enforces the "`value` stays clamped to `length`" contract for any value — including one set
