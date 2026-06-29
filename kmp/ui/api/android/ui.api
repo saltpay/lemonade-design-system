@@ -432,7 +432,8 @@ public final class com/teya/lemonade/NoticeKt {
 }
 
 public final class com/teya/lemonade/PinCodeKt {
-	public static final fun PinCode (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lcom/teya/lemonade/core/LemonadePinCodeVariant;IZZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final synthetic fun PinCode (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lcom/teya/lemonade/core/LemonadePinCodeVariant;IZZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PinCode (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lcom/teya/lemonade/core/LemonadePinCodeVariant;IZZZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/teya/lemonade/RadioButtonKt {

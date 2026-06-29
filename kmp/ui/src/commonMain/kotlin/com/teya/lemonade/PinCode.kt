@@ -26,6 +26,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -71,6 +73,9 @@ import com.teya.lemonade.core.LemonadePinCodeVariant
  * @param length The number of characters to enter. Defaults to 6.
  * @param error When true the boxes turn critical and shake. Re-triggers on each rising edge.
  * @param submitting When true the boxes show the disabled style and input is disabled.
+ * @param autoFocus When true the field requests focus, opening the keyboard without a tap. Focus
+ *   is requested on first composition and again whenever the field becomes enabled (e.g. after
+ *   [submitting] clears). Use for a screen whose only purpose is entering this code.
  * @param onComplete Called once when [value] reaches [length].
  * @param modifier The [Modifier] applied to the root container of the component.
  */
@@ -83,6 +88,7 @@ public fun LemonadeUi.PinCode(
     length: Int = 6,
     error: Boolean = false,
     submitting: Boolean = false,
+    autoFocus: Boolean = false,
     onComplete: ((String) -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
@@ -133,10 +139,44 @@ public fun LemonadeUi.PinCode(
             variant = variant,
             length = length,
             enabled = !submitting,
+            autoFocus = autoFocus,
             onFocusChanged = { focused = it },
             modifier = Modifier.matchParentSize(),
         )
     }
+}
+
+@Deprecated(
+    message = "Use the overload with an autoFocus parameter.",
+    replaceWith = ReplaceWith(
+        expression = "PinCode(value, onValueChange, variant, length, error, submitting, false, " +
+            "onComplete, modifier)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@ExperimentalLemonadeComponent
+@Composable
+public fun LemonadeUi.PinCode(
+    value: String,
+    onValueChange: (String) -> Unit,
+    variant: LemonadePinCodeVariant = LemonadePinCodeVariant.Numeric,
+    length: Int = 6,
+    error: Boolean = false,
+    submitting: Boolean = false,
+    onComplete: ((String) -> Unit)? = null,
+    modifier: Modifier = Modifier,
+) {
+    PinCode(
+        value = value,
+        onValueChange = onValueChange,
+        variant = variant,
+        length = length,
+        error = error,
+        submitting = submitting,
+        autoFocus = false,
+        onComplete = onComplete,
+        modifier = modifier,
+    )
 }
 
 @Composable
@@ -253,12 +293,18 @@ private fun PinCodeHiddenField(
     variant: LemonadePinCodeVariant,
     length: Int,
     enabled: Boolean,
+    autoFocus: Boolean,
     onFocusChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val keyboardType = when (variant) {
         LemonadePinCodeVariant.Numeric -> KeyboardType.Number
         LemonadePinCodeVariant.Alphanumeric -> KeyboardType.Ascii
+    }
+
+    val focusRequester = remember { FocusRequester() }
+    LaunchedEffect(autoFocus, enabled) {
+        if (autoFocus && enabled) focusRequester.requestFocus()
     }
 
     BasicTextField(
@@ -272,6 +318,7 @@ private fun PinCodeHiddenField(
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         modifier = modifier
             .testTag(tag = FIELD_TEST_ID)
+            .focusRequester(focusRequester = focusRequester)
             .onFocusChanged { onFocusChanged(it.isFocused) },
     )
 }

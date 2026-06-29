@@ -4,7 +4,7 @@ import SwiftUI
 import UIKit
 #endif
 
-/// Input modes for ``LemonadeUi/PinCode(value:variant:length:error:submitting:onComplete:)``.
+/// Input modes for ``LemonadeUi/PinCode(value:variant:length:error:submitting:autoFocus:onComplete:)``.
 /// Selects which system keyboard is requested.
 public enum LemonadePinCodeVariant {
     /// Requests a numeric keyboard.
@@ -49,6 +49,9 @@ public extension LemonadeUi {
     ///   - length: The number of characters to enter. Defaults to 6.
     ///   - error: When true the boxes turn critical and shake. Re-triggers on each rising edge.
     ///   - submitting: When true the boxes show the disabled style and input is disabled.
+    ///   - autoFocus: When true the field requests focus, opening the keyboard without a tap. Focus
+    ///     is requested when it appears and again whenever the field becomes enabled (e.g. after
+    ///     `submitting` clears). Use for a screen whose only purpose is entering this code.
     ///   - onComplete: Called once when `value` reaches `length`.
     /// - Returns: A styled PinCode view.
     static func PinCode(
@@ -57,6 +60,7 @@ public extension LemonadeUi {
         length: Int = 6,
         error: Bool = false,
         submitting: Bool = false,
+        autoFocus: Bool = false,
         onComplete: ((String) -> Void)? = nil
     ) -> some View {
         precondition(length > 0, "PinCode length must be greater than zero.")
@@ -66,6 +70,7 @@ public extension LemonadeUi {
             length: length,
             error: error,
             submitting: submitting,
+            autoFocus: autoFocus,
             onComplete: onComplete
         )
     }
@@ -79,6 +84,7 @@ private struct LemonadePinCodeView: View {
     let length: Int
     let error: Bool
     let submitting: Bool
+    let autoFocus: Bool
     let onComplete: ((String) -> Void)?
 
     @State private var shakeTrigger: CGFloat = 0
@@ -115,8 +121,23 @@ private struct LemonadePinCodeView: View {
             #endif
             withAnimation(.linear(duration: 0.3)) { shakeTrigger += 1 }
         }
-        .onAppear { clampAndReport(value) }
+        .onAppear {
+            clampAndReport(value)
+            requestAutoFocusIfNeeded()
+        }
         .onChange(of: value) { clampAndReport($0) }
+        // Mirror the KMP `LaunchedEffect(autoFocus, enabled)`: (re)request focus when the field
+        // becomes enabled (e.g. `submitting` clears) or `autoFocus` turns on, not just on appear.
+        .onChange(of: submitting) { _ in requestAutoFocusIfNeeded() }
+        .onChange(of: autoFocus) { _ in requestAutoFocusIfNeeded() }
+    }
+
+    /// Focuses the hidden field when auto-focus is on and input is enabled, opening the keyboard.
+    private func requestAutoFocusIfNeeded() {
+        guard autoFocus, !submitting else { return }
+        // Defer a frame so the field is in the hierarchy; setting @FocusState synchronously (e.g.
+        // from onAppear) is dropped on first appearance.
+        DispatchQueue.main.async { focused = true }
     }
 
     /// Enforces the "`value` stays clamped to `length`" contract for any value — including one set
