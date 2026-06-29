@@ -4,7 +4,7 @@ import SwiftUI
 import UIKit
 #endif
 
-/// Input modes for ``LemonadeUi/PinCode(value:variant:length:error:submitting:autoFocus:onComplete:)``.
+/// Input modes for ``LemonadeUi/PinCode(value:variant:length:error:submitting:autoFocus:accessibilityLabel:onComplete:)``.
 /// Selects which system keyboard is requested.
 public enum LemonadePinCodeVariant {
     /// Requests a numeric keyboard.
@@ -52,6 +52,8 @@ public extension LemonadeUi {
     ///   - autoFocus: When true the field requests focus, opening the keyboard without a tap. Focus
     ///     is requested when it appears and again whenever the field becomes enabled (e.g. after
     ///     `submitting` clears). Use for a screen whose only purpose is entering this code.
+    ///   - accessibilityLabel: Label for the input, announced by VoiceOver. The boxes carry no
+    ///     visible label, so set this to what the code is for (e.g. "Verification code").
     ///   - onComplete: Called once when `value` reaches `length`.
     /// - Returns: A styled PinCode view.
     static func PinCode(
@@ -61,6 +63,7 @@ public extension LemonadeUi {
         error: Bool = false,
         submitting: Bool = false,
         autoFocus: Bool = false,
+        accessibilityLabel: String? = nil,
         onComplete: ((String) -> Void)? = nil
     ) -> some View {
         precondition(length > 0, "PinCode length must be greater than zero.")
@@ -71,6 +74,7 @@ public extension LemonadeUi {
             error: error,
             submitting: submitting,
             autoFocus: autoFocus,
+            accessibilityLabel: accessibilityLabel,
             onComplete: onComplete
         )
     }
@@ -85,6 +89,7 @@ private struct LemonadePinCodeView: View {
     let error: Bool
     let submitting: Bool
     let autoFocus: Bool
+    let accessibilityLabel: String?
     let onComplete: ((String) -> Void)?
 
     @State private var shakeTrigger: CGFloat = 0
@@ -109,6 +114,7 @@ private struct LemonadePinCodeView: View {
                 variant: variant,
                 length: length,
                 enabled: !submitting,
+                accessibilityLabel: accessibilityLabel,
                 focused: $focused
             )
         }
@@ -221,6 +227,7 @@ private struct PinCodeHiddenField: View {
     let variant: LemonadePinCodeVariant
     let length: Int
     let enabled: Bool
+    let accessibilityLabel: String?
     @FocusState.Binding var focused: Bool
 
     var body: some View {
@@ -235,6 +242,7 @@ private struct PinCodeHiddenField: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .contentShape(Rectangle())
             .accessibilityIdentifier("pin_code_field")
+            .modifier(OptionalAccessibilityLabel(label: accessibilityLabel))
             .modifier(SystemKeyboardTraits(variant: variant))
     }
 
@@ -265,6 +273,18 @@ private struct SystemKeyboardTraits: ViewModifier {
         #else
         content
         #endif
+    }
+}
+
+private struct OptionalAccessibilityLabel: ViewModifier {
+    let label: String?
+
+    func body(content: Content) -> some View {
+        if let label {
+            content.accessibilityLabel(label)
+        } else {
+            content
+        }
     }
 }
 

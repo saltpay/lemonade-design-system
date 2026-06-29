@@ -34,6 +34,8 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -76,6 +78,8 @@ import com.teya.lemonade.core.LemonadePinCodeVariant
  * @param autoFocus When true the field requests focus, opening the keyboard without a tap. Focus
  *   is requested on first composition and again whenever the field becomes enabled (e.g. after
  *   [submitting] clears). Use for a screen whose only purpose is entering this code.
+ * @param contentDescription Accessibility label for the input, announced by screen readers. The
+ *   boxes carry no visible label, so set this to what the code is for (e.g. "Verification code").
  * @param onComplete Called once when [value] reaches [length].
  * @param modifier The [Modifier] applied to the root container of the component.
  */
@@ -89,6 +93,7 @@ public fun LemonadeUi.PinCode(
     error: Boolean = false,
     submitting: Boolean = false,
     autoFocus: Boolean = false,
+    contentDescription: String? = null,
     onComplete: ((String) -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
@@ -140,6 +145,7 @@ public fun LemonadeUi.PinCode(
             length = length,
             enabled = !submitting,
             autoFocus = autoFocus,
+            contentDescription = contentDescription,
             onFocusChanged = { focused = it },
             modifier = Modifier.matchParentSize(),
         )
@@ -294,6 +300,7 @@ private fun PinCodeHiddenField(
     length: Int,
     enabled: Boolean,
     autoFocus: Boolean,
+    contentDescription: String?,
     onFocusChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -319,6 +326,7 @@ private fun PinCodeHiddenField(
         modifier = modifier
             .testTag(tag = FIELD_TEST_ID)
             .focusRequester(focusRequester = focusRequester)
+            .semantics { if (contentDescription != null) this.contentDescription = contentDescription }
             .onFocusChanged { onFocusChanged(it.isFocused) },
     )
 }
