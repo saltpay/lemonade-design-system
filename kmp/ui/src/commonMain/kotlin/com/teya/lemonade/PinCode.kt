@@ -156,7 +156,7 @@ public fun LemonadeUi.PinCode(
     message = "Use the overload with an autoFocus parameter.",
     replaceWith = ReplaceWith(
         expression = "PinCode(value, onValueChange, variant, length, error, submitting, false, " +
-            "onComplete, modifier)",
+            "null, onComplete, modifier)",
     ),
     level = DeprecationLevel.HIDDEN,
 )
