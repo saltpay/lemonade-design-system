@@ -39,15 +39,13 @@ public fun Modifier.animateLemonadeShadow(
     shape: Shape,
 ): Modifier {
     var modifier = this
+    val shadowColor = LocalColors.current.shadow.shadowDefault
     val animatedColor by animateColorAsState(
-        targetValue = Color(21, 34, 21)
-            .copy(
-                alpha = if (shadow == LemonadeShadow.None) {
-                    LocalOpacities.current.base.opacity0
-                } else {
-                    LocalOpacities.current.base.opacity20
-                },
-            ),
+        targetValue = if (shadow == LemonadeShadow.None) {
+            shadowColor.copy(alpha = LocalOpacities.current.base.opacity0)
+        } else {
+            shadowColor
+        },
     )
     val animatedShadows = remember {
         mutableListOf<State<LemonadeShadowData>>()
@@ -72,13 +70,13 @@ public fun Modifier.animateLemonadeShadow(
 private fun Modifier.dropShadow(
     lemonadeShadow: LemonadeShadowData,
     shape: Shape,
-    shadowColor: Color = Color(21, 34, 21).copy(alpha = 0.18f),
+    shadowColor: Color? = null,
 ): Modifier =
     composed {
         dropShadow(
             shape = shape,
             shadow = Shadow(
-                color = shadowColor,
+                color = shadowColor ?: LocalColors.current.shadow.shadowDefault,
                 radius = lemonadeShadow.blur.dp,
                 spread = lemonadeShadow.spread.dp,
                 offset = DpOffset(
