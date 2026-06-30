@@ -208,6 +208,7 @@ public final class com/teya/lemonade/LemonadeDarkTheme : com/teya/lemonade/Lemon
 	public fun getBorder ()Lcom/teya/lemonade/LemonadeSemanticColors$BorderColors;
 	public fun getContent ()Lcom/teya/lemonade/LemonadeSemanticColors$ContentColors;
 	public fun getInteraction ()Lcom/teya/lemonade/LemonadeSemanticColors$InteractionColors;
+	public fun getScoped ()Lcom/teya/lemonade/LemonadeSemanticColors$ScopedColors;
 	public fun getShadow ()Lcom/teya/lemonade/LemonadeSemanticColors$ShadowColors;
 }
 
@@ -255,6 +256,7 @@ public final class com/teya/lemonade/LemonadeLightTheme : com/teya/lemonade/Lemo
 	public fun getBorder ()Lcom/teya/lemonade/LemonadeSemanticColors$BorderColors;
 	public fun getContent ()Lcom/teya/lemonade/LemonadeSemanticColors$ContentColors;
 	public fun getInteraction ()Lcom/teya/lemonade/LemonadeSemanticColors$InteractionColors;
+	public fun getScoped ()Lcom/teya/lemonade/LemonadeSemanticColors$ScopedColors;
 	public fun getShadow ()Lcom/teya/lemonade/LemonadeSemanticColors$ShadowColors;
 }
 

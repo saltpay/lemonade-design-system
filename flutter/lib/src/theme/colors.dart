@@ -32,6 +32,12 @@ final class LemonadeLightColors implements LemonadeSemanticColors {
 
   @override
   LemonadeBackgroundColors get background => _LightBackgroundColors();
+
+  @override
+  LemonadeShadowColors get shadow => _LightShadowColors();
+
+  @override
+  LemonadeScopedColors get scoped => _LightScopedColors();
 }
 
 final class _LightInteractionColors implements LemonadeInteractionColors {
@@ -45,7 +51,7 @@ final class _LightInteractionColors implements LemonadeInteractionColors {
   Color get bgInfoSubtleInteractive => LemonadePrimitiveColors.alpha.blue.blue200;
 
   @override
-  Color get bgNeutralInteractive => LemonadePrimitiveColors.solid.neutral.neutral500;
+  Color get bgNeutralInteractive => LemonadePrimitiveColors.solid.neutral.neutral700;
 
   @override
   Color get bgBrandHighInteractive => LemonadePrimitiveColors.solid.yellowLime.yellowLime900;
@@ -81,7 +87,7 @@ final class _LightInteractionColors implements LemonadeInteractionColors {
   Color get bgCriticalSubtleInteractive => LemonadePrimitiveColors.alpha.red.red200;
 
   @override
-  Color get bgDefaultPressed => LemonadePrimitiveColors.solid.neutral.neutral200;
+  Color get bgDefaultPressed => LemonadePrimitiveColors.alpha.neutral.neutral100;
 
   @override
   Color get bgSubtlePressed => LemonadePrimitiveColors.alpha.neutral.neutral200;
@@ -105,7 +111,7 @@ final class _LightInteractionColors implements LemonadeInteractionColors {
   Color get bgInfoPressed => LemonadePrimitiveColors.solid.blue.blue700;
 
   @override
-  Color get bgPositivePressed => LemonadePrimitiveColors.solid.greenLime.greenLime700;
+  Color get bgPositivePressed => LemonadePrimitiveColors.solid.green.green600;
 
   @override
   Color get bgNeutralPressed => LemonadePrimitiveColors.solid.neutral.neutral800;
@@ -136,31 +142,31 @@ final class _LightInteractionColors implements LemonadeInteractionColors {
 }
 final class _LightBorderColors implements LemonadeBorderColors {
   @override
-  Color get borderBrandInverse => LemonadePrimitiveColors.solid.yellowLime.yellowLime500;
+  Color get borderBrandInverse => LemonadePrimitiveColors.solid.yellowLime.yellowLime600;
 
   @override
-  Color get borderSelectedInverse => LemonadePrimitiveColors.solid.white.white700;
+  Color get borderSelectedInverse => LemonadePrimitiveColors.solid.white.white800;
 
   @override
-  Color get borderNeutralMediumInverse => LemonadePrimitiveColors.solid.white.white200;
+  Color get borderNeutralMediumInverse => LemonadePrimitiveColors.solid.white.white300;
 
   @override
-  Color get borderNeutralLowInverse => LemonadePrimitiveColors.solid.white.white100;
+  Color get borderNeutralLowInverse => LemonadePrimitiveColors.solid.white.white200;
 
   @override
   Color get borderAlwaysDark => LemonadePrimitiveColors.alpha.neutral.neutral900;
 
   @override
-  Color get borderPositiveSubtle => LemonadePrimitiveColors.alpha.greenLime.greenLime500;
+  Color get borderPositiveSubtle => LemonadePrimitiveColors.alpha.greenLime.greenLime100;
 
   @override
-  Color get borderInfoSubtle => LemonadePrimitiveColors.alpha.blue.blue500;
+  Color get borderInfoSubtle => LemonadePrimitiveColors.alpha.blue.blue100;
 
   @override
-  Color get borderCautionSubtle => LemonadePrimitiveColors.alpha.orange.orange500;
+  Color get borderCautionSubtle => LemonadePrimitiveColors.alpha.orange.orange100;
 
   @override
-  Color get borderCriticalSubtle => LemonadePrimitiveColors.alpha.red.red500;
+  Color get borderCriticalSubtle => LemonadePrimitiveColors.alpha.red.red100;
 
   @override
   Color get borderPositive => LemonadePrimitiveColors.solid.greenLime.greenLime600;
@@ -175,10 +181,10 @@ final class _LightBorderColors implements LemonadeBorderColors {
   Color get borderOnBrandMedium => LemonadePrimitiveColors.solid.white.white500;
 
   @override
-  Color get borderBrand => LemonadePrimitiveColors.solid.yellowLime.yellowLime700;
+  Color get borderBrand => LemonadePrimitiveColors.solid.yellowLime.yellowLime600;
 
   @override
-  Color get borderSelected => LemonadePrimitiveColors.alpha.neutral.neutral900;
+  Color get borderSelected => LemonadePrimitiveColors.solid.yellowLime.yellowLime900;
 
   @override
   Color get borderOnBrandLow => LemonadePrimitiveColors.solid.white.white300;
@@ -190,16 +196,16 @@ final class _LightBorderColors implements LemonadeBorderColors {
   Color get borderCritical => LemonadePrimitiveColors.solid.red.red600;
 
   @override
-  Color get borderNeutralLow => LemonadePrimitiveColors.alpha.neutral.neutral50;
+  Color get borderNeutralLow => LemonadePrimitiveColors.alpha.neutral.neutral100;
 
   @override
-  Color get borderNeutralMedium => LemonadePrimitiveColors.alpha.neutral.neutral100;
+  Color get borderNeutralMedium => LemonadePrimitiveColors.alpha.neutral.neutral200;
 
   @override
   Color get borderAlwaysLight => LemonadePrimitiveColors.solid.white.white950;
 
   @override
-  Color get borderNeutralHigh => LemonadePrimitiveColors.alpha.neutral.neutral200;
+  Color get borderNeutralHigh => LemonadePrimitiveColors.alpha.neutral.neutral300;
 
   @override
   Color get borderNeutralHighInverse => LemonadePrimitiveColors.solid.white.white400;
@@ -242,7 +248,7 @@ final class _LightContentColors implements LemonadeContentColors {
   Color get contentAlwaysLight => LemonadePrimitiveColors.solid.white.white950;
 
   @override
-  Color get contentSecondary => LemonadePrimitiveColors.alpha.neutral.neutral600;
+  Color get contentSecondary => LemonadePrimitiveColors.alpha.neutral.neutral500;
 
   @override
   Color get contentPrimaryInverse => LemonadePrimitiveColors.solid.white.white950;
@@ -257,13 +263,13 @@ final class _LightContentColors implements LemonadeContentColors {
   Color get contentAlwaysDark => LemonadePrimitiveColors.alpha.neutral.neutral950;
 
   @override
-  Color get contentNeutral => LemonadePrimitiveColors.solid.neutral.neutral950;
+  Color get contentNeutral => LemonadePrimitiveColors.alpha.neutral.neutral900;
 
   @override
   Color get contentBrandInverse => LemonadePrimitiveColors.solid.yellowLime.yellowLime500;
 
   @override
-  Color get contentSecondaryInverse => LemonadePrimitiveColors.solid.white.white900;
+  Color get contentSecondaryInverse => LemonadePrimitiveColors.solid.white.white800;
 
   @override
   Color get contentCritical => LemonadePrimitiveColors.solid.red.red600;
@@ -290,20 +296,35 @@ final class _LightContentColors implements LemonadeContentColors {
   Color get contentNeutralOnColor => LemonadePrimitiveColors.solid.white.white800;
 
   @override
-  Color get contentBrandHigh => LemonadePrimitiveColors.solid.yellowLime.yellowLime800;
+  Color get contentBrandHigh => LemonadePrimitiveColors.solid.yellowLime.yellowLime900;
+
+  @override
+  Color get contentInfoAlwaysOnColor => LemonadePrimitiveColors.solid.blue.blue400;
+
+  @override
+  Color get contentNeutralAlwaysOnColor => LemonadePrimitiveColors.solid.white.white900;
+
+  @override
+  Color get contentPositiveAlwaysOnColor => LemonadePrimitiveColors.solid.greenLime.greenLime400;
+
+  @override
+  Color get contentCautionAlwaysOnColor => LemonadePrimitiveColors.solid.amber.amber400;
+
+  @override
+  Color get contentCriticalAlwaysOnColor => LemonadePrimitiveColors.solid.red.red400;
 }
 final class _LightBackgroundColors implements LemonadeBackgroundColors {
   @override
   Color get bgAlwaysLight => LemonadePrimitiveColors.solid.white.white950;
 
   @override
-  Color get bgAlwaysDark => LemonadePrimitiveColors.alpha.neutral.neutral950;
+  Color get bgAlwaysDark => LemonadePrimitiveColors.alpha.neutral.neutral900;
 
   @override
   Color get bgDefaultInverse => LemonadePrimitiveColors.solid.neutral.neutral950;
 
   @override
-  Color get bgNeutralSubtle => LemonadePrimitiveColors.alpha.neutral.neutral50;
+  Color get bgNeutralSubtle => LemonadePrimitiveColors.alpha.neutral.neutral100;
 
   @override
   Color get bgCautionSubtle => LemonadePrimitiveColors.alpha.amber.amber100;
@@ -315,7 +336,7 @@ final class _LightBackgroundColors implements LemonadeBackgroundColors {
   Color get bgNeutral => LemonadePrimitiveColors.solid.neutral.neutral600;
 
   @override
-  Color get bgBrandSubtle => LemonadePrimitiveColors.alpha.yellowLime.yellowLime200;
+  Color get bgBrandSubtle => LemonadePrimitiveColors.alpha.yellowLime.yellowLime300;
 
   @override
   Color get bgSubtleInverse => LemonadePrimitiveColors.solid.neutral.neutral900;
@@ -345,7 +366,7 @@ final class _LightBackgroundColors implements LemonadeBackgroundColors {
   Color get bgElevated => LemonadePrimitiveColors.alpha.neutral.neutral50;
 
   @override
-  Color get bgElevatedInverse => LemonadePrimitiveColors.solid.white.white50;
+  Color get bgElevatedInverse => LemonadePrimitiveColors.solid.white.white100;
 
   @override
   Color get bgSubtle => LemonadePrimitiveColors.solid.neutral.neutral50;
@@ -360,5 +381,34 @@ final class _LightBackgroundColors implements LemonadeBackgroundColors {
   Color get bgInfoSubtle => LemonadePrimitiveColors.alpha.blue.blue100;
 
   @override
-  Color get bgElevatedHigh => LemonadePrimitiveColors.alpha.neutral.neutral100;
+  Color get bgElevatedHigh => LemonadePrimitiveColors.alpha.neutral.neutral200;
+}
+final class _LightShadowColors implements LemonadeShadowColors {
+  @override
+  Color get shadowDefault => LemonadePrimitiveColors.solid.black.black50;
+}
+final class _LightScopedColors implements LemonadeScopedColors {
+  @override
+  Color get bgSettlementInstant => LemonadePrimitiveColors.solid.yellowLime.yellowLime500;
+
+  @override
+  Color get bgSettlementBusinessDays => LemonadePrimitiveColors.solid.blue.blue200;
+
+  @override
+  Color get bgSettlementEveryday => LemonadePrimitiveColors.solid.violet.violet200;
+
+  @override
+  Color get bgSettlementScheduled => LemonadePrimitiveColors.solid.fuchsia.fuchsia200;
+
+  @override
+  Color get contentOnSettlementInstant => LemonadePrimitiveColors.solid.yellowLime.yellowLime900;
+
+  @override
+  Color get contentOnSettlementBusinessDays => LemonadePrimitiveColors.solid.blue.blue800;
+
+  @override
+  Color get contentOnSettlementEveryday => LemonadePrimitiveColors.solid.violet.violet800;
+
+  @override
+  Color get contentOnSettlementScheduled => LemonadePrimitiveColors.solid.fuchsia.fuchsia800;
 }

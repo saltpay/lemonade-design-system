@@ -80,6 +80,9 @@ class _Solid {
 
   /// Violet color palette
   final _VioletSolid violet = _VioletSolid();
+
+  /// Fuchsia color palette
+  final _FuchsiaSolid fuchsia = _FuchsiaSolid();
 }
 
 class _YellowLimeSolid {
@@ -514,6 +517,30 @@ class _VioletSolid {
   final Color violet950 = const Color(0xFF2E0C67);
 }
 
+class _FuchsiaSolid {
+  final Color fuchsia50 = const Color(0xFFFDF4FF);
+
+  final Color fuchsia100 = const Color(0xFFFAE8FF);
+
+  final Color fuchsia200 = const Color(0xFFF6CFFF);
+
+  final Color fuchsia300 = const Color(0xFFF4A8FF);
+
+  final Color fuchsia400 = const Color(0xFFED6AFF);
+
+  final Color fuchsia500 = const Color(0xFFE12AFB);
+
+  final Color fuchsia600 = const Color(0xFFC800DE);
+
+  final Color fuchsia700 = const Color(0xFFA800B7);
+
+  final Color fuchsia800 = const Color(0xFF8A0194);
+
+  final Color fuchsia900 = const Color(0xFF721378);
+
+  final Color fuchsia950 = const Color(0xFF4B004F);
+}
+
 class _Alpha {
   /// Neutral color palette
   final _NeutralAlpha neutral = _NeutralAlpha();
@@ -562,6 +589,9 @@ class _Alpha {
 
   /// YellowLime color palette
   final _YellowLimeAlpha yellowLime = _YellowLimeAlpha();
+
+  /// Fuchsia color palette
+  final _FuchsiaAlpha fuchsia = _FuchsiaAlpha();
 }
 
 class _NeutralAlpha {
@@ -946,4 +976,28 @@ class _YellowLimeAlpha {
   final Color yellowLime900 = const Color(0xE5E1E51A);
 
   final Color yellowLime950 = const Color(0xF2E1E51A);
+}
+
+class _FuchsiaAlpha {
+  final Color fuchsia50 = const Color(0x0DE12AFB);
+
+  final Color fuchsia100 = const Color(0x1AE12AFB);
+
+  final Color fuchsia200 = const Color(0x33E12AFB);
+
+  final Color fuchsia300 = const Color(0x4DE12AFB);
+
+  final Color fuchsia400 = const Color(0x66E12AFB);
+
+  final Color fuchsia500 = const Color(0x80E12AFB);
+
+  final Color fuchsia600 = const Color(0x99E12AFB);
+
+  final Color fuchsia700 = const Color(0xB2E12AFB);
+
+  final Color fuchsia800 = const Color(0xCCE12AFB);
+
+  final Color fuchsia900 = const Color(0xE5E12AFB);
+
+  final Color fuchsia950 = const Color(0xF2E12AFB);
 }

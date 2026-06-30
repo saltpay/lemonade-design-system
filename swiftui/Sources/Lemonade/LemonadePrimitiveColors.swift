@@ -1246,6 +1246,74 @@ public enum LemonadePrimitiveColors {
                 opacity: 1.0000000
             )
         }
+        public enum Fuchsia {
+            public static let fuchsia50: Color = Color(
+                red: 0.9921569,
+                green: 0.9568627,
+                blue: 1.0000000,
+                opacity: 1.0000000
+            )
+            public static let fuchsia100: Color = Color(
+                red: 0.9803922,
+                green: 0.9098039,
+                blue: 1.0000000,
+                opacity: 1.0000000
+            )
+            public static let fuchsia200: Color = Color(
+                red: 0.9647059,
+                green: 0.8117647,
+                blue: 1.0000000,
+                opacity: 1.0000000
+            )
+            public static let fuchsia300: Color = Color(
+                red: 0.9568627,
+                green: 0.6588235,
+                blue: 1.0000000,
+                opacity: 1.0000000
+            )
+            public static let fuchsia400: Color = Color(
+                red: 0.9294118,
+                green: 0.4156863,
+                blue: 1.0000000,
+                opacity: 1.0000000
+            )
+            public static let fuchsia500: Color = Color(
+                red: 0.8823529,
+                green: 0.1647059,
+                blue: 0.9843137,
+                opacity: 1.0000000
+            )
+            public static let fuchsia600: Color = Color(
+                red: 0.7843137,
+                green: 0.0000000,
+                blue: 0.8705882,
+                opacity: 1.0000000
+            )
+            public static let fuchsia700: Color = Color(
+                red: 0.6588235,
+                green: 0.0000000,
+                blue: 0.7176471,
+                opacity: 1.0000000
+            )
+            public static let fuchsia800: Color = Color(
+                red: 0.5411765,
+                green: 0.0039216,
+                blue: 0.5803922,
+                opacity: 1.0000000
+            )
+            public static let fuchsia900: Color = Color(
+                red: 0.4470588,
+                green: 0.0745098,
+                blue: 0.4705882,
+                opacity: 1.0000000
+            )
+            public static let fuchsia950: Color = Color(
+                red: 0.2941177,
+                green: 0.0000000,
+                blue: 0.3098039,
+                opacity: 1.0000000
+            )
+        }
     }
 
     public enum Alpha {
@@ -2335,6 +2403,74 @@ public enum LemonadePrimitiveColors {
                 green: 0.8980392,
                 blue: 0.1019608,
                 opacity: 0.9500000
+            )
+        }
+        public enum Fuchsia {
+            public static let alpha50: Color = Color(
+                red: 0.8823529,
+                green: 0.1647059,
+                blue: 0.9843137,
+                opacity: 0.0509804
+            )
+            public static let alpha100: Color = Color(
+                red: 0.8823529,
+                green: 0.1647059,
+                blue: 0.9843137,
+                opacity: 0.1019608
+            )
+            public static let alpha200: Color = Color(
+                red: 0.8823529,
+                green: 0.1647059,
+                blue: 0.9843137,
+                opacity: 0.2000000
+            )
+            public static let alpha300: Color = Color(
+                red: 0.8823529,
+                green: 0.1647059,
+                blue: 0.9843137,
+                opacity: 0.3019608
+            )
+            public static let alpha400: Color = Color(
+                red: 0.8823529,
+                green: 0.1647059,
+                blue: 0.9843137,
+                opacity: 0.4000000
+            )
+            public static let alpha500: Color = Color(
+                red: 0.8823529,
+                green: 0.1647059,
+                blue: 0.9843137,
+                opacity: 0.5019608
+            )
+            public static let alpha600: Color = Color(
+                red: 0.8823529,
+                green: 0.1647059,
+                blue: 0.9843137,
+                opacity: 0.6000000
+            )
+            public static let alpha700: Color = Color(
+                red: 0.8823529,
+                green: 0.1647059,
+                blue: 0.9843137,
+                opacity: 0.6980392
+            )
+            public static let alpha800: Color = Color(
+                red: 0.8823529,
+                green: 0.1647059,
+                blue: 0.9843137,
+                opacity: 0.8000000
+            )
+            public static let alpha900: Color = Color(
+                red: 0.8823529,
+                green: 0.1647059,
+                blue: 0.9843137,
+                opacity: 0.8980392
+            )
+            public static let alpha950: Color = Color(
+                red: 0.8823529,
+                green: 0.1647059,
+                blue: 0.9843137,
+                opacity: 0.9490196
             )
         }
     }

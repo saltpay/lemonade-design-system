@@ -159,11 +159,24 @@ public struct LemonadeShadowColorsShorthand {
     public var shadowDefault: Color { Color("lemonade-shadow-shadow-default", bundle: .lemonade) }
 }
 
+// MARK: - Scoped Colors Namespace
+
+public struct LemonadeScopedColorsShorthand {
+    public var bgSettlementInstant: Color { Color("lemonade-scoped-settlements-bg-settlement-instant", bundle: .lemonade) }
+    public var bgSettlementBusinessDays: Color { Color("lemonade-scoped-settlements-bg-settlement-business-days", bundle: .lemonade) }
+    public var bgSettlementEveryday: Color { Color("lemonade-scoped-settlements-bg-settlement-everyday", bundle: .lemonade) }
+    public var bgSettlementScheduled: Color { Color("lemonade-scoped-settlements-bg-settlement-scheduled", bundle: .lemonade) }
+    public var contentOnSettlementInstant: Color { Color("lemonade-scoped-settlements-content-on-settlement-instant", bundle: .lemonade) }
+    public var contentOnSettlementBusinessDays: Color { Color("lemonade-scoped-settlements-content-on-settlement-business-days", bundle: .lemonade) }
+    public var contentOnSettlementEveryday: Color { Color("lemonade-scoped-settlements-content-on-settlement-everyday", bundle: .lemonade) }
+    public var contentOnSettlementScheduled: Color { Color("lemonade-scoped-settlements-content-on-settlement-scheduled", bundle: .lemonade) }
+}
+
 // MARK: - ShapeStyle Extensions
 
 public extension ShapeStyle where Self == Color {
     /// Interaction color tokens
-    /// Usage: `.foregroundStyle(.interaction.interactionDefault)`
+    /// Usage: `.foregroundStyle(.interaction.bgNeutralSubtleInteractive)`
     static var interaction: LemonadeInteractionColorsShorthand { LemonadeInteractionColorsShorthand() }
 
     /// Border color tokens
@@ -181,5 +194,9 @@ public extension ShapeStyle where Self == Color {
     /// Shadow color tokens
     /// Usage: `.foregroundStyle(.shadow.shadowDefault)`
     static var shadow: LemonadeShadowColorsShorthand { LemonadeShadowColorsShorthand() }
+
+    /// Scoped color tokens
+    /// Usage: `.foregroundStyle(.scoped.bgSettlementInstant)`
+    static var scoped: LemonadeScopedColorsShorthand { LemonadeScopedColorsShorthand() }
 
 }

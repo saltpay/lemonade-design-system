@@ -1268,6 +1268,75 @@ public sealed class LemonadePrimitiveColors {
                 alpha = 1.0000000f,
             )
         }
+
+        public data object Fuchsia : Solid() {
+            public val fuchsia50: Color = Color(
+                red = 0.9921569f,
+                green = 0.9568627f,
+                blue = 1.0000000f,
+                alpha = 1.0000000f,
+            )
+            public val fuchsia100: Color = Color(
+                red = 0.9803922f,
+                green = 0.9098039f,
+                blue = 1.0000000f,
+                alpha = 1.0000000f,
+            )
+            public val fuchsia200: Color = Color(
+                red = 0.9647059f,
+                green = 0.8117647f,
+                blue = 1.0000000f,
+                alpha = 1.0000000f,
+            )
+            public val fuchsia300: Color = Color(
+                red = 0.9568627f,
+                green = 0.6588235f,
+                blue = 1.0000000f,
+                alpha = 1.0000000f,
+            )
+            public val fuchsia400: Color = Color(
+                red = 0.9294118f,
+                green = 0.4156863f,
+                blue = 1.0000000f,
+                alpha = 1.0000000f,
+            )
+            public val fuchsia500: Color = Color(
+                red = 0.8823529f,
+                green = 0.1647059f,
+                blue = 0.9843137f,
+                alpha = 1.0000000f,
+            )
+            public val fuchsia600: Color = Color(
+                red = 0.7843137f,
+                green = 0.0000000f,
+                blue = 0.8705882f,
+                alpha = 1.0000000f,
+            )
+            public val fuchsia700: Color = Color(
+                red = 0.6588235f,
+                green = 0.0000000f,
+                blue = 0.7176471f,
+                alpha = 1.0000000f,
+            )
+            public val fuchsia800: Color = Color(
+                red = 0.5411765f,
+                green = 0.0039216f,
+                blue = 0.5803922f,
+                alpha = 1.0000000f,
+            )
+            public val fuchsia900: Color = Color(
+                red = 0.4470588f,
+                green = 0.0745098f,
+                blue = 0.4705882f,
+                alpha = 1.0000000f,
+            )
+            public val fuchsia950: Color = Color(
+                red = 0.2941177f,
+                green = 0.0000000f,
+                blue = 0.3098039f,
+                alpha = 1.0000000f,
+            )
+        }
     }
 
     public sealed class Alpha : LemonadePrimitiveColors() {
@@ -2372,6 +2441,75 @@ public sealed class LemonadePrimitiveColors {
                 green = 0.8980392f,
                 blue = 0.1019608f,
                 alpha = 0.9500000f,
+            )
+        }
+
+        public data object Fuchsia : Alpha() {
+            public val alpha50: Color = Color(
+                red = 0.8823529f,
+                green = 0.1647059f,
+                blue = 0.9843137f,
+                alpha = 0.0509804f,
+            )
+            public val alpha100: Color = Color(
+                red = 0.8823529f,
+                green = 0.1647059f,
+                blue = 0.9843137f,
+                alpha = 0.1019608f,
+            )
+            public val alpha200: Color = Color(
+                red = 0.8823529f,
+                green = 0.1647059f,
+                blue = 0.9843137f,
+                alpha = 0.2000000f,
+            )
+            public val alpha300: Color = Color(
+                red = 0.8823529f,
+                green = 0.1647059f,
+                blue = 0.9843137f,
+                alpha = 0.3019608f,
+            )
+            public val alpha400: Color = Color(
+                red = 0.8823529f,
+                green = 0.1647059f,
+                blue = 0.9843137f,
+                alpha = 0.4000000f,
+            )
+            public val alpha500: Color = Color(
+                red = 0.8823529f,
+                green = 0.1647059f,
+                blue = 0.9843137f,
+                alpha = 0.5019608f,
+            )
+            public val alpha600: Color = Color(
+                red = 0.8823529f,
+                green = 0.1647059f,
+                blue = 0.9843137f,
+                alpha = 0.6000000f,
+            )
+            public val alpha700: Color = Color(
+                red = 0.8823529f,
+                green = 0.1647059f,
+                blue = 0.9843137f,
+                alpha = 0.6980392f,
+            )
+            public val alpha800: Color = Color(
+                red = 0.8823529f,
+                green = 0.1647059f,
+                blue = 0.9843137f,
+                alpha = 0.8000000f,
+            )
+            public val alpha900: Color = Color(
+                red = 0.8823529f,
+                green = 0.1647059f,
+                blue = 0.9843137f,
+                alpha = 0.8980392f,
+            )
+            public val alpha950: Color = Color(
+                red = 0.8823529f,
+                green = 0.1647059f,
+                blue = 0.9843137f,
+                alpha = 0.9490196f,
             )
         }
     }

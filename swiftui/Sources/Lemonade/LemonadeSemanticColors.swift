@@ -156,6 +156,18 @@ public protocol ShadowColors {
     var shadowDefault: Color { get }
 }
 
+/// Scoped color definitions
+public protocol ScopedColors {
+    var bgSettlementInstant: Color { get }
+    var bgSettlementBusinessDays: Color { get }
+    var bgSettlementEveryday: Color { get }
+    var bgSettlementScheduled: Color { get }
+    var contentOnSettlementInstant: Color { get }
+    var contentOnSettlementBusinessDays: Color { get }
+    var contentOnSettlementEveryday: Color { get }
+    var contentOnSettlementScheduled: Color { get }
+}
+
 /// Protocol defining semantic color categories
 public protocol LemonadeSemanticColors {
     var interaction: InteractionColors { get }
@@ -163,4 +175,5 @@ public protocol LemonadeSemanticColors {
     var content: ContentColors { get }
     var background: BackgroundColors { get }
     var shadow: ShadowColors { get }
+    var scoped: ScopedColors { get }
 }

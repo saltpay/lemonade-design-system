@@ -150,4 +150,15 @@ public object LemonadeLightTheme : LemonadeSemanticColors {
         object : LemonadeSemanticColors.ShadowColors {
             override val shadowDefault = LemonadePrimitiveColors.Solid.Black.black50
         }
+    override val scoped: LemonadeSemanticColors.ScopedColors =
+        object : LemonadeSemanticColors.ScopedColors {
+            override val bgSettlementInstant = LemonadePrimitiveColors.Solid.YellowLime.yellowLime500
+            override val bgSettlementBusinessDays = LemonadePrimitiveColors.Solid.Blue.blue200
+            override val bgSettlementEveryday = LemonadePrimitiveColors.Solid.Violet.violet200
+            override val bgSettlementScheduled = LemonadePrimitiveColors.Solid.Fuchsia.fuchsia200
+            override val contentOnSettlementInstant = LemonadePrimitiveColors.Solid.YellowLime.yellowLime900
+            override val contentOnSettlementBusinessDays = LemonadePrimitiveColors.Solid.Blue.blue800
+            override val contentOnSettlementEveryday = LemonadePrimitiveColors.Solid.Violet.violet800
+            override val contentOnSettlementScheduled = LemonadePrimitiveColors.Solid.Fuchsia.fuchsia800
+        }
 }

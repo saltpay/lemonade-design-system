@@ -157,6 +157,17 @@ private struct AdaptiveShadowColors: ShadowColors {
     var shadowDefault: Color { Color("lemonade-shadow-shadow-default", bundle: .lemonade) }
 }
 
+private struct AdaptiveScopedColors: ScopedColors {
+    var bgSettlementInstant: Color { Color("lemonade-scoped-settlements-bg-settlement-instant", bundle: .lemonade) }
+    var bgSettlementBusinessDays: Color { Color("lemonade-scoped-settlements-bg-settlement-business-days", bundle: .lemonade) }
+    var bgSettlementEveryday: Color { Color("lemonade-scoped-settlements-bg-settlement-everyday", bundle: .lemonade) }
+    var bgSettlementScheduled: Color { Color("lemonade-scoped-settlements-bg-settlement-scheduled", bundle: .lemonade) }
+    var contentOnSettlementInstant: Color { Color("lemonade-scoped-settlements-content-on-settlement-instant", bundle: .lemonade) }
+    var contentOnSettlementBusinessDays: Color { Color("lemonade-scoped-settlements-content-on-settlement-business-days", bundle: .lemonade) }
+    var contentOnSettlementEveryday: Color { Color("lemonade-scoped-settlements-content-on-settlement-everyday", bundle: .lemonade) }
+    var contentOnSettlementScheduled: Color { Color("lemonade-scoped-settlements-content-on-settlement-scheduled", bundle: .lemonade) }
+}
+
 /// Adaptive theme implementation — colors resolve automatically via Asset Catalog
 public struct LemonadeAdaptiveTheme: LemonadeSemanticColors {
     public init() {}
@@ -166,4 +177,5 @@ public struct LemonadeAdaptiveTheme: LemonadeSemanticColors {
     public let content: ContentColors = AdaptiveContentColors()
     public let background: BackgroundColors = AdaptiveBackgroundColors()
     public let shadow: ShadowColors = AdaptiveShadowColors()
+    public let scoped: ScopedColors = AdaptiveScopedColors()
 }

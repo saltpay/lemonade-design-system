@@ -27,11 +27,19 @@ interface class LemonadeSemanticColors {
   /// Background state colors for UI elements
   final LemonadeBackgroundColors background;
 
+  /// Shadow state colors for UI elements
+  final LemonadeShadowColors shadow;
+
+  /// Scoped state colors for UI elements
+  final LemonadeScopedColors scoped;
+
   const LemonadeSemanticColors({
     required this.interaction,
     required this.border,
     required this.content,
     required this.background,
+    required this.shadow,
+    required this.scoped,
   });
 
   /// Linearly interpolates between two [LemonadeSemanticColors] objects.
@@ -46,6 +54,8 @@ interface class LemonadeSemanticColors {
       border: LemonadeBorderColors.lerp(a.border, b.border, t),
       content: LemonadeContentColors.lerp(a.content, b.content, t),
       background: LemonadeBackgroundColors.lerp(a.background, b.background, t),
+      shadow: LemonadeShadowColors.lerp(a.shadow, b.shadow, t),
+      scoped: LemonadeScopedColors.lerp(a.scoped, b.scoped, t),
     );
   }
 
@@ -302,6 +312,11 @@ interface class LemonadeContentColors {
   final Color contentPositiveOnColor;
   final Color contentNeutralOnColor;
   final Color contentBrandHigh;
+  final Color contentInfoAlwaysOnColor;
+  final Color contentNeutralAlwaysOnColor;
+  final Color contentPositiveAlwaysOnColor;
+  final Color contentCautionAlwaysOnColor;
+  final Color contentCriticalAlwaysOnColor;
 
   const LemonadeContentColors({
     required this.contentOnBrandLow,
@@ -327,6 +342,11 @@ interface class LemonadeContentColors {
     required this.contentPositiveOnColor,
     required this.contentNeutralOnColor,
     required this.contentBrandHigh,
+    required this.contentInfoAlwaysOnColor,
+    required this.contentNeutralAlwaysOnColor,
+    required this.contentPositiveAlwaysOnColor,
+    required this.contentCautionAlwaysOnColor,
+    required this.contentCriticalAlwaysOnColor,
   });
 
   /// Linearly interpolates between two [LemonadeContentColors] objects.
@@ -360,6 +380,11 @@ interface class LemonadeContentColors {
       contentPositiveOnColor: Color.lerp(a.contentPositiveOnColor, b.contentPositiveOnColor, t)!,
       contentNeutralOnColor: Color.lerp(a.contentNeutralOnColor, b.contentNeutralOnColor, t)!,
       contentBrandHigh: Color.lerp(a.contentBrandHigh, b.contentBrandHigh, t)!,
+      contentInfoAlwaysOnColor: Color.lerp(a.contentInfoAlwaysOnColor, b.contentInfoAlwaysOnColor, t)!,
+      contentNeutralAlwaysOnColor: Color.lerp(a.contentNeutralAlwaysOnColor, b.contentNeutralAlwaysOnColor, t)!,
+      contentPositiveAlwaysOnColor: Color.lerp(a.contentPositiveAlwaysOnColor, b.contentPositiveAlwaysOnColor, t)!,
+      contentCautionAlwaysOnColor: Color.lerp(a.contentCautionAlwaysOnColor, b.contentCautionAlwaysOnColor, t)!,
+      contentCriticalAlwaysOnColor: Color.lerp(a.contentCriticalAlwaysOnColor, b.contentCriticalAlwaysOnColor, t)!,
     );
   }
 }
@@ -446,6 +471,67 @@ interface class LemonadeBackgroundColors {
       bgPositive: Color.lerp(a.bgPositive, b.bgPositive, t)!,
       bgInfoSubtle: Color.lerp(a.bgInfoSubtle, b.bgInfoSubtle, t)!,
       bgElevatedHigh: Color.lerp(a.bgElevatedHigh, b.bgElevatedHigh, t)!,
+    );
+  }
+}
+/// Shadow state colors for UI elements
+interface class LemonadeShadowColors {
+  final Color shadowDefault;
+
+  const LemonadeShadowColors({
+    required this.shadowDefault,
+  });
+
+  /// Linearly interpolates between two [LemonadeShadowColors] objects.
+  factory LemonadeShadowColors.lerp(
+    LemonadeShadowColors a,
+    LemonadeShadowColors b,
+    double t,
+  ) {
+    if (identical(a, b)) return a;
+    return LemonadeShadowColors(
+      shadowDefault: Color.lerp(a.shadowDefault, b.shadowDefault, t)!,
+    );
+  }
+}
+/// Scoped state colors for UI elements
+interface class LemonadeScopedColors {
+  final Color bgSettlementInstant;
+  final Color bgSettlementBusinessDays;
+  final Color bgSettlementEveryday;
+  final Color bgSettlementScheduled;
+  final Color contentOnSettlementInstant;
+  final Color contentOnSettlementBusinessDays;
+  final Color contentOnSettlementEveryday;
+  final Color contentOnSettlementScheduled;
+
+  const LemonadeScopedColors({
+    required this.bgSettlementInstant,
+    required this.bgSettlementBusinessDays,
+    required this.bgSettlementEveryday,
+    required this.bgSettlementScheduled,
+    required this.contentOnSettlementInstant,
+    required this.contentOnSettlementBusinessDays,
+    required this.contentOnSettlementEveryday,
+    required this.contentOnSettlementScheduled,
+  });
+
+  /// Linearly interpolates between two [LemonadeScopedColors] objects.
+  factory LemonadeScopedColors.lerp(
+    LemonadeScopedColors a,
+    LemonadeScopedColors b,
+    double t,
+  ) {
+    if (identical(a, b)) return a;
+    return LemonadeScopedColors(
+      bgSettlementInstant: Color.lerp(a.bgSettlementInstant, b.bgSettlementInstant, t)!,
+      bgSettlementBusinessDays: Color.lerp(a.bgSettlementBusinessDays, b.bgSettlementBusinessDays, t)!,
+      bgSettlementEveryday: Color.lerp(a.bgSettlementEveryday, b.bgSettlementEveryday, t)!,
+      bgSettlementScheduled: Color.lerp(a.bgSettlementScheduled, b.bgSettlementScheduled, t)!,
+      contentOnSettlementInstant: Color.lerp(a.contentOnSettlementInstant, b.contentOnSettlementInstant, t)!,
+      contentOnSettlementBusinessDays: Color.lerp(a.contentOnSettlementBusinessDays, b.contentOnSettlementBusinessDays, t)!,
+      contentOnSettlementEveryday: Color.lerp(a.contentOnSettlementEveryday, b.contentOnSettlementEveryday, t)!,
+      contentOnSettlementScheduled: Color.lerp(a.contentOnSettlementScheduled, b.contentOnSettlementScheduled, t)!,
     );
   }
 }

@@ -129,6 +129,25 @@ public final class com/teya/lemonade/LemonadePrimitiveColors$Alpha$Cyan : com/te
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/teya/lemonade/LemonadePrimitiveColors$Alpha$Fuchsia : com/teya/lemonade/LemonadePrimitiveColors$Alpha {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/teya/lemonade/LemonadePrimitiveColors$Alpha$Fuchsia;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAlpha100-0d7_KjU ()J
+	public final fun getAlpha200-0d7_KjU ()J
+	public final fun getAlpha300-0d7_KjU ()J
+	public final fun getAlpha400-0d7_KjU ()J
+	public final fun getAlpha50-0d7_KjU ()J
+	public final fun getAlpha500-0d7_KjU ()J
+	public final fun getAlpha600-0d7_KjU ()J
+	public final fun getAlpha700-0d7_KjU ()J
+	public final fun getAlpha800-0d7_KjU ()J
+	public final fun getAlpha900-0d7_KjU ()J
+	public final fun getAlpha950-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/teya/lemonade/LemonadePrimitiveColors$Alpha$Green : com/teya/lemonade/LemonadePrimitiveColors$Alpha {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/teya/lemonade/LemonadePrimitiveColors$Alpha$Green;
@@ -456,6 +475,25 @@ public final class com/teya/lemonade/LemonadePrimitiveColors$Solid$Cyan : com/te
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/teya/lemonade/LemonadePrimitiveColors$Solid$Fuchsia : com/teya/lemonade/LemonadePrimitiveColors$Solid {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/teya/lemonade/LemonadePrimitiveColors$Solid$Fuchsia;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFuchsia100-0d7_KjU ()J
+	public final fun getFuchsia200-0d7_KjU ()J
+	public final fun getFuchsia300-0d7_KjU ()J
+	public final fun getFuchsia400-0d7_KjU ()J
+	public final fun getFuchsia50-0d7_KjU ()J
+	public final fun getFuchsia500-0d7_KjU ()J
+	public final fun getFuchsia600-0d7_KjU ()J
+	public final fun getFuchsia700-0d7_KjU ()J
+	public final fun getFuchsia800-0d7_KjU ()J
+	public final fun getFuchsia900-0d7_KjU ()J
+	public final fun getFuchsia950-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/teya/lemonade/LemonadePrimitiveColors$Solid$Green : com/teya/lemonade/LemonadePrimitiveColors$Solid {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/teya/lemonade/LemonadePrimitiveColors$Solid$Green;
@@ -751,6 +789,7 @@ public abstract interface class com/teya/lemonade/LemonadeSemanticColors {
 	public abstract fun getBorder ()Lcom/teya/lemonade/LemonadeSemanticColors$BorderColors;
 	public abstract fun getContent ()Lcom/teya/lemonade/LemonadeSemanticColors$ContentColors;
 	public abstract fun getInteraction ()Lcom/teya/lemonade/LemonadeSemanticColors$InteractionColors;
+	public abstract fun getScoped ()Lcom/teya/lemonade/LemonadeSemanticColors$ScopedColors;
 	public abstract fun getShadow ()Lcom/teya/lemonade/LemonadeSemanticColors$ShadowColors;
 }
 
@@ -877,6 +916,17 @@ public abstract interface class com/teya/lemonade/LemonadeSemanticColors$Interac
 	public abstract fun getBgPositiveSubtlePressed-0d7_KjU ()J
 	public abstract fun getBgSubtleInteractive-0d7_KjU ()J
 	public abstract fun getBgSubtlePressed-0d7_KjU ()J
+}
+
+public abstract interface class com/teya/lemonade/LemonadeSemanticColors$ScopedColors {
+	public abstract fun getBgSettlementBusinessDays-0d7_KjU ()J
+	public abstract fun getBgSettlementEveryday-0d7_KjU ()J
+	public abstract fun getBgSettlementInstant-0d7_KjU ()J
+	public abstract fun getBgSettlementScheduled-0d7_KjU ()J
+	public abstract fun getContentOnSettlementBusinessDays-0d7_KjU ()J
+	public abstract fun getContentOnSettlementEveryday-0d7_KjU ()J
+	public abstract fun getContentOnSettlementInstant-0d7_KjU ()J
+	public abstract fun getContentOnSettlementScheduled-0d7_KjU ()J
 }
 
 public abstract interface class com/teya/lemonade/LemonadeSemanticColors$ShadowColors {
