@@ -13,6 +13,9 @@ struct TopBarDisplayView: View {
 
     private let demos: [DemoItem] = [
         DemoItem(title: "Basic (native back)", destination: AnyView(BasicTopBarDemo())),
+        DemoItem(title: "Basic (compact variant)", destination: AnyView(BasicCompactDemo())),
+        DemoItem(title: "Basic + trailing actions", destination: AnyView(BasicTrailingActionsDemo())),
+        DemoItem(title: "Basic (subtle background)", destination: AnyView(BasicSubtleBackgroundDemo())),
         DemoItem(title: "Basic (close button)", destination: AnyView(BasicCloseDemo())),
         DemoItem(title: "Basic with Trailing Slot", destination: AnyView(BasicTrailingSlotDemo())),
         DemoItem(title: "Basic with Bottom Slot", destination: AnyView(BasicBottomSlotDemo())),
@@ -89,6 +92,50 @@ private struct BasicTopBarDemo: View {
         }
         .lemonadeTopBar(
             label: "Settings",
+            navigationAction: NavigationAction(action: .back, onAction: {})
+        )
+    }
+}
+
+private struct BasicCompactDemo: View {
+    var body: some View {
+        ScrollView {
+            SampleListContent()
+        }
+        .lemonadeTopBar(
+            label: "Card settings",
+            variant: .compact,
+            navigationAction: NavigationAction(action: .back, onAction: {})
+        )
+    }
+}
+
+private struct BasicTrailingActionsDemo: View {
+    var body: some View {
+        ScrollView {
+            SampleListContent()
+        }
+        .lemonadeTopBar(
+            label: "Notifications",
+            navigationAction: NavigationAction(action: .back, onAction: {}),
+            trailingActions: [
+                TopBarActionItem(icon: .bell, contentDescription: "Alerts", onTap: {}),
+                TopBarActionItem(icon: .ellipsisHorizontal, contentDescription: "More", onTap: {}),
+            ]
+        )
+    }
+}
+
+private struct BasicSubtleBackgroundDemo: View {
+    var body: some View {
+        ScrollView {
+            SampleListContent()
+        }
+        .background(LemonadeTheme.colors.background.bgSubtle)
+        .lemonadeTopBar(
+            label: "Card transactions",
+            variant: .compact,
+            background: .subtle,
             navigationAction: NavigationAction(action: .back, onAction: {})
         )
     }
