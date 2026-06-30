@@ -159,6 +159,19 @@ public struct LemonadeShadowColorsShorthand {
     public var shadowDefault: Color { Color("lemonade-shadow-shadow-default", bundle: .lemonade) }
 }
 
+// MARK: - Settlement Colors Namespace
+
+public struct LemonadeSettlementColorsShorthand {
+    public var bgInstant: Color { Color("lemonade-settlement-bg-instant", bundle: .lemonade) }
+    public var bgBusinessDays: Color { Color("lemonade-settlement-bg-business-days", bundle: .lemonade) }
+    public var bgEveryday: Color { Color("lemonade-settlement-bg-everyday", bundle: .lemonade) }
+    public var bgScheduled: Color { Color("lemonade-settlement-bg-scheduled", bundle: .lemonade) }
+    public var contentOnInstant: Color { Color("lemonade-settlement-content-on-instant", bundle: .lemonade) }
+    public var contentOnBusinessDays: Color { Color("lemonade-settlement-content-on-business-days", bundle: .lemonade) }
+    public var contentOnEveryday: Color { Color("lemonade-settlement-content-on-everyday", bundle: .lemonade) }
+    public var contentOnScheduled: Color { Color("lemonade-settlement-content-on-scheduled", bundle: .lemonade) }
+}
+
 // MARK: - ShapeStyle Extensions
 
 public extension ShapeStyle where Self == Color {
@@ -181,5 +194,9 @@ public extension ShapeStyle where Self == Color {
     /// Shadow color tokens
     /// Usage: `.foregroundStyle(.shadow.shadowDefault)`
     static var shadow: LemonadeShadowColorsShorthand { LemonadeShadowColorsShorthand() }
+
+    /// Settlement color tokens
+    /// Usage: `.foregroundStyle(.settlement.settlementDefault)`
+    static var settlement: LemonadeSettlementColorsShorthand { LemonadeSettlementColorsShorthand() }
 
 }

@@ -126,7 +126,15 @@
     "VariableID:3146:2421",
     "VariableID:3146:2422",
     "VariableID:3146:2423",
-    "VariableID:4668:13941"
+    "VariableID:4668:13941",
+    "VariableID:4913:10",
+    "VariableID:4913:11",
+    "VariableID:4913:12",
+    "VariableID:4913:13",
+    "VariableID:4913:14",
+    "VariableID:4913:15",
+    "VariableID:4913:16",
+    "VariableID:4913:17"
   ],
   "variables": [
     {
@@ -174,7 +182,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgNeutralSubtleInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgNeutralSubtleInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgNeutralSubtleInteractive"
       }
     },
     {
@@ -222,7 +230,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgPositiveSubtleInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgPositiveSubtleInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgPositiveSubtleInteractive"
       }
     },
     {
@@ -270,7 +278,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgInfoSubtleInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgInfoSubtleInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgInfoSubtleInteractive"
       }
     },
     {
@@ -318,7 +326,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgNeutralInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgNeutralInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgNeutralInteractive"
       }
     },
     {
@@ -366,7 +374,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgBrandHighInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgBrandHighInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgBrandHighInteractive"
       }
     },
     {
@@ -414,7 +422,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgDefaultInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgDefaultInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgDefaultInteractive"
       }
     },
     {
@@ -461,7 +469,7 @@
       "hiddenFromPublishing": true,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentAccent",
-        "iOS": "context.lemonade.colors.content.contentAccent"
+        "iOS": "LemonadeTheme.colors.content.contentAccent"
       }
     },
     {
@@ -509,7 +517,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderBrandInverse",
-        "iOS": "context.lemonade.colors.border.borderBrandInverse"
+        "iOS": "LemonadeTheme.colors.border.borderBrandInverse"
       }
     },
     {
@@ -556,7 +564,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderSelectedInverse",
-        "iOS": "context.lemonade.colors.border.borderSelectedInverse"
+        "iOS": "LemonadeTheme.colors.border.borderSelectedInverse"
       }
     },
     {
@@ -604,7 +612,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderNeutralMediumInverse",
-        "iOS": "context.lemonade.colors.border.borderNeutralMediumInverse"
+        "iOS": "LemonadeTheme.colors.border.borderNeutralMediumInverse"
       }
     },
     {
@@ -652,7 +660,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderNeutralLowInverse",
-        "iOS": "context.lemonade.colors.border.borderNeutralLowInverse"
+        "iOS": "LemonadeTheme.colors.border.borderNeutralLowInverse"
       }
     },
     {
@@ -700,7 +708,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderAlwaysDark",
-        "iOS": "context.lemonade.colors.border.borderAlwaysDark"
+        "iOS": "LemonadeTheme.colors.border.borderAlwaysDark"
       }
     },
     {
@@ -748,7 +756,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderPositiveSubtle",
-        "iOS": "context.lemonade.colors.border.borderPositiveSubtle"
+        "iOS": "LemonadeTheme.colors.border.borderPositiveSubtle"
       }
     },
     {
@@ -796,7 +804,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderInfoSubtle",
-        "iOS": "context.lemonade.colors.border.borderInfoSubtle"
+        "iOS": "LemonadeTheme.colors.border.borderInfoSubtle"
       }
     },
     {
@@ -843,7 +851,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentOnBrandLow",
-        "iOS": "context.lemonade.colors.content.contentOnBrandLow"
+        "iOS": "LemonadeTheme.colors.content.contentOnBrandLow"
       }
     },
     {
@@ -891,7 +899,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderCautionSubtle",
-        "iOS": "context.lemonade.colors.border.borderCautionSubtle"
+        "iOS": "LemonadeTheme.colors.border.borderCautionSubtle"
       }
     },
     {
@@ -939,7 +947,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderCriticalSubtle",
-        "iOS": "context.lemonade.colors.border.borderCriticalSubtle"
+        "iOS": "LemonadeTheme.colors.border.borderCriticalSubtle"
       }
     },
     {
@@ -987,7 +995,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderPositive",
-        "iOS": "context.lemonade.colors.border.borderPositive"
+        "iOS": "LemonadeTheme.colors.border.borderPositive"
       }
     },
     {
@@ -1035,7 +1043,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderInfo",
-        "iOS": "context.lemonade.colors.border.borderInfo"
+        "iOS": "LemonadeTheme.colors.border.borderInfo"
       }
     },
     {
@@ -1083,7 +1091,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderCaution",
-        "iOS": "context.lemonade.colors.border.borderCaution"
+        "iOS": "LemonadeTheme.colors.border.borderCaution"
       }
     },
     {
@@ -1131,7 +1139,7 @@
       "hiddenFromPublishing": true,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderAccent",
-        "iOS": "context.lemonade.colors.border.borderAccent"
+        "iOS": "LemonadeTheme.colors.border.borderAccent"
       }
     },
     {
@@ -1179,7 +1187,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderOnBrandMedium",
-        "iOS": "context.lemonade.colors.border.borderOnBrandMedium"
+        "iOS": "LemonadeTheme.colors.border.borderOnBrandMedium"
       }
     },
     {
@@ -1227,7 +1235,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderBrand",
-        "iOS": "context.lemonade.colors.border.borderBrand"
+        "iOS": "LemonadeTheme.colors.border.borderBrand"
       }
     },
     {
@@ -1275,7 +1283,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderSelected",
-        "iOS": "context.lemonade.colors.border.borderSelected"
+        "iOS": "LemonadeTheme.colors.border.borderSelected"
       }
     },
     {
@@ -1323,7 +1331,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgCautionInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgCautionInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgCautionInteractive"
       }
     },
     {
@@ -1373,7 +1381,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgTransparent",
-        "iOS": "context.lemonade.colors.background.bgTransparent"
+        "iOS": "LemonadeTheme.colors.background.bgTransparent"
       }
     },
     {
@@ -1421,7 +1429,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgAlwaysLight",
-        "iOS": "context.lemonade.colors.background.bgAlwaysLight"
+        "iOS": "LemonadeTheme.colors.background.bgAlwaysLight"
       }
     },
     {
@@ -1469,7 +1477,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgAlwaysDark",
-        "iOS": "context.lemonade.colors.background.bgAlwaysDark"
+        "iOS": "LemonadeTheme.colors.background.bgAlwaysDark"
       }
     },
     {
@@ -1516,7 +1524,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentBrand",
-        "iOS": "context.lemonade.colors.content.contentBrand"
+        "iOS": "LemonadeTheme.colors.content.contentBrand"
       }
     },
     {
@@ -1564,7 +1572,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgDefaultInverse",
-        "iOS": "context.lemonade.colors.background.bgDefaultInverse"
+        "iOS": "LemonadeTheme.colors.background.bgDefaultInverse"
       }
     },
     {
@@ -1612,7 +1620,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgPositiveInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgPositiveInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgPositiveInteractive"
       }
     },
     {
@@ -1660,7 +1668,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderOnBrandLow",
-        "iOS": "context.lemonade.colors.border.borderOnBrandLow"
+        "iOS": "LemonadeTheme.colors.border.borderOnBrandLow"
       }
     },
     {
@@ -1708,7 +1716,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgNeutralSubtle",
-        "iOS": "context.lemonade.colors.background.bgNeutralSubtle"
+        "iOS": "LemonadeTheme.colors.background.bgNeutralSubtle"
       }
     },
     {
@@ -1756,7 +1764,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgCautionSubtle",
-        "iOS": "context.lemonade.colors.background.bgCautionSubtle"
+        "iOS": "LemonadeTheme.colors.background.bgCautionSubtle"
       }
     },
     {
@@ -1803,7 +1811,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentCaution",
-        "iOS": "context.lemonade.colors.content.contentCaution"
+        "iOS": "LemonadeTheme.colors.content.contentCaution"
       }
     },
     {
@@ -1851,7 +1859,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgCriticalSubtle",
-        "iOS": "context.lemonade.colors.background.bgCriticalSubtle"
+        "iOS": "LemonadeTheme.colors.background.bgCriticalSubtle"
       }
     },
     {
@@ -1899,13 +1907,13 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgSubtleInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgSubtleInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgSubtleInteractive"
       }
     },
     {
       "id": "VariableID:3037:2039",
       "name": "Background/Voice/bg-neutral",
-      "description": "Use for neutral states that don't carry positive, caution, or critical meaning.",
+      "description": "Use for neutral states that don’t carry positive, caution, or critical meaning.",
       "type": "COLOR",
       "valuesByMode": {
         "3037:0": {
@@ -1947,7 +1955,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgNeutral",
-        "iOS": "context.lemonade.colors.background.bgNeutral"
+        "iOS": "LemonadeTheme.colors.background.bgNeutral"
       }
     },
     {
@@ -1995,7 +2003,7 @@
       "hiddenFromPublishing": true,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgAccent",
-        "iOS": "context.lemonade.colors.background.bgAccent"
+        "iOS": "LemonadeTheme.colors.background.bgAccent"
       }
     },
     {
@@ -2043,7 +2051,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderOnBrandHigh",
-        "iOS": "context.lemonade.colors.border.borderOnBrandHigh"
+        "iOS": "LemonadeTheme.colors.border.borderOnBrandHigh"
       }
     },
     {
@@ -2091,7 +2099,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgBrandSubtle",
-        "iOS": "context.lemonade.colors.background.bgBrandSubtle"
+        "iOS": "LemonadeTheme.colors.background.bgBrandSubtle"
       }
     },
     {
@@ -2139,7 +2147,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgSubtleInverse",
-        "iOS": "context.lemonade.colors.background.bgSubtleInverse"
+        "iOS": "LemonadeTheme.colors.background.bgSubtleInverse"
       }
     },
     {
@@ -2187,7 +2195,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgInfoInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgInfoInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgInfoInteractive"
       }
     },
     {
@@ -2234,7 +2242,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentInfo",
-        "iOS": "context.lemonade.colors.content.contentInfo"
+        "iOS": "LemonadeTheme.colors.content.contentInfo"
       }
     },
     {
@@ -2282,7 +2290,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderCritical",
-        "iOS": "context.lemonade.colors.border.borderCritical"
+        "iOS": "LemonadeTheme.colors.border.borderCritical"
       }
     },
     {
@@ -2329,7 +2337,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentTertiary",
-        "iOS": "context.lemonade.colors.content.contentTertiary"
+        "iOS": "LemonadeTheme.colors.content.contentTertiary"
       }
     },
     {
@@ -2377,7 +2385,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgBrandElevated",
-        "iOS": "context.lemonade.colors.background.bgBrandElevated"
+        "iOS": "LemonadeTheme.colors.background.bgBrandElevated"
       }
     },
     {
@@ -2425,7 +2433,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgPositiveSubtle",
-        "iOS": "context.lemonade.colors.background.bgPositiveSubtle"
+        "iOS": "LemonadeTheme.colors.background.bgPositiveSubtle"
       }
     },
     {
@@ -2473,7 +2481,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgDefault",
-        "iOS": "context.lemonade.colors.background.bgDefault"
+        "iOS": "LemonadeTheme.colors.background.bgDefault"
       }
     },
     {
@@ -2521,7 +2529,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgCritical",
-        "iOS": "context.lemonade.colors.background.bgCritical"
+        "iOS": "LemonadeTheme.colors.background.bgCritical"
       }
     },
     {
@@ -2569,7 +2577,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgBrandHigh",
-        "iOS": "context.lemonade.colors.background.bgBrandHigh"
+        "iOS": "LemonadeTheme.colors.background.bgBrandHigh"
       }
     },
     {
@@ -2616,7 +2624,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentAlwaysLight",
-        "iOS": "context.lemonade.colors.content.contentAlwaysLight"
+        "iOS": "LemonadeTheme.colors.content.contentAlwaysLight"
       }
     },
     {
@@ -2663,7 +2671,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentSecondary",
-        "iOS": "context.lemonade.colors.content.contentSecondary"
+        "iOS": "LemonadeTheme.colors.content.contentSecondary"
       }
     },
     {
@@ -2711,7 +2719,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgCaution",
-        "iOS": "context.lemonade.colors.background.bgCaution"
+        "iOS": "LemonadeTheme.colors.background.bgCaution"
       }
     },
     {
@@ -2759,7 +2767,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgCautionSubtleInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgCautionSubtleInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgCautionSubtleInteractive"
       }
     },
     {
@@ -2807,7 +2815,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgCriticalInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgCriticalInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgCriticalInteractive"
       }
     },
     {
@@ -2855,7 +2863,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgBrand",
-        "iOS": "context.lemonade.colors.background.bgBrand"
+        "iOS": "LemonadeTheme.colors.background.bgBrand"
       }
     },
     {
@@ -2903,7 +2911,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgBrandInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgBrandInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgBrandInteractive"
       }
     },
     {
@@ -2951,7 +2959,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgElevated",
-        "iOS": "context.lemonade.colors.background.bgElevated"
+        "iOS": "LemonadeTheme.colors.background.bgElevated"
       }
     },
     {
@@ -2999,7 +3007,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderNeutralLow",
-        "iOS": "context.lemonade.colors.border.borderNeutralLow"
+        "iOS": "LemonadeTheme.colors.border.borderNeutralLow"
       }
     },
     {
@@ -3046,7 +3054,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentPrimaryInverse",
-        "iOS": "context.lemonade.colors.content.contentPrimaryInverse"
+        "iOS": "LemonadeTheme.colors.content.contentPrimaryInverse"
       }
     },
     {
@@ -3094,7 +3102,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgElevatedInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgElevatedInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgElevatedInteractive"
       }
     },
     {
@@ -3141,7 +3149,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentPositive",
-        "iOS": "context.lemonade.colors.content.contentPositive"
+        "iOS": "LemonadeTheme.colors.content.contentPositive"
       }
     },
     {
@@ -3189,7 +3197,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderNeutralMedium",
-        "iOS": "context.lemonade.colors.border.borderNeutralMedium"
+        "iOS": "LemonadeTheme.colors.border.borderNeutralMedium"
       }
     },
     {
@@ -3237,7 +3245,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgElevatedInverse",
-        "iOS": "context.lemonade.colors.background.bgElevatedInverse"
+        "iOS": "LemonadeTheme.colors.background.bgElevatedInverse"
       }
     },
     {
@@ -3284,7 +3292,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentTertiaryInverse",
-        "iOS": "context.lemonade.colors.content.contentTertiaryInverse"
+        "iOS": "LemonadeTheme.colors.content.contentTertiaryInverse"
       }
     },
     {
@@ -3332,7 +3340,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgSubtle",
-        "iOS": "context.lemonade.colors.background.bgSubtle"
+        "iOS": "LemonadeTheme.colors.background.bgSubtle"
       }
     },
     {
@@ -3379,7 +3387,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentAlwaysDark",
-        "iOS": "context.lemonade.colors.content.contentAlwaysDark"
+        "iOS": "LemonadeTheme.colors.content.contentAlwaysDark"
       }
     },
     {
@@ -3426,7 +3434,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentNeutral",
-        "iOS": "context.lemonade.colors.content.contentNeutral"
+        "iOS": "LemonadeTheme.colors.content.contentNeutral"
       }
     },
     {
@@ -3474,7 +3482,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderAlwaysLight",
-        "iOS": "context.lemonade.colors.border.borderAlwaysLight"
+        "iOS": "LemonadeTheme.colors.border.borderAlwaysLight"
       }
     },
     {
@@ -3522,7 +3530,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgInfo",
-        "iOS": "context.lemonade.colors.background.bgInfo"
+        "iOS": "LemonadeTheme.colors.background.bgInfo"
       }
     },
     {
@@ -3569,7 +3577,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentBrandInverse",
-        "iOS": "context.lemonade.colors.content.contentBrandInverse"
+        "iOS": "LemonadeTheme.colors.content.contentBrandInverse"
       }
     },
     {
@@ -3617,7 +3625,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgPositive",
-        "iOS": "context.lemonade.colors.background.bgPositive"
+        "iOS": "LemonadeTheme.colors.background.bgPositive"
       }
     },
     {
@@ -3664,7 +3672,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentSecondaryInverse",
-        "iOS": "context.lemonade.colors.content.contentSecondaryInverse"
+        "iOS": "LemonadeTheme.colors.content.contentSecondaryInverse"
       }
     },
     {
@@ -3712,7 +3720,7 @@
       "hiddenFromPublishing": true,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgAccentSubtle",
-        "iOS": "context.lemonade.colors.background.bgAccentSubtle"
+        "iOS": "LemonadeTheme.colors.background.bgAccentSubtle"
       }
     },
     {
@@ -3759,7 +3767,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentCritical",
-        "iOS": "context.lemonade.colors.content.contentCritical"
+        "iOS": "LemonadeTheme.colors.content.contentCritical"
       }
     },
     {
@@ -3806,7 +3814,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentOnBrandHigh",
-        "iOS": "context.lemonade.colors.content.contentOnBrandHigh"
+        "iOS": "LemonadeTheme.colors.content.contentOnBrandHigh"
       }
     },
     {
@@ -3854,7 +3862,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgCriticalSubtleInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgCriticalSubtleInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgCriticalSubtleInteractive"
       }
     },
     {
@@ -3902,7 +3910,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgInfoSubtle",
-        "iOS": "context.lemonade.colors.background.bgInfoSubtle"
+        "iOS": "LemonadeTheme.colors.background.bgInfoSubtle"
       }
     },
     {
@@ -3949,7 +3957,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentPrimary",
-        "iOS": "context.lemonade.colors.content.contentPrimary"
+        "iOS": "LemonadeTheme.colors.content.contentPrimary"
       }
     },
     {
@@ -3997,7 +4005,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderNeutralHigh",
-        "iOS": "context.lemonade.colors.border.borderNeutralHigh"
+        "iOS": "LemonadeTheme.colors.border.borderNeutralHigh"
       }
     },
     {
@@ -4045,7 +4053,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderNeutralHighInverse",
-        "iOS": "context.lemonade.colors.border.LemonadeTheme.colors.border.borderNeutralHighInverse"
+        "iOS": "LemonadeTheme.colors.border.borderNeutralHighInverse"
       }
     },
     {
@@ -4093,7 +4101,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bfDefaultPressed",
-        "iOS": "context.lemonade.colors.interaction.bgDefaultPressed"
+        "iOS": "LemonadeTheme.colors.interaction.bfDefaultPressed"
       }
     },
     {
@@ -4141,7 +4149,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgSubtlePressed",
-        "iOS": "context.lemonade.colors.interaction.bgSubtlePressed"
+        "iOS": "LemonadeTheme.colors.interaction.bgSubtlePressed"
       }
     },
     {
@@ -4189,7 +4197,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgElevatedPressed",
-        "iOS": "context.lemonade.colors.interaction.bgElevatedPressed"
+        "iOS": "LemonadeTheme.colors.interaction.bgElevatedPressed"
       }
     },
     {
@@ -4237,7 +4245,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgBrandPressed",
-        "iOS": "context.lemonade.colors.interaction.bgBrandPressed"
+        "iOS": "LemonadeTheme.colors.interaction.bgBrandPressed"
       }
     },
     {
@@ -4285,7 +4293,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgBrandHighPressed",
-        "iOS": "context.lemonade.colors.interaction.bgBrandHighPressed"
+        "iOS": "LemonadeTheme.colors.interaction.bgBrandHighPressed"
       }
     },
     {
@@ -4333,7 +4341,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgCriticalPressed",
-        "iOS": "context.lemonade.colors.interaction.bgCriticalPressed"
+        "iOS": "LemonadeTheme.colors.interaction.bgCriticalPressed"
       }
     },
     {
@@ -4381,7 +4389,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgCautionPressed",
-        "iOS": "context.lemonade.colors.interaction.bgCautionPressed"
+        "iOS": "LemonadeTheme.colors.interaction.bgCautionPressed"
       }
     },
     {
@@ -4429,7 +4437,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgInfoPressed",
-        "iOS": "context.lemonade.colors.interaction.bgInfoPressed"
+        "iOS": "LemonadeTheme.colors.interaction.bgInfoPressed"
       }
     },
     {
@@ -4477,7 +4485,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgPositivePressed",
-        "iOS": "context.lemonade.colors.interaction.bgPositivePressed"
+        "iOS": "LemonadeTheme.colors.interaction.bgPositivePressed"
       }
     },
     {
@@ -4525,7 +4533,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgNeutralPressed",
-        "iOS": "context.lemonade.colors.interaction.bgNeutralPressed"
+        "iOS": "LemonadeTheme.colors.interaction.bgNeutralPressed"
       }
     },
     {
@@ -4573,7 +4581,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgCriticalSubtlePressed",
-        "iOS": "context.lemonade.colors.interaction.bgCriticalSubtlePressed"
+        "iOS": "LemonadeTheme.colors.interaction.bgCriticalSubtlePressed"
       }
     },
     {
@@ -4621,7 +4629,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgCautionSubtlePressed",
-        "iOS": "context.lemonade.colors.interaction.bgCautionSubtlePressed"
+        "iOS": "LemonadeTheme.colors.interaction.bgCautionSubtlePressed"
       }
     },
     {
@@ -4669,7 +4677,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgInfoSubtlePressed",
-        "iOS": "context.lemonade.colors.interaction.bgInfoSubtlePressed"
+        "iOS": "LemonadeTheme.colors.interaction.bgInfoSubtlePressed"
       }
     },
     {
@@ -4717,7 +4725,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgPositiveSubtlePressed",
-        "iOS": "context.lemonade.colors.interaction.bgPositiveSubtlePressed"
+        "iOS": "LemonadeTheme.colors.interaction.bgPositiveSubtlePressed"
       }
     },
     {
@@ -4765,7 +4773,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgNeutralSubtlePressed",
-        "iOS": "context.lemonade.colors.interaction.bgNeutralSubtlePressed"
+        "iOS": "LemonadeTheme.colors.interaction.bgNeutralSubtlePressed"
       }
     },
     {
@@ -4813,7 +4821,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgElevatedHigh",
-        "iOS": "context.lemonade.colors.background.bgElevatedHigh"
+        "iOS": "LemonadeTheme.colors.background.bgElevatedHigh"
       }
     },
     {
@@ -4861,7 +4869,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgElevatedHighInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgElevatedHighInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgElevatedHighInteractive"
       }
     },
     {
@@ -4908,7 +4916,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentCriticalOnColor",
-        "iOS": "context.lemonade.colors.content.contentCriticalOnColor"
+        "iOS": "LemonadeTheme.colors.content.contentCriticalOnColor"
       }
     },
     {
@@ -4955,7 +4963,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentCautionOnColor",
-        "iOS": "context.lemonade.colors.content.contentCautionOnColor"
+        "iOS": "LemonadeTheme.colors.content.contentCautionOnColor"
       }
     },
     {
@@ -5002,7 +5010,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentInfoOnColor",
-        "iOS": "context.lemonade.colors.content.contentInfoOnColor"
+        "iOS": "LemonadeTheme.colors.content.contentInfoOnColor"
       }
     },
     {
@@ -5049,7 +5057,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentPositiveOnColor",
-        "iOS": "context.lemonade.colors.content.contentPositiveOnColor"
+        "iOS": "LemonadeTheme.colors.content.contentPositiveOnColor"
       }
     },
     {
@@ -5096,7 +5104,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentNeutralOnColor",
-        "iOS": "context.lemonade.colors.content.contentNeutralOnColor"
+        "iOS": "LemonadeTheme.colors.content.contentNeutralOnColor"
       }
     },
     {
@@ -5144,7 +5152,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgBrandElevatedInteractive",
-        "iOS": "context.lemonade.colors.interaction.bgBrandElevatedInteractive"
+        "iOS": "LemonadeTheme.colors.interaction.bgBrandElevatedInteractive"
       }
     },
     {
@@ -5192,7 +5200,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgBrandElevatedPressed",
-        "iOS": "context.lemonade.colors.interaction.bgBrandElevatedPressed"
+        "iOS": "LemonadeTheme.colors.interaction.bgBrandElevatedPressed"
       }
     },
     {
@@ -5239,7 +5247,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentBrand",
-        "iOS": "context.lemonade.colors.content.contentBrand"
+        "iOS": "LemonadeTheme.colors.content.contentBrand"
       }
     },
     {
@@ -5287,7 +5295,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderAlwaysLight",
-        "iOS": "context.lemonade.colors.border.borderAlwaysLight"
+        "iOS": "LemonadeTheme.colors.border.borderAlwaysLight"
       }
     },
     {
@@ -5335,7 +5343,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderAlwaysLight",
-        "iOS": "context.lemonade.colors.border.borderAlwaysLight"
+        "iOS": "LemonadeTheme.colors.border.borderAlwaysLight"
       }
     },
     {
@@ -5383,7 +5391,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderAlwaysLight",
-        "iOS": "context.lemonade.colors.border.borderAlwaysLight"
+        "iOS": "LemonadeTheme.colors.border.borderAlwaysLight"
       }
     },
     {
@@ -5431,7 +5439,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderAlwaysDark",
-        "iOS": "context.lemonade.colors.border.borderAlwaysDark"
+        "iOS": "LemonadeTheme.colors.border.borderAlwaysDark"
       }
     },
     {
@@ -5479,7 +5487,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderAlwaysDark",
-        "iOS": "context.lemonade.colors.border.borderAlwaysDark"
+        "iOS": "LemonadeTheme.colors.border.borderAlwaysDark"
       }
     },
     {
@@ -5527,7 +5535,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.border.borderAlwaysDark",
-        "iOS": "context.lemonade.colors.border.borderAlwaysDark"
+        "iOS": "LemonadeTheme.colors.border.borderAlwaysDark"
       }
     },
     {
@@ -5577,7 +5585,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgTransparent",
-        "iOS": "context.lemonade.colors.background.bgTransparent"
+        "iOS": "LemonadeTheme.colors.background.bgTransparent"
       }
     },
     {
@@ -5627,7 +5635,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.background.bgTransparent",
-        "iOS": "context.lemonade.colors.background.bgTransparent"
+        "iOS": "LemonadeTheme.colors.background.bgTransparent"
       }
     },
     {
@@ -5717,7 +5725,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentInfoAlwaysOnColor",
-        "iOS": "context.lemonade.colors.content.contentInfoAlwaysOnColor"
+        "iOS": "LemonadeTheme.colors.content.contentInfoAlwaysOnColor"
       }
     },
     {
@@ -5764,7 +5772,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentNeutralAlwaysOnColor",
-        "iOS": "context.lemonade.colors.content.contentNeutralAlwaysOnColor"
+        "iOS": "LemonadeTheme.colors.content.contentNeutralAlwaysOnColor"
       }
     },
     {
@@ -5811,7 +5819,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentPositiveAlwaysOnColor",
-        "iOS": "context.lemonade.colors.content.contentPositiveAlwaysOnColor"
+        "iOS": "LemonadeTheme.colors.content.contentPositiveAlwaysOnColor"
       }
     },
     {
@@ -5858,7 +5866,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentCautionAlwaysOnColor",
-        "iOS": "context.lemonade.colors.content.contentCautionAlwaysOnColor"
+        "iOS": "LemonadeTheme.colors.content.contentCautionAlwaysOnColor"
       }
     },
     {
@@ -5905,7 +5913,387 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.content.contentCriticalAlwaysOnColor",
-        "iOS": "context.lemonade.colors.content.contentCriticalAlwaysOnColor"
+        "iOS": "LemonadeTheme.colors.content.contentCriticalAlwaysOnColor"
+      }
+    },
+    {
+      "id": "VariableID:4913:10",
+      "name": "Settlement/bg-instant",
+      "description": "Use as the background for the Instant settlement frequency.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.8820960521697998,
+            "g": 0.8995633125305176,
+            "b": 0.10043667256832123,
+            "a": 1
+          },
+          "alias": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87",
+          "aliasName": "yellow-lime/500"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.8820960521697998,
+            "g": 0.8995633125305176,
+            "b": 0.10043667256832123,
+            "a": 1
+          },
+          "alias": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87",
+          "aliasName": "yellow-lime/500"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.settlement.bgInstant",
+        "iOS": "LemonadeTheme.colors.settlement.bgInstant"
+      }
+    },
+    {
+      "id": "VariableID:4913:11",
+      "name": "Settlement/bg-business-days",
+      "description": "Use as the background for the Business days settlement frequency.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:e7a43f5f223b2f0b746883b020076263bcfc0be5/72:131"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:e7a43f5f223b2f0b746883b020076263bcfc0be5/72:131"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.7450929880142212,
+            "g": 0.85866379737854,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:e7a43f5f223b2f0b746883b020076263bcfc0be5/72:131",
+          "aliasName": "blue/200"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.7450929880142212,
+            "g": 0.85866379737854,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:e7a43f5f223b2f0b746883b020076263bcfc0be5/72:131",
+          "aliasName": "blue/200"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.settlement.bgBusinessDays",
+        "iOS": "LemonadeTheme.colors.settlement.bgBusinessDays"
+      }
+    },
+    {
+      "id": "VariableID:4913:12",
+      "name": "Settlement/bg-everyday",
+      "description": "Use as the background for the Everyday settlement frequency.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:2d2cc3f79b64963d3e72f5648e7e22c13ffaa79d/74:5"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:2d2cc3f79b64963d3e72f5648e7e22c13ffaa79d/74:5"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.8665415048599243,
+            "g": 0.8378734588623047,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:2d2cc3f79b64963d3e72f5648e7e22c13ffaa79d/74:5",
+          "aliasName": "violet/200"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.8665415048599243,
+            "g": 0.8378734588623047,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:2d2cc3f79b64963d3e72f5648e7e22c13ffaa79d/74:5",
+          "aliasName": "violet/200"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.settlement.bgEveryday",
+        "iOS": "LemonadeTheme.colors.settlement.bgEveryday"
+      }
+    },
+    {
+      "id": "VariableID:4913:13",
+      "name": "Settlement/bg-scheduled",
+      "description": "Use as the background for the Scheduled settlement frequency.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:50c055b9f05351877f395adb63b29db579bb226a/590:9"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:50c055b9f05351877f395adb63b29db579bb226a/590:9"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.9647058844566345,
+            "g": 0.8117647171020508,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:50c055b9f05351877f395adb63b29db579bb226a/590:9",
+          "aliasName": "fuchsia/200"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.9647058844566345,
+            "g": 0.8117647171020508,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:50c055b9f05351877f395adb63b29db579bb226a/590:9",
+          "aliasName": "fuchsia/200"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.settlement.bgScheduled",
+        "iOS": "LemonadeTheme.colors.settlement.bgScheduled"
+      }
+    },
+    {
+      "id": "VariableID:4913:14",
+      "name": "Settlement/content-on-instant",
+      "description": "Use for text and icons on the Instant settlement background.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:32edd553f4f45306d1ba866c5595851700a96c50/121:75"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:32edd553f4f45306d1ba866c5595851700a96c50/121:75"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.1595725268125534,
+            "g": 0.19419847428798676,
+            "b": 0.04580152779817581,
+            "a": 1
+          },
+          "alias": "VariableID:32edd553f4f45306d1ba866c5595851700a96c50/121:75",
+          "aliasName": "yellow-lime/900"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.1595725268125534,
+            "g": 0.19419847428798676,
+            "b": 0.04580152779817581,
+            "a": 1
+          },
+          "alias": "VariableID:32edd553f4f45306d1ba866c5595851700a96c50/121:75",
+          "aliasName": "yellow-lime/900"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.settlement.contentInstant",
+        "iOS": "LemonadeTheme.colors.settlement.contentInstant"
+      }
+    },
+    {
+      "id": "VariableID:4913:15",
+      "name": "Settlement/content-on-business-days",
+      "description": "Use for text and icons on the Business days settlement background.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:3a44dd03043bca6b311f1a5548657a613b9e0a86/72:136"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:3a44dd03043bca6b311f1a5548657a613b9e0a86/72:136"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.09978122264146805,
+            "g": 0.23377007246017456,
+            "b": 0.7229224443435669,
+            "a": 1
+          },
+          "alias": "VariableID:3a44dd03043bca6b311f1a5548657a613b9e0a86/72:136",
+          "aliasName": "blue/800"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.09978122264146805,
+            "g": 0.23377007246017456,
+            "b": 0.7229224443435669,
+            "a": 1
+          },
+          "alias": "VariableID:3a44dd03043bca6b311f1a5548657a613b9e0a86/72:136",
+          "aliasName": "blue/800"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.settlement.contentBusinessDays",
+        "iOS": "LemonadeTheme.colors.settlement.contentBusinessDays"
+      }
+    },
+    {
+      "id": "VariableID:4913:16",
+      "name": "Settlement/content-on-everyday",
+      "description": "Use for text and icons on the Everyday settlement background.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:9b66780d5fa36be34d7e3b1ad3e08a49221fef04/74:17"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:9b66780d5fa36be34d7e3b1ad3e08a49221fef04/74:17"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.3653835356235504,
+            "g": 0.05553901195526123,
+            "b": 0.7533063292503357,
+            "a": 1
+          },
+          "alias": "VariableID:9b66780d5fa36be34d7e3b1ad3e08a49221fef04/74:17",
+          "aliasName": "violet/800"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.3653835356235504,
+            "g": 0.05553901195526123,
+            "b": 0.7533063292503357,
+            "a": 1
+          },
+          "alias": "VariableID:9b66780d5fa36be34d7e3b1ad3e08a49221fef04/74:17",
+          "aliasName": "violet/800"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.settlement.contentEveryday",
+        "iOS": "LemonadeTheme.colors.settlement.contentEveryday"
+      }
+    },
+    {
+      "id": "VariableID:4913:17",
+      "name": "Settlement/content-on-scheduled",
+      "description": "Use for text and icons on the Scheduled settlement background.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:fd341a5e984cf6009b254c64463111dc963912b9/590:27"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:fd341a5e984cf6009b254c64463111dc963912b9/590:27"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.5411764979362488,
+            "g": 0.003921568859368563,
+            "b": 0.5803921818733215,
+            "a": 1
+          },
+          "alias": "VariableID:fd341a5e984cf6009b254c64463111dc963912b9/590:27",
+          "aliasName": "fuchsia/800"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.5411764979362488,
+            "g": 0.003921568859368563,
+            "b": 0.5803921818733215,
+            "a": 1
+          },
+          "alias": "VariableID:fd341a5e984cf6009b254c64463111dc963912b9/590:27",
+          "aliasName": "fuchsia/800"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.settlement.contentScheduled",
+        "iOS": "LemonadeTheme.colors.settlement.contentScheduled"
       }
     }
   ]

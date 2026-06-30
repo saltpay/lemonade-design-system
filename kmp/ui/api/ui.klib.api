@@ -347,6 +347,8 @@ final object com.teya.lemonade/LemonadeDarkTheme : com.teya.lemonade/LemonadeSem
         final fun <get-content>(): com.teya.lemonade/LemonadeSemanticColors.ContentColors // com.teya.lemonade/LemonadeDarkTheme.content.<get-content>|<get-content>(){}[0]
     final val interaction // com.teya.lemonade/LemonadeDarkTheme.interaction|{}interaction[0]
         final fun <get-interaction>(): com.teya.lemonade/LemonadeSemanticColors.InteractionColors // com.teya.lemonade/LemonadeDarkTheme.interaction.<get-interaction>|<get-interaction>(){}[0]
+    final val settlement // com.teya.lemonade/LemonadeDarkTheme.settlement|{}settlement[0]
+        final fun <get-settlement>(): com.teya.lemonade/LemonadeSemanticColors.SettlementColors // com.teya.lemonade/LemonadeDarkTheme.settlement.<get-settlement>|<get-settlement>(){}[0]
     final val shadow // com.teya.lemonade/LemonadeDarkTheme.shadow|{}shadow[0]
         final fun <get-shadow>(): com.teya.lemonade/LemonadeSemanticColors.ShadowColors // com.teya.lemonade/LemonadeDarkTheme.shadow.<get-shadow>|<get-shadow>(){}[0]
 }
@@ -360,6 +362,8 @@ final object com.teya.lemonade/LemonadeLightTheme : com.teya.lemonade/LemonadeSe
         final fun <get-content>(): com.teya.lemonade/LemonadeSemanticColors.ContentColors // com.teya.lemonade/LemonadeLightTheme.content.<get-content>|<get-content>(){}[0]
     final val interaction // com.teya.lemonade/LemonadeLightTheme.interaction|{}interaction[0]
         final fun <get-interaction>(): com.teya.lemonade/LemonadeSemanticColors.InteractionColors // com.teya.lemonade/LemonadeLightTheme.interaction.<get-interaction>|<get-interaction>(){}[0]
+    final val settlement // com.teya.lemonade/LemonadeLightTheme.settlement|{}settlement[0]
+        final fun <get-settlement>(): com.teya.lemonade/LemonadeSemanticColors.SettlementColors // com.teya.lemonade/LemonadeLightTheme.settlement.<get-settlement>|<get-settlement>(){}[0]
     final val shadow // com.teya.lemonade/LemonadeLightTheme.shadow|{}shadow[0]
         final fun <get-shadow>(): com.teya.lemonade/LemonadeSemanticColors.ShadowColors // com.teya.lemonade/LemonadeLightTheme.shadow.<get-shadow>|<get-shadow>(){}[0]
 }
