@@ -153,6 +153,41 @@ public fun LemonadeUi.PinCode(
 }
 
 @Deprecated(
+    message = "Use the overload with a contentDescription parameter.",
+    replaceWith = ReplaceWith(
+        expression = "PinCode(value, onValueChange, variant, length, error, submitting, autoFocus, " +
+            "null, onComplete, modifier)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@ExperimentalLemonadeComponent
+@Composable
+public fun LemonadeUi.PinCode(
+    value: String,
+    onValueChange: (String) -> Unit,
+    variant: LemonadePinCodeVariant = LemonadePinCodeVariant.Numeric,
+    length: Int = 6,
+    error: Boolean = false,
+    submitting: Boolean = false,
+    autoFocus: Boolean = false,
+    onComplete: ((String) -> Unit)? = null,
+    modifier: Modifier = Modifier,
+) {
+    PinCode(
+        value = value,
+        onValueChange = onValueChange,
+        variant = variant,
+        length = length,
+        error = error,
+        submitting = submitting,
+        autoFocus = autoFocus,
+        contentDescription = null,
+        onComplete = onComplete,
+        modifier = modifier,
+    )
+}
+
+@Deprecated(
     message = "Use the overload with an autoFocus parameter.",
     replaceWith = ReplaceWith(
         expression = "PinCode(value, onValueChange, variant, length, error, submitting, false, " +
