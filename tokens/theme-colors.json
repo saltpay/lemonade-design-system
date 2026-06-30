@@ -4100,8 +4100,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.interaction.bfDefaultPressed",
-        "iOS": "LemonadeTheme.colors.interaction.bfDefaultPressed"
+        "ANDROID": "LemonadeTheme.colors.interaction.bgDefaultPressed",
+        "iOS": "LemonadeTheme.colors.interaction.bgDefaultPressed"
       }
     },
     {
@@ -6151,8 +6151,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.settlement.contentInstant",
-        "iOS": "LemonadeTheme.colors.settlement.contentInstant"
+        "ANDROID": "LemonadeTheme.colors.settlement.contentOnInstant",
+        "iOS": "LemonadeTheme.colors.settlement.contentOnInstant"
       }
     },
     {
@@ -6198,8 +6198,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.settlement.contentBusinessDays",
-        "iOS": "LemonadeTheme.colors.settlement.contentBusinessDays"
+        "ANDROID": "LemonadeTheme.colors.settlement.contentOnBusinessDays",
+        "iOS": "LemonadeTheme.colors.settlement.contentOnBusinessDays"
       }
     },
     {
@@ -6245,8 +6245,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.settlement.contentEveryday",
-        "iOS": "LemonadeTheme.colors.settlement.contentEveryday"
+        "ANDROID": "LemonadeTheme.colors.settlement.contentOnEveryday",
+        "iOS": "LemonadeTheme.colors.settlement.contentOnEveryday"
       }
     },
     {
@@ -6292,8 +6292,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.settlement.contentScheduled",
-        "iOS": "LemonadeTheme.colors.settlement.contentScheduled"
+        "ANDROID": "LemonadeTheme.colors.settlement.contentOnScheduled",
+        "iOS": "LemonadeTheme.colors.settlement.contentOnScheduled"
       }
     }
   ]
