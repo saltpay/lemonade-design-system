@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingToolbarDefaults
 import androidx.compose.material3.HorizontalFloatingToolbar
@@ -60,12 +61,34 @@ import kotlin.math.roundToInt
  * @param selectedIcon Optional [LemonadeIcons] rendered while the item is selected. A common
  *   pattern is to pair an outline `icon` with its solid variant here (e.g. `Wallet` /
  *   `WalletSolid`). When `null`, [icon] is used for both states.
+ * @param badge Optional short text rendered as a small [LemonadeUi.Tag] over the icon's
+ *   top-trailing corner (e.g. "Soon" / "New"). When `null`, no badge is shown.
  */
 public data class BottomTabBarItem(
     val label: String,
     val icon: LemonadeIcons,
     val selectedIcon: LemonadeIcons? = null,
-)
+    val badge: String? = null,
+) {
+    // Binary-compat shim: restores the pre-badge constructor symbols
+    // `<init>(String, LemonadeIcons, LemonadeIcons)` and its `$default` variant, so already
+    // compiled consumers keep linking. HIDDEN keeps the bytecode while hiding it from source.
+    @Deprecated("kept for binary compatibility", level = DeprecationLevel.HIDDEN)
+    public constructor(
+        label: String,
+        icon: LemonadeIcons,
+        selectedIcon: LemonadeIcons? = null,
+    ) : this(label, icon, selectedIcon, badge = null)
+
+    // Binary-compat shim: restores the pre-badge `copy(...)` and `copy$default(...)` symbols.
+    // The defaults are required — they are what regenerate the old `copy$default`.
+    @Deprecated("kept for binary compatibility", level = DeprecationLevel.HIDDEN)
+    public fun copy(
+        label: String = this.label,
+        icon: LemonadeIcons = this.icon,
+        selectedIcon: LemonadeIcons? = this.selectedIcon,
+    ): BottomTabBarItem = copy(label = label, icon = icon, selectedIcon = selectedIcon, badge = this.badge)
+}
 
 /**
  * A floating, pill-shaped bottom navigation bar for top-level destinations.
@@ -282,23 +305,31 @@ private fun BottomTabBarItemContent(
             label = "tabIconScale",
         )
 
-        Box(
-            modifier = Modifier.graphicsLayer {
-                scaleX = iconScale
-                scaleY = iconScale
+        BadgedBox(
+            badge = {
+                item.badge?.let { badge ->
+                    LemonadeUi.Badge(text = badge)
+                }
             },
         ) {
-            Crossfade(
-                targetState = displayedIcon,
-                animationSpec = tween(durationMillis = ICON_CROSSFADE_MS),
-                label = "tabIcon",
-            ) { icon ->
-                LemonadeUi.Icon(
-                    icon = icon,
-                    contentDescription = null,
-                    size = LemonadeAssetSize.Medium,
-                    tint = LemonadeTheme.colors.content.contentPrimary,
-                )
+            Box(
+                modifier = Modifier.graphicsLayer {
+                    scaleX = iconScale
+                    scaleY = iconScale
+                },
+            ) {
+                Crossfade(
+                    targetState = displayedIcon,
+                    animationSpec = tween(durationMillis = ICON_CROSSFADE_MS),
+                    label = "tabIcon",
+                ) { icon ->
+                    LemonadeUi.Icon(
+                        icon = icon,
+                        contentDescription = null,
+                        size = LemonadeAssetSize.Medium,
+                        tint = LemonadeTheme.colors.content.contentPrimary,
+                    )
+                }
             }
         }
 
