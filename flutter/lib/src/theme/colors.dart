@@ -37,7 +37,7 @@ final class LemonadeLightColors implements LemonadeSemanticColors {
   LemonadeShadowColors get shadow => _LightShadowColors();
 
   @override
-  LemonadeSettlementColors get settlement => _LightSettlementColors();
+  LemonadeScopedColors get scoped => _LightScopedColors();
 }
 
 final class _LightInteractionColors implements LemonadeInteractionColors {
@@ -387,28 +387,28 @@ final class _LightShadowColors implements LemonadeShadowColors {
   @override
   Color get shadowDefault => LemonadePrimitiveColors.solid.black.black50;
 }
-final class _LightSettlementColors implements LemonadeSettlementColors {
+final class _LightScopedColors implements LemonadeScopedColors {
   @override
-  Color get bgInstant => LemonadePrimitiveColors.solid.yellowLime.yellowLime500;
+  Color get bgSettlementInstant => LemonadePrimitiveColors.solid.yellowLime.yellowLime500;
 
   @override
-  Color get bgBusinessDays => LemonadePrimitiveColors.solid.blue.blue200;
+  Color get bgSettlementBusinessDays => LemonadePrimitiveColors.solid.blue.blue200;
 
   @override
-  Color get bgEveryday => LemonadePrimitiveColors.solid.violet.violet200;
+  Color get bgSettlementEveryday => LemonadePrimitiveColors.solid.violet.violet200;
 
   @override
-  Color get bgScheduled => LemonadePrimitiveColors.solid.fuchsia.fuchsia200;
+  Color get bgSettlementScheduled => LemonadePrimitiveColors.solid.fuchsia.fuchsia200;
 
   @override
-  Color get contentOnInstant => LemonadePrimitiveColors.solid.yellowLime.yellowLime900;
+  Color get contentOnSettlementInstant => LemonadePrimitiveColors.solid.yellowLime.yellowLime900;
 
   @override
-  Color get contentOnBusinessDays => LemonadePrimitiveColors.solid.blue.blue800;
+  Color get contentOnSettlementBusinessDays => LemonadePrimitiveColors.solid.blue.blue800;
 
   @override
-  Color get contentOnEveryday => LemonadePrimitiveColors.solid.violet.violet800;
+  Color get contentOnSettlementEveryday => LemonadePrimitiveColors.solid.violet.violet800;
 
   @override
-  Color get contentOnScheduled => LemonadePrimitiveColors.solid.fuchsia.fuchsia800;
+  Color get contentOnSettlementScheduled => LemonadePrimitiveColors.solid.fuchsia.fuchsia800;
 }

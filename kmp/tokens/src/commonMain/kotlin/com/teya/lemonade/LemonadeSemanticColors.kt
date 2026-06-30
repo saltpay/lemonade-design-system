@@ -26,7 +26,7 @@ public interface LemonadeSemanticColors {
     public val content: ContentColors
     public val background: BackgroundColors
     public val shadow: ShadowColors
-    public val settlement: SettlementColors
+    public val scoped: ScopedColors
 
     public interface InteractionColors {
         public val bgNeutralSubtleInteractive: Color
@@ -157,14 +157,14 @@ public interface LemonadeSemanticColors {
         public val shadowDefault: Color
     }
 
-    public interface SettlementColors {
-        public val bgInstant: Color
-        public val bgBusinessDays: Color
-        public val bgEveryday: Color
-        public val bgScheduled: Color
-        public val contentOnInstant: Color
-        public val contentOnBusinessDays: Color
-        public val contentOnEveryday: Color
-        public val contentOnScheduled: Color
+    public interface ScopedColors {
+        public val bgSettlementInstant: Color
+        public val bgSettlementBusinessDays: Color
+        public val bgSettlementEveryday: Color
+        public val bgSettlementScheduled: Color
+        public val contentOnSettlementInstant: Color
+        public val contentOnSettlementBusinessDays: Color
+        public val contentOnSettlementEveryday: Color
+        public val contentOnSettlementScheduled: Color
     }
 }

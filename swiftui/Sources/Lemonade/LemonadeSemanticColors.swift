@@ -156,16 +156,16 @@ public protocol ShadowColors {
     var shadowDefault: Color { get }
 }
 
-/// Settlement color definitions
-public protocol SettlementColors {
-    var bgInstant: Color { get }
-    var bgBusinessDays: Color { get }
-    var bgEveryday: Color { get }
-    var bgScheduled: Color { get }
-    var contentOnInstant: Color { get }
-    var contentOnBusinessDays: Color { get }
-    var contentOnEveryday: Color { get }
-    var contentOnScheduled: Color { get }
+/// Scoped color definitions
+public protocol ScopedColors {
+    var bgSettlementInstant: Color { get }
+    var bgSettlementBusinessDays: Color { get }
+    var bgSettlementEveryday: Color { get }
+    var bgSettlementScheduled: Color { get }
+    var contentOnSettlementInstant: Color { get }
+    var contentOnSettlementBusinessDays: Color { get }
+    var contentOnSettlementEveryday: Color { get }
+    var contentOnSettlementScheduled: Color { get }
 }
 
 /// Protocol defining semantic color categories
@@ -175,5 +175,5 @@ public protocol LemonadeSemanticColors {
     var content: ContentColors { get }
     var background: BackgroundColors { get }
     var shadow: ShadowColors { get }
-    var settlement: SettlementColors { get }
+    var scoped: ScopedColors { get }
 }

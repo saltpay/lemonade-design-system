@@ -5918,7 +5918,7 @@
     },
     {
       "id": "VariableID:4913:10",
-      "name": "Settlement/bg-instant",
+      "name": "Scoped/Settlements/bg-settlement-instant",
       "description": "Use as the background for the Instant settlement frequency.",
       "type": "COLOR",
       "valuesByMode": {
@@ -5960,13 +5960,13 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.settlement.bgInstant",
-        "iOS": "LemonadeTheme.colors.settlement.bgInstant"
+        "ANDROID": "LemonadeTheme.colors.scoped.bgSettlementInstant",
+        "iOS": "LemonadeTheme.colors.scoped.bgSettlementInstant"
       }
     },
     {
       "id": "VariableID:4913:11",
-      "name": "Settlement/bg-business-days",
+      "name": "Scoped/Settlements/bg-settlement-business-days",
       "description": "Use as the background for the Business days settlement frequency.",
       "type": "COLOR",
       "valuesByMode": {
@@ -6008,13 +6008,13 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.settlement.bgBusinessDays",
-        "iOS": "LemonadeTheme.colors.settlement.bgBusinessDays"
+        "ANDROID": "LemonadeTheme.colors.scoped.bgSettlementBusinessDays",
+        "iOS": "LemonadeTheme.colors.scoped.bgSettlementBusinessDays"
       }
     },
     {
       "id": "VariableID:4913:12",
-      "name": "Settlement/bg-everyday",
+      "name": "Scoped/Settlements/bg-settlement-everyday",
       "description": "Use as the background for the Everyday settlement frequency.",
       "type": "COLOR",
       "valuesByMode": {
@@ -6056,13 +6056,13 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.settlement.bgEveryday",
-        "iOS": "LemonadeTheme.colors.settlement.bgEveryday"
+        "ANDROID": "LemonadeTheme.colors.scoped.bgSettlementEveryday",
+        "iOS": "LemonadeTheme.colors.scoped.bgSettlementEveryday"
       }
     },
     {
       "id": "VariableID:4913:13",
-      "name": "Settlement/bg-scheduled",
+      "name": "Scoped/Settlements/bg-settlement-scheduled",
       "description": "Use as the background for the Scheduled settlement frequency.",
       "type": "COLOR",
       "valuesByMode": {
@@ -6104,13 +6104,13 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.settlement.bgScheduled",
-        "iOS": "LemonadeTheme.colors.settlement.bgScheduled"
+        "ANDROID": "LemonadeTheme.colors.scoped.bgSettlementScheduled",
+        "iOS": "LemonadeTheme.colors.scoped.bgSettlementScheduled"
       }
     },
     {
       "id": "VariableID:4913:14",
-      "name": "Settlement/content-on-instant",
+      "name": "Scoped/Settlements/content-on-settlement-instant",
       "description": "Use for text and icons on the Instant settlement background.",
       "type": "COLOR",
       "valuesByMode": {
@@ -6151,13 +6151,13 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.settlement.contentOnInstant",
-        "iOS": "LemonadeTheme.colors.settlement.contentOnInstant"
+        "ANDROID": "LemonadeTheme.colors.scoped.contentOnSettlementInstant",
+        "iOS": "LemonadeTheme.colors.scoped.contentOnSettlementInstant"
       }
     },
     {
       "id": "VariableID:4913:15",
-      "name": "Settlement/content-on-business-days",
+      "name": "Scoped/Settlements/content-on-settlement-business-days",
       "description": "Use for text and icons on the Business days settlement background.",
       "type": "COLOR",
       "valuesByMode": {
@@ -6198,13 +6198,13 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.settlement.contentOnBusinessDays",
-        "iOS": "LemonadeTheme.colors.settlement.contentOnBusinessDays"
+        "ANDROID": "LemonadeTheme.colors.scoped.contentOnSettlementBusinessDays",
+        "iOS": "LemonadeTheme.colors.scoped.contentOnSettlementBusinessDays"
       }
     },
     {
       "id": "VariableID:4913:16",
-      "name": "Settlement/content-on-everyday",
+      "name": "Scoped/Settlements/content-on-settlement-everyday",
       "description": "Use for text and icons on the Everyday settlement background.",
       "type": "COLOR",
       "valuesByMode": {
@@ -6245,13 +6245,13 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.settlement.contentOnEveryday",
-        "iOS": "LemonadeTheme.colors.settlement.contentOnEveryday"
+        "ANDROID": "LemonadeTheme.colors.scoped.contentOnSettlementEveryday",
+        "iOS": "LemonadeTheme.colors.scoped.contentOnSettlementEveryday"
       }
     },
     {
       "id": "VariableID:4913:17",
-      "name": "Settlement/content-on-scheduled",
+      "name": "Scoped/Settlements/content-on-settlement-scheduled",
       "description": "Use for text and icons on the Scheduled settlement background.",
       "type": "COLOR",
       "valuesByMode": {
@@ -6292,8 +6292,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.settlement.contentOnScheduled",
-        "iOS": "LemonadeTheme.colors.settlement.contentOnScheduled"
+        "ANDROID": "LemonadeTheme.colors.scoped.contentOnSettlementScheduled",
+        "iOS": "LemonadeTheme.colors.scoped.contentOnSettlementScheduled"
       }
     }
   ]

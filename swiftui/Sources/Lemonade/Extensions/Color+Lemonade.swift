@@ -159,17 +159,17 @@ public struct LemonadeShadowColorsShorthand {
     public var shadowDefault: Color { Color("lemonade-shadow-shadow-default", bundle: .lemonade) }
 }
 
-// MARK: - Settlement Colors Namespace
+// MARK: - Scoped Colors Namespace
 
-public struct LemonadeSettlementColorsShorthand {
-    public var bgInstant: Color { Color("lemonade-settlement-bg-instant", bundle: .lemonade) }
-    public var bgBusinessDays: Color { Color("lemonade-settlement-bg-business-days", bundle: .lemonade) }
-    public var bgEveryday: Color { Color("lemonade-settlement-bg-everyday", bundle: .lemonade) }
-    public var bgScheduled: Color { Color("lemonade-settlement-bg-scheduled", bundle: .lemonade) }
-    public var contentOnInstant: Color { Color("lemonade-settlement-content-on-instant", bundle: .lemonade) }
-    public var contentOnBusinessDays: Color { Color("lemonade-settlement-content-on-business-days", bundle: .lemonade) }
-    public var contentOnEveryday: Color { Color("lemonade-settlement-content-on-everyday", bundle: .lemonade) }
-    public var contentOnScheduled: Color { Color("lemonade-settlement-content-on-scheduled", bundle: .lemonade) }
+public struct LemonadeScopedColorsShorthand {
+    public var bgSettlementInstant: Color { Color("lemonade-scoped-settlements-bg-settlement-instant", bundle: .lemonade) }
+    public var bgSettlementBusinessDays: Color { Color("lemonade-scoped-settlements-bg-settlement-business-days", bundle: .lemonade) }
+    public var bgSettlementEveryday: Color { Color("lemonade-scoped-settlements-bg-settlement-everyday", bundle: .lemonade) }
+    public var bgSettlementScheduled: Color { Color("lemonade-scoped-settlements-bg-settlement-scheduled", bundle: .lemonade) }
+    public var contentOnSettlementInstant: Color { Color("lemonade-scoped-settlements-content-on-settlement-instant", bundle: .lemonade) }
+    public var contentOnSettlementBusinessDays: Color { Color("lemonade-scoped-settlements-content-on-settlement-business-days", bundle: .lemonade) }
+    public var contentOnSettlementEveryday: Color { Color("lemonade-scoped-settlements-content-on-settlement-everyday", bundle: .lemonade) }
+    public var contentOnSettlementScheduled: Color { Color("lemonade-scoped-settlements-content-on-settlement-scheduled", bundle: .lemonade) }
 }
 
 // MARK: - ShapeStyle Extensions
@@ -195,8 +195,8 @@ public extension ShapeStyle where Self == Color {
     /// Usage: `.foregroundStyle(.shadow.shadowDefault)`
     static var shadow: LemonadeShadowColorsShorthand { LemonadeShadowColorsShorthand() }
 
-    /// Settlement color tokens
-    /// Usage: `.foregroundStyle(.settlement.settlementDefault)`
-    static var settlement: LemonadeSettlementColorsShorthand { LemonadeSettlementColorsShorthand() }
+    /// Scoped color tokens
+    /// Usage: `.foregroundStyle(.scoped.scopedDefault)`
+    static var scoped: LemonadeScopedColorsShorthand { LemonadeScopedColorsShorthand() }
 
 }

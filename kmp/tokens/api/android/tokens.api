@@ -789,7 +789,7 @@ public abstract interface class com/teya/lemonade/LemonadeSemanticColors {
 	public abstract fun getBorder ()Lcom/teya/lemonade/LemonadeSemanticColors$BorderColors;
 	public abstract fun getContent ()Lcom/teya/lemonade/LemonadeSemanticColors$ContentColors;
 	public abstract fun getInteraction ()Lcom/teya/lemonade/LemonadeSemanticColors$InteractionColors;
-	public abstract fun getSettlement ()Lcom/teya/lemonade/LemonadeSemanticColors$SettlementColors;
+	public abstract fun getScoped ()Lcom/teya/lemonade/LemonadeSemanticColors$ScopedColors;
 	public abstract fun getShadow ()Lcom/teya/lemonade/LemonadeSemanticColors$ShadowColors;
 }
 
@@ -918,15 +918,15 @@ public abstract interface class com/teya/lemonade/LemonadeSemanticColors$Interac
 	public abstract fun getBgSubtlePressed-0d7_KjU ()J
 }
 
-public abstract interface class com/teya/lemonade/LemonadeSemanticColors$SettlementColors {
-	public abstract fun getBgBusinessDays-0d7_KjU ()J
-	public abstract fun getBgEveryday-0d7_KjU ()J
-	public abstract fun getBgInstant-0d7_KjU ()J
-	public abstract fun getBgScheduled-0d7_KjU ()J
-	public abstract fun getContentOnBusinessDays-0d7_KjU ()J
-	public abstract fun getContentOnEveryday-0d7_KjU ()J
-	public abstract fun getContentOnInstant-0d7_KjU ()J
-	public abstract fun getContentOnScheduled-0d7_KjU ()J
+public abstract interface class com/teya/lemonade/LemonadeSemanticColors$ScopedColors {
+	public abstract fun getBgSettlementBusinessDays-0d7_KjU ()J
+	public abstract fun getBgSettlementEveryday-0d7_KjU ()J
+	public abstract fun getBgSettlementInstant-0d7_KjU ()J
+	public abstract fun getBgSettlementScheduled-0d7_KjU ()J
+	public abstract fun getContentOnSettlementBusinessDays-0d7_KjU ()J
+	public abstract fun getContentOnSettlementEveryday-0d7_KjU ()J
+	public abstract fun getContentOnSettlementInstant-0d7_KjU ()J
+	public abstract fun getContentOnSettlementScheduled-0d7_KjU ()J
 }
 
 public abstract interface class com/teya/lemonade/LemonadeSemanticColors$ShadowColors {

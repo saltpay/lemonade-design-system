@@ -30,8 +30,8 @@ interface class LemonadeSemanticColors {
   /// Shadow state colors for UI elements
   final LemonadeShadowColors shadow;
 
-  /// Settlement state colors for UI elements
-  final LemonadeSettlementColors settlement;
+  /// Scoped state colors for UI elements
+  final LemonadeScopedColors scoped;
 
   const LemonadeSemanticColors({
     required this.interaction,
@@ -39,7 +39,7 @@ interface class LemonadeSemanticColors {
     required this.content,
     required this.background,
     required this.shadow,
-    required this.settlement,
+    required this.scoped,
   });
 
   /// Linearly interpolates between two [LemonadeSemanticColors] objects.
@@ -55,7 +55,7 @@ interface class LemonadeSemanticColors {
       content: LemonadeContentColors.lerp(a.content, b.content, t),
       background: LemonadeBackgroundColors.lerp(a.background, b.background, t),
       shadow: LemonadeShadowColors.lerp(a.shadow, b.shadow, t),
-      settlement: LemonadeSettlementColors.lerp(a.settlement, b.settlement, t),
+      scoped: LemonadeScopedColors.lerp(a.scoped, b.scoped, t),
     );
   }
 
@@ -494,44 +494,44 @@ interface class LemonadeShadowColors {
     );
   }
 }
-/// Settlement state colors for UI elements
-interface class LemonadeSettlementColors {
-  final Color bgInstant;
-  final Color bgBusinessDays;
-  final Color bgEveryday;
-  final Color bgScheduled;
-  final Color contentOnInstant;
-  final Color contentOnBusinessDays;
-  final Color contentOnEveryday;
-  final Color contentOnScheduled;
+/// Scoped state colors for UI elements
+interface class LemonadeScopedColors {
+  final Color bgSettlementInstant;
+  final Color bgSettlementBusinessDays;
+  final Color bgSettlementEveryday;
+  final Color bgSettlementScheduled;
+  final Color contentOnSettlementInstant;
+  final Color contentOnSettlementBusinessDays;
+  final Color contentOnSettlementEveryday;
+  final Color contentOnSettlementScheduled;
 
-  const LemonadeSettlementColors({
-    required this.bgInstant,
-    required this.bgBusinessDays,
-    required this.bgEveryday,
-    required this.bgScheduled,
-    required this.contentOnInstant,
-    required this.contentOnBusinessDays,
-    required this.contentOnEveryday,
-    required this.contentOnScheduled,
+  const LemonadeScopedColors({
+    required this.bgSettlementInstant,
+    required this.bgSettlementBusinessDays,
+    required this.bgSettlementEveryday,
+    required this.bgSettlementScheduled,
+    required this.contentOnSettlementInstant,
+    required this.contentOnSettlementBusinessDays,
+    required this.contentOnSettlementEveryday,
+    required this.contentOnSettlementScheduled,
   });
 
-  /// Linearly interpolates between two [LemonadeSettlementColors] objects.
-  factory LemonadeSettlementColors.lerp(
-    LemonadeSettlementColors a,
-    LemonadeSettlementColors b,
+  /// Linearly interpolates between two [LemonadeScopedColors] objects.
+  factory LemonadeScopedColors.lerp(
+    LemonadeScopedColors a,
+    LemonadeScopedColors b,
     double t,
   ) {
     if (identical(a, b)) return a;
-    return LemonadeSettlementColors(
-      bgInstant: Color.lerp(a.bgInstant, b.bgInstant, t)!,
-      bgBusinessDays: Color.lerp(a.bgBusinessDays, b.bgBusinessDays, t)!,
-      bgEveryday: Color.lerp(a.bgEveryday, b.bgEveryday, t)!,
-      bgScheduled: Color.lerp(a.bgScheduled, b.bgScheduled, t)!,
-      contentOnInstant: Color.lerp(a.contentOnInstant, b.contentOnInstant, t)!,
-      contentOnBusinessDays: Color.lerp(a.contentOnBusinessDays, b.contentOnBusinessDays, t)!,
-      contentOnEveryday: Color.lerp(a.contentOnEveryday, b.contentOnEveryday, t)!,
-      contentOnScheduled: Color.lerp(a.contentOnScheduled, b.contentOnScheduled, t)!,
+    return LemonadeScopedColors(
+      bgSettlementInstant: Color.lerp(a.bgSettlementInstant, b.bgSettlementInstant, t)!,
+      bgSettlementBusinessDays: Color.lerp(a.bgSettlementBusinessDays, b.bgSettlementBusinessDays, t)!,
+      bgSettlementEveryday: Color.lerp(a.bgSettlementEveryday, b.bgSettlementEveryday, t)!,
+      bgSettlementScheduled: Color.lerp(a.bgSettlementScheduled, b.bgSettlementScheduled, t)!,
+      contentOnSettlementInstant: Color.lerp(a.contentOnSettlementInstant, b.contentOnSettlementInstant, t)!,
+      contentOnSettlementBusinessDays: Color.lerp(a.contentOnSettlementBusinessDays, b.contentOnSettlementBusinessDays, t)!,
+      contentOnSettlementEveryday: Color.lerp(a.contentOnSettlementEveryday, b.contentOnSettlementEveryday, t)!,
+      contentOnSettlementScheduled: Color.lerp(a.contentOnSettlementScheduled, b.contentOnSettlementScheduled, t)!,
     );
   }
 }
