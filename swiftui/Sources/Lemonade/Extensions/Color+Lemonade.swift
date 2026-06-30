@@ -176,7 +176,7 @@ public struct LemonadeScopedColorsShorthand {
 
 public extension ShapeStyle where Self == Color {
     /// Interaction color tokens
-    /// Usage: `.foregroundStyle(.interaction.interactionDefault)`
+    /// Usage: `.foregroundStyle(.interaction.bgNeutralSubtleInteractive)`
     static var interaction: LemonadeInteractionColorsShorthand { LemonadeInteractionColorsShorthand() }
 
     /// Border color tokens
@@ -196,7 +196,7 @@ public extension ShapeStyle where Self == Color {
     static var shadow: LemonadeShadowColorsShorthand { LemonadeShadowColorsShorthand() }
 
     /// Scoped color tokens
-    /// Usage: `.foregroundStyle(.scoped.scopedDefault)`
+    /// Usage: `.foregroundStyle(.scoped.bgSettlementInstant)`
     static var scoped: LemonadeScopedColorsShorthand { LemonadeScopedColorsShorthand() }
 
 }

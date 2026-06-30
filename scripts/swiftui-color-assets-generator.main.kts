@@ -241,7 +241,7 @@ fun generateColorShorthand(resources: List<ColorResource>): String {
         appendLine()
         appendLine("public extension ShapeStyle where Self == Color {")
 
-        grouped.forEach { (group, _) ->
+        grouped.forEach { (group, colors) ->
             val shorthandName = when (group) {
                 "Background" -> "bg"
                 "Content" -> "content"
@@ -250,12 +250,15 @@ fun generateColorShorthand(resources: List<ColorResource>): String {
                 else -> group.lowercase()
             }
             appendLine("    /// $group color tokens")
+            // Use a real member of the group as the example; fall back to the
+            // first token so groups without a "<name>Default" don't produce a
+            // dangling reference (e.g. scoped, interaction).
             val exampleToken = when (group) {
                 "Content" -> "contentPrimary"
                 "Background" -> "bgDefault"
                 "Border" -> "borderNeutralMedium"
                 "Shadow" -> "shadowDefault"
-                else -> "${shorthandName}Default"
+                else -> colors.first().name
             }
             appendLine("    /// Usage: `.foregroundStyle(.$shorthandName.$exampleToken)`")
             appendLine("    static var $shorthandName: Lemonade${group}ColorsShorthand { Lemonade${group}ColorsShorthand() }")
