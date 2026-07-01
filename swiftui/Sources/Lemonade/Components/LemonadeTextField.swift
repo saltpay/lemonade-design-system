@@ -21,6 +21,8 @@ public extension LemonadeUi {
     /// - Parameters:
     ///   - input: The inputted text (Binding)
     ///   - onInputChanged: Callback when the user inputs content
+    ///   - onSubmit: Callback when the keyboard's return key is pressed. The field
+    ///     keeps focus (the keyboard stays up) so the caller decides what happens next.
     ///   - label: Label displayed above the text field
     ///   - optionalIndicator: Optional text displayed on the right of the label
     ///   - supportText: Support text displayed below the text field
@@ -33,6 +35,7 @@ public extension LemonadeUi {
     static func TextField(
         input: Binding<String>,
         onInputChanged: ((String) -> Void)? = nil,
+        onSubmit: (() -> Void)? = nil,
         label: String? = nil,
         optionalIndicator: String? = nil,
         supportText: String? = nil,
@@ -44,6 +47,7 @@ public extension LemonadeUi {
         LemonadeTextFieldView<EmptyView, EmptyView>(
             input: input,
             onInputChanged: onInputChanged,
+            onSubmit: onSubmit,
             label: label,
             optionalIndicator: optionalIndicator,
             supportText: supportText,
@@ -75,6 +79,8 @@ public extension LemonadeUi {
     /// - Parameters:
     ///   - input: The inputted text (Binding)
     ///   - onInputChanged: Callback when the user inputs content
+    ///   - onSubmit: Callback when the keyboard's return key is pressed. The field
+    ///     keeps focus (the keyboard stays up) so the caller decides what happens next.
     ///   - label: Label displayed above the text field
     ///   - optionalIndicator: Optional text displayed on the right of the label
     ///   - supportText: Support text displayed below the text field
@@ -89,6 +95,7 @@ public extension LemonadeUi {
     static func TextField<LeadingContent: View, TrailingContent: View>(
         input: Binding<String>,
         onInputChanged: ((String) -> Void)? = nil,
+        onSubmit: (() -> Void)? = nil,
         label: String? = nil,
         optionalIndicator: String? = nil,
         supportText: String? = nil,
@@ -102,6 +109,7 @@ public extension LemonadeUi {
         LemonadeTextFieldView(
             input: input,
             onInputChanged: onInputChanged,
+            onSubmit: onSubmit,
             label: label,
             optionalIndicator: optionalIndicator,
             supportText: supportText,
@@ -491,6 +499,7 @@ private struct LemonadeTextInputField: View {
     let enabled: Bool
     @Binding var isFocused: Bool
     let onInputChanged: ((String) -> Void)?
+    let onSubmit: (() -> Void)?
 
     // The String-binding overloads expose no `keyboardType:` parameter, so the
     // `.lemonadeKeyboardType()` modifier (read from the environment here) is the
@@ -510,13 +519,15 @@ private struct LemonadeTextInputField: View {
         isSecure: Bool,
         enabled: Bool,
         isFocused: Binding<Bool>,
-        onInputChanged: ((String) -> Void)?
+        onInputChanged: ((String) -> Void)?,
+        onSubmit: (() -> Void)?
     ) {
         _input = input
         self.isSecure = isSecure
         self.enabled = enabled
         _isFocused = isFocused
         self.onInputChanged = onInputChanged
+        self.onSubmit = onSubmit
         _fieldValue = State(initialValue: LemonadeTextFieldValue(text: input.wrappedValue))
     }
 
@@ -535,7 +546,8 @@ private struct LemonadeTextInputField: View {
             onValueChange: { newValue in
                 if newValue.text != input { input = newValue.text }
                 onInputChanged?(newValue.text)
-            }
+            },
+            onReturnKey: onSubmit
         )
         .onChange(of: input) { newText in
             // External text change (e.g. a programmatic reset): re-sync, cursor to end.
@@ -552,6 +564,7 @@ private struct LemonadeTextInputField: View {
     let enabled: Bool
     @Binding var isFocused: Bool
     let onInputChanged: ((String) -> Void)?
+    let onSubmit: (() -> Void)?
 
     @FocusState private var fieldFocused: Bool
 
@@ -568,6 +581,7 @@ private struct LemonadeTextInputField: View {
         .tint(LemonadeTheme.colors.content.contentPrimary)
         .focused($fieldFocused)
         .disabled(!enabled)
+        .onSubmit { onSubmit?() }
         .onChange(of: input) { newValue in
             onInputChanged?(newValue)
         }
@@ -582,6 +596,7 @@ private struct LemonadeTextInputField: View {
 private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View>: View {
     @Binding var input: String
     let onInputChanged: ((String) -> Void)?
+    let onSubmit: (() -> Void)?
     let label: String?
     let optionalIndicator: String?
     let supportText: String?
@@ -620,7 +635,8 @@ private struct LemonadeTextFieldView<LeadingContent: View, TrailingContent: View
                         isSecure: isSecure,
                         enabled: enabled,
                         isFocused: $isFocused,
-                        onInputChanged: onInputChanged
+                        onInputChanged: onInputChanged,
+                        onSubmit: onSubmit
                     )
                 }
 
@@ -703,7 +719,8 @@ private struct LemonadeTextFieldWithSelectorView<LeadingContent: View, TrailingC
                             isSecure: isSecure,
                             enabled: enabled,
                             isFocused: $isFocused,
-                            onInputChanged: onInputChanged
+                            onInputChanged: onInputChanged,
+                            onSubmit: nil
                         )
                     }
 
@@ -848,6 +865,7 @@ private struct LemonadeTextFieldValueView<LeadingContent: View, TrailingContent:
         LemonadeTextFieldView(
             input: textBinding,
             onInputChanged: nil,
+            onSubmit: nil,
             label: label,
             optionalIndicator: optionalIndicator,
             supportText: supportText,
