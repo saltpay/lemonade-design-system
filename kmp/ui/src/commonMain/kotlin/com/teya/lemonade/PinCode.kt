@@ -38,7 +38,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDataType
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadePinCodeVariant
@@ -394,9 +396,27 @@ private fun PinCodeHiddenField(
         if (autoFocus && enabled) focusRequester.requestFocus()
     }
 
+    // Drive the field through a [TextFieldValue] rather than a raw String so the cursor stays
+    // pinned to the end of the clamped text. The String overload lets Compose's IME buffer keep
+    // the characters typed past [length]: focus then drifts off the last box and backspace has to
+    // chew through those invisible characters before it reaches a visible digit.
+    val clamped = value.take(n = length)
+    var fieldValue by remember { mutableStateOf(value = pinnedToEnd(text = clamped)) }
+    // Resync when the entry changes underneath us (external writes, or input we rejected as
+    // overflow so the buffer text is unchanged), always collapsing the cursor to the end.
+    if (fieldValue.text != clamped) {
+        fieldValue = pinnedToEnd(text = clamped)
+    }
+
     BasicTextField(
-        value = value.take(n = length),
-        onValueChange = { input -> onValueChange(input.take(n = length)) },
+        value = fieldValue,
+        onValueChange = { input ->
+            val next = input.text.take(n = length)
+            // Push the buffer back to the end even when [next] matches the current text (overflow
+            // typing), so the IME drops the extra characters instead of parking the cursor past them.
+            fieldValue = pinnedToEnd(text = next)
+            if (next != clamped) onValueChange(next)
+        },
         enabled = enabled,
         singleLine = true,
         cursorBrush = SolidColor(value = Color.Transparent),
@@ -411,6 +431,12 @@ private fun PinCodeHiddenField(
                 if (!oneTimeCodeAutofill) contentDataType = ContentDataType.None
             }.onFocusChanged { onFocusChanged(it.isFocused) },
     )
+}
+
+// A [TextFieldValue] holding [text] with the cursor collapsed to its end — the state the hidden
+// field is always driven to, so rejected overflow never leaves the caret parked past the digits.
+private fun pinnedToEnd(text: String): TextFieldValue {
+    return TextFieldValue(text = text, selection = TextRange(index = text.length))
 }
 
 private const val FIELD_TEST_ID = "pin_code_field"
