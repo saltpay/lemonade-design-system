@@ -237,10 +237,19 @@ private struct PinCodeHiddenField: View {
     let oneTimeCodeAutofill: Bool
     @FocusState.Binding var focused: Bool
 
+    // Local mirror of the entry that the field edits directly. Binding a plain String whose setter
+    // clamps to `length` leaves the characters typed past the limit sitting in UIKit's (invisible,
+    // `.clear`) field buffer with the cursor parked beyond them — because clamping to the unchanged
+    // `value` never pushes an update back to the field. Focus then drifts off the last box and
+    // backspace has to chew through those ghosts before it reaches a visible digit. Reassigning this
+    // @State to the clamped text forces SwiftUI to push it back into the field, dropping the overflow
+    // and collapsing the cursor to the end — mirroring the KMP `TextFieldValue` fix.
+    @State private var text: String = ""
+
     var body: some View {
         // Full-bleed transparent field: a tap anywhere on the boxes lands here and focuses it
         // natively, so the keyboard opens on the first tap with no sync round-trip.
-        TextField("", text: clampedBinding)
+        TextField("", text: $text)
             .focused($focused)
             .autocorrectionDisabled(true)
             .foregroundColor(.clear)
@@ -251,13 +260,20 @@ private struct PinCodeHiddenField: View {
             .accessibilityIdentifier("pin_code_field")
             .modifier(OptionalAccessibilityLabel(label: accessibilityLabel))
             .modifier(SystemKeyboardTraits(variant: variant, oneTimeCodeAutofill: oneTimeCodeAutofill))
-    }
-
-    private var clampedBinding: Binding<String> {
-        Binding(
-            get: { value },
-            set: { value = String($0.prefix(length)) }
-        )
+            .onAppear { text = String(value.prefix(length)) }
+            .onChange(of: text) { newText in
+                let clamped = String(newText.prefix(length))
+                // Force the field back to the clamped text (drops overflow, collapses the cursor to
+                // the end) whenever raw input exceeded `length` — including typing while it is full.
+                if clamped != newText { text = clamped }
+                if clamped != value { value = clamped }
+            }
+            // Keep the field in sync when the entry changes from outside (external writes, or the
+            // parent clamping an oversized value).
+            .onChange(of: value) { newValue in
+                let clamped = String(newValue.prefix(length))
+                if text != clamped { text = clamped }
+            }
     }
 }
 
