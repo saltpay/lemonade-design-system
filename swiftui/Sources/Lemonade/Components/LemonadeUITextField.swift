@@ -26,6 +26,10 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     var isSecure: Bool = false
     var onValueChange: ((LemonadeTextFieldValue) -> Void)?
     var onEditingChanged: ((Bool) -> Void)?
+    /// Called when the keyboard's return key is pressed. When set, the field keeps
+    /// first responder (the keyboard stays up) so the caller drives what happens
+    /// next; when `nil`, the return key dismisses the keyboard as before.
+    var onReturnKey: (() -> Void)?
 
     /// Clamps cursor position to valid UTF-16 range for the given text
     private func clampedCursorPosition(_ position: Int, for text: String) -> Int {
@@ -229,7 +233,11 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         }
 
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            textField.resignFirstResponder()
+            if let onReturnKey = parent.onReturnKey {
+                onReturnKey()
+            } else {
+                textField.resignFirstResponder()
+            }
             return true
         }
 
