@@ -402,10 +402,12 @@ private fun PinCodeHiddenField(
     // chew through those invisible characters before it reaches a visible digit.
     val clamped = value.take(n = length)
     var fieldValue by remember { mutableStateOf(value = pinnedToEnd(text = clamped)) }
-    // Resync when the entry changes underneath us (external writes, or input we rejected as
-    // overflow so the buffer text is unchanged), always collapsing the cursor to the end.
-    if (fieldValue.text != clamped) {
-        fieldValue = pinnedToEnd(text = clamped)
+    // Resync from an effect — not during composition — when the entry changes underneath us: an
+    // external write, or the parent clamping an oversized value. Overflow typing is already pinned
+    // in onValueChange below, so this only needs to track [clamped]. Mirrors the
+    // `LaunchedEffect(displayText)` idiom documented on LemonadeUi.TextFieldWithSelector.
+    LaunchedEffect(clamped) {
+        if (fieldValue.text != clamped) fieldValue = pinnedToEnd(text = clamped)
     }
 
     BasicTextField(
