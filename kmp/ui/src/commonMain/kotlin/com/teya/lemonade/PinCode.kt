@@ -437,9 +437,7 @@ private fun PinCodeHiddenField(
 
 // A [TextFieldValue] holding [text] with the cursor collapsed to its end — the state the hidden
 // field is always driven to, so rejected overflow never leaves the caret parked past the digits.
-private fun pinnedToEnd(text: String): TextFieldValue {
-    return TextFieldValue(text = text, selection = TextRange(index = text.length))
-}
+private fun pinnedToEnd(text: String): TextFieldValue = TextFieldValue(text = text, selection = TextRange(index = text.length))
 
 private const val FIELD_TEST_ID = "pin_code_field"
 
