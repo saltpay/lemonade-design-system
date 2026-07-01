@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.ContentDataType
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -34,7 +35,6 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.autofill.ContentDataType
 import androidx.compose.ui.semantics.contentDataType
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -409,8 +409,7 @@ private fun PinCodeHiddenField(
             .semantics {
                 if (contentDescription != null) this.contentDescription = contentDescription
                 if (!oneTimeCodeAutofill) contentDataType = ContentDataType.None
-            }
-            .onFocusChanged { onFocusChanged(it.isFocused) },
+            }.onFocusChanged { onFocusChanged(it.isFocused) },
     )
 }
 

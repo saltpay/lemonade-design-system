@@ -270,17 +270,18 @@ private struct SystemKeyboardTraits: ViewModifier {
         // `.username` (not nil) is what reliably stops iOS surfacing the "From Messages" code
         // suggestion when one-time-code autofill is off.
         let contentType: UITextContentType = oneTimeCodeAutofill ? .oneTimeCode : .username
-        switch variant {
-        case .numeric:
-            content
-                .keyboardType(.numberPad)
-                .textContentType(contentType)
-        case .alphanumeric:
-            content
-                .keyboardType(.asciiCapable)
-                .textInputAutocapitalization(.never)
-                .textContentType(contentType)
+        Group {
+            switch variant {
+            case .numeric:
+                content
+                    .keyboardType(.numberPad)
+            case .alphanumeric:
+                content
+                    .keyboardType(.asciiCapable)
+                    .textInputAutocapitalization(.never)
+            }
         }
+        .textContentType(contentType)
         #else
         content
         #endif
