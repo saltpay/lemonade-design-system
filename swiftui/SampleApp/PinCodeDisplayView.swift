@@ -7,6 +7,7 @@ struct PinCodeDisplayView: View {
     @State private var numericPin = ""
     @State private var numericError = false
     @State private var alphaPin = ""
+    @State private var noAutofillPin = ""
 
     var body: some View {
         ScrollView {
@@ -29,6 +30,15 @@ struct PinCodeDisplayView: View {
 
                 sectionView(title: "Alphanumeric (system keyboard)") {
                     LemonadeUi.PinCode(value: $alphaPin, variant: .alphanumeric)
+                }
+
+                sectionView(title: "Autofill disabled") {
+                    VStack(spacing: 16) {
+                        LemonadeUi.PinCode(value: $noAutofillPin, oneTimeCodeAutofill: false)
+                        Text("No OTC suggestion above the keyboard")
+                            .font(.caption)
+                            .foregroundStyle(.content.contentSecondary)
+                    }
                 }
 
                 sectionView(title: "Submitting") {

@@ -48,6 +48,19 @@ internal fun PinCodeDisplay() {
             )
         }
 
+        PinCodeSection("Autofill disabled") {
+            var pin by remember { mutableStateOf("") }
+            LemonadeUi.PinCode(
+                value = pin,
+                onValueChange = { pin = it },
+                oneTimeCodeAutofill = false,
+            )
+            LemonadeUi.Text(
+                text = "No OTC suggestion above the keyboard",
+                textStyle = LemonadeTheme.typography.bodySmallRegular,
+            )
+        }
+
         PinCodeSection("Submitting") {
             LemonadeUi.PinCode(
                 value = SAMPLE_PIN,

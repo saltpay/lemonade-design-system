@@ -267,8 +267,9 @@ private struct SystemKeyboardTraits: ViewModifier {
 
     func body(content: Content) -> some View {
         #if os(iOS)
-        // `.username` (not nil) is what reliably stops iOS surfacing the "From Messages" code
-        // suggestion when one-time-code autofill is off.
+        // Deliberately NOT `nil`: an unset contentType does NOT stop iOS surfacing the
+        // "From Messages" OTC suggestion. `.username` (any non-OTC, non-nil type) overrides
+        // that heuristic. Verified on-device; do not change to nil without re-verifying.
         let contentType: UITextContentType = oneTimeCodeAutofill ? .oneTimeCode : .username
         Group {
             switch variant {
