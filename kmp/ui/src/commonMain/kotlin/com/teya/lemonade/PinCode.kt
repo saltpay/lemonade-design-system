@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.ContentDataType
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -34,6 +35,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDataType
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
@@ -80,6 +82,9 @@ import com.teya.lemonade.core.LemonadePinCodeVariant
  *   [submitting] clears). Use for a screen whose only purpose is entering this code.
  * @param contentDescription Accessibility label for the input, announced by screen readers. The
  *   boxes carry no visible label, so set this to what the code is for (e.g. "Verification code").
+ * @param oneTimeCodeAutofill When true the field offers the OS one-time-code autofill suggestion.
+ *   Set false to suppress it on flows where the suggestion is unwanted (the keyboard's plain
+ *   numeric/character input still works).
  * @param onComplete Called once when [value] reaches [length].
  * @param modifier The [Modifier] applied to the root container of the component.
  */
@@ -94,6 +99,7 @@ public fun LemonadeUi.PinCode(
     submitting: Boolean = false,
     autoFocus: Boolean = false,
     contentDescription: String? = null,
+    oneTimeCodeAutofill: Boolean = true,
     onComplete: ((String) -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
@@ -146,10 +152,48 @@ public fun LemonadeUi.PinCode(
             enabled = !submitting,
             autoFocus = autoFocus,
             contentDescription = contentDescription,
+            oneTimeCodeAutofill = oneTimeCodeAutofill,
             onFocusChanged = { focused = it },
             modifier = Modifier.matchParentSize(),
         )
     }
+}
+
+@Deprecated(
+    message = "Use the overload with a oneTimeCodeAutofill parameter.",
+    replaceWith = ReplaceWith(
+        expression = "PinCode(value, onValueChange, variant, length, error, submitting, autoFocus, " +
+            "contentDescription, true, onComplete, modifier)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@ExperimentalLemonadeComponent
+@Composable
+public fun LemonadeUi.PinCode(
+    value: String,
+    onValueChange: (String) -> Unit,
+    variant: LemonadePinCodeVariant = LemonadePinCodeVariant.Numeric,
+    length: Int = 6,
+    error: Boolean = false,
+    submitting: Boolean = false,
+    autoFocus: Boolean = false,
+    contentDescription: String? = null,
+    onComplete: ((String) -> Unit)? = null,
+    modifier: Modifier = Modifier,
+) {
+    PinCode(
+        value = value,
+        onValueChange = onValueChange,
+        variant = variant,
+        length = length,
+        error = error,
+        submitting = submitting,
+        autoFocus = autoFocus,
+        contentDescription = contentDescription,
+        oneTimeCodeAutofill = true,
+        onComplete = onComplete,
+        modifier = modifier,
+    )
 }
 
 @Deprecated(
@@ -336,6 +380,7 @@ private fun PinCodeHiddenField(
     enabled: Boolean,
     autoFocus: Boolean,
     contentDescription: String?,
+    oneTimeCodeAutofill: Boolean,
     onFocusChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -361,8 +406,10 @@ private fun PinCodeHiddenField(
         modifier = modifier
             .testTag(tag = FIELD_TEST_ID)
             .focusRequester(focusRequester = focusRequester)
-            .semantics { if (contentDescription != null) this.contentDescription = contentDescription }
-            .onFocusChanged { onFocusChanged(it.isFocused) },
+            .semantics {
+                if (contentDescription != null) this.contentDescription = contentDescription
+                if (!oneTimeCodeAutofill) contentDataType = ContentDataType.None
+            }.onFocusChanged { onFocusChanged(it.isFocused) },
     )
 }
 

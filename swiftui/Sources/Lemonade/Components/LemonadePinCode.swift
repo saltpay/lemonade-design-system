@@ -4,7 +4,7 @@ import SwiftUI
 import UIKit
 #endif
 
-/// Input modes for ``LemonadeUi/PinCode(value:variant:length:error:submitting:autoFocus:accessibilityLabel:onComplete:)``.
+/// Input modes for ``LemonadeUi/PinCode(value:variant:length:error:submitting:autoFocus:accessibilityLabel:oneTimeCodeAutofill:onComplete:)``.
 /// Selects which system keyboard is requested.
 public enum LemonadePinCodeVariant {
     /// Requests a numeric keyboard.
@@ -54,6 +54,8 @@ public extension LemonadeUi {
     ///     `submitting` clears). Use for a screen whose only purpose is entering this code.
     ///   - accessibilityLabel: Label for the input, announced by VoiceOver. The boxes carry no
     ///     visible label, so set this to what the code is for (e.g. "Verification code").
+    ///   - oneTimeCodeAutofill: When true the field offers the OS one-time-code suggestion (the
+    ///     "From Messages" QuickType item). Set false to suppress it on flows where it's unwanted.
     ///   - onComplete: Called once when `value` reaches `length`.
     /// - Returns: A styled PinCode view.
     static func PinCode(
@@ -64,6 +66,7 @@ public extension LemonadeUi {
         submitting: Bool = false,
         autoFocus: Bool = false,
         accessibilityLabel: String? = nil,
+        oneTimeCodeAutofill: Bool = true,
         onComplete: ((String) -> Void)? = nil
     ) -> some View {
         precondition(length > 0, "PinCode length must be greater than zero.")
@@ -75,6 +78,7 @@ public extension LemonadeUi {
             submitting: submitting,
             autoFocus: autoFocus,
             accessibilityLabel: accessibilityLabel,
+            oneTimeCodeAutofill: oneTimeCodeAutofill,
             onComplete: onComplete
         )
     }
@@ -90,6 +94,7 @@ private struct LemonadePinCodeView: View {
     let submitting: Bool
     let autoFocus: Bool
     let accessibilityLabel: String?
+    let oneTimeCodeAutofill: Bool
     let onComplete: ((String) -> Void)?
 
     @State private var shakeTrigger: CGFloat = 0
@@ -115,6 +120,7 @@ private struct LemonadePinCodeView: View {
                 length: length,
                 enabled: !submitting,
                 accessibilityLabel: accessibilityLabel,
+                oneTimeCodeAutofill: oneTimeCodeAutofill,
                 focused: $focused
             )
         }
@@ -228,6 +234,7 @@ private struct PinCodeHiddenField: View {
     let length: Int
     let enabled: Bool
     let accessibilityLabel: String?
+    let oneTimeCodeAutofill: Bool
     @FocusState.Binding var focused: Bool
 
     var body: some View {
@@ -243,7 +250,7 @@ private struct PinCodeHiddenField: View {
             .contentShape(Rectangle())
             .accessibilityIdentifier("pin_code_field")
             .modifier(OptionalAccessibilityLabel(label: accessibilityLabel))
-            .modifier(SystemKeyboardTraits(variant: variant))
+            .modifier(SystemKeyboardTraits(variant: variant, oneTimeCodeAutofill: oneTimeCodeAutofill))
     }
 
     private var clampedBinding: Binding<String> {
@@ -256,20 +263,26 @@ private struct PinCodeHiddenField: View {
 
 private struct SystemKeyboardTraits: ViewModifier {
     let variant: LemonadePinCodeVariant
+    let oneTimeCodeAutofill: Bool
 
     func body(content: Content) -> some View {
         #if os(iOS)
-        switch variant {
-        case .numeric:
-            content
-                .keyboardType(.numberPad)
-                .textContentType(.oneTimeCode)
-        case .alphanumeric:
-            content
-                .keyboardType(.asciiCapable)
-                .textInputAutocapitalization(.never)
-                .textContentType(.oneTimeCode)
+        // Deliberately NOT `nil`: an unset contentType does NOT stop iOS surfacing the
+        // "From Messages" OTC suggestion. `.username` (any non-OTC, non-nil type) overrides
+        // that heuristic. Verified on-device; do not change to nil without re-verifying.
+        let contentType: UITextContentType = oneTimeCodeAutofill ? .oneTimeCode : .username
+        Group {
+            switch variant {
+            case .numeric:
+                content
+                    .keyboardType(.numberPad)
+            case .alphanumeric:
+                content
+                    .keyboardType(.asciiCapable)
+                    .textInputAutocapitalization(.never)
+            }
         }
+        .textContentType(contentType)
         #else
         content
         #endif
