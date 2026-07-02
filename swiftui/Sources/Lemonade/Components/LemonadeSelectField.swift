@@ -135,6 +135,9 @@ private struct LemonadeSelectFieldView<LeadingContent: View>: View {
                 }
                 .padding(.horizontal, TextFieldConstants.horizontalPadding)
                 .padding(.vertical, TextFieldConstants.verticalPadding)
+                // Hit-test the whole field, not just the opaque text + chevron. Without this the
+                // empty space around the Spacer falls through and taps there don't register.
+                .contentShape(Rectangle())
             }
             .buttonStyle(PlainButtonStyle())
             .disabled(!enabled)
