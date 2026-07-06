@@ -101,7 +101,7 @@ private fun CoreIconButton(
     val colors = resolveColors(
         variant = variant,
         type = type,
-    )
+    ).adjustedForDisabledFill(enabled = enabled, variant = variant, type = type)
     val animatedBackgroundColor by animateColorAsState(
         targetValue = when {
             isPressed -> colors.backgroundPressedColor
@@ -111,18 +111,11 @@ private fun CoreIconButton(
     )
     val sizeData = size.toSizeData(shape = shape)
 
-    // `bgSubtle` backdrop is drawn BEFORE the disabled [Modifier.alpha] scope. Compose applies
-    // alpha as a graphics layer wrapping subsequent draws only — so when disabled, the 50% alpha
-    // blends the colored fill into the opaque backdrop instead of into whatever is behind the
-    // button. When enabled, the opaque colored fill fully covers the backdrop. Ghost buttons have
-    // no fill, so they skip the backdrop entirely and stay transparent when disabled.
+    // When disabled, wrap the fill and content in a single alpha graphics layer so the whole
+    // button — container and content together — dims to 50% as one group, matching the Figma
+    // disabled treatment (group opacity, letting the underlying surface show through).
     val disabledModifier = if (!enabled) {
-        val backdrop = if (type == LemonadeButtonType.Ghost) {
-            Modifier
-        } else {
-            Modifier.background(color = LocalColors.current.background.bgSubtle)
-        }
-        backdrop.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+        Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
     } else {
         Modifier
     }
@@ -177,6 +170,26 @@ private fun resolveColors(
         LemonadeButtonVariant.Neutral -> resolveNeutralColors(type = type)
         LemonadeButtonVariant.Critical -> resolveCriticalColors(type = type)
     }
+
+// Secondary Solid's fill is an opaque dark inverse. Figma dims it to `opacity40` when disabled,
+// while every other variant — and all content — dims to `opacityDisabled`. The disabled
+// [Modifier.alpha] in [CoreIconButton] already multiplies the whole button by `opacityDisabled`,
+// so pre-scale just this fill by the ratio of the two, letting them multiply out to `opacity40`.
+@Composable
+private fun IconButtonColorData.adjustedForDisabledFill(
+    enabled: Boolean,
+    variant: LemonadeButtonVariant,
+    type: LemonadeButtonType,
+): IconButtonColorData {
+    val isSecondarySolid = variant == LemonadeButtonVariant.Secondary &&
+        type == LemonadeButtonType.Solid
+    if (enabled || !isSecondarySolid) return this
+    val opacities = LocalOpacities.current
+    val fillScale = opacities.base.opacity40 / opacities.state.opacityDisabled
+    return copy(
+        backgroundColor = backgroundColor.copy(alpha = backgroundColor.alpha * fillScale),
+    )
+}
 
 @Composable
 private fun resolvePrimaryColors(type: LemonadeButtonType): IconButtonColorData =

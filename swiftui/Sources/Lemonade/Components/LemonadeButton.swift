@@ -371,63 +371,63 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
         let colors = resolveButtonColors(variant: variant, type: type)
         let buttonShape = RoundedRectangle(cornerRadius: cornerRadius)
 
-        // The ZStack backdrop paints an opaque `bgSubtle` rectangle behind the button. It sits
-        // OUTSIDE the `.opacity` modifier applied to the SwiftUI.Button, so the disabled 50%
-        // opacity blends the colored fill into the backdrop instead of into whatever happens to
-        // be drawn behind (e.g. a scrolling list under a floating footer).
+        // When disabled, the whole button — fill and content together — dims to 50% via a single
+        // `.opacity` modifier on the SwiftUI.Button, matching the Figma disabled treatment (group
+        // opacity, letting the underlying surface show through).
         let pressedOpacity = isPressed ? LemonadeTheme.opacity.state.opacityPressed : LemonadeTheme.opacity.base.opacity100
         let disabledOpacity = (enabled || loading) ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled
-        ZStack {
-            if !enabled, type != .ghost {
-                buttonShape.fill(LemonadeTheme.colors.background.bgSubtle)
-            }
-
-            SwiftUI.Button(action: onClick) {
-                HStack(spacing: 0) {
-                    if !loading, let leadingSlot = leadingSlot {
-                        leadingSlot(colors)
-                    }
-
-                    HStack(spacing: 0) {
-                        Spacer(minLength: 0)
-                        ZStack {
-                            // Hide the content with opacity while loading instead of removing it
-                            // from the hierarchy. A removed view fades out at its old absolute
-                            // position, so if the button's frame animates at the same time the
-                            // content detaches and fades mid-screen while the spinner rides the
-                            // button to its new position. Kept in the layout, it moves with the
-                            // button.
-                            contentSlot(colors)
-                                .opacity(loading ? 0 : 1)
-
-                            if loading {
-                                LemonadeUi.Spinner(tint: colors.contentColor)
-                            }
-                        }
-                        Spacer(minLength: 0)
-                    }
-                    .padding(.vertical, size.contentData.verticalPadding)
-                    .padding(.horizontal, size.contentData.horizontalPadding)
-                    .if(expandContents) { view in
-                        view.frame(maxWidth: .infinity)
-                    }
-
-                    if !loading, let trailingSlot = trailingSlot {
-                        trailingSlot(colors)
-                    }
+        // Secondary Solid's opaque inverse fill dims to `opacity40` when disabled, not
+        // `opacityDisabled`. The `.opacity(… disabledOpacity)` below already dims the whole button
+        // by `opacityDisabled`, so pre-scale just the fill by the ratio so they multiply out to
+        // `opacity40`.
+        let disabledFillScale = (!enabled && variant == .secondary && type == .solid)
+            ? LemonadeTheme.opacity.base.opacity40 / LemonadeTheme.opacity.state.opacityDisabled
+            : 1.0
+        SwiftUI.Button(action: onClick) {
+            HStack(spacing: 0) {
+                if !loading, let leadingSlot = leadingSlot {
+                    leadingSlot(colors)
                 }
-                .frame(height: size.contentData.requiredHeight)
-                .frame(minWidth: size.contentData.minWidth)
-                .background(buttonShape.fill(colors.backgroundColor))
-                // Keep the rounded hit target the removed .clipShape used to provide, without
-                // reintroducing its offscreen pass.
-                .contentShape(buttonShape)
+
+                HStack(spacing: 0) {
+                    Spacer(minLength: 0)
+                    ZStack {
+                        // Hide the content with opacity while loading instead of removing it
+                        // from the hierarchy. A removed view fades out at its old absolute
+                        // position, so if the button's frame animates at the same time the
+                        // content detaches and fades mid-screen while the spinner rides the
+                        // button to its new position. Kept in the layout, it moves with the
+                        // button.
+                        contentSlot(colors)
+                            .opacity(loading ? 0 : 1)
+
+                        if loading {
+                            LemonadeUi.Spinner(tint: colors.contentColor)
+                        }
+                    }
+                    Spacer(minLength: 0)
+                }
+                .padding(.vertical, size.contentData.verticalPadding)
+                .padding(.horizontal, size.contentData.horizontalPadding)
+                .if(expandContents) { view in
+                    view.frame(maxWidth: .infinity)
+                }
+
+                if !loading, let trailingSlot = trailingSlot {
+                    trailingSlot(colors)
+                }
             }
-            .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
-            .opacity(pressedOpacity * disabledOpacity)
-            .animation(.easeInOut(duration: 0.1), value: isPressed)
-            .disabled(!enabled || loading)
+            .frame(height: size.contentData.requiredHeight)
+            .frame(minWidth: size.contentData.minWidth)
+            .background(buttonShape.fill(colors.backgroundColor.opacity(disabledFillScale)))
+            // Keep the rounded hit target the removed .clipShape used to provide, without
+            // reintroducing its offscreen pass.
+            .contentShape(buttonShape)
         }
+        .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
+        .opacity(pressedOpacity * disabledOpacity)
+        .animation(.easeInOut(duration: 0.1), value: isPressed)
+        .disabled(!enabled || loading)
         .fixedSize(horizontal: false, vertical: true)
     }
 }

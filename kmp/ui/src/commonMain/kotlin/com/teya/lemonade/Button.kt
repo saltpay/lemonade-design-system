@@ -70,10 +70,9 @@ public fun LemonadeUi.Button(
     val colors = resolveButtonColors(
         variant = variant,
         type = type,
-    )
+    ).adjustedForDisabledFill(enabled = enabled, variant = variant, type = type)
     CoreButton(
         colors = colors,
-        type = type,
         size = size,
         modifier = modifier,
         enabled = enabled,
@@ -151,10 +150,9 @@ public fun LemonadeUi.Button(
     val colors = resolveButtonColors(
         variant = variant,
         type = type,
-    )
+    ).adjustedForDisabledFill(enabled = enabled, variant = variant, type = type)
     CoreButton(
         colors = colors,
-        type = type,
         size = size,
         enabled = enabled,
         interactionSource = interactionSource,
@@ -254,6 +252,30 @@ private fun resolveButtonColors(
         LemonadeButtonVariant.Critical -> resolveCriticalButtonColors(type = type)
     }
 
+// Secondary Solid's fill is an opaque dark inverse. Figma dims it to `opacity40` when disabled,
+// while every other variant — and all content — dims to `opacityDisabled`. The disabled
+// [Modifier.alpha] in [CoreButton] already multiplies the whole button by `opacityDisabled`, so
+// pre-scale just this fill by the ratio of the two, letting them multiply out to `opacity40`.
+@Composable
+private fun LemonadeButtonColors.adjustedForDisabledFill(
+    enabled: Boolean,
+    variant: LemonadeButtonVariant,
+    type: LemonadeButtonType,
+): LemonadeButtonColors {
+    val isSecondarySolid = variant == LemonadeButtonVariant.Secondary &&
+        type == LemonadeButtonType.Solid
+    if (enabled || !isSecondarySolid) return this
+    val opacities = LocalOpacities.current
+    val fillScale = opacities.base.opacity40 / opacities.state.opacityDisabled
+    return LemonadeButtonColors(
+        contentColor = contentColor,
+        solidBackgroundColor = solidBackgroundColor.copy(
+            alpha = solidBackgroundColor.alpha * fillScale,
+        ),
+        pressedBackgroundColor = pressedBackgroundColor,
+    )
+}
+
 @Composable
 private fun resolvePrimaryButtonColors(type: LemonadeButtonType): LemonadeButtonColors =
     when (type) {
@@ -349,7 +371,6 @@ private fun CoreButton(
     trailingSlot: (@Composable RowScope.(LemonadeButtonColors) -> Unit)?,
     onClick: () -> Unit,
     colors: LemonadeButtonColors,
-    type: LemonadeButtonType,
     size: LemonadeButtonSize,
     expandContents: Boolean,
     enabled: Boolean,
@@ -365,18 +386,11 @@ private fun CoreButton(
             colors.solidBackgroundColor
         },
     )
-    // `bgSubtle` backdrop is drawn BEFORE the disabled [Modifier.alpha] scope. Compose applies
-    // alpha as a graphics layer wrapping subsequent draws only — so when disabled, the 50% alpha
-    // blends the colored fill into the opaque backdrop instead of into whatever is behind the
-    // button. When enabled, the opaque colored fill fully covers the backdrop. Ghost buttons have
-    // no fill, so they skip the backdrop entirely and stay transparent when disabled.
+    // When disabled, wrap the fill and content in a single alpha graphics layer so the whole
+    // button — container and content together — dims to 50% as one group, matching the Figma
+    // disabled treatment (group opacity, letting the underlying surface show through).
     val disabledModifier = if (!enabled) {
-        val backdrop = if (type == LemonadeButtonType.Ghost) {
-            Modifier
-        } else {
-            Modifier.background(color = LocalColors.current.background.bgSubtle)
-        }
-        backdrop.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+        Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
     } else {
         Modifier
     }
