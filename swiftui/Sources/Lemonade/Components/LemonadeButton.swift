@@ -375,7 +375,7 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
         // `.opacity` modifier on the SwiftUI.Button, matching the Figma disabled treatment (group
         // opacity, letting the underlying surface show through).
         let pressedOpacity = isPressed ? LemonadeTheme.opacity.state.opacityPressed : LemonadeTheme.opacity.base.opacity100
-        let disabledOpacity = (enabled || loading) ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled
+        let disabledOpacity = enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled
         // Secondary Solid's opaque inverse fill dims to `opacity40` when disabled, not
         // `opacityDisabled`. The `.opacity(… disabledOpacity)` below already dims the whole button
         // by `opacityDisabled`, so pre-scale just the fill by the ratio so they multiply out to
