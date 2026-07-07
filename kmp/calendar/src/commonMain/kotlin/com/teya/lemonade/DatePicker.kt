@@ -51,12 +51,39 @@ private const val CENTER_PAGE = PAGES_TOTAL / 2
 /**
  * State holder for [LemonadeUi.DatePicker].
  *
- * Holds the currently selected date as observable state, plus the selectable date range.
- * Observe [selectedDate] to react to user selections.
+ * Holds the currently selected date as observable state, plus the selectable date range and
+ * an observable [disabledDates] set that greys out (and blocks selection of) specific days
+ * regardless of [minDate] / [maxDate].
+ *
+ * ## Dynamic disable via API
+ *
+ * Because [disabledDates] is a Compose `mutableStateOf` set, callers can update it in response
+ * to month navigation and the picker will re-render automatically. Wire it up alongside the
+ * `onMonthDisplayed` callback on [LemonadeUi.DatePicker]:
+ *
+ * ```kotlin
+ * val state = rememberDatePickerState(initialDate = today)
+ * val scope = rememberCoroutineScope()
+ *
+ * LemonadeUi.DatePicker(
+ *     state = state,
+ *     monthFormatter = ::formatMonth,
+ *     weekdayAbbreviations = weekdayAbbreviations,
+ *     onMonthDisplayed = { yearMonth ->
+ *         scope.launch { state.disabledDates = repository.disabledDatesFor(yearMonth) }
+ *     },
+ * )
+ * ```
+ *
+ * The caller keeps ownership of caching / cancellation / error handling; the picker just
+ * observes whatever set is currently in the state and treats members as non-interactive.
  *
  * @param initialDate The initially selected date — seeds [selectedDate].
  * @param minDate Minimum selectable date.
  * @param maxDate Maximum selectable date.
+ * @param initialDisabledDates Days that start out disabled (greyed out + non-tappable).
+ * Update [disabledDates] later — including from an API call keyed on the currently displayed
+ * month — to change which days are blocked.
  * @see rememberDatePickerState
  */
 @Stable
@@ -64,9 +91,17 @@ public class DatePickerState internal constructor(
     initialDate: LocalDate? = null,
     public val minDate: LocalDate? = null,
     public val maxDate: LocalDate? = null,
+    initialDisabledDates: Set<LocalDate> = emptySet(),
 ) {
     public var selectedDate: LocalDate? by mutableStateOf(initialDate)
         internal set
+
+    /**
+     * Days rendered as disabled (greyed out and non-tappable) in addition to any [minDate] /
+     * [maxDate] bounds. Callers update this in response to `onMonthDisplayed` when the disabled
+     * set needs to be fetched from an API keyed on the visible month. Empty by default.
+     */
+    public var disabledDates: Set<LocalDate> by mutableStateOf(initialDisabledDates)
 }
 
 /**
@@ -75,33 +110,60 @@ public class DatePickerState internal constructor(
  * @param initialDate The initially selected date.
  * @param minDate Minimum selectable date.
  * @param maxDate Maximum selectable date.
+ * @param initialDisabledDates Days that start out disabled — pass an empty set and mutate
+ * [DatePickerState.disabledDates] later when the disabled list comes from an async source.
  */
 @Composable
 public fun rememberDatePickerState(
     initialDate: LocalDate? = null,
     minDate: LocalDate? = null,
     maxDate: LocalDate? = null,
+    initialDisabledDates: Set<LocalDate> = emptySet(),
 ): DatePickerState =
     remember(initialDate, minDate, maxDate) {
         DatePickerState(
             initialDate = initialDate,
             minDate = minDate,
             maxDate = maxDate,
+            initialDisabledDates = initialDisabledDates,
         )
     }
+
+/**
+ * Binary-compatibility shim: preserves the original three-parameter overload of
+ * [rememberDatePickerState] so consumers compiled against the pre-`initialDisabledDates`
+ * signature keep linking. Delegates to the current implementation with an empty disabled set.
+ */
+@Deprecated("kept for binary compatibility", level = DeprecationLevel.HIDDEN)
+@Composable
+public fun rememberDatePickerState(
+    initialDate: LocalDate? = null,
+    minDate: LocalDate? = null,
+    maxDate: LocalDate? = null,
+): DatePickerState = rememberDatePickerState(
+    initialDate = initialDate,
+    minDate = minDate,
+    maxDate = maxDate,
+    initialDisabledDates = emptySet(),
+)
 
 /**
  * State holder for [LemonadeUi.DateRangePicker].
  *
  * Holds the currently selected start/end dates as observable state, plus the selectable
- * date range and maximum range length. Observe [selectedStartDate] and [selectedEndDate]
- * to react to user selections.
+ * date range, maximum range length, and an observable [disabledDates] set that greys out
+ * (and blocks selection of) specific days regardless of [minDate] / [maxDate].
+ *
+ * See [DatePickerState] for the dynamic-disable pattern — the same `onMonthDisplayed`
+ * approach applies. A disabled day appearing inside a completed range is greyed out but
+ * doesn't break the range; the user simply can't pick it as start or end.
  *
  * @param initialStartDate Initial start date — seeds [selectedStartDate].
  * @param initialEndDate Initial end date — seeds [selectedEndDate].
  * @param minDate Minimum selectable date.
  * @param maxDate Maximum selectable date.
  * @param maxRangeDays Maximum number of days allowed in a date range selection.
+ * @param initialDisabledDates Days that start out disabled (greyed out + non-tappable).
  * @see rememberDateRangePickerState
  */
 @Stable
@@ -111,11 +173,19 @@ public class DateRangePickerState internal constructor(
     public val minDate: LocalDate? = null,
     public val maxDate: LocalDate? = null,
     public val maxRangeDays: Int? = null,
+    initialDisabledDates: Set<LocalDate> = emptySet(),
 ) {
     public var selectedStartDate: LocalDate? by mutableStateOf(initialStartDate)
         internal set
     public var selectedEndDate: LocalDate? by mutableStateOf(initialEndDate)
         internal set
+
+    /**
+     * Days rendered as disabled (greyed out and non-tappable) in addition to any [minDate] /
+     * [maxDate] bounds. Update this in response to `onMonthDisplayed` when the disabled set
+     * needs to be fetched from an API keyed on the visible month. Empty by default.
+     */
+    public var disabledDates: Set<LocalDate> by mutableStateOf(initialDisabledDates)
 }
 
 /**
@@ -126,6 +196,8 @@ public class DateRangePickerState internal constructor(
  * @param minDate Minimum selectable date.
  * @param maxDate Maximum selectable date.
  * @param maxRangeDays Maximum number of days allowed in a date range selection.
+ * @param initialDisabledDates Days that start out disabled — pass an empty set and mutate
+ * [DateRangePickerState.disabledDates] later when the disabled list comes from an async source.
  */
 @Composable
 public fun rememberDateRangePickerState(
@@ -134,6 +206,7 @@ public fun rememberDateRangePickerState(
     minDate: LocalDate? = null,
     maxDate: LocalDate? = null,
     maxRangeDays: Int? = null,
+    initialDisabledDates: Set<LocalDate> = emptySet(),
 ): DateRangePickerState =
     remember(initialStartDate, initialEndDate, minDate, maxDate, maxRangeDays) {
         DateRangePickerState(
@@ -142,8 +215,31 @@ public fun rememberDateRangePickerState(
             minDate = minDate,
             maxDate = maxDate,
             maxRangeDays = maxRangeDays,
+            initialDisabledDates = initialDisabledDates,
         )
     }
+
+/**
+ * Binary-compatibility shim: preserves the original five-parameter overload of
+ * [rememberDateRangePickerState] so consumers compiled against the pre-`initialDisabledDates`
+ * signature keep linking. Delegates to the current implementation with an empty disabled set.
+ */
+@Deprecated("kept for binary compatibility", level = DeprecationLevel.HIDDEN)
+@Composable
+public fun rememberDateRangePickerState(
+    initialStartDate: LocalDate? = null,
+    initialEndDate: LocalDate? = null,
+    minDate: LocalDate? = null,
+    maxDate: LocalDate? = null,
+    maxRangeDays: Int? = null,
+): DateRangePickerState = rememberDateRangePickerState(
+    initialStartDate = initialStartDate,
+    initialEndDate = initialEndDate,
+    minDate = minDate,
+    maxDate = maxDate,
+    maxRangeDays = maxRangeDays,
+    initialDisabledDates = emptySet(),
+)
 
 /**
  * A single-date picker widget from the Lemonade Design System.
@@ -193,6 +289,7 @@ public fun LemonadeUi.DatePicker(
         onDateSelected = { date -> state.selectedDate = date },
         minDate = state.minDate,
         maxDate = state.maxDate,
+        disabledDates = state.disabledDates,
         firstDayOfWeek = firstDayOfWeek,
         today = today,
         onMonthDisplayed = onMonthDisplayed,
@@ -297,6 +394,7 @@ public fun LemonadeUi.DateRangePicker(
         },
         minDate = effectiveMin,
         maxDate = effectiveMax,
+        disabledDates = state.disabledDates,
         firstDayOfWeek = firstDayOfWeek,
         today = today,
         onMonthDisplayed = onMonthDisplayed,
@@ -343,6 +441,7 @@ public fun LemonadeUi.DateRangePicker(
     )
 }
 
+@Suppress("LongParameterList")
 @Composable
 private fun CoreDatePicker(
     modifier: Modifier,
@@ -352,6 +451,7 @@ private fun CoreDatePicker(
     onDateSelected: (LocalDate) -> Unit,
     minDate: LocalDate?,
     maxDate: LocalDate?,
+    disabledDates: Set<LocalDate>,
     firstDayOfWeek: DayOfWeek,
     today: LocalDate,
     onMonthDisplayed: ((YearMonth) -> Unit)?,
@@ -453,6 +553,7 @@ private fun CoreDatePicker(
                 today = today,
                 minDate = minDate,
                 maxDate = maxDate,
+                disabledDates = disabledDates,
                 firstDayOfWeek = firstDayOfWeek,
                 onDateSelected = onDateSelected,
             )
@@ -460,6 +561,7 @@ private fun CoreDatePicker(
     }
 }
 
+@Suppress("LongParameterList")
 @Composable
 private fun MonthGrid(
     yearMonth: YearMonth,
@@ -467,6 +569,7 @@ private fun MonthGrid(
     today: LocalDate,
     minDate: LocalDate?,
     maxDate: LocalDate?,
+    disabledDates: Set<LocalDate>,
     firstDayOfWeek: DayOfWeek,
     onDateSelected: (LocalDate) -> Unit,
 ) {
@@ -500,6 +603,7 @@ private fun MonthGrid(
 
                     val isBeforeMin = minDate != null && current < minDate
                     val isAfterMax = maxDate != null && current > maxDate
+                    val isExplicitlyDisabled = current in disabledDates
 
                     ContentCell(
                         modifier = Modifier
@@ -508,7 +612,7 @@ private fun MonthGrid(
                         text = "${current.day}",
                         isCurrent = current == today,
                         isSelected = current in selectedDates,
-                        isEnabled = !isBeforeMin && !isAfterMax,
+                        isEnabled = !isBeforeMin && !isAfterMax && !isExplicitlyDisabled,
                         isOutsideVisibleRange = current.yearMonth != yearMonth,
                         isInsideSelectedRange = isInRange,
                         onClick = { onDateSelected(current) },

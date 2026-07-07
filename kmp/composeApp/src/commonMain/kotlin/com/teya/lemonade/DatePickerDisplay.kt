@@ -9,11 +9,19 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import kotlinx.coroutines.delay
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.YearMonth
 import kotlinx.datetime.number
+import kotlinx.datetime.plus
 import kotlinx.datetime.todayIn
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -117,6 +125,31 @@ internal fun DatePickerDisplay() {
             )
         }
 
+        DatePickerSection(title = "Dynamic disabled dates (fetched per visible month)") {
+            val state = rememberDatePickerState(initialDate = today)
+            var currentMonth by remember { mutableStateOf(YearMonth(today.year, today.month.number)) }
+
+            // Simulated per-month "sparse" API: every 3rd, 8th, 14th, 21st and 27th of any month
+            // comes back as disabled. Swap for a repository call in real usage.
+            LaunchedEffect(currentMonth) {
+                delay(FAKE_FETCH_DELAY_MS)
+                state.disabledDates = disabledDatesFor(currentMonth)
+            }
+
+            LemonadeUi.DatePicker(
+                state = state,
+                monthFormatter = ::formatMonth,
+                weekdayAbbreviations = weekdayAbbreviations,
+                onMonthDisplayed = { yearMonth -> currentMonth = yearMonth },
+            )
+            LemonadeUi.Text(
+                text = "Selected: ${state.selectedDate?.let { formatDate(it) }} — " +
+                    "disabled this month: ${state.disabledDates.size}",
+                textStyle = LemonadeTheme.typography.bodySmallRegular,
+                color = LemonadeTheme.colors.content.contentSecondary,
+            )
+        }
+
         DatePickerSection(title = "Date Range Mode") {
             val state = rememberDateRangePickerState()
             LemonadeUi.DateRangePicker(
@@ -178,3 +211,14 @@ private fun daysInMonth(
     }
 
 private fun formatDate(date: LocalDate): String = "${date.day}/${date.month.number}/${date.year}"
+
+private const val FAKE_FETCH_DELAY_MS = 200L
+private val FAKE_DISABLED_DAY_OFFSETS = intArrayOf(2, 7, 13, 20, 26)
+
+private fun disabledDatesFor(yearMonth: YearMonth): Set<LocalDate> {
+    val firstOfMonth = LocalDate(yearMonth.year, yearMonth.month.number, 1)
+    return FAKE_DISABLED_DAY_OFFSETS
+        .map { offset -> firstOfMonth.plus(offset, DateTimeUnit.DAY) }
+        .filter { it.month == yearMonth.month }
+        .toSet()
+}
