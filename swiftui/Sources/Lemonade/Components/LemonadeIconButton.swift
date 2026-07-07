@@ -250,47 +250,46 @@ private struct LemonadeIconButtonView: View {
         let bgColor: Color = isHovering ? colors.backgroundHoverColor : colors.backgroundColor
         let buttonShape = RoundedRectangle(cornerRadius: cornerRadius)
 
-        // The ZStack backdrop paints an opaque `bgSubtle` rectangle behind the button. It sits
-        // OUTSIDE the `.opacity` modifier applied to the SwiftUI.Button, so the disabled 50%
-        // opacity blends the colored fill into the backdrop instead of into whatever happens to
-        // be drawn behind. Ghost buttons have no fill, so they skip the backdrop entirely.
-        ZStack {
-            if !enabled, type != .ghost {
-                buttonShape.fill(LemonadeTheme.colors.background.bgSubtle)
-            }
-
-            SwiftUI.Button(action: onClick) {
-                Group {
-                    if loading {
-                        LemonadeUi.Spinner(tint: colors.contentColor)
-                    } else {
-                        LemonadeUi.Icon(
-                            icon: icon,
-                            contentDescription: contentDescription,
-                            size: size.iconButtonSizeData.iconSize,
-                            tint: colors.contentColor
-                        )
-                    }
+        // When disabled, the whole button — fill and content together — dims to 50% via a single
+        // `.opacity` modifier on the SwiftUI.Button, matching the Figma disabled treatment (group
+        // opacity, letting the underlying surface show through).
+        // Secondary Solid's opaque inverse fill dims to `opacity40` when disabled, not
+        // `opacityDisabled`. The `.opacity(… opacityDisabled)` below already dims the whole button,
+        // so pre-scale just the fill by the ratio so they multiply out to `opacity40`.
+        let disabledFillScale = (!enabled && variant == .secondary && type == .solid)
+            ? LemonadeTheme.opacity.base.opacity40 / LemonadeTheme.opacity.state.opacityDisabled
+            : 1.0
+        SwiftUI.Button(action: onClick) {
+            Group {
+                if loading {
+                    LemonadeUi.Spinner(tint: colors.contentColor)
+                } else {
+                    LemonadeUi.Icon(
+                        icon: icon,
+                        contentDescription: contentDescription,
+                        size: size.iconButtonSizeData.iconSize,
+                        tint: colors.contentColor
+                    )
                 }
-                .padding(size.iconButtonSizeData.innerPadding)
-                .background(
-                    buttonShape
-                        .fill(bgColor)
-                        .animation(.easeInOut(duration: 0.1), value: bgColor)
-                )
-                // Keep the rounded hit target the removed .clipShape used to provide, without
-                // reintroducing its offscreen pass.
-                .contentShape(buttonShape)
             }
-            .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
-            .opacity(isPressed ? .opacity.opacityPressed : .opacity.opacity100)
-            .animation(.easeInOut(duration: 0.1), value: isPressed)
-            .onHover { hovering in
-                isHovering = hovering
-            }
-            .disabled(!enabled || loading)
-            .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+            .padding(size.iconButtonSizeData.innerPadding)
+            .background(
+                buttonShape
+                    .fill(bgColor.opacity(disabledFillScale))
+                    .animation(.easeInOut(duration: 0.1), value: bgColor)
+            )
+            // Keep the rounded hit target the removed .clipShape used to provide, without
+            // reintroducing its offscreen pass.
+            .contentShape(buttonShape)
         }
+        .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
+        .opacity(isPressed ? .opacity.opacityPressed : .opacity.opacity100)
+        .animation(.easeInOut(duration: 0.1), value: isPressed)
+        .onHover { hovering in
+            isHovering = hovering
+        }
+        .disabled(!enabled || loading)
+        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
     }
 }
 
