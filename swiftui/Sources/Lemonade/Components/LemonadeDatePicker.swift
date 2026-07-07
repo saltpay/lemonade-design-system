@@ -18,21 +18,28 @@ public struct LemonadeDatePickerState {
     /// on the visible month. Compared using calendar-day granularity (time components ignored).
     ///
     /// > Note: `onMonthDisplayed` does not fire for the initially displayed month. Seed the
-    /// > first month synchronously via ``init(initialDate:minDate:maxDate:initialDisabledDates:)``
-    /// > if the disabled set is already known, or trigger the first fetch yourself in an
+    /// > first month synchronously via the initializer's `initialDisabledDates` parameter if
+    /// > the disabled set is already known, or trigger the first fetch yourself in an
     /// > `.onAppear` / `.task` on your view.
     public var disabledDates: Set<Date>
+    /// The year+month the pager opens on. When nil (the default), the picker infers this from
+    /// ``selectedDate`` (if set) or falls back to today's year+month. Callers usually leave this
+    /// nil — pass an explicit value only when the initial page should differ from
+    /// ``selectedDate``'s month.
+    public let initialDisplayedMonth: DateComponents?
 
     public init(
         initialDate: Date? = nil,
         minDate: Date? = nil,
         maxDate: Date? = nil,
-        initialDisabledDates: Set<Date> = []
+        initialDisabledDates: Set<Date> = [],
+        initialDisplayedMonth: DateComponents? = nil
     ) {
         self.selectedDate = initialDate
         self.minDate = minDate
         self.maxDate = maxDate
         self.disabledDates = initialDisabledDates
+        self.initialDisplayedMonth = initialDisplayedMonth
     }
 }
 
@@ -52,6 +59,9 @@ public struct LemonadeDateRangePickerState {
     /// but doesn't break the range — the user just can't pick it as start or end.
     /// Compared using calendar-day granularity.
     public var disabledDates: Set<Date>
+    /// The year+month the pager opens on. When nil (the default), the picker infers this from
+    /// ``selectedStartDate`` (if set) or falls back to today's year+month.
+    public let initialDisplayedMonth: DateComponents?
 
     public init(
         initialStartDate: Date? = nil,
@@ -59,7 +69,8 @@ public struct LemonadeDateRangePickerState {
         minDate: Date? = nil,
         maxDate: Date? = nil,
         maxRangeDays: Int? = nil,
-        initialDisabledDates: Set<Date> = []
+        initialDisabledDates: Set<Date> = [],
+        initialDisplayedMonth: DateComponents? = nil
     ) {
         self.selectedStartDate = initialStartDate
         self.selectedEndDate = initialEndDate
@@ -67,6 +78,7 @@ public struct LemonadeDateRangePickerState {
         self.maxDate = maxDate
         self.maxRangeDays = maxRangeDays
         self.disabledDates = initialDisabledDates
+        self.initialDisplayedMonth = initialDisplayedMonth
     }
 }
 
@@ -170,6 +182,10 @@ private struct LemonadeDatePickerView: View {
             minDate: state.minDate,
             maxDate: state.maxDate,
             disabledDates: state.disabledDates,
+            // Prefer the caller's explicit override, else the selected date's month, else nil
+            // (which the CoreDatePickerView reads as today's month).
+            initialDisplayedMonth: state.initialDisplayedMonth
+                ?? state.selectedDate.map { Calendar.current.dateComponents([.year, .month], from: $0) },
             onMonthDisplayed: onMonthDisplayed
         )
     }
@@ -229,6 +245,8 @@ private struct LemonadeDateRangePickerView: View {
             minDate: effectiveMin,
             maxDate: effectiveMax,
             disabledDates: state.disabledDates,
+            initialDisplayedMonth: state.initialDisplayedMonth
+                ?? state.selectedStartDate.map { Calendar.current.dateComponents([.year, .month], from: $0) },
             onMonthDisplayed: onMonthDisplayed
         )
     }
@@ -244,7 +262,44 @@ private struct CoreDatePickerView: View {
     let minDate: Date?
     let maxDate: Date?
     let disabledDates: Set<Date>
+    let initialDisplayedMonth: DateComponents?
     let onMonthDisplayed: ((DateComponents) -> Void)?
+
+    init(
+        monthFormatter: @escaping (Int) -> String,
+        weekdayAbbreviations: [String],
+        selectedDates: Set<Date>,
+        onDateSelected: @escaping (Date) -> Void,
+        minDate: Date?,
+        maxDate: Date?,
+        disabledDates: Set<Date>,
+        initialDisplayedMonth: DateComponents? = nil,
+        onMonthDisplayed: ((DateComponents) -> Void)?
+    ) {
+        self.monthFormatter = monthFormatter
+        self.weekdayAbbreviations = weekdayAbbreviations
+        self.selectedDates = selectedDates
+        self.onDateSelected = onDateSelected
+        self.minDate = minDate
+        self.maxDate = maxDate
+        self.disabledDates = disabledDates
+        self.initialDisplayedMonth = initialDisplayedMonth
+        self.onMonthDisplayed = onMonthDisplayed
+
+        // Seed the pager on the caller's requested month; falls back to 0 (today's month) when
+        // no override is given. Anchoring on `today` keeps prev/next math consistent.
+        let calendar = Calendar.current
+        let startOfToday = CalendarUtils.startOfDay(Date())
+        let offset: Int
+        if let requested = initialDisplayedMonth,
+           let requestedDate = calendar.date(from: DateComponents(year: requested.year, month: requested.month, day: 1)),
+           let todayFirstOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: startOfToday)) {
+            offset = calendar.dateComponents([.month], from: todayFirstOfMonth, to: requestedDate).month ?? 0
+        } else {
+            offset = 0
+        }
+        _displayedMonthOffset = State(initialValue: offset)
+    }
 
     /// Disabled dates normalised to start-of-day so callers can pass anything without worrying
     /// about time components — matches how the min/max checks below use `startOfDay`.
@@ -255,7 +310,7 @@ private struct CoreDatePickerView: View {
     private let totalPages = 240
     private var centerPage: Int { totalPages / 2 }
     
-    @State private var displayedMonthOffset: Int = 0
+    @State private var displayedMonthOffset: Int
     
     private let calendar = Calendar.current
     private let today = CalendarUtils.startOfDay(Date())

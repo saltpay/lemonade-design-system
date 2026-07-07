@@ -101,6 +101,13 @@ public class DatePickerState internal constructor(
     public val minDate: LocalDate? = null,
     public val maxDate: LocalDate? = null,
     initialDisabledDates: Set<LocalDate> = emptySet(),
+    /**
+     * The year+month the pager opens on. When null (the default), the picker infers this from
+     * [initialDate] (if set) or falls back to today's year+month. Callers usually leave this
+     * null — pass an explicit value only when the initial page should differ from
+     * [initialDate]'s month.
+     */
+    public val initialDisplayedMonth: YearMonth? = null,
 ) {
     public var selectedDate: LocalDate? by mutableStateOf(initialDate)
         internal set
@@ -129,6 +136,8 @@ public class DatePickerState internal constructor(
  * @param maxDate Maximum selectable date.
  * @param initialDisabledDates Days that start out disabled — pass an empty set and mutate
  * [DatePickerState.disabledDates] later when the disabled list comes from an async source.
+ * @param initialDisplayedMonth The year+month the pager opens on. When null (the default), the
+ * picker infers this from [initialDate] (if set), or falls back to today's year+month.
  */
 @Composable
 public fun rememberDatePickerState(
@@ -136,15 +145,39 @@ public fun rememberDatePickerState(
     minDate: LocalDate? = null,
     maxDate: LocalDate? = null,
     initialDisabledDates: Set<LocalDate> = emptySet(),
+    initialDisplayedMonth: YearMonth? = null,
 ): DatePickerState =
-    remember(initialDate, minDate, maxDate, initialDisabledDates) {
+    remember(initialDate, minDate, maxDate, initialDisabledDates, initialDisplayedMonth) {
         DatePickerState(
             initialDate = initialDate,
             minDate = minDate,
             maxDate = maxDate,
             initialDisabledDates = initialDisabledDates,
+            initialDisplayedMonth = initialDisplayedMonth,
         )
     }
+
+/**
+ * Binary-compatibility shim: preserves the pre-`initialDisplayedMonth` four-parameter overload of
+ * [rememberDatePickerState] (introduced with `initialDisabledDates`, released before this
+ * change) so consumers compiled against it keep linking. Delegates with `null` — same as the
+ * defaulted behavior.
+ */
+@Deprecated("kept for binary compatibility", level = DeprecationLevel.HIDDEN)
+@Composable
+public fun rememberDatePickerState(
+    initialDate: LocalDate? = null,
+    minDate: LocalDate? = null,
+    maxDate: LocalDate? = null,
+    initialDisabledDates: Set<LocalDate> = emptySet(),
+): DatePickerState =
+    rememberDatePickerState(
+        initialDate = initialDate,
+        minDate = minDate,
+        maxDate = maxDate,
+        initialDisabledDates = initialDisabledDates,
+        initialDisplayedMonth = null,
+    )
 
 /**
  * Binary-compatibility shim: preserves the original three-parameter overload of
@@ -163,6 +196,7 @@ public fun rememberDatePickerState(
         minDate = minDate,
         maxDate = maxDate,
         initialDisabledDates = emptySet(),
+        initialDisplayedMonth = null,
     )
 
 /**
@@ -192,6 +226,11 @@ public class DateRangePickerState internal constructor(
     public val maxDate: LocalDate? = null,
     public val maxRangeDays: Int? = null,
     initialDisabledDates: Set<LocalDate> = emptySet(),
+    /**
+     * The year+month the pager opens on. When null (the default), the picker infers this from
+     * [initialStartDate] (if set) or falls back to today's year+month.
+     */
+    public val initialDisplayedMonth: YearMonth? = null,
 ) {
     public var selectedStartDate: LocalDate? by mutableStateOf(initialStartDate)
         internal set
@@ -233,8 +272,17 @@ public fun rememberDateRangePickerState(
     maxDate: LocalDate? = null,
     maxRangeDays: Int? = null,
     initialDisabledDates: Set<LocalDate> = emptySet(),
+    initialDisplayedMonth: YearMonth? = null,
 ): DateRangePickerState =
-    remember(initialStartDate, initialEndDate, minDate, maxDate, maxRangeDays, initialDisabledDates) {
+    remember(
+        initialStartDate,
+        initialEndDate,
+        minDate,
+        maxDate,
+        maxRangeDays,
+        initialDisabledDates,
+        initialDisplayedMonth,
+    ) {
         DateRangePickerState(
             initialStartDate = initialStartDate,
             initialEndDate = initialEndDate,
@@ -242,8 +290,34 @@ public fun rememberDateRangePickerState(
             maxDate = maxDate,
             maxRangeDays = maxRangeDays,
             initialDisabledDates = initialDisabledDates,
+            initialDisplayedMonth = initialDisplayedMonth,
         )
     }
+
+/**
+ * Binary-compatibility shim: preserves the pre-`initialDisplayedMonth` six-parameter overload of
+ * [rememberDateRangePickerState] so consumers compiled against it keep linking. Delegates with
+ * `null` — same as the defaulted behavior.
+ */
+@Deprecated("kept for binary compatibility", level = DeprecationLevel.HIDDEN)
+@Composable
+public fun rememberDateRangePickerState(
+    initialStartDate: LocalDate? = null,
+    initialEndDate: LocalDate? = null,
+    minDate: LocalDate? = null,
+    maxDate: LocalDate? = null,
+    maxRangeDays: Int? = null,
+    initialDisabledDates: Set<LocalDate> = emptySet(),
+): DateRangePickerState =
+    rememberDateRangePickerState(
+        initialStartDate = initialStartDate,
+        initialEndDate = initialEndDate,
+        minDate = minDate,
+        maxDate = maxDate,
+        maxRangeDays = maxRangeDays,
+        initialDisabledDates = initialDisabledDates,
+        initialDisplayedMonth = null,
+    )
 
 /**
  * Binary-compatibility shim: preserves the original five-parameter overload of
@@ -266,6 +340,7 @@ public fun rememberDateRangePickerState(
         maxDate = maxDate,
         maxRangeDays = maxRangeDays,
         initialDisabledDates = emptySet(),
+        initialDisplayedMonth = null,
     )
 
 /**
@@ -319,6 +394,7 @@ public fun LemonadeUi.DatePicker(
         disabledDates = state.disabledDates,
         firstDayOfWeek = firstDayOfWeek,
         today = today,
+        initialDisplayedMonth = state.initialDisplayedMonth ?: state.selectedDate?.let { YearMonth(it.year, it.month.number) },
         onMonthDisplayed = onMonthDisplayed,
     )
 }
@@ -424,6 +500,7 @@ public fun LemonadeUi.DateRangePicker(
         disabledDates = state.disabledDates,
         firstDayOfWeek = firstDayOfWeek,
         today = today,
+        initialDisplayedMonth = state.initialDisplayedMonth ?: state.selectedStartDate?.let { YearMonth(it.year, it.month.number) },
         onMonthDisplayed = onMonthDisplayed,
     )
 }
@@ -481,11 +558,18 @@ private fun CoreDatePicker(
     disabledDates: Set<LocalDate>,
     firstDayOfWeek: DayOfWeek,
     today: LocalDate,
+    initialDisplayedMonth: YearMonth?,
     onMonthDisplayed: ((YearMonth) -> Unit)?,
 ) {
+    // Anchor the pager math on today's month; the caller's `initialDisplayedMonth` only shifts
+    // the *initial* page, not the navigation math (`centerYearMonth = startMonth + offset`), so
+    // subsequent month-navigation logic keeps working relative to today.
     val startMonth = remember(today) { YearMonth(today.year, today.month.number) }
+    val initialPageOffset = remember(startMonth, initialDisplayedMonth) {
+        initialDisplayedMonth?.let { startMonth.monthsUntil(it) } ?: 0
+    }
 
-    val pagerState = rememberPagerState(initialPage = CENTER_PAGE) { PAGES_TOTAL }
+    val pagerState = rememberPagerState(initialPage = CENTER_PAGE + initialPageOffset) { PAGES_TOTAL }
     val coroutineScope = rememberCoroutineScope()
 
     val centerYearMonth = startMonth.plus(pagerState.currentPage.toLong() - CENTER_PAGE, DateTimeUnit.MONTH)
