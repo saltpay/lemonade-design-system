@@ -11,11 +11,23 @@ public struct LemonadeDatePickerState {
     public internal(set) var selectedDate: Date?
     public let minDate: Date?
     public let maxDate: Date?
-    
-    public init(initialDate: Date? = nil, minDate: Date? = nil, maxDate: Date? = nil) {
+    /// Days rendered as disabled (greyed out and non-tappable) in addition to any
+    /// ``minDate`` / ``maxDate`` bounds. Mutate freely — typically from the
+    /// ``LemonadeUi/DatePicker(state:monthFormatter:weekdayAbbreviations:onMonthDisplayed:)``
+    /// `onMonthDisplayed` callback — when the disabled set needs to come from an API keyed
+    /// on the visible month. Compared using calendar-day granularity (time components ignored).
+    public var disabledDates: Set<Date>
+
+    public init(
+        initialDate: Date? = nil,
+        minDate: Date? = nil,
+        maxDate: Date? = nil,
+        initialDisabledDates: Set<Date> = []
+    ) {
         self.selectedDate = initialDate
         self.minDate = minDate
         self.maxDate = maxDate
+        self.disabledDates = initialDisabledDates
     }
 }
 
@@ -30,19 +42,26 @@ public struct LemonadeDateRangePickerState {
     public let minDate: Date?
     public let maxDate: Date?
     public let maxRangeDays: Int?
-    
+    /// Days rendered as disabled (greyed out and non-tappable) in addition to any
+    /// ``minDate`` / ``maxDate`` bounds. A disabled day inside a completed range is greyed
+    /// but doesn't break the range — the user just can't pick it as start or end.
+    /// Compared using calendar-day granularity.
+    public var disabledDates: Set<Date>
+
     public init(
         initialStartDate: Date? = nil,
         initialEndDate: Date? = nil,
         minDate: Date? = nil,
         maxDate: Date? = nil,
-        maxRangeDays: Int? = nil
+        maxRangeDays: Int? = nil,
+        initialDisabledDates: Set<Date> = []
     ) {
         self.selectedStartDate = initialStartDate
         self.selectedEndDate = initialEndDate
         self.minDate = minDate
         self.maxDate = maxDate
         self.maxRangeDays = maxRangeDays
+        self.disabledDates = initialDisabledDates
     }
 }
 
@@ -145,6 +164,7 @@ private struct LemonadeDatePickerView: View {
             },
             minDate: state.minDate,
             maxDate: state.maxDate,
+            disabledDates: state.disabledDates,
             onMonthDisplayed: onMonthDisplayed
         )
     }
@@ -195,7 +215,7 @@ private struct LemonadeDateRangePickerView: View {
                     state.selectedEndDate = nil
                     return
                 }
-                
+
                 let newStart = min(date, start)
                 let newEnd = max(date, start)
                 state.selectedStartDate = newStart
@@ -203,6 +223,7 @@ private struct LemonadeDateRangePickerView: View {
             },
             minDate: effectiveMin,
             maxDate: effectiveMax,
+            disabledDates: state.disabledDates,
             onMonthDisplayed: onMonthDisplayed
         )
     }
@@ -217,8 +238,15 @@ private struct CoreDatePickerView: View {
     let onDateSelected: (Date) -> Void
     let minDate: Date?
     let maxDate: Date?
+    let disabledDates: Set<Date>
     let onMonthDisplayed: ((DateComponents) -> Void)?
-    
+
+    /// Disabled dates normalised to start-of-day so callers can pass anything without worrying
+    /// about time components — matches how the min/max checks below use `startOfDay`.
+    private var normalizedDisabledDates: Set<Date> {
+        Set(disabledDates.map { CalendarUtils.startOfDay($0) })
+    }
+
     private let totalPages = 240
     private var centerPage: Int { totalPages / 2 }
     
@@ -302,6 +330,7 @@ private struct CoreDatePickerView: View {
                         selectedDates: selectedDates,
                         minDate: minDate,
                         maxDate: maxDate,
+                        disabledDates: normalizedDisabledDates,
                         onDateSelected: onDateSelected
                     )
                     .padding(.horizontal, LemonadeTheme.spaces.spacing400)
@@ -317,6 +346,7 @@ private struct CoreDatePickerView: View {
                 selectedDates: selectedDates,
                 minDate: minDate,
                 maxDate: maxDate,
+                disabledDates: normalizedDisabledDates,
                 onDateSelected: onDateSelected
             )
             .padding(.horizontal, LemonadeTheme.spaces.spacing400)
@@ -337,6 +367,7 @@ private struct MonthGridView: View {
     let selectedDates: Set<Date>
     let minDate: Date?
     let maxDate: Date?
+    let disabledDates: Set<Date>
     let onDateSelected: (Date) -> Void
     
     private let calendar = Calendar.current
@@ -381,13 +412,14 @@ private struct MonthGridView: View {
                         
                         let isBeforeMin = minDate.map { normalized < CalendarUtils.startOfDay($0) } ?? false
                         let isAfterMax = maxDate.map { normalized > CalendarUtils.startOfDay($0) } ?? false
-                        
+                        let isExplicitlyDisabled = disabledDates.contains(normalized)
+
                         CalendarDayCell(
                             date: current,
                             text: "\(calendar.component(.day, from: current))",
                             isCurrent: normalized == today,
                             isSelected: normalizedSelectedDates.contains(normalized),
-                            isEnabled: !isBeforeMin && !isAfterMax,
+                            isEnabled: !isBeforeMin && !isAfterMax && !isExplicitlyDisabled,
                             isOutsideVisibleRange: isOutsideMonth,
                             isInsideSelectedRange: isInRange,
                             showWeekdayLabel: false,
