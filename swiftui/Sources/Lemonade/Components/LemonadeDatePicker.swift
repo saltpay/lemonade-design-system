@@ -12,10 +12,15 @@ public struct LemonadeDatePickerState {
     public let minDate: Date?
     public let maxDate: Date?
     /// Days rendered as disabled (greyed out and non-tappable) in addition to any
-    /// ``minDate`` / ``maxDate`` bounds. Mutate freely — typically from the
+    /// ``minDate`` / ``maxDate`` bounds. Assign a new set — typically from the
     /// ``LemonadeUi/DatePicker(state:monthFormatter:weekdayAbbreviations:onMonthDisplayed:)``
-    /// `onMonthDisplayed` callback — when the disabled set needs to come from an API keyed
+    /// `onMonthDisplayed` callback — when the disabled list needs to come from an API keyed
     /// on the visible month. Compared using calendar-day granularity (time components ignored).
+    ///
+    /// > Note: `onMonthDisplayed` does not fire for the initially displayed month. Seed the
+    /// > first month synchronously via ``init(initialDate:minDate:maxDate:initialDisabledDates:)``
+    /// > if the disabled set is already known, or trigger the first fetch yourself in an
+    /// > `.onAppear` / `.task` on your view.
     public var disabledDates: Set<Date>
 
     public init(

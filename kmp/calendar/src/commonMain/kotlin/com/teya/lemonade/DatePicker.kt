@@ -65,6 +65,12 @@ private const val CENTER_PAGE = PAGES_TOTAL / 2
  * val state = rememberDatePickerState(initialDate = today)
  * val scope = rememberCoroutineScope()
  *
+ * // Seed the initial month yourself: `onMonthDisplayed` doesn't fire for the initially
+ * // displayed month — it only fires when the merchant navigates.
+ * LaunchedEffect(Unit) {
+ *     state.disabledDates = repository.disabledDatesFor(YearMonth.now())
+ * }
+ *
  * LemonadeUi.DatePicker(
  *     state = state,
  *     monthFormatter = ::formatMonth,
@@ -75,8 +81,11 @@ private const val CENTER_PAGE = PAGES_TOTAL / 2
  * )
  * ```
  *
+ * Or pass the initial set synchronously via `initialDisabledDates` if it's already known.
  * The caller keeps ownership of caching / cancellation / error handling; the picker just
  * observes whatever set is currently in the state and treats members as non-interactive.
+ *
+ * @sample initialDisabledDates hydrates the state synchronously on first composition.
  *
  * @param initialDate The initially selected date — seeds [selectedDate].
  * @param minDate Minimum selectable date.
@@ -100,8 +109,16 @@ public class DatePickerState internal constructor(
      * Days rendered as disabled (greyed out and non-tappable) in addition to any [minDate] /
      * [maxDate] bounds. Callers update this in response to `onMonthDisplayed` when the disabled
      * set needs to be fetched from an API keyed on the visible month. Empty by default.
+     *
+     * Assigned values are defensively copied — mutating a set you previously passed here will
+     * NOT trigger a recomposition. Always assign a new set (`state.disabledDates = newSet`).
      */
-    public var disabledDates: Set<LocalDate> by mutableStateOf(initialDisabledDates)
+    public var disabledDates: Set<LocalDate>
+        get() = _disabledDates
+        set(value) {
+            _disabledDates = value.toSet()
+        }
+    private var _disabledDates: Set<LocalDate> by mutableStateOf(initialDisabledDates.toSet())
 }
 
 /**
@@ -120,7 +137,7 @@ public fun rememberDatePickerState(
     maxDate: LocalDate? = null,
     initialDisabledDates: Set<LocalDate> = emptySet(),
 ): DatePickerState =
-    remember(initialDate, minDate, maxDate) {
+    remember(initialDate, minDate, maxDate, initialDisabledDates) {
         DatePickerState(
             initialDate = initialDate,
             minDate = minDate,
@@ -184,8 +201,16 @@ public class DateRangePickerState internal constructor(
      * Days rendered as disabled (greyed out and non-tappable) in addition to any [minDate] /
      * [maxDate] bounds. Update this in response to `onMonthDisplayed` when the disabled set
      * needs to be fetched from an API keyed on the visible month. Empty by default.
+     *
+     * Assigned values are defensively copied — mutating a set you previously passed here will
+     * NOT trigger a recomposition. Always assign a new set (`state.disabledDates = newSet`).
      */
-    public var disabledDates: Set<LocalDate> by mutableStateOf(initialDisabledDates)
+    public var disabledDates: Set<LocalDate>
+        get() = _disabledDates
+        set(value) {
+            _disabledDates = value.toSet()
+        }
+    private var _disabledDates: Set<LocalDate> by mutableStateOf(initialDisabledDates.toSet())
 }
 
 /**
@@ -208,7 +233,7 @@ public fun rememberDateRangePickerState(
     maxRangeDays: Int? = null,
     initialDisabledDates: Set<LocalDate> = emptySet(),
 ): DateRangePickerState =
-    remember(initialStartDate, initialEndDate, minDate, maxDate, maxRangeDays) {
+    remember(initialStartDate, initialEndDate, minDate, maxDate, maxRangeDays, initialDisabledDates) {
         DateRangePickerState(
             initialStartDate = initialStartDate,
             initialEndDate = initialEndDate,
