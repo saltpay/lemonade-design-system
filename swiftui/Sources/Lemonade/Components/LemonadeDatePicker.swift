@@ -93,6 +93,11 @@ public extension LemonadeUi {
     ///     Observe ``LemonadeDatePickerState/selectedDate`` to react to user selections.
     ///   - monthFormatter: Formatter that returns the month name for a given month number (1-12).
     ///   - weekdayAbbreviations: Exactly 7 items representing Sunday through Saturday.
+    ///   - today: The date treated as "today" — drives both the "today" indicator and the pager's
+    ///     initial month. Defaults to `Date()`. Callers can pass a different value (e.g. the
+    ///     currently-selected day) to have the pager open on that day's month; the day will also
+    ///     get the "today" dot, which is usually visually swamped by the selected-day highlight.
+    ///     Time components are ignored — the picker normalises to start-of-day internally.
     ///   - onMonthDisplayed: Optional callback invoked when the displayed month changes.
     ///     Receives a `DateComponents` with `.year` and `.month` set.
     @ViewBuilder
@@ -100,12 +105,14 @@ public extension LemonadeUi {
         state: Binding<LemonadeDatePickerState>,
         monthFormatter: @escaping (Int) -> String,
         weekdayAbbreviations: [String],
+        today: Date = Date(),
         onMonthDisplayed: ((DateComponents) -> Void)? = nil
     ) -> some View {
         LemonadeDatePickerView(
             state: state,
             monthFormatter: monthFormatter,
             weekdayAbbreviations: weekdayAbbreviations,
+            today: today,
             onMonthDisplayed: onMonthDisplayed
         )
     }
@@ -133,6 +140,9 @@ public extension LemonadeUi {
     ///     ``LemonadeDateRangePickerState/selectedEndDate`` to react to user selections.
     ///   - monthFormatter: Formatter that returns the month name for a given month number (1-12).
     ///   - weekdayAbbreviations: Exactly 7 items representing Sunday through Saturday.
+    ///   - today: The date treated as "today" — drives both the "today" indicator and the pager's
+    ///     initial month. Defaults to `Date()`. See ``DatePicker(state:monthFormatter:weekdayAbbreviations:today:onMonthDisplayed:)``
+    ///     for the intended usage.
     ///   - onMonthDisplayed: Optional callback invoked when the displayed month changes.
     ///     Receives a `DateComponents` with `.year` and `.month` set.
     @ViewBuilder
@@ -140,12 +150,14 @@ public extension LemonadeUi {
         state: Binding<LemonadeDateRangePickerState>,
         monthFormatter: @escaping (Int) -> String,
         weekdayAbbreviations: [String],
+        today: Date = Date(),
         onMonthDisplayed: ((DateComponents) -> Void)? = nil
     ) -> some View {
         LemonadeDateRangePickerView(
             state: state,
             monthFormatter: monthFormatter,
             weekdayAbbreviations: weekdayAbbreviations,
+            today: today,
             onMonthDisplayed: onMonthDisplayed
         )
     }
@@ -157,8 +169,9 @@ private struct LemonadeDatePickerView: View {
     @Binding var state: LemonadeDatePickerState
     let monthFormatter: (Int) -> String
     let weekdayAbbreviations: [String]
+    let today: Date
     let onMonthDisplayed: ((DateComponents) -> Void)?
-    
+
     var body: some View {
         CoreDatePickerView(
             monthFormatter: monthFormatter,
@@ -170,6 +183,7 @@ private struct LemonadeDatePickerView: View {
             minDate: state.minDate,
             maxDate: state.maxDate,
             disabledDates: state.disabledDates,
+            today: today,
             onMonthDisplayed: onMonthDisplayed
         )
     }
@@ -181,6 +195,7 @@ private struct LemonadeDateRangePickerView: View {
     @Binding var state: LemonadeDateRangePickerState
     let monthFormatter: (Int) -> String
     let weekdayAbbreviations: [String]
+    let today: Date
     let onMonthDisplayed: ((DateComponents) -> Void)?
     
     private var isSelectingEndDate: Bool {
@@ -229,6 +244,7 @@ private struct LemonadeDateRangePickerView: View {
             minDate: effectiveMin,
             maxDate: effectiveMax,
             disabledDates: state.disabledDates,
+            today: today,
             onMonthDisplayed: onMonthDisplayed
         )
     }
@@ -244,6 +260,9 @@ private struct CoreDatePickerView: View {
     let minDate: Date?
     let maxDate: Date?
     let disabledDates: Set<Date>
+    /// Caller-provided "today". Drives the "today" indicator and the pager's initial month.
+    /// Compared as start-of-day via ``normalizedToday``.
+    let today: Date
     let onMonthDisplayed: ((DateComponents) -> Void)?
 
     /// Disabled dates normalised to start-of-day so callers can pass anything without worrying
@@ -254,11 +273,14 @@ private struct CoreDatePickerView: View {
 
     private let totalPages = 240
     private var centerPage: Int { totalPages / 2 }
-    
+
     @State private var displayedMonthOffset: Int = 0
-    
+
     private let calendar = Calendar.current
-    private let today = CalendarUtils.startOfDay(Date())
+    /// Start-of-day snapshot of the caller-provided `today`. Anything comparing against a
+    /// specific day (the "today" dot, prev/next-month reachability) uses this, not the raw
+    /// `today` — a `Date` with a wall-clock time wouldn't match a start-of-day cell date.
+    private var normalizedToday: Date { CalendarUtils.startOfDay(today) }
     
     private var currentYearMonth: DateComponents {
         guard let target = calendar.date(byAdding: .month, value: displayedMonthOffset, to: today) else {
@@ -332,6 +354,7 @@ private struct CoreDatePickerView: View {
                     MonthGridView(
                         monthOffset: offset,
                         baseDate: today,
+                        today: normalizedToday,
                         selectedDates: selectedDates,
                         minDate: minDate,
                         maxDate: maxDate,
@@ -348,6 +371,7 @@ private struct CoreDatePickerView: View {
             MonthGridView(
                 monthOffset: displayedMonthOffset,
                 baseDate: today,
+                today: normalizedToday,
                 selectedDates: selectedDates,
                 minDate: minDate,
                 maxDate: maxDate,
@@ -369,14 +393,17 @@ private struct CoreDatePickerView: View {
 private struct MonthGridView: View {
     let monthOffset: Int
     let baseDate: Date
+    /// Start-of-day snapshot of "today". Compared against each cell's start-of-day to place the
+    /// "today" dot on the correct cell. Passed in by the parent so a caller-provided `today`
+    /// override propagates all the way down to the individual day cell.
+    let today: Date
     let selectedDates: Set<Date>
     let minDate: Date?
     let maxDate: Date?
     let disabledDates: Set<Date>
     let onDateSelected: (Date) -> Void
-    
+
     private let calendar = Calendar.current
-    private let today = CalendarUtils.startOfDay(Date())
     
     private var yearMonth: DateComponents {
         guard let target = calendar.date(byAdding: .month, value: monthOffset, to: baseDate) else {
