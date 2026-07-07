@@ -157,12 +157,13 @@ public fun rememberDatePickerState(
     initialDate: LocalDate? = null,
     minDate: LocalDate? = null,
     maxDate: LocalDate? = null,
-): DatePickerState = rememberDatePickerState(
-    initialDate = initialDate,
-    minDate = minDate,
-    maxDate = maxDate,
-    initialDisabledDates = emptySet(),
-)
+): DatePickerState =
+    rememberDatePickerState(
+        initialDate = initialDate,
+        minDate = minDate,
+        maxDate = maxDate,
+        initialDisabledDates = emptySet(),
+    )
 
 /**
  * State holder for [LemonadeUi.DateRangePicker].
@@ -257,14 +258,15 @@ public fun rememberDateRangePickerState(
     minDate: LocalDate? = null,
     maxDate: LocalDate? = null,
     maxRangeDays: Int? = null,
-): DateRangePickerState = rememberDateRangePickerState(
-    initialStartDate = initialStartDate,
-    initialEndDate = initialEndDate,
-    minDate = minDate,
-    maxDate = maxDate,
-    maxRangeDays = maxRangeDays,
-    initialDisabledDates = emptySet(),
-)
+): DateRangePickerState =
+    rememberDateRangePickerState(
+        initialStartDate = initialStartDate,
+        initialEndDate = initialEndDate,
+        minDate = minDate,
+        maxDate = maxDate,
+        maxRangeDays = maxRangeDays,
+        initialDisabledDates = emptySet(),
+    )
 
 /**
  * A single-date picker widget from the Lemonade Design System.
