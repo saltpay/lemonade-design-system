@@ -243,7 +243,7 @@ private func resolveColors(
             backgroundColor: LemonadeTheme.colors.background.bgAlwaysLightMedium,
             backgroundHoverColor: LemonadeTheme.colors.interaction.bgAlwaysLightMediumInteractive,
             backgroundPressedColor: LemonadeTheme.colors.interaction.bgAlwaysLightMediumInteractive,
-            contentColor: LemonadeTheme.colors.content.contentPrimaryInverse
+            contentColor: LemonadeTheme.colors.content.contentAlwaysLight
         )
     }
 }

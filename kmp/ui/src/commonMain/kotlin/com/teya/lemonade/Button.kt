@@ -385,7 +385,7 @@ private fun resolveOnBrandButtonColors(): LemonadeButtonColors =
 @Composable
 private fun resolveOnColorButtonColors(): LemonadeButtonColors =
     LemonadeButtonColors(
-        contentColor = LocalColors.current.content.contentPrimaryInverse,
+        contentColor = LocalColors.current.content.contentAlwaysLight,
         solidBackgroundColor = LocalColors.current.background.bgAlwaysLightMedium,
         pressedBackgroundColor = LocalColors.current.interaction.bgAlwaysLightMediumInteractive,
     )

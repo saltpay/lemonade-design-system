@@ -305,7 +305,7 @@ private fun resolveOnColorColors(): IconButtonColorData =
         backgroundColor = LocalColors.current.background.bgAlwaysLightMedium,
         backgroundHoverColor = LocalColors.current.interaction.bgAlwaysLightMediumInteractive,
         backgroundPressedColor = LocalColors.current.interaction.bgAlwaysLightMediumInteractive,
-        contentColor = LocalColors.current.content.contentPrimaryInverse,
+        contentColor = LocalColors.current.content.contentAlwaysLight,
     )
 
 // MARK: - Size Data

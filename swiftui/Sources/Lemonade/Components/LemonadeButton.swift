@@ -354,7 +354,7 @@ private func resolveButtonColors(
         )
     case (.onColor, _):
         return LemonadeButtonColors(
-            contentColor: LemonadeTheme.colors.content.contentPrimaryInverse,
+            contentColor: LemonadeTheme.colors.content.contentAlwaysLight,
             backgroundColor: LemonadeTheme.colors.background.bgAlwaysLightMedium,
             pressedBackgroundColor: LemonadeTheme.colors.interaction.bgAlwaysLightMediumInteractive
         )
