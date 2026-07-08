@@ -97,7 +97,7 @@ private struct LemonadeIconButtonColors {
 
 private struct LemonadeIconButtonSizeData {
     let iconSize: LemonadeUiIconSize
-    let innerPadding: CGFloat
+    let size: CGFloat
     let cornerRadius: CGFloat
 }
 
@@ -109,20 +109,26 @@ private extension LemonadeButtonSize {
         case .large:
             return LemonadeIconButtonSizeData(
                 iconSize: .large,
-                innerPadding: LemonadeTheme.spaces.spacing400,
+                size: LemonadeTheme.sizes.size1400,
                 cornerRadius: LemonadeTheme.radius.radius400
             )
         case .medium:
             return LemonadeIconButtonSizeData(
                 iconSize: .large,
-                innerPadding: LemonadeTheme.spaces.spacing200,
-                cornerRadius: LemonadeTheme.radius.radius300
+                size: LemonadeTheme.sizes.size1200,
+                cornerRadius: LemonadeTheme.radius.radius350
             )
-        case .small, .xSmall:
+        case .small:
             return LemonadeIconButtonSizeData(
                 iconSize: .small,
-                innerPadding: LemonadeTheme.spaces.spacing200,
+                size: LemonadeTheme.sizes.size1000,
                 cornerRadius: LemonadeTheme.radius.radius300
+            )
+        case .xSmall:
+            return LemonadeIconButtonSizeData(
+                iconSize: .small,
+                size: LemonadeTheme.sizes.size800,
+                cornerRadius: LemonadeTheme.radius.radius250
             )
         }
     }
@@ -297,7 +303,7 @@ private struct LemonadeIconButtonView: View {
                     )
                 }
             }
-            .padding(size.iconButtonSizeData.innerPadding)
+            .frame(width: size.iconButtonSizeData.size, height: size.iconButtonSizeData.size)
             .background(
                 buttonShape
                     .fill(bgColor.opacity(disabledFillScale))

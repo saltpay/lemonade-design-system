@@ -7,7 +7,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -123,6 +123,7 @@ private fun CoreIconButton(
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
+            .requiredSize(size = sizeData.size)
             .clip(shape = sizeData.shape)
             .then(other = disabledModifier)
             .clickable(
@@ -131,8 +132,7 @@ private fun CoreIconButton(
                 interactionSource = interactionSource,
                 indication = LocalEffects.current.interactionIndication,
                 enabled = enabled && !loading,
-            ).background(color = animatedBackgroundColor)
-            .padding(all = sizeData.innerPaddings),
+            ).background(color = animatedBackgroundColor),
     ) {
         if (loading) {
             LemonadeUi.Spinner(
@@ -313,7 +313,7 @@ private fun resolveOnColorColors(): IconButtonColorData =
 private data class IconButtonSizeData(
     val iconSize: LemonadeAssetSize,
     val spinnerSize: LemonadeAssetSize,
-    val innerPaddings: Dp,
+    val size: Dp,
     val shape: Shape,
 )
 
@@ -323,29 +323,29 @@ private fun LemonadeButtonSize.toSizeData(shape: LemonadeIconButtonShape): IconB
         LemonadeButtonSize.Large -> IconButtonSizeData(
             iconSize = LemonadeAssetSize.Large,
             spinnerSize = LemonadeAssetSize.Small,
-            innerPaddings = LocalSpaces.current.spacing400,
+            size = LocalSizes.current.size1400,
             shape = shape.resolveShape(roundedShape = LocalShapes.current.radius400),
         )
 
         LemonadeButtonSize.Medium -> IconButtonSizeData(
             iconSize = LemonadeAssetSize.Large,
             spinnerSize = LemonadeAssetSize.Small,
-            innerPaddings = LocalSpaces.current.spacing200,
-            shape = shape.resolveShape(roundedShape = LocalShapes.current.radius300),
+            size = LocalSizes.current.size1200,
+            shape = shape.resolveShape(roundedShape = LocalShapes.current.radius350),
         )
 
         LemonadeButtonSize.Small -> IconButtonSizeData(
             iconSize = LemonadeAssetSize.Small,
             spinnerSize = LemonadeAssetSize.XSmall,
-            innerPaddings = LocalSpaces.current.spacing200,
+            size = LocalSizes.current.size1000,
             shape = shape.resolveShape(roundedShape = LocalShapes.current.radius300),
         )
 
         LemonadeButtonSize.XSmall -> IconButtonSizeData(
             iconSize = LemonadeAssetSize.Small,
             spinnerSize = LemonadeAssetSize.XSmall,
-            innerPaddings = LocalSpaces.current.spacing200,
-            shape = shape.resolveShape(roundedShape = LocalShapes.current.radius300),
+            size = LocalSizes.current.size800,
+            shape = shape.resolveShape(roundedShape = LocalShapes.current.radius250),
         )
     }
 
