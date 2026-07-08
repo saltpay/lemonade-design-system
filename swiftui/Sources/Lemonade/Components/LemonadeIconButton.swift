@@ -229,13 +229,13 @@ private func resolveColors(
 
     // MARK: On Brand / On Color
     // Designed as a single Subtle treatment for placing a button on top of a brand- or
-    // color-filled surface. They don't vary by type. On Color has no dedicated pressed token,
-    // so it reuses its interactive token for the pressed state.
+    // color-filled surface. They don't vary by type. Their pressed state mirrors the labeled
+    // LemonadeButton (the base), which uses the interactive token rather than a dedicated pressed one.
     case (.onBrand, _):
         return LemonadeIconButtonColors(
             backgroundColor: LemonadeTheme.colors.background.bgBrandElevated,
             backgroundHoverColor: LemonadeTheme.colors.interaction.bgBrandElevatedInteractive,
-            backgroundPressedColor: LemonadeTheme.colors.interaction.bgBrandElevatedPressed,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgBrandElevatedInteractive,
             contentColor: LemonadeTheme.colors.content.contentOnBrandHigh
         )
     case (.onColor, _):

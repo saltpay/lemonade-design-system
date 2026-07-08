@@ -287,14 +287,15 @@ private fun resolveCriticalColors(type: LemonadeButtonType): IconButtonColorData
 
 // On Brand / On Color are designed as a single Subtle treatment, meant to sit on top of a
 // brand- or color-filled surface. They don't vary by [LemonadeButtonType], so the type is
-// ignored and every type resolves to the same colors. On Color has no dedicated pressed token,
-// so it reuses its interactive token for the pressed state.
+// ignored and every type resolves to the same colors. Their pressed state mirrors the labeled
+// [LemonadeUi.Button] (the base), which uses the interactive token rather than a dedicated pressed
+// one.
 @Composable
 private fun resolveOnBrandColors(): IconButtonColorData =
     IconButtonColorData(
         backgroundColor = LocalColors.current.background.bgBrandElevated,
         backgroundHoverColor = LocalColors.current.interaction.bgBrandElevatedInteractive,
-        backgroundPressedColor = LocalColors.current.interaction.bgBrandElevatedPressed,
+        backgroundPressedColor = LocalColors.current.interaction.bgBrandElevatedInteractive,
         contentColor = LocalColors.current.content.contentOnBrandHigh,
     )
 
