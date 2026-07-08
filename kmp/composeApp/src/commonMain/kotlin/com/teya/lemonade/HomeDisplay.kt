@@ -1,30 +1,43 @@
 package com.teya.lemonade
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeAssetSize
+import com.teya.lemonade.core.LemonadeButtonType
 import com.teya.lemonade.core.LemonadeIcons
+import com.teya.lemonade.core.SelectListItemType
 import com.teya.lemonade.core.TabButtonProperties
 
 @Composable
 internal fun HomeDisplay(onNavigate: (Displays) -> Unit) {
     val styleHandler = LocalLemonadeStyleHandler.current
-    val styles = LemonadeStyle.entries
-    val selectedIndex = styles.indexOf(styleHandler.currentStyle)
     val variants = LemonadeThemeVariant.entries
     val selectedVariantIndex = variants.indexOf(styleHandler.currentVariant)
 
+    var showSettings by remember { mutableStateOf(value = false) }
+
     SampleScreenDisplayLazyColumn(
         title = "Lemonade Design System",
+        action = {
+            LemonadeUi.IconButton(
+                icon = LemonadeIcons.Gear,
+                contentDescription = "Settings",
+                type = LemonadeButtonType.Ghost,
+                onClick = { showSettings = true },
+            )
+        },
     ) {
         item {
-            LemonadeUi.SegmentedControl(
-                selectedTab = selectedIndex,
-                onTabSelected = { index -> styleHandler.currentStyle = styles[index] },
-                properties = styles.map { style -> TabButtonProperties.label(label = style.label) },
-                modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing200),
-            )
             LemonadeUi.SegmentedControl(
                 selectedTab = selectedVariantIndex,
                 onTabSelected = { index -> styleHandler.currentVariant = variants[index] },
@@ -55,6 +68,52 @@ internal fun HomeDisplay(onNavigate: (Displays) -> Unit) {
                     }
                 }
             }
+        }
+    }
+
+    SettingsSheet(
+        expanded = showSettings,
+        onDismissRequest = { showSettings = false },
+    )
+}
+
+@Composable
+private fun SettingsSheet(
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+) {
+    val styleHandler = LocalLemonadeStyleHandler.current
+    LemonadeUi.BottomSheet(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest,
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing400),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = LemonadeTheme.spaces.spacing400),
+        ) {
+            LemonadeUi.Text(
+                text = "Settings",
+                textStyle = LemonadeTheme.typography.headingSmall,
+            )
+
+            LemonadeUi.Card(
+                header = CardHeaderConfig(title = "Appearance"),
+            ) {
+                val styles = LemonadeStyle.entries
+                styles.forEachIndexed { index, style ->
+                    LemonadeUi.SelectListItem(
+                        label = style.label,
+                        type = SelectListItemType.Single,
+                        checked = styleHandler.currentStyle == style,
+                        onItemClicked = { styleHandler.currentStyle = style },
+                        showDivider = index != styles.lastIndex,
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(height = LemonadeTheme.spaces.spacing400))
         }
     }
 }

@@ -4,6 +4,7 @@ import Lemonade
 struct HomeView: View {
     @EnvironmentObject private var styleHandler: LemonadeStyleHandler
     @State private var searchText: String = ""
+    @State private var showSettings: Bool = false
 
     private struct DemoItem: Identifiable {
         let id = UUID()
@@ -122,22 +123,8 @@ struct HomeView: View {
         }
     }
 
-    private var selectedStyleIndex: Int {
-        LemonadeStyle.allCases.firstIndex(of: styleHandler.currentStyle) ?? 0
-    }
-
     var body: some View {
         List {
-            Section {
-                LemonadeUi.SegmentedControl(
-                    properties: LemonadeStyle.allCases.map { .label($0.label) },
-                    selectedTab: selectedStyleIndex,
-                    onTabSelected: { index in
-                        styleHandler.currentStyle = LemonadeStyle.allCases[index]
-                    }
-                )
-            }
-
             ForEach(filteredSections) { section in
                 Section(section.title) {
                     ForEach(section.items) { item in
@@ -150,6 +137,20 @@ struct HomeView: View {
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .automatic))
         .textInputAutocapitalization(.never)
         .disableAutocorrection(true)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: { showSettings = true }) {
+                    LemonadeUi.Icon(
+                        icon: .gear,
+                        contentDescription: "Settings"
+                    )
+                }
+            }
+        }
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
+                .environmentObject(styleHandler)
+        }
     }
 }
 

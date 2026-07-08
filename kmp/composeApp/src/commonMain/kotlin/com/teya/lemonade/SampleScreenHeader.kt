@@ -6,12 +6,14 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
@@ -25,6 +27,7 @@ internal fun SampleScreenHeader(
     background: Color = LemonadeTheme.colors.background.bgDefault,
     progress: Float,
     onBack: (() -> Unit)? = null,
+    action: (@Composable () -> Unit)? = null,
 ) {
     if (title.isNullOrBlank()) return
 
@@ -66,8 +69,10 @@ internal fun SampleScreenHeader(
             .background(background.copy(animatedAlpha))
             .statusBarsPadding(),
     ) {
-        Column(
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(
                     horizontal = LemonadeTheme.spaces.spacing400,
                     vertical = verticalPad,
@@ -76,7 +81,9 @@ internal fun SampleScreenHeader(
             LemonadeUi.Text(
                 text = title,
                 textStyle = LemonadeTheme.typography.headingMedium.copy(fontSize = animatedFontSize),
+                modifier = Modifier.weight(weight = 1f),
             )
+            action?.invoke()
         }
 
         Box(
