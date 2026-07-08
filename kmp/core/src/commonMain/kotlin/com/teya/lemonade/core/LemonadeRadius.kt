@@ -26,9 +26,11 @@ public enum class LemonadeRadius {
     Radius200,
     Radius250,
     Radius300,
+    Radius350,
     Radius400,
     Radius500,
     Radius600,
     Radius800,
+    Radius900,
     RadiusFull,
 }

@@ -31,7 +31,13 @@
     "VariableID:3037:2043",
     "VariableID:3037:2066",
     "VariableID:3037:2029",
+    "VariableID:4974:197",
+    "VariableID:4974:196",
+    "VariableID:4974:195",
     "VariableID:3037:2028",
+    "VariableID:4974:194",
+    "VariableID:4974:193",
+    "VariableID:4974:192",
     "VariableID:3037:2027",
     "VariableID:4664:26753",
     "VariableID:4664:26754",
@@ -105,6 +111,12 @@
     "VariableID:3037:2004",
     "VariableID:3037:2003",
     "VariableID:3037:2002",
+    "VariableID:4979:275",
+    "VariableID:4979:278",
+    "VariableID:4979:277",
+    "VariableID:4979:274",
+    "VariableID:4979:273",
+    "VariableID:4979:272",
     "VariableID:3125:1886",
     "VariableID:3125:1887",
     "VariableID:3125:1888",
@@ -140,7 +152,7 @@
     {
       "id": "VariableID:3037:2002",
       "name": "Interaction/Interactive/Background/bg-neutral-subtle-interactive",
-      "description": "",
+      "description": "Use for interactive states on subtle neutral backgrounds.",
       "type": "COLOR",
       "valuesByMode": {
         "3037:0": {
@@ -528,33 +540,33 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:42ee631b01d15ddd550816fb6216127c7593d71a/109:31"
+          "id": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487"
+          "id": "VariableID:1cde25931e5330368f430707ddecf5da880df6d6/109:32"
         }
       },
       "resolvedValuesByMode": {
         "3037:0": {
           "resolvedValue": {
-            "r": 1,
-            "g": 1,
-            "b": 1,
-            "a": 0.800000011920929
+            "r": 0.8820960521697998,
+            "g": 0.8995633125305176,
+            "b": 0.10043667256832123,
+            "a": 1
           },
-          "alias": "VariableID:42ee631b01d15ddd550816fb6216127c7593d71a/109:31",
-          "aliasName": "white/800"
+          "alias": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87",
+          "aliasName": "yellow-lime/500"
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.03529411926865578,
-            "g": 0.0313725508749485,
-            "b": 0.0235294122248888,
-            "a": 0.925000011920929
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.8999999761581421
           },
-          "alias": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
-          "aliasName": "neutral/alpha/900"
+          "alias": "VariableID:1cde25931e5330368f430707ddecf5da880df6d6/109:32",
+          "aliasName": "white/900"
         }
       },
       "scopes": [
@@ -723,7 +735,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:b32450d86a0a89b66789a934ac8c531e6fb946eb/76:407"
+          "id": "VariableID:169b48022f4a60164b3d49fb0e10aced4427846a/76:403"
         }
       },
       "resolvedValuesByMode": {
@@ -742,10 +754,10 @@
             "r": 0.4872932434082031,
             "g": 0.8099173903465271,
             "b": 0,
-            "a": 0.30000001192092896
+            "a": 0.10000000149011612
           },
-          "alias": "VariableID:b32450d86a0a89b66789a934ac8c531e6fb946eb/76:407",
-          "aliasName": "green-lime/alpha/300"
+          "alias": "VariableID:169b48022f4a60164b3d49fb0e10aced4427846a/76:403",
+          "aliasName": "green-lime/alpha/100"
         }
       },
       "scopes": [
@@ -771,7 +783,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:1c3bca3074c95cca953150dced0b68c56a5b4cf7/76:319"
+          "id": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315"
         }
       },
       "resolvedValuesByMode": {
@@ -790,10 +802,10 @@
             "r": 0.16933248937129974,
             "g": 0.49804946780204773,
             "b": 1,
-            "a": 0.30000001192092896
+            "a": 0.10000000149011612
           },
-          "alias": "VariableID:1c3bca3074c95cca953150dced0b68c56a5b4cf7/76:319",
-          "aliasName": "blue/alpha/300"
+          "alias": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315",
+          "aliasName": "blue/alpha/100"
         }
       },
       "scopes": [
@@ -819,7 +831,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:3d29360b74ce2b1f363eda98f910b1182240f8f9/406:13"
+          "id": "VariableID:6d9c92c71562a356221eeae95c51cd6962648e80/394:22"
         }
       },
       "resolvedValuesByMode": {
@@ -835,13 +847,13 @@
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.9160000085830688,
-            "g": 0.9160000085830688,
-            "b": 0.2840000092983246,
+            "r": 0.42639997601509094,
+            "g": 0.46799999475479126,
+            "b": 0.052000001072883606,
             "a": 1
           },
-          "alias": "VariableID:3d29360b74ce2b1f363eda98f910b1182240f8f9/406:13",
-          "aliasName": "yellow-lime/400"
+          "alias": "VariableID:6d9c92c71562a356221eeae95c51cd6962648e80/394:22",
+          "aliasName": "yellow-lime/700"
         }
       },
       "scopes": [
@@ -866,7 +878,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:e869f9472c1ba91cea0d0e2277ba1688beccb95c/76:459"
+          "id": "VariableID:798357b6c28271a579acd379d7528d833b57a34f/76:457"
         }
       },
       "resolvedValuesByMode": {
@@ -885,10 +897,10 @@
             "r": 1,
             "g": 0.4107343256473541,
             "b": 0,
-            "a": 0.30000001192092896
+            "a": 0.10000000149011612
           },
-          "alias": "VariableID:e869f9472c1ba91cea0d0e2277ba1688beccb95c/76:459",
-          "aliasName": "orange/alpha/300"
+          "alias": "VariableID:798357b6c28271a579acd379d7528d833b57a34f/76:457",
+          "aliasName": "orange/alpha/100"
         }
       },
       "scopes": [
@@ -914,7 +926,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/559:15"
+          "id": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/559:13"
         }
       },
       "resolvedValuesByMode": {
@@ -933,10 +945,10 @@
             "r": 0.9686274528503418,
             "g": 0.23529411852359772,
             "b": 0.2823529541492462,
-            "a": 0.30000001192092896
+            "a": 0.10000000149011612
           },
-          "alias": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/559:15",
-          "aliasName": "red/alpha/300"
+          "alias": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/559:13",
+          "aliasName": "red/alpha/100"
         }
       },
       "scopes": [
@@ -1731,7 +1743,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:fc7c131fab81908c64be2fc60db89536ae0996bc/76:141"
+          "id": "VariableID:0aa49d6b6d51cd34a538da859f6db0a2c5c62dbf/76:139"
         }
       },
       "resolvedValuesByMode": {
@@ -1750,10 +1762,10 @@
             "r": 0.994271457195282,
             "g": 0.6020927429199219,
             "b": 0,
-            "a": 0.20000000298023224
+            "a": 0.10000000149011612
           },
-          "alias": "VariableID:fc7c131fab81908c64be2fc60db89536ae0996bc/76:141",
-          "aliasName": "amber/alpha/200"
+          "alias": "VariableID:0aa49d6b6d51cd34a538da859f6db0a2c5c62dbf/76:139",
+          "aliasName": "amber/alpha/100"
         }
       },
       "scopes": [
@@ -1826,7 +1838,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:b1fe30e3320da67c3864e50f532848b06c78b19e/559:14"
+          "id": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/559:13"
         }
       },
       "resolvedValuesByMode": {
@@ -1845,10 +1857,10 @@
             "r": 0.9686274528503418,
             "g": 0.23529411852359772,
             "b": 0.2823529541492462,
-            "a": 0.20000000298023224
+            "a": 0.10000000149011612
           },
-          "alias": "VariableID:b1fe30e3320da67c3864e50f532848b06c78b19e/559:14",
-          "aliasName": "red/alpha/200"
+          "alias": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/559:13",
+          "aliasName": "red/alpha/100"
         }
       },
       "scopes": [
@@ -1874,7 +1886,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/504:61"
+          "id": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/501:251"
         }
       },
       "resolvedValuesByMode": {
@@ -1890,13 +1902,13 @@
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.46000000834465027,
-            "g": 0.4200000762939453,
-            "b": 0.3400000035762787,
-            "a": 0.10000000149011612
+            "r": 0.5589999556541443,
+            "g": 0.5263333916664124,
+            "b": 0.4610000252723694,
+            "a": 0.20000000298023224
           },
-          "alias": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/504:61",
-          "aliasName": "neutral/alpha/100"
+          "alias": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/501:251",
+          "aliasName": "neutral/alpha/200"
         }
       },
       "scopes": [
@@ -2352,7 +2364,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:a55954920e7c4af5b152459fc69045e42fb15a48/109:26"
+          "id": "VariableID:6b52be630b90a02df7b3a03f5e58a12ed596a2c3/109:28"
         }
       },
       "resolvedValuesByMode": {
@@ -2371,10 +2383,10 @@
             "r": 1,
             "g": 1,
             "b": 1,
-            "a": 0.30000001192092896
+            "a": 0.5
           },
-          "alias": "VariableID:a55954920e7c4af5b152459fc69045e42fb15a48/109:26",
-          "aliasName": "white/300"
+          "alias": "VariableID:6b52be630b90a02df7b3a03f5e58a12ed596a2c3/109:28",
+          "aliasName": "white/500"
         }
       },
       "scopes": [
@@ -2400,7 +2412,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:cd519cce5202dd4608f48c522bd2274976028603/76:405"
+          "id": "VariableID:169b48022f4a60164b3d49fb0e10aced4427846a/76:403"
         }
       },
       "resolvedValuesByMode": {
@@ -2419,10 +2431,10 @@
             "r": 0.4872932434082031,
             "g": 0.8099173903465271,
             "b": 0,
-            "a": 0.20000000298023224
+            "a": 0.10000000149011612
           },
-          "alias": "VariableID:cd519cce5202dd4608f48c522bd2274976028603/76:405",
-          "aliasName": "green-lime/alpha/200"
+          "alias": "VariableID:169b48022f4a60164b3d49fb0e10aced4427846a/76:403",
+          "aliasName": "green-lime/alpha/100"
         }
       },
       "scopes": [
@@ -3069,7 +3081,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/501:251"
+          "id": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270"
         }
       },
       "resolvedValuesByMode": {
@@ -3085,13 +3097,13 @@
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.5589999556541443,
-            "g": 0.5263333916664124,
-            "b": 0.4610000252723694,
-            "a": 0.20000000298023224
+            "r": 0.46619999408721924,
+            "g": 0.4354000389575958,
+            "b": 0.37380000948905945,
+            "a": 0.30000001192092896
           },
-          "alias": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/501:251",
-          "aliasName": "neutral/alpha/200"
+          "alias": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270",
+          "aliasName": "neutral/alpha/300"
         }
       },
       "scopes": [
@@ -3877,7 +3889,7 @@
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:8f72eca7a9211f9081c968931c670339bf8a84a6/76:317"
+          "id": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315"
         }
       },
       "resolvedValuesByMode": {
@@ -3893,13 +3905,13 @@
         },
         "4431:0": {
           "resolvedValue": {
-            "r": 0.16862745583057404,
-            "g": 0.49803921580314636,
+            "r": 0.16933248937129974,
+            "g": 0.49804946780204773,
             "b": 1,
-            "a": 0.20000000298023224
+            "a": 0.10000000149011612
           },
-          "alias": "VariableID:8f72eca7a9211f9081c968931c670339bf8a84a6/76:317",
-          "aliasName": "blue/alpha/200"
+          "alias": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315",
+          "aliasName": "blue/alpha/100"
         }
       },
       "scopes": [
@@ -4827,7 +4839,7 @@
     {
       "id": "VariableID:3139:2121",
       "name": "Interaction/Interactive/Background/bg-elevated-high-interactive",
-      "description": "",
+      "description": "Use for interactive states on high-emphasis elevated backgrounds.",
       "type": "COLOR",
       "valuesByMode": {
         "3037:0": {
@@ -5115,11 +5127,11 @@
       "valuesByMode": {
         "3037:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:6b52be630b90a02df7b3a03f5e58a12ed596a2c3/109:28"
+          "id": "VariableID:34078c143a73dc340a495ef80e13d1db6dd8cf2a/109:29"
         },
         "4431:0": {
           "type": "VARIABLE_ALIAS",
-          "id": "VariableID:6b52be630b90a02df7b3a03f5e58a12ed596a2c3/109:28"
+          "id": "VariableID:34078c143a73dc340a495ef80e13d1db6dd8cf2a/109:29"
         }
       },
       "resolvedValuesByMode": {
@@ -5128,20 +5140,20 @@
             "r": 1,
             "g": 1,
             "b": 1,
-            "a": 0.5
+            "a": 0.6000000238418579
           },
-          "alias": "VariableID:6b52be630b90a02df7b3a03f5e58a12ed596a2c3/109:28",
-          "aliasName": "white/500"
+          "alias": "VariableID:34078c143a73dc340a495ef80e13d1db6dd8cf2a/109:29",
+          "aliasName": "white/600"
         },
         "4431:0": {
           "resolvedValue": {
             "r": 1,
             "g": 1,
             "b": 1,
-            "a": 0.5
+            "a": 0.6000000238418579
           },
-          "alias": "VariableID:6b52be630b90a02df7b3a03f5e58a12ed596a2c3/109:28",
-          "aliasName": "white/500"
+          "alias": "VariableID:34078c143a73dc340a495ef80e13d1db6dd8cf2a/109:29",
+          "aliasName": "white/600"
         }
       },
       "scopes": [
@@ -5541,7 +5553,7 @@
     {
       "id": "VariableID:4664:26753",
       "name": "Background/Fixed/bg-transparent-light",
-      "description": "Use for transparent surfaces or when layering elements.",
+      "description": "Use for transparent light surfaces or when layering elements over darker content.",
       "type": "COLOR",
       "valuesByMode": {
         "3037:0": {
@@ -5584,14 +5596,14 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.background.bgTransparent",
-        "iOS": "LemonadeTheme.colors.background.bgTransparent"
+        "ANDROID": "LemonadeTheme.colors.background.bgTransparentLight",
+        "iOS": "LemonadeTheme.colors.background.bgTransparentLight"
       }
     },
     {
       "id": "VariableID:4664:26754",
       "name": "Background/Fixed/bg-transparent-dark",
-      "description": "Use for transparent surfaces or when layering elements.",
+      "description": "Use for transparent dark surfaces or when layering elements over lighter content.",
       "type": "COLOR",
       "valuesByMode": {
         "3037:0": {
@@ -5634,8 +5646,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.background.bgTransparent",
-        "iOS": "LemonadeTheme.colors.background.bgTransparent"
+        "ANDROID": "LemonadeTheme.colors.background.bgTransparentDark",
+        "iOS": "LemonadeTheme.colors.background.bgTransparentDark"
       }
     },
     {
@@ -6294,6 +6306,582 @@
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.scoped.contentOnSettlementScheduled",
         "iOS": "LemonadeTheme.colors.scoped.contentOnSettlementScheduled"
+      }
+    },
+    {
+      "id": "VariableID:4974:192",
+      "name": "Background/Fixed/bg-always-light-low",
+      "description": "Use for low-emphasis surfaces that must always appear light, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:644365395869c07f1342bc4eda3f2d2a8aed61c7/109:23"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:644365395869c07f1342bc4eda3f2d2a8aed61c7/109:23"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.05000000074505806
+          },
+          "alias": "VariableID:644365395869c07f1342bc4eda3f2d2a8aed61c7/109:23",
+          "aliasName": "white/50"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.05000000074505806
+          },
+          "alias": "VariableID:644365395869c07f1342bc4eda3f2d2a8aed61c7/109:23",
+          "aliasName": "white/50"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgAlwaysLightLow",
+        "iOS": "LemonadeTheme.colors.background.bgAlwaysLightLow"
+      }
+    },
+    {
+      "id": "VariableID:4974:193",
+      "name": "Background/Fixed/bg-always-light-medium",
+      "description": "Use for medium-emphasis surfaces that must always appear light, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24",
+          "aliasName": "white/100"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24",
+          "aliasName": "white/100"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgAlwaysLightMedium",
+        "iOS": "LemonadeTheme.colors.background.bgAlwaysLightMedium"
+      }
+    },
+    {
+      "id": "VariableID:4974:194",
+      "name": "Background/Fixed/bg-always-light-high",
+      "description": "Use for high-emphasis surfaces that must always appear light, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:51e3632fa986388868a89fd3aa4a4833f2febbf5/109:25"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:51e3632fa986388868a89fd3aa4a4833f2febbf5/109:25"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.20000000298023224
+          },
+          "alias": "VariableID:51e3632fa986388868a89fd3aa4a4833f2febbf5/109:25",
+          "aliasName": "white/200"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.20000000298023224
+          },
+          "alias": "VariableID:51e3632fa986388868a89fd3aa4a4833f2febbf5/109:25",
+          "aliasName": "white/200"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgAlwaysLightHigh",
+        "iOS": "LemonadeTheme.colors.background.bgAlwaysLightHigh"
+      }
+    },
+    {
+      "id": "VariableID:4974:195",
+      "name": "Background/Fixed/bg-always-dark-low",
+      "description": "Use for low-emphasis surfaces that must always appear dark, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:592bebe32cb3538b9658b266a4f3988cafef06c5/504:94"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:592bebe32cb3538b9658b266a4f3988cafef06c5/504:94"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.3724000155925751,
+            "g": 0.3107999563217163,
+            "b": 0.1876000016927719,
+            "a": 0.05000000074505806
+          },
+          "alias": "VariableID:592bebe32cb3538b9658b266a4f3988cafef06c5/504:94",
+          "aliasName": "neutral/alpha/50"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.3724000155925751,
+            "g": 0.3107999563217163,
+            "b": 0.1876000016927719,
+            "a": 0.05000000074505806
+          },
+          "alias": "VariableID:592bebe32cb3538b9658b266a4f3988cafef06c5/504:94",
+          "aliasName": "neutral/alpha/50"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgAlwaysDarkLow",
+        "iOS": "LemonadeTheme.colors.background.bgAlwaysDarkLow"
+      }
+    },
+    {
+      "id": "VariableID:4974:196",
+      "name": "Background/Fixed/bg-always-dark-medium",
+      "description": "Use for medium-emphasis surfaces that must always appear dark, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/501:251"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/501:251"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.5589999556541443,
+            "g": 0.5263333916664124,
+            "b": 0.4610000252723694,
+            "a": 0.20000000298023224
+          },
+          "alias": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/501:251",
+          "aliasName": "neutral/alpha/200"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.5589999556541443,
+            "g": 0.5263333916664124,
+            "b": 0.4610000252723694,
+            "a": 0.20000000298023224
+          },
+          "alias": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/501:251",
+          "aliasName": "neutral/alpha/200"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgAlwaysDarkMedium",
+        "iOS": "LemonadeTheme.colors.background.bgAlwaysDarkMedium"
+      }
+    },
+    {
+      "id": "VariableID:4974:197",
+      "name": "Background/Fixed/bg-always-dark-high",
+      "description": "Use for high-emphasis surfaces that must always appear dark, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.46619999408721924,
+            "g": 0.4354000389575958,
+            "b": 0.37380000948905945,
+            "a": 0.30000001192092896
+          },
+          "alias": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270",
+          "aliasName": "neutral/alpha/300"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.46619999408721924,
+            "g": 0.4354000389575958,
+            "b": 0.37380000948905945,
+            "a": 0.30000001192092896
+          },
+          "alias": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270",
+          "aliasName": "neutral/alpha/300"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgAlwaysDarkHigh",
+        "iOS": "LemonadeTheme.colors.background.bgAlwaysDarkHigh"
+      }
+    },
+    {
+      "id": "VariableID:4979:272",
+      "name": "Interaction/Interactive/Background/bg-always-light-low-interactive",
+      "description": "Use for interactive states on low-emphasis surfaces that must always appear light, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24",
+          "aliasName": "white/100"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24",
+          "aliasName": "white/100"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgAlwaysLightLowInteractive",
+        "iOS": "LemonadeTheme.colors.interaction.bgAlwaysLightLowInteractive"
+      }
+    },
+    {
+      "id": "VariableID:4979:273",
+      "name": "Interaction/Interactive/Background/bg-always-light-medium-interactive",
+      "description": "Use for interactive states on medium-emphasis surfaces that must always appear light, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:51e3632fa986388868a89fd3aa4a4833f2febbf5/109:25"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:51e3632fa986388868a89fd3aa4a4833f2febbf5/109:25"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.20000000298023224
+          },
+          "alias": "VariableID:51e3632fa986388868a89fd3aa4a4833f2febbf5/109:25",
+          "aliasName": "white/200"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.20000000298023224
+          },
+          "alias": "VariableID:51e3632fa986388868a89fd3aa4a4833f2febbf5/109:25",
+          "aliasName": "white/200"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgAlwaysLightMediumInteractive",
+        "iOS": "LemonadeTheme.colors.interaction.bgAlwaysLightMediumInteractive"
+      }
+    },
+    {
+      "id": "VariableID:4979:274",
+      "name": "Interaction/Interactive/Background/bg-always-light-high-interactive",
+      "description": "Use for interactive states on high-emphasis surfaces that must always appear light, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:a55954920e7c4af5b152459fc69045e42fb15a48/109:26"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:a55954920e7c4af5b152459fc69045e42fb15a48/109:26"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.30000001192092896
+          },
+          "alias": "VariableID:a55954920e7c4af5b152459fc69045e42fb15a48/109:26",
+          "aliasName": "white/300"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.30000001192092896
+          },
+          "alias": "VariableID:a55954920e7c4af5b152459fc69045e42fb15a48/109:26",
+          "aliasName": "white/300"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgAlwaysLightHighInteractive",
+        "iOS": "LemonadeTheme.colors.interaction.bgAlwaysLightHighInteractive"
+      }
+    },
+    {
+      "id": "VariableID:4979:275",
+      "name": "Interaction/Interactive/Background/bg-always-dark-high-interactive",
+      "description": "Use for interactive states on high-emphasis surfaces that must always appear dark, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:c3574904535c2bf808ae1ecb322386bbc65fdcca/501:271"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:c3574904535c2bf808ae1ecb322386bbc65fdcca/501:271"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.12999999523162842,
+            "g": 0.10999999940395355,
+            "b": 0.07000000029802322,
+            "a": 0.4000000059604645
+          },
+          "alias": "VariableID:c3574904535c2bf808ae1ecb322386bbc65fdcca/501:271",
+          "aliasName": "neutral/alpha/400"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.12999999523162842,
+            "g": 0.10999999940395355,
+            "b": 0.07000000029802322,
+            "a": 0.4000000059604645
+          },
+          "alias": "VariableID:c3574904535c2bf808ae1ecb322386bbc65fdcca/501:271",
+          "aliasName": "neutral/alpha/400"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgAlwaysDarkHighInteractive",
+        "iOS": "LemonadeTheme.colors.interaction.bgAlwaysDarkHighInteractive"
+      }
+    },
+    {
+      "id": "VariableID:4979:277",
+      "name": "Interaction/Interactive/Background/bg-always-dark-low-interactive",
+      "description": "Use for interactive states on low-emphasis surfaces that must always appear dark, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/504:61"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/504:61"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.46000000834465027,
+            "g": 0.4200000762939453,
+            "b": 0.3400000035762787,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/504:61",
+          "aliasName": "neutral/alpha/100"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.46000000834465027,
+            "g": 0.4200000762939453,
+            "b": 0.3400000035762787,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/504:61",
+          "aliasName": "neutral/alpha/100"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgAlwaysDarkLowInteractive",
+        "iOS": "LemonadeTheme.colors.interaction.bgAlwaysDarkLowInteractive"
+      }
+    },
+    {
+      "id": "VariableID:4979:278",
+      "name": "Interaction/Interactive/Background/bg-always-dark-medium-interactive",
+      "description": "Use for interactive states on medium-emphasis surfaces that must always appear dark, regardless of theme or mode.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.46619999408721924,
+            "g": 0.4354000389575958,
+            "b": 0.37380000948905945,
+            "a": 0.30000001192092896
+          },
+          "alias": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270",
+          "aliasName": "neutral/alpha/300"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.46619999408721924,
+            "g": 0.4354000389575958,
+            "b": 0.37380000948905945,
+            "a": 0.30000001192092896
+          },
+          "alias": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270",
+          "aliasName": "neutral/alpha/300"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgAlwaysDarkMediumInteractive",
+        "iOS": "LemonadeTheme.colors.interaction.bgAlwaysDarkMediumInteractive"
       }
     }
   ]

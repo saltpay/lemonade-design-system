@@ -827,11 +827,13 @@ public final class com/teya/lemonade/core/LemonadeRadius : java/lang/Enum {
 	public static final field Radius200 Lcom/teya/lemonade/core/LemonadeRadius;
 	public static final field Radius250 Lcom/teya/lemonade/core/LemonadeRadius;
 	public static final field Radius300 Lcom/teya/lemonade/core/LemonadeRadius;
+	public static final field Radius350 Lcom/teya/lemonade/core/LemonadeRadius;
 	public static final field Radius400 Lcom/teya/lemonade/core/LemonadeRadius;
 	public static final field Radius50 Lcom/teya/lemonade/core/LemonadeRadius;
 	public static final field Radius500 Lcom/teya/lemonade/core/LemonadeRadius;
 	public static final field Radius600 Lcom/teya/lemonade/core/LemonadeRadius;
 	public static final field Radius800 Lcom/teya/lemonade/core/LemonadeRadius;
+	public static final field Radius900 Lcom/teya/lemonade/core/LemonadeRadius;
 	public static final field RadiusFull Lcom/teya/lemonade/core/LemonadeRadius;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/LemonadeRadius;

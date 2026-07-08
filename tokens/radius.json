@@ -12,10 +12,12 @@
     "VariableID:3096:1604",
     "VariableID:4254:2705",
     "VariableID:3096:1605",
+    "VariableID:4977:222",
     "VariableID:3096:1606",
     "VariableID:3096:1607",
     "VariableID:3096:1608",
     "VariableID:3096:1609",
+    "VariableID:4409:821",
     "VariableID:3097:1600",
     "VariableID:4199:2020"
   ],
@@ -40,7 +42,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.radius.radius50",
-        "iOS": "context.lemonade.radius.radius50"
+        "iOS": "LemonadeTheme.radius.radius50"
       }
     },
     {
@@ -63,7 +65,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.radius.radius100",
-        "iOS": "context.lemonade.radius.radius100"
+        "iOS": "LemonadeTheme.radius.radius100"
       }
     },
     {
@@ -86,7 +88,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.radius.radius150",
-        "iOS": "context.lemonade.radius.radius150"
+        "iOS": "LemonadeTheme.radius.radius150"
       }
     },
     {
@@ -109,7 +111,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.radius.radius200",
-        "iOS": "context.lemonade.radius.radius200"
+        "iOS": "LemonadeTheme.radius.radius200"
       }
     },
     {
@@ -132,7 +134,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.radius.radius300",
-        "iOS": "context.lemonade.radius.radius300"
+        "iOS": "LemonadeTheme.radius.radius300"
       }
     },
     {
@@ -155,7 +157,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.radius.radius400",
-        "iOS": "context.lemonade.radius.radius400"
+        "iOS": "LemonadeTheme.radius.radius400"
       }
     },
     {
@@ -178,7 +180,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.radius.radius500",
-        "iOS": "context.lemonade.radius.radius500"
+        "iOS": "LemonadeTheme.radius.radius500"
       }
     },
     {
@@ -201,7 +203,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.radius.radius600",
-        "iOS": "context.lemonade.radius.radius600"
+        "iOS": "LemonadeTheme.radius.radius600"
       }
     },
     {
@@ -224,7 +226,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.radius.radius800",
-        "iOS": "context.lemonade.radius.radius800"
+        "iOS": "LemonadeTheme.radius.radius800"
       }
     },
     {
@@ -247,7 +249,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.radius.radiusfull",
-        "iOS": "context.lemonade.radius.radiusfull"
+        "iOS": "LemonadeTheme.radius.radiusfull"
       }
     },
     {
@@ -270,7 +272,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.radius.radius0",
-        "iOS": "context.lemonade.radius.radius0"
+        "iOS": "LemonadeTheme.radius.radius0"
       }
     },
     {
@@ -297,7 +299,7 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.radius.semantic.radiusContainerDefault",
-        "iOS": "context.lemonade.radius.semantic.radiusContainerDefault"
+        "iOS": "LemonadeTheme.radius.semantic.radiusContainerDefault"
       }
     },
     {
@@ -320,7 +322,53 @@
       "hiddenFromPublishing": false,
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.radius.radius250",
-        "iOS": "context.lemonade.radius.radius250"
+        "iOS": "LemonadeTheme.radius.radius250"
+      }
+    },
+    {
+      "id": "VariableID:4409:821",
+      "name": "radius-900",
+      "description": "40px",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3096:0": 40
+      },
+      "resolvedValuesByMode": {
+        "3096:0": {
+          "resolvedValue": 40,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius900",
+        "iOS": "LemonadeTheme.radius.radius900"
+      }
+    },
+    {
+      "id": "VariableID:4977:222",
+      "name": "radius-350",
+      "description": "14px",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "3096:0": 14
+      },
+      "resolvedValuesByMode": {
+        "3096:0": {
+          "resolvedValue": 14,
+          "alias": null
+        }
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.r adius.radius350",
+        "iOS": "LemonadeTheme.radius.radius350"
       }
     }
   ]

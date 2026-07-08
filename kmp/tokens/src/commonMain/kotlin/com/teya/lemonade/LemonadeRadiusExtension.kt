@@ -35,10 +35,12 @@ public val LemonadeRadius.dp: Dp
         LemonadeRadius.Radius200 -> 8.dp
         LemonadeRadius.Radius250 -> 10.dp
         LemonadeRadius.Radius300 -> 12.dp
+        LemonadeRadius.Radius350 -> 14.dp
         LemonadeRadius.Radius400 -> 16.dp
         LemonadeRadius.Radius500 -> 20.dp
         LemonadeRadius.Radius600 -> 24.dp
         LemonadeRadius.Radius800 -> 32.dp
+        LemonadeRadius.Radius900 -> 40.dp
         LemonadeRadius.RadiusFull -> 999.dp
     }
 
@@ -50,10 +52,12 @@ public interface LemonadeRadiusValues {
     public val radius200: Dp
     public val radius250: Dp
     public val radius300: Dp
+    public val radius350: Dp
     public val radius400: Dp
     public val radius500: Dp
     public val radius600: Dp
     public val radius800: Dp
+    public val radius900: Dp
     public val radiusFull: Dp
     public val semantic: Semantic
 
@@ -70,10 +74,12 @@ public interface LemonadeShapes {
     public val radius200: Shape
     public val radius250: Shape
     public val radius300: Shape
+    public val radius350: Shape
     public val radius400: Shape
     public val radius500: Shape
     public val radius600: Shape
     public val radius800: Shape
+    public val radius900: Shape
     public val radiusFull: Shape
     public val semantic: Semantic
 
@@ -101,10 +107,12 @@ internal data class InternalLemonadeRadiusValues(
     override val radius200: Dp = LemonadeRadius.Radius200.dp,
     override val radius250: Dp = LemonadeRadius.Radius250.dp,
     override val radius300: Dp = LemonadeRadius.Radius300.dp,
+    override val radius350: Dp = LemonadeRadius.Radius350.dp,
     override val radius400: Dp = LemonadeRadius.Radius400.dp,
     override val radius500: Dp = LemonadeRadius.Radius500.dp,
     override val radius600: Dp = LemonadeRadius.Radius600.dp,
     override val radius800: Dp = LemonadeRadius.Radius800.dp,
+    override val radius900: Dp = LemonadeRadius.Radius900.dp,
     override val radiusFull: Dp = LemonadeRadius.RadiusFull.dp,
     override val semantic: LemonadeRadiusValues.Semantic = InternalLemonadeSemanticRadiusValues(),
 ) : LemonadeRadiusValues
@@ -118,10 +126,12 @@ internal data class InternalLemonadeShapes(
     override val radius200: Shape = RoundedCornerShape(size = LemonadeRadius.Radius200.dp),
     override val radius250: Shape = RoundedCornerShape(size = LemonadeRadius.Radius250.dp),
     override val radius300: Shape = RoundedCornerShape(size = LemonadeRadius.Radius300.dp),
+    override val radius350: Shape = RoundedCornerShape(size = LemonadeRadius.Radius350.dp),
     override val radius400: Shape = RoundedCornerShape(size = LemonadeRadius.Radius400.dp),
     override val radius500: Shape = RoundedCornerShape(size = LemonadeRadius.Radius500.dp),
     override val radius600: Shape = RoundedCornerShape(size = LemonadeRadius.Radius600.dp),
     override val radius800: Shape = RoundedCornerShape(size = LemonadeRadius.Radius800.dp),
+    override val radius900: Shape = RoundedCornerShape(size = LemonadeRadius.Radius900.dp),
     override val radiusFull: Shape = RoundedCornerShape(size = LemonadeRadius.RadiusFull.dp),
     override val semantic: LemonadeShapes.Semantic = InternalLemonadeSemanticShapes(),
 ) : LemonadeShapes
