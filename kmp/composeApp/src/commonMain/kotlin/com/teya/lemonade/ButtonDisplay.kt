@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonType
 import com.teya.lemonade.core.LemonadeButtonVariant
@@ -26,14 +27,26 @@ import com.teya.lemonade.core.LemonadeIcons
 internal fun ButtonDisplay() {
     SampleScreenDisplayColumn("Button", itemsSpacing = LemonadeTheme.spaces.spacing600) {
         LemonadeButtonVariant.entries.forEach { variant ->
-            LemonadeButtonType.entries.forEach { type ->
+            // On Brand / On Color use translucent fills meant to sit on a filled surface, so give
+            // their cards a backdrop — otherwise the light fill (and On Color's white content) is
+            // invisible against the default card surface.
+            val backdrop: Color? = when (variant) {
+                LemonadeButtonVariant.OnBrand -> LemonadeTheme.colors.background.bgBrand
+                LemonadeButtonVariant.OnColor -> LemonadeTheme.colors.background.bgSubtleInverse
+                else -> null
+            }
+            // OnBrand / OnColor (the variants that need a backdrop) only have a Subtle treatment and
+            // ignore the type axis, so show each once instead of repeating an identical section under
+            // every type.
+            val types = if (backdrop != null) listOf(LemonadeButtonType.Subtle) else LemonadeButtonType.entries
+            types.forEach { type ->
                 ButtonSection(title = "$variant+$type") {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(
                             space = LemonadeTheme.spaces.spacing300,
                         ),
                     ) {
-                        ButtonCard {
+                        ButtonCard(backdrop = backdrop) {
                             LemonadeButtonSize.entries.forEach { size ->
                                 LemonadeUi.Button(
                                     label = size.toString(),
@@ -45,7 +58,7 @@ internal fun ButtonDisplay() {
                             }
                         }
 
-                        ButtonCard {
+                        ButtonCard(backdrop = backdrop) {
                             listOf("leading", "trailing").forEach { position ->
                                 val leadingIcon = getButtonLeadingIcon(variant)
                                 LemonadeUi.Button(
@@ -60,7 +73,7 @@ internal fun ButtonDisplay() {
                             }
                         }
 
-                        ButtonCard {
+                        ButtonCard(backdrop = backdrop) {
                             LemonadeUi.Button(
                                 label = "Loading",
                                 onClick = {},
@@ -80,7 +93,7 @@ internal fun ButtonDisplay() {
                             )
                         }
 
-                        ButtonCard {
+                        ButtonCard(backdrop = backdrop) {
                             LemonadeUi.Button(
                                 label = "Dual Action",
                                 onClick = {},
@@ -159,7 +172,10 @@ internal fun ButtonDisplay() {
 }
 
 @Composable
-private fun ButtonCard(content: @Composable () -> Unit) {
+private fun ButtonCard(
+    backdrop: Color? = null,
+    content: @Composable () -> Unit,
+) {
     LemonadeUi.Card(
         contentPadding = LemonadeCardPadding.Medium,
     ) {
@@ -169,7 +185,17 @@ private fun ButtonCard(content: @Composable () -> Unit) {
                 alignment = Alignment.CenterHorizontally,
             ),
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .then(
+                    if (backdrop != null) {
+                        Modifier
+                            .background(color = backdrop)
+                            .padding(all = LemonadeTheme.spaces.spacing300)
+                    } else {
+                        Modifier
+                    },
+                ),
         ) {
             content()
         }
@@ -198,6 +224,8 @@ private fun getButtonLeadingIcon(variant: LemonadeButtonVariant = LemonadeButton
         LemonadeButtonVariant.Primary,
         LemonadeButtonVariant.Secondary,
         LemonadeButtonVariant.Neutral,
+        LemonadeButtonVariant.OnBrand,
+        LemonadeButtonVariant.OnColor,
         -> LemonadeIcons.Heart
 
         LemonadeButtonVariant.Critical -> LemonadeIcons.Trash

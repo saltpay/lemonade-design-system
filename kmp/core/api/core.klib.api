@@ -157,6 +157,8 @@ final enum class com.teya.lemonade.core/LemonadeButtonType : kotlin/Enum<com.tey
 final enum class com.teya.lemonade.core/LemonadeButtonVariant : kotlin/Enum<com.teya.lemonade.core/LemonadeButtonVariant> { // com.teya.lemonade.core/LemonadeButtonVariant|null[0]
     enum entry Critical // com.teya.lemonade.core/LemonadeButtonVariant.Critical|null[0]
     enum entry Neutral // com.teya.lemonade.core/LemonadeButtonVariant.Neutral|null[0]
+    enum entry OnBrand // com.teya.lemonade.core/LemonadeButtonVariant.OnBrand|null[0]
+    enum entry OnColor // com.teya.lemonade.core/LemonadeButtonVariant.OnColor|null[0]
     enum entry Primary // com.teya.lemonade.core/LemonadeButtonVariant.Primary|null[0]
     enum entry Secondary // com.teya.lemonade.core/LemonadeButtonVariant.Secondary|null[0]
 

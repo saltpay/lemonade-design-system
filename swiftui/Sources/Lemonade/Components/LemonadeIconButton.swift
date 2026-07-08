@@ -8,6 +8,12 @@ public enum LemonadeButtonVariant {
     case secondary
     case neutral
     case critical
+
+    /// For use on top of brand-filled surfaces. Rendered as a single Subtle treatment (ignores `type`).
+    case onBrand
+
+    /// For use on top of color-filled (voice) surfaces. Rendered as a single Subtle treatment (ignores `type`).
+    case onColor
 }
 
 // MARK: - Button Type (shared)
@@ -219,6 +225,25 @@ private func resolveColors(
             backgroundHoverColor: LemonadeTheme.colors.interaction.bgSubtleInteractive,
             backgroundPressedColor: LemonadeTheme.colors.interaction.bgCriticalSubtlePressed,
             contentColor: LemonadeTheme.colors.content.contentCritical
+        )
+
+    // MARK: On Brand / On Color
+    // Designed as a single Subtle treatment for placing a button on top of a brand- or
+    // color-filled surface. They don't vary by type. On Color has no dedicated pressed token,
+    // so it reuses its interactive token for the pressed state.
+    case (.onBrand, _):
+        return LemonadeIconButtonColors(
+            backgroundColor: LemonadeTheme.colors.background.bgBrandElevated,
+            backgroundHoverColor: LemonadeTheme.colors.interaction.bgBrandElevatedInteractive,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgBrandElevatedPressed,
+            contentColor: LemonadeTheme.colors.content.contentOnBrandHigh
+        )
+    case (.onColor, _):
+        return LemonadeIconButtonColors(
+            backgroundColor: LemonadeTheme.colors.background.bgAlwaysLightMedium,
+            backgroundHoverColor: LemonadeTheme.colors.interaction.bgAlwaysLightMediumInteractive,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgAlwaysLightMediumInteractive,
+            contentColor: LemonadeTheme.colors.content.contentPrimaryInverse
         )
     }
 }

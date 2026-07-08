@@ -169,6 +169,8 @@ private fun resolveColors(
         LemonadeButtonVariant.Secondary -> resolveSecondaryColors(type = type)
         LemonadeButtonVariant.Neutral -> resolveNeutralColors(type = type)
         LemonadeButtonVariant.Critical -> resolveCriticalColors(type = type)
+        LemonadeButtonVariant.OnBrand -> resolveOnBrandColors()
+        LemonadeButtonVariant.OnColor -> resolveOnColorColors()
     }
 
 // Secondary Solid's fill is an opaque dark inverse. Figma dims it to `opacity40` when disabled,
@@ -282,6 +284,28 @@ private fun resolveCriticalColors(type: LemonadeButtonType): IconButtonColorData
             contentColor = LocalColors.current.content.contentCritical,
         )
     }
+
+// On Brand / On Color are designed as a single Subtle treatment, meant to sit on top of a
+// brand- or color-filled surface. They don't vary by [LemonadeButtonType], so the type is
+// ignored and every type resolves to the same colors. On Color has no dedicated pressed token,
+// so it reuses its interactive token for the pressed state.
+@Composable
+private fun resolveOnBrandColors(): IconButtonColorData =
+    IconButtonColorData(
+        backgroundColor = LocalColors.current.background.bgBrandElevated,
+        backgroundHoverColor = LocalColors.current.interaction.bgBrandElevatedInteractive,
+        backgroundPressedColor = LocalColors.current.interaction.bgBrandElevatedPressed,
+        contentColor = LocalColors.current.content.contentOnBrandHigh,
+    )
+
+@Composable
+private fun resolveOnColorColors(): IconButtonColorData =
+    IconButtonColorData(
+        backgroundColor = LocalColors.current.background.bgAlwaysLightMedium,
+        backgroundHoverColor = LocalColors.current.interaction.bgAlwaysLightMediumInteractive,
+        backgroundPressedColor = LocalColors.current.interaction.bgAlwaysLightMediumInteractive,
+        contentColor = LocalColors.current.content.contentPrimaryInverse,
+    )
 
 // MARK: - Size Data
 

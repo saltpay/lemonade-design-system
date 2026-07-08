@@ -45,7 +45,9 @@ import com.teya.lemonade.core.LemonadeTextStyle
  * @param onClick - Callback to be invoked when the Button is clicked.
  * @param leadingIcon - [LemonadeIcons] shown before the label.
  * @param trailingIcon - [LemonadeIcons] shown after the label.
- * @param variant - [LemonadeButtonVariant] for the color palette (Primary, Secondary, Neutral, Critical).
+ * @param variant - [LemonadeButtonVariant] for the color palette (Primary, Secondary, Neutral,
+ * Critical, OnBrand, OnColor). OnBrand and OnColor are single Subtle treatments for placing a
+ * button on top of a brand- or color-filled surface; they ignore [type].
  * @param type - [LemonadeButtonType] for the fill treatment (Solid, Subtle, Ghost).
  * @param size - [LemonadeButtonSize] to size the Button accordingly.
  * @param modifier - [Modifier] to be applied to the Button.
@@ -122,7 +124,9 @@ public fun LemonadeUi.Button(
  * @param label - [String] to be displayed as the Button's label.
  * @param onClick - Callback to be invoked when the Button is clicked.
  * @param modifier - [Modifier] to be applied to the Button.
- * @param variant - [LemonadeButtonVariant] for the color palette (Primary, Secondary, Neutral, Critical).
+ * @param variant - [LemonadeButtonVariant] for the color palette (Primary, Secondary, Neutral,
+ * Critical, OnBrand, OnColor). OnBrand and OnColor are single Subtle treatments for placing a
+ * button on top of a brand- or color-filled surface; they ignore [type].
  * @param type - [LemonadeButtonType] for the fill treatment (Solid, Subtle, Ghost).
  * @param size - [LemonadeButtonSize] to size the Button accordingly.
  * @param leadingSlot - Optional composable slot shown before the label.
@@ -250,6 +254,8 @@ private fun resolveButtonColors(
         LemonadeButtonVariant.Secondary -> resolveSecondaryButtonColors(type = type)
         LemonadeButtonVariant.Neutral -> resolveNeutralButtonColors(type = type)
         LemonadeButtonVariant.Critical -> resolveCriticalButtonColors(type = type)
+        LemonadeButtonVariant.OnBrand -> resolveOnBrandButtonColors()
+        LemonadeButtonVariant.OnColor -> resolveOnColorButtonColors()
     }
 
 // Secondary Solid's fill is an opaque dark inverse. Figma dims it to `opacity40` when disabled,
@@ -363,6 +369,25 @@ private fun resolveCriticalButtonColors(type: LemonadeButtonType): LemonadeButto
             pressedBackgroundColor = LocalColors.current.interaction.bgCriticalSubtlePressed,
         )
     }
+
+// On Brand / On Color are designed as a single Subtle treatment, meant to sit on top of a
+// brand- or color-filled surface. They don't vary by [LemonadeButtonType], so the type is
+// ignored and every type resolves to the same colors.
+@Composable
+private fun resolveOnBrandButtonColors(): LemonadeButtonColors =
+    LemonadeButtonColors(
+        contentColor = LocalColors.current.content.contentOnBrandHigh,
+        solidBackgroundColor = LocalColors.current.background.bgBrandElevated,
+        pressedBackgroundColor = LocalColors.current.interaction.bgBrandElevatedInteractive,
+    )
+
+@Composable
+private fun resolveOnColorButtonColors(): LemonadeButtonColors =
+    LemonadeButtonColors(
+        contentColor = LocalColors.current.content.contentPrimaryInverse,
+        solidBackgroundColor = LocalColors.current.background.bgAlwaysLightMedium,
+        pressedBackgroundColor = LocalColors.current.interaction.bgAlwaysLightMediumInteractive,
+    )
 
 @Composable
 private fun CoreButton(

@@ -342,6 +342,22 @@ private func resolveButtonColors(
             backgroundColor: Color.clear,
             pressedBackgroundColor: LemonadeTheme.colors.interaction.bgCriticalSubtlePressed
         )
+
+    // MARK: On Brand / On Color
+    // Designed as a single Subtle treatment for placing a button on top of a brand- or
+    // color-filled surface. They don't vary by type, so every type resolves to the same colors.
+    case (.onBrand, _):
+        return LemonadeButtonColors(
+            contentColor: LemonadeTheme.colors.content.contentOnBrandHigh,
+            backgroundColor: LemonadeTheme.colors.background.bgBrandElevated,
+            pressedBackgroundColor: LemonadeTheme.colors.interaction.bgBrandElevatedInteractive
+        )
+    case (.onColor, _):
+        return LemonadeButtonColors(
+            contentColor: LemonadeTheme.colors.content.contentPrimaryInverse,
+            backgroundColor: LemonadeTheme.colors.background.bgAlwaysLightMedium,
+            pressedBackgroundColor: LemonadeTheme.colors.interaction.bgAlwaysLightMediumInteractive
+        )
     }
 }
 

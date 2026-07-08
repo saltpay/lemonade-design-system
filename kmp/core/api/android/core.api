@@ -119,6 +119,8 @@ public final class com/teya/lemonade/core/LemonadeButtonType : java/lang/Enum {
 public final class com/teya/lemonade/core/LemonadeButtonVariant : java/lang/Enum {
 	public static final field Critical Lcom/teya/lemonade/core/LemonadeButtonVariant;
 	public static final field Neutral Lcom/teya/lemonade/core/LemonadeButtonVariant;
+	public static final field OnBrand Lcom/teya/lemonade/core/LemonadeButtonVariant;
+	public static final field OnColor Lcom/teya/lemonade/core/LemonadeButtonVariant;
 	public static final field Primary Lcom/teya/lemonade/core/LemonadeButtonVariant;
 	public static final field Secondary Lcom/teya/lemonade/core/LemonadeButtonVariant;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
