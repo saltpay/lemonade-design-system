@@ -72,7 +72,7 @@ public fun LemonadeUi.Button(
     val colors = resolveButtonColors(
         variant = variant,
         type = type,
-    ).adjustedForDisabledFill(enabled = enabled, variant = variant, type = type)
+    ).adjustedForDisabledFill(dimmed = !enabled || loading, variant = variant, type = type)
     CoreButton(
         colors = colors,
         size = size,
@@ -154,7 +154,7 @@ public fun LemonadeUi.Button(
     val colors = resolveButtonColors(
         variant = variant,
         type = type,
-    ).adjustedForDisabledFill(enabled = enabled, variant = variant, type = type)
+    ).adjustedForDisabledFill(dimmed = !enabled || loading, variant = variant, type = type)
     CoreButton(
         colors = colors,
         size = size,
@@ -207,9 +207,9 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
             LemonadeButtonSize.XSmall -> LemonadeButtonContentData(
                 verticalPadding = LocalSpaces.current.spacing100,
                 horizontalPadding = LocalSpaces.current.spacing200,
-                requiredHeight = LocalSizes.current.size1000,
+                requiredHeight = LocalSizes.current.size800,
                 minWidth = LocalSizes.current.size1600,
-                shape = LocalShapes.current.radius200,
+                shape = LocalShapes.current.radius250,
                 textStyle = LocalTypographies.current.bodySmallSemiBold,
             )
 
@@ -227,7 +227,7 @@ private val LemonadeButtonSize.contentData: LemonadeButtonContentData
                 horizontalPadding = LocalSpaces.current.spacing400,
                 requiredHeight = LocalSizes.current.size1200,
                 minWidth = LocalSizes.current.size1600,
-                shape = LocalShapes.current.radius300,
+                shape = LocalShapes.current.radius350,
                 textStyle = LocalTypographies.current.bodyMediumSemiBold,
             )
 
@@ -258,19 +258,20 @@ private fun resolveButtonColors(
         LemonadeButtonVariant.OnColor -> resolveOnColorButtonColors()
     }
 
-// Secondary Solid's fill is an opaque dark inverse. Figma dims it to `opacity40` when disabled,
-// while every other variant — and all content — dims to `opacityDisabled`. The disabled
-// [Modifier.alpha] in [CoreButton] already multiplies the whole button by `opacityDisabled`, so
-// pre-scale just this fill by the ratio of the two, letting them multiply out to `opacity40`.
+// Secondary Solid's fill is an opaque dark inverse. Figma dims it to `opacity40` when dimmed
+// (disabled or loading), while every other variant — and all content — dims to `opacityDisabled`.
+// The dimming [Modifier.alpha] in [CoreButton] already multiplies the whole button by
+// `opacityDisabled`, so pre-scale just this fill by the ratio of the two, letting them multiply out
+// to `opacity40`.
 @Composable
 private fun LemonadeButtonColors.adjustedForDisabledFill(
-    enabled: Boolean,
+    dimmed: Boolean,
     variant: LemonadeButtonVariant,
     type: LemonadeButtonType,
 ): LemonadeButtonColors {
     val isSecondarySolid = variant == LemonadeButtonVariant.Secondary &&
         type == LemonadeButtonType.Solid
-    if (enabled || !isSecondarySolid) return this
+    if (!dimmed || !isSecondarySolid) return this
     val opacities = LocalOpacities.current
     val fillScale = opacities.base.opacity40 / opacities.state.opacityDisabled
     return LemonadeButtonColors(
@@ -411,10 +412,10 @@ private fun CoreButton(
             colors.solidBackgroundColor
         },
     )
-    // When disabled, wrap the fill and content in a single alpha graphics layer so the whole
-    // button — container and content together — dims to 50% as one group, matching the Figma
+    // When disabled or loading, wrap the fill and content in a single alpha graphics layer so the
+    // whole button — container and content together — dims to 50% as one group, matching the Figma
     // disabled treatment (group opacity, letting the underlying surface show through).
-    val disabledModifier = if (!enabled) {
+    val disabledModifier = if (!enabled || loading) {
         Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
     } else {
         Modifier
