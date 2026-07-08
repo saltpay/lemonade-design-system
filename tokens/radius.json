@@ -367,7 +367,7 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.r adius.radius350",
+        "ANDROID": "LemonadeTheme.radius.radius350",
         "iOS": "LemonadeTheme.radius.radius350"
       }
     }

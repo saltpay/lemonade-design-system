@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Generate platform token code (KMP / SwiftUI / Flutter) from tokens/*.json.
+# Generate platform token code (KMP + SwiftUI) from tokens/*.json.
 #
 # Usage (run from the repo root):
 #   .claude/skills/generate-tokens/scripts/run-converters.sh [--changed | --all | <file.json>...]
