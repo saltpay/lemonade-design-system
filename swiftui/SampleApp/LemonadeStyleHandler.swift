@@ -1,6 +1,7 @@
 import SwiftUI
 import UIKit
 
+@MainActor
 final class LemonadeStyleHandler: ObservableObject {
     @Published var currentStyle: LemonadeStyle = .system {
         didSet { applyToWindows() }
