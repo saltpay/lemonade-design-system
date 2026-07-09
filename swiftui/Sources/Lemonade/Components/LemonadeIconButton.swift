@@ -8,6 +8,12 @@ public enum LemonadeButtonVariant {
     case secondary
     case neutral
     case critical
+
+    /// For use on top of brand-filled surfaces. Rendered as a single Subtle treatment (ignores `type`).
+    case onBrand
+
+    /// For use on top of color-filled (voice) surfaces. Rendered as a single Subtle treatment (ignores `type`).
+    case onColor
 }
 
 // MARK: - Button Type (shared)
@@ -91,7 +97,7 @@ private struct LemonadeIconButtonColors {
 
 private struct LemonadeIconButtonSizeData {
     let iconSize: LemonadeUiIconSize
-    let innerPadding: CGFloat
+    let size: CGFloat
     let cornerRadius: CGFloat
 }
 
@@ -103,20 +109,26 @@ private extension LemonadeButtonSize {
         case .large:
             return LemonadeIconButtonSizeData(
                 iconSize: .large,
-                innerPadding: LemonadeTheme.spaces.spacing400,
+                size: LemonadeTheme.sizes.size1400,
                 cornerRadius: LemonadeTheme.radius.radius400
             )
         case .medium:
             return LemonadeIconButtonSizeData(
                 iconSize: .large,
-                innerPadding: LemonadeTheme.spaces.spacing200,
-                cornerRadius: LemonadeTheme.radius.radius300
+                size: LemonadeTheme.sizes.size1200,
+                cornerRadius: LemonadeTheme.radius.radius350
             )
-        case .small, .xSmall:
+        case .small:
             return LemonadeIconButtonSizeData(
                 iconSize: .small,
-                innerPadding: LemonadeTheme.spaces.spacing200,
+                size: LemonadeTheme.sizes.size1000,
                 cornerRadius: LemonadeTheme.radius.radius300
+            )
+        case .xSmall:
+            return LemonadeIconButtonSizeData(
+                iconSize: .small,
+                size: LemonadeTheme.sizes.size800,
+                cornerRadius: LemonadeTheme.radius.radius250
             )
         }
     }
@@ -220,6 +232,25 @@ private func resolveColors(
             backgroundPressedColor: LemonadeTheme.colors.interaction.bgCriticalSubtlePressed,
             contentColor: LemonadeTheme.colors.content.contentCritical
         )
+
+    // MARK: On Brand / On Color
+    // Designed as a single Subtle treatment for placing a button on top of a brand- or
+    // color-filled surface. They don't vary by type. Their pressed state mirrors the labeled
+    // LemonadeButton (the base), which uses the interactive token rather than a dedicated pressed one.
+    case (.onBrand, _):
+        return LemonadeIconButtonColors(
+            backgroundColor: LemonadeTheme.colors.background.bgBrandElevated,
+            backgroundHoverColor: LemonadeTheme.colors.interaction.bgBrandElevatedInteractive,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgBrandElevatedInteractive,
+            contentColor: LemonadeTheme.colors.content.contentOnBrandHigh
+        )
+    case (.onColor, _):
+        return LemonadeIconButtonColors(
+            backgroundColor: LemonadeTheme.colors.background.bgAlwaysLightMedium,
+            backgroundHoverColor: LemonadeTheme.colors.interaction.bgAlwaysLightMediumInteractive,
+            backgroundPressedColor: LemonadeTheme.colors.interaction.bgAlwaysLightMediumInteractive,
+            contentColor: LemonadeTheme.colors.content.contentAlwaysLight
+        )
     }
 }
 
@@ -250,13 +281,14 @@ private struct LemonadeIconButtonView: View {
         let bgColor: Color = isHovering ? colors.backgroundHoverColor : colors.backgroundColor
         let buttonShape = RoundedRectangle(cornerRadius: cornerRadius)
 
-        // When disabled, the whole button — fill and content together — dims to 50% via a single
-        // `.opacity` modifier on the SwiftUI.Button, matching the Figma disabled treatment (group
-        // opacity, letting the underlying surface show through).
-        // Secondary Solid's opaque inverse fill dims to `opacity40` when disabled, not
+        // When disabled or loading, the whole button — fill and content together — dims to 50% via
+        // a single `.opacity` modifier on the SwiftUI.Button, matching the Figma disabled treatment
+        // (group opacity, letting the underlying surface show through).
+        let dimmed = !enabled || loading
+        // Secondary Solid's opaque inverse fill dims to `opacity40` when dimmed, not
         // `opacityDisabled`. The `.opacity(… opacityDisabled)` below already dims the whole button,
         // so pre-scale just the fill by the ratio so they multiply out to `opacity40`.
-        let disabledFillScale = (!enabled && variant == .secondary && type == .solid)
+        let disabledFillScale = (dimmed && variant == .secondary && type == .solid)
             ? LemonadeTheme.opacity.base.opacity40 / LemonadeTheme.opacity.state.opacityDisabled
             : 1.0
         SwiftUI.Button(action: onClick) {
@@ -272,7 +304,7 @@ private struct LemonadeIconButtonView: View {
                     )
                 }
             }
-            .padding(size.iconButtonSizeData.innerPadding)
+            .frame(width: size.iconButtonSizeData.size, height: size.iconButtonSizeData.size)
             .background(
                 buttonShape
                     .fill(bgColor.opacity(disabledFillScale))
@@ -289,7 +321,7 @@ private struct LemonadeIconButtonView: View {
             isHovering = hovering
         }
         .disabled(!enabled || loading)
-        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+        .opacity(dimmed ? LemonadeTheme.opacity.state.opacityDisabled : 1.0)
     }
 }
 

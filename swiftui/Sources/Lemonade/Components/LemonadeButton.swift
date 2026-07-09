@@ -39,7 +39,7 @@ public extension LemonadeUi {
     ///   - type: LemonadeButtonType for the fill treatment (solid, subtle, ghost)
     ///   - size: LemonadeButtonSize to size the Button accordingly
     ///   - enabled: Boolean flag to enable or disable the Button
-    ///   - loading: Boolean flag to show a loading spinner and disable interaction. Unlike `enabled`, loading keeps full opacity.
+    ///   - loading: Boolean flag to show a loading spinner and disable interaction. Like `enabled`, loading dims the button to the disabled opacity.
     /// - Returns: A styled Button view
     @ViewBuilder
     static func Button(
@@ -220,9 +220,9 @@ private extension LemonadeButtonSize {
             return LemonadeButtonContentData(
                 verticalPadding: LemonadeTheme.spaces.spacing100,
                 horizontalPadding: LemonadeTheme.spaces.spacing200,
-                requiredHeight: LemonadeTheme.sizes.size1000,
+                requiredHeight: LemonadeTheme.sizes.size800,
                 minWidth: LemonadeTheme.sizes.size1600,
-                cornerRadius: LemonadeTheme.radius.radius200,
+                cornerRadius: LemonadeTheme.radius.radius250,
                 textStyle: LemonadeTypography.shared.bodySmallSemiBold
             )
         case .small:
@@ -240,7 +240,7 @@ private extension LemonadeButtonSize {
                 horizontalPadding: LemonadeTheme.spaces.spacing400,
                 requiredHeight: LemonadeTheme.sizes.size1200,
                 minWidth: LemonadeTheme.sizes.size1600,
-                cornerRadius: LemonadeTheme.radius.radius300,
+                cornerRadius: LemonadeTheme.radius.radius350,
                 textStyle: LemonadeTypography.shared.bodyMediumSemiBold
             )
         case .large:
@@ -342,6 +342,22 @@ private func resolveButtonColors(
             backgroundColor: Color.clear,
             pressedBackgroundColor: LemonadeTheme.colors.interaction.bgCriticalSubtlePressed
         )
+
+    // MARK: On Brand / On Color
+    // Designed as a single Subtle treatment for placing a button on top of a brand- or
+    // color-filled surface. They don't vary by type, so every type resolves to the same colors.
+    case (.onBrand, _):
+        return LemonadeButtonColors(
+            contentColor: LemonadeTheme.colors.content.contentOnBrandHigh,
+            backgroundColor: LemonadeTheme.colors.background.bgBrandElevated,
+            pressedBackgroundColor: LemonadeTheme.colors.interaction.bgBrandElevatedInteractive
+        )
+    case (.onColor, _):
+        return LemonadeButtonColors(
+            contentColor: LemonadeTheme.colors.content.contentAlwaysLight,
+            backgroundColor: LemonadeTheme.colors.background.bgAlwaysLightMedium,
+            pressedBackgroundColor: LemonadeTheme.colors.interaction.bgAlwaysLightMediumInteractive
+        )
     }
 }
 
@@ -371,16 +387,17 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
         let colors = resolveButtonColors(variant: variant, type: type)
         let buttonShape = RoundedRectangle(cornerRadius: cornerRadius)
 
-        // When disabled, the whole button — fill and content together — dims to 50% via a single
-        // `.opacity` modifier on the SwiftUI.Button, matching the Figma disabled treatment (group
-        // opacity, letting the underlying surface show through).
+        // When disabled or loading, the whole button — fill and content together — dims to 50% via
+        // a single `.opacity` modifier on the SwiftUI.Button, matching the Figma disabled treatment
+        // (group opacity, letting the underlying surface show through).
         let pressedOpacity = isPressed ? LemonadeTheme.opacity.state.opacityPressed : LemonadeTheme.opacity.base.opacity100
-        let disabledOpacity = enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled
-        // Secondary Solid's opaque inverse fill dims to `opacity40` when disabled, not
-        // `opacityDisabled`. The `.opacity(… disabledOpacity)` below already dims the whole button
+        let dimmed = !enabled || loading
+        let dimmedOpacity = dimmed ? LemonadeTheme.opacity.state.opacityDisabled : 1.0
+        // Secondary Solid's opaque inverse fill dims to `opacity40` when dimmed, not
+        // `opacityDisabled`. The `.opacity(… dimmedOpacity)` below already dims the whole button
         // by `opacityDisabled`, so pre-scale just the fill by the ratio so they multiply out to
         // `opacity40`.
-        let disabledFillScale = (!enabled && variant == .secondary && type == .solid)
+        let disabledFillScale = (dimmed && variant == .secondary && type == .solid)
             ? LemonadeTheme.opacity.base.opacity40 / LemonadeTheme.opacity.state.opacityDisabled
             : 1.0
         SwiftUI.Button(action: onClick) {
@@ -425,7 +442,7 @@ private struct LemonadeCoreButtonView<LeadingSlot: View, TrailingSlot: View>: Vi
             .contentShape(buttonShape)
         }
         .buttonStyle(LemonadePressTrackingButtonStyle(isPressed: $isPressed))
-        .opacity(pressedOpacity * disabledOpacity)
+        .opacity(pressedOpacity * dimmedOpacity)
         .animation(.easeInOut(duration: 0.1), value: isPressed)
         .disabled(!enabled || loading)
         .fixedSize(horizontal: false, vertical: true)

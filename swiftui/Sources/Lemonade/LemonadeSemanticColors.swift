@@ -54,6 +54,12 @@ public protocol InteractionColors {
     var bgElevatedHighInteractive: Color { get }
     var bgBrandElevatedInteractive: Color { get }
     var bgBrandElevatedPressed: Color { get }
+    var bgAlwaysLightLowInteractive: Color { get }
+    var bgAlwaysLightMediumInteractive: Color { get }
+    var bgAlwaysLightHighInteractive: Color { get }
+    var bgAlwaysDarkHighInteractive: Color { get }
+    var bgAlwaysDarkLowInteractive: Color { get }
+    var bgAlwaysDarkMediumInteractive: Color { get }
 }
 
 /// Border color definitions
@@ -149,6 +155,12 @@ public protocol BackgroundColors {
     var bgElevatedHigh: Color { get }
     var bgTransparentLight: Color { get }
     var bgTransparentDark: Color { get }
+    var bgAlwaysLightLow: Color { get }
+    var bgAlwaysLightMedium: Color { get }
+    var bgAlwaysLightHigh: Color { get }
+    var bgAlwaysDarkLow: Color { get }
+    var bgAlwaysDarkMedium: Color { get }
+    var bgAlwaysDarkHigh: Color { get }
 }
 
 /// Shadow color definitions

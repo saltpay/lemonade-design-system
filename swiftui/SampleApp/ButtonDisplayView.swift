@@ -119,6 +119,12 @@ struct ButtonDisplayView: View {
                     }
                 }
 
+                // On Brand — meant to sit on top of a brand-filled surface
+                onSurfaceSection(title: "On Brand", variant: .onBrand, background: LemonadeTheme.colors.background.bgBrand)
+
+                // On Color — meant to sit on top of a color-filled (voice) surface
+                onSurfaceSection(title: "On Color", variant: .onColor, background: LemonadeTheme.colors.background.bgSubtleInverse)
+
                 // Full Shape (pill)
                 sectionView(title: "Full Shape (.fullShape())") {
                     VStack(spacing: 16) {
@@ -150,6 +156,34 @@ struct ButtonDisplayView: View {
                 .foregroundStyle(.content.contentSecondary)
 
             content()
+        }
+    }
+
+    // On Brand / On Color are single Subtle treatments meant to sit on a filled surface, so they
+    // share one section shape rendered on top of the given backdrop.
+    private func onSurfaceSection(title: String, variant: LemonadeButtonVariant, background: Color) -> some View {
+        sectionView(title: title) {
+            VStack(spacing: 16) {
+                HStack(spacing: 12) {
+                    LemonadeUi.Button(label: "XSmall", onClick: {}, variant: variant, size: .xSmall)
+                    LemonadeUi.Button(label: "Small", onClick: {}, variant: variant, size: .small)
+                    LemonadeUi.Button(label: "Medium", onClick: {}, variant: variant, size: .medium)
+                    LemonadeUi.Button(label: "Large", onClick: {}, variant: variant, size: .large)
+                }
+
+                HStack(spacing: 12) {
+                    LemonadeUi.Button(label: "Leading", onClick: {}, leadingIcon: .heart, variant: variant, size: .medium)
+                    LemonadeUi.Button(label: "Trailing", onClick: {}, trailingIcon: .arrowRight, variant: variant, size: .medium)
+                }
+
+                LemonadeUi.Button(label: "Disabled", onClick: {}, variant: variant, size: .medium, enabled: false)
+
+                LemonadeUi.Button(label: "Loading", onClick: {}, variant: variant, size: .medium, loading: true)
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity)
+            .background(background)
+            .clipShape(RoundedRectangle(cornerRadius: LemonadeTheme.radius.radius400))
         }
     }
 }

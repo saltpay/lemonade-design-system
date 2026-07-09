@@ -771,11 +771,13 @@ public abstract interface class com/teya/lemonade/LemonadeRadiusValues {
 	public abstract fun getRadius200-D9Ej5fM ()F
 	public abstract fun getRadius250-D9Ej5fM ()F
 	public abstract fun getRadius300-D9Ej5fM ()F
+	public abstract fun getRadius350-D9Ej5fM ()F
 	public abstract fun getRadius400-D9Ej5fM ()F
 	public abstract fun getRadius50-D9Ej5fM ()F
 	public abstract fun getRadius500-D9Ej5fM ()F
 	public abstract fun getRadius600-D9Ej5fM ()F
 	public abstract fun getRadius800-D9Ej5fM ()F
+	public abstract fun getRadius900-D9Ej5fM ()F
 	public abstract fun getRadiusFull-D9Ej5fM ()F
 	public abstract fun getSemantic ()Lcom/teya/lemonade/LemonadeRadiusValues$Semantic;
 }
@@ -795,7 +797,13 @@ public abstract interface class com/teya/lemonade/LemonadeSemanticColors {
 
 public abstract interface class com/teya/lemonade/LemonadeSemanticColors$BackgroundColors {
 	public abstract fun getBgAlwaysDark-0d7_KjU ()J
+	public abstract fun getBgAlwaysDarkHigh-0d7_KjU ()J
+	public abstract fun getBgAlwaysDarkLow-0d7_KjU ()J
+	public abstract fun getBgAlwaysDarkMedium-0d7_KjU ()J
 	public abstract fun getBgAlwaysLight-0d7_KjU ()J
+	public abstract fun getBgAlwaysLightHigh-0d7_KjU ()J
+	public abstract fun getBgAlwaysLightLow-0d7_KjU ()J
+	public abstract fun getBgAlwaysLightMedium-0d7_KjU ()J
 	public abstract fun getBgBrand-0d7_KjU ()J
 	public abstract fun getBgBrandElevated-0d7_KjU ()J
 	public abstract fun getBgBrandHigh-0d7_KjU ()J
@@ -883,6 +891,12 @@ public abstract interface class com/teya/lemonade/LemonadeSemanticColors$Content
 }
 
 public abstract interface class com/teya/lemonade/LemonadeSemanticColors$InteractionColors {
+	public abstract fun getBgAlwaysDarkHighInteractive-0d7_KjU ()J
+	public abstract fun getBgAlwaysDarkLowInteractive-0d7_KjU ()J
+	public abstract fun getBgAlwaysDarkMediumInteractive-0d7_KjU ()J
+	public abstract fun getBgAlwaysLightHighInteractive-0d7_KjU ()J
+	public abstract fun getBgAlwaysLightLowInteractive-0d7_KjU ()J
+	public abstract fun getBgAlwaysLightMediumInteractive-0d7_KjU ()J
 	public abstract fun getBgBrandElevatedInteractive-0d7_KjU ()J
 	public abstract fun getBgBrandElevatedPressed-0d7_KjU ()J
 	public abstract fun getBgBrandHighInteractive-0d7_KjU ()J
@@ -940,11 +954,13 @@ public abstract interface class com/teya/lemonade/LemonadeShapes {
 	public abstract fun getRadius200 ()Landroidx/compose/ui/graphics/Shape;
 	public abstract fun getRadius250 ()Landroidx/compose/ui/graphics/Shape;
 	public abstract fun getRadius300 ()Landroidx/compose/ui/graphics/Shape;
+	public abstract fun getRadius350 ()Landroidx/compose/ui/graphics/Shape;
 	public abstract fun getRadius400 ()Landroidx/compose/ui/graphics/Shape;
 	public abstract fun getRadius50 ()Landroidx/compose/ui/graphics/Shape;
 	public abstract fun getRadius500 ()Landroidx/compose/ui/graphics/Shape;
 	public abstract fun getRadius600 ()Landroidx/compose/ui/graphics/Shape;
 	public abstract fun getRadius800 ()Landroidx/compose/ui/graphics/Shape;
+	public abstract fun getRadius900 ()Landroidx/compose/ui/graphics/Shape;
 	public abstract fun getRadiusFull ()Landroidx/compose/ui/graphics/Shape;
 	public abstract fun getSemantic ()Lcom/teya/lemonade/LemonadeShapes$Semantic;
 }

@@ -53,6 +53,12 @@ public struct LemonadeInteractionColorsShorthand {
     public var bgElevatedHighInteractive: Color { Color("lemonade-interaction-interactive-background-bg-elevated-high-interactive", bundle: .lemonade) }
     public var bgBrandElevatedInteractive: Color { Color("lemonade-interaction-interactive-background-bg-brand-elevated-interactive", bundle: .lemonade) }
     public var bgBrandElevatedPressed: Color { Color("lemonade-interaction-pressed-background-bg-brand-elevated-pressed", bundle: .lemonade) }
+    public var bgAlwaysLightLowInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-light-low-interactive", bundle: .lemonade) }
+    public var bgAlwaysLightMediumInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-light-medium-interactive", bundle: .lemonade) }
+    public var bgAlwaysLightHighInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-light-high-interactive", bundle: .lemonade) }
+    public var bgAlwaysDarkHighInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-dark-high-interactive", bundle: .lemonade) }
+    public var bgAlwaysDarkLowInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-dark-low-interactive", bundle: .lemonade) }
+    public var bgAlwaysDarkMediumInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-dark-medium-interactive", bundle: .lemonade) }
 }
 
 // MARK: - Border Colors Namespace
@@ -151,6 +157,12 @@ public struct LemonadeBackgroundColorsShorthand {
     public var bgElevatedHigh: Color { Color("lemonade-background-bg-elevated-high", bundle: .lemonade) }
     public var bgTransparentLight: Color { Color("lemonade-background-fixed-bg-transparent-light", bundle: .lemonade) }
     public var bgTransparentDark: Color { Color("lemonade-background-fixed-bg-transparent-dark", bundle: .lemonade) }
+    public var bgAlwaysLightLow: Color { Color("lemonade-background-fixed-bg-always-light-low", bundle: .lemonade) }
+    public var bgAlwaysLightMedium: Color { Color("lemonade-background-fixed-bg-always-light-medium", bundle: .lemonade) }
+    public var bgAlwaysLightHigh: Color { Color("lemonade-background-fixed-bg-always-light-high", bundle: .lemonade) }
+    public var bgAlwaysDarkLow: Color { Color("lemonade-background-fixed-bg-always-dark-low", bundle: .lemonade) }
+    public var bgAlwaysDarkMedium: Color { Color("lemonade-background-fixed-bg-always-dark-medium", bundle: .lemonade) }
+    public var bgAlwaysDarkHigh: Color { Color("lemonade-background-fixed-bg-always-dark-high", bundle: .lemonade) }
 }
 
 // MARK: - Shadow Colors Namespace

@@ -7,7 +7,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -101,7 +101,7 @@ private fun CoreIconButton(
     val colors = resolveColors(
         variant = variant,
         type = type,
-    ).adjustedForDisabledFill(enabled = enabled, variant = variant, type = type)
+    ).adjustedForDisabledFill(dimmed = !enabled || loading, variant = variant, type = type)
     val animatedBackgroundColor by animateColorAsState(
         targetValue = when {
             isPressed -> colors.backgroundPressedColor
@@ -111,10 +111,10 @@ private fun CoreIconButton(
     )
     val sizeData = size.toSizeData(shape = shape)
 
-    // When disabled, wrap the fill and content in a single alpha graphics layer so the whole
-    // button — container and content together — dims to 50% as one group, matching the Figma
+    // When disabled or loading, wrap the fill and content in a single alpha graphics layer so the
+    // whole button — container and content together — dims to 50% as one group, matching the Figma
     // disabled treatment (group opacity, letting the underlying surface show through).
-    val disabledModifier = if (!enabled) {
+    val disabledModifier = if (!enabled || loading) {
         Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
     } else {
         Modifier
@@ -123,6 +123,7 @@ private fun CoreIconButton(
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
+            .requiredSize(size = sizeData.size)
             .clip(shape = sizeData.shape)
             .then(other = disabledModifier)
             .clickable(
@@ -131,8 +132,7 @@ private fun CoreIconButton(
                 interactionSource = interactionSource,
                 indication = LocalEffects.current.interactionIndication,
                 enabled = enabled && !loading,
-            ).background(color = animatedBackgroundColor)
-            .padding(all = sizeData.innerPaddings),
+            ).background(color = animatedBackgroundColor),
     ) {
         if (loading) {
             LemonadeUi.Spinner(
@@ -169,21 +169,24 @@ private fun resolveColors(
         LemonadeButtonVariant.Secondary -> resolveSecondaryColors(type = type)
         LemonadeButtonVariant.Neutral -> resolveNeutralColors(type = type)
         LemonadeButtonVariant.Critical -> resolveCriticalColors(type = type)
+        LemonadeButtonVariant.OnBrand -> resolveOnBrandColors()
+        LemonadeButtonVariant.OnColor -> resolveOnColorColors()
     }
 
-// Secondary Solid's fill is an opaque dark inverse. Figma dims it to `opacity40` when disabled,
-// while every other variant — and all content — dims to `opacityDisabled`. The disabled
-// [Modifier.alpha] in [CoreIconButton] already multiplies the whole button by `opacityDisabled`,
-// so pre-scale just this fill by the ratio of the two, letting them multiply out to `opacity40`.
+// Secondary Solid's fill is an opaque dark inverse. Figma dims it to `opacity40` when dimmed
+// (disabled or loading), while every other variant — and all content — dims to `opacityDisabled`.
+// The dimming [Modifier.alpha] in [CoreIconButton] already multiplies the whole button by
+// `opacityDisabled`, so pre-scale just this fill by the ratio of the two, letting them multiply out
+// to `opacity40`.
 @Composable
 private fun IconButtonColorData.adjustedForDisabledFill(
-    enabled: Boolean,
+    dimmed: Boolean,
     variant: LemonadeButtonVariant,
     type: LemonadeButtonType,
 ): IconButtonColorData {
     val isSecondarySolid = variant == LemonadeButtonVariant.Secondary &&
         type == LemonadeButtonType.Solid
-    if (enabled || !isSecondarySolid) return this
+    if (!dimmed || !isSecondarySolid) return this
     val opacities = LocalOpacities.current
     val fillScale = opacities.base.opacity40 / opacities.state.opacityDisabled
     return copy(
@@ -283,12 +286,35 @@ private fun resolveCriticalColors(type: LemonadeButtonType): IconButtonColorData
         )
     }
 
+// On Brand / On Color are designed as a single Subtle treatment, meant to sit on top of a
+// brand- or color-filled surface. They don't vary by [LemonadeButtonType], so the type is
+// ignored and every type resolves to the same colors. Their pressed state mirrors the labeled
+// [LemonadeUi.Button] (the base), which uses the interactive token rather than a dedicated pressed
+// one.
+@Composable
+private fun resolveOnBrandColors(): IconButtonColorData =
+    IconButtonColorData(
+        backgroundColor = LocalColors.current.background.bgBrandElevated,
+        backgroundHoverColor = LocalColors.current.interaction.bgBrandElevatedInteractive,
+        backgroundPressedColor = LocalColors.current.interaction.bgBrandElevatedInteractive,
+        contentColor = LocalColors.current.content.contentOnBrandHigh,
+    )
+
+@Composable
+private fun resolveOnColorColors(): IconButtonColorData =
+    IconButtonColorData(
+        backgroundColor = LocalColors.current.background.bgAlwaysLightMedium,
+        backgroundHoverColor = LocalColors.current.interaction.bgAlwaysLightMediumInteractive,
+        backgroundPressedColor = LocalColors.current.interaction.bgAlwaysLightMediumInteractive,
+        contentColor = LocalColors.current.content.contentAlwaysLight,
+    )
+
 // MARK: - Size Data
 
 private data class IconButtonSizeData(
     val iconSize: LemonadeAssetSize,
     val spinnerSize: LemonadeAssetSize,
-    val innerPaddings: Dp,
+    val size: Dp,
     val shape: Shape,
 )
 
@@ -298,29 +324,29 @@ private fun LemonadeButtonSize.toSizeData(shape: LemonadeIconButtonShape): IconB
         LemonadeButtonSize.Large -> IconButtonSizeData(
             iconSize = LemonadeAssetSize.Large,
             spinnerSize = LemonadeAssetSize.Small,
-            innerPaddings = LocalSpaces.current.spacing400,
+            size = LocalSizes.current.size1400,
             shape = shape.resolveShape(roundedShape = LocalShapes.current.radius400),
         )
 
         LemonadeButtonSize.Medium -> IconButtonSizeData(
             iconSize = LemonadeAssetSize.Large,
             spinnerSize = LemonadeAssetSize.Small,
-            innerPaddings = LocalSpaces.current.spacing200,
-            shape = shape.resolveShape(roundedShape = LocalShapes.current.radius300),
+            size = LocalSizes.current.size1200,
+            shape = shape.resolveShape(roundedShape = LocalShapes.current.radius350),
         )
 
         LemonadeButtonSize.Small -> IconButtonSizeData(
             iconSize = LemonadeAssetSize.Small,
             spinnerSize = LemonadeAssetSize.XSmall,
-            innerPaddings = LocalSpaces.current.spacing200,
+            size = LocalSizes.current.size1000,
             shape = shape.resolveShape(roundedShape = LocalShapes.current.radius300),
         )
 
         LemonadeButtonSize.XSmall -> IconButtonSizeData(
             iconSize = LemonadeAssetSize.Small,
             spinnerSize = LemonadeAssetSize.XSmall,
-            innerPaddings = LocalSpaces.current.spacing200,
-            shape = shape.resolveShape(roundedShape = LocalShapes.current.radius300),
+            size = LocalSizes.current.size800,
+            shape = shape.resolveShape(roundedShape = LocalShapes.current.radius250),
         )
     }
 

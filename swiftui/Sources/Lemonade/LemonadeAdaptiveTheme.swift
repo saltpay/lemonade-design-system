@@ -59,6 +59,12 @@ private struct AdaptiveInteractionColors: InteractionColors {
     var bgElevatedHighInteractive: Color { Color("lemonade-interaction-interactive-background-bg-elevated-high-interactive", bundle: .lemonade) }
     var bgBrandElevatedInteractive: Color { Color("lemonade-interaction-interactive-background-bg-brand-elevated-interactive", bundle: .lemonade) }
     var bgBrandElevatedPressed: Color { Color("lemonade-interaction-pressed-background-bg-brand-elevated-pressed", bundle: .lemonade) }
+    var bgAlwaysLightLowInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-light-low-interactive", bundle: .lemonade) }
+    var bgAlwaysLightMediumInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-light-medium-interactive", bundle: .lemonade) }
+    var bgAlwaysLightHighInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-light-high-interactive", bundle: .lemonade) }
+    var bgAlwaysDarkHighInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-dark-high-interactive", bundle: .lemonade) }
+    var bgAlwaysDarkLowInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-dark-low-interactive", bundle: .lemonade) }
+    var bgAlwaysDarkMediumInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-dark-medium-interactive", bundle: .lemonade) }
 }
 
 private struct AdaptiveBorderColors: BorderColors {
@@ -151,6 +157,12 @@ private struct AdaptiveBackgroundColors: BackgroundColors {
     var bgElevatedHigh: Color { Color("lemonade-background-bg-elevated-high", bundle: .lemonade) }
     var bgTransparentLight: Color { Color("lemonade-background-fixed-bg-transparent-light", bundle: .lemonade) }
     var bgTransparentDark: Color { Color("lemonade-background-fixed-bg-transparent-dark", bundle: .lemonade) }
+    var bgAlwaysLightLow: Color { Color("lemonade-background-fixed-bg-always-light-low", bundle: .lemonade) }
+    var bgAlwaysLightMedium: Color { Color("lemonade-background-fixed-bg-always-light-medium", bundle: .lemonade) }
+    var bgAlwaysLightHigh: Color { Color("lemonade-background-fixed-bg-always-light-high", bundle: .lemonade) }
+    var bgAlwaysDarkLow: Color { Color("lemonade-background-fixed-bg-always-dark-low", bundle: .lemonade) }
+    var bgAlwaysDarkMedium: Color { Color("lemonade-background-fixed-bg-always-dark-medium", bundle: .lemonade) }
+    var bgAlwaysDarkHigh: Color { Color("lemonade-background-fixed-bg-always-dark-high", bundle: .lemonade) }
 }
 
 private struct AdaptiveShadowColors: ShadowColors {

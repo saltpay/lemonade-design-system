@@ -157,6 +157,8 @@ final enum class com.teya.lemonade.core/LemonadeButtonType : kotlin/Enum<com.tey
 final enum class com.teya.lemonade.core/LemonadeButtonVariant : kotlin/Enum<com.teya.lemonade.core/LemonadeButtonVariant> { // com.teya.lemonade.core/LemonadeButtonVariant|null[0]
     enum entry Critical // com.teya.lemonade.core/LemonadeButtonVariant.Critical|null[0]
     enum entry Neutral // com.teya.lemonade.core/LemonadeButtonVariant.Neutral|null[0]
+    enum entry OnBrand // com.teya.lemonade.core/LemonadeButtonVariant.OnBrand|null[0]
+    enum entry OnColor // com.teya.lemonade.core/LemonadeButtonVariant.OnColor|null[0]
     enum entry Primary // com.teya.lemonade.core/LemonadeButtonVariant.Primary|null[0]
     enum entry Secondary // com.teya.lemonade.core/LemonadeButtonVariant.Secondary|null[0]
 
@@ -912,11 +914,13 @@ final enum class com.teya.lemonade.core/LemonadeRadius : kotlin/Enum<com.teya.le
     enum entry Radius200 // com.teya.lemonade.core/LemonadeRadius.Radius200|null[0]
     enum entry Radius250 // com.teya.lemonade.core/LemonadeRadius.Radius250|null[0]
     enum entry Radius300 // com.teya.lemonade.core/LemonadeRadius.Radius300|null[0]
+    enum entry Radius350 // com.teya.lemonade.core/LemonadeRadius.Radius350|null[0]
     enum entry Radius400 // com.teya.lemonade.core/LemonadeRadius.Radius400|null[0]
     enum entry Radius50 // com.teya.lemonade.core/LemonadeRadius.Radius50|null[0]
     enum entry Radius500 // com.teya.lemonade.core/LemonadeRadius.Radius500|null[0]
     enum entry Radius600 // com.teya.lemonade.core/LemonadeRadius.Radius600|null[0]
     enum entry Radius800 // com.teya.lemonade.core/LemonadeRadius.Radius800|null[0]
+    enum entry Radius900 // com.teya.lemonade.core/LemonadeRadius.Radius900|null[0]
     enum entry RadiusFull // com.teya.lemonade.core/LemonadeRadius.RadiusFull|null[0]
 
     final val entries // com.teya.lemonade.core/LemonadeRadius.entries|#static{}entries[0]
