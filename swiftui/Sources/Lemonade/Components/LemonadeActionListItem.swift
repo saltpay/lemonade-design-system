@@ -27,7 +27,9 @@ public extension LemonadeUi {
     ///   - isLoading: Shows a skeleton loading placeholder instead of content
     ///   - enabled: Flag to define if component is enabled. Defaults to true
     ///   - showDivider: Flag to show a divider below the list item. Defaults to false
-    ///   - leadingAlignment: Vertical alignment of the leading slot. Defaults to `.top`.
+    ///   - leadingAlignment: Vertical alignment of the leading slot. Pass `nil` (the default) to let the
+    ///     component center the leading slot against the text for single-line content (no `topLabel`,
+    ///     `supportText`, or `slotContent`) and top-align it otherwise. Pass an explicit value to override.
     ///   - trailingAlignment: Vertical alignment of the trailing slot and navigation indicator. Defaults to `.center`.
     ///   - labelMaxLines: Maximum number of lines for the label before it truncates. Defaults to `nil` (no limit).
     ///   - labelOverflow: Truncation mode applied to the label when it exceeds `labelMaxLines`. Defaults to `.tail`.
@@ -50,7 +52,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
-        leadingAlignment: VerticalAlignment = .top,
+        leadingAlignment: VerticalAlignment? = nil,
         trailingAlignment: VerticalAlignment = .center,
         labelMaxLines: Int? = nil,
         labelOverflow: Text.TruncationMode = .tail,
@@ -97,7 +99,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
-        leadingAlignment: VerticalAlignment = .top,
+        leadingAlignment: VerticalAlignment? = nil,
         trailingAlignment: VerticalAlignment = .center,
         labelMaxLines: Int? = nil,
         labelOverflow: Text.TruncationMode = .tail,
@@ -140,7 +142,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
-        leadingAlignment: VerticalAlignment = .top,
+        leadingAlignment: VerticalAlignment? = nil,
         trailingAlignment: VerticalAlignment = .center,
         labelMaxLines: Int? = nil,
         labelOverflow: Text.TruncationMode = .tail,
@@ -183,7 +185,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
-        leadingAlignment: VerticalAlignment = .top,
+        leadingAlignment: VerticalAlignment? = nil,
         trailingAlignment: VerticalAlignment = .center,
         labelMaxLines: Int? = nil,
         labelOverflow: Text.TruncationMode = .tail,

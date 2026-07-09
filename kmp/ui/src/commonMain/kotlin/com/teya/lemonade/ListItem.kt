@@ -129,6 +129,8 @@ public fun LemonadeUi.ResourceListItem(
         modifier = modifier,
         showDivider = showDivider,
         interactionSource = interactionSource,
+        // Keep the value top-aligned with the label's first line: the label can wrap (no maxLines cap),
+        // and the outer Row already centers a single-line row, so this handles both without extra logic.
         trailingVerticalAlignment = Alignment.Top,
     )
 }
@@ -271,7 +273,8 @@ public fun LemonadeUi.ActionListItem(
  * @param trailingVerticalAlignment - Vertical alignment of the trailing slot and navigation
  *  indicator against the label/supportText column. Defaults to [Alignment.CenterVertically].
  * @param leadingVerticalAlignment - Vertical alignment of the leading slot against the
- *  label/supportText column. Defaults to [Alignment.Top].
+ *  label/supportText column. Defaults to [Alignment.CenterVertically] for single-line content
+ *  (no [topLabel] or [supportText]) and [Alignment.Top] otherwise.
  * @param slotContent - Optional slot rendered below the support text, inside the label column
  *  so it stays aligned with the leading/trailing slots. Use for secondary content like an
  *  inline status text, badge, or compact widget that should sit under the row's text.
@@ -301,7 +304,10 @@ public fun LemonadeUi.ActionListItem(
     showNavigationIndicator: Boolean = false,
     showDivider: Boolean = false,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
-    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
+    // slotContent is declared below and can't be referenced in this default, so an ActionListItem with
+    // only slotContent centers its leading slot (a minor divergence from the slotContent-aware ListItem).
+    leadingVerticalAlignment: Alignment.Vertical =
+        singleLineLeadingAlignment(topLabel, supportText),
     slotContent: (@Composable ColumnScope.() -> Unit)? = null,
     labelMaxLines: Int = Int.MAX_VALUE,
     labelOverflow: TextOverflow = TextOverflow.Clip,
@@ -589,7 +595,8 @@ public fun LemonadeUi.ListItem(
  * @param trailingVerticalAlignment - Vertical alignment of the trailing slot and navigation
  *  indicator against the label/supportText column. Defaults to [Alignment.CenterVertically].
  * @param leadingVerticalAlignment - Vertical alignment of the leading slot against the
- *  label/supportText column. Defaults to [Alignment.Top].
+ *  label/supportText column. Defaults to [Alignment.CenterVertically] for single-line content
+ *  (no [topLabel], [supportText], or [slotContent]) and [Alignment.Top] otherwise.
  * @param labelMaxLines - Maximum number of lines for the [label] before it truncates. Defaults to
  *  [Int.MAX_VALUE] (no limit).
  * @param labelOverflow - [TextOverflow] strategy applied to the [label] when it exceeds
@@ -619,7 +626,8 @@ public fun LemonadeUi.ListItem(
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     slotContent: (@Composable ColumnScope.() -> Unit)? = null,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
-    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
+    leadingVerticalAlignment: Alignment.Vertical =
+        singleLineLeadingAlignment(topLabel, supportText, slotContent),
     labelMaxLines: Int = Int.MAX_VALUE,
     labelOverflow: TextOverflow = TextOverflow.Clip,
     supportTextMaxLines: Int = Int.MAX_VALUE,
@@ -823,6 +831,21 @@ public fun LemonadeUi.ListItem(
         priority = priority,
     )
 }
+
+/**
+ * Vertical alignment for a list item's leading slot: centered against single-line content (nothing
+ * stacked below the label), top-aligned otherwise so it lines up with the label's first line.
+ */
+private fun singleLineLeadingAlignment(
+    topLabel: String?,
+    supportText: String?,
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
+): Alignment.Vertical =
+    if (topLabel == null && supportText == null && slotContent == null) {
+        Alignment.CenterVertically
+    } else {
+        Alignment.Top
+    }
 
 @Composable
 private fun CoreListItem(

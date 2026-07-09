@@ -211,7 +211,7 @@ struct ResourceListItemPreview: View {
                             icon: .coins,
                             contentDescription: nil,
                             voice: .positive,
-                            size: .large,
+                            size: .medium,
                             shape: .rounded
                         )
                     }
@@ -238,7 +238,7 @@ struct ResourceListItemPreview: View {
                             icon: .arrowUpRight,
                             contentDescription: nil,
                             voice: .critical,
-                            size: .large,
+                            size: .medium,
                             shape: .rounded
                         )
                     }
@@ -504,7 +504,7 @@ struct ActionListItemPreview: View {
                             icon: .bank,
                             contentDescription: nil,
                             voice: .neutral,
-                            size: .large,
+                            size: .medium,
                             shape: .rounded
                         )
                     },
@@ -873,7 +873,7 @@ struct OutlinedSelectListItemPreview: View {
                                     icon: option.icon,
                                     contentDescription: nil,
                                     voice: isChecked ? .positive : .neutral,
-                                    size: .large,
+                                    size: .medium,
                                     shape: .rounded
                                 )
                             }
@@ -907,7 +907,7 @@ struct OutlinedSelectListItemPreview: View {
                                     icon: option.icon,
                                     contentDescription: nil,
                                     voice: isChecked ? .positive : .neutral,
-                                    size: .large,
+                                    size: .medium,
                                     shape: .rounded
                                 )
                             },
@@ -967,7 +967,7 @@ struct OutlinedSelectListItemPreview: View {
                                     icon: option.icon,
                                     contentDescription: nil,
                                     voice: .neutral,
-                                    size: .large,
+                                    size: .medium,
                                     shape: .rounded
                                 )
                             }
@@ -1005,7 +1005,7 @@ struct OutlinedSelectListItemPreview: View {
                                     icon: option.icon,
                                     contentDescription: nil,
                                     voice: isChecked ? .positive : .neutral,
-                                    size: .large,
+                                    size: .medium,
                                     shape: .rounded
                                 )
                             }
@@ -1041,7 +1041,7 @@ struct OutlinedSelectListItemPreview: View {
                                     icon: option.icon,
                                     contentDescription: nil,
                                     voice: isChecked ? .positive : .neutral,
-                                    size: .large,
+                                    size: .medium,
                                     shape: .rounded
                                 )
                             },
@@ -1085,7 +1085,7 @@ struct OutlinedSelectListItemPreview: View {
                                 icon: .padlock,
                                 contentDescription: nil,
                                 voice: .neutral,
-                                size: .large,
+                                size: .medium,
                                 shape: .rounded
                             )
                         }
@@ -1103,7 +1103,7 @@ struct OutlinedSelectListItemPreview: View {
                                 icon: .bell,
                                 contentDescription: nil,
                                 voice: .neutral,
-                                size: .large,
+                                size: .medium,
                                 shape: .rounded
                             )
                         },

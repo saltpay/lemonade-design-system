@@ -77,7 +77,10 @@ public extension LemonadeUi {
     ///   - isLoading: Shows a skeleton loading placeholder instead of content
     ///   - enabled: Flag to define if component is enabled
     ///   - showDivider: Flag to show a divider below the list item
-    ///   - leadingAlignment: Vertical alignment of the leading slot. Defaults to `.top`.
+    ///   - leadingAlignment: Vertical alignment of the leading slot. Pass `nil` (the default) to let the
+    ///     component decide: it centers the leading slot against the text when the content is a single line
+    ///     (no `topLabel`, `supportText`, or `slotContent`) and top-aligns it otherwise. Pass an explicit
+    ///     value to override this automatic behavior.
     ///   - trailingAlignment: Vertical alignment of the content row — both the label/content and the trailing slot align to it (e.g. `.top` keeps them on the same first line when one wraps). Defaults to `.center`.
     ///   - priority: Which slot claims layout space first when label and trailing content compete for width. Use `.both` to split the width evenly. Defaults to `.trailing`.
     ///   - labelMaxLines: Maximum number of lines for the label before it truncates. Defaults to `nil` (no limit).
@@ -98,7 +101,7 @@ public extension LemonadeUi {
         isLoading: Bool = false,
         enabled: Bool = true,
         showDivider: Bool = false,
-        leadingAlignment: VerticalAlignment = .top,
+        leadingAlignment: VerticalAlignment? = nil,
         trailingAlignment: VerticalAlignment = .center,
         priority: LemonadeListItemPriority = .trailing,
         labelMaxLines: Int? = nil,
@@ -113,12 +116,20 @@ public extension LemonadeUi {
         if isLoading {
             ListItemSkeletonView(showDivider: showDivider)
         } else {
+            // The content is effectively single-line when there is nothing stacked below the
+            // label — no top label, no support text, and no custom slot content. In that case the
+            // leading slot is centered against the lone text line unless the caller explicitly pins
+            // an alignment.
+            let isSingleLineContent = topLabel == nil
+                && supportText == nil
+                && SlotContent.self == EmptyView.self
+
             ListItem(
                 voice: voice,
                 navigationIndicator: navigationIndicator,
                 enabled: enabled,
                 showDivider: showDivider,
-                leadingAlignment: leadingAlignment,
+                leadingAlignment: leadingAlignment ?? (isSingleLineContent ? .center : .top),
                 trailingAlignment: trailingAlignment,
                 priority: priority,
                 onListItemClick: onListItemClick,
@@ -516,14 +527,32 @@ struct LemonadeListItem_Previews: PreviewProvider {
                 supportText: "Support text"
             )
             
-            LemonadeUi.HorizontalDivider()
-                .padding(.vertical, LemonadeTheme.spaces.spacing200)
+            LemonadeUi.ListItem(
+                label: "Resource Label",
+                supportText: "09:37 • [Automated TQC TestingStore] Way4 ES 01",
+                showDivider: true,
+                leadingSlot: {
+                    LemonadeUi.SymbolContainer(
+                        icon: .heart,
+                        contentDescription: nil,
+                        size: .medium,
+                        shape: .rounded
+                    )
+                },
+                trailingSlot: {
+                    LemonadeUi.Text(
+                        "$100.00",
+                        textStyle: LemonadeTypography.shared.bodyMediumMedium,
+                        textAlign: .trailing
+                    )
+                }
+            )
             
             // ResourceListItem with divider
             LemonadeUi.ResourceListItem(
                 label: "Resource Label",
                 value: "$100.00",
-//                supportText: "Metadata",
+                supportText: "09:37 • [Automated TQC TestingStore] Way4 ES 01",
                 showDivider: true,
                 onItemClicked: {},
             ) {
@@ -546,7 +575,7 @@ struct LemonadeListItem_Previews: PreviewProvider {
                         icon: .check,
                         contentDescription: nil,
                         voice: .positive,
-                        size: .large,
+                        size: .medium,
                         shape: .rounded
                     )
                 }
