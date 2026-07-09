@@ -32,11 +32,12 @@ internal fun LemonadeStyledTheme(
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(LocalLemonadeStyleHandler provides handler) {
+        val colors = handler.currentStyle.resolveColors()
         when (handler.currentVariant) {
-            LemonadeThemeVariant.Standard -> LemonadeTheme(colors = handler.currentStyle.colors) {
+            LemonadeThemeVariant.Standard -> LemonadeTheme(colors = colors) {
                 content()
             }
-            LemonadeThemeVariant.Expressive -> LemonadeExpressiveTheme(colors = handler.currentStyle.colors) {
+            LemonadeThemeVariant.Expressive -> LemonadeExpressiveTheme(colors = colors) {
                 content()
             }
         }

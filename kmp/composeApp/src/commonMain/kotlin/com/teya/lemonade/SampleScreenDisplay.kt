@@ -111,8 +111,9 @@ internal fun SampleScreenDisplayLazyColumn(
     modifier: Modifier = Modifier,
     contentHorizontalPadding: Dp = LemonadeTheme.spaces.spacing400,
     background: Color = LemonadeTheme.colors.background.bgSubtle,
+    action: (@Composable () -> Unit)? = null,
     header: @Composable (progress: Float) -> Unit = { progress ->
-        SampleScreenHeader(title = title, progress = progress)
+        SampleScreenHeader(title = title, progress = progress, action = action)
     },
     content: LazyListScope.() -> Unit,
 ) {

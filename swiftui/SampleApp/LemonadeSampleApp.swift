@@ -27,18 +27,19 @@ struct LemonadeSampleApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(styleHandler)
-                .id(styleHandler.currentStyle)
-                .preferredColorScheme(styleHandler.currentStyle.colorScheme)
                 .environment(\.font, Font.custom("Figtree", size: LemonadeTypography.shared.bodyMediumMedium.fontSize))
         }
     }
 }
 
 struct ContentView: View {
+    @EnvironmentObject private var styleHandler: LemonadeStyleHandler
+
     var body: some View {
         NavigationStack {
             HomeView()
         }
         .lemonadeToastContainer()
+        .onAppear { styleHandler.applyToWindows() }
     }
 }
