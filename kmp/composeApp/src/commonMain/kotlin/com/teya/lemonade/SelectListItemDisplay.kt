@@ -211,7 +211,7 @@ internal fun SelectListItemDisplay() {
                             LemonadeUi.SymbolContainer(
                                 icon = option.icon,
                                 contentDescription = null,
-                                size = SymbolContainerSize.Large,
+                                size = SymbolContainerSize.Medium,
                                 shape = SymbolContainerShape.Rounded,
                                 voice = if (isChecked) {
                                     SymbolContainerVoice.Positive
@@ -244,7 +244,7 @@ internal fun SelectListItemDisplay() {
                             LemonadeUi.SymbolContainer(
                                 icon = option.icon,
                                 contentDescription = null,
-                                size = SymbolContainerSize.Large,
+                                size = SymbolContainerSize.Medium,
                                 shape = SymbolContainerShape.Rounded,
                                 voice = if (isChecked) {
                                     SymbolContainerVoice.Positive
@@ -300,7 +300,7 @@ internal fun SelectListItemDisplay() {
                             LemonadeUi.SymbolContainer(
                                 icon = option.icon,
                                 contentDescription = null,
-                                size = SymbolContainerSize.Large,
+                                size = SymbolContainerSize.Medium,
                                 shape = SymbolContainerShape.Rounded,
                                 voice = SymbolContainerVoice.Neutral,
                             )
@@ -329,7 +329,7 @@ internal fun SelectListItemDisplay() {
                             LemonadeUi.SymbolContainer(
                                 icon = option.icon,
                                 contentDescription = null,
-                                size = SymbolContainerSize.Large,
+                                size = SymbolContainerSize.Medium,
                                 shape = SymbolContainerShape.Rounded,
                                 voice = if (isChecked) {
                                     SymbolContainerVoice.Positive
@@ -363,7 +363,7 @@ internal fun SelectListItemDisplay() {
                             LemonadeUi.SymbolContainer(
                                 icon = option.icon,
                                 contentDescription = null,
-                                size = SymbolContainerSize.Large,
+                                size = SymbolContainerSize.Medium,
                                 shape = SymbolContainerShape.Rounded,
                                 voice = if (isChecked) {
                                     SymbolContainerVoice.Positive
@@ -409,7 +409,7 @@ internal fun SelectListItemDisplay() {
                         LemonadeUi.SymbolContainer(
                             icon = LemonadeIcons.Padlock,
                             contentDescription = null,
-                            size = SymbolContainerSize.Large,
+                            size = SymbolContainerSize.Medium,
                             shape = SymbolContainerShape.Rounded,
                             voice = SymbolContainerVoice.Neutral,
                         )
@@ -427,7 +427,7 @@ internal fun SelectListItemDisplay() {
                         LemonadeUi.SymbolContainer(
                             icon = LemonadeIcons.Bell,
                             contentDescription = null,
-                            size = SymbolContainerSize.Large,
+                            size = SymbolContainerSize.Medium,
                             shape = SymbolContainerShape.Rounded,
                             voice = SymbolContainerVoice.Neutral,
                         )

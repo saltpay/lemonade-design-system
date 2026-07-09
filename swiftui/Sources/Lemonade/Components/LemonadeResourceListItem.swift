@@ -47,7 +47,10 @@ public extension LemonadeUi {
             isLoading: isLoading,
             enabled: enabled,
             showDivider: showDivider,
-            trailingAlignment: .top,
+            // With support text the content is multi-line, so pin the trailing value to the top to
+            // align it with the label's first line. With a single-line label there's nothing to align
+            // to — center it (and the auto-centered leading slot) against the lone text line instead.
+            trailingAlignment: supportText == nil ? .center : .top,
             onListItemClick: onItemClicked,
             leadingSlot: {
                 leadingSlot()

@@ -45,7 +45,7 @@ internal fun ResourceListItemDisplay() {
                         icon = LemonadeIcons.Money,
                         contentDescription = null,
                         voice = SymbolContainerVoice.Info,
-                        size = SymbolContainerSize.Large,
+                        size = SymbolContainerSize.Medium,
                     )
                 },
             )
@@ -60,7 +60,7 @@ internal fun ResourceListItemDisplay() {
                         icon = LemonadeIcons.Coins,
                         contentDescription = null,
                         voice = SymbolContainerVoice.Positive,
-                        size = SymbolContainerSize.Large,
+                        size = SymbolContainerSize.Medium,
                     )
                 },
             )
@@ -83,7 +83,7 @@ internal fun ResourceListItemDisplay() {
                         icon = LemonadeIcons.ArrowUpRight,
                         contentDescription = null,
                         voice = SymbolContainerVoice.Critical,
-                        size = SymbolContainerSize.Large,
+                        size = SymbolContainerSize.Medium,
                     )
                 },
             )
