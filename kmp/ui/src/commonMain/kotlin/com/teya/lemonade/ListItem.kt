@@ -129,9 +129,9 @@ public fun LemonadeUi.ResourceListItem(
         modifier = modifier,
         showDivider = showDivider,
         interactionSource = interactionSource,
-        // With support text the content is multi-line, so top-align the value with the label's first
-        // line. With a single-line label, center it (and the leading slot) against the lone text line.
-        trailingVerticalAlignment = if (supportText == null) Alignment.CenterVertically else Alignment.Top,
+        // Keep the value top-aligned with the label's first line: the label can wrap (no maxLines cap),
+        // and the outer Row already centers a single-line row, so this handles both without extra logic.
+        trailingVerticalAlignment = Alignment.Top,
     )
 }
 
@@ -839,7 +839,7 @@ public fun LemonadeUi.ListItem(
 private fun singleLineLeadingAlignment(
     topLabel: String?,
     supportText: String?,
-    slotContent: Any? = null,
+    slotContent: (@Composable ColumnScope.() -> Unit)? = null,
 ): Alignment.Vertical =
     if (topLabel == null && supportText == null && slotContent == null) {
         Alignment.CenterVertically

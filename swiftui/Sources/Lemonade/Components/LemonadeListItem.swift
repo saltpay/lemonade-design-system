@@ -528,10 +528,9 @@ struct LemonadeListItem_Previews: PreviewProvider {
             )
             
             LemonadeUi.ListItem(
-                label: "Delivery to",
-                supportText: "Metadata",
+                label: "Resource Label",
+                supportText: "09:37 • [Automated TQC TestingStore] Way4 ES 01",
                 showDivider: true,
-                priority: .label,
                 leadingSlot: {
                     LemonadeUi.SymbolContainer(
                         icon: .heart,
@@ -553,7 +552,7 @@ struct LemonadeListItem_Previews: PreviewProvider {
             LemonadeUi.ResourceListItem(
                 label: "Resource Label",
                 value: "$100.00",
-//                supportText: "Metadata",
+                supportText: "09:37 • [Automated TQC TestingStore] Way4 ES 01",
                 showDivider: true,
                 onItemClicked: {},
             ) {
