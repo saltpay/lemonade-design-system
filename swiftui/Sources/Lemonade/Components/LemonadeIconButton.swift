@@ -281,13 +281,14 @@ private struct LemonadeIconButtonView: View {
         let bgColor: Color = isHovering ? colors.backgroundHoverColor : colors.backgroundColor
         let buttonShape = RoundedRectangle(cornerRadius: cornerRadius)
 
-        // When disabled, the whole button — fill and content together — dims to 50% via a single
-        // `.opacity` modifier on the SwiftUI.Button, matching the Figma disabled treatment (group
-        // opacity, letting the underlying surface show through).
-        // Secondary Solid's opaque inverse fill dims to `opacity40` when disabled, not
+        // When disabled or loading, the whole button — fill and content together — dims to 50% via
+        // a single `.opacity` modifier on the SwiftUI.Button, matching the Figma disabled treatment
+        // (group opacity, letting the underlying surface show through).
+        let dimmed = !enabled || loading
+        // Secondary Solid's opaque inverse fill dims to `opacity40` when dimmed, not
         // `opacityDisabled`. The `.opacity(… opacityDisabled)` below already dims the whole button,
         // so pre-scale just the fill by the ratio so they multiply out to `opacity40`.
-        let disabledFillScale = (!enabled && variant == .secondary && type == .solid)
+        let disabledFillScale = (dimmed && variant == .secondary && type == .solid)
             ? LemonadeTheme.opacity.base.opacity40 / LemonadeTheme.opacity.state.opacityDisabled
             : 1.0
         SwiftUI.Button(action: onClick) {
@@ -320,7 +321,7 @@ private struct LemonadeIconButtonView: View {
             isHovering = hovering
         }
         .disabled(!enabled || loading)
-        .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
+        .opacity(dimmed ? LemonadeTheme.opacity.state.opacityDisabled : 1.0)
     }
 }
 
