@@ -241,7 +241,7 @@ struct ToastItemView: View {
         .frame(maxWidth: .infinity)
         .padding(.top, .space.spacing1800) // Extra space for dismiss gesture
         .padding(.horizontal, .space.spacing200)
-        .padding(.bottom, .space.spacing400)
+        .padding(.bottom, toast.anchor.bottomPadding)
         .background(
             GeometryReader { geometry in
                 Color.clear
@@ -267,5 +267,16 @@ struct ToastItemView: View {
                 guard toast.isDismissible else { return }
                 onDragEnded(value.translation.height)
             }
+    }
+}
+
+private extension LemonadeToastAnchor {
+    // Not a spacing-scale token — matches the height + margin of a standard bottom action
+    // button so `.aboveBottomActionButton` toasts clear it.
+    var bottomPadding: CGFloat {
+        switch self {
+        case .bottom: return .space.spacing400
+        case .aboveBottomActionButton: return 112
+        }
     }
 }
