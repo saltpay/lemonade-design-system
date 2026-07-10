@@ -85,6 +85,17 @@ public sealed class ToastDuration(internal val millis: kotlin.Long) {
     }
 }
 
+/**
+ * Where a toast anchors itself at the bottom of the screen.
+ */
+public enum class ToastAnchor {
+    /** Default position, just above the navigation/gesture bar. */
+    Bottom,
+
+    /** Raised clear of a screen's persistent bottom action button. */
+    AboveBottomActionButton,
+}
+
 internal data class ToastData(
     val label: String,
     val voice: ToastVoice,
@@ -94,6 +105,7 @@ internal data class ToastData(
     val id: Int,
     val actionLabel: String?,
     val onAction: (() -> Unit)?,
+    val anchor: ToastAnchor,
 )
 
 /**
@@ -156,6 +168,7 @@ public class LemonadeToastState {
      * @param actionLabel Optional label for the action button shown at the trailing end of the toast.
      * @param onAction Optional callback invoked when the action button is tapped. The button is only shown
      *   when both [actionLabel] and [onAction] are non-null.
+     * @param anchor Where the toast sits at the bottom of the screen. Defaults to [ToastAnchor.Bottom].
      */
     public fun show(
         label: String,
@@ -165,6 +178,7 @@ public class LemonadeToastState {
         dismissible: Boolean = true,
         actionLabel: String? = null,
         onAction: (() -> Unit)? = null,
+        anchor: ToastAnchor = ToastAnchor.Bottom,
     ) {
         currentToast = ToastData(
             label = label,
@@ -175,6 +189,7 @@ public class LemonadeToastState {
             id = nextId++,
             actionLabel = actionLabel,
             onAction = onAction,
+            anchor = anchor,
         )
     }
 
@@ -352,6 +367,7 @@ private fun CoreToast(
 }
 
 private const val DRAG_DISMISS_THRESHOLD_DP = 25
+private const val ABOVE_BOTTOM_ACTION_BUTTON_PADDING_DP = 112
 private const val DRAG_FADE_MULTIPLIER = 4
 
 /**
@@ -384,6 +400,10 @@ public fun LemonadeToastHost(
             val toast = toastState.currentToast
             val haptic = LocalHapticFeedback.current
             val spaces = LocalSpaces.current
+            val bottomPadding = when (toast?.anchor ?: ToastAnchor.Bottom) {
+                ToastAnchor.Bottom -> spaces.spacing600
+                ToastAnchor.AboveBottomActionButton -> ABOVE_BOTTOM_ACTION_BUTTON_PADDING_DP.dp
+            }
 
             // Haptic feedback + auto-dismiss timer
             LaunchedEffect(toast?.id) {
@@ -426,7 +446,7 @@ public fun LemonadeToastHost(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .navigationBarsPadding()
-                    .padding(bottom = spaces.spacing600)
+                    .padding(bottom = bottomPadding)
                     .padding(horizontal = spaces.spacing400),
             ) { animatedToast ->
                 if (animatedToast != null) {
