@@ -161,6 +161,24 @@ struct ToastDisplayView: View {
                 }
             }
 
+            Section("Anchor") {
+                Button("Bottom (default)") {
+                    toastManager.show(
+                        label: "Default bottom position",
+                        voice: .neutral,
+                        anchor: .bottom
+                    )
+                }
+
+                Button("Above Bottom Action Button") {
+                    toastManager.show(
+                        label: "Item added to cart",
+                        voice: .success,
+                        anchor: .aboveBottomActionButton
+                    )
+                }
+            }
+
             Section("Keyboard Handling") {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Tap the text field to open keyboard, then show a toast:")
