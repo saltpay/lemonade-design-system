@@ -182,6 +182,29 @@ internal fun ToastDisplay() {
                 },
             )
         }
+
+        ToastSection("Anchor") {
+            LemonadeUi.Button(
+                label = "Bottom (default)",
+                onClick = {
+                    toastState.show(
+                        label = "Default bottom position",
+                        voice = ToastVoice.Neutral,
+                        anchor = ToastAnchor.Bottom,
+                    )
+                },
+            )
+            LemonadeUi.Button(
+                label = "Above Bottom Action Button",
+                onClick = {
+                    toastState.show(
+                        label = "Above Bottom Action Button",
+                        voice = ToastVoice.Success,
+                        anchor = ToastAnchor.AboveBottomActionButton,
+                    )
+                },
+            )
+        }
     }
 }
 
