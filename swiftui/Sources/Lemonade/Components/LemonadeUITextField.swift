@@ -9,6 +9,11 @@ import UIKit
 /// - Note: Cursor positions are measured in UTF-16 code units to match UIKit's internal indexing
 ///   and maintain compatibility with Kotlin/Compose on Android.
 internal struct LemonadeUITextField: UIViewRepresentable {
+    /// Read from the environment rather than passed in, so a single change here covers every
+    /// public TextField overload without touching any of their signatures.
+    @Environment(\.lemonadeTextInputTransformation) private var inputTransformation
+    @Environment(\.lemonadeTextDisplayDecoration) private var displayDecoration
+
     @Binding var value: LemonadeTextFieldValue
     @Binding var isFocused: Bool
     var isEnabled: Bool
@@ -138,8 +143,40 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             textField.autocorrectionType = autocorrectionType
         }
 
+        applyDisplayDecoration(textField)
+
         // Handle focus state
         updateFocus(textField)
+    }
+
+    /// Redraws the field's text through the decoration, if one is set.
+    ///
+    /// The decoration cannot change the character count, so the caret index is still valid
+    /// afterwards — but assigning `attributedText` moves the caret to the end regardless, so it is
+    /// captured and restored around the write.
+    private func applyDisplayDecoration(_ textField: UITextField) {
+        guard let decoration = displayDecoration else { return }
+
+        // Assigning attributedText cancels an in-flight multi-stage composition.
+        guard textField.markedTextRange == nil else { return }
+
+        let text = textField.text ?? ""
+        let decorated = decoration.decorate(
+            text,
+            baseAttributes: [
+                .font: textStyle.uiFont,
+                .foregroundColor: UIColor(textColor),
+            ]
+        )
+        guard textField.attributedText != decorated else { return }
+
+        let caret = textField.selectedTextRange.map {
+            textField.offset(from: textField.beginningOfDocument, to: $0.start)
+        }
+        textField.attributedText = decorated
+        if let caret {
+            textField.setCaret(toUTF16Offset: caret)
+        }
     }
 
     private func updateFocus(_ textField: UITextField) {
@@ -213,19 +250,91 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             shouldChangeCharactersIn range: NSRange,
             replacementString string: String
         ) -> Bool {
-            // A secure UITextField wipes all of its text on the first edit after the
-            // text was assigned programmatically — which we do when restoring content
-            // across a secure-entry toggle. Apply the edit ourselves and return false
-            // so UIKit never runs that auto-clear, keeping the field stable when the
-            // user keeps typing after a show/hide toggle.
+            // Multi-stage input (kana, pinyin, Devanagari) is mid-composition: the provisional
+            // text lives in the field's marked range, and assigning `.text` cancels it. Never
+            // intercept while that is in flight.
+            if textField.markedTextRange != nil { return true }
+
+            // AutoFill probes an empty field with a lone space before offering its suggestion.
+            // Reject the probe and the suggestion never appears at all.
+            if textField.textContentType != nil,
+               (textField.text ?? "").isEmpty,
+               range.location == 0, range.length == 0, string == " " {
+                return true
+            }
+
+            guard let transformation = parent.inputTransformation,
+                  let oldText = textField.text else {
+                return applySecureEntryEdit(textField, range: range, replacement: string)
+            }
+
+            let edit = LemonadeTextEdit(
+                currentText: oldText,
+                range: range,
+                replacement: string
+            )
+            guard let result = transformation.transform(edit) else {
+                return applySecureEntryEdit(textField, range: range, replacement: string)
+            }
+
+            // The transformation lands on exactly what UIKit would have produced. Take the native
+            // path: every `false` we return instead is a hole in undo, autocorrect and the
+            // predictive bar.
+            let naive = (oldText as NSString).replacingCharacters(in: range, with: string)
+            let naiveCaret = range.location + (string as NSString).length
+            if result.text == naive, result.cursorPosition == naiveCaret {
+                return applySecureEntryEdit(textField, range: range, replacement: string)
+            }
+
+            // `replace(_:withText:)` routes through the text-input system and so may fire
+            // `.editingChanged` itself; suppress that and notify once, deliberately, below.
+            isUpdating = true
+            applyOverride(to: textField, newText: result.text, caret: result.cursorPosition)
+            isUpdating = false
+
+            textFieldDidChange(textField)
+            return false
+        }
+
+        /// Overwrites only the span that actually differs.
+        ///
+        /// Assigning `.text` wholesale would bypass the field's own undo manager, so one keystroke
+        /// undoes the entire field — and a rejected paste can be left on the undo stack, where
+        /// shake-to-undo then crashes on it.
+        private func applyOverride(to textField: UITextField, newText: String, caret: Int) {
+            let edit = lemonadeMinimalReplacement(from: textField.text ?? "", to: newText)
+
+            if let start = textField.position(
+                from: textField.beginningOfDocument,
+                offset: edit.range.location
+            ),
+               let end = textField.position(from: start, offset: edit.range.length),
+               let uiRange = textField.textRange(from: start, to: end) {
+                // Going through the text-input system, rather than assigning `.text`, is what
+                // registers the edit with the field's own undo manager.
+                textField.replace(uiRange, withText: edit.replacement)
+            } else {
+                textField.text = newText
+            }
+
+            textField.setCaret(toUTF16Offset: caret)
+        }
+
+        /// A secure `UITextField` wipes all of its text on the first edit after the text was
+        /// assigned programmatically — which we do when restoring content across a secure-entry
+        /// toggle. Applying the edit ourselves keeps the field stable when the user carries on
+        /// typing after a show/hide toggle.
+        private func applySecureEntryEdit(
+            _ textField: UITextField,
+            range: NSRange,
+            replacement: String
+        ) -> Bool {
             guard textField.isSecureTextEntry else { return true }
             guard let oldText = textField.text,
                   let replaceRange = Range(range, in: oldText) else { return true }
 
-            textField.text = oldText.replacingCharacters(in: replaceRange, with: string)
-
-            // Place the cursor right after the inserted text (UTF-16 offset).
-            textField.setCaret(toUTF16Offset: range.location + (string as NSString).length)
+            textField.text = oldText.replacingCharacters(in: replaceRange, with: replacement)
+            textField.setCaret(toUTF16Offset: range.location + (replacement as NSString).length)
 
             // Programmatic text changes don't fire `.editingChanged`, so propagate manually.
             textFieldDidChange(textField)
