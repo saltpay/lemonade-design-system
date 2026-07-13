@@ -67,7 +67,7 @@ public enum SymbolContainerSize {
         case .medium: return LemonadeTheme.sizes.size1000
         case .large: return LemonadeTheme.sizes.size1200
         case .xLarge: return LemonadeTheme.sizes.size1600
-        case .xxLarge: return LemonadeTheme.sizes.size2000
+        case .xxLarge: return LemonadeTheme.sizes.size1800
         }
     }
 
@@ -382,7 +382,7 @@ private struct LemonadeSymbolContainerView<Content: View, Badge: View>: View {
         case .medium: LemonadeTheme.radius.radius300
         case .large: LemonadeTheme.radius.radius400
         case .xLarge: LemonadeTheme.radius.radius500
-        case .xxLarge: LemonadeTheme.radius.radius600
+        case .xxLarge: LemonadeTheme.radius.radius500
         }
     }
 

@@ -351,7 +351,7 @@ private fun SymbolContainerShape.resolveShape(size: SymbolContainerSize): Shape 
             SymbolContainerSize.Medium -> LocalShapes.current.radius300
             SymbolContainerSize.Large -> LocalShapes.current.radius400
             SymbolContainerSize.XLarge -> LocalShapes.current.radius500
-            SymbolContainerSize.XXLarge -> LocalShapes.current.radius600
+            SymbolContainerSize.XXLarge -> LocalShapes.current.radius500
         }
     }
 
@@ -401,7 +401,7 @@ private fun SymbolContainerSize.defaultSymbolContainerPlatformDimensions(): Symb
         )
 
         SymbolContainerSize.XXLarge -> SymbolContainerPlatformDimensions(
-            containerSize = LocalSizes.current.size2000,
+            containerSize = LocalSizes.current.size1800,
             contentSize = LocalSizes.current.size1000,
             lemonadeIconSize = LemonadeAssetSize.XXLarge,
             textStyle = LocalTypographies.current.headingSmall,
