@@ -806,7 +806,7 @@ internal fun BoxScope.DefaultTextBox(
 /**
  * This is only used for desktop environment. On mobile, it defaults to the null variant.
  */
-private val TextFieldSize?.data: TextFieldData
+internal val TextFieldSize?.data: TextFieldData
     @Composable get() {
         return when (this) {
             TextFieldSize.Small -> TextFieldData(
@@ -855,7 +855,7 @@ public enum class TextFieldSize {
     Large,
 }
 
-private data class TextFieldData(
+internal data class TextFieldData(
     val minHeight: Dp?,
     val containerShape: Shape,
     val horizontalPadding: Dp,
