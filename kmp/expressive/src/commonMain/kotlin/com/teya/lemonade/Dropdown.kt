@@ -103,9 +103,10 @@ public fun LemonadeUi.Dropdown(
  * A single item within a [LemonadeUi.Dropdown] menu, following the Lemonade Design System.
  *
  * This composable wraps [DropdownMenuItem] with Lemonade styling, and restricts
- * icon parameters to [LemonadeIcons] values instead of arbitrary composable lambdas. Icons are
- * rendered internally using [LemonadeUi.Icon] at appropriate sizes: [LemonadeAssetSize.Medium]
- * for leading icons and [LemonadeAssetSize.Small] for trailing icons.
+ * icon parameters to [LemonadeIcons] values. Icons are rendered internally using
+ * [LemonadeUi.Icon] at appropriate sizes: [LemonadeAssetSize.Medium] for leading icons and
+ * [LemonadeAssetSize.Small] for trailing icons. For arbitrary composable content in the trailing
+ * position, use the `DropdownItem` overload with a `trailingSlot` parameter.
  *
  * @param text The label text displayed for this menu item.
  * @param onClick Callback invoked when the user clicks this menu item.
@@ -144,23 +145,11 @@ public fun LemonadeUi.DropdownItem(
     trailingIcon: LemonadeIcons? = null,
     enabled: Boolean = true,
 ) {
-    DropdownMenuItem(
+    LemonadeUi.DropdownItem(
+        text = text,
         onClick = onClick,
-        modifier = Modifier
-            .padding(LemonadeTheme.spaces.spacing100)
-            .clip(LemonadeTheme.shapes.radius400),
-        leadingIcon = if (leadingIcon != null) {
-            {
-                LemonadeUi.Icon(
-                    icon = leadingIcon,
-                    contentDescription = null,
-                    size = LemonadeAssetSize.Medium,
-                )
-            }
-        } else {
-            null
-        },
-        trailingIcon = if (trailingIcon != null) {
+        leadingIcon = leadingIcon,
+        trailingSlot = if (trailingIcon != null) {
             {
                 LemonadeUi.Icon(
                     icon = trailingIcon,
@@ -171,6 +160,90 @@ public fun LemonadeUi.DropdownItem(
         } else {
             null
         },
+        enabled = enabled,
+    )
+}
+
+/**
+ * A single item within a [LemonadeUi.Dropdown] menu with slot-based trailing content.
+ *
+ * This composable wraps [DropdownMenuItem] with Lemonade styling. The leading position is
+ * restricted to [LemonadeIcons] values, rendered internally using [LemonadeUi.Icon] at
+ * [LemonadeAssetSize.Medium], while the trailing position accepts an arbitrary composable slot.
+ * Slot content is rendered as provided, so callers are responsible for sizing it appropriately
+ * for a menu item.
+ *
+ * @param text The label text displayed for this menu item.
+ * @param onClick Callback invoked when the user clicks this menu item.
+ * @param modifier [Modifier] applied to this menu item.
+ * @param leadingIcon An optional [LemonadeIcons] displayed before the text.
+ *   Rendered at [LemonadeAssetSize.Medium]. Defaults to `null` (no leading icon).
+ * @param trailingSlot An optional composable displayed after the text.
+ *   Defaults to `null` (no trailing content).
+ * @param enabled Whether this menu item is interactive. Defaults to `true`.
+ *   When `false`, the item is visually dimmed and does not respond to clicks.
+ *
+ * ## Usage Example
+ *
+ * ```kotlin
+ * LemonadeUi.DropdownItem(
+ *     text = "Notifications",
+ *     onClick = { /* handle click */ },
+ *     leadingIcon = LemonadeIcons.Bell,
+ *     trailingSlot = {
+ *         LemonadeUi.Badge(text = "12")
+ *     },
+ * )
+ * ```
+ *
+ * @see LemonadeUi.Dropdown The parent dropdown menu component.
+ * @see LemonadeIcons For available icon options.
+ */
+@Composable
+public fun LemonadeUi.DropdownItem(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    leadingIcon: LemonadeIcons? = null,
+    trailingSlot: (@Composable () -> Unit)? = null,
+    enabled: Boolean = true,
+) {
+    CoreDropdownItem(
+        text = text,
+        onClick = onClick,
+        leadingSlot = if (leadingIcon != null) {
+            {
+                LemonadeUi.Icon(
+                    icon = leadingIcon,
+                    contentDescription = null,
+                    size = LemonadeAssetSize.Medium,
+                )
+            }
+        } else {
+            null
+        },
+        trailingSlot = trailingSlot,
+        enabled = enabled,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun CoreDropdownItem(
+    text: String,
+    onClick: () -> Unit,
+    leadingSlot: (@Composable () -> Unit)?,
+    trailingSlot: (@Composable () -> Unit)?,
+    enabled: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    DropdownMenuItem(
+        onClick = onClick,
+        modifier = modifier
+            .padding(LemonadeTheme.spaces.spacing100)
+            .clip(LemonadeTheme.shapes.radius400),
+        leadingIcon = leadingSlot,
+        trailingIcon = trailingSlot,
         enabled = enabled,
         contentPadding = PaddingValues(LemonadeTheme.spaces.spacing300),
         colors = MenuDefaults.itemColors(),
