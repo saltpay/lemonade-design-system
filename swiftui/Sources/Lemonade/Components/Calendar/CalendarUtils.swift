@@ -178,7 +178,6 @@ enum CalendarUtils {
         case .short:
             symbols = calendar.shortWeekdaySymbols
         }
-        let first = calendar.firstWeekday - 1 // 0-indexed
-        return (0..<7).map { symbols[(first + $0) % 7] }
+        return orderedWeekdayAbbreviations(symbols, calendar: calendar)
     }
 }
