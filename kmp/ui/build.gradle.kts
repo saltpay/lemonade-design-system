@@ -36,10 +36,6 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
         }
-        val desktopMain by getting
-        desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
-        }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
