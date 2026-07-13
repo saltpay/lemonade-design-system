@@ -46,6 +46,34 @@ public protocol LemonadeTextInputTransformation {
     func transform(_ edit: LemonadeTextEdit) -> LemonadeTextEditResult?
 }
 
+/// The span of a field's text the caret and any selection may occupy.
+///
+/// This is what lets a currency symbol live in the field's own text: the symbol is real text, but
+/// every offset outside the returned span is unreachable, so the user can neither put the caret
+/// there nor select across it.
+public protocol LemonadeTextSelectionConstraint {
+    /// The UTF-16 offsets the caret may occupy in `text`. Return `nil` to leave the field free.
+    func allowedRange(in text: String) -> ClosedRange<Int>?
+}
+
+/// Confines the caret to the digits of a formatted number, so that a currency symbol on either side
+/// of them — `$2.80`, `2,80 kr.` — is part of the text yet can never be reached or deleted.
+public struct LemonadeDigitSpanSelectionConstraint: LemonadeTextSelectionConstraint {
+    public init() {}
+
+    public func allowedRange(in text: String) -> ClosedRange<Int>? {
+        let units = Array(text.utf16)
+        guard let first = units.firstIndex(where: Self.isDigit),
+              let last = units.lastIndex(where: Self.isDigit) else { return nil }
+        return first...(last + 1)
+    }
+
+    private static func isDigit(_ unit: UTF16.CodeUnit) -> Bool {
+        guard let scalar = Unicode.Scalar(unit) else { return false }
+        return CharacterSet.decimalDigits.contains(scalar)
+    }
+}
+
 /// Cosmetic decoration of a field's text.
 ///
 /// **Must not change the character count** — index `i` of the returned string has to be index `i`
@@ -99,6 +127,10 @@ private struct LemonadeTextDisplayDecorationKey: EnvironmentKey {
     static let defaultValue: LemonadeTextDisplayDecoration? = nil
 }
 
+private struct LemonadeTextSelectionConstraintKey: EnvironmentKey {
+    static let defaultValue: LemonadeTextSelectionConstraint? = nil
+}
+
 public extension EnvironmentValues {
     var lemonadeTextInputTransformation: LemonadeTextInputTransformation? {
         get { self[LemonadeTextInputTransformationKey.self] }
@@ -108,6 +140,11 @@ public extension EnvironmentValues {
     var lemonadeTextDisplayDecoration: LemonadeTextDisplayDecoration? {
         get { self[LemonadeTextDisplayDecorationKey.self] }
         set { self[LemonadeTextDisplayDecorationKey.self] = newValue }
+    }
+
+    var lemonadeTextSelectionConstraint: LemonadeTextSelectionConstraint? {
+        get { self[LemonadeTextSelectionConstraintKey.self] }
+        set { self[LemonadeTextSelectionConstraintKey.self] = newValue }
     }
 }
 
@@ -124,5 +161,12 @@ public extension View {
         _ decoration: LemonadeTextDisplayDecoration?
     ) -> some View {
         environment(\.lemonadeTextDisplayDecoration, decoration)
+    }
+
+    /// Confines the caret of the text fields in this subtree to a span of their text.
+    func lemonadeTextSelectionConstraint(
+        _ constraint: LemonadeTextSelectionConstraint?
+    ) -> some View {
+        environment(\.lemonadeTextSelectionConstraint, constraint)
     }
 }

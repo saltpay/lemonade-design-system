@@ -13,6 +13,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     /// public TextField overload without touching any of their signatures.
     @Environment(\.lemonadeTextInputTransformation) private var inputTransformation
     @Environment(\.lemonadeTextDisplayDecoration) private var displayDecoration
+    @Environment(\.lemonadeTextSelectionConstraint) private var selectionConstraint
 
     @Binding var value: LemonadeTextFieldValue
     @Binding var isFocused: Bool
@@ -36,14 +37,17 @@ internal struct LemonadeUITextField: UIViewRepresentable {
     /// next; when `nil`, the return key dismisses the keyboard as before.
     var onReturnKey: (() -> Void)?
 
-    /// Clamps cursor position to valid UTF-16 range for the given text
+    /// Clamps a cursor position to the text's UTF-16 range, and then into the constrained span.
     private func clampedCursorPosition(_ position: Int, for text: String) -> Int {
         let utf16Length = text.utf16.count
-        return min(max(position, 0), utf16Length)
+        let inText = min(max(position, 0), utf16Length)
+        guard let allowed = selectionConstraint?.allowedSpan(in: text) else { return inText }
+        return min(max(inText, allowed.lowerBound), allowed.upperBound)
     }
 
-    func makeUIView(context: Context) -> UITextField {
-        let textField = UITextField()
+    func makeUIView(context: Context) -> LemonadeClampingTextField {
+        let textField = LemonadeClampingTextField()
+        textField.selectionConstraint = selectionConstraint
         textField.delegate = context.coordinator
         textField.font = textStyle.uiFont
         textField.textColor = UIColor(textColor)
@@ -82,8 +86,9 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         return textField
     }
 
-    func updateUIView(_ textField: UITextField, context: Context) {
+    func updateUIView(_ textField: LemonadeClampingTextField, context: Context) {
         context.coordinator.parent = self  // Keep coordinator in sync
+        textField.selectionConstraint = selectionConstraint
 
         // Guard against re-entrant updates from our own callbacks to avoid infinite loops
         guard !context.coordinator.isUpdating else { return }
@@ -232,6 +237,10 @@ internal struct LemonadeUITextField: UIViewRepresentable {
         func textFieldDidChangeSelection(_ textField: UITextField) {
             guard !isUpdating else { return }
 
+            isUpdating = true
+            clampSelection(textField)
+            isUpdating = false
+
             let cursorPosition = getCursorPosition(textField)
             if parent.value.cursorPosition != cursorPosition {
                 isUpdating = true
@@ -261,6 +270,13 @@ internal struct LemonadeUITextField: UIViewRepresentable {
                (textField.text ?? "").isEmpty,
                range.location == 0, range.length == 0, string == " " {
                 return true
+            }
+
+            // The selection clamp keeps the caret out of the symbol, but not the *edit*: with the
+            // caret pinned just after a leading "$", UIKit still proposes (0, 1) for a backspace.
+            if let allowed = allowedSpan(for: textField),
+               range.location < allowed.lowerBound || range.location + range.length > allowed.upperBound {
+                return false
             }
 
             guard let transformation = parent.inputTransformation,
@@ -317,7 +333,7 @@ internal struct LemonadeUITextField: UIViewRepresentable {
                 textField.text = newText
             }
 
-            textField.setCaret(toUTF16Offset: caret)
+            textField.setCaret(toUTF16Offset: clampedCaret(caret, for: newText))
         }
 
         /// A secure `UITextField` wipes all of its text on the first edit after the text was
@@ -350,11 +366,75 @@ internal struct LemonadeUITextField: UIViewRepresentable {
             return true
         }
 
+        /// Pulls the caret — or both ends of a selection — back into the constrained span.
+        ///
+        /// Assigning `selectedTextRange` re-enters this delegate synchronously, so the write is made
+        /// under `isUpdating` and only when the range actually changes. Doing it synchronously is
+        /// what keeps the caret from being *drawn* in the symbol: deferring the correction to the
+        /// next runloop turn paints a handful of frames with the caret in the forbidden region.
+        private func clampSelection(_ textField: UITextField) {
+            guard let allowed = allowedSpan(for: textField),
+                  let selection = textField.selectedTextRange else { return }
+
+            let document = textField.beginningOfDocument
+            let start = textField.offset(from: document, to: selection.start)
+            let end = textField.offset(from: document, to: selection.end)
+            let clampedStart = min(max(start, allowed.lowerBound), allowed.upperBound)
+            let clampedEnd = min(max(end, allowed.lowerBound), allowed.upperBound)
+            guard clampedStart != start || clampedEnd != end else { return }
+
+            guard let startPosition = textField.position(from: document, offset: clampedStart),
+                  let endPosition = textField.position(from: document, offset: clampedEnd),
+                  let clamped = textField.textRange(from: startPosition, to: endPosition) else { return }
+            textField.selectedTextRange = clamped
+        }
+
+        private func allowedSpan(for textField: UITextField) -> ClosedRange<Int>? {
+            parent.selectionConstraint?.allowedSpan(in: textField.text ?? "")
+        }
+
+        private func clampedCaret(_ caret: Int, for text: String) -> Int {
+            guard let allowed = parent.selectionConstraint?.allowedSpan(in: text) else { return caret }
+            return min(max(caret, allowed.lowerBound), allowed.upperBound)
+        }
+
         /// Returns cursor position as UTF-16 code unit offset (matches UIKit's internal indexing)
         private func getCursorPosition(_ textField: UITextField) -> Int {
             guard let selectedRange = textField.selectedTextRange else { return 0 }
             return textField.offset(from: textField.beginningOfDocument, to: selectedRange.start)
         }
+    }
+}
+
+/// A field that never resolves a touch to a position outside the constrained span.
+///
+/// `closestPosition(to:)` is the one function UIKit calls to turn a touch point into a text
+/// position, so clamping it constrains the tap, the drag and the loupe at the source, and the
+/// selection-change clamp never has to correct them. It does not see keyboard-driven selection
+/// (arrow keys, ⌘A) or word selection, which is why the delegate clamp remains the backstop.
+internal final class LemonadeClampingTextField: UITextField {
+    var selectionConstraint: LemonadeTextSelectionConstraint?
+
+    override func closestPosition(to point: CGPoint) -> UITextPosition? {
+        guard let closest = super.closestPosition(to: point) else { return nil }
+        guard let allowed = selectionConstraint?.allowedSpan(in: text ?? "") else { return closest }
+
+        let offset = self.offset(from: beginningOfDocument, to: closest)
+        let clamped = min(max(offset, allowed.lowerBound), allowed.upperBound)
+        guard clamped != offset else { return closest }
+        return position(from: beginningOfDocument, offset: clamped) ?? closest
+    }
+}
+
+internal extension LemonadeTextSelectionConstraint {
+    /// The allowed span for `text`, clamped to its UTF-16 length so both bounds are always valid
+    /// positions in the field.
+    func allowedSpan(in text: String) -> ClosedRange<Int>? {
+        guard let allowed = allowedRange(in: text) else { return nil }
+        let length = text.utf16.count
+        let lower = min(max(allowed.lowerBound, 0), length)
+        let upper = min(max(allowed.upperBound, lower), length)
+        return lower...upper
     }
 }
 
