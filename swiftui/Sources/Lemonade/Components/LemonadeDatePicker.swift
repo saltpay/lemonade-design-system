@@ -92,7 +92,9 @@ public extension LemonadeUi {
     ///   - state: Configuration state holding the selected date, min/max bounds.
     ///     Observe ``LemonadeDatePickerState/selectedDate`` to react to user selections.
     ///   - monthFormatter: Formatter that returns the month name for a given month number (1-12).
-    ///   - weekdayAbbreviations: Exactly 7 items representing Sunday through Saturday.
+    ///   - weekdayAbbreviations: Exactly 7 items representing Sunday through Saturday. The header
+    ///     renders them starting from the current calendar's first weekday, so the labels stay
+    ///     aligned with the day grid on every device region.
     ///   - today: The date treated as "today" — drives both the "today" indicator and the pager's
     ///     initial month. Defaults to `Date()`. Callers can pass a different value (e.g. the
     ///     currently-selected day) to have the pager open on that day's month; the day will also
@@ -139,7 +141,9 @@ public extension LemonadeUi {
     ///     Observe ``LemonadeDateRangePickerState/selectedStartDate`` and
     ///     ``LemonadeDateRangePickerState/selectedEndDate`` to react to user selections.
     ///   - monthFormatter: Formatter that returns the month name for a given month number (1-12).
-    ///   - weekdayAbbreviations: Exactly 7 items representing Sunday through Saturday.
+    ///   - weekdayAbbreviations: Exactly 7 items representing Sunday through Saturday. The header
+    ///     renders them starting from the current calendar's first weekday, so the labels stay
+    ///     aligned with the day grid on every device region.
     ///   - today: The date treated as "today" — drives both the "today" indicator and the pager's
     ///     initial month. Defaults to `Date()`. See ``DatePicker(state:monthFormatter:weekdayAbbreviations:today:onMonthDisplayed:)``
     ///     for the intended usage.
@@ -335,7 +339,10 @@ private struct CoreDatePickerView: View {
             Spacer().frame(height: LemonadeTheme.spaces.spacing200)
             
             HStack(spacing: 0) {
-                ForEach(Array(weekdayAbbreviations.prefix(7).enumerated()), id: \.offset) { _, day in
+                ForEach(
+                    Array(CalendarUtils.orderedWeekdayAbbreviations(weekdayAbbreviations, calendar: calendar).enumerated()),
+                    id: \.offset
+                ) { _, day in
                     LemonadeUi.Text(
                         day,
                         textStyle: LemonadeTypography.shared.bodyXSmallOverline,
