@@ -146,6 +146,24 @@ enum CalendarUtils {
         return "\(monthFormatter(month)) \(year)"
     }
 
+    /// Rotates 7 Sunday-first weekday labels so index 0 is the calendar's `firstWeekday`.
+    ///
+    /// A month grid from ``generateMonthDays(year:month:calendar:)`` places its first column
+    /// on `calendar.firstWeekday`, so a header row must be rotated with this before rendering
+    /// or its labels drift from the day cells on any non-Sunday-first calendar.
+    ///
+    /// - Parameters:
+    ///   - abbreviations: Exactly 7 labels ordered Sunday through Saturday. Anything past the
+    ///     first 7 is dropped; fewer than 7 are returned unchanged.
+    ///   - calendar: The calendar whose `firstWeekday` decides the rotation.
+    /// - Returns: The labels reordered to start at the calendar's first weekday.
+    static func orderedWeekdayAbbreviations(_ abbreviations: [String], calendar: Calendar) -> [String] {
+        let labels = Array(abbreviations.prefix(7))
+        guard labels.count == 7 else { return labels }
+        let first = calendar.firstWeekday - 1
+        return (0..<7).map { labels[(first + $0) % 7] }
+    }
+
     /// Returns an array of 7 weekday labels starting from the calendar's first weekday.
     ///
     /// - Parameters:
