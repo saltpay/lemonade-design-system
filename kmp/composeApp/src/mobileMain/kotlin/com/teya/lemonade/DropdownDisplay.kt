@@ -27,6 +27,7 @@ internal fun DropdownSampleDisplay() {
     var basicExpanded by remember { mutableStateOf(false) }
     var leadingIconsExpanded by remember { mutableStateOf(false) }
     var trailingIconsExpanded by remember { mutableStateOf(false) }
+    var trailingSlotExpanded by remember { mutableStateOf(false) }
     var disabledItemsExpanded by remember { mutableStateOf(false) }
     var nonDismissableExpanded by remember { mutableStateOf(false) }
     var interactiveExpanded by remember { mutableStateOf(false) }
@@ -132,6 +133,47 @@ internal fun DropdownSampleDisplay() {
                         text = "Delete",
                         onClick = { trailingIconsExpanded = false },
                         trailingIcon = LemonadeIcons.Trash,
+                    )
+                }
+            }
+        }
+
+        // With Trailing Slot
+        DropdownSection(title = "With Trailing Slot") {
+            Box {
+                LemonadeUi.Button(
+                    label = "Open Menu with Trailing Slot",
+                    onClick = { trailingSlotExpanded = true },
+                    variant = LemonadeButtonVariant.Secondary,
+                    size = LemonadeButtonSize.Medium,
+                )
+
+                LemonadeUi.Dropdown(
+                    expanded = trailingSlotExpanded,
+                    onDismissRequest = { trailingSlotExpanded = false },
+                ) {
+                    LemonadeUi.DropdownItem(
+                        text = "Notifications",
+                        onClick = { trailingSlotExpanded = false },
+                        leadingIcon = LemonadeIcons.Bell,
+                        trailingSlot = {
+                            LemonadeUi.Badge(text = "12")
+                        },
+                    )
+                    LemonadeUi.DropdownItem(
+                        text = "Updates",
+                        onClick = { trailingSlotExpanded = false },
+                        leadingIcon = LemonadeIcons.Gear,
+                        trailingSlot = {
+                            LemonadeUi.Tag(label = "New")
+                        },
+                    )
+                    LemonadeUi.DropdownItem(
+                        text = "Messages",
+                        onClick = { trailingSlotExpanded = false },
+                        trailingSlot = {
+                            LemonadeUi.Badge(text = "3")
+                        },
                     )
                 }
             }
