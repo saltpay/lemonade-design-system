@@ -231,17 +231,26 @@ struct ToastItemView: View {
     }
 
     private var toastContent: some View {
-        LemonadeUi.Toast(
-            label: toast.label,
-            voice: toast.voice,
-            icon: toast.icon,
-            actionLabel: toast.actionLabel,
-            onAction: toast.onAction
-        )
-        .frame(maxWidth: .infinity)
-        .padding(.top, .space.spacing1800) // Extra space for dismiss gesture
-        .padding(.horizontal, .space.spacing200)
-        .padding(.bottom, toast.anchor.bottomPadding)
+        VStack(spacing: 0) {
+            LemonadeUi.Toast(
+                label: toast.label,
+                voice: toast.voice,
+                icon: toast.icon,
+                actionLabel: toast.actionLabel,
+                onAction: toast.onAction
+            )
+            .frame(maxWidth: .infinity)
+            .padding(.top, .space.spacing1800) // Extra space for dismiss gesture
+            .padding(.horizontal, .space.spacing200)
+            .contentShape(Rectangle())
+            .simultaneousGesture(dismissGesture)
+
+            // Clears whatever sits below the toast (e.g. a bottom action button). Kept out of
+            // the contentShape/gesture above so it stays non-interactive and touches pass through.
+            Color.clear
+                .frame(height: toast.anchor.bottomPadding)
+                .allowsHitTesting(false)
+        }
         .background(
             GeometryReader { geometry in
                 Color.clear
@@ -252,9 +261,8 @@ struct ToastItemView: View {
                         onHeightChanged(newHeight)
                     }
             }
+            .allowsHitTesting(false)
         )
-        .contentShape(Rectangle())
-        .simultaneousGesture(dismissGesture)
     }
 
     private var dismissGesture: some Gesture {
