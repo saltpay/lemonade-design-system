@@ -32,6 +32,9 @@ import com.teya.lemonade.core.LemonadeBottomSheetVariant
  * @param hideNavigationBar Whether to hide the system navigation bar in the dialog window.
  * @param showDragHandle Whether to display the drag handle at the top of the sheet.
  * @param skipPartiallyExpanded Whether the partially expanded state should be skipped.
+ * @param gesturesEnabled Whether the sheet responds to swipe/drag gestures. When `false`, the
+ *   drag handle is hidden (overriding [showDragHandle]) and the sheet cannot be dragged. Defaults
+ *   to `true`.
  * @param background The background variant of the bottom sheet. Defaults to
  *   [LemonadeBottomSheetVariant.Default].
  * @param properties Dismissal behaviour for the bottom sheet (back press / scrim tap). Defaults
@@ -46,6 +49,7 @@ public fun LemonadeUi.BottomSheet(
     hideNavigationBar: Boolean,
     showDragHandle: Boolean = true,
     skipPartiallyExpanded: Boolean = false,
+    gesturesEnabled: Boolean = true,
     background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
     properties: LemonadeBottomSheetProperties = LemonadeBottomSheetProperties(),
     content: @Composable ColumnScope.() -> Unit,
@@ -55,6 +59,7 @@ public fun LemonadeUi.BottomSheet(
         onDismissRequest = onDismissRequest,
         showDragHandle = showDragHandle,
         skipPartiallyExpanded = skipPartiallyExpanded,
+        gesturesEnabled = gesturesEnabled,
         background = background,
         properties = properties,
         contentWindowInsets = if (hideNavigationBar) {
@@ -72,10 +77,43 @@ public fun LemonadeUi.BottomSheet(
 }
 
 @Deprecated(
+    message = "Use the overload with a gesturesEnabled parameter.",
+    replaceWith = ReplaceWith(
+        "BottomSheet(expanded, onDismissRequest, hideNavigationBar, showDragHandle, " +
+            "skipPartiallyExpanded, true, background, properties, content)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+public fun LemonadeUi.BottomSheet(
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+    hideNavigationBar: Boolean,
+    showDragHandle: Boolean = true,
+    skipPartiallyExpanded: Boolean = false,
+    background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
+    properties: LemonadeBottomSheetProperties = LemonadeBottomSheetProperties(),
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    BottomSheet(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest,
+        hideNavigationBar = hideNavigationBar,
+        showDragHandle = showDragHandle,
+        skipPartiallyExpanded = skipPartiallyExpanded,
+        gesturesEnabled = true,
+        background = background,
+        properties = properties,
+        content = content,
+    )
+}
+
+@Deprecated(
     message = "Use the overload with a properties parameter.",
     replaceWith = ReplaceWith(
         "BottomSheet(expanded, onDismissRequest, hideNavigationBar, showDragHandle, " +
-            "skipPartiallyExpanded, background, LemonadeBottomSheetProperties(), content)",
+            "skipPartiallyExpanded, true, background, LemonadeBottomSheetProperties(), content)",
     ),
     level = DeprecationLevel.HIDDEN,
 )

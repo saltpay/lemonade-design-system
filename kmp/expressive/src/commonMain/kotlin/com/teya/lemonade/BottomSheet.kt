@@ -32,6 +32,9 @@ import com.teya.lemonade.core.LemonadeBottomSheetVariant
  * @param skipPartiallyExpanded Whether the partially expanded state should be skipped. If `true`,
  *   the bottom sheet will always expand to the full height, skipping the intermediate (half-expanded)
  *   state. Defaults to `false`.
+ * @param gesturesEnabled Whether the sheet responds to swipe/drag gestures. When `false`, the
+ *   drag handle is hidden (overriding [showDragHandle]) and the sheet cannot be dragged. Defaults
+ *   to `true`.
  * @param background The background variant of the bottom sheet. Defaults to
  *   [LemonadeBottomSheetVariant.Default], which uses [LemonadeTheme.colors.background.bgDefault];
  *   use [LemonadeBottomSheetVariant.Subtle] for [LemonadeTheme.colors.background.bgSubtle].
@@ -82,6 +85,7 @@ public fun LemonadeUi.BottomSheet(
     onDismissRequest: () -> Unit,
     showDragHandle: Boolean = true,
     skipPartiallyExpanded: Boolean = false,
+    gesturesEnabled: Boolean = true,
     background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
     properties: LemonadeBottomSheetProperties = LemonadeBottomSheetProperties(),
     content: @Composable ColumnScope.() -> Unit,
@@ -91,6 +95,38 @@ public fun LemonadeUi.BottomSheet(
         onDismissRequest = onDismissRequest,
         showDragHandle = showDragHandle,
         skipPartiallyExpanded = skipPartiallyExpanded,
+        gesturesEnabled = gesturesEnabled,
+        background = background,
+        properties = properties,
+        content = content,
+    )
+}
+
+@Deprecated(
+    message = "Use the overload with a gesturesEnabled parameter.",
+    replaceWith = ReplaceWith(
+        "BottomSheet(expanded, onDismissRequest, showDragHandle, skipPartiallyExpanded, " +
+            "true, background, properties, content)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+public fun LemonadeUi.BottomSheet(
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+    showDragHandle: Boolean = true,
+    skipPartiallyExpanded: Boolean = false,
+    background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
+    properties: LemonadeBottomSheetProperties = LemonadeBottomSheetProperties(),
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    BottomSheet(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest,
+        showDragHandle = showDragHandle,
+        skipPartiallyExpanded = skipPartiallyExpanded,
+        gesturesEnabled = true,
         background = background,
         properties = properties,
         content = content,
@@ -101,7 +137,7 @@ public fun LemonadeUi.BottomSheet(
     message = "Use the overload with a properties parameter.",
     replaceWith = ReplaceWith(
         "BottomSheet(expanded, onDismissRequest, showDragHandle, skipPartiallyExpanded, " +
-            "background, LemonadeBottomSheetProperties(), content)",
+            "true, background, LemonadeBottomSheetProperties(), content)",
     ),
     level = DeprecationLevel.HIDDEN,
 )
@@ -132,12 +168,15 @@ internal fun CoreBottomSheet(
     onDismissRequest: () -> Unit,
     showDragHandle: Boolean = true,
     skipPartiallyExpanded: Boolean = false,
+    gesturesEnabled: Boolean = true,
     background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
     properties: LemonadeBottomSheetProperties = LemonadeBottomSheetProperties(),
     contentWindowInsets: @Composable () -> WindowInsets = { BottomSheetDefaults.windowInsets },
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpanded)
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = skipPartiallyExpanded,
+    )
     LaunchedEffect(expanded) {
         if (!expanded && sheetState.isVisible) {
             sheetState.hide()
@@ -153,13 +192,14 @@ internal fun CoreBottomSheet(
         ModalBottomSheet(
             onDismissRequest = onDismissRequest,
             sheetState = sheetState,
+            sheetGesturesEnabled = gesturesEnabled,
             shape = RoundedCornerShape(
                 topStart = LemonadeTheme.radius.radius500,
                 topEnd = LemonadeTheme.radius.radius500,
             ),
             containerColor = containerColor,
             tonalElevation = 0.dp,
-            dragHandle = if (showDragHandle) {
+            dragHandle = if (showDragHandle && gesturesEnabled) {
                 { BottomSheetDefaults.DragHandle() }
             } else {
                 null

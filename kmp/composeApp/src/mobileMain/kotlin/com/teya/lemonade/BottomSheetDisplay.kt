@@ -81,7 +81,7 @@ internal fun BottomSheetSampleDisplay() {
         // Non-dismissible scrim / back press
         BottomSheetSection(title = "Non-dismissible") {
             LemonadeUi.Text(
-                text = "Scrim taps and back presses are ignored; the sheet must be closed via the button.",
+                text = "Scrim taps, back presses, and swipe-down are all ignored; the sheet must be closed via the button.",
                 textStyle = LemonadeTheme.typography.bodySmallRegular,
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
@@ -190,10 +190,11 @@ internal fun BottomSheetSampleDisplay() {
         }
     }
 
-    // Non-dismissible (custom properties)
+    // Non-dismissible (fully locked)
     LemonadeUi.BottomSheet(
         expanded = showNonDismissibleSheet,
         onDismissRequest = { showNonDismissibleSheet = false },
+        gesturesEnabled = false,
         properties = LemonadeBottomSheetProperties(
             dismissOnBackPress = false,
             dismissOnClickOutside = false,
@@ -210,7 +211,7 @@ internal fun BottomSheetSampleDisplay() {
                 textStyle = LemonadeTheme.typography.headingSmall,
             )
             LemonadeUi.Text(
-                text = "Scrim taps and back presses are ignored. Use the button below to close.",
+                text = "Scrim taps, back presses, and swipe-down are ignored, and there's no drag handle. Use the button below to close.",
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
             LemonadeUi.Button(
