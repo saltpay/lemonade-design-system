@@ -4,7 +4,11 @@
 
 import java.io.File
 import java.security.MessageDigest
+import javax.imageio.ImageIO
+import javax.xml.parsers.DocumentBuilderFactory
 import org.json.JSONObject
+import org.w3c.dom.Element
+import org.w3c.dom.Node
 
 // === Name conversion utilities ===
 
@@ -91,6 +95,190 @@ fun loadCache(): MutableMap<String, String> {
 fun saveCache(cache: Map<String, String>) {
     cacheFile.parentFile.mkdirs()
     cacheFile.writeText(JSONObject(cache.toSortedMap()).toString(2))
+}
+
+// === SVG feature validation ===
+
+/**
+ * Elements whose children only *define* reusable content - they are never painted where they
+ * sit, so shapes inside them are irrelevant to the vector-drawable conversion. Nearly every
+ * flag wraps a `<rect>` in a `<clipPath>` this way, which is harmless.
+ */
+private val DEFS_LIKE_ELEMENTS =
+    setOf("defs", "clipPath", "mask", "pattern", "linearGradient", "radialGradient", "symbol")
+
+/** Painted elements that [convertSvgToVectorDrawable] does not read - it only matches `<path>`. */
+private val UNSUPPORTED_PAINTED_ELEMENTS =
+    setOf("rect", "circle", "ellipse", "polygon", "polyline", "line", "image", "text", "use")
+
+private data class SvgFeatures(
+    val paintedNonPaths: List<String>,
+    val referenceFills: List<String>,
+    val strokes: List<String>,
+)
+
+/**
+ * Reports the parts of [file] that the converter cannot express, ignoring anything nested in a
+ * [DEFS_LIKE_ELEMENTS] container. Structure matters here: a regex for `<rect` would flag 264 of
+ * the 265 flags, all of which are fine.
+ */
+private fun inspectSvgFeatures(file: File): SvgFeatures {
+    val factory = DocumentBuilderFactory.newInstance().apply { isNamespaceAware = false }
+    val document = factory.newDocumentBuilder().parse(file)
+
+    val paintedNonPaths = mutableListOf<String>()
+    val referenceFills = mutableListOf<String>()
+    val strokes = mutableListOf<String>()
+
+    fun walk(node: Node, insideDefs: Boolean) {
+        val children = node.childNodes
+        for (index in 0 until children.length) {
+            val child = children.item(index) as? Element ?: continue
+            val tag = child.tagName
+            val childInsideDefs = insideDefs || tag in DEFS_LIKE_ELEMENTS
+            if (!childInsideDefs) {
+                if (tag in UNSUPPORTED_PAINTED_ELEMENTS) paintedNonPaths += tag
+                if (child.getAttribute("fill").startsWith("url(#")) referenceFills += tag
+                val stroke = child.getAttribute("stroke")
+                if (stroke.isNotEmpty() && stroke != "none") strokes += tag
+            }
+            walk(child, childInsideDefs)
+        }
+    }
+    walk(document.documentElement, insideDefs = false)
+
+    return SvgFeatures(paintedNonPaths, referenceFills, strokes)
+}
+
+/**
+ * Fails the run when an SVG paints something the Android vector-drawable converter will drop.
+ *
+ * These failures are invisible without a check like this: the SwiftUI side goes through
+ * rsvg-convert and renders correctly, so the asset looks right on iOS while silently losing
+ * artwork on KMP. Only the files being converted are inspected, so pre-existing assets are not
+ * retroactively failed - the point is to catch it as the asset is added or re-exported.
+ *
+ * Strokes only warn: they are dropped too, but a dozen flags already rely on them and fixing
+ * those is separate work.
+ */
+private fun validateSvgFeatures(pack: PackConfig, files: Collection<File>) {
+    val failures = mutableListOf<String>()
+
+    files.sortedBy { it.name }.forEach { file ->
+        val features = try {
+            inspectSvgFeatures(file)
+        } catch (e: Exception) {
+            println("⚠️ ${pack.name}: could not parse ${file.name} to validate it: ${e.message}")
+            return@forEach
+        }
+
+        val problems = buildList {
+            features.paintedNonPaths.distinct().takeIf { it.isNotEmpty() }?.let {
+                add("paints <${it.joinToString(">, <")}>, which only <path> elements are read from")
+            }
+            features.referenceFills.distinct().takeIf { it.isNotEmpty() }?.let {
+                add("fills <${it.joinToString(">, <")}> with a gradient or pattern, which has no flat-colour equivalent")
+            }
+        }
+        if (problems.isNotEmpty()) {
+            failures += "  ${file.path}: ${problems.joinToString("; ")}"
+        }
+
+        features.strokes.distinct().takeIf { it.isNotEmpty() }?.let {
+            println(
+                "⚠️ ${pack.name}: ${file.name} strokes <${it.joinToString(">, <")}> - strokes are not " +
+                    "converted, so this artwork will be missing or mis-filled on KMP while correct on iOS"
+            )
+        }
+    }
+
+    if (failures.isNotEmpty()) {
+        error(
+            "${pack.name}: SVG(s) paint content the Android vector-drawable converter cannot express. " +
+                "It would be dropped silently on KMP while rendering correctly on iOS:\n" +
+                failures.joinToString("\n") +
+                "\nRe-export with shapes flattened to <path> and gradients flattened to solid fills."
+        )
+    }
+}
+
+// === Dark variant comparison ===
+
+/** Below this per-channel delta, two renders differ only by anti-aliasing on path edges. */
+private val NO_OP_DARK_MAX_DELTA = 32
+
+private fun renderToPng(svgFile: File, pngFile: File, size: Int = 240) {
+    val process = ProcessBuilder(
+        "rsvg-convert", "-w", "$size", "-h", "$size", "-f", "png", "-o", pngFile.absolutePath, svgFile.absolutePath
+    ).redirectErrorStream(true).start()
+    val output = process.inputStream.bufferedReader().readText()
+    if (process.waitFor() != 0) error("rsvg-convert failed for ${svgFile.name}: $output")
+}
+
+/** Largest per-channel difference (0..255) between two renders of the same size. */
+private fun maxChannelDelta(first: File, second: File): Int {
+    val a = ImageIO.read(first)
+    val b = ImageIO.read(second)
+    if (a.width != b.width || a.height != b.height) return 255
+
+    var max = 0
+    for (y in 0 until a.height) {
+        for (x in 0 until a.width) {
+            val pa = a.getRGB(x, y)
+            val pb = b.getRGB(x, y)
+            if (pa == pb) continue
+            for (shift in intArrayOf(24, 16, 8, 0)) {
+                val delta = Math.abs(((pa shr shift) and 0xFF) - ((pb shr shift) and 0xFF))
+                if (delta > max) max = delta
+            }
+            if (max == 255) return max
+        }
+    }
+    return max
+}
+
+/**
+ * Drops dark variants that render the same as their light asset.
+ *
+ * Most logos read equally well on both surfaces, and an export that emits a `-dark` file per
+ * asset regardless will pair no-op variants that ship a duplicate drawable and PDF for no visual
+ * gain. Comparing renders rather than fills is what makes this reliable: a re-export changes path
+ * floats, so the files are never byte-identical even when the artwork is.
+ */
+private fun withoutNoOpDarkVariants(
+    pack: PackConfig,
+    svgFiles: List<File>,
+    darkSvgFiles: Map<String, File>,
+): Map<String, File> {
+    if (darkSvgFiles.isEmpty()) return darkSvgFiles
+    val lightByName = svgFiles.associateBy { it.nameWithoutExtension }
+
+    return darkSvgFiles.filter { (name, darkFile) ->
+        val lightFile = lightByName[name] ?: return@filter true
+        val lightPng = File.createTempFile("lemonade-light-", ".png")
+        val darkPng = File.createTempFile("lemonade-dark-", ".png")
+        try {
+            renderToPng(lightFile, lightPng)
+            renderToPng(darkFile, darkPng)
+            val delta = maxChannelDelta(lightPng, darkPng)
+            if (delta <= NO_OP_DARK_MAX_DELTA) {
+                println(
+                    "⚠️ ${pack.name}: ${darkFile.name} renders the same as ${lightFile.name} " +
+                        "(max channel delta $delta/255); ignoring it, ${name} falls back to light. " +
+                        "Delete the file to silence this."
+                )
+                false
+            } else {
+                true
+            }
+        } catch (e: Exception) {
+            println("⚠️ ${pack.name}: could not compare ${darkFile.name} to its light asset: ${e.message}")
+            true
+        } finally {
+            lightPng.delete()
+            darkPng.delete()
+        }
+    }
 }
 
 // === Pre-compiled regexes for SVG parsing ===
@@ -716,7 +904,11 @@ fun main() {
         if (orphanDarkNames.isNotEmpty()) {
             println("⚠️ ${pack.name}: dark variant(s) with no matching light asset, ignored: ${orphanDarkNames.sorted().joinToString { "$it$DARK_SUFFIX.svg" }}")
         }
-        val pairedDarkSvgFiles = darkSvgFiles.filterKeys { it in lightNames }
+        val pairedDarkSvgFiles = withoutNoOpDarkVariants(
+            pack = pack,
+            svgFiles = svgFiles,
+            darkSvgFiles = darkSvgFiles.filterKeys { it in lightNames },
+        )
         if (pack.supportsDark) {
             println("Found ${pairedDarkSvgFiles.size} dark variant(s); ${lightNames.size - pairedDarkSvgFiles.size} asset(s) fall back to light")
         }
@@ -775,6 +967,10 @@ fun main() {
         if (deletionsOccurred) {
             println("Deletions detected, regenerating enum/extension files")
         }
+
+        // Only the assets about to be converted are validated, so an SVG is checked as it lands
+        // rather than the whole corpus being re-litigated on every run.
+        validateSvgFeatures(pack, (svgFiles + pairedDarkSvgFiles.values).filter { it.path in changedFiles })
 
         generateKmpAssets(pack, svgFiles, pairedDarkSvgFiles, changedFiles)
         generateSwiftAssets(pack, svgFiles, pairedDarkSvgFiles, changedFiles)
