@@ -51,8 +51,15 @@ private fun CoreBrandLogo(
     contentDescription: String?,
     modifier: Modifier = Modifier,
 ) {
+    // Resolved from the theme rather than the system appearance: a consumer may pass
+    // LemonadeDarkTheme while the system is light, and the logo must follow the theme.
+    val resource = if (LemonadeTheme.colors.isDark) {
+        logo.darkDrawableResource
+    } else {
+        logo.drawableResource
+    }
     Image(
-        painter = painterResource(resource = logo.drawableResource),
+        painter = painterResource(resource = resource),
         contentDescription = contentDescription,
         modifier = modifier.requiredSize(size = size.dp),
     )

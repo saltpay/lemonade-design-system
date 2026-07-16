@@ -194,6 +194,7 @@ public final class com/teya/lemonade/LemonadeAssetKt {
 }
 
 public final class com/teya/lemonade/LemonadeBrandLogosExtensionKt {
+	public static final fun getDarkDrawableResource (Lcom/teya/lemonade/core/LemonadeBrandLogos;)Lorg/jetbrains/compose/resources/DrawableResource;
 	public static final fun getDrawableResource (Lcom/teya/lemonade/core/LemonadeBrandLogos;)Lorg/jetbrains/compose/resources/DrawableResource;
 }
 
@@ -217,6 +218,7 @@ public final class com/teya/lemonade/LemonadeDarkTheme : com/teya/lemonade/Lemon
 	public fun getInteraction ()Lcom/teya/lemonade/LemonadeSemanticColors$InteractionColors;
 	public fun getScoped ()Lcom/teya/lemonade/LemonadeSemanticColors$ScopedColors;
 	public fun getShadow ()Lcom/teya/lemonade/LemonadeSemanticColors$ShadowColors;
+	public fun isDark ()Z
 }
 
 public abstract interface class com/teya/lemonade/LemonadeFontSizeValues {
@@ -265,6 +267,7 @@ public final class com/teya/lemonade/LemonadeLightTheme : com/teya/lemonade/Lemo
 	public fun getInteraction ()Lcom/teya/lemonade/LemonadeSemanticColors$InteractionColors;
 	public fun getScoped ()Lcom/teya/lemonade/LemonadeSemanticColors$ScopedColors;
 	public fun getShadow ()Lcom/teya/lemonade/LemonadeSemanticColors$ShadowColors;
+	public fun isDark ()Z
 }
 
 public abstract interface class com/teya/lemonade/LemonadeLineHeightValues {

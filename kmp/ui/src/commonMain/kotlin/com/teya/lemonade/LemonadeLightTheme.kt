@@ -21,6 +21,8 @@ import androidx.compose.runtime.Stable
 @Stable
 @OptIn(InternalLemonadeApi::class)
 public object LemonadeLightTheme : LemonadeSemanticColors {
+    override val isDark: Boolean = false
+
     override val interaction: LemonadeSemanticColors.InteractionColors =
         object : LemonadeSemanticColors.InteractionColors {
             override val bgNeutralSubtleInteractive = LemonadePrimitiveColors.Solid.Black.black200

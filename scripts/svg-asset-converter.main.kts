@@ -28,12 +28,24 @@ data class PackConfig(
     val swiftEnumName: String,
     val swiftFileName: String,
     val packType: PackType,
+    /**
+     * When true, files in [sourceDir] named `<name>-dark.svg` are treated as the dark-theme
+     * variant of `<name>.svg` rather than as assets in their own right, and are kept out of
+     * the generated enums. Assets without a dark variant fall back to their light one.
+     *
+     * This makes `-dark` a reserved suffix for the pack, so leave it false for packs whose
+     * asset names may legitimately end in it.
+     */
+    val supportsDark: Boolean = false,
 )
+
+/** File name suffix marking a dark-theme variant, for packs with `supportsDark`. */
+val DARK_SUFFIX = "-dark"
 
 val packs = listOf(
     PackConfig("icons", "svg/icons", "LemonadeIcons", "LemonadeIcon", "LemonadeIcons.swift", PackType.ICON),
     PackConfig("flags", "svg/flags", "LemonadeCountryFlags", "LemonadeCountryFlag", "LemonadeCountryFlags.swift", PackType.FLAG),
-    PackConfig("brandLogos", "svg/brandLogos", "LemonadeBrandLogos", "LemonadeBrandLogo", "LemonadeBrandLogos.swift", PackType.BRAND_LOGO),
+    PackConfig("brandLogos", "svg/brandLogos", "LemonadeBrandLogos", "LemonadeBrandLogo", "LemonadeBrandLogos.swift", PackType.BRAND_LOGO, supportsDark = true),
 )
 
 // === Content-hash cache ===
@@ -139,7 +151,12 @@ private fun convertSvgToVectorDrawable(svgContent: String): String {
     }
 }
 
-private fun generateKmpAssets(pack: PackConfig, svgFiles: List<File>, changedFiles: Set<String>) {
+private fun generateKmpAssets(
+    pack: PackConfig,
+    svgFiles: List<File>,
+    darkSvgFiles: Map<String, File>,
+    changedFiles: Set<String>,
+) {
     val outputDir = File("kmp/ui/src/commonMain/composeResources/drawable")
     outputDir.mkdirs()
 
@@ -165,15 +182,64 @@ private fun generateKmpAssets(pack: PackConfig, svgFiles: List<File>, changedFil
         }
     }
 
+    darkSvgFiles.forEach { (name, svgFile) ->
+        try {
+            val outputFile = File(outputDir, "gen_${kmpDarkResourceSuffix(name)}.xml")
+
+            if (svgFile.path !in changedFiles && outputFile.exists()) return@forEach
+
+            val vectorDrawable = convertSvgToVectorDrawable(svgFile.readText())
+            outputFile.writeText(vectorDrawable)
+            convertedCount++
+        } catch (e: Exception) {
+            println("✗ KMP: Failed to convert dark variant ${svgFile.name}: ${e.message}")
+        }
+    }
+
+    // Drop stale dark drawables whose source SVG was removed.
+    if (pack.supportsDark) {
+        svgFiles.forEach { svgFile ->
+            val name = svgFile.nameWithoutExtension
+            if (name !in darkSvgFiles) {
+                File(outputDir, "gen_${kmpDarkResourceSuffix(name)}.xml").delete()
+            }
+        }
+    }
+
     if (iconNames.isNotEmpty()) {
         val sortedNames = iconNames.sorted()
+        val total = sortedNames.size + darkSvgFiles.size
         generateKmpEnum(pack, sortedNames)
-        generateKmpExtension(pack, sortedNames)
-        println("✓ KMP: Converted $convertedCount/${sortedNames.size} drawables (${sortedNames.size - convertedCount} cached) + enum + extension for ${pack.kmpEnumName}")
+        generateKmpExtension(pack, sortedNames, darkSvgFiles.keys)
+        println("✓ KMP: Converted $convertedCount/$total drawables (${total - convertedCount} cached) + enum + extension for ${pack.kmpEnumName}")
+    }
+}
+
+private fun kmpDarkResourceSuffix(name: String): String = "${name.replace("-", "_")}_dark"
+
+/**
+ * Fails the run if a dark-theme variant reached the asset list of a [PackConfig.supportsDark] pack.
+ *
+ * The enums generated from these names are published API: a leaked variant would add an entry
+ * (e.g. `VisaDark`) that consumers could select by hand, defeating the theme-driven resolution.
+ * Worse, it would land silently - the API classifier reads a new entry as ADDITIONS_ONLY, and
+ * removing it afterwards is a breaking change. Cheaper to stop here.
+ */
+private fun requireNoDarkVariantsLeaked(pack: PackConfig, assetNames: List<String>) {
+    if (!pack.supportsDark) return
+    val leaked = assetNames.filter { it.endsWith(DARK_SUFFIX) }
+    if (leaked.isNotEmpty()) {
+        error(
+            "${pack.name}: dark variant(s) reached the ${pack.kmpEnumName} asset list: " +
+                "${leaked.joinToString { "$it.svg" }}. They must be paired to a light asset, " +
+                "not generated as entries of their own."
+        )
     }
 }
 
 private fun generateKmpEnum(pack: PackConfig, iconNames: List<String>) {
+    requireNoDarkVariantsLeaked(pack, iconNames)
+
     val coreFile = File("kmp/core/src/commonMain/kotlin/com/teya/lemonade/core/${pack.kmpEnumName}.kt")
 
     val content = buildString {
@@ -206,7 +272,7 @@ private fun generateKmpEnum(pack: PackConfig, iconNames: List<String>) {
     coreFile.writeText(content)
 }
 
-private fun generateKmpExtension(pack: PackConfig, iconNames: List<String>) {
+private fun generateKmpExtension(pack: PackConfig, iconNames: List<String>, darkNames: Set<String> = emptySet()) {
     val extensionFile = File("kmp/ui/src/commonMain/kotlin/com/teya/lemonade/${pack.kmpEnumName}Extension.kt")
 
     val content = buildString {
@@ -235,6 +301,38 @@ private fun generateKmpExtension(pack: PackConfig, iconNames: List<String>) {
         }
 
         appendLine("    }")
+
+        if (pack.supportsDark) {
+            appendLine()
+            appendLine("/**")
+            appendLine(" * Auto-generated extension for ${pack.kmpEnumName} enum providing dark-theme drawable resources.")
+            appendLine(" *")
+            appendLine(" * Entries without a `<name>$DARK_SUFFIX.svg` in ${pack.sourceDir}/ resolve to their light")
+            appendLine(" * drawable, which is the correct rendering for assets that read equally well on")
+            appendLine(" * both surfaces.")
+            appendLine(" *")
+            appendLine(" * ⚠️ **DO NOT MODIFY THIS FILE MANUALLY** ⚠️")
+            appendLine(" *")
+            appendLine(" * This file is automatically generated by the svg-asset-converter.main.kts script.")
+            appendLine(" * All changes will be overwritten when the script is run again.")
+            appendLine(" *")
+            appendLine(" * @generated by svg-asset-converter.main.kts")
+            appendLine(" */")
+            appendLine("@Suppress(\"MaxLineLength\")")
+            appendLine("public val ${pack.kmpEnumName}.darkDrawableResource: DrawableResource")
+            appendLine("    get() = when (this) {")
+
+            iconNames.forEach { iconName ->
+                val resourceName = if (iconName in darkNames) {
+                    "gen_" + kmpDarkResourceSuffix(iconName)
+                } else {
+                    "gen_" + iconName.replace("-", "_")
+                }
+                appendLine("        ${pack.kmpEnumName}.${iconName.toPascalCase()} -> LemonadeRes.drawable.$resourceName")
+            }
+
+            appendLine("    }")
+        }
     }
 
     extensionFile.parentFile.mkdirs()
@@ -266,7 +364,12 @@ private fun ensureAssetCatalogRoot(assetsDir: File) {
 """)
 }
 
-private fun generateSwiftAssets(pack: PackConfig, svgFiles: List<File>, changedFiles: Set<String>) {
+private fun generateSwiftAssets(
+    pack: PackConfig,
+    svgFiles: List<File>,
+    darkSvgFiles: Map<String, File>,
+    changedFiles: Set<String>,
+) {
     val outputDir = File("swiftui/Sources/Lemonade")
     val assetsDir = File("swiftui/Sources/Lemonade/Resources/Assets.xcassets")
 
@@ -279,12 +382,26 @@ private fun generateSwiftAssets(pack: PackConfig, svgFiles: List<File>, changedF
         val name = svgFile.nameWithoutExtension
         val imagesetDir = File(assetsDir, "$name.imageset")
         val pdfFile = File(imagesetDir, "$name.pdf")
+        val darkSvgFile = darkSvgFiles[name]
+        val darkPdfFile = File(imagesetDir, "$name-dark.pdf")
 
-        if (svgFile.path !in changedFiles && pdfFile.exists()) return@forEach
+        val lightStale = svgFile.path in changedFiles || !pdfFile.exists()
+        val darkStale = darkSvgFile != null && (darkSvgFile.path in changedFiles || !darkPdfFile.exists())
+        // A dark variant that was removed leaves an orphan PDF behind; rewrite the imageset.
+        val darkOrphaned = darkSvgFile == null && darkPdfFile.exists()
+
+        if (!lightStale && !darkStale && !darkOrphaned) return@forEach
 
         imagesetDir.mkdirs()
         try {
-            convertSvgToPdf(svgFile, pdfFile)
+            if (lightStale) {
+                convertSvgToPdf(svgFile, pdfFile)
+            }
+            if (darkSvgFile != null) {
+                convertSvgToPdf(darkSvgFile, darkPdfFile)
+            } else {
+                darkPdfFile.delete()
+            }
         } catch (e: Exception) {
             println("✗ SwiftUI: Failed to convert ${svgFile.name} to PDF: ${e.message}")
             return@forEach
@@ -292,7 +409,13 @@ private fun generateSwiftAssets(pack: PackConfig, svgFiles: List<File>, changedF
 
         // Write Contents.json based on pack type
         val contentsJson = File(imagesetDir, "Contents.json")
-        contentsJson.writeText(buildImagesetContentsJson(pack.packType, "$name.pdf"))
+        contentsJson.writeText(
+            buildImagesetContentsJson(
+                packType = pack.packType,
+                pdfFileName = "$name.pdf",
+                darkPdfFileName = darkSvgFile?.let { "$name-dark.pdf" },
+            )
+        )
         convertedCount++
     }
 
@@ -304,7 +427,11 @@ private fun generateSwiftAssets(pack: PackConfig, svgFiles: List<File>, changedF
     println("✓ SwiftUI: Converted $convertedCount/${svgFiles.size} imagesets (${svgFiles.size - convertedCount} cached) + ${pack.swiftFileName}")
 }
 
-private fun buildImagesetContentsJson(packType: PackType, pdfFileName: String): String {
+private fun buildImagesetContentsJson(
+    packType: PackType,
+    pdfFileName: String,
+    darkPdfFileName: String? = null,
+): String {
     val properties = when (packType) {
         PackType.ICON -> """
   "properties" : {
@@ -317,12 +444,28 @@ private fun buildImagesetContentsJson(packType: PackType, pdfFileName: String): 
   }"""
     }
 
+    // The dark entry is resolved by UIKit from the trait collection, which is the same
+    // mechanism the generated colorsets use. No Swift-side branching is needed.
+    val darkImage = darkPdfFileName?.let {
+        """,
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "$it",
+      "idiom" : "universal"
+    }"""
+    }.orEmpty()
+
     return """{
   "images" : [
     {
       "filename" : "$pdfFileName",
       "idiom" : "universal"
-    }
+    }$darkImage
   ],
   "info" : {
     "author" : "xcode",
@@ -334,6 +477,8 @@ $properties
 }
 
 private fun buildSwiftEnum(pack: PackConfig, svgFiles: List<File>): String {
+    requireNoDarkVariantsLeaked(pack, svgFiles.map { it.nameWithoutExtension })
+
     return when (pack.packType) {
         PackType.ICON -> buildIconSwiftEnum(pack, svgFiles)
         PackType.FLAG -> buildFlagSwiftEnum(pack, svgFiles)
@@ -482,20 +627,43 @@ fun main() {
             return@forEach
         }
 
-        val svgFiles = svgDir.listFiles { file -> file.isFile && file.extension == "svg" }
+        val allSvgFiles = svgDir.listFiles { file -> file.isFile && file.extension == "svg" }
             ?.sortedBy { it.nameWithoutExtension } ?: emptyList()
 
-        if (svgFiles.isEmpty()) {
+        if (allSvgFiles.isEmpty()) {
             println("⚠️ No SVG files found in ${pack.sourceDir}, skipping")
             return@forEach
         }
 
-        println("Found ${svgFiles.size} SVG files")
+        println("Found ${allSvgFiles.size} SVG files")
+
+        // Split the dark-theme variants ("<name>$DARK_SUFFIX.svg") out of the pack and pair each
+        // to the light asset of the same base name. Only the light assets become enum entries;
+        // assets without a variant fall back to their light drawable.
+        val (darkFiles, svgFiles) = if (pack.supportsDark) {
+            allSvgFiles.partition { it.nameWithoutExtension.endsWith(DARK_SUFFIX) }
+        } else {
+            emptyList<File>() to allSvgFiles
+        }
+
+        val darkSvgFiles = darkFiles.associateBy { it.nameWithoutExtension.removeSuffix(DARK_SUFFIX) }
+        val lightNames = svgFiles.map { it.nameWithoutExtension }.toSet()
+
+        // A "<name>$DARK_SUFFIX.svg" with no "<name>.svg" beside it is ambiguous: either a typo,
+        // or an asset whose real name happens to end in "$DARK_SUFFIX". Neither should be guessed at.
+        val orphanDarkNames = darkSvgFiles.keys - lightNames
+        if (orphanDarkNames.isNotEmpty()) {
+            println("⚠️ ${pack.name}: dark variant(s) with no matching light asset, ignored: ${orphanDarkNames.sorted().joinToString { "$it$DARK_SUFFIX.svg" }}")
+        }
+        val pairedDarkSvgFiles = darkSvgFiles.filterKeys { it in lightNames }
+        if (pack.supportsDark) {
+            println("Found ${pairedDarkSvgFiles.size} dark variant(s); ${lightNames.size - pairedDarkSvgFiles.size} asset(s) fall back to light")
+        }
 
         // Determine which files changed by comparing content hashes
         val changedFiles = mutableSetOf<String>()
         val newHashes = mutableMapOf<String, String>()
-        svgFiles.forEach { svgFile ->
+        (svgFiles + pairedDarkSvgFiles.values).forEach { svgFile ->
             val hash = sha256(svgFile)
             newHashes[svgFile.path] = hash
             if (hash != cache[svgFile.path]) {
@@ -504,7 +672,7 @@ fun main() {
         }
 
         // Prune cache entries for deleted SVGs in this pack
-        val currentPaths = svgFiles.map { it.path }.toSet()
+        val currentPaths = (svgFiles + pairedDarkSvgFiles.values).map { it.path }.toSet()
         val deletionsOccurred = updatedCache.keys.removeAll { it.startsWith("${pack.sourceDir}/") && it !in currentPaths }
 
         // Cache unchanged files immediately; changed files are cached after successful conversion
@@ -521,9 +689,20 @@ fun main() {
             val name = svgFile.nameWithoutExtension
             val kmpFile = File(kmpDrawableDir, "gen_${name.replace("-", "_")}.xml")
             val pdfFile = File(assetsRoot, "$name.imageset/$name.pdf")
-            !kmpFile.exists() || !pdfFile.exists()
+            val darkOutputsStale = if (name in pairedDarkSvgFiles) {
+                !File(kmpDrawableDir, "gen_${kmpDarkResourceSuffix(name)}.xml").exists() ||
+                    !File(assetsRoot, "$name.imageset/$name-dark.pdf").exists()
+            } else {
+                false
+            }
+            !kmpFile.exists() || !pdfFile.exists() || darkOutputsStale
         }
 
+        // NOTE: this early return also skips the enum/extension codegen below. That is load
+        // bearing: LemonadeCountryFlags.kt is rewritten here and then has its `getOrNull`
+        // companion injected by kmp-country-flags-alpha2-generator.main.kts, so regenerating
+        // it without re-running that post-generator drops public API. Run the whole pipeline
+        // via scripts/generate-resources.main.kts, which sequences the two correctly.
         if (changedFiles.isEmpty() && !deletionsOccurred && !missingOutputs) {
             println("✓ ${pack.name}: no changes detected, skipping conversions")
             return@forEach
@@ -536,8 +715,8 @@ fun main() {
             println("Deletions detected, regenerating enum/extension files")
         }
 
-        generateKmpAssets(pack, svgFiles, changedFiles)
-        generateSwiftAssets(pack, svgFiles, changedFiles)
+        generateKmpAssets(pack, svgFiles, pairedDarkSvgFiles, changedFiles)
+        generateSwiftAssets(pack, svgFiles, pairedDarkSvgFiles, changedFiles)
 
         // Only cache changed files after successful conversion
         changedFiles.forEach { path -> updatedCache[path] = newHashes[path]!! }
