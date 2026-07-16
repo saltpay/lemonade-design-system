@@ -112,9 +112,9 @@ private val UNSUPPORTED_PAINTED_ELEMENTS =
     setOf("rect", "circle", "ellipse", "polygon", "polyline", "line", "image", "text", "use")
 
 private data class SvgFeatures(
-    val paintedNonPaths: List<String>,
-    val referenceFills: List<String>,
-    val strokes: List<String>,
+    val paintedNonPaths: Set<String>,
+    val referenceFills: Set<String>,
+    val strokes: Set<String>,
 )
 
 /**
@@ -126,9 +126,9 @@ private fun inspectSvgFeatures(file: File): SvgFeatures {
     val factory = DocumentBuilderFactory.newInstance().apply { isNamespaceAware = false }
     val document = factory.newDocumentBuilder().parse(file)
 
-    val paintedNonPaths = mutableListOf<String>()
-    val referenceFills = mutableListOf<String>()
-    val strokes = mutableListOf<String>()
+    val paintedNonPaths = mutableSetOf<String>()
+    val referenceFills = mutableSetOf<String>()
+    val strokes = mutableSetOf<String>()
 
     fun walk(node: Node, insideDefs: Boolean) {
         val children = node.childNodes
@@ -173,20 +173,23 @@ private fun validateSvgFeatures(pack: PackConfig, files: Collection<File>) {
         }
 
         val problems = buildList {
-            features.paintedNonPaths.distinct().takeIf { it.isNotEmpty() }?.let {
-                add("paints <${it.joinToString(">, <")}>, which only <path> elements are read from")
+            if (features.paintedNonPaths.isNotEmpty()) {
+                add("paints <${features.paintedNonPaths.joinToString(">, <")}>, which only <path> elements are read from")
             }
-            features.referenceFills.distinct().takeIf { it.isNotEmpty() }?.let {
-                add("fills <${it.joinToString(">, <")}> with a gradient or pattern, which has no flat-colour equivalent")
+            if (features.referenceFills.isNotEmpty()) {
+                add(
+                    "fills <${features.referenceFills.joinToString(">, <")}> with a gradient or pattern, " +
+                        "which has no flat-colour equivalent"
+                )
             }
         }
         if (problems.isNotEmpty()) {
             failures += "  ${file.path}: ${problems.joinToString("; ")}"
         }
 
-        features.strokes.distinct().takeIf { it.isNotEmpty() }?.let {
+        if (features.strokes.isNotEmpty()) {
             println(
-                "⚠️ ${pack.name}: ${file.name} strokes <${it.joinToString(">, <")}> - strokes are not " +
+                "⚠️ ${pack.name}: ${file.name} strokes <${features.strokes.joinToString(">, <")}> - strokes are not " +
                     "converted, so this artwork will be missing or mis-filled on KMP while correct on iOS"
             )
         }
@@ -208,11 +211,7 @@ private fun validateSvgFeatures(pack: PackConfig, files: Collection<File>) {
 private val NO_OP_DARK_MAX_DELTA = 32
 
 private fun renderToPng(svgFile: File, pngFile: File, size: Int = 240) {
-    val process = ProcessBuilder(
-        "rsvg-convert", "-w", "$size", "-h", "$size", "-f", "png", "-o", pngFile.absolutePath, svgFile.absolutePath
-    ).redirectErrorStream(true).start()
-    val output = process.inputStream.bufferedReader().readText()
-    if (process.waitFor() != 0) error("rsvg-convert failed for ${svgFile.name}: $output")
+    runRsvgConvert(svgFile, pngFile, format = "png", size = size)
 }
 
 /** Largest per-channel difference (0..255) between two renders of the same size. */
@@ -221,18 +220,19 @@ private fun maxChannelDelta(first: File, second: File): Int {
     val b = ImageIO.read(second)
     if (a.width != b.width || a.height != b.height) return 255
 
+    val pixelsA = a.getRGB(0, 0, a.width, a.height, null, 0, a.width)
+    val pixelsB = b.getRGB(0, 0, b.width, b.height, null, 0, b.width)
+
     var max = 0
-    for (y in 0 until a.height) {
-        for (x in 0 until a.width) {
-            val pa = a.getRGB(x, y)
-            val pb = b.getRGB(x, y)
-            if (pa == pb) continue
-            for (shift in intArrayOf(24, 16, 8, 0)) {
-                val delta = Math.abs(((pa shr shift) and 0xFF) - ((pb shr shift) and 0xFF))
-                if (delta > max) max = delta
-            }
-            if (max == 255) return max
+    for (index in pixelsA.indices) {
+        val pa = pixelsA[index]
+        val pb = pixelsB[index]
+        if (pa == pb) continue
+        for (shift in intArrayOf(24, 16, 8, 0)) {
+            val delta = Math.abs(((pa shr shift) and 0xFF) - ((pb shr shift) and 0xFF))
+            if (delta > max) max = delta
         }
+        if (max == 255) return max
     }
     return max
 }
@@ -247,14 +247,13 @@ private fun maxChannelDelta(first: File, second: File): Int {
  */
 private fun withoutNoOpDarkVariants(
     pack: PackConfig,
-    svgFiles: List<File>,
+    lightByName: Map<String, File>,
     darkSvgFiles: Map<String, File>,
 ): Map<String, File> {
     if (darkSvgFiles.isEmpty()) return darkSvgFiles
-    val lightByName = svgFiles.associateBy { it.nameWithoutExtension }
 
     return darkSvgFiles.filter { (name, darkFile) ->
-        val lightFile = lightByName[name] ?: return@filter true
+        val lightFile = lightByName.getValue(name)
         val lightPng = File.createTempFile("lemonade-light-", ".png")
         val darkPng = File.createTempFile("lemonade-dark-", ".png")
         try {
@@ -291,6 +290,23 @@ private val svgFillRegex = Regex("fill=\"([^\"]*)")
 private val svgFillRuleRegex = Regex("fill-rule=\"([^\"]*)")
 
 // === rsvg-convert check ===
+
+/**
+ * Runs rsvg-convert, sizing the output square when [size] is given. Draining stdout matters:
+ * with stderr redirected into it, a child that writes enough output would block on a full pipe.
+ */
+private fun runRsvgConvert(svgFile: File, outputFile: File, format: String, size: Int? = null) {
+    val command = buildList {
+        add("rsvg-convert")
+        size?.let { addAll(listOf("-w", "$it", "-h", "$it")) }
+        addAll(listOf("-f", format, "-o", outputFile.absolutePath, svgFile.absolutePath))
+    }
+    val process = ProcessBuilder(command).redirectErrorStream(true).start()
+    val output = process.inputStream.bufferedReader().readText()
+    if (process.waitFor() != 0) {
+        error("rsvg-convert failed for ${svgFile.name}: $output")
+    }
+}
 
 fun checkRsvgConvert() {
     try {
@@ -375,8 +391,7 @@ private fun generateKmpAssets(
             val fileName = svgFile.nameWithoutExtension
             iconNames.add(fileName)
 
-            val outputFileName = fileName.replace("-", "_")
-            val outputFile = File(outputDir, "gen_$outputFileName.xml")
+            val outputFile = File(outputDir, "${kmpResourceName(fileName)}.xml")
 
             if (svgFile.path !in changedFiles && outputFile.exists()) return@forEach
 
@@ -391,7 +406,7 @@ private fun generateKmpAssets(
 
     darkSvgFiles.forEach { (name, svgFile) ->
         try {
-            val outputFile = File(outputDir, "gen_${kmpDarkResourceSuffix(name)}.xml")
+            val outputFile = File(outputDir, "${kmpDarkResourceName(name)}.xml")
 
             if (svgFile.path !in changedFiles && outputFile.exists()) return@forEach
 
@@ -408,7 +423,7 @@ private fun generateKmpAssets(
         svgFiles.forEach { svgFile ->
             val name = svgFile.nameWithoutExtension
             if (name !in darkSvgFiles) {
-                File(outputDir, "gen_${kmpDarkResourceSuffix(name)}.xml").delete()
+                File(outputDir, "${kmpDarkResourceName(name)}.xml").delete()
             }
         }
     }
@@ -422,7 +437,14 @@ private fun generateKmpAssets(
     }
 }
 
-private fun kmpDarkResourceSuffix(name: String): String = "${name.replace("-", "_")}_dark"
+/** Compose Resources drawable name for a light asset, e.g. `apple-pay` -> `gen_apple_pay`. */
+private fun kmpResourceName(name: String): String = "gen_${name.replace("-", "_")}"
+
+/** Compose Resources drawable name for a dark variant, e.g. `apple-pay` -> `gen_apple_pay_dark`. */
+private fun kmpDarkResourceName(name: String): String = "${kmpResourceName(name)}_dark"
+
+/** File name of a dark variant's PDF inside its imageset, e.g. `apple-pay` -> `apple-pay-dark.pdf`. */
+private fun darkPdfName(name: String): String = "$name$DARK_SUFFIX.pdf"
 
 /**
  * Fails the run if a dark-theme variant reached the asset list of a [PackConfig.supportsDark] pack.
@@ -492,15 +514,14 @@ private fun generateKmpEnum(pack: PackConfig, iconNames: List<String>) {
  * The `when` branches below map every enum entry, including any deprecated ones, so the
  * generated file has to opt out of its own deprecation warnings.
  */
-private fun suppressAnnotation(pack: PackConfig): String {
-    val names = buildList {
-        add("MaxLineLength")
-        if (pack.deprecations.isNotEmpty()) add("DEPRECATION")
+private fun suppressAnnotation(pack: PackConfig): String =
+    if (pack.deprecations.isEmpty()) {
+        "@Suppress(\"MaxLineLength\")"
+    } else {
+        "@Suppress(\"MaxLineLength\", \"DEPRECATION\")"
     }
-    return "@Suppress(${names.joinToString { "\"$it\"" }})"
-}
 
-private fun generateKmpExtension(pack: PackConfig, iconNames: List<String>, darkNames: Set<String> = emptySet()) {
+private fun generateKmpExtension(pack: PackConfig, iconNames: List<String>, darkNames: Set<String>) {
     val extensionFile = File("kmp/ui/src/commonMain/kotlin/com/teya/lemonade/${pack.kmpEnumName}Extension.kt")
 
     val content = buildString {
@@ -524,7 +545,7 @@ private fun generateKmpExtension(pack: PackConfig, iconNames: List<String>, dark
         appendLine("    get() = when (this) {")
 
         iconNames.forEach { iconName ->
-            val resourceName = "gen_" + iconName.replace("-", "_")
+            val resourceName = kmpResourceName(iconName)
             appendLine("        ${pack.kmpEnumName}.${iconName.toPascalCase()} -> LemonadeRes.drawable.$resourceName")
         }
 
@@ -552,9 +573,9 @@ private fun generateKmpExtension(pack: PackConfig, iconNames: List<String>, dark
 
             iconNames.forEach { iconName ->
                 val resourceName = if (iconName in darkNames) {
-                    "gen_" + kmpDarkResourceSuffix(iconName)
+                    kmpDarkResourceName(iconName)
                 } else {
-                    "gen_" + iconName.replace("-", "_")
+                    kmpResourceName(iconName)
                 }
                 appendLine("        ${pack.kmpEnumName}.${iconName.toPascalCase()} -> LemonadeRes.drawable.$resourceName")
             }
@@ -570,14 +591,7 @@ private fun generateKmpExtension(pack: PackConfig, iconNames: List<String>, dark
 // === SwiftUI Generation ===
 
 private fun convertSvgToPdf(svgFile: File, pdfFile: File) {
-    val process = ProcessBuilder("rsvg-convert", "-f", "pdf", "-o", pdfFile.absolutePath, svgFile.absolutePath)
-        .redirectErrorStream(true)
-        .start()
-    val output = process.inputStream.bufferedReader().readText()
-    val exitCode = process.waitFor()
-    if (exitCode != 0) {
-        error("rsvg-convert failed for ${svgFile.name}: $output")
-    }
+    runRsvgConvert(svgFile, pdfFile, format = "pdf")
 }
 
 private fun ensureAssetCatalogRoot(assetsDir: File) {
@@ -611,7 +625,7 @@ private fun generateSwiftAssets(
         val imagesetDir = File(assetsDir, "$name.imageset")
         val pdfFile = File(imagesetDir, "$name.pdf")
         val darkSvgFile = darkSvgFiles[name]
-        val darkPdfFile = File(imagesetDir, "$name-dark.pdf")
+        val darkPdfFile = File(imagesetDir, darkPdfName(name))
 
         val lightStale = svgFile.path in changedFiles || !pdfFile.exists()
         val darkStale = darkSvgFile != null && (darkSvgFile.path in changedFiles || !darkPdfFile.exists())
@@ -641,7 +655,7 @@ private fun generateSwiftAssets(
             buildImagesetContentsJson(
                 packType = pack.packType,
                 pdfFileName = "$name.pdf",
-                darkPdfFileName = darkSvgFile?.let { "$name-dark.pdf" },
+                darkPdfFileName = darkSvgFile?.let { darkPdfName(name) },
             )
         )
         convertedCount++
@@ -658,7 +672,7 @@ private fun generateSwiftAssets(
 private fun buildImagesetContentsJson(
     packType: PackType,
     pdfFileName: String,
-    darkPdfFileName: String? = null,
+    darkPdfFileName: String?,
 ): String {
     val properties = when (packType) {
         PackType.ICON -> """
@@ -714,6 +728,52 @@ private fun buildSwiftEnum(pack: PackConfig, svgFiles: List<File>): String {
     }
 }
 
+/**
+ * Emits the `case` lines for a Swift enum, plus `allCases` when the pack has deprecations.
+ *
+ * Shared by every pack so that [PackConfig.deprecations] means the same thing on both platforms.
+ * Emitting the annotation and the `allCases` override from one place is what keeps them together:
+ * `@available` on a case silently disables Swift's `CaseIterable` synthesis, so a builder that
+ * emitted one without the other would stop compiling.
+ *
+ * Deprecated aliases are left out of `allCases`: each renders the same asset as its replacement,
+ * so listing both would show it twice in a gallery. The cases stay usable and still warn at the
+ * point of use.
+ *
+ * [caseName] maps an asset name to its case name, which is the only thing that varies per pack.
+ */
+private fun StringBuilder.appendSwiftCases(
+    pack: PackConfig,
+    svgFiles: List<File>,
+    caseName: (String) -> String,
+) {
+    svgFiles.forEach { file ->
+        val name = file.nameWithoutExtension
+        pack.deprecations[name]?.let { replacement ->
+            appendLine("    @available(*, deprecated, renamed: \"${caseName(replacement)}\")")
+        }
+        appendLine("    case ${caseName(name)} = \"$name\"")
+    }
+
+    if (pack.deprecations.isEmpty()) return
+
+    appendLine()
+    appendLine("    /// Swift cannot synthesise `CaseIterable` for an enum carrying `@available` on a")
+    appendLine("    /// case, so `allCases` is written out here.")
+    appendLine("    ///")
+    appendLine("    /// Deprecated aliases are omitted: each renders the same asset as its replacement,")
+    appendLine("    /// so listing both would show the logo twice in a gallery. The cases themselves stay")
+    appendLine("    /// usable - referencing one just warns and points at the replacement.")
+    appendLine("    public static var allCases: [${pack.swiftEnumName}] {")
+    appendLine("        [")
+    svgFiles
+        .map { it.nameWithoutExtension }
+        .filterNot { it in pack.deprecations }
+        .forEach { appendLine("            .${caseName(it)},") }
+    appendLine("        ]")
+    appendLine("    }")
+}
+
 private fun buildIconSwiftEnum(pack: PackConfig, svgFiles: List<File>): String {
     return buildString {
         appendLine("import SwiftUI")
@@ -730,9 +790,7 @@ private fun buildIconSwiftEnum(pack: PackConfig, svgFiles: List<File>): String {
         appendLine()
         appendLine("/// Icon token enum")
         appendLine("public enum ${pack.swiftEnumName}: String, CaseIterable {")
-        svgFiles.forEach { file ->
-            appendLine("    case ${file.nameWithoutExtension.toCamelCase()} = \"${file.nameWithoutExtension}\"")
-        }
+        appendSwiftCases(pack, svgFiles) { it.toCamelCase() }
         appendLine()
         appendLine("    /// Returns the Image for this icon from the Lemonade bundle's asset catalog")
         appendLine("    public var image: Image {")
@@ -787,10 +845,7 @@ private fun buildFlagSwiftEnum(pack: PackConfig, svgFiles: List<File>): String {
         appendLine()
         appendLine("/// Country flag token enum")
         appendLine("public enum ${pack.swiftEnumName}: String, CaseIterable {")
-        svgFiles.forEach { file ->
-            val enumCase = file.nameWithoutExtension.toPascalCase().replaceFirstChar { it.lowercase() }
-            appendLine("    case $enumCase = \"${file.nameWithoutExtension}\"")
-        }
+        appendSwiftCases(pack, svgFiles) { it.toPascalCase().replaceFirstChar { char -> char.lowercase() } }
         appendLine()
         appendLine("    /// Returns the country code (first part of the flag name, e.g., \"PT\" from \"PT-portugal\")")
         appendLine("    public var countryCode: String {")
@@ -821,30 +876,7 @@ private fun buildBrandLogoSwiftEnum(pack: PackConfig, svgFiles: List<File>): Str
         appendLine()
         appendLine("/// Brand logo token enum")
         appendLine("public enum ${pack.swiftEnumName}: String, CaseIterable {")
-        svgFiles.forEach { file ->
-            val name = file.nameWithoutExtension
-            pack.deprecations[name]?.let { replacement ->
-                appendLine("    @available(*, deprecated, renamed: \"${replacement.toCamelCase()}\")")
-            }
-            appendLine("    case ${name.toCamelCase()} = \"$name\"")
-        }
-        if (pack.deprecations.isNotEmpty()) {
-            appendLine()
-            appendLine("    /// Swift cannot synthesise `CaseIterable` for an enum carrying `@available` on a")
-            appendLine("    /// case, so `allCases` is written out here.")
-            appendLine("    ///")
-            appendLine("    /// Deprecated aliases are omitted: each renders the same asset as its replacement,")
-            appendLine("    /// so listing both would show the logo twice in a gallery. The cases themselves stay")
-            appendLine("    /// usable - referencing one just warns and points at the replacement.")
-            appendLine("    public static var allCases: [${pack.swiftEnumName}] {")
-            appendLine("        [")
-            svgFiles
-                .map { it.nameWithoutExtension }
-                .filterNot { it in pack.deprecations }
-                .forEach { appendLine("            .${it.toCamelCase()},") }
-            appendLine("        ]")
-            appendLine("    }")
-        }
+        appendSwiftCases(pack, svgFiles) { it.toCamelCase() }
         appendLine("}")
     }
 }
@@ -896,7 +928,8 @@ fun main() {
         }
 
         val darkSvgFiles = darkFiles.associateBy { it.nameWithoutExtension.removeSuffix(DARK_SUFFIX) }
-        val lightNames = svgFiles.map { it.nameWithoutExtension }.toSet()
+        val lightByName = svgFiles.associateBy { it.nameWithoutExtension }
+        val lightNames = lightByName.keys
 
         // A "<name>$DARK_SUFFIX.svg" with no "<name>.svg" beside it is ambiguous: either a typo,
         // or an asset whose real name happens to end in "$DARK_SUFFIX". Neither should be guessed at.
@@ -906,7 +939,7 @@ fun main() {
         }
         val pairedDarkSvgFiles = withoutNoOpDarkVariants(
             pack = pack,
-            svgFiles = svgFiles,
+            lightByName = lightByName,
             darkSvgFiles = darkSvgFiles.filterKeys { it in lightNames },
         )
         if (pack.supportsDark) {
@@ -914,9 +947,10 @@ fun main() {
         }
 
         // Determine which files changed by comparing content hashes
+        val convertedFiles = svgFiles + pairedDarkSvgFiles.values
         val changedFiles = mutableSetOf<String>()
         val newHashes = mutableMapOf<String, String>()
-        (svgFiles + pairedDarkSvgFiles.values).forEach { svgFile ->
+        convertedFiles.forEach { svgFile ->
             val hash = sha256(svgFile)
             newHashes[svgFile.path] = hash
             if (hash != cache[svgFile.path]) {
@@ -925,7 +959,7 @@ fun main() {
         }
 
         // Prune cache entries for deleted SVGs in this pack
-        val currentPaths = (svgFiles + pairedDarkSvgFiles.values).map { it.path }.toSet()
+        val currentPaths = newHashes.keys
         val deletionsOccurred = updatedCache.keys.removeAll { it.startsWith("${pack.sourceDir}/") && it !in currentPaths }
 
         // Cache unchanged files immediately; changed files are cached after successful conversion
@@ -940,11 +974,11 @@ fun main() {
         val assetsRoot = File("swiftui/Sources/Lemonade/Resources/Assets.xcassets")
         val missingOutputs = svgFiles.any { svgFile ->
             val name = svgFile.nameWithoutExtension
-            val kmpFile = File(kmpDrawableDir, "gen_${name.replace("-", "_")}.xml")
+            val kmpFile = File(kmpDrawableDir, "${kmpResourceName(name)}.xml")
             val pdfFile = File(assetsRoot, "$name.imageset/$name.pdf")
             val darkOutputsStale = if (name in pairedDarkSvgFiles) {
-                !File(kmpDrawableDir, "gen_${kmpDarkResourceSuffix(name)}.xml").exists() ||
-                    !File(assetsRoot, "$name.imageset/$name-dark.pdf").exists()
+                !File(kmpDrawableDir, "${kmpDarkResourceName(name)}.xml").exists() ||
+                    !File(assetsRoot, "$name.imageset/${darkPdfName(name)}").exists()
             } else {
                 false
             }
@@ -970,7 +1004,7 @@ fun main() {
 
         // Only the assets about to be converted are validated, so an SVG is checked as it lands
         // rather than the whole corpus being re-litigated on every run.
-        validateSvgFeatures(pack, (svgFiles + pairedDarkSvgFiles.values).filter { it.path in changedFiles })
+        validateSvgFeatures(pack, convertedFiles.filter { it.path in changedFiles })
 
         generateKmpAssets(pack, svgFiles, pairedDarkSvgFiles, changedFiles)
         generateSwiftAssets(pack, svgFiles, pairedDarkSvgFiles, changedFiles)
