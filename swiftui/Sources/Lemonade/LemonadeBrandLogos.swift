@@ -23,13 +23,19 @@ public enum LemonadeBrandLogo: String, CaseIterable {
     case amazon = "amazon"
     case amex = "amex"
     case applePay = "apple-pay"
+    case bancomat = "bancomat"
+    case cartesBancaires = "cartes-bancaires"
+    case diners = "diners"
+    @available(*, deprecated, renamed: "diners")
     case dinners = "dinners"
     case discover = "discover"
     case edenred = "edenred"
     case genericMealOrHealthIssuer = "generic-meal-or-health-issuer"
+    case girocard = "girocard"
     case googlePay = "google-pay"
     case jcb = "jcb"
     case mastercard = "mastercard"
+    case mbWay = "mb-way"
     case multibanco = "multibanco"
     case nfcLogo = "nfc-logo"
     case pagoBancomat = "pago-bancomat"
@@ -38,4 +44,37 @@ public enum LemonadeBrandLogo: String, CaseIterable {
     case sodexo = "sodexo"
     case unionpay = "unionpay"
     case visa = "visa"
+
+    /// Swift cannot synthesise `CaseIterable` for an enum carrying `@available` on a
+    /// case, so `allCases` is written out here.
+    ///
+    /// Deprecated aliases are omitted: each renders the same asset as its replacement,
+    /// so listing both would show the logo twice in a gallery. The cases themselves stay
+    /// usable - referencing one just warns and points at the replacement.
+    public static var allCases: [LemonadeBrandLogo] {
+        [
+            .amazon,
+            .amex,
+            .applePay,
+            .bancomat,
+            .cartesBancaires,
+            .diners,
+            .discover,
+            .edenred,
+            .genericMealOrHealthIssuer,
+            .girocard,
+            .googlePay,
+            .jcb,
+            .mastercard,
+            .mbWay,
+            .multibanco,
+            .nfcLogo,
+            .pagoBancomat,
+            .pluxee,
+            .sepa,
+            .sodexo,
+            .unionpay,
+            .visa,
+        ]
+    }
 }

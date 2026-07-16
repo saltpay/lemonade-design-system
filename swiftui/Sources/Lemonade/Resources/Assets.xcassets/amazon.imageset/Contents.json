@@ -3,6 +3,16 @@
     {
       "filename" : "amazon.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "amazon-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

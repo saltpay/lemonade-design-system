@@ -3,6 +3,16 @@
     {
       "filename" : "apple-pay.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "apple-pay-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

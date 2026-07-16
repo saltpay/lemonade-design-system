@@ -3,6 +3,16 @@
     {
       "filename" : "sepa.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "sepa-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
