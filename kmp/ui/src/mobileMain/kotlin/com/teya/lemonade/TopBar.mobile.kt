@@ -759,8 +759,8 @@ public fun LemonadeUi.TopBar(
     message = "Use the overload with a scrolledBackgroundColor parameter.",
     replaceWith = ReplaceWith(
         expression = "TopBar(label, searchInput, onSearchChanged, modifier, state, backgroundColor, " +
-            "backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0), expandedLabel, " +
-            "subtitle, navigationAction, trailingSlot, bottomSlot)",
+                "backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0), expandedLabel, " +
+                "subtitle, navigationAction, trailingSlot, bottomSlot)",
     ),
     level = DeprecationLevel.HIDDEN,
 )
@@ -800,8 +800,8 @@ public fun LemonadeUi.TopBar(
     message = "Use the overload with a searchPlaceholder parameter.",
     replaceWith = ReplaceWith(
         expression = "TopBar(label, searchInput, onSearchChanged, modifier, state, backgroundColor, " +
-            "scrolledBackgroundColor, expandedLabel, subtitle, null, navigationAction, trailingSlot, " +
-            "bottomSlot)",
+                "scrolledBackgroundColor, expandedLabel, subtitle, null, navigationAction, trailingSlot, " +
+                "bottomSlot)",
     ),
     level = DeprecationLevel.HIDDEN,
 )
@@ -947,7 +947,7 @@ public fun LemonadeUi.TopBar(
     message = "Use the overload with a scrolledBackgroundColor parameter.",
     replaceWith = ReplaceWith(
         expression = "TopBar(label, subheading, modifier, state, backgroundColor, " +
-            "backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0), trailingSlot, bottomSlot)",
+                "backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0), trailingSlot, bottomSlot)",
     ),
     level = DeprecationLevel.HIDDEN,
 )
@@ -1121,8 +1121,8 @@ public fun LemonadeUi.TopBar(
     message = "Use the overload with a scrolledBackgroundColor parameter.",
     replaceWith = ReplaceWith(
         expression = "TopBar(label, subheading, searchInput, onSearchChanged, modifier, state, " +
-            "backgroundColor, backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0), " +
-            "trailingSlot)",
+                "backgroundColor, backgroundColor.copy(alpha = LocalOpacities.current.base.opacity0), " +
+                "trailingSlot)",
     ),
     level = DeprecationLevel.HIDDEN,
 )
@@ -1156,7 +1156,7 @@ public fun LemonadeUi.TopBar(
     message = "Use the overload with a searchPlaceholder parameter.",
     replaceWith = ReplaceWith(
         expression = "TopBar(label, subheading, searchInput, onSearchChanged, modifier, state, " +
-            "backgroundColor, scrolledBackgroundColor, null, trailingSlot)",
+                "backgroundColor, scrolledBackgroundColor, null, trailingSlot)",
     ),
     level = DeprecationLevel.HIDDEN,
 )
@@ -1344,9 +1344,9 @@ internal fun TopBarLayout(
                     .roundToInt()
 
             val totalHeight = fixedHeaderPlaceable.height +
-                dividerPlaceable.height +
-                visibleCollapsablePlaceableHeight +
-                (bottomSlotPlaceable?.height ?: 0)
+                    dividerPlaceable.height +
+                    visibleCollapsablePlaceableHeight +
+                    (bottomSlotPlaceable?.height ?: 0)
 
             layout(
                 width = constraints.maxWidth,
@@ -1416,7 +1416,7 @@ internal fun CoreTopBarContent(
 
     Layout(
         modifier = modifier
-            .heightIn(min = LocalSizes.current.size1100)
+            .heightIn(min = LocalSizes.current.size1400)
             .padding(horizontal = LocalSpaces.current.spacing100),
         content = {
             Box(
