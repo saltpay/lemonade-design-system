@@ -537,8 +537,8 @@ public fun LemonadeUi.TopBar(
                     .fillMaxWidth()
                     .padding(horizontal = LocalSpaces.current.spacing400)
                     .padding(
-                        vertical = LocalSpaces.current.spacing200,
-                        horizontal = LocalSpaces.current.spacing400,
+                        top = LocalSpaces.current.spacing50,
+                        bottom = LocalSpaces.current.spacing200,
                     ),
             ) {
                 LemonadeUi.Text(
