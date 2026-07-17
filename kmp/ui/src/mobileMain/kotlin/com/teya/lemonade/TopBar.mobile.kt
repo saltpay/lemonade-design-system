@@ -536,7 +536,10 @@ public fun LemonadeUi.TopBar(
                 modifier = collapsableSlotModifier
                     .fillMaxWidth()
                     .padding(horizontal = LocalSpaces.current.spacing400)
-                    .padding(all = LocalSpaces.current.spacing200),
+                    .padding(
+                        vertical = LocalSpaces.current.spacing200,
+                        horizontal = LocalSpaces.current.spacing400,
+                    ),
             ) {
                 LemonadeUi.Text(
                     text = label,
