@@ -22,7 +22,8 @@
         />
     <path
         android:pathData="M17.2141 7.30762V11.4696M18.2819 7.30762V11.4696M19.3497 7.30762V11.4696"
-        android:fillColor="#FF000000"
+        android:strokeColor="#D80027"
+        android:strokeWidth="7"
         />
     <path
         android:pathData="M15.9146 11.476V15.638ZM15.0591 11.476V15.638ZM14.2035 11.4824V14.9497ZM13.3222 11.4824V14.5123Z"
@@ -30,7 +31,8 @@
         />
     <path
         android:pathData="M15.9146 11.476V15.638M15.0591 11.476V15.638M14.2035 11.4824V14.9497M13.3222 11.4824V14.5123"
-        android:fillColor="#FF000000"
+        android:strokeColor="#D80027"
+        android:strokeWidth="5"
         />
     <path
         android:pathData="M12.8591 9.39183L14.6345 7.30762L16.4678 9.38539L14.6602 11.4696L12.8591 9.39183Z"

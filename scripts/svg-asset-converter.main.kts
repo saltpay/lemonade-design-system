@@ -114,7 +114,6 @@ private val UNSUPPORTED_PAINTED_ELEMENTS =
 private data class SvgFeatures(
     val paintedNonPaths: Set<String>,
     val referenceFills: Set<String>,
-    val strokes: Set<String>,
 )
 
 /**
@@ -128,7 +127,6 @@ private fun inspectSvgFeatures(file: File): SvgFeatures {
 
     val paintedNonPaths = mutableSetOf<String>()
     val referenceFills = mutableSetOf<String>()
-    val strokes = mutableSetOf<String>()
 
     fun walk(node: Node, insideDefs: Boolean) {
         val children = node.childNodes
@@ -139,15 +137,13 @@ private fun inspectSvgFeatures(file: File): SvgFeatures {
             if (!childInsideDefs) {
                 if (tag in UNSUPPORTED_PAINTED_ELEMENTS) paintedNonPaths += tag
                 if (child.getAttribute("fill").startsWith("url(#")) referenceFills += tag
-                val stroke = child.getAttribute("stroke")
-                if (stroke.isNotEmpty() && stroke != "none") strokes += tag
             }
             walk(child, childInsideDefs)
         }
     }
     walk(document.documentElement, insideDefs = false)
 
-    return SvgFeatures(paintedNonPaths, referenceFills, strokes)
+    return SvgFeatures(paintedNonPaths, referenceFills)
 }
 
 /**
@@ -157,9 +153,6 @@ private fun inspectSvgFeatures(file: File): SvgFeatures {
  * rsvg-convert and renders correctly, so the asset looks right on iOS while silently losing
  * artwork on KMP. Only the files being converted are inspected, so pre-existing assets are not
  * retroactively failed - the point is to catch it as the asset is added or re-exported.
- *
- * Strokes only warn: they are dropped too, but a dozen flags already rely on them and fixing
- * those is separate work.
  */
 private fun validateSvgFeatures(pack: PackConfig, files: Collection<File>) {
     val failures = mutableListOf<String>()
@@ -185,13 +178,6 @@ private fun validateSvgFeatures(pack: PackConfig, files: Collection<File>) {
         }
         if (problems.isNotEmpty()) {
             failures += "  ${file.path}: ${problems.joinToString("; ")}"
-        }
-
-        if (features.strokes.isNotEmpty()) {
-            println(
-                "⚠️ ${pack.name}: ${file.name} strokes <${features.strokes.joinToString(">, <")}> - strokes are not " +
-                    "converted, so this artwork will be missing or mis-filled on KMP while correct on iOS"
-            )
         }
     }
 
@@ -288,6 +274,19 @@ private val svgViewBoxRegex = Regex("viewBox=\"([^\"]*)")
 private val svgPathRegex = Regex("<path[^>]*d=\"([^\"]*)[^>]*>")
 private val svgFillRegex = Regex("fill=\"([^\"]*)")
 private val svgFillRuleRegex = Regex("fill-rule=\"([^\"]*)")
+private val svgRootFillRegex = Regex("<svg[^>]*\\sfill=\"([^\"]*)\"")
+private val svgStrokeRegex = Regex("stroke=\"([^\"]*)")
+private val svgStrokeWidthRegex = Regex("stroke-width=\"([^\"]*)")
+private val svgStrokeLineCapRegex = Regex("stroke-linecap=\"([^\"]*)")
+private val svgStrokeLineJoinRegex = Regex("stroke-linejoin=\"([^\"]*)")
+private val svgStrokeMiterLimitRegex = Regex("stroke-miterlimit=\"([^\"]*)")
+
+/** SVG's named colours that Android vector drawables spell differently. */
+private fun svgColorToAndroid(color: String): String = when (color) {
+    "black" -> "#FF000000"
+    "white" -> "#FFFFFFFF"
+    else -> color
+}
 
 // === rsvg-convert check ===
 
@@ -333,6 +332,11 @@ private fun convertSvgToVectorDrawable(svgContent: String): String {
     val viewportWidth = viewBox?.getOrNull(2)?.toDoubleOrNull() ?: width.toDouble()
     val viewportHeight = viewBox?.getOrNull(3)?.toDoubleOrNull() ?: height.toDouble()
 
+    // `fill` inherits, so a path without one takes the root's. Every asset here is exported with
+    // `<svg fill="none">`, which means an unfilled stroke-only path - assuming SVG's own "black"
+    // default instead would paint it solid.
+    val inheritedFill = svgRootFillRegex.find(svgContent)?.groupValues?.get(1) ?: "black"
+
     return buildString {
         appendLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
         appendLine("<vector xmlns:android=\"http://schemas.android.com/apk/res/android\"")
@@ -349,14 +353,27 @@ private fun convertSvgToVectorDrawable(svgContent: String): String {
             appendLine("    <path")
             appendLine("        android:pathData=\"$pathData\"")
 
-            val fillColor = fillMatch?.groupValues?.get(1) ?: "black"
+            val fillColor = fillMatch?.groupValues?.get(1) ?: inheritedFill
             if (fillColor != "none") {
-                val androidColor = when (fillColor) {
-                    "black" -> "#FF000000"
-                    "white" -> "#FFFFFFFF"
-                    else -> fillColor
+                appendLine("        android:fillColor=\"${svgColorToAndroid(fillColor)}\"")
+            }
+
+            val strokeColor = svgStrokeRegex.find(match.value)?.groupValues?.get(1)
+            if (strokeColor != null && strokeColor != "none") {
+                appendLine("        android:strokeColor=\"${svgColorToAndroid(strokeColor)}\"")
+                // SVG defaults stroke-width to 1; Android defaults strokeWidth to 0, which would
+                // draw nothing, so it always has to be written out.
+                val strokeWidth = svgStrokeWidthRegex.find(match.value)?.groupValues?.get(1) ?: "1"
+                appendLine("        android:strokeWidth=\"$strokeWidth\"")
+                svgStrokeLineCapRegex.find(match.value)?.groupValues?.get(1)?.let {
+                    appendLine("        android:strokeLineCap=\"$it\"")
                 }
-                appendLine("        android:fillColor=\"$androidColor\"")
+                svgStrokeLineJoinRegex.find(match.value)?.groupValues?.get(1)?.let {
+                    appendLine("        android:strokeLineJoin=\"$it\"")
+                }
+                svgStrokeMiterLimitRegex.find(match.value)?.groupValues?.get(1)?.let {
+                    appendLine("        android:strokeMiterLimit=\"$it\"")
+                }
             }
 
             fillRuleMatch?.let {

@@ -38,6 +38,8 @@
         />
     <path
         android:pathData="M16.4678 18.3526C16.4678 18.3526 21.3825 15.0526 21.3825 10.9807C21.3825 6.90873 16.4678 3.60229 16.4678 3.60229C16.4678 3.60229 11.5532 6.9023 11.5532 10.9742C11.5532 15.0462 16.4678 18.3526 16.4678 18.3526Z"
-        android:fillColor="#FF000000"
+        android:strokeColor="#D80027"
+        android:strokeWidth="12"
+        android:strokeMiterLimit="10"
         />
 </vector>
