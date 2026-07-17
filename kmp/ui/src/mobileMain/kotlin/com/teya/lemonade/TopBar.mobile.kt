@@ -1416,7 +1416,7 @@ internal fun CoreTopBarContent(
 
     Layout(
         modifier = modifier
-            .heightIn(min = LocalSizes.current.size1100)
+            .heightIn(min = LocalSizes.current.size1400)
             .padding(horizontal = LocalSpaces.current.spacing100),
         content = {
             Box(
