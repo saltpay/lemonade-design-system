@@ -134,6 +134,20 @@ private fun buildThemeInterfaceCode(
         append(defaultAutoGenerationMessage(scriptFilePath = scriptFilePath))
         appendLine(" */")
         appendLine("public interface LemonadeSemanticColors {")
+        appendLine("    /**")
+        appendLine("     * Whether this palette is a dark one.")
+        appendLine("     *")
+        appendLine("     * This is the single source of truth for the theme's brightness: components that")
+        appendLine("     * cannot express a theme through colour alone - such as brand logos, which carry")
+        appendLine("     * their own fixed brand palette - resolve their asset from this flag.")
+        appendLine("     *")
+        appendLine("     * Defaults to `false` so that existing implementations keep compiling. Custom")
+        appendLine("     * palettes intended for dark surfaces must override this, otherwise those")
+        appendLine("     * components will render their light variant.")
+        appendLine("     */")
+        appendLine("    public val isDark: Boolean")
+        appendLine("        get() = false")
+        appendLine()
         groupedThemeResources.keys.forEach { groupName ->
             if (groupName != null) {
                 appendLine("    public val ${groupName.sanitizedValueName()}: ${groupName}Colors")
@@ -187,6 +201,8 @@ private fun buildThemeCode(
         appendLine("@Stable")
         appendLine("@OptIn(InternalLemonadeApi::class)")
         appendLine("public object $fileName : LemonadeSemanticColors {")
+        appendLine("    override val isDark: Boolean = ${themeName.equals("Dark", ignoreCase = true)}")
+        appendLine()
         groupedThemeResources.forEach { (groupName, resources) ->
             if (groupName != null) {
                 append(

@@ -139,6 +139,8 @@ abstract interface com.teya.lemonade/LemonadeSemanticColors { // com.teya.lemona
         abstract fun <get-scoped>(): com.teya.lemonade/LemonadeSemanticColors.ScopedColors // com.teya.lemonade/LemonadeSemanticColors.scoped.<get-scoped>|<get-scoped>(){}[0]
     abstract val shadow // com.teya.lemonade/LemonadeSemanticColors.shadow|{}shadow[0]
         abstract fun <get-shadow>(): com.teya.lemonade/LemonadeSemanticColors.ShadowColors // com.teya.lemonade/LemonadeSemanticColors.shadow.<get-shadow>|<get-shadow>(){}[0]
+    open val isDark // com.teya.lemonade/LemonadeSemanticColors.isDark|{}isDark[0]
+        open fun <get-isDark>(): kotlin/Boolean // com.teya.lemonade/LemonadeSemanticColors.isDark.<get-isDark>|<get-isDark>(){}[0]
 
     abstract interface BackgroundColors { // com.teya.lemonade/LemonadeSemanticColors.BackgroundColors|null[0]
         abstract val bgAlwaysDark // com.teya.lemonade/LemonadeSemanticColors.BackgroundColors.bgAlwaysDark|{}bgAlwaysDark[0]

@@ -3,6 +3,16 @@
     {
       "filename" : "google-pay.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "google-pay-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

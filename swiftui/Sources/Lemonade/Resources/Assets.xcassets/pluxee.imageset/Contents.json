@@ -3,6 +3,16 @@
     {
       "filename" : "pluxee.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "pluxee-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

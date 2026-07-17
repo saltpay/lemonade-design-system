@@ -3,6 +3,16 @@
     {
       "filename" : "multibanco.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "multibanco-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

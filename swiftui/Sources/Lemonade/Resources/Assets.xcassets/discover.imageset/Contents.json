@@ -3,6 +3,16 @@
     {
       "filename" : "discover.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "discover-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

@@ -66,7 +66,9 @@ private struct LemonadeBrandLogoView: View {
     }
 
     private var logoImage: Image {
-        Image(logo.rawValue, bundle: .lemonade)
+        // assetName, not rawValue: a deprecated alias has no asset of its own and resolves to
+        // its replacement's.
+        Image(logo.assetName, bundle: .lemonade)
     }
 }
 

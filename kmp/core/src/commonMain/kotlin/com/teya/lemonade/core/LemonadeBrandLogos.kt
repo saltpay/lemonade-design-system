@@ -18,13 +18,23 @@ public enum class LemonadeBrandLogos : LemonadeAsset {
     Amazon,
     Amex,
     ApplePay,
+    Bancomat,
+    CartesBancaires,
+    Diners,
+
+    @Deprecated(
+        message = "Superseded by Diners.",
+        replaceWith = ReplaceWith("Diners"),
+    )
     Dinners,
     Discover,
     Edenred,
     GenericMealOrHealthIssuer,
+    Girocard,
     GooglePay,
     Jcb,
     Mastercard,
+    MbWay,
     Multibanco,
     NfcLogo,
     PagoBancomat,

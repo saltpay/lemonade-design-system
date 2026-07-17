@@ -77,13 +77,18 @@ public final class com/teya/lemonade/core/LemonadeBrandLogos : java/lang/Enum, c
 	public static final field Amazon Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Amex Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field ApplePay Lcom/teya/lemonade/core/LemonadeBrandLogos;
+	public static final field Bancomat Lcom/teya/lemonade/core/LemonadeBrandLogos;
+	public static final field CartesBancaires Lcom/teya/lemonade/core/LemonadeBrandLogos;
+	public static final field Diners Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Dinners Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Discover Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Edenred Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field GenericMealOrHealthIssuer Lcom/teya/lemonade/core/LemonadeBrandLogos;
+	public static final field Girocard Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field GooglePay Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Jcb Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Mastercard Lcom/teya/lemonade/core/LemonadeBrandLogos;
+	public static final field MbWay Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Multibanco Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field NfcLogo Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field PagoBancomat Lcom/teya/lemonade/core/LemonadeBrandLogos;
