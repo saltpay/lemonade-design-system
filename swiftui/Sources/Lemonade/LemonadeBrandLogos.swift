@@ -45,6 +45,18 @@ public enum LemonadeBrandLogo: String, CaseIterable {
     case unionpay = "unionpay"
     case visa = "visa"
 
+    /// Name of this logo's image in the asset catalog.
+    ///
+    /// Deprecated aliases have no asset of their own and resolve to their replacement's,
+    /// so the two can never drift apart. Kept separate from `rawValue`, which stays the
+    /// entry's own name so that `init(rawValue:)` still accepts it.
+    public var assetName: String {
+        switch self {
+        case .dinners: return "diners"
+        default: return rawValue
+        }
+    }
+
     /// Swift cannot synthesise `CaseIterable` for an enum carrying `@available` on a
     /// case, so `allCases` is written out here.
     ///

@@ -42,11 +42,13 @@ data class PackConfig(
      */
     val supportsDark: Boolean = false,
     /**
-     * Superseded assets, as `old asset name` -> `replacement asset name`. Both files must stay
-     * in [sourceDir]: the old one still generates its entry and drawables, so already-published
-     * enum entries keep working, but the entry is marked deprecated and points callers at the
-     * replacement. Removing the old asset instead would delete a public enum entry, which is a
-     * breaking change.
+     * Superseded assets, as `old asset name` -> `replacement asset name`. Only the replacement
+     * needs a file in [sourceDir]; the old name has no asset of its own.
+     *
+     * The old name still gets its enum entry - deleting a published one is a breaking change -
+     * but the entry is marked deprecated and resolves to the *replacement's* asset. Giving it a
+     * copy of the artwork instead would ship the same drawable twice and let the two drift apart
+     * the next time only one is re-exported, which is the opposite of what an alias promises.
      */
     val deprecations: Map<String, String> = emptyMap(),
 )
@@ -431,8 +433,9 @@ private fun generateKmpAssets(
     if (iconNames.isNotEmpty()) {
         val sortedNames = iconNames.sorted()
         val total = sortedNames.size + darkSvgFiles.size
-        generateKmpEnum(pack, sortedNames)
-        generateKmpExtension(pack, sortedNames, darkSvgFiles.keys)
+        val entryNames = (sortedNames + pack.deprecations.keys).sorted()
+        generateKmpEnum(pack, entryNames)
+        generateKmpExtension(pack, entryNames, darkSvgFiles.keys)
         println("✓ KMP: Converted $convertedCount/$total drawables (${total - convertedCount} cached) + enum + extension for ${pack.kmpEnumName}")
     }
 }
@@ -545,7 +548,7 @@ private fun generateKmpExtension(pack: PackConfig, iconNames: List<String>, dark
         appendLine("    get() = when (this) {")
 
         iconNames.forEach { iconName ->
-            val resourceName = kmpResourceName(iconName)
+            val resourceName = kmpResourceName(pack.deprecations[iconName] ?: iconName)
             appendLine("        ${pack.kmpEnumName}.${iconName.toPascalCase()} -> LemonadeRes.drawable.$resourceName")
         }
 
@@ -572,10 +575,11 @@ private fun generateKmpExtension(pack: PackConfig, iconNames: List<String>, dark
             appendLine("    get() = when (this) {")
 
             iconNames.forEach { iconName ->
-                val resourceName = if (iconName in darkNames) {
-                    kmpDarkResourceName(iconName)
+                val assetName = pack.deprecations[iconName] ?: iconName
+                val resourceName = if (assetName in darkNames) {
+                    kmpDarkResourceName(assetName)
                 } else {
-                    kmpResourceName(iconName)
+                    kmpResourceName(assetName)
                 }
                 appendLine("        ${pack.kmpEnumName}.${iconName.toPascalCase()} -> LemonadeRes.drawable.$resourceName")
             }
@@ -744,11 +748,12 @@ private fun buildSwiftEnum(pack: PackConfig, svgFiles: List<File>): String {
  */
 private fun StringBuilder.appendSwiftCases(
     pack: PackConfig,
-    svgFiles: List<File>,
+    assetNames: List<String>,
     caseName: (String) -> String,
 ) {
-    svgFiles.forEach { file ->
-        val name = file.nameWithoutExtension
+    val entryNames = (assetNames + pack.deprecations.keys).sorted()
+
+    entryNames.forEach { name ->
         pack.deprecations[name]?.let { replacement ->
             appendLine("    @available(*, deprecated, renamed: \"${caseName(replacement)}\")")
         }
@@ -758,6 +763,20 @@ private fun StringBuilder.appendSwiftCases(
     if (pack.deprecations.isEmpty()) return
 
     appendLine()
+    appendLine("    /// Name of this logo's image in the asset catalog.")
+    appendLine("    ///")
+    appendLine("    /// Deprecated aliases have no asset of their own and resolve to their replacement's,")
+    appendLine("    /// so the two can never drift apart. Kept separate from `rawValue`, which stays the")
+    appendLine("    /// entry's own name so that `init(rawValue:)` still accepts it.")
+    appendLine("    public var assetName: String {")
+    appendLine("        switch self {")
+    pack.deprecations.toSortedMap().forEach { (name, replacement) ->
+        appendLine("        case .${caseName(name)}: return \"$replacement\"")
+    }
+    appendLine("        default: return rawValue")
+    appendLine("        }")
+    appendLine("    }")
+    appendLine()
     appendLine("    /// Swift cannot synthesise `CaseIterable` for an enum carrying `@available` on a")
     appendLine("    /// case, so `allCases` is written out here.")
     appendLine("    ///")
@@ -766,8 +785,7 @@ private fun StringBuilder.appendSwiftCases(
     appendLine("    /// usable - referencing one just warns and points at the replacement.")
     appendLine("    public static var allCases: [${pack.swiftEnumName}] {")
     appendLine("        [")
-    svgFiles
-        .map { it.nameWithoutExtension }
+    entryNames
         .filterNot { it in pack.deprecations }
         .forEach { appendLine("            .${caseName(it)},") }
     appendLine("        ]")
@@ -790,7 +808,7 @@ private fun buildIconSwiftEnum(pack: PackConfig, svgFiles: List<File>): String {
         appendLine()
         appendLine("/// Icon token enum")
         appendLine("public enum ${pack.swiftEnumName}: String, CaseIterable {")
-        appendSwiftCases(pack, svgFiles) { it.toCamelCase() }
+        appendSwiftCases(pack, svgFiles.map { it.nameWithoutExtension }) { it.toCamelCase() }
         appendLine()
         appendLine("    /// Returns the Image for this icon from the Lemonade bundle's asset catalog")
         appendLine("    public var image: Image {")
@@ -845,7 +863,7 @@ private fun buildFlagSwiftEnum(pack: PackConfig, svgFiles: List<File>): String {
         appendLine()
         appendLine("/// Country flag token enum")
         appendLine("public enum ${pack.swiftEnumName}: String, CaseIterable {")
-        appendSwiftCases(pack, svgFiles) { it.toPascalCase().replaceFirstChar { char -> char.lowercase() } }
+        appendSwiftCases(pack, svgFiles.map { it.nameWithoutExtension }) { it.toPascalCase().replaceFirstChar { char -> char.lowercase() } }
         appendLine()
         appendLine("    /// Returns the country code (first part of the flag name, e.g., \"PT\" from \"PT-portugal\")")
         appendLine("    public var countryCode: String {")
@@ -876,7 +894,7 @@ private fun buildBrandLogoSwiftEnum(pack: PackConfig, svgFiles: List<File>): Str
         appendLine()
         appendLine("/// Brand logo token enum")
         appendLine("public enum ${pack.swiftEnumName}: String, CaseIterable {")
-        appendSwiftCases(pack, svgFiles) { it.toCamelCase() }
+        appendSwiftCases(pack, svgFiles.map { it.nameWithoutExtension }) { it.toCamelCase() }
         appendLine("}")
     }
 }
