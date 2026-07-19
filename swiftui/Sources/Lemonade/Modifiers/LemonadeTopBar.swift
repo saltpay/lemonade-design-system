@@ -13,8 +13,62 @@ import CoreImage.CIFilterBuiltins
 ///   callback is **not** invoked for `.back` — use `.close` (with `@Environment(\.dismiss)`)
 ///   if you need to run logic when the user dismisses the screen.
 public enum TopBarAction {
+    /// Native back affordance (chevron + swipe-to-go-back). `NavigationAction.onAction` is NOT
+    /// invoked — the system handles the pop.
     case back
+    /// Leading close (X) button. Calls `NavigationAction.onAction`; hides the native back button.
     case close
+}
+
+// MARK: - LemonadeTopBarVariant
+
+/// The title display variant of a Lemonade top bar, mirroring the Figma `Variant` property.
+///
+/// - `large`: a big, left-aligned title on its own row below the leading/trailing controls
+///   (collapses to a small inline title on scroll). The default.
+/// - `compact`: a small, centred title on the same row as the leading/trailing controls
+///   (the iOS `.inline` display mode) — use for detail and form screens.
+public enum LemonadeTopBarVariant {
+    case large
+    case compact
+}
+
+// MARK: - LemonadeTopBarBackground
+
+/// The top bar's background treatment, mirroring the Figma `Background` property.
+///
+/// - `default`: the system navigation-bar background (transparent at the scroll edge, blurs on scroll).
+/// - `subtle`: paints `bgSubtle` behind the bar — use when the screen body is `bgSubtle` so content
+///   doesn't bleed under the (transparent at the edge) inline bar on iOS 26.
+/// - `transparent`: forces the bar background hidden (content shows through).
+public enum LemonadeTopBarBackground {
+    case `default`
+    case subtle
+    case transparent
+}
+
+// MARK: - TopBarActionItem
+
+/// A single trailing action rendered as a circular ghost `LemonadeUi.IconButton` in the top bar.
+/// Use the `trailingActions:` parameter instead of hand-assembling `ToolbarItem { Button { Icon } }`.
+public struct TopBarActionItem: Identifiable {
+    public let id = UUID()
+    let icon: LemonadeIcon
+    let contentDescription: String
+    let isEnabled: Bool
+    let onTap: () -> Void
+
+    public init(
+        icon: LemonadeIcon,
+        contentDescription: String,
+        isEnabled: Bool = true,
+        onTap: @escaping () -> Void
+    ) {
+        self.icon = icon
+        self.contentDescription = contentDescription
+        self.isEnabled = isEnabled
+        self.onTap = onTap
+    }
 }
 
 // MARK: - NavigationAction
@@ -42,6 +96,74 @@ private struct LemonadeEmptyToolbarContent: ToolbarContent {
     }
 }
 
+// MARK: - Shared toolbar pieces
+
+/// True when the native back affordance must be hidden — only `.close` renders its own leading control.
+private func lemonadeHidesNativeBack(_ navigationAction: NavigationAction?) -> Bool {
+    navigationAction?.action == .close
+}
+
+/// The leading slot. `.close` renders a circular ghost `IconButton` (matching the Figma controls)
+/// wired to `onAction`; `.back` (or nil) renders nothing so the native back affordance (chevron +
+/// swipe) shows. Always emits one leading `ToolbarItem` (an empty one coexists with the native back
+/// button) so we avoid the iOS-16-only `@ToolbarContentBuilder` `if`.
+@ToolbarContentBuilder
+private func lemonadeLeadingToolbarItem(_ navigationAction: NavigationAction?) -> some ToolbarContent {
+    ToolbarItem(placement: .navigationBarLeading) {
+        if let navigationAction, navigationAction.action == .close {
+            LemonadeUi.IconButton(
+                icon: .times,
+                contentDescription: "Close",
+                onClick: navigationAction.onAction,
+                variant: .neutral,
+                type: .ghost,
+                shape: .circular
+            )
+        }
+    }
+}
+
+/// Trailing actions rendered as circular ghost `IconButton`s, in order. Empty `actions` → an empty
+/// group (renders nothing).
+@ToolbarContentBuilder
+private func lemonadeTrailingActions(_ actions: [TopBarActionItem]) -> some ToolbarContent {
+    ToolbarItemGroup(placement: .navigationBarTrailing) {
+        ForEach(actions) { action in
+            LemonadeUi.IconButton(
+                icon: action.icon,
+                contentDescription: action.contentDescription,
+                onClick: action.onTap,
+                enabled: action.isEnabled,
+                variant: .neutral,
+                type: .ghost,
+                shape: .circular
+            )
+        }
+    }
+}
+
+private extension View {
+    /// Applies the Figma `Background` treatment to the navigation bar. `.toolbarBackground` is iOS
+    /// 16+, so below 16 this is a no-op (the bar keeps the system background).
+    @ViewBuilder
+    func lemonadeTopBarBackground(_ background: LemonadeTopBarBackground) -> some View {
+        if #available(iOS 16.0, *) {
+            switch background {
+            case .default:
+                self
+            case .subtle:
+                self
+                    .toolbarBackground(LemonadeTheme.colors.background.bgSubtle, for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
+            case .transparent:
+                self.toolbarBackground(.hidden, for: .navigationBar)
+            }
+        } else {
+            self
+        }
+    }
+}
+
 // MARK: - Basic TopBar Modifier
 
 /// A modifier that applies a native iOS navigation bar styled with Lemonade tokens.
@@ -51,29 +173,25 @@ private struct BasicTopBarModifier<Toolbar: ToolbarContent, BottomContent: View>
     let label: String
     let subheading: String?
     let collapsedLabel: String?
+    let variant: LemonadeTopBarVariant
+    let background: LemonadeTopBarBackground
     let navigationAction: NavigationAction?
+    let trailingActions: [TopBarActionItem]
     let toolbarContent: Toolbar
     let bottomSlot: (() -> BottomContent)?
 
     func body(content: Content) -> some View {
         content
-            .lemonadeNavigationTitle(title: collapsedLabel ?? label, subheading: subheading)
-            .navigationBarBackButtonHidden(navigationAction?.action == .close)
+            .lemonadeNavigationTitle(title: collapsedLabel ?? label, subheading: subheading, variant: variant)
+            .navigationBarBackButtonHidden(lemonadeHidesNativeBack(navigationAction))
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    if let navigationAction, navigationAction.action == .close {
-                        Button(action: navigationAction.onAction) {
-                            LemonadeUi.Icon(
-                                icon: .times,
-                                contentDescription: "Close"
-                            )
-                        }
-                    }
-                }
+                lemonadeLeadingToolbarItem(navigationAction)
+                lemonadeTrailingActions(trailingActions)
                 toolbarContent
             }
             .lemonadeFallbackPrincipalTitle(label: collapsedLabel ?? label, subheading: subheading)
             .lemonadeTopBarBottomSlot(bottomSlot)
+            .lemonadeTopBarBackground(background)
     }
 }
 
@@ -87,6 +205,7 @@ private struct SearchTopBarModifier<Toolbar: ToolbarContent, BottomContent: View
     @Binding var searchInput: String
     let searchPrompt: String
     let expandedLabel: String?
+    let background: LemonadeTopBarBackground
     let navigationAction: NavigationAction?
     let toolbarContent: Toolbar
     let bottomSlot: (() -> BottomContent)?
@@ -99,22 +218,14 @@ private struct SearchTopBarModifier<Toolbar: ToolbarContent, BottomContent: View
                 placement: .navigationBarDrawer(displayMode: .always),
                 prompt: searchPrompt
             )
-            .navigationBarBackButtonHidden(navigationAction?.action == .close)
+            .navigationBarBackButtonHidden(lemonadeHidesNativeBack(navigationAction))
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    if let navigationAction, navigationAction.action == .close {
-                        Button(action: navigationAction.onAction) {
-                            LemonadeUi.Icon(
-                                icon: .times,
-                                contentDescription: "Close"
-                            )
-                        }
-                    }
-                }
+                lemonadeLeadingToolbarItem(navigationAction)
                 toolbarContent
             }
             .lemonadeFallbackPrincipalTitle(label: expandedLabel ?? label, subheading: subheading)
             .lemonadeTopBarBottomSlot(bottomSlot)
+            .lemonadeTopBarBackground(background)
     }
 }
 
@@ -638,18 +749,22 @@ private extension View {
     /// bars at the cost of losing the large-title morph. The native `.navigationTitle`
     /// is kept (not emptied) so pushed screens still inherit a back button label.
     @ViewBuilder
-    func lemonadeNavigationTitle(title: String, subheading: String?) -> some View {
+    func lemonadeNavigationTitle(title: String, subheading: String?, variant: LemonadeTopBarVariant = .large) -> some View {
+        // `.compact` always renders inline (small centred title, matching the Figma Compact
+        // variant). `.large` keeps the version-/subheading-dependent large-title behaviour; on
+        // iOS < 26 a non-nil subheading falls back to inline so the stacked title + subheading
+        // can render via `lemonadeFallbackPrincipalTitle`.
         #if compiler(>=6.2)
         if #available(iOS 26, *), let subheading {
             self
                 .navigationTitle(title)
                 .navigationSubtitle(subheading)
-                .navigationBarTitleDisplayMode(.large)
+                .navigationBarTitleDisplayMode(variant == .compact ? .inline : .large)
         } else if #available(iOS 26, *) {
             self
                 .navigationTitle(title)
-                .navigationBarTitleDisplayMode(.large)
-        } else if subheading != nil {
+                .navigationBarTitleDisplayMode(variant == .compact ? .inline : .large)
+        } else if variant == .compact || subheading != nil {
             self
                 .navigationTitle(title)
                 .navigationBarTitleDisplayMode(.inline)
@@ -659,7 +774,7 @@ private extension View {
                 .navigationBarTitleDisplayMode(.large)
         }
         #else
-        if subheading != nil {
+        if variant == .compact || subheading != nil {
             self
                 .navigationTitle(title)
                 .navigationBarTitleDisplayMode(.inline)
@@ -916,7 +1031,10 @@ public extension View {
         label: String,
         subheading: String? = nil,
         collapsedLabel: String? = nil,
+        variant: LemonadeTopBarVariant = .large,
+        background: LemonadeTopBarBackground = .default,
         navigationAction: NavigationAction? = nil,
+        trailingActions: [TopBarActionItem] = [],
         @ViewBuilder bottomSlot: @escaping () -> BottomContent,
         @ToolbarContentBuilder toolbar: () -> Toolbar
     ) -> some View {
@@ -924,7 +1042,10 @@ public extension View {
             label: label,
             subheading: subheading,
             collapsedLabel: collapsedLabel,
+            variant: variant,
+            background: background,
             navigationAction: navigationAction,
+            trailingActions: trailingActions,
             toolbarContent: toolbar(),
             bottomSlot: bottomSlot
         ))
@@ -935,31 +1056,45 @@ public extension View {
         label: String,
         subheading: String? = nil,
         collapsedLabel: String? = nil,
+        variant: LemonadeTopBarVariant = .large,
+        background: LemonadeTopBarBackground = .default,
         navigationAction: NavigationAction? = nil,
+        trailingActions: [TopBarActionItem] = [],
         @ToolbarContentBuilder toolbar: () -> Toolbar
     ) -> some View {
         modifier(BasicTopBarModifier(
             label: label,
             subheading: subheading,
             collapsedLabel: collapsedLabel,
+            variant: variant,
+            background: background,
             navigationAction: navigationAction,
+            trailingActions: trailingActions,
             toolbarContent: toolbar(),
             bottomSlot: nil as (() -> EmptyView)?
         ))
     }
 
-    /// Applies a Lemonade-styled navigation bar with a collapsible large title (no toolbar or bottom slot).
+    /// Applies a Lemonade-styled navigation bar with a `variant`-controlled title
+    /// (`.large` collapsible big title, or `.compact` inline title) plus optional
+    /// `trailingActions`, no custom toolbar or bottom slot.
     func lemonadeTopBar(
         label: String,
         subheading: String? = nil,
         collapsedLabel: String? = nil,
-        navigationAction: NavigationAction? = nil
+        variant: LemonadeTopBarVariant = .large,
+        background: LemonadeTopBarBackground = .default,
+        navigationAction: NavigationAction? = nil,
+        trailingActions: [TopBarActionItem] = []
     ) -> some View {
         modifier(BasicTopBarModifier(
             label: label,
             subheading: subheading,
             collapsedLabel: collapsedLabel,
+            variant: variant,
+            background: background,
             navigationAction: navigationAction,
+            trailingActions: trailingActions,
             toolbarContent: LemonadeEmptyToolbarContent(),
             bottomSlot: nil as (() -> EmptyView)?
         ))
@@ -991,6 +1126,7 @@ public extension View {
         searchInput: Binding<String>,
         searchPrompt: String = "Search...",
         expandedLabel: String? = nil,
+        background: LemonadeTopBarBackground = .default,
         navigationAction: NavigationAction? = nil,
         @ViewBuilder bottomSlot: @escaping () -> BottomContent,
         @ToolbarContentBuilder toolbar: () -> Toolbar
@@ -1001,6 +1137,7 @@ public extension View {
             searchInput: searchInput,
             searchPrompt: searchPrompt,
             expandedLabel: expandedLabel,
+            background: background,
             navigationAction: navigationAction,
             toolbarContent: toolbar(),
             bottomSlot: bottomSlot
@@ -1014,6 +1151,7 @@ public extension View {
         searchInput: Binding<String>,
         searchPrompt: String = "Search...",
         expandedLabel: String? = nil,
+        background: LemonadeTopBarBackground = .default,
         navigationAction: NavigationAction? = nil,
         @ToolbarContentBuilder toolbar: () -> Toolbar
     ) -> some View {
@@ -1023,6 +1161,7 @@ public extension View {
             searchInput: searchInput,
             searchPrompt: searchPrompt,
             expandedLabel: expandedLabel,
+            background: background,
             navigationAction: navigationAction,
             toolbarContent: toolbar(),
             bottomSlot: nil as (() -> EmptyView)?
@@ -1036,6 +1175,7 @@ public extension View {
         searchInput: Binding<String>,
         searchPrompt: String = "Search...",
         expandedLabel: String? = nil,
+        background: LemonadeTopBarBackground = .default,
         navigationAction: NavigationAction? = nil
     ) -> some View {
         modifier(SearchTopBarModifier(
@@ -1044,6 +1184,7 @@ public extension View {
             searchInput: searchInput,
             searchPrompt: searchPrompt,
             expandedLabel: expandedLabel,
+            background: background,
             navigationAction: navigationAction,
             toolbarContent: LemonadeEmptyToolbarContent(),
             bottomSlot: nil as (() -> EmptyView)?
