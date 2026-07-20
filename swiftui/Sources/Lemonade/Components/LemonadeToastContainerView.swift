@@ -231,17 +231,27 @@ struct ToastItemView: View {
     }
 
     private var toastContent: some View {
-        LemonadeUi.Toast(
-            label: toast.label,
-            voice: toast.voice,
-            icon: toast.icon,
-            actionLabel: toast.actionLabel,
-            onAction: toast.onAction
-        )
-        .frame(maxWidth: .infinity)
-        .padding(.top, .space.spacing1800) // Extra space for dismiss gesture
-        .padding(.horizontal, .space.spacing200)
-        .padding(.bottom, .space.spacing400)
+        VStack(spacing: 0) {
+            LemonadeUi.Toast(
+                label: toast.label,
+                voice: toast.voice,
+                icon: toast.icon,
+                actionLabel: toast.actionLabel,
+                onAction: toast.onAction
+            )
+            .frame(maxWidth: .infinity)
+            .padding(.top, .space.spacing1800) // Extra space for dismiss gesture
+            .padding(.leading, resolvedPadding(toast.paddingValues?.leading, default: .space.spacing200))
+            .padding(.trailing, resolvedPadding(toast.paddingValues?.trailing, default: .space.spacing200))
+            .contentShape(Rectangle())
+            .simultaneousGesture(dismissGesture)
+
+            // Clears whatever sits below the toast (e.g. a bottom action button). Kept out of
+            // the contentShape/gesture above so it stays non-interactive and touches pass through.
+            Color.clear
+                .frame(height: resolvedPadding(toast.paddingValues?.bottom, default: .space.spacing400))
+                .allowsHitTesting(false)
+        }
         .background(
             GeometryReader { geometry in
                 Color.clear
@@ -252,9 +262,8 @@ struct ToastItemView: View {
                         onHeightChanged(newHeight)
                     }
             }
+            .allowsHitTesting(false)
         )
-        .contentShape(Rectangle())
-        .simultaneousGesture(dismissGesture)
     }
 
     private var dismissGesture: some Gesture {
@@ -268,4 +277,13 @@ struct ToastItemView: View {
                 onDragEnded(value.translation.height)
             }
     }
+}
+
+// A zero edge is treated as "not overridden" and falls back to the default — `show()` isn't a
+// SwiftUI view, so a caller can't pull the real spacing200/spacing400 token values to build an
+// EdgeInsets that only overrides one edge. `top` is never read: the toast is always bottom-anchored
+// with intrinsic height, so extra top inset only adds invisible space above it — no visible effect.
+private func resolvedPadding(_ override: CGFloat?, default defaultValue: CGFloat) -> CGFloat {
+    guard let override, override > 0 else { return defaultValue }
+    return override
 }

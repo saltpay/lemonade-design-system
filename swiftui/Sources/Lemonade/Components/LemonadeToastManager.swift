@@ -76,6 +76,7 @@ public struct LemonadeToastItem: Identifiable, Equatable, Sendable {
     public let isDismissible: Bool
     public let actionLabel: String?
     public let onAction: (@MainActor @Sendable () -> Void)?
+    public let paddingValues: EdgeInsets?
 
     public init(
         id: UUID = UUID(),
@@ -85,7 +86,8 @@ public struct LemonadeToastItem: Identifiable, Equatable, Sendable {
         duration: LemonadeToastDuration = .short,
         isDismissible: Bool = true,
         actionLabel: String? = nil,
-        onAction: (@MainActor @Sendable () -> Void)? = nil
+        onAction: (@MainActor @Sendable () -> Void)? = nil,
+        paddingValues: EdgeInsets? = nil
     ) {
         self.id = id
         self.label = label
@@ -95,6 +97,7 @@ public struct LemonadeToastItem: Identifiable, Equatable, Sendable {
         self.isDismissible = isDismissible
         self.actionLabel = actionLabel
         self.onAction = onAction
+        self.paddingValues = paddingValues
     }
 
     public static func == (lhs: LemonadeToastItem, rhs: LemonadeToastItem) -> Bool {
@@ -153,6 +156,12 @@ public final class LemonadeToastManager: ObservableObject {
     ///   - dismissible: Whether the toast can be dismissed by swiping. Ignored (forced off) when `voice` is `.loading`.
     ///   - actionLabel: Optional label for the action button shown at the trailing end of the toast.
     ///   - onAction: Optional callback invoked when the action button is tapped. The button is only shown when both `actionLabel` and `onAction` are non-nil.
+    ///   - paddingValues: Extra space to clear around the toast, e.g. to raise it clear of a screen's
+    ///     persistent bottom action button, or to inset it from a side element. Bottom/leading/trailing
+    ///     are honored; a zero edge falls back to the standard margin for that edge (there's no way to
+    ///     tell "unset" from "explicitly zero" on a plain `EdgeInsets`). The top inset is never honored —
+    ///     the toast is always bottom-anchored with intrinsic height, so it has no visible effect.
+    ///     Defaults to `nil` (standard margins on every edge).
     ///
     /// Use `.loading` to communicate an ongoing action (e.g. "Downloading your document…"). A loading
     /// toast shows a spinner and persists until you call ``dismiss()`` or replace it with another `show`.
@@ -163,7 +172,8 @@ public final class LemonadeToastManager: ObservableObject {
         duration: LemonadeToastDuration = .short,
         dismissible: Bool = true,
         actionLabel: String? = nil,
-        onAction: (@MainActor @Sendable () -> Void)? = nil
+        onAction: (@MainActor @Sendable () -> Void)? = nil,
+        paddingValues: EdgeInsets? = nil
     ) {
         let toast = LemonadeToastItem(
             label: label,
@@ -173,7 +183,8 @@ public final class LemonadeToastManager: ObservableObject {
             // A loading toast describes an ongoing action: it cannot be swiped away.
             isDismissible: voice == .loading ? false : dismissible,
             actionLabel: actionLabel,
-            onAction: onAction
+            onAction: onAction,
+            paddingValues: paddingValues
         )
 
         if currentToast != nil {
