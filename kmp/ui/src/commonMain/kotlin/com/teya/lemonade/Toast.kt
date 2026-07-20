@@ -13,7 +13,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
@@ -36,6 +39,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
@@ -85,17 +89,6 @@ public sealed class ToastDuration(internal val millis: kotlin.Long) {
     }
 }
 
-/**
- * Where a toast anchors itself at the bottom of the screen.
- */
-public enum class ToastAnchor {
-    /** Default position, just above the navigation/gesture bar. */
-    Bottom,
-
-    /** Raised clear of a screen's persistent bottom action button. */
-    AboveBottomActionButton,
-}
-
 internal data class ToastData(
     val label: String,
     val voice: ToastVoice,
@@ -105,7 +98,7 @@ internal data class ToastData(
     val id: Int,
     val actionLabel: String?,
     val onAction: (() -> Unit)?,
-    val anchor: ToastAnchor,
+    val paddingValues: PaddingValues?,
 )
 
 /**
@@ -168,7 +161,12 @@ public class LemonadeToastState {
      * @param actionLabel Optional label for the action button shown at the trailing end of the toast.
      * @param onAction Optional callback invoked when the action button is tapped. The button is only shown
      *   when both [actionLabel] and [onAction] are non-null.
-     * @param anchor Where the toast sits at the bottom of the screen. Defaults to [ToastAnchor.Bottom].
+     * @param paddingValues Extra space to clear around the toast, e.g. to raise it clear of a screen's
+     *   persistent bottom action button, or to inset it from a side element. Bottom/start/end are honored;
+     *   a zero edge falls back to the standard margin for that edge (there's no way to tell "unset" from
+     *   "explicitly zero" on a plain [PaddingValues]). The top inset is never honored — the toast is always
+     *   bottom-anchored with intrinsic height, so it has no visible effect. Defaults to `null` (standard
+     *   margins on every edge).
      */
     public fun show(
         label: String,
@@ -178,7 +176,7 @@ public class LemonadeToastState {
         dismissible: Boolean = true,
         actionLabel: String? = null,
         onAction: (() -> Unit)? = null,
-        anchor: ToastAnchor = ToastAnchor.Bottom,
+        paddingValues: PaddingValues? = null,
     ) {
         currentToast = ToastData(
             label = label,
@@ -189,14 +187,14 @@ public class LemonadeToastState {
             id = nextId++,
             actionLabel = actionLabel,
             onAction = onAction,
-            anchor = anchor,
+            paddingValues = paddingValues,
         )
     }
 
     @Deprecated(
-        message = "Use show() with an anchor parameter to position the toast.",
+        message = "Use show() with a paddingValues parameter to position the toast.",
         replaceWith = ReplaceWith(
-            expression = "show(label, voice, icon, duration, dismissible, actionLabel, onAction, ToastAnchor.Bottom)",
+            expression = "show(label, voice, icon, duration, dismissible, actionLabel, onAction, null)",
         ),
         level = DeprecationLevel.HIDDEN,
     )
@@ -217,7 +215,7 @@ public class LemonadeToastState {
             dismissible = dismissible,
             actionLabel = actionLabel,
             onAction = onAction,
-            anchor = ToastAnchor.Bottom,
+            paddingValues = null,
         )
     }
 
@@ -395,7 +393,6 @@ private fun CoreToast(
 }
 
 private const val DRAG_DISMISS_THRESHOLD_DP = 25
-private const val ABOVE_BOTTOM_ACTION_BUTTON_PADDING_DP = 112
 private const val DRAG_FADE_MULTIPLIER = 4
 
 /**
@@ -428,10 +425,19 @@ public fun LemonadeToastHost(
             val toast = toastState.currentToast
             val haptic = LocalHapticFeedback.current
             val spaces = LocalSpaces.current
-            val bottomPadding = when (toast?.anchor ?: ToastAnchor.Bottom) {
-                ToastAnchor.Bottom -> spaces.spacing600
-                ToastAnchor.AboveBottomActionButton -> ABOVE_BOTTOM_ACTION_BUTTON_PADDING_DP.dp
-            }
+            val layoutDirection = LocalLayoutDirection.current
+            // A zero edge is treated as "not overridden" and falls back to the default — `show()` isn't
+            // @Composable, so a caller can't pull the real spacing600/spacing400 token values to build a
+            // PaddingValues that only overrides one edge. The top inset is never honored: the toast is
+            // always bottom-anchored with intrinsic height, so extra top padding only adds invisible space
+            // above it — it has no visible effect on where the toast sits.
+            val overridePadding = toast?.paddingValues
+            val bottomPadding = overridePadding?.calculateBottomPadding()?.takeIf { it > 0.dp }
+                ?: spaces.spacing600
+            val startPadding = overridePadding?.calculateStartPadding(layoutDirection)?.takeIf { it > 0.dp }
+                ?: spaces.spacing400
+            val endPadding = overridePadding?.calculateEndPadding(layoutDirection)?.takeIf { it > 0.dp }
+                ?: spaces.spacing400
 
             // Haptic feedback + auto-dismiss timer
             LaunchedEffect(toast?.id) {
@@ -466,7 +472,7 @@ public fun LemonadeToastHost(
                                 dampingRatio = 0.8f,
                                 stiffness = Spring.StiffnessMediumLow,
                             ),
-                            targetOffsetY = { toastHeight -> toastHeight * 3 },
+                            targetOffsetY = { hostHeightPx },
                         ),
                     ).using(SizeTransform(clip = false) { _, _ -> snap() })
                 },
@@ -475,7 +481,7 @@ public fun LemonadeToastHost(
                     .align(Alignment.BottomCenter)
                     .navigationBarsPadding()
                     .padding(bottom = bottomPadding)
-                    .padding(horizontal = spaces.spacing400),
+                    .padding(start = startPadding, end = endPadding),
             ) { animatedToast ->
                 if (animatedToast != null) {
                     var offsetY by remember(animatedToast.id) { mutableStateOf(0f) }

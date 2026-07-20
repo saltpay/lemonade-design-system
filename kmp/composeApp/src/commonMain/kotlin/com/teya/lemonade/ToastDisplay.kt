@@ -2,7 +2,9 @@ package com.teya.lemonade
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeIcons
 
 @Composable
@@ -183,14 +185,13 @@ internal fun ToastDisplay() {
             )
         }
 
-        ToastSection("Anchor") {
+        ToastSection("Padding") {
             LemonadeUi.Button(
                 label = "Bottom (default)",
                 onClick = {
                     toastState.show(
                         label = "Default bottom position",
                         voice = ToastVoice.Neutral,
-                        anchor = ToastAnchor.Bottom,
                     )
                 },
             )
@@ -200,7 +201,7 @@ internal fun ToastDisplay() {
                     toastState.show(
                         label = "Above Bottom Action Button",
                         voice = ToastVoice.Success,
-                        anchor = ToastAnchor.AboveBottomActionButton,
+                        paddingValues = PaddingValues(bottom = 112.dp),
                     )
                 },
             )

@@ -161,12 +161,11 @@ struct ToastDisplayView: View {
                 }
             }
 
-            Section("Anchor") {
+            Section("Padding") {
                 Button("Bottom (default)") {
                     toastManager.show(
                         label: "Default bottom position",
-                        voice: .neutral,
-                        anchor: .bottom
+                        voice: .neutral
                     )
                 }
 
@@ -174,7 +173,7 @@ struct ToastDisplayView: View {
                     toastManager.show(
                         label: "Item added to cart",
                         voice: .success,
-                        anchor: .aboveBottomActionButton
+                        paddingValues: EdgeInsets(top: 0, leading: 0, bottom: 112, trailing: 0)
                     )
                 }
             }
