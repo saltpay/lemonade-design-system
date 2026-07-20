@@ -33,6 +33,17 @@ final enum class com.teya.lemonade/TextFieldSize : kotlin/Enum<com.teya.lemonade
     final fun values(): kotlin/Array<com.teya.lemonade/TextFieldSize> // com.teya.lemonade/TextFieldSize.values|values#static(){}[0]
 }
 
+final enum class com.teya.lemonade/ToastAnchor : kotlin/Enum<com.teya.lemonade/ToastAnchor> { // com.teya.lemonade/ToastAnchor|null[0]
+    enum entry AboveBottomActionButton // com.teya.lemonade/ToastAnchor.AboveBottomActionButton|null[0]
+    enum entry Bottom // com.teya.lemonade/ToastAnchor.Bottom|null[0]
+
+    final val entries // com.teya.lemonade/ToastAnchor.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.teya.lemonade/ToastAnchor> // com.teya.lemonade/ToastAnchor.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.teya.lemonade/ToastAnchor // com.teya.lemonade/ToastAnchor.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.teya.lemonade/ToastAnchor> // com.teya.lemonade/ToastAnchor.values|values#static(){}[0]
+}
+
 final enum class com.teya.lemonade/ToastVoice : kotlin/Enum<com.teya.lemonade/ToastVoice> { // com.teya.lemonade/ToastVoice|null[0]
     enum entry Error // com.teya.lemonade/ToastVoice.Error|null[0]
     enum entry Loading // com.teya.lemonade/ToastVoice.Loading|null[0]
@@ -215,6 +226,7 @@ final class com.teya.lemonade/LemonadeToastState { // com.teya.lemonade/Lemonade
     final fun dismiss() // com.teya.lemonade/LemonadeToastState.dismiss|dismiss(){}[0]
     final fun show(kotlin/String, com.teya.lemonade/ToastVoice = ..., com.teya.lemonade.core/LemonadeIcons? = ..., com.teya.lemonade/ToastDuration = ..., kotlin/Boolean = ...) // com.teya.lemonade/LemonadeToastState.show|show(kotlin.String;com.teya.lemonade.ToastVoice;com.teya.lemonade.core.LemonadeIcons?;com.teya.lemonade.ToastDuration;kotlin.Boolean){}[0]
     final fun show(kotlin/String, com.teya.lemonade/ToastVoice = ..., com.teya.lemonade.core/LemonadeIcons? = ..., com.teya.lemonade/ToastDuration = ..., kotlin/Boolean = ..., kotlin/String? = ..., kotlin/Function0<kotlin/Unit>? = ...) // com.teya.lemonade/LemonadeToastState.show|show(kotlin.String;com.teya.lemonade.ToastVoice;com.teya.lemonade.core.LemonadeIcons?;com.teya.lemonade.ToastDuration;kotlin.Boolean;kotlin.String?;kotlin.Function0<kotlin.Unit>?){}[0]
+    final fun show(kotlin/String, com.teya.lemonade/ToastVoice = ..., com.teya.lemonade.core/LemonadeIcons? = ..., com.teya.lemonade/ToastDuration = ..., kotlin/Boolean = ..., kotlin/String? = ..., kotlin/Function0<kotlin/Unit>? = ..., com.teya.lemonade/ToastAnchor = ...) // com.teya.lemonade/LemonadeToastState.show|show(kotlin.String;com.teya.lemonade.ToastVoice;com.teya.lemonade.core.LemonadeIcons?;com.teya.lemonade.ToastDuration;kotlin.Boolean;kotlin.String?;kotlin.Function0<kotlin.Unit>?;com.teya.lemonade.ToastAnchor){}[0]
 }
 
 final class com.teya.lemonade/NavigationAction { // com.teya.lemonade/NavigationAction|null[0]

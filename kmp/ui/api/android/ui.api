@@ -369,9 +369,11 @@ public final class com/teya/lemonade/LemonadeToastState {
 	public fun <init> ()V
 	public final fun dismiss ()V
 	public final fun show (Ljava/lang/String;Lcom/teya/lemonade/ToastVoice;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/ToastDuration;Z)V
-	public final fun show (Ljava/lang/String;Lcom/teya/lemonade/ToastVoice;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/ToastDuration;ZLjava/lang/String;Lkotlin/jvm/functions/Function0;)V
+	public final synthetic fun show (Ljava/lang/String;Lcom/teya/lemonade/ToastVoice;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/ToastDuration;ZLjava/lang/String;Lkotlin/jvm/functions/Function0;)V
+	public final fun show (Ljava/lang/String;Lcom/teya/lemonade/ToastVoice;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/ToastDuration;ZLjava/lang/String;Lkotlin/jvm/functions/Function0;Lcom/teya/lemonade/ToastAnchor;)V
 	public static synthetic fun show$default (Lcom/teya/lemonade/LemonadeToastState;Ljava/lang/String;Lcom/teya/lemonade/ToastVoice;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/ToastDuration;ZILjava/lang/Object;)V
 	public static synthetic fun show$default (Lcom/teya/lemonade/LemonadeToastState;Ljava/lang/String;Lcom/teya/lemonade/ToastVoice;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/ToastDuration;ZLjava/lang/String;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public static synthetic fun show$default (Lcom/teya/lemonade/LemonadeToastState;Ljava/lang/String;Lcom/teya/lemonade/ToastVoice;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/ToastDuration;ZLjava/lang/String;Lkotlin/jvm/functions/Function0;Lcom/teya/lemonade/ToastAnchor;ILjava/lang/Object;)V
 }
 
 public final class com/teya/lemonade/LemonadeTypefacesKt {
@@ -560,6 +562,14 @@ public final class com/teya/lemonade/TileKt {
 	public static final synthetic fun Tile (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Landroidx/compose/ui/Modifier;ZZLjava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lcom/teya/lemonade/core/LemonadeTileVariant;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
 	public static final synthetic fun Tile (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lcom/teya/lemonade/core/LemonadeIcons;Landroidx/compose/ui/Modifier;ZZLjava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lcom/teya/lemonade/core/LemonadeTileVariant;Landroidx/compose/runtime/Composer;III)V
 	public static final fun Tile (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Lcom/teya/lemonade/core/LemonadeIcons;Landroidx/compose/ui/Modifier;ZZLjava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lcom/teya/lemonade/core/LemonadeTileVariant;Lcom/teya/lemonade/core/LemonadeTileOrientation;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/teya/lemonade/ToastAnchor : java/lang/Enum {
+	public static final field AboveBottomActionButton Lcom/teya/lemonade/ToastAnchor;
+	public static final field Bottom Lcom/teya/lemonade/ToastAnchor;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/ToastAnchor;
+	public static fun values ()[Lcom/teya/lemonade/ToastAnchor;
 }
 
 public abstract class com/teya/lemonade/ToastDuration {

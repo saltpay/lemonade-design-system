@@ -193,6 +193,34 @@ public class LemonadeToastState {
         )
     }
 
+    @Deprecated(
+        message = "Use show() with an anchor parameter to position the toast.",
+        replaceWith = ReplaceWith(
+            expression = "show(label, voice, icon, duration, dismissible, actionLabel, onAction, ToastAnchor.Bottom)",
+        ),
+        level = DeprecationLevel.HIDDEN,
+    )
+    public fun show(
+        label: String,
+        voice: ToastVoice = ToastVoice.Neutral,
+        icon: LemonadeIcons? = null,
+        duration: ToastDuration = ToastDuration.Short,
+        dismissible: Boolean = true,
+        actionLabel: String? = null,
+        onAction: (() -> Unit)? = null,
+    ) {
+        show(
+            label = label,
+            voice = voice,
+            icon = icon,
+            duration = duration,
+            dismissible = dismissible,
+            actionLabel = actionLabel,
+            onAction = onAction,
+            anchor = ToastAnchor.Bottom,
+        )
+    }
+
     /** Programmatically dismiss the current toast. */
     public fun dismiss() {
         currentToast = null
