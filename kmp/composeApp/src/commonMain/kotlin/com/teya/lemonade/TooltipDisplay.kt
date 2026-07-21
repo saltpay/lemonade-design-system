@@ -24,7 +24,13 @@ private const val REPORTS_ANCHOR = "reports"
 
 @Composable
 internal fun TooltipDisplay() {
-    SampleScreenDisplayColumn("Tooltip", itemsSpacing = LemonadeTheme.spaces.spacing600) {
+    // bgDefault rather than the usual bgSubtle: the tooltip's surface is bgDefaultInverse, so this
+    // is the background it is designed to sit against.
+    SampleScreenDisplayColumn(
+        "Tooltip",
+        itemsSpacing = LemonadeTheme.spaces.spacing600,
+        background = LemonadeTheme.colors.background.bgDefault,
+    ) {
         TooltipSection("Anchored — on-demand help") {
             TooltipOnDemandHelpExample()
         }
