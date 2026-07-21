@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Rect
@@ -36,6 +37,10 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.TooltipFooterActionVariant
 import com.teya.lemonade.core.TooltipIndicatorPlacement
 import com.teya.lemonade.core.TooltipScrim
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.hazeEffect
+import dev.chrisbanes.haze.hazeSource
+import dev.chrisbanes.haze.rememberHazeState
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -50,6 +55,9 @@ private val TooltipSpotlightPadding = 4.dp
 
 /** Corner radius of the spotlight cut-out. */
 private val TooltipSpotlightRadius = 12.dp
+
+/** Blur applied to the host content that shows through the tooltip's translucent surface. */
+private val TooltipBackdropBlurRadius = 24.dp
 
 /**
  * One step of a guided tour. See [LemonadeTooltipState.startTour].
@@ -446,13 +454,20 @@ public fun LemonadeTooltipHost(
 ) {
     val tooltipState = remember { LemonadeTooltipState() }
 
+    // Captures the host content so the tooltip can blur what shows through its translucent surface.
+    // Compose has no backdrop-blur modifier and a GraphicsLayer cannot be re-drawn by a second
+    // owner, so the capture has to come from Haze.
+    val hazeState = rememberHazeState()
+
     CompositionLocalProvider(LocalLemonadeTooltipState provides tooltipState) {
         Box(
             modifier = modifier.onGloballyPositioned { coordinates ->
                 tooltipState.hostBounds = coordinates.boundsInWindow()
             },
         ) {
-            content()
+            Box(modifier = Modifier.hazeSource(state = hazeState)) {
+                content()
+            }
 
             val presentation = tooltipState.presentation
             val hostBounds = tooltipState.hostBounds
@@ -466,6 +481,7 @@ public fun LemonadeTooltipHost(
                     presentation = presentation,
                     anchor = anchor,
                     hostSize = Size(width = hostBounds.width, height = hostBounds.height),
+                    hazeState = hazeState,
                 )
             }
         }
@@ -478,9 +494,11 @@ private fun TooltipOverlay(
     presentation: TooltipPresentation,
     anchor: Rect,
     hostSize: Size,
+    hazeState: HazeState,
 ) {
     val colors = LocalColors.current
     val opacities = LocalOpacities.current
+    val radius = LocalRadius.current
     val density = LocalDensity.current
 
     val scrimSource = colors.background.bgAlwaysDark
@@ -535,21 +553,45 @@ private fun TooltipOverlay(
                 }
             },
     ) {
+        val tooltipShape = remember(placement, radius.radius600) {
+            TooltipShape(
+                indicatorPlacement = placement,
+                cornerRadius = radius.radius600,
+            )
+        }
+
         Layout(
             content = {
-                LemonadeUi.Tooltip(
-                    content = presentation.content,
-                    title = presentation.title,
-                    indicatorPlacement = placement,
-                    onCloseClick = presentation.onCloseClick,
-                    closeContentDescription = presentation.closeContentDescription,
-                    cover = presentation.cover,
-                    footer = presentation.footer,
+                Box(
                     // Swallow taps on the tooltip itself so they never reach the dismiss handler.
                     modifier = Modifier.pointerInput(presentation.id) {
                         detectTapGestures { }
                     },
-                )
+                ) {
+                    // The tooltip fill is only ~74% opaque, so whatever it covers reads through.
+                    // Blurring the backdrop, clipped to the tooltip's own outline, turns busy
+                    // content behind it into a wash instead of letting it compete with the text.
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .clip(shape = tooltipShape)
+                            .hazeEffect(state = hazeState) {
+                                blurRadius = TooltipBackdropBlurRadius
+                                // No tint: the tooltip draws its own fill over this.
+                                tints = emptyList()
+                            },
+                    )
+
+                    LemonadeUi.Tooltip(
+                        content = presentation.content,
+                        title = presentation.title,
+                        indicatorPlacement = placement,
+                        onCloseClick = presentation.onCloseClick,
+                        closeContentDescription = presentation.closeContentDescription,
+                        cover = presentation.cover,
+                        footer = presentation.footer,
+                    )
+                }
             },
             modifier = Modifier.fillMaxSize(),
         ) { measurables, constraints ->

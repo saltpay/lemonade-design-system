@@ -284,16 +284,7 @@ struct LemonadeTooltipView: View {
         .padding(.top, indicatorTopInset)
         .padding(.bottom, indicatorBottomInset)
         .frame(width: LemonadeTooltipMetrics.width)
-        .background(
-            LemonadeTooltipShape(
-                indicatorPlacement: indicatorPlacement,
-                cornerRadius: LemonadeTheme.radius.radius600
-            )
-            .fill(
-                LemonadeTheme.colors.background.bgAlwaysDark
-                    .opacity(LemonadeTheme.opacity.base.opacity80)
-            )
-        )
+        .background(surface)
         .compositingGroup()
         .lemonadeShadow(.xlarge)
         .overlay(alignment: .topTrailing) {
@@ -302,6 +293,31 @@ struct LemonadeTooltipView: View {
                     .padding(.top, indicatorTopInset + LemonadeTheme.spaces.spacing100)
                     .padding(.trailing, LemonadeTheme.spaces.spacing100)
             }
+        }
+    }
+
+    // MARK: Surface
+
+    /// The tooltip surface: a blurred backdrop with the fill token layered over it.
+    ///
+    /// The fill is only ~74% opaque (an 80% layer opacity over `bgAlwaysDark`), so whatever the
+    /// tooltip covers shows through. Blurring the backdrop keeps that legible instead of letting
+    /// busy content read through the text.
+    private var surface: some View {
+        let shape = LemonadeTooltipShape(
+            indicatorPlacement: indicatorPlacement,
+            cornerRadius: LemonadeTheme.radius.radius600
+        )
+
+        return ZStack {
+            // `.ultraThinMaterial` is the backdrop blur; the token fill on top restores the exact
+            // colour the design calls for, so the material's own tint barely reads through.
+            shape.fill(.ultraThinMaterial)
+
+            shape.fill(
+                LemonadeTheme.colors.background.bgAlwaysDark
+                    .opacity(LemonadeTheme.opacity.base.opacity80)
+            )
         }
     }
 

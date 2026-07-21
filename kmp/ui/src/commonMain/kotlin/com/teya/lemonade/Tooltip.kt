@@ -476,7 +476,7 @@ internal val TooltipIndicatorPlacement.pointsDown: Boolean
  * The indicator is drawn outside the body rectangle, so the shape expects to be laid out over a size
  * that already includes [TooltipIndicatorHeight] on the indicator's edge.
  */
-private data class TooltipShape(
+internal data class TooltipShape(
     private val indicatorPlacement: TooltipIndicatorPlacement,
     private val cornerRadius: Dp,
 ) : Shape {

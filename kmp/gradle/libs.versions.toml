@@ -11,6 +11,7 @@ componentsResources = "1.10.3"
 composeHotReload = "1.0.0"
 composeMultiplatform = "1.10.3"
 foundation = "1.10.3"
+haze = "1.7.2"
 kotlin = "2.3.20"
 kotlinx-datetime = "0.7.1"
 kotlinx-serialization = "1.9.0"
@@ -26,6 +27,7 @@ binaryCompatibilityValidator = "0.18.1"
 [libraries]
 components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "componentsResources" }
 compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "foundation" }
+haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 gradle-vanniktech-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "mavenPublish" }
 gradle-agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 gradle-kmp = { module = "org.jetbrains.kotlin.multiplatform:org.jetbrains.kotlin.multiplatform.gradle.plugin", version.ref = "kotlin" }
