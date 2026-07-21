@@ -35,6 +35,25 @@ public enum LemonadeTooltipIndicatorPlacement: Hashable, CaseIterable, Sendable 
         }
     }
 
+    /// Pivot for the entry scale, placed at the indicator so the tooltip grows out of the element
+    /// it points at rather than out of its own centre.
+    var transformAnchor: UnitPoint {
+        let indicatorFraction =
+            (LemonadeTooltipMetrics.indicatorEdgeInset + LemonadeTooltipMetrics.indicatorBaseWidth / 2)
+                / LemonadeTooltipMetrics.width
+
+        let x: CGFloat
+        switch self {
+        case .topLeft, .bottomLeft: x = indicatorFraction
+        case .topRight, .bottomRight: x = 1 - indicatorFraction
+        case .topCenter, .bottomCenter, .none: x = 0.5
+        }
+
+        let y: CGFloat = pointsUp ? 0 : (pointsDown ? 1 : 0.5)
+
+        return UnitPoint(x: x, y: y)
+    }
+
     /// Horizontal centre of the indicator within a body of the given width.
     func indicatorCenterX(in width: CGFloat) -> CGFloat {
         switch self {

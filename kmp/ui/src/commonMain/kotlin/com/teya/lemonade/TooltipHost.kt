@@ -1,5 +1,14 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -25,6 +34,7 @@ import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.ClipOp
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.Layout
@@ -58,6 +68,18 @@ private val TooltipSpotlightRadius = 12.dp
 
 /** Blur applied to the host content that shows through the tooltip's translucent surface. */
 private val TooltipBackdropBlurRadius = 24.dp
+
+/** Scale the tooltip grows from as it enters. */
+private const val TOOLTIP_ENTER_INITIAL_SCALE = 0.8f
+
+/** Bounce of the entry spring. Below 1 so the scale overshoots and settles — the "bubble" feel. */
+private const val TOOLTIP_ENTER_DAMPING_RATIO = 0.55f
+
+private const val TOOLTIP_ENTER_FADE_MILLIS = 120
+
+private const val TOOLTIP_EXIT_FADE_MILLIS = 150
+
+private const val TOOLTIP_SCRIM_FADE_IN_MILLIS = 180
 
 /**
  * One step of a guided tour. See [LemonadeTooltipState.startTour].
@@ -470,18 +492,35 @@ public fun LemonadeTooltipHost(
             }
 
             val presentation = tooltipState.presentation
+
+            // The presentation is cleared the moment a tooltip is dismissed, so it has to be held
+            // on to for the exit animation to have anything left to fade out.
+            var retained by remember { mutableStateOf<TooltipPresentation?>(null) }
+            if (presentation != null) {
+                retained = presentation
+            }
+
+            val visibleState = remember { MutableTransitionState(initialState = false) }
+            visibleState.targetState = presentation != null
+
+            val shown = retained
             val hostBounds = tooltipState.hostBounds
-            val anchor = presentation?.let { current ->
+            val anchor = shown?.let { current ->
                 tooltipState.anchorBoundsInHost(key = current.anchor)
             }
 
-            if (presentation != null && hostBounds != null && anchor != null) {
+            if (shown != null &&
+                hostBounds != null &&
+                anchor != null &&
+                (visibleState.currentState || visibleState.targetState)
+            ) {
                 TooltipOverlay(
                     state = tooltipState,
-                    presentation = presentation,
+                    presentation = shown,
                     anchor = anchor,
                     hostSize = Size(width = hostBounds.width, height = hostBounds.height),
                     hazeState = hazeState,
+                    visibleState = visibleState,
                 )
             }
         }
@@ -495,14 +534,30 @@ private fun TooltipOverlay(
     anchor: Rect,
     hostSize: Size,
     hazeState: HazeState,
+    visibleState: MutableTransitionState<Boolean>,
 ) {
     val colors = LocalColors.current
     val opacities = LocalOpacities.current
     val radius = LocalRadius.current
     val density = LocalDensity.current
 
+    // The scrim only fades — scaling it with the tooltip would sweep the dimming across the screen.
+    val scrimProgress by animateFloatAsState(
+        targetValue = if (visibleState.targetState) 1f else 0f,
+        animationSpec = tween(
+            durationMillis = if (visibleState.targetState) {
+                TOOLTIP_SCRIM_FADE_IN_MILLIS
+            } else {
+                TOOLTIP_EXIT_FADE_MILLIS
+            },
+        ),
+        label = "tooltipScrim",
+    )
+
     val scrimSource = colors.background.bgAlwaysDark
-    val scrimColor = scrimSource.copy(alpha = scrimSource.alpha * opacities.base.opacity40)
+    val scrimColor = scrimSource.copy(
+        alpha = scrimSource.alpha * opacities.base.opacity40 * scrimProgress,
+    )
     val spotlight = anchor.inflate(delta = with(density) { TooltipSpotlightPadding.toPx() })
     val spotlightRadius = with(density) { TooltipSpotlightRadius.toPx() }
 
@@ -562,35 +617,52 @@ private fun TooltipOverlay(
 
         Layout(
             content = {
-                Box(
-                    // Swallow taps on the tooltip itself so they never reach the dismiss handler.
-                    modifier = Modifier.pointerInput(presentation.id) {
-                        detectTapGestures { }
-                    },
+                // AnimatedVisibility wraps the tooltip rather than the whole overlay so that
+                // scaleIn's transform origin resolves against the tooltip's own bounds, letting it
+                // grow out of its indicator instead of the centre of the screen.
+                AnimatedVisibility(
+                    visibleState = visibleState,
+                    enter = fadeIn(animationSpec = tween(durationMillis = TOOLTIP_ENTER_FADE_MILLIS)) +
+                        scaleIn(
+                            animationSpec = spring(
+                                dampingRatio = TOOLTIP_ENTER_DAMPING_RATIO,
+                                stiffness = Spring.StiffnessMediumLow,
+                            ),
+                            initialScale = TOOLTIP_ENTER_INITIAL_SCALE,
+                            transformOrigin = placement.transformOrigin,
+                        ),
+                    exit = fadeOut(animationSpec = tween(durationMillis = TOOLTIP_EXIT_FADE_MILLIS)),
                 ) {
-                    // The tooltip fill is only ~74% opaque, so whatever it covers reads through.
-                    // Blurring the backdrop, clipped to the tooltip's own outline, turns busy
-                    // content behind it into a wash instead of letting it compete with the text.
                     Box(
-                        modifier = Modifier
-                            .matchParentSize()
-                            .clip(shape = tooltipShape)
-                            .hazeEffect(state = hazeState) {
-                                blurRadius = TooltipBackdropBlurRadius
-                                // No tint: the tooltip draws its own fill over this.
-                                tints = emptyList()
-                            },
-                    )
+                        // Swallow taps on the tooltip itself so they never reach the dismiss handler.
+                        modifier = Modifier.pointerInput(presentation.id) {
+                            detectTapGestures { }
+                        },
+                    ) {
+                        // The tooltip fill is only ~74% opaque, so whatever it covers reads through.
+                        // Blurring the backdrop, clipped to the tooltip's own outline, turns busy
+                        // content behind it into a wash instead of letting it compete with the text.
+                        Box(
+                            modifier = Modifier
+                                .matchParentSize()
+                                .clip(shape = tooltipShape)
+                                .hazeEffect(state = hazeState) {
+                                    blurRadius = TooltipBackdropBlurRadius
+                                    // No tint: the tooltip draws its own fill over this.
+                                    tints = emptyList()
+                                },
+                        )
 
-                    LemonadeUi.Tooltip(
-                        content = presentation.content,
-                        title = presentation.title,
-                        indicatorPlacement = placement,
-                        onCloseClick = presentation.onCloseClick,
-                        closeContentDescription = presentation.closeContentDescription,
-                        cover = presentation.cover,
-                        footer = presentation.footer,
-                    )
+                        LemonadeUi.Tooltip(
+                            content = presentation.content,
+                            title = presentation.title,
+                            indicatorPlacement = placement,
+                            onCloseClick = presentation.onCloseClick,
+                            closeContentDescription = presentation.closeContentDescription,
+                            cover = presentation.cover,
+                            footer = presentation.footer,
+                        )
+                    }
                 }
             },
             modifier = Modifier.fillMaxSize(),
@@ -619,6 +691,34 @@ private fun TooltipOverlay(
         }
     }
 }
+
+/**
+ * Pivot for the entry scale, placed at the indicator so the tooltip grows out of the element it
+ * points at rather than out of its own centre.
+ */
+private val TooltipIndicatorPlacement.transformOrigin: TransformOrigin
+    get() {
+        val indicatorFraction =
+            (TooltipIndicatorEdgeInset + TooltipIndicatorBaseWidth / 2f) / TooltipWidth
+        val pivotX = when (this) {
+            TooltipIndicatorPlacement.TopLeft,
+            TooltipIndicatorPlacement.BottomLeft,
+            -> indicatorFraction
+
+            TooltipIndicatorPlacement.TopRight,
+            TooltipIndicatorPlacement.BottomRight,
+            -> 1f - indicatorFraction
+
+            else -> 0.5f
+        }
+        val pivotY = when {
+            pointsUp -> 0f
+            pointsDown -> 1f
+            else -> 0.5f
+        }
+
+        return TransformOrigin(pivotFractionX = pivotX, pivotFractionY = pivotY)
+    }
 
 // MARK: - Placement Resolution
 

@@ -15,6 +15,25 @@ private enum LemonadeTooltipLayout {
     /// Corner radius of the spotlight cut-out.
     static let spotlightRadius: CGFloat = 12
 
+    /// Scale the tooltip grows from as it enters.
+    static let enterInitialScale: CGFloat = 0.8
+
+    /// Entry spring. The damping is below 1 so the scale overshoots and settles — the "bubble" feel.
+    ///
+    /// Matched to Compose's `spring(dampingRatio = 0.55, stiffness = StiffnessMediumLow)`: stiffness
+    /// 400 at unit mass gives ω = 20 rad/s, so response = 2π/ω ≈ 0.31s. Keeping them the same spring
+    /// rather than two hand-tuned ones stops the platforms drifting apart.
+    static let enterAnimation: Animation = .spring(response: 0.31, dampingFraction: 0.55)
+
+    /// Exit is a plain fade, with no scale.
+    static let exitAnimation: Animation = .easeOut(duration: 0.15)
+
+    /// The scrim only fades — scaling it with the tooltip would sweep the dimming across the screen.
+    static let scrimAnimation: Animation = .easeInOut(duration: 0.18)
+
+    /// Matches `exitAnimation`, used to unmount once the fade has finished.
+    static let exitDuration: TimeInterval = 0.15
+
 }
 
 // MARK: - Anchor Registration
@@ -93,6 +112,8 @@ struct LemonadeTooltipContainerView<Content: View>: View {
 
     @StateObject private var manager = LemonadeTooltipManager()
     @State private var tooltipSize: CGSize = .zero
+    @State private var retained: LemonadeTooltipPresentation?
+    @State private var isVisible = false
 
     var body: some View {
         // The overlay hangs off `content` rather than wrapping it in a ZStack: a NavigationStack
@@ -106,13 +127,41 @@ struct LemonadeTooltipContainerView<Content: View>: View {
                     let containerFrame = proxy.frame(in: .global)
 
                     ZStack(alignment: .topLeading) {
-                        if let presentation = manager.presentation,
+                        // `retained` outlives manager.presentation being cleared so the exit
+                        // animation still has something to fade out. Scale and opacity are animated
+                        // explicitly rather than via `.transition`: an insertion transition on a
+                        // subtree that appears in the same pass as its data does not reliably pick
+                        // up the transaction's animation, and the tooltip simply popped in.
+                        if let presentation = retained,
                            let anchor = manager.anchorFrameInContainer(presentation.anchor) {
                             overlay(
                                 presentation: presentation,
                                 anchor: anchor,
                                 containerSize: proxy.size
                             )
+                        }
+                    }
+                    .onChange(of: manager.presentation?.id) { _ in
+                        if let presentation = manager.presentation {
+                            retained = presentation
+                            isVisible = false
+                            // A frame at the start scale before springing up to 1, so the growth is
+                            // actually animated rather than applied on the same pass as the mount.
+                            DispatchQueue.main.async {
+                                withAnimation(LemonadeTooltipLayout.enterAnimation) {
+                                    isVisible = true
+                                }
+                            }
+                        } else {
+                            withAnimation(LemonadeTooltipLayout.exitAnimation) { isVisible = false }
+                            let dismissed = retained?.id
+                            DispatchQueue.main.asyncAfter(
+                                deadline: .now() + LemonadeTooltipLayout.exitDuration
+                            ) {
+                                if manager.presentation == nil, retained?.id == dismissed {
+                                    retained = nil
+                                }
+                            }
                         }
                     }
                     .onAppear { manager.containerFrame = containerFrame }
@@ -162,9 +211,15 @@ struct LemonadeTooltipContainerView<Content: View>: View {
                         )
                     }
                 )
+                // Grows out of its indicator rather than its own centre, so it reads as coming from
+                // the element it points at. Exit is opacity only — no scale — so it just fades.
+                .scaleEffect(
+                    isVisible ? 1 : LemonadeTooltipLayout.enterInitialScale,
+                    anchor: placement.transformAnchor
+                )
                 .offset(x: origin.x, y: origin.y)
-                // Hidden until measured, so it never flashes at the wrong position.
-                .opacity(tooltipSize == .zero ? 0 : 1)
+                // Also hidden until measured, so it never flashes at the wrong position.
+                .opacity(tooltipSize == .zero || !isVisible ? 0 : 1)
         }
         .onPreferenceChange(LemonadeTooltipSizePreferenceKey.self) { size in
             tooltipSize = size
@@ -211,6 +266,7 @@ struct LemonadeTooltipContainerView<Content: View>: View {
                 }
             }
         }
+        .opacity(isVisible ? 1 : 0)
         .contentShape(Rectangle())
         .onTapGesture {
             // The tap is always swallowed so the UI underneath cannot be acted on while a tooltip
