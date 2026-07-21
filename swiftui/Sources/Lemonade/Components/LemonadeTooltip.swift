@@ -386,7 +386,8 @@ struct LemonadeTooltipView: View {
 
     private var bodyView: some View {
         VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing300) {
-            VStack(alignment: .leading, spacing: 0) {
+            // Only takes effect when there is a title — VStack spacing sits between children.
+            VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing100) {
                 if let title {
                     LemonadeUi.Text(
                         title,

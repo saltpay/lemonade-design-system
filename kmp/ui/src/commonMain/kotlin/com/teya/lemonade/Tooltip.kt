@@ -387,7 +387,11 @@ private fun TooltipBody(
             .padding(all = spaces.spacing300),
         verticalArrangement = Arrangement.spacedBy(space = spaces.spacing300),
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            // Only takes effect when there is a title — spacedBy adds nothing to a single child.
+            verticalArrangement = Arrangement.spacedBy(space = spaces.spacing100),
+        ) {
             if (title != null) {
                 LemonadeUi.Text(
                     text = title,
