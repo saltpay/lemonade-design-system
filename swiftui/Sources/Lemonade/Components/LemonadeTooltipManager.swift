@@ -113,6 +113,10 @@ struct LemonadeTooltipPresentation: Identifiable {
     let isTourStep: Bool
     let stepIndex: Int
     let stepCount: Int
+    /// Captured rather than read back off the manager: the tour is cleared the moment it is
+    /// dismissed, so a presentation retained for the exit animation has to carry its own labels or
+    /// the footer vanishes a frame into the fade.
+    let tourLabels: LemonadeTooltipTourLabels?
 }
 
 private struct LemonadeTooltipTour {
@@ -347,11 +351,6 @@ public final class LemonadeTooltipManager: ObservableObject {
         presentation = nil
     }
 
-    /// Labels of the running tour, used by the container to build the footer.
-    var tourLabels: LemonadeTooltipTourLabels? {
-        tour?.labels
-    }
-
     func updateAnchor(_ key: String, frame: CGRect) {
         guard anchors[key] != frame else { return }
         anchors[key] = frame
@@ -385,7 +384,8 @@ public final class LemonadeTooltipManager: ObservableObject {
             footer: nil,
             isTourStep: true,
             stepIndex: stepIndex,
-            stepCount: tour.steps.count
+            stepCount: tour.steps.count,
+            tourLabels: tour.labels
         )
     }
 
@@ -416,7 +416,8 @@ public final class LemonadeTooltipManager: ObservableObject {
             footer: footer,
             isTourStep: false,
             stepIndex: 0,
-            stepCount: 0
+            stepCount: 0,
+            tourLabels: nil
         )
     }
 }

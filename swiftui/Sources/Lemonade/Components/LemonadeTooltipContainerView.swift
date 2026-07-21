@@ -284,7 +284,7 @@ struct LemonadeTooltipContainerView<Content: View>: View {
         let onClose: (() -> Void)? = presentation.showCloseButton ? { manager.dismiss() } : nil
 
         let footer: ((LemonadeTooltipFooterScope) -> AnyView)?
-        if presentation.isTourStep, let labels = manager.tourLabels {
+        if presentation.isTourStep, let labels = presentation.tourLabels {
             footer = { scope in
                 AnyView(
                     tourFooter(footer: scope, presentation: presentation, labels: labels)
