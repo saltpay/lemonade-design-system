@@ -528,20 +528,27 @@ private struct LemonadeTooltipShape: Shape {
         let overlap: CGFloat = pointsUp ? 1 : -1
         let apexY = pointsUp ? baseY - apexHeight : baseY + apexHeight
 
-        let tipEntryX = (centerX - halfBase) + halfBase * tipStart
-        let tipExitX = (centerX + halfBase) - halfBase * tipStart
+        // Traversed base-to-tip-to-base, starting on the side that keeps the winding clockwise in
+        // screen coordinates for BOTH directions: left-to-right pointing up, right-to-left pointing
+        // down. Mirroring only the apex would reverse the winding for the downward case, and the
+        // non-zero fill rule would then cancel it against the body exactly where they overlap,
+        // opening a hairline hole across the join.
+        let startX = pointsUp ? centerX - halfBase : centerX + halfBase
+        let endX = pointsUp ? centerX + halfBase : centerX - halfBase
+        let tipStartX = startX + (centerX - startX) * tipStart
+        let tipEndX = endX + (centerX - endX) * tipStart
         let tipY = baseY + (apexY - baseY) * tipStart
         let controlY = tipY + (apexY - tipY) * curvature
 
         var path = Path()
-        path.move(to: CGPoint(x: centerX - halfBase, y: baseY + overlap))
-        path.addLine(to: CGPoint(x: tipEntryX, y: tipY))
+        path.move(to: CGPoint(x: startX, y: baseY + overlap))
+        path.addLine(to: CGPoint(x: tipStartX, y: tipY))
         path.addCurve(
-            to: CGPoint(x: tipExitX, y: tipY),
-            control1: CGPoint(x: tipEntryX + (centerX - tipEntryX) * curvature, y: controlY),
-            control2: CGPoint(x: tipExitX + (centerX - tipExitX) * curvature, y: controlY)
+            to: CGPoint(x: tipEndX, y: tipY),
+            control1: CGPoint(x: tipStartX + (centerX - tipStartX) * curvature, y: controlY),
+            control2: CGPoint(x: tipEndX + (centerX - tipEndX) * curvature, y: controlY)
         )
-        path.addLine(to: CGPoint(x: centerX + halfBase, y: baseY + overlap))
+        path.addLine(to: CGPoint(x: endX, y: baseY + overlap))
         path.closeSubpath()
 
         return path
