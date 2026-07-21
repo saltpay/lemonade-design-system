@@ -285,8 +285,7 @@ struct LemonadeTooltipView: View {
         .padding(.bottom, indicatorBottomInset)
         .frame(width: LemonadeTooltipMetrics.width)
         .background(surface)
-        .compositingGroup()
-        .lemonadeShadow(.xlarge)
+        .background(shadowLayer)
         .overlay(alignment: .topTrailing) {
             if let onClose {
                 closeButton(onClose: onClose)
@@ -319,6 +318,31 @@ struct LemonadeTooltipView: View {
                     .opacity(LemonadeTheme.opacity.base.opacity80)
             )
         }
+    }
+
+    /// The drop shadow, cast from an opaque silhouette of the surface rather than from the surface
+    /// itself.
+    ///
+    /// `lemonadeShadow` builds its shadow by masking a solid colour with the view it is applied to,
+    /// so applying it to the tooltip scaled the shadow by the surface's ~74% alpha and roughly
+    /// halved it — measured at 4.7% against Compose's 10% at the same edge. Casting it from an
+    /// opaque copy of the shape keeps the token at full strength, and punching that shape back out
+    /// stops the shadow from tinting the translucent fill sitting in front of it.
+    private var shadowLayer: some View {
+        let shape = LemonadeTooltipShape(
+            indicatorPlacement: indicatorPlacement,
+            cornerRadius: LemonadeTheme.radius.radius600
+        )
+
+        return shape
+            .fill(Color.black)
+            .lemonadeShadow(.xlarge)
+            .overlay {
+                shape
+                    .fill(Color.black)
+                    .blendMode(.destinationOut)
+            }
+            .compositingGroup()
     }
 
     // MARK: Cover
