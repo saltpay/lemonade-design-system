@@ -45,6 +45,7 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
@@ -414,121 +415,154 @@ public fun LemonadeToastHost(
     content: @Composable () -> Unit,
 ) {
     val toastState = remember { LemonadeToastState() }
-    var hostHeightPx by remember { mutableStateOf(0) }
+
+    val toast = toastState.currentToast
+    val haptic = LocalHapticFeedback.current
+    // Hosted here, not in the platform overlay, so it runs the same inline or in a window.
+    LaunchedEffect(toast?.id) {
+        if (toast != null) {
+            val feedbackType = when (toast.voice) {
+                ToastVoice.Neutral, ToastVoice.Loading -> HapticFeedbackType.TextHandleMove
+                ToastVoice.Success, ToastVoice.Error -> HapticFeedbackType.LongPress
+            }
+            haptic.performHapticFeedback(feedbackType)
+            // A loading toast describes an ongoing action: it persists until explicitly
+            // dismissed or replaced, so skip the auto-dismiss timer.
+            if (toast.voice != ToastVoice.Loading) {
+                delay(toast.duration.millis)
+                toastState.dismiss()
+            }
+        }
+    }
 
     CompositionLocalProvider(LocalLemonadeToastState provides toastState) {
-        Box(
-            modifier = modifier.onSizeChanged { hostHeightPx = it.height },
-        ) {
-            content()
+        PlatformToastHost(
+            modifier = modifier,
+            toastState = toastState,
+            content = content,
+        )
+    }
+}
 
-            val toast = toastState.currentToast
-            val haptic = LocalHapticFeedback.current
-            val spaces = LocalSpaces.current
-            val layoutDirection = LocalLayoutDirection.current
-            // A zero edge is treated as "not overridden" and falls back to the default — `show()` isn't
-            // @Composable, so a caller can't pull the real spacing600/spacing400 token values to build a
-            // PaddingValues that only overrides one edge. The top inset is never honored: the toast is
-            // always bottom-anchored with intrinsic height, so extra top padding only adds invisible space
-            // above it — it has no visible effect on where the toast sits.
-            val overridePadding = toast?.paddingValues
-            val bottomPadding = overridePadding?.calculateBottomPadding()?.takeIf { it > 0.dp }
-                ?: spaces.spacing600
-            val startPadding = overridePadding?.calculateStartPadding(layoutDirection)?.takeIf { it > 0.dp }
-                ?: spaces.spacing400
-            val endPadding = overridePadding?.calculateEndPadding(layoutDirection)?.takeIf { it > 0.dp }
-                ?: spaces.spacing400
+/**
+ * Renders the toast overlay for the current platform. Android draws it in its own window so it z-orders
+ * above any `ModalBottomSheet` / `Dialog`; other platforms render it inline as a sibling of [content].
+ */
+@Composable
+internal expect fun PlatformToastHost(
+    modifier: Modifier,
+    toastState: LemonadeToastState,
+    content: @Composable () -> Unit,
+)
 
-            // Haptic feedback + auto-dismiss timer
-            LaunchedEffect(toast?.id) {
-                if (toast != null) {
-                    val feedbackType = when (toast.voice) {
-                        ToastVoice.Neutral, ToastVoice.Loading -> HapticFeedbackType.TextHandleMove
-                        ToastVoice.Success, ToastVoice.Error -> HapticFeedbackType.LongPress
-                    }
-                    haptic.performHapticFeedback(feedbackType)
-                    // A loading toast describes an ongoing action: it persists until explicitly
-                    // dismissed or replaced, so skip the auto-dismiss timer.
-                    if (toast.voice != ToastVoice.Loading) {
-                        delay(toast.duration.millis)
-                        toastState.dismiss()
-                    }
-                }
-            }
+/** Inline overlay: the animated toast pinned to the bottom of the host [Box], over [content]. */
+@Composable
+internal fun InlineToastHost(
+    modifier: Modifier,
+    toastState: LemonadeToastState,
+    content: @Composable () -> Unit,
+) {
+    var hostHeightPx by remember { mutableStateOf(0) }
+    Box(modifier = modifier.onSizeChanged { hostHeightPx = it.height }) {
+        content()
 
-            AnimatedContent(
-                targetState = toast,
-                contentAlignment = Alignment.BottomCenter,
-                transitionSpec = {
-                    slideInVertically(
+        val toast = toastState.currentToast
+        val padding = rememberToastPadding(toast?.paddingValues, LocalLayoutDirection.current)
+
+        AnimatedContent(
+            targetState = toast,
+            contentAlignment = Alignment.BottomCenter,
+            transitionSpec = {
+                slideInVertically(
+                    animationSpec = spring(
+                        dampingRatio = 0.8f,
+                        stiffness = Spring.StiffnessMediumLow,
+                    ),
+                    initialOffsetY = { hostHeightPx },
+                ).togetherWith(
+                    slideOutVertically(
                         animationSpec = spring(
                             dampingRatio = 0.8f,
                             stiffness = Spring.StiffnessMediumLow,
                         ),
-                        initialOffsetY = { hostHeightPx },
-                    ).togetherWith(
-                        slideOutVertically(
-                            animationSpec = spring(
-                                dampingRatio = 0.8f,
-                                stiffness = Spring.StiffnessMediumLow,
-                            ),
-                            targetOffsetY = { hostHeightPx },
-                        ),
-                    ).using(SizeTransform(clip = false) { _, _ -> snap() })
-                },
-                contentKey = { it?.id },
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .navigationBarsPadding()
-                    .padding(bottom = bottomPadding)
-                    .padding(start = startPadding, end = endPadding),
-            ) { animatedToast ->
-                if (animatedToast != null) {
-                    var offsetY by remember(animatedToast.id) { mutableStateOf(0f) }
-
-                    // A loading toast cannot be swiped away — it stays until the action completes.
-                    val swipeDismissible = animatedToast.dismissible &&
-                        animatedToast.voice != ToastVoice.Loading
-
-                    val swipeModifier = if (swipeDismissible) {
-                        Modifier.pointerInput(animatedToast.id) {
-                            detectVerticalDragGestures(
-                                onDragEnd = {
-                                    if (offsetY > DRAG_DISMISS_THRESHOLD_DP.dp.toPx()) {
-                                        toastState.dismiss()
-                                    } else {
-                                        offsetY = 0f
-                                    }
-                                },
-                                onDragCancel = {
-                                    offsetY = 0f
-                                },
-                                onVerticalDrag = { change, dragAmount ->
-                                    offsetY = (offsetY + dragAmount).coerceAtLeast(0f)
-                                    change.consume()
-                                },
-                            )
-                        }
-                    } else {
-                        Modifier
-                    }
-
-                    LemonadeUi.Toast(
-                        label = animatedToast.label,
-                        voice = animatedToast.voice,
-                        icon = animatedToast.icon,
-                        actionLabel = animatedToast.actionLabel,
-                        onAction = animatedToast.onAction,
-                        modifier = swipeModifier
-                            .offset { IntOffset(x = 0, y = offsetY.roundToInt()) }
-                            .graphicsLayer {
-                                val fadeDistance =
-                                    DRAG_DISMISS_THRESHOLD_DP.dp.toPx() * DRAG_FADE_MULTIPLIER
-                                alpha = 1f - (offsetY / fadeDistance).coerceIn(0f, 1f)
-                            },
-                    )
-                }
+                        targetOffsetY = { hostHeightPx },
+                    ),
+                ).using(SizeTransform(clip = false) { _, _ -> snap() })
+            },
+            contentKey = { it?.id },
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .navigationBarsPadding()
+                .padding(padding),
+        ) { animatedToast ->
+            if (animatedToast != null) {
+                SwipeableToast(
+                    toast = animatedToast,
+                    onDismiss = { toastState.dismiss() },
+                )
             }
         }
     }
+}
+
+/** The toast plus swipe-to-dismiss: a downward drag past a threshold dismisses it (never a loading toast). */
+@Composable
+internal fun SwipeableToast(
+    toast: ToastData,
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var offsetY by remember(toast.id) { mutableStateOf(0f) }
+    val swipeDismissible = toast.dismissible && toast.voice != ToastVoice.Loading
+    val swipeModifier = if (swipeDismissible) {
+        Modifier.pointerInput(toast.id) {
+            detectVerticalDragGestures(
+                onDragEnd = {
+                    if (offsetY > DRAG_DISMISS_THRESHOLD_DP.dp.toPx()) {
+                        onDismiss()
+                    } else {
+                        offsetY = 0f
+                    }
+                },
+                onDragCancel = { offsetY = 0f },
+                onVerticalDrag = { change, dragAmount ->
+                    offsetY = (offsetY + dragAmount).coerceAtLeast(0f)
+                    change.consume()
+                },
+            )
+        }
+    } else {
+        Modifier
+    }
+
+    LemonadeUi.Toast(
+        label = toast.label,
+        voice = toast.voice,
+        icon = toast.icon,
+        actionLabel = toast.actionLabel,
+        onAction = toast.onAction,
+        modifier = modifier
+            .then(swipeModifier)
+            .offset { IntOffset(x = 0, y = offsetY.roundToInt()) }
+            .graphicsLayer {
+                val fadeDistance = DRAG_DISMISS_THRESHOLD_DP.dp.toPx() * DRAG_FADE_MULTIPLIER
+                alpha = 1f - (offsetY / fadeDistance).coerceIn(0f, 1f)
+            },
+    )
+}
+
+/**
+ * Resolves the toast margins from a per-edge [override]. A zero edge means "not overridden" and falls
+ * back to the standard margin; the top edge is never honored (the toast is bottom-anchored).
+ */
+@Composable
+internal fun rememberToastPadding(
+    override: PaddingValues?,
+    layoutDirection: LayoutDirection,
+): PaddingValues {
+    val spaces = LocalSpaces.current
+    val bottom = override?.calculateBottomPadding()?.takeIf { it > 0.dp } ?: spaces.spacing600
+    val start = override?.calculateStartPadding(layoutDirection)?.takeIf { it > 0.dp } ?: spaces.spacing400
+    val end = override?.calculateEndPadding(layoutDirection)?.takeIf { it > 0.dp } ?: spaces.spacing400
+    return PaddingValues(start = start, end = end, bottom = bottom)
 }
