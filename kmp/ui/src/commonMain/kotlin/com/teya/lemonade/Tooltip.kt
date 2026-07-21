@@ -25,11 +25,14 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -289,7 +292,13 @@ private fun CoreTooltip(
     // ~74% fill lets busy content read straight through the text, and blurring it on Compose needs
     // a third-party dependency that is not worth carrying for one component.
     val surfaceColor = colors.background.bgDefaultInverse
-    Box(modifier = modifier.width(width = TooltipWidth)) {
+    Box(
+        modifier = modifier
+            .width(width = TooltipWidth)
+            // Matches the `isolate` on Figma's tooltip root: without its own compositing layer the
+            // close button's blend would reach through to whatever is behind the tooltip.
+            .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen },
+    ) {
         // The shadow is cast from the body rectangle rather than the full tooltip outline. Given an
         // Outline.Generic shape, Compose's dropShadow clips the blur a few dp past the node bounds
         // on Android, which cuts the falloff off square; a rounded rect takes the un-clipped path.
@@ -444,7 +453,13 @@ private fun TooltipCloseButton(
             .clickable(
                 onClick = onClick,
                 role = Role.Button,
-            ).alpha(alpha = opacities.base.opacity40),
+            ).graphicsLayer {
+                alpha = opacities.base.opacity40
+                // Hard light rather than a flat tint: over the dark light-mode surface a light icon
+                // screens and stays visible, and over the light dark-mode surface a dark icon
+                // multiplies, so the same token reads on both without a per-theme colour.
+                blendMode = BlendMode.Hardlight
+            },
     ) {
         LemonadeUi.Icon(
             icon = LemonadeIcons.Times,

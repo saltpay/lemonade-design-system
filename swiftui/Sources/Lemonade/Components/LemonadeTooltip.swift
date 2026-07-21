@@ -312,6 +312,9 @@ struct LemonadeTooltipView: View {
                     .padding(.trailing, LemonadeTheme.spaces.spacing100)
             }
         }
+        // Matches the `isolate` on Figma's tooltip root: without its own compositing group the close
+        // button's blend would reach through to whatever is behind the tooltip.
+        .compositingGroup()
     }
 
     // MARK: Surface
@@ -434,6 +437,10 @@ struct LemonadeTooltipView: View {
         }
         .buttonStyle(.plain)
         .opacity(LemonadeTheme.opacity.base.opacity40)
+        // Hard light rather than a flat tint: over the dark light-mode surface a light icon screens
+        // and stays visible, and over the light dark-mode surface a dark icon multiplies, so the
+        // same token reads on both without a per-theme colour.
+        .blendMode(.hardLight)
     }
 }
 
