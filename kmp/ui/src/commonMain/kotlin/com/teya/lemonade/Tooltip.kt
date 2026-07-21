@@ -294,13 +294,7 @@ private fun CoreTooltip(
     // straight through the text, so legibility wins over matching the design here. The consequence
     // is that Compose renders darker than both the design and iOS.
     val surfaceColor = colors.background.bgDefaultInverse
-    Box(
-        modifier = modifier
-            .width(width = TooltipWidth)
-            // Matches the `isolate` on Figma's tooltip root: without its own compositing layer the
-            // close button's blend would reach through to whatever is behind the tooltip.
-            .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen },
-    ) {
+    Box(modifier = modifier.width(width = TooltipWidth)) {
         // The shadow is cast from the body rectangle rather than the full tooltip outline. Given an
         // Outline.Generic shape, Compose's dropShadow clips the blur a few dp past the node bounds
         // on Android, which cuts the falloff off square; a rounded rect takes the un-clipped path.
@@ -317,42 +311,52 @@ private fun CoreTooltip(
                 ),
         )
 
-        Column(
+        // Matches the `isolate` on Figma's tooltip root: without its own compositing layer the close
+        // button's blend would reach through to whatever is behind the tooltip. It wraps the surface
+        // alone — an offscreen layer clips to its own bounds, so putting it any higher would take
+        // the shadow with it and crop the blur.
+        Box(
             modifier = Modifier
-                .background(
-                    color = surfaceColor,
-                    shape = shape,
-                ).padding(
-                    top = indicatorTopInset,
-                    bottom = indicatorBottomInset,
-                ).padding(all = spaces.spacing100),
+                .fillMaxWidth()
+                .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen },
         ) {
-            if (cover != null) {
-                TooltipCover(
-                    cornerRadius = cornerRadius,
-                    outerPadding = spaces.spacing100,
-                    cover = cover,
+            Column(
+                modifier = Modifier
+                    .background(
+                        color = surfaceColor,
+                        shape = shape,
+                    ).padding(
+                        top = indicatorTopInset,
+                        bottom = indicatorBottomInset,
+                    ).padding(all = spaces.spacing100),
+            ) {
+                if (cover != null) {
+                    TooltipCover(
+                        cornerRadius = cornerRadius,
+                        outerPadding = spaces.spacing100,
+                        cover = cover,
+                    )
+                }
+
+                TooltipBody(
+                    content = content,
+                    title = title,
+                    footer = footer,
                 )
             }
 
-            TooltipBody(
-                content = content,
-                title = title,
-                footer = footer,
-            )
-        }
-
-        if (onCloseClick != null) {
-            TooltipCloseButton(
-                onClick = onCloseClick,
-                contentDescription = closeContentDescription,
-                modifier = Modifier
-                    .align(alignment = Alignment.TopEnd)
-                    .padding(
-                        top = indicatorTopInset + spaces.spacing100,
-                        end = spaces.spacing100,
-                    ),
-            )
+            if (onCloseClick != null) {
+                TooltipCloseButton(
+                    onClick = onCloseClick,
+                    contentDescription = closeContentDescription,
+                    modifier = Modifier
+                        .align(alignment = Alignment.TopEnd)
+                        .padding(
+                            top = indicatorTopInset + spaces.spacing100,
+                            end = spaces.spacing100,
+                        ),
+                )
+            }
         }
     }
 }
