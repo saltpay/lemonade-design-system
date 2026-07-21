@@ -21,7 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
@@ -471,10 +473,16 @@ internal val TooltipIndicatorPlacement.pointsDown: Boolean
     }
 
 /**
- * Rounded-rectangle surface with the tooltip indicator carved into one edge.
+ * The tooltip surface: a rounded rectangle with the indicator triangle added to one edge.
  *
- * The indicator is drawn outside the body rectangle, so the shape expects to be laid out over a size
- * that already includes [TooltipIndicatorHeight] on the indicator's edge.
+ * The two are separate sub-paths of a single [Path] rather than two drawn shapes. Non-zero winding
+ * fills overlapping sub-paths as their union in one operation, so the join is seamless — drawing
+ * them as two views at the surface's ~74% alpha would composite the overlap twice and show a darker
+ * wedge across the join. Being one shape also means one shadow outline and one clip for the host's
+ * backdrop blur.
+ *
+ * The indicator is drawn outside the body, so the shape expects a size that already includes
+ * [TooltipIndicatorHeight] on the indicator's edge.
  */
 internal data class TooltipShape(
     private val indicatorPlacement: TooltipIndicatorPlacement,
@@ -484,146 +492,93 @@ internal data class TooltipShape(
         size: Size,
         layoutDirection: LayoutDirection,
         density: Density,
-    ): Outline =
-        Outline.Generic(
-            path = buildPath(
-                size = size,
-                density = density,
-            ),
-        )
+    ): Outline {
+        val indicatorHeight = with(density) { TooltipIndicatorHeight.toPx() }
+        val bodyTop = if (indicatorPlacement.pointsUp) indicatorHeight else 0f
+        val bodyBottom = if (indicatorPlacement.pointsDown) {
+            size.height - indicatorHeight
+        } else {
+            size.height
+        }
+        val radius = with(density) { cornerRadius.toPx() }
+            .coerceAtMost(maximumValue = minOf(size.width, bodyBottom - bodyTop) / 2f)
 
-    private fun buildPath(
+        val path = Path().apply {
+            addRoundRect(
+                roundRect = RoundRect(
+                    rect = Rect(
+                        left = 0f,
+                        top = bodyTop,
+                        right = size.width,
+                        bottom = bodyBottom,
+                    ),
+                    cornerRadius = CornerRadius(radius, radius),
+                ),
+            )
+
+            if (indicatorPlacement != TooltipIndicatorPlacement.None) {
+                addPath(
+                    path = indicatorPath(
+                        size = size,
+                        density = density,
+                        baseY = if (indicatorPlacement.pointsUp) bodyTop else bodyBottom,
+                    ),
+                )
+            }
+        }
+
+        return Outline.Generic(path = path)
+    }
+
+    /**
+     * The indicator triangle. Its straight edges stop short of the notional apex and a cubic bridges
+     * the gap, which is what rounds the tip. The base is deliberately sunk one pixel into the body
+     * so the two sub-paths overlap rather than merely touching, which would leave a hairline.
+     */
+    private fun indicatorPath(
         size: Size,
         density: Density,
+        baseY: Float,
     ): Path {
-        val indicatorHeight = with(density) { TooltipIndicatorHeight.toPx() }
-        val baseWidth = with(density) { TooltipIndicatorBaseWidth.toPx() }
+        val halfBase = with(density) { TooltipIndicatorBaseWidth.toPx() } / 2f
         val apexHeight = with(density) { TooltipIndicatorApexHeight.toPx() }
         val edgeInset = with(density) { TooltipIndicatorEdgeInset.toPx() }
 
-        val bodyTop = if (indicatorPlacement.pointsUp) indicatorHeight else 0f
-        val bodyBottom = if (indicatorPlacement.pointsDown) size.height - indicatorHeight else size.height
-        val bodyHeight = bodyBottom - bodyTop
-        val radius = with(density) { cornerRadius.toPx() }
-            .coerceAtMost(maximumValue = minOf(size.width, bodyHeight) / 2f)
-        val diameter = radius * 2f
-
-        val centerX = indicatorCenterX(
-            width = size.width,
-            baseWidth = baseWidth,
-            edgeInset = edgeInset,
-        )
-
-        return Path().apply {
-            moveTo(radius, bodyTop)
-            if (indicatorPlacement.pointsUp) {
-                addIndicator(
-                    centerX = centerX,
-                    baseY = bodyTop,
-                    baseWidth = baseWidth,
-                    apexHeight = apexHeight,
-                    pointsUp = true,
-                )
-            }
-            lineTo(size.width - radius, bodyTop)
-            arcTo(
-                rect = Rect(size.width - diameter, bodyTop, size.width, bodyTop + diameter),
-                startAngleDegrees = -QUARTER_TURN,
-                sweepAngleDegrees = QUARTER_TURN,
-                forceMoveTo = false,
-            )
-            lineTo(size.width, bodyBottom - radius)
-            arcTo(
-                rect = Rect(size.width - diameter, bodyBottom - diameter, size.width, bodyBottom),
-                startAngleDegrees = 0f,
-                sweepAngleDegrees = QUARTER_TURN,
-                forceMoveTo = false,
-            )
-            if (indicatorPlacement.pointsDown) {
-                addIndicator(
-                    centerX = centerX,
-                    baseY = bodyBottom,
-                    baseWidth = baseWidth,
-                    apexHeight = apexHeight,
-                    pointsUp = false,
-                )
-            }
-            lineTo(radius, bodyBottom)
-            arcTo(
-                rect = Rect(0f, bodyBottom - diameter, diameter, bodyBottom),
-                startAngleDegrees = QUARTER_TURN,
-                sweepAngleDegrees = QUARTER_TURN,
-                forceMoveTo = false,
-            )
-            lineTo(0f, bodyTop + radius)
-            arcTo(
-                rect = Rect(0f, bodyTop, diameter, bodyTop + diameter),
-                startAngleDegrees = HALF_TURN,
-                sweepAngleDegrees = QUARTER_TURN,
-                forceMoveTo = false,
-            )
-            close()
-        }
-    }
-
-    private fun indicatorCenterX(
-        width: Float,
-        baseWidth: Float,
-        edgeInset: Float,
-    ): Float =
-        when (indicatorPlacement) {
+        val pointsUp = indicatorPlacement.pointsUp
+        val centerX = when (indicatorPlacement) {
             TooltipIndicatorPlacement.TopLeft,
             TooltipIndicatorPlacement.BottomLeft,
-            -> edgeInset + baseWidth / 2f
-
-            TooltipIndicatorPlacement.TopCenter,
-            TooltipIndicatorPlacement.BottomCenter,
-            TooltipIndicatorPlacement.None,
-            -> width / 2f
+            -> edgeInset + halfBase
 
             TooltipIndicatorPlacement.TopRight,
             TooltipIndicatorPlacement.BottomRight,
-            -> width - edgeInset - baseWidth / 2f
+            -> size.width - edgeInset - halfBase
+
+            else -> size.width / 2f
         }
 
-    /**
-     * Appends the indicator to the edge currently being traced. The outline is traced clockwise, so
-     * the top edge runs left-to-right and the bottom edge right-to-left — [pointsUp] picks which.
-     */
-    private fun Path.addIndicator(
-        centerX: Float,
-        baseY: Float,
-        baseWidth: Float,
-        apexHeight: Float,
-        pointsUp: Boolean,
-    ) {
-        val halfBase = baseWidth / 2f
+        val overlap = if (pointsUp) 1f else -1f
         val apexY = if (pointsUp) baseY - apexHeight else baseY + apexHeight
-        val entryX = if (pointsUp) centerX - halfBase else centerX + halfBase
-        val exitX = if (pointsUp) centerX + halfBase else centerX - halfBase
-
-        // The tip is rounded off: each straight edge stops short of the notional apex, and a cubic
-        // whose control points lean towards that apex bridges the gap.
-        val tipEntryX = entryX + (centerX - entryX) * TOOLTIP_INDICATOR_TIP_START
-        val tipExitX = exitX + (centerX - exitX) * TOOLTIP_INDICATOR_TIP_START
+        val tipX = centerX
+        val tipEntryX = (centerX - halfBase) + halfBase * TOOLTIP_INDICATOR_TIP_START
+        val tipExitX = (centerX + halfBase) - halfBase * TOOLTIP_INDICATOR_TIP_START
         val tipY = baseY + (apexY - baseY) * TOOLTIP_INDICATOR_TIP_START
+        val controlY = tipY + (apexY - tipY) * TOOLTIP_INDICATOR_TIP_CURVATURE
 
-        lineTo(entryX, baseY)
-        lineTo(tipEntryX, tipY)
-        cubicTo(
-            x1 = tipEntryX + (centerX - tipEntryX) * TOOLTIP_INDICATOR_TIP_CURVATURE,
-            y1 = tipY + (apexY - tipY) * TOOLTIP_INDICATOR_TIP_CURVATURE,
-            x2 = tipExitX + (centerX - tipExitX) * TOOLTIP_INDICATOR_TIP_CURVATURE,
-            y2 = tipY + (apexY - tipY) * TOOLTIP_INDICATOR_TIP_CURVATURE,
-            x3 = tipExitX,
-            y3 = tipY,
-        )
-        lineTo(exitX, baseY)
-    }
-
-    private companion object {
-        const val QUARTER_TURN = 90f
-        const val HALF_TURN = 180f
+        return Path().apply {
+            moveTo(centerX - halfBase, baseY + overlap)
+            lineTo(tipEntryX, tipY)
+            cubicTo(
+                x1 = tipEntryX + (tipX - tipEntryX) * TOOLTIP_INDICATOR_TIP_CURVATURE,
+                y1 = controlY,
+                x2 = tipExitX + (tipX - tipExitX) * TOOLTIP_INDICATOR_TIP_CURVATURE,
+                y2 = controlY,
+                x3 = tipExitX,
+                y3 = tipY,
+            )
+            lineTo(centerX + halfBase, baseY + overlap)
+            close()
+        }
     }
 }
 

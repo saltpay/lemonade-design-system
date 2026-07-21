@@ -428,66 +428,73 @@ private struct LemonadeTooltipFooterActionView: View {
 
 // MARK: - Tooltip Shape
 
-/// Rounded-rectangle surface with the tooltip indicator carved into one edge.
+/// The tooltip surface: a rounded rectangle with the indicator triangle added to one edge.
 ///
-/// The indicator is drawn outside the body rectangle, so the shape expects to be laid out over a
-/// rect that already includes `indicatorHeight` on the indicator's edge.
+/// The two are separate sub-paths of a single `Path` rather than two drawn shapes. Non-zero winding
+/// fills overlapping sub-paths as their union in one operation, so the join is seamless — drawing
+/// them as two views at the surface's ~74% alpha would composite the overlap twice and show a
+/// darker wedge across the join. Being one shape also means one shadow outline and one clip for the
+/// backdrop blur.
+///
+/// The indicator is drawn outside the body, so the shape expects a rect that already includes
+/// `indicatorHeight` on the indicator's edge.
 private struct LemonadeTooltipShape: Shape {
     let indicatorPlacement: LemonadeTooltipIndicatorPlacement
     let cornerRadius: CGFloat
 
     func path(in rect: CGRect) -> Path {
-        let bodyTop = indicatorPlacement.pointsUp ? LemonadeTooltipMetrics.indicatorHeight : 0
-        let bodyBottom = indicatorPlacement.pointsDown
-            ? rect.height - LemonadeTooltipMetrics.indicatorHeight
-            : rect.height
+        let indicatorHeight = LemonadeTooltipMetrics.indicatorHeight
+        let bodyTop = indicatorPlacement.pointsUp ? indicatorHeight : 0
+        let bodyBottom = indicatorPlacement.pointsDown ? rect.height - indicatorHeight : rect.height
         let radius = min(cornerRadius, min(rect.width, bodyBottom - bodyTop) / 2)
-        let centerX = indicatorPlacement.indicatorCenterX(in: rect.width)
 
         var path = Path()
-        path.move(to: CGPoint(x: radius, y: bodyTop))
+        path.addRoundedRect(
+            in: CGRect(x: 0, y: bodyTop, width: rect.width, height: bodyBottom - bodyTop),
+            cornerSize: CGSize(width: radius, height: radius)
+        )
 
-        if indicatorPlacement.pointsUp {
-            path.addIndicator(centerX: centerX, baseY: bodyTop, pointsUp: true)
+        if indicatorPlacement != .none {
+            path.addPath(
+                indicatorPath(
+                    in: rect,
+                    baseY: indicatorPlacement.pointsUp ? bodyTop : bodyBottom
+                )
+            )
         }
 
-        path.addLine(to: CGPoint(x: rect.width - radius, y: bodyTop))
-        path.addArc(
-            center: CGPoint(x: rect.width - radius, y: bodyTop + radius),
-            radius: radius,
-            startAngle: .degrees(-90),
-            endAngle: .degrees(0),
-            clockwise: false
-        )
-        path.addLine(to: CGPoint(x: rect.width, y: bodyBottom - radius))
-        path.addArc(
-            center: CGPoint(x: rect.width - radius, y: bodyBottom - radius),
-            radius: radius,
-            startAngle: .degrees(0),
-            endAngle: .degrees(90),
-            clockwise: false
-        )
+        return path
+    }
 
-        if indicatorPlacement.pointsDown {
-            path.addIndicator(centerX: centerX, baseY: bodyBottom, pointsUp: false)
-        }
+    /// The indicator triangle. Its straight edges stop short of the notional apex and a cubic
+    /// bridges the gap, which is what rounds the tip. The base is deliberately sunk one point into
+    /// the body so the two sub-paths overlap rather than merely touching, which would leave a
+    /// hairline.
+    private func indicatorPath(in rect: CGRect, baseY: CGFloat) -> Path {
+        let halfBase = LemonadeTooltipMetrics.indicatorBaseWidth / 2
+        let apexHeight = LemonadeTooltipMetrics.indicatorApexHeight
+        let tipStart = LemonadeTooltipMetrics.indicatorTipStart
+        let curvature = LemonadeTooltipMetrics.indicatorTipCurvature
 
-        path.addLine(to: CGPoint(x: radius, y: bodyBottom))
-        path.addArc(
-            center: CGPoint(x: radius, y: bodyBottom - radius),
-            radius: radius,
-            startAngle: .degrees(90),
-            endAngle: .degrees(180),
-            clockwise: false
+        let pointsUp = indicatorPlacement.pointsUp
+        let centerX = indicatorPlacement.indicatorCenterX(in: rect.width)
+        let overlap: CGFloat = pointsUp ? 1 : -1
+        let apexY = pointsUp ? baseY - apexHeight : baseY + apexHeight
+
+        let tipEntryX = (centerX - halfBase) + halfBase * tipStart
+        let tipExitX = (centerX + halfBase) - halfBase * tipStart
+        let tipY = baseY + (apexY - baseY) * tipStart
+        let controlY = tipY + (apexY - tipY) * curvature
+
+        var path = Path()
+        path.move(to: CGPoint(x: centerX - halfBase, y: baseY + overlap))
+        path.addLine(to: CGPoint(x: tipEntryX, y: tipY))
+        path.addCurve(
+            to: CGPoint(x: tipExitX, y: tipY),
+            control1: CGPoint(x: tipEntryX + (centerX - tipEntryX) * curvature, y: controlY),
+            control2: CGPoint(x: tipExitX + (centerX - tipExitX) * curvature, y: controlY)
         )
-        path.addLine(to: CGPoint(x: 0, y: bodyTop + radius))
-        path.addArc(
-            center: CGPoint(x: radius, y: bodyTop + radius),
-            radius: radius,
-            startAngle: .degrees(180),
-            endAngle: .degrees(270),
-            clockwise: false
-        )
+        path.addLine(to: CGPoint(x: centerX + halfBase, y: baseY + overlap))
         path.closeSubpath()
 
         return path
@@ -543,37 +550,6 @@ private struct LemonadeTooltipCoverShape: Shape {
         path.closeSubpath()
 
         return path
-    }
-}
-
-private extension Path {
-
-    /// Appends the indicator to the edge currently being traced. The outline is traced clockwise, so
-    /// the top edge runs left-to-right and the bottom edge right-to-left — `pointsUp` picks which.
-    mutating func addIndicator(centerX: CGFloat, baseY: CGFloat, pointsUp: Bool) {
-        let halfBase = LemonadeTooltipMetrics.indicatorBaseWidth / 2
-        let apexHeight = LemonadeTooltipMetrics.indicatorApexHeight
-        let apexY = pointsUp ? baseY - apexHeight : baseY + apexHeight
-        let entryX = pointsUp ? centerX - halfBase : centerX + halfBase
-        let exitX = pointsUp ? centerX + halfBase : centerX - halfBase
-
-        // The tip is rounded off: each straight edge stops short of the notional apex, and a cubic
-        // whose control points lean towards that apex bridges the gap.
-        let tipStart = LemonadeTooltipMetrics.indicatorTipStart
-        let curvature = LemonadeTooltipMetrics.indicatorTipCurvature
-        let tipEntryX = entryX + (centerX - entryX) * tipStart
-        let tipExitX = exitX + (centerX - exitX) * tipStart
-        let tipY = baseY + (apexY - baseY) * tipStart
-        let controlY = tipY + (apexY - tipY) * curvature
-
-        addLine(to: CGPoint(x: entryX, y: baseY))
-        addLine(to: CGPoint(x: tipEntryX, y: tipY))
-        addCurve(
-            to: CGPoint(x: tipExitX, y: tipY),
-            control1: CGPoint(x: tipEntryX + (centerX - tipEntryX) * curvature, y: controlY),
-            control2: CGPoint(x: tipExitX + (centerX - tipExitX) * curvature, y: controlY)
-        )
-        addLine(to: CGPoint(x: exitX, y: baseY))
     }
 }
 
