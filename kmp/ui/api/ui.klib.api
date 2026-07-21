@@ -252,8 +252,10 @@ final class com.teya.lemonade/LemonadeTooltipStep { // com.teya.lemonade/Lemonad
 }
 
 final class com.teya.lemonade/LemonadeTooltipTourLabels { // com.teya.lemonade/LemonadeTooltipTourLabels|null[0]
-    constructor <init>(kotlin/String = ..., kotlin/String = ..., kotlin/String? = ..., kotlin/String = ...) // com.teya.lemonade/LemonadeTooltipTourLabels.<init>|<init>(kotlin.String;kotlin.String;kotlin.String?;kotlin.String){}[0]
+    constructor <init>(kotlin/String = ..., kotlin/String = ..., kotlin/String? = ..., kotlin/String = ..., kotlin/String = ...) // com.teya.lemonade/LemonadeTooltipTourLabels.<init>|<init>(kotlin.String;kotlin.String;kotlin.String?;kotlin.String;kotlin.String){}[0]
 
+    final val close // com.teya.lemonade/LemonadeTooltipTourLabels.close|{}close[0]
+        final fun <get-close>(): kotlin/String // com.teya.lemonade/LemonadeTooltipTourLabels.close.<get-close>|<get-close>(){}[0]
     final val done // com.teya.lemonade/LemonadeTooltipTourLabels.done|{}done[0]
         final fun <get-done>(): kotlin/String // com.teya.lemonade/LemonadeTooltipTourLabels.done.<get-done>|<get-done>(){}[0]
     final val next // com.teya.lemonade/LemonadeTooltipTourLabels.next|{}next[0]

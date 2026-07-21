@@ -610,8 +610,8 @@ internal data class TooltipShape(
         val overlap = if (pointsUp) 1f else -1f
         val apexY = if (pointsUp) baseY - apexHeight else baseY + apexHeight
         val tipX = centerX
-        val tipEntryX = (centerX - halfBase) + halfBase * TOOLTIP_INDICATOR_TIP_START
-        val tipExitX = (centerX + halfBase) - halfBase * TOOLTIP_INDICATOR_TIP_START
+        val tipEntryX = centerX - halfBase + halfBase * TOOLTIP_INDICATOR_TIP_START
+        val tipExitX = centerX + halfBase - halfBase * TOOLTIP_INDICATOR_TIP_START
         val tipY = baseY + (apexY - baseY) * TOOLTIP_INDICATOR_TIP_START
         val controlY = tipY + (apexY - tipY) * TOOLTIP_INDICATOR_TIP_CURVATURE
 

@@ -406,8 +406,9 @@ public final class com/teya/lemonade/LemonadeTooltipStep {
 public final class com/teya/lemonade/LemonadeTooltipTourLabels {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getClose ()Ljava/lang/String;
 	public final fun getDone ()Ljava/lang/String;
 	public final fun getNext ()Ljava/lang/String;
 	public final fun getSkip ()Ljava/lang/String;

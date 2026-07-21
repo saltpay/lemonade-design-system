@@ -32,6 +32,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.ClipOp
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.drawscope.clipPath
@@ -99,15 +100,21 @@ public class LemonadeTooltipStep(
  * @param next Label of the action that advances to the next step.
  * @param done Label that replaces [next] on the final step.
  * @param skip Label of the action that abandons the tour. Pass `null` to leave it out.
+ * @param close Accessibility label for the close button. Kept separate from [skip], which can be
+ *   `null` — the close button is always there, so it always needs a label.
  * @param stepSeparator Word between the two numbers of the step counter, as in `1 of 3`.
  */
 public class LemonadeTooltipTourLabels(
     public val next: String = "Next",
     public val done: String = "Done",
     public val skip: String? = "Skip",
+    public val close: String = "Close",
     public val stepSeparator: String = "of",
 )
 
+// A snapshot of everything one presented tooltip needs. It is a plain carrier of the arguments the
+// caller already passed to show() or startTour(), so the parameter count tracks theirs.
+@Suppress("LongParameterList")
 internal class TooltipPresentation(
     val id: Int,
     val anchor: String,
@@ -370,7 +377,7 @@ public class LemonadeTooltipState {
             scrim = currentTour.scrim,
             dismissOnOutsideTap = true,
             onCloseClick = { skip() },
-            closeContentDescription = currentTour.labels.skip,
+            closeContentDescription = currentTour.labels.close,
             cover = step.cover,
             footer = tourFooter(tour = currentTour, index = stepIndex),
         )
@@ -488,17 +495,17 @@ public fun LemonadeTooltipHost(
             val visibleState = remember { MutableTransitionState(initialState = false) }
             visibleState.targetState = presentation != null
 
-            val shown = retained
+            // The presentation that should be on screen right now. Still set while the exit
+            // animation runs, hence currentState as well as targetState.
+            val shown = retained.takeIf {
+                visibleState.currentState || visibleState.targetState
+            }
             val hostBounds = tooltipState.hostBounds
             val anchor = shown?.let { current ->
                 tooltipState.anchorBoundsInHost(key = current.anchor)
             }
 
-            if (shown != null &&
-                hostBounds != null &&
-                anchor != null &&
-                (visibleState.currentState || visibleState.targetState)
-            ) {
+            if (shown != null && hostBounds != null && anchor != null) {
                 TooltipOverlay(
                     state = tooltipState,
                     presentation = shown,
@@ -511,6 +518,35 @@ public fun LemonadeTooltipHost(
     }
 }
 
+/** Draws the scrim behind a tooltip, punching out the anchor when the scrim is a spotlight. */
+private fun Modifier.drawTooltipScrim(
+    scrim: TooltipScrim,
+    color: Color,
+    spotlight: Rect,
+    spotlightRadius: Float,
+): Modifier =
+    drawBehind {
+        when (scrim) {
+            TooltipScrim.None -> Unit
+
+            TooltipScrim.Dim -> drawRect(color = color)
+
+            TooltipScrim.Spotlight -> {
+                val cutout = Path().apply {
+                    addRoundRect(
+                        roundRect = RoundRect(
+                            rect = spotlight,
+                            cornerRadius = CornerRadius(spotlightRadius, spotlightRadius),
+                        ),
+                    )
+                }
+                clipPath(path = cutout, clipOp = ClipOp.Difference) {
+                    drawRect(color = color)
+                }
+            }
+        }
+    }
+
 @Composable
 private fun TooltipOverlay(
     state: LemonadeTooltipState,
@@ -521,7 +557,6 @@ private fun TooltipOverlay(
 ) {
     val colors = LocalColors.current
     val opacities = LocalOpacities.current
-    val radius = LocalRadius.current
     val density = LocalDensity.current
 
     // The scrim only fades — scaling it with the tooltip would sweep the dimming across the screen.
@@ -569,35 +604,13 @@ private fun TooltipOverlay(
                         state.dismiss()
                     }
                 }
-            }.drawBehind {
-                when (presentation.scrim) {
-                    TooltipScrim.None -> Unit
-
-                    TooltipScrim.Dim -> drawRect(color = scrimColor)
-
-                    TooltipScrim.Spotlight -> {
-                        val cutout = Path().apply {
-                            addRoundRect(
-                                roundRect = RoundRect(
-                                    rect = spotlight,
-                                    cornerRadius = CornerRadius(spotlightRadius, spotlightRadius),
-                                ),
-                            )
-                        }
-                        clipPath(path = cutout, clipOp = ClipOp.Difference) {
-                            drawRect(color = scrimColor)
-                        }
-                    }
-                }
-            },
+            }.drawTooltipScrim(
+                scrim = presentation.scrim,
+                color = scrimColor,
+                spotlight = spotlight,
+                spotlightRadius = spotlightRadius,
+            ),
     ) {
-        val tooltipShape = remember(placement, radius.radius600) {
-            TooltipShape(
-                indicatorPlacement = placement,
-                cornerRadius = radius.radius600,
-            )
-        }
-
         Layout(
             content = {
                 // AnimatedVisibility wraps the tooltip rather than the whole overlay so that

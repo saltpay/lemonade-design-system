@@ -76,22 +76,27 @@ public struct LemonadeTooltipTourLabels: Sendable {
     let next: String
     let done: String
     let skip: String?
+    let close: String
     let stepSeparator: String
 
     /// - Parameters:
     ///   - next: Label of the action that advances to the next step.
     ///   - done: Label that replaces `next` on the final step.
     ///   - skip: Label of the action that abandons the tour. Pass `nil` to leave it out.
+    ///   - close: Accessibility label for the close button. Kept separate from `skip`, which can be
+    ///     `nil` — the close button is always there, so it always needs a label.
     ///   - stepSeparator: Word between the two numbers of the step counter, as in `1 of 3`.
     public init(
         next: String = "Next",
         done: String = "Done",
         skip: String? = "Skip",
+        close: String = "Close",
         stepSeparator: String = "of"
     ) {
         self.next = next
         self.done = done
         self.skip = skip
+        self.close = close
         self.stepSeparator = stepSeparator
     }
 }
@@ -379,7 +384,7 @@ public final class LemonadeTooltipManager: ObservableObject {
             scrim: tour.scrim,
             dismissOnOutsideTap: true,
             showCloseButton: true,
-            closeContentDescription: tour.labels.skip,
+            closeContentDescription: tour.labels.close,
             cover: step.cover,
             footer: nil,
             isTourStep: true,
