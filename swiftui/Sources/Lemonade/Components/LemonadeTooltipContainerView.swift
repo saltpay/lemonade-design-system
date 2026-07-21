@@ -26,13 +26,13 @@ private enum LemonadeTooltipLayout {
     static let enterAnimation: Animation = .spring(response: 0.31, dampingFraction: 0.55)
 
     /// Exit is a plain fade, with no scale.
-    static let exitAnimation: Animation = .easeOut(duration: 0.15)
+    static let exitAnimation: Animation = .easeOut(duration: 0.09)
 
     /// The scrim only fades — scaling it with the tooltip would sweep the dimming across the screen.
     static let scrimAnimation: Animation = .easeInOut(duration: 0.18)
 
     /// Matches `exitAnimation`, used to unmount once the fade has finished.
-    static let exitDuration: TimeInterval = 0.15
+    static let exitDuration: TimeInterval = 0.09
 
 }
 

@@ -77,7 +77,7 @@ private const val TOOLTIP_ENTER_DAMPING_RATIO = 0.55f
 
 private const val TOOLTIP_ENTER_FADE_MILLIS = 120
 
-private const val TOOLTIP_EXIT_FADE_MILLIS = 150
+private const val TOOLTIP_EXIT_FADE_MILLIS = 90
 
 private const val TOOLTIP_SCRIM_FADE_IN_MILLIS = 180
 
