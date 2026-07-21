@@ -77,6 +77,7 @@ struct HomeView: View {
                     DemoItem(title: "Card", destination: AnyView(CardDisplayView())),
                     DemoItem(title: "Divider", destination: AnyView(DividerDisplayView())),
                     DemoItem(title: "Notice", destination: AnyView(NoticeDisplayView())),
+                    DemoItem(title: "Tooltip", destination: AnyView(TooltipDisplayView())),
                     DemoItem(title: "HistoryTimeline", destination: AnyView(HistoryTimelineDisplayView()))
                 ]
             ),

@@ -1103,6 +1103,27 @@ public final class com/teya/lemonade/core/TagVoice : java/lang/Enum {
 	public static fun values ()[Lcom/teya/lemonade/core/TagVoice;
 }
 
+public final class com/teya/lemonade/core/TooltipFooterActionVariant : java/lang/Enum {
+	public static final field Primary Lcom/teya/lemonade/core/TooltipFooterActionVariant;
+	public static final field Secondary Lcom/teya/lemonade/core/TooltipFooterActionVariant;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/TooltipFooterActionVariant;
+	public static fun values ()[Lcom/teya/lemonade/core/TooltipFooterActionVariant;
+}
+
+public final class com/teya/lemonade/core/TooltipIndicatorPlacement : java/lang/Enum {
+	public static final field BottomCenter Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
+	public static final field BottomLeft Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
+	public static final field BottomRight Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
+	public static final field None Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
+	public static final field TopCenter Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
+	public static final field TopLeft Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
+	public static final field TopRight Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
+	public static fun values ()[Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
+}
+
 public abstract class com/teya/lemonade/core/TopBarAction {
 }
 

@@ -53,6 +53,7 @@ internal interface Displays {
             Toast,
             HistoryTimeline,
             Markdown,
+            Tooltip,
         )
     }
 
@@ -274,5 +275,10 @@ internal interface Displays {
     @Serializable
     data object Markdown : Displays {
         override val label: String = "Markdown"
+    }
+
+    @Serializable
+    data object Tooltip : Displays {
+        override val label: String = "Tooltip"
     }
 }

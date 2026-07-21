@@ -126,6 +126,13 @@ public final class com/teya/lemonade/ComposableSingletons$TextFieldKt {
 	public final fun getLambda$967498816$ui_release ()Lkotlin/jvm/functions/Function3;
 }
 
+public final class com/teya/lemonade/ComposableSingletons$TooltipKt {
+	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$TooltipKt;
+	public fun <init> ()V
+	public final fun getLambda$-226253370$ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$900957876$ui_release ()Lkotlin/jvm/functions/Function3;
+}
+
 public final class com/teya/lemonade/ComposableSingletons$TopBar_mobileKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$TopBar_mobileKt;
 	public fun <init> ()V
@@ -620,6 +627,21 @@ public final class com/teya/lemonade/ToastVoice : java/lang/Enum {
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/ToastVoice;
 	public static fun values ()[Lcom/teya/lemonade/ToastVoice;
+}
+
+public final class com/teya/lemonade/TooltipFooterScope : androidx/compose/foundation/layout/RowScope {
+	public static final field $stable I
+	public final fun Action (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/core/TooltipFooterActionVariant;Landroidx/compose/runtime/Composer;II)V
+	public final fun StepCounter (IILandroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public fun align (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Alignment$Vertical;)Landroidx/compose/ui/Modifier;
+	public fun alignBy (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/layout/HorizontalAlignmentLine;)Landroidx/compose/ui/Modifier;
+	public fun alignBy (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;)Landroidx/compose/ui/Modifier;
+	public fun alignByBaseline (Landroidx/compose/ui/Modifier;)Landroidx/compose/ui/Modifier;
+	public fun weight (Landroidx/compose/ui/Modifier;FZ)Landroidx/compose/ui/Modifier;
+}
+
+public final class com/teya/lemonade/TooltipKt {
+	public static final fun Tooltip (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lcom/teya/lemonade/core/TooltipIndicatorPlacement;Lkotlin/jvm/functions/Function0;Ljava/lang/String;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/teya/lemonade/TopBarState {
