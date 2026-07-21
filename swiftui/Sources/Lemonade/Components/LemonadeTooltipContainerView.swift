@@ -114,6 +114,9 @@ struct LemonadeTooltipContainerView<Content: View>: View {
     @State private var tooltipSize: CGSize = .zero
     @State private var retained: LemonadeTooltipPresentation?
     @State private var isVisible = false
+    // Tracked apart from `isVisible`, which restarts on every step so each tooltip gets its own
+    // entrance. The scrim spans the whole tour, so it must only fade when the tour itself ends.
+    @State private var isScrimVisible = false
 
     var body: some View {
         // The overlay hangs off `content` rather than wrapping it in a ZStack: a NavigationStack
@@ -145,6 +148,9 @@ struct LemonadeTooltipContainerView<Content: View>: View {
                         if let presentation = manager.presentation {
                             retained = presentation
                             isVisible = false
+                            withAnimation(LemonadeTooltipLayout.scrimAnimation) {
+                                isScrimVisible = true
+                            }
                             // A frame at the start scale before springing up to 1, so the growth is
                             // actually animated rather than applied on the same pass as the mount.
                             DispatchQueue.main.async {
@@ -154,6 +160,9 @@ struct LemonadeTooltipContainerView<Content: View>: View {
                             }
                         } else {
                             withAnimation(LemonadeTooltipLayout.exitAnimation) { isVisible = false }
+                            withAnimation(LemonadeTooltipLayout.scrimAnimation) {
+                                isScrimVisible = false
+                            }
                             let dismissed = retained?.id
                             DispatchQueue.main.asyncAfter(
                                 deadline: .now() + LemonadeTooltipLayout.exitDuration
@@ -200,6 +209,8 @@ struct LemonadeTooltipContainerView<Content: View>: View {
         )
 
         ZStack(alignment: .topLeading) {
+            // Kept outside the `.id` below. Identity is per step, so anything carrying it is torn
+            // down and rebuilt when a tour advances — which would flash the backdrop between steps.
             scrim(presentation: presentation, anchor: anchor)
 
             tooltip(presentation: presentation, placement: placement)
@@ -220,15 +231,15 @@ struct LemonadeTooltipContainerView<Content: View>: View {
                 .offset(x: origin.x, y: origin.y)
                 // Also hidden until measured, so it never flashes at the wrong position.
                 .opacity(tooltipSize == .zero || !isVisible ? 0 : 1)
+                .onPreferenceChange(LemonadeTooltipSizePreferenceKey.self) { size in
+                    tooltipSize = size
+                }
+                // Deliberately not reset when a step disappears: the outgoing step's teardown runs
+                // after the incoming one has measured, so clearing it there would race and leave the
+                // new tooltip stuck at zero size, and therefore invisible. Carrying the previous size
+                // over is harmless — it is only used until the new measurement lands a frame later.
+                .id(presentation.id)
         }
-        .onPreferenceChange(LemonadeTooltipSizePreferenceKey.self) { size in
-            tooltipSize = size
-        }
-        // Deliberately not reset when a step disappears: the outgoing step's teardown runs after the
-        // incoming one has measured, so clearing it there would race and leave the new tooltip stuck
-        // at zero size, and therefore invisible. Carrying the previous size over is harmless — it is
-        // only used until the new measurement lands a frame later.
-        .id(presentation.id)
     }
 
     @ViewBuilder
@@ -266,7 +277,7 @@ struct LemonadeTooltipContainerView<Content: View>: View {
                 }
             }
         }
-        .opacity(isVisible ? 1 : 0)
+        .opacity(isScrimVisible ? 1 : 0)
         .contentShape(Rectangle())
         .onTapGesture {
             // The tap is always swallowed so the UI underneath cannot be acted on while a tooltip
