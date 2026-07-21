@@ -285,7 +285,10 @@ private fun CoreTooltip(
     val indicatorTopInset = if (indicatorPlacement.pointsUp) TooltipIndicatorHeight else 0.dp
     val indicatorBottomInset = if (indicatorPlacement.pointsDown) TooltipIndicatorHeight else 0.dp
 
-    val surfaceColor = colors.background.bgAlwaysDark
+    // Opaque rather than the design's translucent bg-always-dark: without a backdrop blur a
+    // ~74% fill lets busy content read straight through the text, and blurring it on Compose needs
+    // a third-party dependency that is not worth carrying for one component.
+    val surfaceColor = colors.background.bgDefaultInverse
     Box(modifier = modifier.width(width = TooltipWidth)) {
         // The shadow is cast from the body rectangle rather than the full tooltip outline. Given an
         // Outline.Generic shape, Compose's dropShadow clips the blur a few dp past the node bounds
@@ -306,7 +309,7 @@ private fun CoreTooltip(
         Column(
             modifier = Modifier
                 .background(
-                    color = surfaceColor.copy(alpha = surfaceColor.alpha * opacities.base.opacity80),
+                    color = surfaceColor,
                     shape = shape,
                 ).padding(
                     top = indicatorTopInset,
