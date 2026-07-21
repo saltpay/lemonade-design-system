@@ -288,9 +288,11 @@ private fun CoreTooltip(
     val indicatorTopInset = if (indicatorPlacement.pointsUp) TooltipIndicatorHeight else 0.dp
     val indicatorBottomInset = if (indicatorPlacement.pointsDown) TooltipIndicatorHeight else 0.dp
 
-    // Opaque rather than the design's translucent bg-always-dark: without a backdrop blur a
-    // ~74% fill lets busy content read straight through the text, and blurring it on Compose needs
-    // a third-party dependency that is not worth carrying for one component.
+    // Deliberately opaque. The design fills this at 80% opacity, and SwiftUI matches that over a
+    // system material, but Compose has no backdrop blur without a third-party dependency that is
+    // not worth carrying for one component. Left translucent and unblurred, busy content reads
+    // straight through the text, so legibility wins over matching the design here. The consequence
+    // is that Compose renders darker than both the design and iOS.
     val surfaceColor = colors.background.bgDefaultInverse
     Box(
         modifier = modifier
