@@ -28,6 +28,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
@@ -503,7 +504,7 @@ internal data class TooltipShape(
         val radius = with(density) { cornerRadius.toPx() }
             .coerceAtMost(maximumValue = minOf(size.width, bodyBottom - bodyTop) / 2f)
 
-        val path = Path().apply {
+        val body = Path().apply {
             addRoundRect(
                 roundRect = RoundRect(
                     rect = Rect(
@@ -515,16 +516,28 @@ internal data class TooltipShape(
                     cornerRadius = CornerRadius(radius, radius),
                 ),
             )
+        }
 
-            if (indicatorPlacement != TooltipIndicatorPlacement.None) {
-                addPath(
-                    path = indicatorPath(
-                        size = size,
-                        density = density,
-                        baseY = if (indicatorPlacement.pointsUp) bodyTop else bodyBottom,
-                    ),
-                )
-            }
+        if (indicatorPlacement == TooltipIndicatorPlacement.None) {
+            return Outline.Generic(path = body)
+        }
+
+        val indicator = indicatorPath(
+            size = size,
+            density = density,
+            baseY = if (indicatorPlacement.pointsUp) bodyTop else bodyBottom,
+        )
+
+        // An explicit union rather than appending the triangle as a second sub-path. Skia adds the
+        // round rect with the opposite winding to the triangle, so under the non-zero rule the two
+        // cancel exactly where they overlap and punch a 1px hole the width of the indicator base
+        // across the join. A boolean union does not care about winding.
+        val path = Path().apply {
+            op(
+                path1 = body,
+                path2 = indicator,
+                operation = PathOperation.Union,
+            )
         }
 
         return Outline.Generic(path = path)

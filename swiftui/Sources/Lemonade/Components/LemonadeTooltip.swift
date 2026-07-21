@@ -454,6 +454,10 @@ private struct LemonadeTooltipShape: Shape {
             cornerSize: CGSize(width: radius, height: radius)
         )
 
+        // Appended as a second sub-path and unioned by the non-zero fill rule. This works because
+        // CoreGraphics winds `addRoundedRect` the same way as the triangle below; reverse either and
+        // they cancel where they overlap, leaving a hairline hole across the join. Compose needs an
+        // explicit boolean union for exactly that reason — Skia winds its round rect the other way.
         if indicatorPlacement != .none {
             path.addPath(
                 indicatorPath(
