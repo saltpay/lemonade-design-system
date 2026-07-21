@@ -286,20 +286,29 @@ private fun CoreTooltip(
     val indicatorBottomInset = if (indicatorPlacement.pointsDown) TooltipIndicatorHeight else 0.dp
 
     val surfaceColor = colors.background.bgAlwaysDark
-    Box(
-        modifier = modifier
-            .width(width = TooltipWidth)
-            .lemonadeShadow(
-                shadow = LemonadeShadow.Xlarge,
-                shape = shape,
-            ).background(
-                color = surfaceColor.copy(alpha = surfaceColor.alpha * opacities.base.opacity80),
-                shape = shape,
-            ),
-    ) {
+    Box(modifier = modifier.width(width = TooltipWidth)) {
+        // The shadow is cast from the body rectangle rather than the full tooltip outline. Given an
+        // Outline.Generic shape, Compose's dropShadow clips the blur a few dp past the node bounds
+        // on Android, which cuts the falloff off square; a rounded rect takes the un-clipped path.
+        // The indicator goes unshadowed, which at this token's 5% alpha over 8dp is not visible.
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .padding(
+                    top = indicatorTopInset,
+                    bottom = indicatorBottomInset,
+                ).lemonadeShadow(
+                    shadow = LemonadeShadow.Xlarge,
+                    shape = LocalShapes.current.radius600,
+                ),
+        )
+
         Column(
             modifier = Modifier
-                .padding(
+                .background(
+                    color = surfaceColor.copy(alpha = surfaceColor.alpha * opacities.base.opacity80),
+                    shape = shape,
+                ).padding(
                     top = indicatorTopInset,
                     bottom = indicatorBottomInset,
                 ).padding(all = spaces.spacing100),
