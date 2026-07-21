@@ -41,19 +41,19 @@ import com.teya.lemonade.core.LemonadeShadow
 import com.teya.lemonade.core.TooltipFooterActionVariant
 import com.teya.lemonade.core.TooltipIndicatorPlacement
 
-private val TooltipWidth = 280.dp
+internal val TooltipWidth = 280.dp
 
 /** Height of the visible, rounded-off indicator — how far it protrudes past the tooltip body. */
-private val TooltipIndicatorHeight = 8.dp
+internal val TooltipIndicatorHeight = 8.dp
 
 /** Width of the indicator where it meets the tooltip body. */
-private val TooltipIndicatorBaseWidth = 15.dp
+internal val TooltipIndicatorBaseWidth = 15.dp
 
 /** Height the indicator would reach if its tip were a sharp point instead of a rounded one. */
-private val TooltipIndicatorApexHeight = 10.dp
+internal val TooltipIndicatorApexHeight = 10.dp
 
 /** Distance from the tooltip edge to the near side of the indicator base, for the left/right placements. */
-private val TooltipIndicatorEdgeInset = 40.dp
+internal val TooltipIndicatorEdgeInset = 40.dp
 
 /**
  * Fraction of the way from the indicator base to its notional apex at which the rounded tip starts.
@@ -438,7 +438,7 @@ private fun TooltipCloseButton(
 
 // MARK: - Indicator Geometry
 
-private val TooltipIndicatorPlacement.pointsUp: Boolean
+internal val TooltipIndicatorPlacement.pointsUp: Boolean
     get() {
         return when (this) {
             TooltipIndicatorPlacement.TopLeft,
@@ -454,7 +454,7 @@ private val TooltipIndicatorPlacement.pointsUp: Boolean
         }
     }
 
-private val TooltipIndicatorPlacement.pointsDown: Boolean
+internal val TooltipIndicatorPlacement.pointsDown: Boolean
     get() {
         return when (this) {
             TooltipIndicatorPlacement.BottomLeft,

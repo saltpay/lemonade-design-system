@@ -10,7 +10,9 @@ public fun MainViewController(): UIViewController =
     ComposeUIViewController {
         LemonadeStyledTheme {
             LemonadeToastHost {
-                App()
+                LemonadeTooltipHost {
+                    App()
+                }
             }
         }
     }

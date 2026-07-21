@@ -233,31 +233,34 @@ public extension LemonadeUi {
         @ViewBuilder cover: @escaping () -> Cover = { EmptyView() },
         @ViewBuilder footer: @escaping (LemonadeTooltipFooterScope) -> Footer = { _ in EmptyView() }
     ) -> some View {
+        // The slots are type-erased here so the view itself can treat "absent" as nil rather than
+        // inferring it from a generic parameter. The container builds tooltips from stored,
+        // already-erased slots, where that inference is not available.
         LemonadeTooltipView(
             content: content,
             title: title,
             indicatorPlacement: indicatorPlacement,
             onClose: onClose,
             closeContentDescription: closeContentDescription,
-            cover: cover,
-            footer: footer
+            cover: Cover.self == EmptyView.self ? nil : AnyView(cover()),
+            footer: Footer.self == EmptyView.self ? nil : { scope in AnyView(footer(scope)) }
         )
     }
 }
 
 // MARK: - Internal Tooltip View
 
-private struct LemonadeTooltipView<Cover: View, Footer: View>: View {
+struct LemonadeTooltipView: View {
     let content: String
     let title: String?
     let indicatorPlacement: LemonadeTooltipIndicatorPlacement
     let onClose: (() -> Void)?
     let closeContentDescription: String?
-    @ViewBuilder let cover: () -> Cover
-    @ViewBuilder let footer: (LemonadeTooltipFooterScope) -> Footer
+    let cover: AnyView?
+    let footer: ((LemonadeTooltipFooterScope) -> AnyView)?
 
-    private var hasCover: Bool { Cover.self != EmptyView.self }
-    private var hasFooter: Bool { Footer.self != EmptyView.self }
+    private var hasCover: Bool { cover != nil }
+    private var hasFooter: Bool { footer != nil }
 
     // The indicator is drawn outside the body, so the body has to be inset by its height on
     // whichever edge the indicator sits on.
@@ -310,7 +313,7 @@ private struct LemonadeTooltipView<Cover: View, Footer: View>: View {
         // specifies.
         Color.clear
             .aspectRatio(LemonadeTooltipMetrics.coverAspectRatio, contentMode: .fit)
-            .overlay { cover() }
+            .overlay { cover }
             .background(LemonadeTheme.colors.background.bgElevatedHigh)
             .clipShape(
                 LemonadeTooltipCoverShape(
@@ -343,7 +346,7 @@ private struct LemonadeTooltipView<Cover: View, Footer: View>: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
 
-            if hasFooter {
+            if let footer {
                 HStack(spacing: LemonadeTheme.spaces.spacing100) {
                     footer(LemonadeTooltipFooterScope())
                 }

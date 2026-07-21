@@ -1124,6 +1124,15 @@ public final class com/teya/lemonade/core/TooltipIndicatorPlacement : java/lang/
 	public static fun values ()[Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
 }
 
+public final class com/teya/lemonade/core/TooltipScrim : java/lang/Enum {
+	public static final field Dim Lcom/teya/lemonade/core/TooltipScrim;
+	public static final field None Lcom/teya/lemonade/core/TooltipScrim;
+	public static final field Spotlight Lcom/teya/lemonade/core/TooltipScrim;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/TooltipScrim;
+	public static fun values ()[Lcom/teya/lemonade/core/TooltipScrim;
+}
+
 public abstract class com/teya/lemonade/core/TopBarAction {
 }
 

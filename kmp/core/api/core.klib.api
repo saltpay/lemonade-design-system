@@ -1236,6 +1236,18 @@ final enum class com.teya.lemonade.core/TooltipIndicatorPlacement : kotlin/Enum<
     final fun values(): kotlin/Array<com.teya.lemonade.core/TooltipIndicatorPlacement> // com.teya.lemonade.core/TooltipIndicatorPlacement.values|values#static(){}[0]
 }
 
+final enum class com.teya.lemonade.core/TooltipScrim : kotlin/Enum<com.teya.lemonade.core/TooltipScrim> { // com.teya.lemonade.core/TooltipScrim|null[0]
+    enum entry Dim // com.teya.lemonade.core/TooltipScrim.Dim|null[0]
+    enum entry None // com.teya.lemonade.core/TooltipScrim.None|null[0]
+    enum entry Spotlight // com.teya.lemonade.core/TooltipScrim.Spotlight|null[0]
+
+    final val entries // com.teya.lemonade.core/TooltipScrim.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.teya.lemonade.core/TooltipScrim> // com.teya.lemonade.core/TooltipScrim.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.teya.lemonade.core/TooltipScrim // com.teya.lemonade.core/TooltipScrim.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.teya.lemonade.core/TooltipScrim> // com.teya.lemonade.core/TooltipScrim.values|values#static(){}[0]
+}
+
 sealed interface com.teya.lemonade.core/LemonadeAsset // com.teya.lemonade.core/LemonadeAsset|null[0]
 
 final class com.teya.lemonade.core/LemonadeTextStyle { // com.teya.lemonade.core/LemonadeTextStyle|null[0]

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -11,13 +12,27 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TooltipFooterActionVariant
 import com.teya.lemonade.core.TooltipIndicatorPlacement
+
+private const val FEES_ANCHOR = "fees-info"
+private const val TAKINGS_ANCHOR = "takings"
+private const val REPORTS_ANCHOR = "reports"
 
 @Composable
 internal fun TooltipDisplay() {
     SampleScreenDisplayColumn("Tooltip", itemsSpacing = LemonadeTheme.spaces.spacing600) {
+        TooltipSection("Anchored — on-demand help") {
+            TooltipOnDemandHelpExample()
+        }
+
+        TooltipSection("Anchored — guided tour") {
+            TooltipTourManagerExample()
+        }
+
         TooltipSection("Indicator Placements") {
             TooltipIndicatorPlacement.entries.forEach { placement ->
                 LemonadeUi.Tooltip(
@@ -72,6 +87,84 @@ internal fun TooltipDisplay() {
                 },
             )
         }
+    }
+}
+
+@Composable
+private fun TooltipOnDemandHelpExample() {
+    val tooltips = LocalLemonadeTooltipState.current
+
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        LemonadeUi.Text(
+            text = "Daily fees",
+            textStyle = LemonadeTheme.typography.bodyMediumRegular,
+        )
+        LemonadeUi.IconButton(
+            icon = LemonadeIcons.CircleInfo,
+            contentDescription = "About fees",
+            onClick = {
+                tooltips.show(
+                    anchor = FEES_ANCHOR,
+                    title = "Daily fees",
+                    content = "Fees are deducted once a day, just after midnight.",
+                )
+            },
+            modifier = Modifier.lemonadeTooltipAnchor(key = FEES_ANCHOR),
+        )
+    }
+}
+
+@Composable
+private fun TooltipTourManagerExample() {
+    val tooltips = LocalLemonadeTooltipState.current
+    val toasts = LocalLemonadeToastState.current
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            LemonadeUi.Tag(
+                label = "Takings",
+                modifier = Modifier.lemonadeTooltipAnchor(key = TAKINGS_ANCHOR),
+            )
+            LemonadeUi.Tag(
+                label = "Reports",
+                modifier = Modifier.lemonadeTooltipAnchor(key = REPORTS_ANCHOR),
+            )
+        }
+
+        LemonadeUi.Button(
+            label = "Start tour",
+            onClick = {
+                tooltips.startTour(
+                    steps = listOf(
+                        LemonadeTooltipStep(
+                            anchor = TAKINGS_ANCHOR,
+                            title = "Daily takings",
+                            content = "Everything you sold today, updated as it happens.",
+                        ),
+                        LemonadeTooltipStep(
+                            anchor = REPORTS_ANCHOR,
+                            title = "Reports",
+                            content = "Dig into the numbers over any period you like.",
+                        ),
+                        LemonadeTooltipStep(
+                            anchor = FEES_ANCHOR,
+                            title = "Fees",
+                            content = "Tap here whenever you want the fee breakdown.",
+                        ),
+                    ),
+                    onFinish = { toasts.show(label = "Tour finished", voice = ToastVoice.Success) },
+                    onSkip = { toasts.show(label = "Tour skipped") },
+                )
+            },
+        )
     }
 }
 

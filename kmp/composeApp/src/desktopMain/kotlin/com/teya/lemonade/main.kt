@@ -12,7 +12,9 @@ internal fun main() {
         ) {
             LemonadeStyledTheme {
                 LemonadeToastHost {
-                    App()
+                    LemonadeTooltipHost {
+                        App()
+                    }
                 }
             }
         }

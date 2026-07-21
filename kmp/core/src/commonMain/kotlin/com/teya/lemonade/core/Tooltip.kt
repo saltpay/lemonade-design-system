@@ -23,6 +23,23 @@ public enum class TooltipIndicatorPlacement {
 }
 
 /**
+ * What the tooltip host draws behind a tooltip while it is showing.
+ *
+ * Regardless of the mode, the host swallows taps outside the tooltip so that an outside tap can
+ * dismiss it — the UI underneath is not interactive while a tooltip is up.
+ */
+public enum class TooltipScrim {
+    /** Nothing is drawn behind the tooltip. The default for on-demand help. */
+    None,
+
+    /** A translucent scrim covers the whole host. */
+    Dim,
+
+    /** As [Dim], but punched through around the anchor so the described element stays lit. */
+    Spotlight,
+}
+
+/**
  * Emphasis of a tooltip footer action.
  */
 public enum class TooltipFooterActionVariant {

@@ -1,7 +1,14 @@
 import SwiftUI
 import Lemonade
 
+private let feesAnchor = "fees-info"
+private let takingsAnchor = "takings"
+private let reportsAnchor = "reports"
+
 struct TooltipDisplayView: View {
+    @EnvironmentObject private var tooltips: LemonadeTooltipManager
+    @EnvironmentObject private var toasts: LemonadeToastManager
+
     @State private var closeButtonDismissed = false
     @State private var step = 1
 
@@ -10,6 +17,64 @@ struct TooltipDisplayView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 32) {
+                sectionView(title: "Anchored — on-demand help") {
+                    HStack(spacing: 12) {
+                        LemonadeUi.Text(
+                            "Daily fees",
+                            textStyle: LemonadeTypography.shared.bodyMediumRegular
+                        )
+                        LemonadeUi.IconButton(
+                            icon: .circleInfo,
+                            contentDescription: "About fees",
+                            onClick: {
+                                tooltips.show(
+                                    anchor: feesAnchor,
+                                    content: "Fees are deducted once a day, just after midnight.",
+                                    title: "Daily fees"
+                                )
+                            },
+                            type: .ghost,
+                            size: .small
+                        )
+                        .lemonadeTooltipAnchor(feesAnchor)
+                    }
+                }
+
+                sectionView(title: "Anchored — guided tour") {
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack(spacing: 12) {
+                            LemonadeUi.Tag(label: "Takings")
+                                .lemonadeTooltipAnchor(takingsAnchor)
+                            LemonadeUi.Tag(label: "Reports")
+                                .lemonadeTooltipAnchor(reportsAnchor)
+                        }
+
+                        LemonadeUi.Button(label: "Start tour") {
+                            tooltips.startTour(
+                                steps: [
+                                    LemonadeTooltipStep(
+                                        anchor: takingsAnchor,
+                                        content: "Everything you sold today, updated as it happens.",
+                                        title: "Daily takings"
+                                    ),
+                                    LemonadeTooltipStep(
+                                        anchor: reportsAnchor,
+                                        content: "Dig into the numbers over any period you like.",
+                                        title: "Reports"
+                                    ),
+                                    LemonadeTooltipStep(
+                                        anchor: feesAnchor,
+                                        content: "Tap here whenever you want the fee breakdown.",
+                                        title: "Fees"
+                                    )
+                                ],
+                                onFinish: { toasts.show(label: "Tour finished", voice: .success) },
+                                onSkip: { toasts.show(label: "Tour skipped") }
+                            )
+                        }
+                    }
+                }
+
                 sectionView(title: "Indicator Placements") {
                     VStack(spacing: 12) {
                         ForEach(LemonadeTooltipIndicatorPlacement.allCases, id: \.self) { placement in
