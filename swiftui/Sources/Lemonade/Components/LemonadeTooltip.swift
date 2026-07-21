@@ -79,15 +79,15 @@ public enum LemonadeTooltipFooterActionVariant: Hashable, Sendable {
 
     var backgroundColor: Color {
         switch self {
-        case .primary: return LemonadeTheme.colors.background.bgAlwaysLight
+        case .primary: return LemonadeTheme.colors.background.bgDefault
         case .secondary: return Color.clear
         }
     }
 
     var contentColor: Color {
         switch self {
-        case .primary: return LemonadeTheme.colors.content.contentAlwaysDark
-        case .secondary: return LemonadeTheme.colors.content.contentAlwaysLight
+        case .primary: return LemonadeTheme.colors.content.contentPrimary
+        case .secondary: return LemonadeTheme.colors.content.contentPrimaryInverse
         }
     }
 
@@ -164,7 +164,7 @@ public struct LemonadeTooltipFooterScope {
         LemonadeUi.Text(
             "\(currentStep) \(separator) \(totalSteps)",
             textStyle: LemonadeTypography.shared.bodyXSmallMedium,
-            color: LemonadeTheme.colors.content.contentAlwaysLight
+            color: LemonadeTheme.colors.content.contentPrimaryInverse
                 .opacity(LemonadeTheme.opacity.base.opacity80),
             maxLines: 1
         )
@@ -318,7 +318,7 @@ struct LemonadeTooltipView: View {
 
     /// The tooltip surface: a blurred backdrop with the fill token layered over it.
     ///
-    /// The fill is only ~74% opaque (an 80% layer opacity over `bgAlwaysDark`), so whatever the
+    /// The fill is an 80% layer opacity over `bgDefaultInverse`, so whatever the
     /// tooltip covers shows through. Blurring the backdrop keeps that legible instead of letting
     /// busy content read through the text.
     private var surface: some View {
@@ -333,7 +333,7 @@ struct LemonadeTooltipView: View {
             shape.fill(.ultraThinMaterial)
 
             shape.fill(
-                LemonadeTheme.colors.background.bgAlwaysDark
+                LemonadeTheme.colors.background.bgDefaultInverse
                     .opacity(LemonadeTheme.opacity.base.opacity80)
             )
         }
@@ -392,7 +392,7 @@ struct LemonadeTooltipView: View {
                     LemonadeUi.Text(
                         title,
                         textStyle: LemonadeTypography.shared.bodySmallSemiBold,
-                        color: LemonadeTheme.colors.content.contentAlwaysLight
+                        color: LemonadeTheme.colors.content.contentPrimaryInverse
                     )
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -400,7 +400,7 @@ struct LemonadeTooltipView: View {
                 LemonadeUi.Text(
                     content,
                     textStyle: LemonadeTypography.shared.bodySmallRegular,
-                    color: LemonadeTheme.colors.content.contentAlwaysLight
+                    color: LemonadeTheme.colors.content.contentPrimaryInverse
                         .opacity(LemonadeTheme.opacity.base.opacity90)
                 )
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -433,7 +433,7 @@ struct LemonadeTooltipView: View {
             .contentShape(Circle())
         }
         .buttonStyle(.plain)
-        .opacity(LemonadeTheme.opacity.base.opacity60)
+        .opacity(LemonadeTheme.opacity.base.opacity40)
     }
 }
 
@@ -460,7 +460,7 @@ private struct LemonadeTooltipFooterActionView: View {
             .overlay {
                 Capsule()
                     .strokeBorder(
-                        LemonadeTheme.colors.border.borderNeutralLowInverse,
+                        LemonadeTheme.colors.border.borderNeutralMediumInverse,
                         lineWidth: variant.borderWidth
                     )
             }

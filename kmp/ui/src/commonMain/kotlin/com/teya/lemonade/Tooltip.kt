@@ -106,7 +106,7 @@ public class TooltipFooterScope internal constructor(
         LemonadeUi.Text(
             text = "$currentStep $separator $totalSteps",
             textStyle = LocalTypographies.current.bodyXSmallMedium,
-            color = colors.content.contentAlwaysLight.copy(alpha = opacities.base.opacity80),
+            color = colors.content.contentPrimaryInverse.copy(alpha = opacities.base.opacity80),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = modifier,
@@ -135,12 +135,12 @@ public class TooltipFooterScope internal constructor(
         val typographies = LocalTypographies.current
 
         val backgroundColor = when (variant) {
-            TooltipFooterActionVariant.Primary -> colors.background.bgAlwaysLight
+            TooltipFooterActionVariant.Primary -> colors.background.bgDefault
             TooltipFooterActionVariant.Secondary -> Color.Transparent
         }
         val contentColor = when (variant) {
-            TooltipFooterActionVariant.Primary -> colors.content.contentAlwaysDark
-            TooltipFooterActionVariant.Secondary -> colors.content.contentAlwaysLight
+            TooltipFooterActionVariant.Primary -> colors.content.contentPrimary
+            TooltipFooterActionVariant.Secondary -> colors.content.contentPrimaryInverse
         }
         val textStyle = when (variant) {
             TooltipFooterActionVariant.Primary -> typographies.bodySmallSemiBold
@@ -150,7 +150,7 @@ public class TooltipFooterScope internal constructor(
             TooltipFooterActionVariant.Primary -> Modifier
             TooltipFooterActionVariant.Secondary -> Modifier.border(
                 width = LocalBorderWidths.current.base.border25,
-                color = colors.border.borderNeutralLowInverse,
+                color = colors.border.borderNeutralMediumInverse,
                 shape = shapes.radiusFull,
             )
         }
@@ -399,7 +399,7 @@ private fun TooltipBody(
                 LemonadeUi.Text(
                     text = title,
                     textStyle = typographies.bodySmallSemiBold,
-                    color = colors.content.contentAlwaysLight,
+                    color = colors.content.contentPrimaryInverse,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -407,7 +407,7 @@ private fun TooltipBody(
             LemonadeUi.Text(
                 text = content,
                 textStyle = typographies.bodySmallRegular,
-                color = colors.content.contentAlwaysLight.copy(alpha = opacities.base.opacity90),
+                color = colors.content.contentPrimaryInverse.copy(alpha = opacities.base.opacity90),
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -444,7 +444,7 @@ private fun TooltipCloseButton(
             .clickable(
                 onClick = onClick,
                 role = Role.Button,
-            ).alpha(alpha = opacities.base.opacity60),
+            ).alpha(alpha = opacities.base.opacity40),
     ) {
         LemonadeUi.Icon(
             icon = LemonadeIcons.Times,
