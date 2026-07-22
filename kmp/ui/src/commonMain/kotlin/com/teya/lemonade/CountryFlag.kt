@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.Dp
 import com.teya.lemonade.core.CountryFlagShape
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeCountryFlags
-import org.jetbrains.compose.resources.painterResource
 
 /**
  * Country Flags component, to display the available country flags in standardized way.
@@ -86,7 +85,7 @@ private fun CoreCountryFlag(
 ) {
     val resolvedShape = shape.resolveShape(size = size)
     Image(
-        painter = painterResource(resource = flag.drawableResource),
+        painter = rememberAssetPainter(resource = flag.drawableResource),
         contentDescription = contentDescription,
         contentScale = ContentScale.Crop,
         modifier = modifier

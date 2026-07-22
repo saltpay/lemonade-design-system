@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
-import org.jetbrains.compose.resources.painterResource
 
 /**
  * Icon component, to indication status and possible actions via iconography
@@ -49,7 +48,7 @@ public fun LemonadeUi.Icon(
     modifier: Modifier = Modifier,
 ) {
     CoreIcon(
-        painter = painterResource(resource = icon.drawableResource),
+        painter = rememberAssetPainter(resource = icon.drawableResource),
         contentDescription = contentDescription,
         tint = tint,
         size = size,

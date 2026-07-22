@@ -9,7 +9,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeBrandLogos
-import org.jetbrains.compose.resources.painterResource
 
 /**
  * Brand logo component, to indication of Card Schemes in standardized way.
@@ -59,7 +58,7 @@ private fun CoreBrandLogo(
         logo.drawableResource
     }
     Image(
-        painter = painterResource(resource = resource),
+        painter = rememberAssetPainter(resource = resource),
         contentDescription = contentDescription,
         modifier = modifier.requiredSize(size = size.dp),
     )
