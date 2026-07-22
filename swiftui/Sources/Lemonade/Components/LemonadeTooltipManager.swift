@@ -19,7 +19,7 @@ public enum LemonadeTooltipScrim: Hashable, Sendable {
 
 // MARK: - Tooltip Step
 
-/// One step of a guided tour. See ``LemonadeTooltipManager/startTour(steps:labels:scrim:onFinish:onSkip:)``.
+/// One step of a guided tour. See ``LemonadeTooltipManager/startTour(steps:labels:scrim:showCloseButton:onFinish:onSkip:)``.
 public struct LemonadeTooltipStep: Identifiable {
     public let id: UUID
     let anchor: String

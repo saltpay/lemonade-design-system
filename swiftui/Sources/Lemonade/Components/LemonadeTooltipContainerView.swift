@@ -67,7 +67,7 @@ private struct LemonadeTooltipAnchorModifier: ViewModifier {
 
 public extension View {
     /// Registers this view as a tooltip anchor under `key`, so ``LemonadeTooltipManager/show(anchor:content:title:indicatorPlacement:scrim:dismissOnOutsideTap:showCloseButton:closeContentDescription:)``
-    /// and ``LemonadeTooltipManager/startTour(steps:labels:scrim:onFinish:onSkip:)`` can point at it.
+    /// and ``LemonadeTooltipManager/startTour(steps:labels:scrim:showCloseButton:onFinish:onSkip:)`` can point at it.
     ///
     /// Keys are global to the enclosing `lemonadeTooltipContainer()`. A tooltip aimed at an anchor
     /// that is not on screen simply does not render — which is what lets a tour walk across several
