@@ -4,6 +4,7 @@ import Lemonade
 struct ToastDisplayView: View {
     @EnvironmentObject private var toastManager: LemonadeToastManager
     @State private var textFieldValue: String = ""
+    @State private var showOverSheet = false
 
     var body: some View {
         List {
@@ -178,6 +179,12 @@ struct ToastDisplayView: View {
                 }
             }
 
+            Section("Over Bottom Sheet") {
+                Button("Open bottom sheet") {
+                    showOverSheet = true
+                }
+            }
+
             Section("Keyboard Handling") {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Tap the text field to open keyboard, then show a toast:")
@@ -213,6 +220,22 @@ struct ToastDisplayView: View {
             }
         }
         .navigationTitle("Toast")
+        .sheet(isPresented: $showOverSheet) {
+            VStack(spacing: 16) {
+                Text("Show a toast while this sheet is open — does it appear on top of the sheet, or behind it?")
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.secondary)
+                Button("Show toast on top") {
+                    toastManager.show(
+                        label: "This toast should be above the bottom sheet",
+                        voice: .success
+                    )
+                }
+                .buttonStyle(.borderedProminent)
+            }
+            .padding()
+            .presentationDetents([.medium])
+        }
     }
 }
 
