@@ -760,9 +760,10 @@ internal fun resolvePointsUp(
     hostSize: Size,
     forcedPlacement: TooltipIndicatorPlacement?,
 ): Boolean =
-    when {
-        forcedPlacement != null && forcedPlacement != TooltipIndicatorPlacement.None -> forcedPlacement.pointsUp
-        else -> anchor.center.y < hostSize.height / 2f
+    if (forcedPlacement != null && forcedPlacement != TooltipIndicatorPlacement.None) {
+        forcedPlacement.pointsUp
+    } else {
+        anchor.center.y < hostSize.height / 2f
     }
 
 /**
