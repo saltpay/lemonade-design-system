@@ -12,6 +12,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -133,6 +134,7 @@ private class TooltipTour(
     val steps: List<LemonadeTooltipStep>,
     val labels: LemonadeTooltipTourLabels,
     val scrim: TooltipScrim,
+    val showCloseButton: Boolean,
     val onFinish: () -> Unit,
     val onSkip: () -> Unit,
 )
@@ -267,6 +269,7 @@ public class LemonadeTooltipState {
      * @param labels Text for the generated footer. Pass translated strings to localise a tour.
      * @param scrim What to draw behind each step. Defaults to [TooltipScrim.Spotlight], which keeps
      *   the element being described lit while dimming the rest.
+     * @param showCloseButton Whether each step shows the close button. Defaults to `true`.
      * @param onFinish Invoked once the final step is confirmed.
      * @param onSkip Invoked when the tour is abandoned, whether by the skip action, the close button
      *   or an outside tap.
@@ -275,6 +278,7 @@ public class LemonadeTooltipState {
         steps: List<LemonadeTooltipStep>,
         labels: LemonadeTooltipTourLabels = LemonadeTooltipTourLabels(),
         scrim: TooltipScrim = TooltipScrim.Spotlight,
+        showCloseButton: Boolean = true,
         onFinish: () -> Unit = {},
         onSkip: () -> Unit = {},
     ) {
@@ -286,6 +290,7 @@ public class LemonadeTooltipState {
             steps = steps,
             labels = labels,
             scrim = scrim,
+            showCloseButton = showCloseButton,
             onFinish = onFinish,
             onSkip = onSkip,
         )
@@ -376,7 +381,11 @@ public class LemonadeTooltipState {
             indicatorPlacement = step.indicatorPlacement,
             scrim = currentTour.scrim,
             dismissOnOutsideTap = true,
-            onCloseClick = { skip() },
+            onCloseClick = if (currentTour.showCloseButton) {
+                { skip() }
+            } else {
+                null
+            },
             closeContentDescription = currentTour.labels.close,
             cover = step.cover,
             footer = tourFooter(tour = currentTour, index = stepIndex),
@@ -390,12 +399,18 @@ public class LemonadeTooltipState {
         {
             val isLast = index == tour.steps.lastIndex
 
-            StepCounter(
-                currentStep = index + 1,
-                totalSteps = tour.steps.size,
-                modifier = Modifier.weight(weight = 1f),
-                separator = tour.labels.stepSeparator,
-            )
+            // `1 of 1` says nothing, so a single-step tour gets no counter — but the weight has to
+            // stay, or the actions stop being trailing-aligned.
+            if (tour.steps.size > 1) {
+                StepCounter(
+                    currentStep = index + 1,
+                    totalSteps = tour.steps.size,
+                    modifier = Modifier.weight(weight = 1f),
+                    separator = tour.labels.stepSeparator,
+                )
+            } else {
+                Spacer(modifier = Modifier.weight(weight = 1f))
+            }
 
             val skipLabel = tour.labels.skip
             if (skipLabel != null && !isLast) {
@@ -581,7 +596,11 @@ private fun TooltipOverlay(
 
     // The tooltip is composed with its final indicator before it is measured, so the placement is
     // resolved from the anchor and the host alone — neither of which needs the measured size.
-    val pointsUp = resolvePointsUp(anchor = anchor, hostSize = hostSize)
+    val pointsUp = resolvePointsUp(
+        anchor = anchor,
+        hostSize = hostSize,
+        forcedPlacement = presentation.indicatorPlacement,
+    )
     val placement = presentation.indicatorPlacement
         ?: resolveIndicatorPlacement(
             anchor = anchor,
@@ -729,11 +748,22 @@ internal fun indicatorCenterOffset(
         -> tooltipWidth - edgeInset - baseWidth / 2f
     }
 
-/** Whether the tooltip sits below the anchor, with its indicator pointing up at it. */
+/**
+ * Whether the tooltip sits below the anchor, with its indicator pointing up at it.
+ *
+ * A caller that forces an indicator placement is choosing the side too — an indicator drawn on top
+ * of the body only makes sense with the body below the anchor. Without one, the side follows the
+ * anchor's half of the host.
+ */
 internal fun resolvePointsUp(
     anchor: Rect,
     hostSize: Size,
-): Boolean = anchor.center.y < hostSize.height / 2f
+    forcedPlacement: TooltipIndicatorPlacement?,
+): Boolean =
+    when {
+        forcedPlacement != null && forcedPlacement != TooltipIndicatorPlacement.None -> forcedPlacement.pointsUp
+        else -> anchor.center.y < hostSize.height / 2f
+    }
 
 /**
  * Picks the placement whose indicator lands closest to the centre of [anchor] once the tooltip has
