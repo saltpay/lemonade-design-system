@@ -192,7 +192,11 @@ struct LemonadeTooltipContainerView<Content: View>: View {
         anchor: CGRect,
         containerSize: CGSize
     ) -> some View {
-        let pointsUp = LemonadeTooltipPositioning.pointsUp(anchor: anchor, containerSize: containerSize)
+        let pointsUp = LemonadeTooltipPositioning.pointsUp(
+            anchor: anchor,
+            containerSize: containerSize,
+            forcedPlacement: presentation.indicatorPlacement
+        )
         let placement = presentation.indicatorPlacement
             ?? LemonadeTooltipPositioning.indicatorPlacement(
                 anchor: anchor,
@@ -356,8 +360,19 @@ private struct LemonadeTooltipSizePreferenceKey: PreferenceKey {
 enum LemonadeTooltipPositioning {
 
     /// Whether the tooltip sits below the anchor, with its indicator pointing up at it.
-    static func pointsUp(anchor: CGRect, containerSize: CGSize) -> Bool {
-        anchor.midY < containerSize.height / 2
+    ///
+    /// A caller that forces an `indicatorPlacement` is choosing the side too — an indicator drawn
+    /// on top of the body only makes sense with the body below the anchor. Without one, the side
+    /// follows the anchor's half of the container.
+    static func pointsUp(
+        anchor: CGRect,
+        containerSize: CGSize,
+        forcedPlacement: LemonadeTooltipIndicatorPlacement?
+    ) -> Bool {
+        if let forcedPlacement, forcedPlacement != .none {
+            return forcedPlacement.pointsUp
+        }
+        return anchor.midY < containerSize.height / 2
     }
 
     /// Horizontal distance from the tooltip's leading edge to the centre of its indicator. The
