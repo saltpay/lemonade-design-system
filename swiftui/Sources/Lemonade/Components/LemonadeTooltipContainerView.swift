@@ -328,11 +328,14 @@ struct LemonadeTooltipContainerView<Content: View>: View {
     ) -> some View {
         let isLast = presentation.stepIndex == presentation.stepCount - 1
 
-        footer.stepCounter(
-            currentStep: presentation.stepIndex + 1,
-            totalSteps: presentation.stepCount,
-            separator: labels.stepSeparator
-        )
+        // `1 of 1` says nothing, so a single-step tour gets no counter at all.
+        if presentation.stepCount > 1 {
+            footer.stepCounter(
+                currentStep: presentation.stepIndex + 1,
+                totalSteps: presentation.stepCount,
+                separator: labels.stepSeparator
+            )
+        }
 
         Spacer()
 

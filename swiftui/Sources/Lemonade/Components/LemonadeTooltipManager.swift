@@ -128,6 +128,7 @@ private struct LemonadeTooltipTour {
     let steps: [LemonadeTooltipStep]
     let labels: LemonadeTooltipTourLabels
     let scrim: LemonadeTooltipScrim
+    let showCloseButton: Bool
     let onFinish: () -> Void
     let onSkip: () -> Void
 }
@@ -291,6 +292,8 @@ public final class LemonadeTooltipManager: ObservableObject {
     ///   - labels: Text for the generated footer. Pass translated strings to localise a tour.
     ///   - scrim: What to draw behind each step. Defaults to `.spotlight`, which keeps the element
     ///     being described lit while dimming the rest.
+    ///   - showCloseButton: Whether each step shows the close button. Defaults to `true`. Pass
+    ///     `false` for a tour whose only exits are the next/done action and an outside tap.
     ///   - onFinish: Invoked once the final step is confirmed.
     ///   - onSkip: Invoked when the tour is abandoned, whether by the skip action, the close button
     ///     or an outside tap.
@@ -298,6 +301,7 @@ public final class LemonadeTooltipManager: ObservableObject {
         steps: [LemonadeTooltipStep],
         labels: LemonadeTooltipTourLabels = LemonadeTooltipTourLabels(),
         scrim: LemonadeTooltipScrim = .spotlight,
+        showCloseButton: Bool = true,
         onFinish: @escaping () -> Void = {},
         onSkip: @escaping () -> Void = {}
     ) {
@@ -307,6 +311,7 @@ public final class LemonadeTooltipManager: ObservableObject {
             steps: steps,
             labels: labels,
             scrim: scrim,
+            showCloseButton: showCloseButton,
             onFinish: onFinish,
             onSkip: onSkip
         )
@@ -383,7 +388,7 @@ public final class LemonadeTooltipManager: ObservableObject {
             indicatorPlacement: step.indicatorPlacement,
             scrim: tour.scrim,
             dismissOnOutsideTap: true,
-            showCloseButton: true,
+            showCloseButton: tour.showCloseButton,
             closeContentDescription: tour.labels.close,
             cover: step.cover,
             footer: nil,
