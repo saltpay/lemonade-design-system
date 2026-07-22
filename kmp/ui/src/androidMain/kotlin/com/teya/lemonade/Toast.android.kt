@@ -10,8 +10,10 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -84,6 +86,9 @@ private fun ToastOverlayWindow(toastState: LemonadeToastState) {
         val startInset = margins.calculateStartPadding(layoutDirection)
         val endInset = margins.calculateEndPadding(layoutDirection)
         ConfigureToastWindow(bottomInset = margins.calculateBottomPadding())
+        // The window is centered; start/end insets only cap the width (the toast keeps clear of the
+        // screen edges). Unlike the inline host they don't shift it horizontally — a bottom-centered
+        // toast has no caller that needs asymmetric horizontal positioning.
         val maxToastWidth = (LocalConfiguration.current.screenWidthDp.dp - startInset - endInset)
             .coerceAtLeast(0.dp)
 
@@ -112,13 +117,18 @@ private fun ToastOverlayWindow(toastState: LemonadeToastState) {
 }
 
 /**
- * Sizes the dialog window to the toast and lifts it [bottomInset] above the screen bottom via a window
- * attribute, not padding — so the frame hugs the pill and taps everywhere else fall through.
+ * Sizes the dialog window to the toast and lifts it [bottomInset] (plus the navigation-bar inset)
+ * above the bottom via a window attribute, not padding — so the frame hugs the pill and taps
+ * everywhere else fall through. The navigation-bar inset resolves to zero when the window already
+ * sits above the bars and to the bar height on edge-to-edge screens, so the toast never lands under
+ * the navigation bar.
  */
 @Composable
 private fun ConfigureToastWindow(bottomInset: Dp) {
     val view = LocalView.current
-    val bottomInsetPx = with(LocalDensity.current) { bottomInset.roundToPx() }
+    val density = LocalDensity.current
+    val navigationBarInsetPx = WindowInsets.navigationBars.getBottom(density)
+    val bottomInsetPx = with(density) { bottomInset.roundToPx() } + navigationBarInsetPx
     DisposableEffect(bottomInsetPx) {
         (view.parent as? DialogWindowProvider)?.window?.apply {
             setBackgroundDrawable(ColorDrawable(AndroidColor.TRANSPARENT))
