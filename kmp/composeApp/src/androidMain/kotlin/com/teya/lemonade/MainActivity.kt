@@ -21,23 +21,25 @@ public class MainActivity : ComponentActivity() {
         setContent {
             LemonadeStyledTheme {
                 LemonadeToastHost {
-                    val backStack = remember {
-                        mutableStateListOf<Displays>(Displays.Home)
+                    LemonadeTooltipHost {
+                        val backStack = remember {
+                            mutableStateListOf<Displays>(Displays.Home)
+                        }
+                        NavDisplay(
+                            modifier = Modifier.background(color = LemonadeTheme.colors.background.bgDefault),
+                            backStack = backStack,
+                            onBack = {
+                                backStack.removeLastOrNull()
+                            },
+                            entryProvider = { displayKey ->
+                                NavEntry(key = displayKey) {
+                                    val screen = screens[displayKey]
+                                        ?: { _ -> BasicText("Invalid key") }
+                                    screen.invoke { backStack.add(it) }
+                                }
+                            },
+                        )
                     }
-                    NavDisplay(
-                        modifier = Modifier.background(color = LemonadeTheme.colors.background.bgDefault),
-                        backStack = backStack,
-                        onBack = {
-                            backStack.removeLastOrNull()
-                        },
-                        entryProvider = { displayKey ->
-                            NavEntry(key = displayKey) {
-                                val screen = screens[displayKey]
-                                    ?: { _ -> BasicText("Invalid key") }
-                                screen.invoke { backStack.add(it) }
-                            }
-                        },
-                    )
                 }
             }
         }

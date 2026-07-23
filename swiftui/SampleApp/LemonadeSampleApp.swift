@@ -40,6 +40,7 @@ struct ContentView: View {
             HomeView()
         }
         .lemonadeToastContainer()
+        .lemonadeTooltipContainer()
         .onAppear { styleHandler.applyToWindows() }
     }
 }

@@ -180,6 +180,7 @@ internal object DisplayRegistry {
                 Displays.Divider,
                 Displays.Notice,
                 Displays.Toast,
+                Displays.Tooltip,
                 Displays.HistoryTimeline,
             ),
         ),
