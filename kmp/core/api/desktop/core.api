@@ -1116,7 +1116,13 @@ public final class com/teya/lemonade/core/TooltipIndicatorPlacement : java/lang/
 	public static final field BottomCenter Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
 	public static final field BottomLeft Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
 	public static final field BottomRight Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
+	public static final field LeftBottom Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
+	public static final field LeftCenter Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
+	public static final field LeftTop Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
 	public static final field None Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
+	public static final field RightBottom Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
+	public static final field RightCenter Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
+	public static final field RightTop Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
 	public static final field TopCenter Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
 	public static final field TopLeft Lcom/teya/lemonade/core/TooltipIndicatorPlacement;
 	public static final field TopRight Lcom/teya/lemonade/core/TooltipIndicatorPlacement;

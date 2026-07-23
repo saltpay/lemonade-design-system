@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
@@ -84,7 +85,8 @@ private const val TOOLTIP_SCRIM_FADE_IN_MILLIS = 180
  * @param content The body text of the step.
  * @param title Optional bold heading.
  * @param indicatorPlacement Forces where the indicator sits. Defaults to `null`, which resolves the
- *   placement from where the anchor is on screen.
+ *   placement from where the anchor is on screen — always a top or bottom one, so pass a left or
+ *   right placement to put the tooltip beside its anchor instead.
  * @param cover Optional cover slot, rendered above the text.
  */
 public class LemonadeTooltipStep(
@@ -203,7 +205,8 @@ public class LemonadeTooltipState {
      * @param content The body text.
      * @param title Optional bold heading.
      * @param indicatorPlacement Forces where the indicator sits. Defaults to `null`, which resolves
-     *   the placement from where the anchor is on screen.
+     *   the placement from where the anchor is on screen — always a top or bottom one, so pass a left
+     *   or right placement to put the tooltip beside its anchor instead.
      * @param scrim What to draw behind the tooltip. Defaults to [TooltipScrim.None] — on-demand help
      *   usually should not dim the screen.
      * @param dismissOnOutsideTap Whether a tap outside the tooltip dismisses it. Defaults to `true`.
@@ -603,7 +606,7 @@ private fun TooltipOverlay(
 
     // The tooltip is composed with its final indicator before it is measured, so the placement is
     // resolved from the anchor and the host alone — neither of which needs the measured size.
-    val pointsUp = resolvePointsUp(
+    val edge = resolveTooltipEdge(
         anchor = anchor,
         hostSize = hostSize,
         forcedPlacement = presentation.indicatorPlacement,
@@ -612,11 +615,8 @@ private fun TooltipOverlay(
         ?: resolveIndicatorPlacement(
             anchor = anchor,
             hostSize = hostSize,
-            tooltipWidth = with(density) { TooltipWidth.toPx() },
-            margin = with(density) { TooltipHostMargin.toPx() },
-            edgeInset = with(density) { TooltipIndicatorEdgeInset.toPx() },
-            baseWidth = with(density) { TooltipIndicatorBaseWidth.toPx() },
-            pointsUp = pointsUp,
+            edge = edge,
+            density = density,
         )
 
     Box(
@@ -651,7 +651,7 @@ private fun TooltipOverlay(
                                 stiffness = Spring.StiffnessMediumLow,
                             ),
                             initialScale = TOOLTIP_ENTER_INITIAL_SCALE,
-                            transformOrigin = placement.transformOrigin,
+                            transformOrigin = placement.transformOrigin(density = density),
                         ),
                     exit = fadeOut(animationSpec = tween(durationMillis = TOOLTIP_EXIT_FADE_MILLIS)),
                 ) {
@@ -689,7 +689,6 @@ private fun TooltipOverlay(
                     height = placeable.height.toFloat(),
                 ),
                 placement = placement,
-                pointsUp = pointsUp,
                 density = this,
             )
 
@@ -704,104 +703,111 @@ private fun TooltipOverlay(
  * Pivot for the entry scale, placed at the indicator so the tooltip grows out of the element it
  * points at rather than out of its own centre.
  */
-private val TooltipIndicatorPlacement.transformOrigin: TransformOrigin
-    get() {
-        val indicatorFraction =
-            (TooltipIndicatorEdgeInset + TooltipIndicatorBaseWidth / 2f) / TooltipWidth
-        val pivotX = when (this) {
-            TooltipIndicatorPlacement.TopLeft,
-            TooltipIndicatorPlacement.BottomLeft,
-            -> indicatorFraction
+private fun TooltipIndicatorPlacement.transformOrigin(density: Density): TransformOrigin {
+    // Derived from indicatorCenterOffset rather than restated, so the pivot cannot drift from where
+    // the indicator is actually drawn. The width is fixed, so the fraction is exact.
+    val tooltipWidth = with(density) { TooltipWidth.toPx() }
+    val alongTopOrBottom = indicatorCenterOffset(
+        placement = this,
+        edgeLength = tooltipWidth,
+        density = density,
+    ) / tooltipWidth
 
-            TooltipIndicatorPlacement.TopRight,
-            TooltipIndicatorPlacement.BottomRight,
-            -> 1f - indicatorFraction
-
-            else -> 0.5f
-        }
-        val pivotY = when {
-            pointsUp -> 0f
-            pointsDown -> 1f
-            else -> 0.5f
-        }
-
-        return TransformOrigin(pivotFractionX = pivotX, pivotFractionY = pivotY)
+    // A left or right indicator's position along its edge cannot be turned into a fraction here: the
+    // tooltip's height depends on its content and is not known until it has been measured. Those
+    // placements pivot on the corner nearest the indicator instead, which over the entry spring does
+    // not read differently.
+    val alongLeftOrRight = when (alignment) {
+        TooltipIndicatorAlignment.Start -> 0f
+        TooltipIndicatorAlignment.Center -> 0.5f
+        TooltipIndicatorAlignment.End -> 1f
     }
+
+    return when (edge) {
+        TooltipIndicatorEdge.Top -> TransformOrigin(
+            pivotFractionX = alongTopOrBottom,
+            pivotFractionY = 0f,
+        )
+
+        TooltipIndicatorEdge.Bottom -> TransformOrigin(
+            pivotFractionX = alongTopOrBottom,
+            pivotFractionY = 1f,
+        )
+
+        TooltipIndicatorEdge.Left -> TransformOrigin(
+            pivotFractionX = 0f,
+            pivotFractionY = alongLeftOrRight,
+        )
+
+        TooltipIndicatorEdge.Right -> TransformOrigin(
+            pivotFractionX = 1f,
+            pivotFractionY = alongLeftOrRight,
+        )
+
+        TooltipIndicatorEdge.None -> TransformOrigin.Center
+    }
+}
 
 // MARK: - Placement Resolution
 
 /**
- * Horizontal distance from the tooltip's leading edge to the centre of its indicator. The indicator
- * sits at one of three fixed positions, so this is the reach a given placement can offer.
- */
-internal fun indicatorCenterOffset(
-    placement: TooltipIndicatorPlacement,
-    tooltipWidth: Float,
-    edgeInset: Float,
-    baseWidth: Float,
-): Float =
-    when (placement) {
-        TooltipIndicatorPlacement.TopLeft,
-        TooltipIndicatorPlacement.BottomLeft,
-        -> edgeInset + baseWidth / 2f
-
-        TooltipIndicatorPlacement.TopCenter,
-        TooltipIndicatorPlacement.BottomCenter,
-        TooltipIndicatorPlacement.None,
-        -> tooltipWidth / 2f
-
-        TooltipIndicatorPlacement.TopRight,
-        TooltipIndicatorPlacement.BottomRight,
-        -> tooltipWidth - edgeInset - baseWidth / 2f
-    }
-
-/**
- * Whether the tooltip sits below the anchor, with its indicator pointing up at it.
+ * Which edge of the tooltip its indicator protrudes from, and therefore which side of [anchor] the
+ * tooltip sits on.
  *
- * A caller that forces an indicator placement is choosing the side too — an indicator drawn on top
- * of the body only makes sense with the body below the anchor. Without one, the side follows the
- * anchor's half of the host.
+ * A caller that forces a placement is choosing the side too — an indicator drawn on top of the body
+ * only makes sense with the body below the anchor. Without one, and for
+ * [TooltipIndicatorPlacement.None] which names no edge, the tooltip goes below an anchor in the top
+ * half of the host and above one in the bottom half. Never returns
+ * [TooltipIndicatorEdge.None]: the tooltip is always on one side of its anchor, even when no
+ * indicator is drawn.
  */
-internal fun resolvePointsUp(
+internal fun resolveTooltipEdge(
     anchor: Rect,
     hostSize: Size,
     forcedPlacement: TooltipIndicatorPlacement?,
-): Boolean =
-    if (forcedPlacement != null && forcedPlacement != TooltipIndicatorPlacement.None) {
-        forcedPlacement.pointsUp
-    } else {
-        anchor.center.y < hostSize.height / 2f
+): TooltipIndicatorEdge {
+    val forcedEdge = forcedPlacement?.edge
+    if (forcedEdge != null && forcedEdge != TooltipIndicatorEdge.None) {
+        return forcedEdge
     }
+
+    return if (anchor.center.y < hostSize.height / 2f) {
+        TooltipIndicatorEdge.Top
+    } else {
+        TooltipIndicatorEdge.Bottom
+    }
+}
 
 /**
  * Picks the placement whose indicator lands closest to the centre of [anchor] once the tooltip has
  * been kept inside the host. The indicator has only three possible positions, so near an edge the
  * left or right variant reaches an anchor that the centred one cannot.
+ *
+ * Only the top and bottom placements are candidates: choosing to sit beside an anchor rather than
+ * above or below it is a deliberate call, so the left and right ones have to be asked for.
  */
-@Suppress("LongParameterList")
 internal fun resolveIndicatorPlacement(
     anchor: Rect,
     hostSize: Size,
-    tooltipWidth: Float,
-    margin: Float,
-    edgeInset: Float,
-    baseWidth: Float,
-    pointsUp: Boolean,
+    edge: TooltipIndicatorEdge,
+    density: Density,
 ): TooltipIndicatorPlacement {
-    val candidates = if (pointsUp) {
-        listOf(
-            TooltipIndicatorPlacement.TopCenter,
-            TooltipIndicatorPlacement.TopLeft,
-            TooltipIndicatorPlacement.TopRight,
-        )
-    } else {
+    val candidates = if (edge == TooltipIndicatorEdge.Bottom) {
         listOf(
             TooltipIndicatorPlacement.BottomCenter,
             TooltipIndicatorPlacement.BottomLeft,
             TooltipIndicatorPlacement.BottomRight,
         )
+    } else {
+        listOf(
+            TooltipIndicatorPlacement.TopCenter,
+            TooltipIndicatorPlacement.TopLeft,
+            TooltipIndicatorPlacement.TopRight,
+        )
     }
 
+    val tooltipWidth = with(density) { TooltipWidth.toPx() }
+    val margin = with(density) { TooltipHostMargin.toPx() }
     val anchorCenterX = anchor.center.x
     val maxX = (hostSize.width - tooltipWidth - margin).coerceAtLeast(minimumValue = margin)
 
@@ -810,9 +816,8 @@ internal fun resolveIndicatorPlacement(
     candidates.forEach { candidate ->
         val offset = indicatorCenterOffset(
             placement = candidate,
-            tooltipWidth = tooltipWidth,
-            edgeInset = edgeInset,
-            baseWidth = baseWidth,
+            edgeLength = tooltipWidth,
+            density = density,
         )
         val x = (anchorCenterX - offset).coerceIn(minimumValue = margin, maximumValue = maxX)
         val error = abs(x + offset - anchorCenterX)
@@ -825,38 +830,64 @@ internal fun resolveIndicatorPlacement(
     return best
 }
 
-@Suppress("LongParameterList")
+/**
+ * Where to place the tooltip inside the host so its indicator points at [anchor], kept inside the
+ * host's margins.
+ *
+ * One rule, applied per edge: along the indicator's own axis the tooltip clears the corresponding
+ * anchor bound by [TooltipAnchorGap]; across it the indicator lines up with the anchor's centre. The
+ * indicator tip sits on the tooltip's own bounds, so the gap is measured from those.
+ *
+ * The edge is resolved here rather than passed in, so it cannot contradict [placement], and so
+ * [TooltipIndicatorPlacement.None] — which names no edge — still lands above or below its anchor.
+ */
 internal fun resolveTooltipOffset(
     anchor: Rect,
     hostSize: Size,
     tooltipSize: Size,
     placement: TooltipIndicatorPlacement,
-    pointsUp: Boolean,
     density: Density,
 ): IntOffset {
+    val edge = resolveTooltipEdge(
+        anchor = anchor,
+        hostSize = hostSize,
+        forcedPlacement = placement,
+    )
     val margin = with(density) { TooltipHostMargin.toPx() }
     val gap = with(density) { TooltipAnchorGap.toPx() }
-    val edgeInset = with(density) { TooltipIndicatorEdgeInset.toPx() }
-    val baseWidth = with(density) { TooltipIndicatorBaseWidth.toPx() }
 
-    val indicatorOffset = indicatorCenterOffset(
+    val besideAnchor = edge == TooltipIndicatorEdge.Left || edge == TooltipIndicatorEdge.Right
+    val alongIndicatorEdge = indicatorCenterOffset(
         placement = placement,
-        tooltipWidth = tooltipSize.width,
-        edgeInset = edgeInset,
-        baseWidth = baseWidth,
+        edgeLength = if (besideAnchor) tooltipSize.height else tooltipSize.width,
+        density = density,
     )
+    val centredOnAnchorX = anchor.center.x - alongIndicatorEdge
+    val centredOnAnchorY = anchor.center.y - alongIndicatorEdge
+
+    val raw = when (edge) {
+        TooltipIndicatorEdge.Top,
+        TooltipIndicatorEdge.None,
+        -> Offset(x = centredOnAnchorX, y = anchor.bottom + gap)
+
+        TooltipIndicatorEdge.Bottom -> Offset(
+            x = centredOnAnchorX,
+            y = anchor.top - gap - tooltipSize.height,
+        )
+
+        TooltipIndicatorEdge.Left -> Offset(x = anchor.right + gap, y = centredOnAnchorY)
+
+        TooltipIndicatorEdge.Right -> Offset(
+            x = anchor.left - gap - tooltipSize.width,
+            y = centredOnAnchorY,
+        )
+    }
 
     val maxX = (hostSize.width - tooltipSize.width - margin).coerceAtLeast(minimumValue = margin)
-    val x = (anchor.center.x - indicatorOffset)
-        .coerceIn(minimumValue = margin, maximumValue = maxX)
-
     val maxY = (hostSize.height - tooltipSize.height - margin).coerceAtLeast(minimumValue = margin)
-    val rawY = if (pointsUp) {
-        anchor.bottom + gap
-    } else {
-        anchor.top - gap - tooltipSize.height
-    }
-    val y = rawY.coerceIn(minimumValue = margin, maximumValue = maxY)
 
-    return IntOffset(x = x.roundToInt(), y = y.roundToInt())
+    return IntOffset(
+        x = raw.x.coerceIn(minimumValue = margin, maximumValue = maxX).roundToInt(),
+        y = raw.y.coerceIn(minimumValue = margin, maximumValue = maxY).roundToInt(),
+    )
 }

@@ -2,8 +2,50 @@ import SwiftUI
 
 // MARK: - Tooltip Indicator Placement
 
+/// How far the indicator protrudes past the tooltip body on each physical edge.
+struct LemonadeTooltipIndicatorInsets {
+    let left: CGFloat
+    let top: CGFloat
+    let right: CGFloat
+    let bottom: CGFloat
+}
+
+/// The edge of the tooltip body an indicator protrudes from.
+enum LemonadeTooltipIndicatorEdge {
+    case none
+    case top
+    case bottom
+    case left
+    case right
+
+    /// Rotation that carries the canonical upward-pointing indicator onto this edge.
+    var rotationAngle: CGFloat {
+        switch self {
+        case .none, .top: return 0
+        case .right: return .pi / 2
+        case .bottom: return .pi
+        case .left: return .pi * 3 / 2
+        }
+    }
+}
+
+/// Where along its edge the indicator sits.
+///
+/// `start` and `end` are physical, like the placements themselves: the left and right ends of the top
+/// and bottom edges, the top and bottom ends of the left and right ones.
+enum LemonadeTooltipIndicatorAlignment {
+    case start
+    case center
+    case end
+}
+
 /// Where the tooltip draws its indicator — the small arrow that points back at the element the
 /// tooltip describes.
+///
+/// The first word names the edge of the tooltip the indicator protrudes from, the second where along
+/// that edge it sits. So `.topLeft` puts the arrow on the top edge towards its left end — the tooltip
+/// hangs below the element it describes — while `.leftTop` puts it on the left edge towards its top,
+/// with the tooltip sitting to the right of that element.
 ///
 /// Placement is physical, not directional: `.topLeft` anchors the indicator to the left edge in both
 /// LTR and RTL layouts, so a caller that positions the tooltip by absolute coordinates does not have
@@ -18,51 +60,126 @@ public enum LemonadeTooltipIndicatorPlacement: Hashable, CaseIterable, Sendable 
     case bottomLeft
     case bottomCenter
     case bottomRight
+    case leftTop
+    case leftCenter
+    case leftBottom
+    case rightTop
+    case rightCenter
+    case rightBottom
 
-    /// Whether the indicator protrudes above the tooltip body.
-    var pointsUp: Bool {
+    /// The edge of the tooltip body this placement's indicator protrudes from.
+    var edge: LemonadeTooltipIndicatorEdge {
         switch self {
-        case .topLeft, .topCenter, .topRight: return true
-        case .none, .bottomLeft, .bottomCenter, .bottomRight: return false
+        case .none: return .none
+        case .topLeft, .topCenter, .topRight: return .top
+        case .bottomLeft, .bottomCenter, .bottomRight: return .bottom
+        case .leftTop, .leftCenter, .leftBottom: return .left
+        case .rightTop, .rightCenter, .rightBottom: return .right
         }
     }
 
-    /// Whether the indicator protrudes below the tooltip body.
-    var pointsDown: Bool {
+    /// Where along that edge the indicator sits.
+    var alignment: LemonadeTooltipIndicatorAlignment {
         switch self {
-        case .bottomLeft, .bottomCenter, .bottomRight: return true
-        case .none, .topLeft, .topCenter, .topRight: return false
+        case .topLeft, .bottomLeft, .leftTop, .rightTop: return .start
+        case .topRight, .bottomRight, .leftBottom, .rightBottom: return .end
+        case .none, .topCenter, .bottomCenter, .leftCenter, .rightCenter: return .center
         }
+    }
+
+    /// Whether the indicator runs along the left or right edge, so its position is measured down the
+    /// tooltip's height rather than across its width. `.none` counts as horizontal — it has no
+    /// indicator, and the container still centres it on its anchor horizontally.
+    var isOnVerticalEdge: Bool {
+        edge == .left || edge == .right
+    }
+
+    /// How far the indicator protrudes past the tooltip body on each edge — `indicatorHeight` on the
+    /// indicator's own edge and nothing on the other three.
+    ///
+    /// The edges are physical, like the placements themselves, so a left indicator stays on the left in
+    /// an RTL layout. This is the single statement of "which edge does the indicator add to": the view
+    /// pads the body by it and `LemonadeTooltipShape` insets its outline by it, and the two have to
+    /// agree exactly or the drawn surface and the padded content come apart.
+    var indicatorInsets: LemonadeTooltipIndicatorInsets {
+        let protrusion = LemonadeTooltipMetrics.indicatorHeight
+        let indicatorEdge = edge
+
+        return LemonadeTooltipIndicatorInsets(
+            left: indicatorEdge == .left ? protrusion : 0,
+            top: indicatorEdge == .top ? protrusion : 0,
+            right: indicatorEdge == .right ? protrusion : 0,
+            bottom: indicatorEdge == .bottom ? protrusion : 0
+        )
     }
 
     /// Pivot for the entry scale, placed at the indicator so the tooltip grows out of the element
     /// it points at rather than out of its own centre.
     var transformAnchor: UnitPoint {
-        let indicatorFraction =
-            (LemonadeTooltipMetrics.indicatorEdgeInset + LemonadeTooltipMetrics.indicatorBaseWidth / 2)
-                / LemonadeTooltipMetrics.width
+        // Derived from indicatorCenterOffset rather than restated, so the pivot cannot drift from where
+        // the indicator is actually drawn. The width is fixed, so the fraction is exact.
+        let alongTopOrBottom = indicatorCenterOffset(alongEdgeOfLength: LemonadeTooltipMetrics.width)
+            / LemonadeTooltipMetrics.width
 
-        let x: CGFloat
-        switch self {
-        case .topLeft, .bottomLeft: x = indicatorFraction
-        case .topRight, .bottomRight: x = 1 - indicatorFraction
-        case .topCenter, .bottomCenter, .none: x = 0.5
+        // A left or right indicator's position along its edge cannot be turned into a fraction here:
+        // the tooltip's height depends on its content and is not known until it has been measured.
+        // Those placements pivot on the corner nearest the indicator instead, which over the entry
+        // spring does not read differently.
+        let alongLeftOrRight: CGFloat
+        switch alignment {
+        case .start: alongLeftOrRight = 0
+        case .center: alongLeftOrRight = 0.5
+        case .end: alongLeftOrRight = 1
         }
 
-        let y: CGFloat = pointsUp ? 0 : (pointsDown ? 1 : 0.5)
-
-        return UnitPoint(x: x, y: y)
+        switch edge {
+        case .top: return UnitPoint(x: alongTopOrBottom, y: 0)
+        case .bottom: return UnitPoint(x: alongTopOrBottom, y: 1)
+        case .left: return UnitPoint(x: 0, y: alongLeftOrRight)
+        case .right: return UnitPoint(x: 1, y: alongLeftOrRight)
+        case .none: return .center
+        }
     }
 
-    /// Horizontal centre of the indicator within a body of the given width.
-    func indicatorCenterX(in width: CGFloat) -> CGFloat {
+    /// Human-readable name, for galleries and documentation.
+    public var displayName: String {
         switch self {
-        case .topLeft, .bottomLeft:
-            return LemonadeTooltipMetrics.indicatorEdgeInset + LemonadeTooltipMetrics.indicatorBaseWidth / 2
-        case .topCenter, .bottomCenter, .none:
-            return width / 2
-        case .topRight, .bottomRight:
-            return width - LemonadeTooltipMetrics.indicatorEdgeInset - LemonadeTooltipMetrics.indicatorBaseWidth / 2
+        case .none: return "None"
+        case .topLeft: return "Top Left"
+        case .topCenter: return "Top Center"
+        case .topRight: return "Top Right"
+        case .bottomLeft: return "Bottom Left"
+        case .bottomCenter: return "Bottom Center"
+        case .bottomRight: return "Bottom Right"
+        case .leftTop: return "Left Top"
+        case .leftCenter: return "Left Center"
+        case .leftBottom: return "Left Bottom"
+        case .rightTop: return "Right Top"
+        case .rightCenter: return "Right Center"
+        case .rightBottom: return "Right Bottom"
+        }
+    }
+
+    /// Distance from the start of the indicator's edge to the centre of the indicator — measured from
+    /// the body's left edge for a top or bottom placement, from its top edge for a left or right one.
+    ///
+    /// The indicator sits at one of three fixed positions along its edge, so this is the reach a given
+    /// placement can offer. Pass the length of the edge the placement sits on: the body's width for a
+    /// top or bottom placement, its height for a left or right one.
+    func indicatorCenterOffset(alongEdgeOfLength length: CGFloat) -> CGFloat {
+        let halfBase = LemonadeTooltipMetrics.indicatorBaseWidth / 2
+        let inset = isOnVerticalEdge
+            ? LemonadeTooltipMetrics.indicatorVerticalEdgeInset
+            : LemonadeTooltipMetrics.indicatorHorizontalEdgeInset
+
+        // An edge too short for the inset would put `end` ahead of `start`; collapsing both onto the
+        // centre keeps the three positions in order instead of crossing them over.
+        let center = length / 2
+
+        switch alignment {
+        case .start: return min(inset + halfBase, center)
+        case .center: return center
+        case .end: return max(length - inset - halfBase, center)
         }
     }
 }
@@ -121,8 +238,12 @@ private enum LemonadeTooltipMetrics {
     /// Height the indicator would reach if its tip were a sharp point instead of a rounded one.
     static let indicatorApexHeight: CGFloat = 10
 
-    /// Distance from the tooltip edge to the near side of the indicator base, for left/right placements.
-    static let indicatorEdgeInset: CGFloat = 40
+    /// Distance from the tooltip corner to the near side of the indicator base, along the top and
+    /// bottom edges — so the offset that separates `.topLeft` from `.topCenter`.
+    static let indicatorHorizontalEdgeInset: CGFloat = 40
+
+    /// As `indicatorHorizontalEdgeInset`, but along the shorter left and right edges.
+    static let indicatorVerticalEdgeInset: CGFloat = 24
 
     /// Fraction of the way from the indicator base to its notional apex at which the rounded tip starts.
     /// Together with `indicatorTipCurvature` this yields the 3pt tip radius from the design.
@@ -130,6 +251,10 @@ private enum LemonadeTooltipMetrics {
 
     /// How far each tip control point is pulled towards the notional apex.
     static let indicatorTipCurvature: CGFloat = 0.5
+
+    /// How far the indicator base is sunk into the tooltip body so the two sub-paths overlap rather
+    /// than merely touching — which would leave a hairline across the join.
+    static let indicatorBodyOverlap: CGFloat = 1
 
     /// Cover slot aspect ratio — 272x158, the cover size at the default 280pt tooltip width.
     static let coverAspectRatio: CGFloat = 272.0 / 158.0
@@ -201,8 +326,9 @@ public extension LemonadeUi {
     /// Place it in an overlay or popover of your choosing and pick the `indicatorPlacement` that
     /// points back at the element being described.
     ///
-    /// The tooltip is 280pt wide by default. The indicator is drawn outside the body, so the view is
-    /// 8pt taller than the body itself whenever `indicatorPlacement` is not `.none`.
+    /// The tooltip body is 280pt wide. The indicator is drawn outside the body, so the view is 8pt
+    /// larger than the body on whichever edge the indicator sits — taller for a top or bottom
+    /// placement, wider for a left or right one.
     ///
     /// ## Usage
     /// ```swift
@@ -278,17 +404,29 @@ struct LemonadeTooltipView: View {
     let cover: AnyView?
     let footer: ((LemonadeTooltipFooterScope) -> AnyView)?
 
+    @Environment(\.layoutDirection) private var layoutDirection
+
     private var hasCover: Bool { cover != nil }
     private var hasFooter: Bool { footer != nil }
 
-    // The indicator is drawn outside the body, so the body has to be inset by its height on
-    // whichever edge the indicator sits on.
-    private var indicatorTopInset: CGFloat {
-        indicatorPlacement.pointsUp ? LemonadeTooltipMetrics.indicatorHeight : 0
+    // The indicator is drawn outside the body, so the body has to be inset by its height on whichever
+    // edge the indicator sits on — the same insets `LemonadeTooltipShape` builds its outline from.
+    private var insets: LemonadeTooltipIndicatorInsets {
+        indicatorPlacement.indicatorInsets
     }
 
-    private var indicatorBottomInset: CGFloat {
-        indicatorPlacement.pointsDown ? LemonadeTooltipMetrics.indicatorHeight : 0
+    // Those insets are physical, like the placements themselves, but SwiftUI's edges are
+    // direction-aware — so they are mapped onto the leading and trailing edges rather than applied to
+    // them, which keeps a left indicator on the left in an RTL layout.
+    private var indicatorPadding: EdgeInsets {
+        let isRightToLeft = layoutDirection == .rightToLeft
+
+        return EdgeInsets(
+            top: insets.top,
+            leading: isRightToLeft ? insets.right : insets.left,
+            bottom: insets.bottom,
+            trailing: isRightToLeft ? insets.left : insets.right
+        )
     }
 
     var body: some View {
@@ -300,16 +438,20 @@ struct LemonadeTooltipView: View {
             bodyView
         }
         .padding(LemonadeTheme.spaces.spacing100)
-        .padding(.top, indicatorTopInset)
-        .padding(.bottom, indicatorBottomInset)
-        .frame(width: LemonadeTooltipMetrics.width)
+        .padding(indicatorPadding)
+        // Covers the body plus whatever the indicator adds beside it, so the body itself stays 280pt
+        // wide whichever edge the indicator sits on.
+        .frame(width: LemonadeTooltipMetrics.width + insets.left + insets.right)
         .background(surface)
         .background(shadowLayer)
         .overlay(alignment: .topTrailing) {
             if let onClose {
                 closeButton(onClose: onClose)
-                    .padding(.top, indicatorTopInset + LemonadeTheme.spaces.spacing100)
-                    .padding(.trailing, LemonadeTheme.spaces.spacing100)
+                    .padding(.top, indicatorPadding.top + LemonadeTheme.spaces.spacing100)
+                    .padding(
+                        .trailing,
+                        indicatorPadding.trailing + LemonadeTheme.spaces.spacing100
+                    )
             }
         }
         // Matches the `isolate` on Figma's tooltip root: without its own compositing group the close
@@ -494,72 +636,79 @@ private struct LemonadeTooltipShape: Shape {
     let cornerRadius: CGFloat
 
     func path(in rect: CGRect) -> Path {
-        let indicatorHeight = LemonadeTooltipMetrics.indicatorHeight
-        let bodyTop = indicatorPlacement.pointsUp ? indicatorHeight : 0
-        let bodyBottom = indicatorPlacement.pointsDown ? rect.height - indicatorHeight : rect.height
-        let radius = min(cornerRadius, min(rect.width, bodyBottom - bodyTop) / 2)
+        let insets = indicatorPlacement.indicatorInsets
+        let body = CGRect(
+            x: insets.left,
+            y: insets.top,
+            width: rect.width - insets.left - insets.right,
+            height: rect.height - insets.top - insets.bottom
+        )
+        let radius = min(cornerRadius, min(body.width, body.height) / 2)
 
         var path = Path()
-        path.addRoundedRect(
-            in: CGRect(x: 0, y: bodyTop, width: rect.width, height: bodyBottom - bodyTop),
-            cornerSize: CGSize(width: radius, height: radius)
-        )
+        path.addRoundedRect(in: body, cornerSize: CGSize(width: radius, height: radius))
 
-        // Appended as a second sub-path and unioned by the non-zero fill rule. This works because
-        // CoreGraphics winds `addRoundedRect` the same way as the triangle below; reverse either and
-        // they cancel where they overlap, leaving a hairline hole across the join. Compose needs an
-        // explicit boolean union for exactly that reason — Skia winds its round rect the other way.
         if indicatorPlacement != .none {
-            path.addPath(
-                indicatorPath(
-                    in: rect,
-                    baseY: indicatorPlacement.pointsUp ? bodyTop : bodyBottom
-                )
-            )
+            path.addPath(canonicalIndicatorPath(), transform: indicatorTransform(in: body))
         }
 
         return path
     }
 
     /// The indicator triangle. Its straight edges stop short of the notional apex and a cubic
-    /// bridges the gap, which is what rounds the tip. The base is deliberately sunk one point into
-    /// the body so the two sub-paths overlap rather than merely touching, which would leave a
-    /// hairline.
-    private func indicatorPath(in rect: CGRect, baseY: CGFloat) -> Path {
+    /// bridges the gap, which is what rounds the tip.
+    ///
+    /// It is built once in a canonical frame — base centred on the origin, apex pointing up — and then
+    /// rotated onto whichever edge it belongs to, so the four edges cannot drift apart. The base is
+    /// deliberately sunk `indicatorBodyOverlap` into the body, on the far side of the origin from the
+    /// apex.
+    ///
+    /// The triangle is appended as a second sub-path and unioned by the non-zero fill rule. That works
+    /// because the canonical path is wound the same way as CoreGraphics winds `addRoundedRect`, and a
+    /// rotation preserves winding, so every edge joins cleanly; reverse either and they cancel where
+    /// they overlap, leaving a hairline hole across the join. Compose needs an explicit boolean union
+    /// for exactly that reason — Skia winds its round rect the other way.
+    private func canonicalIndicatorPath() -> Path {
         let halfBase = LemonadeTooltipMetrics.indicatorBaseWidth / 2
-        let apexHeight = LemonadeTooltipMetrics.indicatorApexHeight
+        let apexY = -LemonadeTooltipMetrics.indicatorApexHeight
         let tipStart = LemonadeTooltipMetrics.indicatorTipStart
         let curvature = LemonadeTooltipMetrics.indicatorTipCurvature
+        let overlap = LemonadeTooltipMetrics.indicatorBodyOverlap
 
-        let pointsUp = indicatorPlacement.pointsUp
-        let centerX = indicatorPlacement.indicatorCenterX(in: rect.width)
-        let overlap: CGFloat = pointsUp ? 1 : -1
-        let apexY = pointsUp ? baseY - apexHeight : baseY + apexHeight
-
-        // Traversed base-to-tip-to-base, starting on the side that keeps the winding clockwise in
-        // screen coordinates for BOTH directions: left-to-right pointing up, right-to-left pointing
-        // down. Mirroring only the apex would reverse the winding for the downward case, and the
-        // non-zero fill rule would then cancel it against the body exactly where they overlap,
-        // opening a hairline hole across the join.
-        let startX = pointsUp ? centerX - halfBase : centerX + halfBase
-        let endX = pointsUp ? centerX + halfBase : centerX - halfBase
-        let tipStartX = startX + (centerX - startX) * tipStart
-        let tipEndX = endX + (centerX - endX) * tipStart
-        let tipY = baseY + (apexY - baseY) * tipStart
+        let tipStartX = -halfBase * (1 - tipStart)
+        let tipEndX = -tipStartX
+        let tipY = apexY * tipStart
         let controlY = tipY + (apexY - tipY) * curvature
 
         var path = Path()
-        path.move(to: CGPoint(x: startX, y: baseY + overlap))
+        path.move(to: CGPoint(x: -halfBase, y: overlap))
         path.addLine(to: CGPoint(x: tipStartX, y: tipY))
         path.addCurve(
             to: CGPoint(x: tipEndX, y: tipY),
-            control1: CGPoint(x: tipStartX + (centerX - tipStartX) * curvature, y: controlY),
-            control2: CGPoint(x: tipEndX + (centerX - tipEndX) * curvature, y: controlY)
+            control1: CGPoint(x: tipStartX * (1 - curvature), y: controlY),
+            control2: CGPoint(x: tipEndX * (1 - curvature), y: controlY)
         )
-        path.addLine(to: CGPoint(x: endX, y: baseY + overlap))
+        path.addLine(to: CGPoint(x: halfBase, y: overlap))
         path.closeSubpath()
 
         return path
+    }
+
+    /// Rotation onto the indicator's edge, then translation to its position along that edge.
+    private func indicatorTransform(in body: CGRect) -> CGAffineTransform {
+        let centerOffset = indicatorPlacement.indicatorCenterOffset(
+            alongEdgeOfLength: indicatorPlacement.isOnVerticalEdge ? body.height : body.width
+        )
+        let origin: CGPoint
+        switch indicatorPlacement.edge {
+        case .top, .none: origin = CGPoint(x: body.minX + centerOffset, y: body.minY)
+        case .bottom: origin = CGPoint(x: body.minX + centerOffset, y: body.maxY)
+        case .left: origin = CGPoint(x: body.minX, y: body.minY + centerOffset)
+        case .right: origin = CGPoint(x: body.maxX, y: body.minY + centerOffset)
+        }
+
+        return CGAffineTransform(translationX: origin.x, y: origin.y)
+            .rotated(by: indicatorPlacement.edge.rotationAngle)
     }
 }
 
@@ -626,7 +775,7 @@ struct LemonadeTooltip_Previews: PreviewProvider {
                 ForEach(LemonadeTooltipIndicatorPlacement.allCases, id: \.self) { placement in
                     LemonadeUi.Tooltip(
                         content: "Tap here to see everything you sold today.",
-                        title: placementName(placement),
+                        title: placement.displayName,
                         indicatorPlacement: placement
                     )
                 }
@@ -673,18 +822,6 @@ struct LemonadeTooltip_Previews: PreviewProvider {
         }
         .background(LemonadeTheme.colors.background.bgSubtle)
         .previewLayout(.sizeThatFits)
-    }
-
-    private static func placementName(_ placement: LemonadeTooltipIndicatorPlacement) -> String {
-        switch placement {
-        case .none: return "None"
-        case .topLeft: return "Top Left"
-        case .topCenter: return "Top Center"
-        case .topRight: return "Top Right"
-        case .bottomLeft: return "Bottom Left"
-        case .bottomCenter: return "Bottom Center"
-        case .bottomRight: return "Bottom Right"
-        }
     }
 
     @ViewBuilder

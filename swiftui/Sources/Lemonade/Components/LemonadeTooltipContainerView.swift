@@ -192,7 +192,7 @@ struct LemonadeTooltipContainerView<Content: View>: View {
         anchor: CGRect,
         containerSize: CGSize
     ) -> some View {
-        let pointsUp = LemonadeTooltipPositioning.pointsUp(
+        let edge = LemonadeTooltipPositioning.edge(
             anchor: anchor,
             containerSize: containerSize,
             forcedPlacement: presentation.indicatorPlacement
@@ -202,14 +202,13 @@ struct LemonadeTooltipContainerView<Content: View>: View {
                 anchor: anchor,
                 containerSize: containerSize,
                 tooltipWidth: tooltipSize.width > 0 ? tooltipSize.width : 280,
-                pointsUp: pointsUp
+                edge: edge
             )
         let origin = LemonadeTooltipPositioning.origin(
             anchor: anchor,
             containerSize: containerSize,
             tooltipSize: tooltipSize,
-            placement: placement,
-            pointsUp: pointsUp
+            placement: placement
         )
 
         ZStack(alignment: .topLeading) {
@@ -362,43 +361,40 @@ private struct LemonadeTooltipSizePreferenceKey: PreferenceKey {
 
 enum LemonadeTooltipPositioning {
 
-    /// Whether the tooltip sits below the anchor, with its indicator pointing up at it.
+    /// Which edge of the tooltip its indicator protrudes from, and therefore which side of `anchor`
+    /// the tooltip sits on.
     ///
-    /// A caller that forces an `indicatorPlacement` is choosing the side too — an indicator drawn
-    /// on top of the body only makes sense with the body below the anchor. Without one, the side
-    /// follows the anchor's half of the container.
-    static func pointsUp(
+    /// A caller that forces a placement is choosing the side too — an indicator drawn on top of the
+    /// body only makes sense with the body below the anchor. Without one, and for `.none` which names
+    /// no edge, the tooltip goes below an anchor in the top half of the container and above one in the
+    /// bottom half. Never returns `.none`: the tooltip is always on one side of its anchor, even when
+    /// no indicator is drawn.
+    static func edge(
         anchor: CGRect,
         containerSize: CGSize,
         forcedPlacement: LemonadeTooltipIndicatorPlacement?
-    ) -> Bool {
-        if let forcedPlacement, forcedPlacement != .none {
-            return forcedPlacement.pointsUp
+    ) -> LemonadeTooltipIndicatorEdge {
+        if let forcedEdge = forcedPlacement?.edge, forcedEdge != .none {
+            return forcedEdge
         }
-        return anchor.midY < containerSize.height / 2
-    }
-
-    /// Horizontal distance from the tooltip's leading edge to the centre of its indicator. The
-    /// indicator sits at one of three fixed positions, so this is the reach a placement can offer.
-    static func indicatorCenterOffset(
-        placement: LemonadeTooltipIndicatorPlacement,
-        tooltipWidth: CGFloat
-    ) -> CGFloat {
-        placement.indicatorCenterX(in: tooltipWidth)
+        return anchor.midY < containerSize.height / 2 ? .top : .bottom
     }
 
     /// Picks the placement whose indicator lands closest to the centre of `anchor` once the tooltip
     /// has been kept inside the container. The indicator has only three possible positions, so near
     /// an edge the left or right variant reaches an anchor that the centred one cannot.
+    ///
+    /// Only the top and bottom placements are candidates: choosing to sit beside an anchor rather than
+    /// above or below it is a deliberate call, so the left and right ones have to be asked for.
     static func indicatorPlacement(
         anchor: CGRect,
         containerSize: CGSize,
         tooltipWidth: CGFloat,
-        pointsUp: Bool
+        edge: LemonadeTooltipIndicatorEdge
     ) -> LemonadeTooltipIndicatorPlacement {
-        let candidates: [LemonadeTooltipIndicatorPlacement] = pointsUp
-            ? [.topCenter, .topLeft, .topRight]
-            : [.bottomCenter, .bottomLeft, .bottomRight]
+        let candidates: [LemonadeTooltipIndicatorPlacement] = edge == .bottom
+            ? [.bottomCenter, .bottomLeft, .bottomRight]
+            : [.topCenter, .topLeft, .topRight]
 
         let margin = LemonadeTooltipLayout.containerMargin
         let maxX = max(margin, containerSize.width - tooltipWidth - margin)
@@ -407,7 +403,7 @@ enum LemonadeTooltipPositioning {
         var bestError = CGFloat.greatestFiniteMagnitude
 
         for candidate in candidates {
-            let offset = indicatorCenterOffset(placement: candidate, tooltipWidth: tooltipWidth)
+            let offset = candidate.indicatorCenterOffset(alongEdgeOfLength: tooltipWidth)
             let x = min(max(anchor.midX - offset, margin), maxX)
             let error = abs(x + offset - anchor.midX)
             if error < bestError {
@@ -419,29 +415,54 @@ enum LemonadeTooltipPositioning {
         return best
     }
 
+    /// Where to place the tooltip inside the container so its indicator points at `anchor`, kept
+    /// inside the container's margins.
+    ///
+    /// One rule, applied per edge: along the indicator's own axis the tooltip clears the corresponding
+    /// anchor bound by `anchorGap`; across it the indicator lines up with the anchor's centre. The
+    /// indicator tip sits on the tooltip's own bounds, so the gap is measured from those.
+    ///
+    /// The edge is resolved here rather than passed in, so it cannot contradict `placement`, and so
+    /// `.none` — which names no edge — still lands above or below its anchor.
     static func origin(
         anchor: CGRect,
         containerSize: CGSize,
         tooltipSize: CGSize,
-        placement: LemonadeTooltipIndicatorPlacement,
-        pointsUp: Bool
+        placement: LemonadeTooltipIndicatorPlacement
     ) -> CGPoint {
+        let resolvedEdge = edge(
+            anchor: anchor,
+            containerSize: containerSize,
+            forcedPlacement: placement
+        )
         let margin = LemonadeTooltipLayout.containerMargin
         let gap = LemonadeTooltipLayout.anchorGap
-        let indicatorOffset = indicatorCenterOffset(
-            placement: placement,
-            tooltipWidth: tooltipSize.width
+
+        let besideAnchor = resolvedEdge == .left || resolvedEdge == .right
+        let alongIndicatorEdge = placement.indicatorCenterOffset(
+            alongEdgeOfLength: besideAnchor ? tooltipSize.height : tooltipSize.width
         )
+        let centredOnAnchorX = anchor.midX - alongIndicatorEdge
+        let centredOnAnchorY = anchor.midY - alongIndicatorEdge
+
+        let raw: CGPoint
+        switch resolvedEdge {
+        case .top, .none:
+            raw = CGPoint(x: centredOnAnchorX, y: anchor.maxY + gap)
+        case .bottom:
+            raw = CGPoint(x: centredOnAnchorX, y: anchor.minY - gap - tooltipSize.height)
+        case .left:
+            raw = CGPoint(x: anchor.maxX + gap, y: centredOnAnchorY)
+        case .right:
+            raw = CGPoint(x: anchor.minX - gap - tooltipSize.width, y: centredOnAnchorY)
+        }
 
         let maxX = max(margin, containerSize.width - tooltipSize.width - margin)
-        let x = min(max(anchor.midX - indicatorOffset, margin), maxX)
-
         let maxY = max(margin, containerSize.height - tooltipSize.height - margin)
-        let rawY = pointsUp
-            ? anchor.maxY + gap
-            : anchor.minY - gap - tooltipSize.height
-        let y = min(max(rawY, margin), maxY)
 
-        return CGPoint(x: x, y: y)
+        return CGPoint(
+            x: min(max(raw.x, margin), maxX),
+            y: min(max(raw.y, margin), maxY)
+        )
     }
 }

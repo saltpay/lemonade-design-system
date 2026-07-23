@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -22,12 +23,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.Matrix
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathOperation
@@ -58,8 +61,14 @@ internal val TooltipIndicatorBaseWidth = 15.dp
 /** Height the indicator would reach if its tip were a sharp point instead of a rounded one. */
 internal val TooltipIndicatorApexHeight = 10.dp
 
-/** Distance from the tooltip edge to the near side of the indicator base, for the left/right placements. */
-internal val TooltipIndicatorEdgeInset = 40.dp
+/**
+ * Distance from the tooltip corner to the near side of the indicator base, along the top and bottom
+ * edges — so the offset that separates `TopLeft` from `TopCenter`.
+ */
+internal val TooltipIndicatorHorizontalEdgeInset = 40.dp
+
+/** As [TooltipIndicatorHorizontalEdgeInset], but along the shorter left and right edges. */
+internal val TooltipIndicatorVerticalEdgeInset = 24.dp
 
 /**
  * Fraction of the way from the indicator base to its notional apex at which the rounded tip starts.
@@ -69,6 +78,12 @@ private const val TOOLTIP_INDICATOR_TIP_START = 0.68f
 
 /** How far each tip control point is pulled towards the notional apex. */
 private const val TOOLTIP_INDICATOR_TIP_CURVATURE = 0.5f
+
+/**
+ * How far, in pixels, the indicator base is sunk into the tooltip body so the two sub-paths overlap
+ * rather than merely touching — which would leave a hairline across the join.
+ */
+private const val TOOLTIP_INDICATOR_BODY_OVERLAP = 1f
 
 /** Cover slot aspect ratio — 272x158, the cover size at the default 280dp tooltip width. */
 private const val TOOLTIP_COVER_ASPECT_RATIO = 272f / 158f
@@ -218,9 +233,10 @@ public class TooltipFooterScope internal constructor(
  * ```
  *
  * ## Design Notes
- * The tooltip is 280dp wide by default; pass a width in [modifier] to override it. The indicator is
- * drawn outside the body, so the composable is [TooltipIndicatorHeight] taller than the body itself
- * whenever [indicatorPlacement] is not [TooltipIndicatorPlacement.None].
+ * The tooltip body is 280dp wide by default; pass a width in [modifier] to override it. The indicator
+ * is drawn outside the body, so the composable is [TooltipIndicatorHeight] larger than the body on
+ * whichever edge the indicator sits — taller for a top or bottom placement, wider for a left or right
+ * one.
  *
  * @param content The body text. Required — a tooltip always says something.
  * @param modifier Modifier to apply to the tooltip container.
@@ -283,10 +299,15 @@ private fun CoreTooltip(
         )
     }
 
-    // The indicator is drawn outside the body, so the body has to be inset by its height on
-    // whichever edge the indicator sits on.
-    val indicatorTopInset = if (indicatorPlacement.pointsUp) TooltipIndicatorHeight else 0.dp
-    val indicatorBottomInset = if (indicatorPlacement.pointsDown) TooltipIndicatorHeight else 0.dp
+    // The indicator is drawn outside the body, so the body has to be inset by its height on whichever
+    // edge the indicator sits on — the same insets [TooltipShape] builds its outline from.
+    val insets = indicatorPlacement.indicatorInsets
+    val indicatorPadding = Modifier.absolutePadding(
+        left = insets.left,
+        top = insets.top,
+        right = insets.right,
+        bottom = insets.bottom,
+    )
 
     // Deliberately opaque. The design fills this at 80% opacity, and SwiftUI matches that over a
     // system material, but Compose has no backdrop blur without a third-party dependency that is
@@ -294,7 +315,11 @@ private fun CoreTooltip(
     // straight through the text, so legibility wins over matching the design here. The consequence
     // is that Compose renders darker than both the design and iOS.
     val surfaceColor = colors.background.bgDefaultInverse
-    Box(modifier = modifier.width(width = TooltipWidth)) {
+    // The width covers the body plus whatever the indicator adds beside it, so the body itself stays
+    // TooltipWidth wide whichever edge the indicator sits on.
+    Box(
+        modifier = modifier.width(width = TooltipWidth + insets.left + insets.right),
+    ) {
         // The shadow is cast from the body rectangle rather than the full tooltip outline. Given an
         // Outline.Generic shape, Compose's dropShadow clips the blur a few dp past the node bounds
         // on Android, which cuts the falloff off square; a rounded rect takes the un-clipped path.
@@ -302,10 +327,8 @@ private fun CoreTooltip(
         Box(
             modifier = Modifier
                 .matchParentSize()
-                .padding(
-                    top = indicatorTopInset,
-                    bottom = indicatorBottomInset,
-                ).lemonadeShadow(
+                .then(other = indicatorPadding)
+                .lemonadeShadow(
                     shadow = LemonadeShadow.Xlarge,
                     shape = LocalShapes.current.radius600,
                 ),
@@ -325,10 +348,8 @@ private fun CoreTooltip(
                     .background(
                         color = surfaceColor,
                         shape = shape,
-                    ).padding(
-                        top = indicatorTopInset,
-                        bottom = indicatorBottomInset,
-                    ).padding(all = spaces.spacing100),
+                    ).then(other = indicatorPadding)
+                    .padding(all = spaces.spacing100),
             ) {
                 if (cover != null) {
                     TooltipCover(
@@ -349,10 +370,16 @@ private fun CoreTooltip(
                 TooltipCloseButton(
                     onClick = onCloseClick,
                     contentDescription = closeContentDescription,
+                    // The indicator insets are physical and the spacing is not, so they go on in two
+                    // passes: whichever edge `end` resolves to, the button clears the indicator on
+                    // that side and then keeps its own spacing inside the body. The inset on the
+                    // opposite edge is slack — the button is pinned to `end`, so padding on its far
+                    // side cannot move it.
                     modifier = Modifier
                         .align(alignment = Alignment.TopEnd)
+                        .then(other = indicatorPadding)
                         .padding(
-                            top = indicatorTopInset + spaces.spacing100,
+                            top = spaces.spacing100,
                             end = spaces.spacing100,
                         ),
                 )
@@ -478,37 +505,162 @@ private fun TooltipCloseButton(
 
 // MARK: - Indicator Geometry
 
-internal val TooltipIndicatorPlacement.pointsUp: Boolean
+/** The edge of the tooltip body an indicator protrudes from. */
+internal enum class TooltipIndicatorEdge {
+    None,
+    Top,
+    Bottom,
+    Left,
+    Right,
+}
+
+/**
+ * Where along its edge the indicator sits.
+ *
+ * [Start] and [End] are physical, like the placements themselves: the left and right ends of the top
+ * and bottom edges, the top and bottom ends of the left and right ones.
+ */
+internal enum class TooltipIndicatorAlignment {
+    Start,
+    Center,
+    End,
+}
+
+internal val TooltipIndicatorPlacement.edge: TooltipIndicatorEdge
     get() {
         return when (this) {
+            TooltipIndicatorPlacement.None -> TooltipIndicatorEdge.None
+
             TooltipIndicatorPlacement.TopLeft,
             TooltipIndicatorPlacement.TopCenter,
             TooltipIndicatorPlacement.TopRight,
-            -> true
+            -> TooltipIndicatorEdge.Top
 
-            TooltipIndicatorPlacement.None,
             TooltipIndicatorPlacement.BottomLeft,
             TooltipIndicatorPlacement.BottomCenter,
             TooltipIndicatorPlacement.BottomRight,
-            -> false
+            -> TooltipIndicatorEdge.Bottom
+
+            TooltipIndicatorPlacement.LeftTop,
+            TooltipIndicatorPlacement.LeftCenter,
+            TooltipIndicatorPlacement.LeftBottom,
+            -> TooltipIndicatorEdge.Left
+
+            TooltipIndicatorPlacement.RightTop,
+            TooltipIndicatorPlacement.RightCenter,
+            TooltipIndicatorPlacement.RightBottom,
+            -> TooltipIndicatorEdge.Right
         }
     }
 
-internal val TooltipIndicatorPlacement.pointsDown: Boolean
+internal val TooltipIndicatorPlacement.alignment: TooltipIndicatorAlignment
     get() {
         return when (this) {
+            TooltipIndicatorPlacement.TopLeft,
             TooltipIndicatorPlacement.BottomLeft,
-            TooltipIndicatorPlacement.BottomCenter,
+            TooltipIndicatorPlacement.LeftTop,
+            TooltipIndicatorPlacement.RightTop,
+            -> TooltipIndicatorAlignment.Start
+
+            TooltipIndicatorPlacement.TopRight,
             TooltipIndicatorPlacement.BottomRight,
-            -> true
+            TooltipIndicatorPlacement.LeftBottom,
+            TooltipIndicatorPlacement.RightBottom,
+            -> TooltipIndicatorAlignment.End
 
             TooltipIndicatorPlacement.None,
-            TooltipIndicatorPlacement.TopLeft,
             TooltipIndicatorPlacement.TopCenter,
-            TooltipIndicatorPlacement.TopRight,
-            -> false
+            TooltipIndicatorPlacement.BottomCenter,
+            TooltipIndicatorPlacement.LeftCenter,
+            TooltipIndicatorPlacement.RightCenter,
+            -> TooltipIndicatorAlignment.Center
         }
     }
+
+/**
+ * Whether the indicator runs along the left or right edge, so its position is measured down the
+ * tooltip's height rather than across its width. [TooltipIndicatorPlacement.None] counts as
+ * horizontal — it has no indicator, and the host still centres it on its anchor horizontally.
+ */
+internal val TooltipIndicatorPlacement.isOnVerticalEdge: Boolean
+    get() {
+        return edge == TooltipIndicatorEdge.Left || edge == TooltipIndicatorEdge.Right
+    }
+
+/**
+ * How far the indicator protrudes past the tooltip body on each edge — [TooltipIndicatorHeight] on
+ * the indicator's own edge and nothing on the other three.
+ *
+ * The edges are physical, like the placements themselves, so a left indicator stays on the left in an
+ * RTL layout. This is the single statement of "which edge does the indicator add to": the layout pads
+ * the body by it and [TooltipShape] insets its outline by it, and the two have to agree exactly or the
+ * drawn surface and the padded content come apart.
+ */
+internal data class TooltipIndicatorInsets(
+    val left: Dp,
+    val top: Dp,
+    val right: Dp,
+    val bottom: Dp,
+)
+
+internal val TooltipIndicatorPlacement.indicatorInsets: TooltipIndicatorInsets
+    get() {
+        val protrusion = TooltipIndicatorHeight
+
+        return TooltipIndicatorInsets(
+            left = if (edge == TooltipIndicatorEdge.Left) protrusion else 0.dp,
+            top = if (edge == TooltipIndicatorEdge.Top) protrusion else 0.dp,
+            right = if (edge == TooltipIndicatorEdge.Right) protrusion else 0.dp,
+            bottom = if (edge == TooltipIndicatorEdge.Bottom) protrusion else 0.dp,
+        )
+    }
+
+/** Rotation that carries the canonical upward-pointing indicator onto this edge. */
+private val TooltipIndicatorEdge.rotationDegrees: Float
+    get() {
+        return when (this) {
+            TooltipIndicatorEdge.None,
+            TooltipIndicatorEdge.Top,
+            -> 0f
+
+            TooltipIndicatorEdge.Right -> 90f
+            TooltipIndicatorEdge.Bottom -> 180f
+            TooltipIndicatorEdge.Left -> 270f
+        }
+    }
+
+/**
+ * Distance from the start of the indicator's edge to the centre of the indicator — measured from the
+ * body's left edge for a top or bottom placement, from its top edge for a left or right one.
+ *
+ * The indicator sits at one of three fixed positions along its edge, so this is the reach a given
+ * placement can offer. Pass the length of the edge the placement sits on: the body's width for a top
+ * or bottom placement, its height for a left or right one.
+ */
+internal fun indicatorCenterOffset(
+    placement: TooltipIndicatorPlacement,
+    edgeLength: Float,
+    density: Density,
+): Float {
+    val halfBase = with(density) { TooltipIndicatorBaseWidth.toPx() } / 2f
+    val inset = with(density) {
+        if (placement.isOnVerticalEdge) {
+            TooltipIndicatorVerticalEdgeInset.toPx()
+        } else {
+            TooltipIndicatorHorizontalEdgeInset.toPx()
+        }
+    }
+
+    // An edge too short for the inset would put End ahead of Start; collapsing both onto the centre
+    // keeps the three positions in order instead of crossing them over.
+    val center = edgeLength / 2f
+
+    return when (placement.alignment) {
+        TooltipIndicatorAlignment.Start -> minOf(inset + halfBase, center)
+        TooltipIndicatorAlignment.Center -> center
+        TooltipIndicatorAlignment.End -> maxOf(edgeLength - inset - halfBase, center)
+    }
+}
 
 /**
  * The tooltip surface: a rounded rectangle with the indicator triangle added to one edge.
@@ -531,25 +683,22 @@ internal data class TooltipShape(
         layoutDirection: LayoutDirection,
         density: Density,
     ): Outline {
-        val indicatorHeight = with(density) { TooltipIndicatorHeight.toPx() }
-        val bodyTop = if (indicatorPlacement.pointsUp) indicatorHeight else 0f
-        val bodyBottom = if (indicatorPlacement.pointsDown) {
-            size.height - indicatorHeight
-        } else {
-            size.height
+        val insets = indicatorPlacement.indicatorInsets
+        val bodyRect = with(density) {
+            Rect(
+                left = insets.left.toPx(),
+                top = insets.top.toPx(),
+                right = size.width - insets.right.toPx(),
+                bottom = size.height - insets.bottom.toPx(),
+            )
         }
         val radius = with(density) { cornerRadius.toPx() }
-            .coerceAtMost(maximumValue = minOf(size.width, bodyBottom - bodyTop) / 2f)
+            .coerceAtMost(maximumValue = minOf(bodyRect.width, bodyRect.height) / 2f)
 
         val body = Path().apply {
             addRoundRect(
                 roundRect = RoundRect(
-                    rect = Rect(
-                        left = 0f,
-                        top = bodyTop,
-                        right = size.width,
-                        bottom = bodyBottom,
-                    ),
+                    rect = bodyRect,
                     cornerRadius = CornerRadius(radius, radius),
                 ),
             )
@@ -560,9 +709,8 @@ internal data class TooltipShape(
         }
 
         val indicator = indicatorPath(
-            size = size,
+            bodyRect = bodyRect,
             density = density,
-            baseY = if (indicatorPlacement.pointsUp) bodyTop else bodyBottom,
         )
 
         // An explicit union rather than appending the triangle as a second sub-path. Skia adds the
@@ -582,53 +730,68 @@ internal data class TooltipShape(
 
     /**
      * The indicator triangle. Its straight edges stop short of the notional apex and a cubic bridges
-     * the gap, which is what rounds the tip. The base is deliberately sunk one pixel into the body
-     * so the two sub-paths overlap rather than merely touching, which would leave a hairline.
+     * the gap, which is what rounds the tip.
+     *
+     * It is built once in a canonical frame — base centred on the origin, apex pointing up — and then
+     * rotated onto whichever edge it belongs to, so the four edges cannot drift apart. The base is
+     * deliberately sunk [TOOLTIP_INDICATOR_BODY_OVERLAP] into the body, on the far side of the origin
+     * from the apex.
      */
     private fun indicatorPath(
-        size: Size,
+        bodyRect: Rect,
         density: Density,
-        baseY: Float,
     ): Path {
         val halfBase = with(density) { TooltipIndicatorBaseWidth.toPx() } / 2f
-        val apexHeight = with(density) { TooltipIndicatorApexHeight.toPx() }
-        val edgeInset = with(density) { TooltipIndicatorEdgeInset.toPx() }
+        val apexY = -with(density) { TooltipIndicatorApexHeight.toPx() }
 
-        val pointsUp = indicatorPlacement.pointsUp
-        val centerX = when (indicatorPlacement) {
-            TooltipIndicatorPlacement.TopLeft,
-            TooltipIndicatorPlacement.BottomLeft,
-            -> edgeInset + halfBase
-
-            TooltipIndicatorPlacement.TopRight,
-            TooltipIndicatorPlacement.BottomRight,
-            -> size.width - edgeInset - halfBase
-
-            else -> size.width / 2f
-        }
-
-        val overlap = if (pointsUp) 1f else -1f
-        val apexY = if (pointsUp) baseY - apexHeight else baseY + apexHeight
-        val tipX = centerX
-        val tipEntryX = centerX - halfBase + halfBase * TOOLTIP_INDICATOR_TIP_START
-        val tipExitX = centerX + halfBase - halfBase * TOOLTIP_INDICATOR_TIP_START
-        val tipY = baseY + (apexY - baseY) * TOOLTIP_INDICATOR_TIP_START
+        val tipEntryX = -halfBase * (1f - TOOLTIP_INDICATOR_TIP_START)
+        val tipExitX = -tipEntryX
+        val tipY = apexY * TOOLTIP_INDICATOR_TIP_START
         val controlY = tipY + (apexY - tipY) * TOOLTIP_INDICATOR_TIP_CURVATURE
 
-        return Path().apply {
-            moveTo(centerX - halfBase, baseY + overlap)
+        val indicator = Path().apply {
+            moveTo(-halfBase, TOOLTIP_INDICATOR_BODY_OVERLAP)
             lineTo(tipEntryX, tipY)
             cubicTo(
-                x1 = tipEntryX + (tipX - tipEntryX) * TOOLTIP_INDICATOR_TIP_CURVATURE,
+                x1 = tipEntryX * (1f - TOOLTIP_INDICATOR_TIP_CURVATURE),
                 y1 = controlY,
-                x2 = tipExitX + (tipX - tipExitX) * TOOLTIP_INDICATOR_TIP_CURVATURE,
+                x2 = tipExitX * (1f - TOOLTIP_INDICATOR_TIP_CURVATURE),
                 y2 = controlY,
                 x3 = tipExitX,
                 y3 = tipY,
             )
-            lineTo(centerX + halfBase, baseY + overlap)
+            lineTo(halfBase, TOOLTIP_INDICATOR_BODY_OVERLAP)
             close()
         }
+
+        val centerOffset = indicatorCenterOffset(
+            placement = indicatorPlacement,
+            edgeLength = if (indicatorPlacement.isOnVerticalEdge) bodyRect.height else bodyRect.width,
+            density = density,
+        )
+        val edge = indicatorPlacement.edge
+        val origin = when (edge) {
+            TooltipIndicatorEdge.Top,
+            TooltipIndicatorEdge.None,
+            -> Offset(x = bodyRect.left + centerOffset, y = bodyRect.top)
+
+            TooltipIndicatorEdge.Bottom -> Offset(
+                x = bodyRect.left + centerOffset,
+                y = bodyRect.bottom,
+            )
+
+            TooltipIndicatorEdge.Left -> Offset(x = bodyRect.left, y = bodyRect.top + centerOffset)
+            TooltipIndicatorEdge.Right -> Offset(x = bodyRect.right, y = bodyRect.top + centerOffset)
+        }
+
+        indicator.transform(
+            matrix = Matrix().apply {
+                translate(x = origin.x, y = origin.y)
+                rotateZ(degrees = edge.rotationDegrees)
+            },
+        )
+
+        return indicator
     }
 }
 

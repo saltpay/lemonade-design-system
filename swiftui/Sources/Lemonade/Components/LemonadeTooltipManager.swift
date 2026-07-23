@@ -35,7 +35,8 @@ public struct LemonadeTooltipStep: Identifiable {
     ///   - content: The body text of the step.
     ///   - title: Optional bold heading.
     ///   - indicatorPlacement: Forces where the indicator sits. Defaults to `nil`, which resolves
-    ///     the placement from where the anchor is on screen.
+    ///     the placement from where the anchor is on screen — always a top or bottom one, so pass a
+    ///     left or right placement to put the tooltip beside its anchor instead.
     public init(
         id: UUID = UUID(),
         anchor: String,
@@ -210,7 +211,8 @@ public final class LemonadeTooltipManager: ObservableObject {
     ///   - content: The body text.
     ///   - title: Optional bold heading.
     ///   - indicatorPlacement: Forces where the indicator sits. Defaults to `nil`, which resolves
-    ///     the placement from where the anchor is on screen.
+    ///     the placement from where the anchor is on screen — always a top or bottom one, so pass a
+    ///     left or right placement to put the tooltip beside its anchor instead.
     ///   - scrim: What to draw behind the tooltip. Defaults to `.none` — on-demand help usually
     ///     should not dim the screen.
     ///   - dismissOnOutsideTap: Whether a tap outside the tooltip dismisses it. Defaults to `true`.

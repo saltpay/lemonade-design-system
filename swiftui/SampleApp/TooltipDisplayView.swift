@@ -4,6 +4,8 @@ import Lemonade
 private let feesAnchor = "fees-info"
 private let takingsAnchor = "takings"
 private let reportsAnchor = "reports"
+private let besideLeadingAnchor = "beside-leading"
+private let besideTrailingAnchor = "beside-trailing"
 
 struct TooltipDisplayView: View {
     @EnvironmentObject private var tooltips: LemonadeTooltipManager
@@ -75,12 +77,54 @@ struct TooltipDisplayView: View {
                     }
                 }
 
+                sectionView(title: "Anchored — beside the anchor") {
+                    // The anchors sit at opposite edges of the screen: a side placement needs a whole
+                    // tooltip's width of room beside its anchor, which is exactly what an edge-aligned
+                    // control has and a centred one does not.
+                    HStack {
+                        LemonadeUi.IconButton(
+                            icon: .circleInfo,
+                            contentDescription: "Points left",
+                            onClick: {
+                                tooltips.show(
+                                    anchor: besideLeadingAnchor,
+                                    content: "The indicator is on the left edge, so the tooltip sits to the right of the icon.",
+                                    title: "Left Center",
+                                    indicatorPlacement: .leftCenter
+                                )
+                            },
+                            type: .ghost,
+                            size: .small
+                        )
+                        .lemonadeTooltipAnchor(besideLeadingAnchor)
+
+                        Spacer()
+
+                        LemonadeUi.IconButton(
+                            icon: .circleInfo,
+                            contentDescription: "Points right",
+                            onClick: {
+                                tooltips.show(
+                                    anchor: besideTrailingAnchor,
+                                    content: "The indicator is on the right edge, so the tooltip sits to the left of the icon.",
+                                    title: "Right Center",
+                                    indicatorPlacement: .rightCenter
+                                )
+                            },
+                            type: .ghost,
+                            size: .small
+                        )
+                        .lemonadeTooltipAnchor(besideTrailingAnchor)
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+
                 sectionView(title: "Indicator Placements") {
                     VStack(spacing: 12) {
                         ForEach(LemonadeTooltipIndicatorPlacement.allCases, id: \.self) { placement in
                             LemonadeUi.Tooltip(
                                 content: "Tap here to see everything you sold today.",
-                                title: placementName(placement),
+                                title: placement.displayName,
                                 indicatorPlacement: placement
                             )
                         }
@@ -153,18 +197,6 @@ struct TooltipDisplayView: View {
         // bgDefaultInverse, so this is the background it is designed to sit against.
         .background(.bg.bgDefault)
         .navigationTitle("Tooltip")
-    }
-
-    private func placementName(_ placement: LemonadeTooltipIndicatorPlacement) -> String {
-        switch placement {
-        case .none: return "None"
-        case .topLeft: return "Top Left"
-        case .topCenter: return "Top Center"
-        case .topRight: return "Top Right"
-        case .bottomLeft: return "Bottom Left"
-        case .bottomCenter: return "Bottom Center"
-        case .bottomRight: return "Bottom Right"
-        }
     }
 
     private func sectionView<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
