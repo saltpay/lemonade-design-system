@@ -617,6 +617,7 @@ public final class com/teya/lemonade/core/LemonadeIcons : java/lang/Enum, com/te
 	public static final field Cookie Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Copy Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field CornerUpLeft Lcom/teya/lemonade/core/LemonadeIcons;
+	public static final field Debug Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field Download Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field EllipsisHorizontal Lcom/teya/lemonade/core/LemonadeIcons;
 	public static final field EllipsisVertical Lcom/teya/lemonade/core/LemonadeIcons;

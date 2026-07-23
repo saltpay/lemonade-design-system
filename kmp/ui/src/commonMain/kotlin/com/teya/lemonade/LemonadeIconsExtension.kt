@@ -139,6 +139,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.Cookie -> LemonadeRes.drawable.gen_cookie
         LemonadeIcons.Copy -> LemonadeRes.drawable.gen_copy
         LemonadeIcons.CornerUpLeft -> LemonadeRes.drawable.gen_corner_up_left
+        LemonadeIcons.Debug -> LemonadeRes.drawable.gen_debug
         LemonadeIcons.Download -> LemonadeRes.drawable.gen_download
         LemonadeIcons.EllipsisHorizontal -> LemonadeRes.drawable.gen_ellipsis_horizontal
         LemonadeIcons.EllipsisVertical -> LemonadeRes.drawable.gen_ellipsis_vertical

@@ -138,6 +138,7 @@ public enum class LemonadeIcons : LemonadeAsset {
     Cookie,
     Copy,
     CornerUpLeft,
+    Debug,
     Download,
     EllipsisHorizontal,
     EllipsisVertical,

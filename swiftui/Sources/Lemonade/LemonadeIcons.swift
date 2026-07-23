@@ -145,6 +145,7 @@ public enum LemonadeIcon: String, CaseIterable {
     case cookie = "cookie"
     case copy = "copy"
     case cornerUpLeft = "corner-up-left"
+    case debug = "debug"
     case download = "download"
     case ellipsisHorizontal = "ellipsis-horizontal"
     case ellipsisVertical = "ellipsis-vertical"
