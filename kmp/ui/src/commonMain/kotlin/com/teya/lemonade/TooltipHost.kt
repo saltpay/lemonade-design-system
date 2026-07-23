@@ -130,6 +130,7 @@ internal class TooltipPresentation(
     val footer: (@Composable TooltipFooterScope.() -> Unit)?,
 )
 
+@Suppress("LongParameterList")
 private class TooltipTour(
     val steps: List<LemonadeTooltipStep>,
     val labels: LemonadeTooltipTourLabels,
