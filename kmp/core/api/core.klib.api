@@ -686,6 +686,7 @@ final enum class com.teya.lemonade.core/LemonadeIcons : com.teya.lemonade.core/L
     enum entry Cookie // com.teya.lemonade.core/LemonadeIcons.Cookie|null[0]
     enum entry Copy // com.teya.lemonade.core/LemonadeIcons.Copy|null[0]
     enum entry CornerUpLeft // com.teya.lemonade.core/LemonadeIcons.CornerUpLeft|null[0]
+    enum entry Debug // com.teya.lemonade.core/LemonadeIcons.Debug|null[0]
     enum entry Download // com.teya.lemonade.core/LemonadeIcons.Download|null[0]
     enum entry EllipsisHorizontal // com.teya.lemonade.core/LemonadeIcons.EllipsisHorizontal|null[0]
     enum entry EllipsisVertical // com.teya.lemonade.core/LemonadeIcons.EllipsisVertical|null[0]
