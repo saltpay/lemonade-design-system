@@ -18,3 +18,22 @@ extension View {
         }
     }
 }
+
+// MARK: - Minimum Tappable Frame
+
+extension View {
+    /// Grows the view's layout frame to at least `minSize` on each side, centered on the
+    /// content. Use on icon-only button labels whose rendered size is smaller than the
+    /// platform's minimum touch target, so the enclosing `Button`'s tappable area grows
+    /// with it instead of matching the icon's small visual bounds.
+    ///
+    /// ```swift
+    /// Button(action: onClick) {
+    ///     LemonadeUi.Icon(icon: .times, contentDescription: "Close")
+    /// }
+    /// .clickableFrame(minSize: .size800)
+    /// ```
+    func clickableFrame(minSize: LemonadeSizes) -> some View {
+        frame(minWidth: minSize.value, minHeight: minSize.value)
+    }
+}
