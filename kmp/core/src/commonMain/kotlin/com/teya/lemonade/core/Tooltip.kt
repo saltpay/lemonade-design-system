@@ -6,6 +6,11 @@ package com.teya.lemonade.core
  * Where the tooltip draws its indicator — the small arrow that points back at the element the
  * tooltip describes.
  *
+ * The first word names the edge of the tooltip the indicator protrudes from, the second where along
+ * that edge it sits. So [TopLeft] puts the arrow on the top edge towards its left end — the tooltip
+ * hangs below the element it describes — while [LeftTop] puts it on the left edge towards its top,
+ * with the tooltip sitting to the right of that element.
+ *
  * Placement is physical, not directional: [TopLeft] anchors the indicator to the left edge in both
  * LTR and RTL layouts, so a caller that positions the tooltip by absolute coordinates does not have
  * to compensate for the layout direction.
@@ -20,6 +25,15 @@ public enum class TooltipIndicatorPlacement {
     BottomLeft,
     BottomCenter,
     BottomRight,
+
+    // Appended rather than grouped with the placements above: the entry order is part of the
+    // published API, so inserting these among their neighbours would shift every later ordinal.
+    LeftTop,
+    LeftCenter,
+    LeftBottom,
+    RightTop,
+    RightCenter,
+    RightBottom,
 }
 
 /**

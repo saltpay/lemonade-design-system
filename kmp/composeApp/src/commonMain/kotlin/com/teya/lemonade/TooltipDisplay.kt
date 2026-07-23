@@ -21,6 +21,8 @@ import com.teya.lemonade.core.TooltipIndicatorPlacement
 private const val FEES_ANCHOR = "fees-info"
 private const val TAKINGS_ANCHOR = "takings"
 private const val REPORTS_ANCHOR = "reports"
+private const val BESIDE_LEADING_ANCHOR = "beside-leading"
+private const val BESIDE_TRAILING_ANCHOR = "beside-trailing"
 
 @Composable
 internal fun TooltipDisplay() {
@@ -37,6 +39,10 @@ internal fun TooltipDisplay() {
 
         TooltipSection("Anchored — guided tour") {
             TooltipTourManagerExample()
+        }
+
+        TooltipSection("Anchored — beside the anchor") {
+            TooltipBesideAnchorExample()
         }
 
         TooltipSection("Indicator Placements") {
@@ -170,6 +176,48 @@ private fun TooltipTourManagerExample() {
                     onSkip = { toasts.show(label = "Tour skipped") },
                 )
             },
+        )
+    }
+}
+
+@Composable
+private fun TooltipBesideAnchorExample() {
+    val tooltips = LocalLemonadeTooltipState.current
+
+    // The anchors sit at opposite edges of the screen: a side placement needs a whole tooltip's width
+    // of room beside its anchor, which is exactly what an edge-aligned control has and a centred one
+    // does not.
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        LemonadeUi.IconButton(
+            icon = LemonadeIcons.CircleInfo,
+            contentDescription = "Points left",
+            onClick = {
+                tooltips.show(
+                    anchor = BESIDE_LEADING_ANCHOR,
+                    title = "Left Center",
+                    content = "The indicator is on the left edge, so the tooltip sits to the right of the icon.",
+                    indicatorPlacement = TooltipIndicatorPlacement.LeftCenter,
+                )
+            },
+            modifier = Modifier.lemonadeTooltipAnchor(key = BESIDE_LEADING_ANCHOR),
+        )
+
+        LemonadeUi.IconButton(
+            icon = LemonadeIcons.CircleInfo,
+            contentDescription = "Points right",
+            onClick = {
+                tooltips.show(
+                    anchor = BESIDE_TRAILING_ANCHOR,
+                    title = "Right Center",
+                    content = "The indicator is on the right edge, so the tooltip sits to the left of the icon.",
+                    indicatorPlacement = TooltipIndicatorPlacement.RightCenter,
+                )
+            },
+            modifier = Modifier.lemonadeTooltipAnchor(key = BESIDE_TRAILING_ANCHOR),
         )
     }
 }
