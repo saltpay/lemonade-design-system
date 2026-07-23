@@ -67,6 +67,7 @@ private struct BasicTopBarModifier<Toolbar: ToolbarContent, BottomContent: View>
                                 icon: .times,
                                 contentDescription: "Close"
                             )
+                            .clickableFrame(minSize: .size800)
                         }
                     }
                 }
@@ -108,6 +109,7 @@ private struct SearchTopBarModifier<Toolbar: ToolbarContent, BottomContent: View
                                 icon: .times,
                                 contentDescription: "Close"
                             )
+                            .clickableFrame(minSize: .size800)
                         }
                     }
                 }
