@@ -388,8 +388,8 @@ public final class com/teya/lemonade/LemonadeTooltipState {
 	public final fun show (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/teya/lemonade/core/TooltipIndicatorPlacement;Lcom/teya/lemonade/core/TooltipScrim;ZZLjava/lang/String;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;)V
 	public static synthetic fun show$default (Lcom/teya/lemonade/LemonadeTooltipState;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/teya/lemonade/core/TooltipIndicatorPlacement;Lcom/teya/lemonade/core/TooltipScrim;ZZLjava/lang/String;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
 	public final fun skip ()V
-	public final fun startTour (Ljava/util/List;Lcom/teya/lemonade/LemonadeTooltipTourLabels;Lcom/teya/lemonade/core/TooltipScrim;ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)V
-	public static synthetic fun startTour$default (Lcom/teya/lemonade/LemonadeTooltipState;Ljava/util/List;Lcom/teya/lemonade/LemonadeTooltipTourLabels;Lcom/teya/lemonade/core/TooltipScrim;ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public final fun startTour (Ljava/util/List;Lcom/teya/lemonade/LemonadeTooltipTourLabels;Lcom/teya/lemonade/core/TooltipScrim;ZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun startTour$default (Lcom/teya/lemonade/LemonadeTooltipState;Ljava/util/List;Lcom/teya/lemonade/LemonadeTooltipTourLabels;Lcom/teya/lemonade/core/TooltipScrim;ZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
 }
 
 public final class com/teya/lemonade/LemonadeTooltipStep {

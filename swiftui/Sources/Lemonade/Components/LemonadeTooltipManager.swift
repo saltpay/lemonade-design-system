@@ -129,6 +129,7 @@ private struct LemonadeTooltipTour {
     let labels: LemonadeTooltipTourLabels
     let scrim: LemonadeTooltipScrim
     let showCloseButton: Bool
+    let dismissOnOutsideTap: Bool
     let onFinish: () -> Void
     let onSkip: () -> Void
 }
@@ -294,6 +295,9 @@ public final class LemonadeTooltipManager: ObservableObject {
     ///     being described lit while dimming the rest.
     ///   - showCloseButton: Whether each step shows the close button. Defaults to `true`. Pass
     ///     `false` for a tour whose only exits are the next/done action and an outside tap.
+    ///   - dismissOnOutsideTap: Whether a tap outside the tooltip abandons the tour. Defaults to
+    ///     `true`. Pass `false` to require the next/done action — the tap is still swallowed, so the
+    ///     UI underneath is never acted on, it just does not end the tour.
     ///   - onFinish: Invoked once the final step is confirmed.
     ///   - onSkip: Invoked when the tour is abandoned, whether by the skip action, the close button
     ///     or an outside tap.
@@ -302,6 +306,7 @@ public final class LemonadeTooltipManager: ObservableObject {
         labels: LemonadeTooltipTourLabels = LemonadeTooltipTourLabels(),
         scrim: LemonadeTooltipScrim = .spotlight,
         showCloseButton: Bool = true,
+        dismissOnOutsideTap: Bool = true,
         onFinish: @escaping () -> Void = {},
         onSkip: @escaping () -> Void = {}
     ) {
@@ -312,6 +317,7 @@ public final class LemonadeTooltipManager: ObservableObject {
             labels: labels,
             scrim: scrim,
             showCloseButton: showCloseButton,
+            dismissOnOutsideTap: dismissOnOutsideTap,
             onFinish: onFinish,
             onSkip: onSkip
         )
@@ -387,7 +393,7 @@ public final class LemonadeTooltipManager: ObservableObject {
             title: step.title,
             indicatorPlacement: step.indicatorPlacement,
             scrim: tour.scrim,
-            dismissOnOutsideTap: true,
+            dismissOnOutsideTap: tour.dismissOnOutsideTap,
             showCloseButton: tour.showCloseButton,
             closeContentDescription: tour.labels.close,
             cover: step.cover,

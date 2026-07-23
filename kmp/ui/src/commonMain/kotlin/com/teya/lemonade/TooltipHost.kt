@@ -135,6 +135,7 @@ private class TooltipTour(
     val labels: LemonadeTooltipTourLabels,
     val scrim: TooltipScrim,
     val showCloseButton: Boolean,
+    val dismissOnOutsideTap: Boolean,
     val onFinish: () -> Unit,
     val onSkip: () -> Unit,
 )
@@ -270,6 +271,9 @@ public class LemonadeTooltipState {
      * @param scrim What to draw behind each step. Defaults to [TooltipScrim.Spotlight], which keeps
      *   the element being described lit while dimming the rest.
      * @param showCloseButton Whether each step shows the close button. Defaults to `true`.
+     * @param dismissOnOutsideTap Whether a tap outside the tooltip abandons the tour. Defaults to
+     *   `true`. Pass `false` to require the next/done action — the tap is still swallowed, so the UI
+     *   underneath is never acted on, it just does not end the tour.
      * @param onFinish Invoked once the final step is confirmed.
      * @param onSkip Invoked when the tour is abandoned, whether by the skip action, the close button
      *   or an outside tap.
@@ -279,6 +283,7 @@ public class LemonadeTooltipState {
         labels: LemonadeTooltipTourLabels = LemonadeTooltipTourLabels(),
         scrim: TooltipScrim = TooltipScrim.Spotlight,
         showCloseButton: Boolean = true,
+        dismissOnOutsideTap: Boolean = true,
         onFinish: () -> Unit = {},
         onSkip: () -> Unit = {},
     ) {
@@ -291,6 +296,7 @@ public class LemonadeTooltipState {
             labels = labels,
             scrim = scrim,
             showCloseButton = showCloseButton,
+            dismissOnOutsideTap = dismissOnOutsideTap,
             onFinish = onFinish,
             onSkip = onSkip,
         )
@@ -380,7 +386,7 @@ public class LemonadeTooltipState {
             title = step.title,
             indicatorPlacement = step.indicatorPlacement,
             scrim = currentTour.scrim,
-            dismissOnOutsideTap = true,
+            dismissOnOutsideTap = currentTour.dismissOnOutsideTap,
             onCloseClick = if (currentTour.showCloseButton) {
                 { skip() }
             } else {
