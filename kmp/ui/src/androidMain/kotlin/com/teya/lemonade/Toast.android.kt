@@ -3,12 +3,11 @@ package com.teya.lemonade
 import android.graphics.drawable.ColorDrawable
 import android.view.Gravity
 import android.view.WindowManager
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -20,10 +19,13 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -101,17 +103,31 @@ private fun ToastOverlayWindow(toastState: LemonadeToastState) {
             }
         }
 
-        AnimatedVisibility(
-            visibleState = animState,
-            enter = fadeIn() + slideInVertically { it },
-            exit = fadeOut() + slideOutVertically { it },
+        // Keep the toast always composed so the wrap-content window measures one fixed size and stays
+        // centered. Animating it in with AnimatedVisibility resized the window as the content appeared,
+        // which made the entrance drift in from the side. Drive enter/exit as a draw-only alpha +
+        // vertical translation instead — those never re-measure the window.
+        var toastHeightPx by remember { mutableIntStateOf(0) }
+        val transition = updateTransition(animState, label = "toast")
+        val alpha by transition.animateFloat(label = "alpha") { visible -> if (visible) 1f else 0f }
+        val translationY by transition.animateFloat(
+            transitionSpec = { spring(dampingRatio = 0.8f, stiffness = Spring.StiffnessMediumLow) },
+            label = "translationY",
+        ) { visible -> if (visible) 0f else toastHeightPx.toFloat() }
+
+        Box(
+            modifier = Modifier
+                .widthIn(max = maxToastWidth)
+                .onSizeChanged { toastHeightPx = it.height }
+                .graphicsLayer {
+                    this.alpha = alpha
+                    this.translationY = translationY
+                },
         ) {
-            Box(modifier = Modifier.widthIn(max = maxToastWidth)) {
-                SwipeableToast(
-                    toast = displayToast,
-                    onDismiss = { toastState.dismiss() },
-                )
-            }
+            SwipeableToast(
+                toast = displayToast,
+                onDismiss = { toastState.dismiss() },
+            )
         }
     }
 }
@@ -144,6 +160,9 @@ private fun ConfigureToastWindow(bottomInset: Dp) {
             attributes = attributes.apply {
                 gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
                 y = bottomInsetPx
+                // Compose drives the enter/exit; suppress the platform window animation so it doesn't
+                // run on top of it.
+                windowAnimations = 0
             }
         }
         onDispose { }
