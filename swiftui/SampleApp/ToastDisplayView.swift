@@ -4,6 +4,7 @@ import Lemonade
 struct ToastDisplayView: View {
     @EnvironmentObject private var toastManager: LemonadeToastManager
     @State private var textFieldValue: String = ""
+    @State private var showOverSheet = false
 
     var body: some View {
         List {
@@ -178,6 +179,12 @@ struct ToastDisplayView: View {
                 }
             }
 
+            Section("Over Bottom Sheet") {
+                Button("Open bottom sheet") {
+                    showOverSheet = true
+                }
+            }
+
             Section("Keyboard Handling") {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Tap the text field to open keyboard, then show a toast:")
@@ -213,6 +220,35 @@ struct ToastDisplayView: View {
             }
         }
         .navigationTitle("Toast")
+        .sheet(isPresented: $showOverSheet) {
+            // Give the sheet its own toast container so a toast fired from inside it renders on top of
+            // the sheet, not behind it. A `.sheet` is a separate presentation layer above the root, so
+            // the root's container can't reach over it — each presented layer that shows toasts needs
+            // its own container. (This mirrors how the app's navigator wraps every presented screen.)
+            OverBottomSheetContent()
+                .lemonadeToastContainer()
+                .presentationDetents([.medium])
+        }
+    }
+}
+
+private struct OverBottomSheetContent: View {
+    @EnvironmentObject private var toastManager: LemonadeToastManager
+
+    var body: some View {
+        VStack(spacing: 16) {
+            Text("This sheet has its own toast container, so the toast renders on top of it.")
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.secondary)
+            Button("Show toast on top") {
+                toastManager.show(
+                    label: "This toast is above the bottom sheet",
+                    voice: .success
+                )
+            }
+            .buttonStyle(.borderedProminent)
+        }
+        .padding()
     }
 }
 

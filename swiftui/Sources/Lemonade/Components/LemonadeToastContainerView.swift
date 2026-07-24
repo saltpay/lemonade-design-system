@@ -232,19 +232,24 @@ struct ToastItemView: View {
 
     private var toastContent: some View {
         VStack(spacing: 0) {
-            LemonadeUi.Toast(
-                label: toast.label,
-                voice: toast.voice,
-                icon: toast.icon,
-                actionLabel: toast.actionLabel,
-                onAction: toast.onAction
-            )
-            .frame(maxWidth: .infinity)
-            .padding(.top, .space.spacing1800) // Extra space for dismiss gesture
+            // Only the pill is hittable; the spacers on either side pass touches through to the content
+            // beneath, so taps left/right of the toast reach it (a full-width frame would swallow them).
+            HStack(spacing: 0) {
+                Spacer(minLength: 0).allowsHitTesting(false)
+                LemonadeUi.Toast(
+                    label: toast.label,
+                    voice: toast.voice,
+                    icon: toast.icon,
+                    actionLabel: toast.actionLabel,
+                    onAction: toast.onAction
+                )
+                .padding(.top, .space.spacing1800) // Extra space for dismiss gesture
+                .contentShape(Rectangle())
+                .simultaneousGesture(dismissGesture)
+                Spacer(minLength: 0).allowsHitTesting(false)
+            }
             .padding(.leading, resolvedPadding(toast.paddingValues?.leading, default: .space.spacing200))
             .padding(.trailing, resolvedPadding(toast.paddingValues?.trailing, default: .space.spacing200))
-            .contentShape(Rectangle())
-            .simultaneousGesture(dismissGesture)
 
             // Clears whatever sits below the toast (e.g. a bottom action button). Kept out of
             // the contentShape/gesture above so it stays non-interactive and touches pass through.

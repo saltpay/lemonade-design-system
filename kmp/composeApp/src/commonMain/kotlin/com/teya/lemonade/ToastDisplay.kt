@@ -4,12 +4,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeIcons
 
 @Composable
 internal fun ToastDisplay() {
     val toastState = LocalLemonadeToastState.current
+    var showSheet by remember { mutableStateOf(false) }
 
     SampleScreenDisplayColumn("Toast", itemsSpacing = LemonadeTheme.spaces.spacing600) {
         ToastSection("Voice Variants") {
@@ -202,6 +207,38 @@ internal fun ToastDisplay() {
                         label = "Above Bottom Action Button",
                         voice = ToastVoice.Success,
                         paddingValues = PaddingValues(bottom = 112.dp),
+                    )
+                },
+            )
+        }
+
+        ToastSection("Over Bottom Sheet") {
+            LemonadeUi.Button(
+                label = "Open bottom sheet",
+                onClick = { showSheet = true },
+            )
+        }
+    }
+
+    LemonadeUi.BottomSheet(
+        expanded = showSheet,
+        onDismissRequest = { showSheet = false },
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+        ) {
+            LemonadeUi.Text(
+                text = "Show a toast while this sheet is open — it appears on top of the sheet, " +
+                    "not behind it.",
+                textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                color = LemonadeTheme.colors.content.contentSecondary,
+            )
+            LemonadeUi.Button(
+                label = "Show toast on top",
+                onClick = {
+                    toastState.show(
+                        label = "This toast is above the bottom sheet",
+                        voice = ToastVoice.Success,
                     )
                 },
             )
