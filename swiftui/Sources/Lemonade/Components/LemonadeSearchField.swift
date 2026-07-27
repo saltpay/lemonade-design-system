@@ -73,7 +73,33 @@ private struct LemonadeSearchFieldView: View {
     /// `@FocusState` updates arrive without an animation transaction, so an `if` driven straight off
     /// `isFocused` would insert and remove the button untransitioned no matter what `.transition` it
     /// carries. Routing the change through plain state is what lets the scale actually run.
-    @State private var isCancelPresented = false
+    /// Seeded in `init` rather than `onAppear` so a pre-filled field draws its cancel button on the
+    /// very first frame instead of popping it in one frame late.
+    @State private var isCancelPresented: Bool
+
+    init(
+        input: Binding<String>,
+        onInputChanged: ((String) -> Void)?,
+        placeholder: String?,
+        onInputClear: (() -> Void)?,
+        dismissible: Bool,
+        onCancel: (() -> Void)?,
+        cancelContentDescription: String?,
+        enabled: Bool
+    ) {
+        self._input = input
+        self.onInputChanged = onInputChanged
+        self.placeholder = placeholder
+        self.onInputClear = onInputClear
+        self.dismissible = dismissible
+        self.onCancel = onCancel
+        self.cancelContentDescription = cancelContentDescription
+        self.enabled = enabled
+        // Same predicate as `shouldShowCancel`, minus focus — nothing is focused before first render.
+        self._isCancelPresented = State(
+            initialValue: dismissible && enabled && !input.wrappedValue.isEmpty
+        )
+    }
 
     private let height: CGFloat = LemonadeTheme.sizes.size1100
     private let horizontalPadding: CGFloat = LemonadeTheme.spaces.spacing300
@@ -124,7 +150,6 @@ private struct LemonadeSearchFieldView: View {
                 .transition(.scaleOpacity(scale: cancelCollapsedScale))
             }
         }
-        .onAppear { isCancelPresented = shouldShowCancel }
         .onChange(of: shouldShowCancel) { newValue in
             withAnimation(.easeInOut(duration: animationDuration)) { isCancelPresented = newValue }
         }

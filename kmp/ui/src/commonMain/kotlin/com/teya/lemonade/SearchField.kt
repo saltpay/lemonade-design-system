@@ -40,14 +40,25 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonType
 import com.teya.lemonade.core.LemonadeButtonVariant
 import com.teya.lemonade.core.LemonadeIconButtonShape
 import com.teya.lemonade.core.LemonadeIcons
 
+private const val SEARCH_FIELD_ANIMATION_MILLIS = 150
+
 private val SearchFieldFadeSpec = tween<Float>(
-    durationMillis = 150,
+    durationMillis = SEARCH_FIELD_ANIMATION_MILLIS,
+    easing = EaseInOut,
+)
+
+// Same curve as the fade, but typed for the size animation. Without it `expandHorizontally` and
+// `shrinkHorizontally` fall back to their default spring and the width drifts out of step with the
+// opacity and scale.
+private val SearchFieldSizeSpec = tween<IntSize>(
+    durationMillis = SEARCH_FIELD_ANIMATION_MILLIS,
     easing = EaseInOut,
 )
 
@@ -134,12 +145,12 @@ public fun LemonadeUi.SearchField(
                 scaleIn(
                     animationSpec = SearchFieldFadeSpec,
                     initialScale = CANCEL_BUTTON_COLLAPSED_SCALE,
-                ) + expandHorizontally(),
+                ) + expandHorizontally(animationSpec = SearchFieldSizeSpec),
             exit = fadeOut(animationSpec = SearchFieldFadeSpec) +
                 scaleOut(
                     animationSpec = SearchFieldFadeSpec,
                     targetScale = CANCEL_BUTTON_COLLAPSED_SCALE,
-                ) + shrinkHorizontally(),
+                ) + shrinkHorizontally(animationSpec = SearchFieldSizeSpec),
         ) {
             LemonadeUi.IconButton(
                 icon = LemonadeIcons.Times,
