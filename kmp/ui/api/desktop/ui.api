@@ -6,6 +6,10 @@ public final class com/teya/lemonade/BorderKt {
 	public static final fun shadowBorder-9IZ8Weo (Landroidx/compose/ui/Modifier;FJLandroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/Modifier;
 }
 
+public final class com/teya/lemonade/BoxSelectionKt {
+	public static final fun BoxSelection (Lcom/teya/lemonade/LemonadeUi;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/core/LemonadeBoxSelectionVariant;Lcom/teya/lemonade/core/LemonadeBoxSelectionBackground;ZZLcom/teya/lemonade/core/LemonadeSpaces;Lcom/teya/lemonade/core/LemonadeRadius;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
+}
+
 public final class com/teya/lemonade/BrandLogoKt {
 	public static final fun BrandLogo (Lcom/teya/lemonade/LemonadeUi;Lcom/teya/lemonade/core/LemonadeBrandLogos;Ljava/lang/String;Lcom/teya/lemonade/core/LemonadeAssetSize;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
@@ -69,6 +73,12 @@ public final class com/teya/lemonade/ChipKt {
 	public static final fun Chip (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;ZLandroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/painter/Painter;Lcom/teya/lemonade/core/LemonadeIcons;Ljava/lang/Integer;ZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
 	public static final fun Chip (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;ZLandroidx/compose/ui/Modifier;Lcom/teya/lemonade/core/LemonadeIcons;Lcom/teya/lemonade/core/LemonadeIcons;Ljava/lang/Integer;ZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
 	public static final fun Chip (Lcom/teya/lemonade/LemonadeUi;Ljava/lang/String;ZLkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/ui/Modifier;Ljava/lang/Integer;ZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/teya/lemonade/ComposableSingletons$BoxSelectionKt {
+	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$BoxSelectionKt;
+	public fun <init> ()V
+	public final fun getLambda$1508943510$ui ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$CardKt {

@@ -102,6 +102,28 @@ final enum class com.teya.lemonade.core/LemonadeBottomSheetVariant : kotlin/Enum
     final fun values(): kotlin/Array<com.teya.lemonade.core/LemonadeBottomSheetVariant> // com.teya.lemonade.core/LemonadeBottomSheetVariant.values|values#static(){}[0]
 }
 
+final enum class com.teya.lemonade.core/LemonadeBoxSelectionBackground : kotlin/Enum<com.teya.lemonade.core/LemonadeBoxSelectionBackground> { // com.teya.lemonade.core/LemonadeBoxSelectionBackground|null[0]
+    enum entry Default // com.teya.lemonade.core/LemonadeBoxSelectionBackground.Default|null[0]
+    enum entry Elevated // com.teya.lemonade.core/LemonadeBoxSelectionBackground.Elevated|null[0]
+
+    final val entries // com.teya.lemonade.core/LemonadeBoxSelectionBackground.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.teya.lemonade.core/LemonadeBoxSelectionBackground> // com.teya.lemonade.core/LemonadeBoxSelectionBackground.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.teya.lemonade.core/LemonadeBoxSelectionBackground // com.teya.lemonade.core/LemonadeBoxSelectionBackground.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.teya.lemonade.core/LemonadeBoxSelectionBackground> // com.teya.lemonade.core/LemonadeBoxSelectionBackground.values|values#static(){}[0]
+}
+
+final enum class com.teya.lemonade.core/LemonadeBoxSelectionVariant : kotlin/Enum<com.teya.lemonade.core/LemonadeBoxSelectionVariant> { // com.teya.lemonade.core/LemonadeBoxSelectionVariant|null[0]
+    enum entry Filled // com.teya.lemonade.core/LemonadeBoxSelectionVariant.Filled|null[0]
+    enum entry Outlined // com.teya.lemonade.core/LemonadeBoxSelectionVariant.Outlined|null[0]
+
+    final val entries // com.teya.lemonade.core/LemonadeBoxSelectionVariant.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.teya.lemonade.core/LemonadeBoxSelectionVariant> // com.teya.lemonade.core/LemonadeBoxSelectionVariant.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.teya.lemonade.core/LemonadeBoxSelectionVariant // com.teya.lemonade.core/LemonadeBoxSelectionVariant.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.teya.lemonade.core/LemonadeBoxSelectionVariant> // com.teya.lemonade.core/LemonadeBoxSelectionVariant.values|values#static(){}[0]
+}
+
 final enum class com.teya.lemonade.core/LemonadeBrandLogos : com.teya.lemonade.core/LemonadeAsset, kotlin/Enum<com.teya.lemonade.core/LemonadeBrandLogos> { // com.teya.lemonade.core/LemonadeBrandLogos|null[0]
     enum entry Amazon // com.teya.lemonade.core/LemonadeBrandLogos.Amazon|null[0]
     enum entry Amex // com.teya.lemonade.core/LemonadeBrandLogos.Amex|null[0]

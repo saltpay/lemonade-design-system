@@ -193,6 +193,7 @@ internal object DisplayRegistry {
                 Displays.ContentListItem,
                 Displays.SegmentedControl,
                 Displays.ActionListItem,
+                Displays.BoxSelection,
             ),
         ),
         DisplayData(

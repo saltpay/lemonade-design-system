@@ -73,6 +73,22 @@ public final class com/teya/lemonade/core/LemonadeBottomSheetVariant : java/lang
 	public static fun values ()[Lcom/teya/lemonade/core/LemonadeBottomSheetVariant;
 }
 
+public final class com/teya/lemonade/core/LemonadeBoxSelectionBackground : java/lang/Enum {
+	public static final field Default Lcom/teya/lemonade/core/LemonadeBoxSelectionBackground;
+	public static final field Elevated Lcom/teya/lemonade/core/LemonadeBoxSelectionBackground;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/LemonadeBoxSelectionBackground;
+	public static fun values ()[Lcom/teya/lemonade/core/LemonadeBoxSelectionBackground;
+}
+
+public final class com/teya/lemonade/core/LemonadeBoxSelectionVariant : java/lang/Enum {
+	public static final field Filled Lcom/teya/lemonade/core/LemonadeBoxSelectionVariant;
+	public static final field Outlined Lcom/teya/lemonade/core/LemonadeBoxSelectionVariant;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/core/LemonadeBoxSelectionVariant;
+	public static fun values ()[Lcom/teya/lemonade/core/LemonadeBoxSelectionVariant;
+}
+
 public final class com/teya/lemonade/core/LemonadeBrandLogos : java/lang/Enum, com/teya/lemonade/core/LemonadeAsset {
 	public static final field Amazon Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Amex Lcom/teya/lemonade/core/LemonadeBrandLogos;

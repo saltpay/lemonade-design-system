@@ -5,6 +5,7 @@ import com.teya.lemonade.ActionListItemDisplay
 import com.teya.lemonade.BadgeDisplay
 import com.teya.lemonade.BorderWidthDisplay
 import com.teya.lemonade.BottomTabBarDisplay
+import com.teya.lemonade.BoxSelectionDisplay
 import com.teya.lemonade.BrandLogoDisplay
 import com.teya.lemonade.ButtonDisplay
 import com.teya.lemonade.CardDisplay
@@ -69,6 +70,7 @@ internal val screens: Map<Displays, @Composable (onNavigate: (Displays) -> Unit)
     Displays.ContentListItem to { _ -> ContentListItemDisplay() },
     Displays.Chip to { _ -> ChipDisplay() },
     Displays.SegmentedControl to { _ -> SegmentedControlDisplay() },
+    Displays.BoxSelection to { _ -> BoxSelectionDisplay() },
     Displays.PinCode to { _ -> PinCodeDisplay() },
     Displays.Text to { _ -> TextDisplay() },
     Displays.SymbolContainer to { _ -> SymbolContainerDisplay() },
