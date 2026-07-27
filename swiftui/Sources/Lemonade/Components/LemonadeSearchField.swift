@@ -24,8 +24,11 @@ public extension LemonadeUi {
     ///     tapping it dismisses the keyboard, drops the focus and empties the input. Turn it off for
     ///     hosts that already provide their own dismissal affordance.
     ///   - onCancel: Callback invoked after the search has been dismissed through the cancel button.
-    ///     The input has already been emptied — `onInputChanged` fires with an empty string first —
-    ///     so use this to drop whatever the query was driving, such as results or a filter.
+    ///     The binding has already been emptied by the time this runs, so use it to drop whatever
+    ///     the query was driving, such as results or a filter. Note that the order in which this and
+    ///     `onInputChanged` fire is not guaranteed — the input change is delivered through
+    ///     `onChange(of:)`, i.e. the view update — so do not depend on one having run when the other
+    ///     does.
     ///   - cancelContentDescription: Optional content description for the cancel button, for
     ///     accessibility. The component leaves it unset by default so the label can be localised by
     ///     the consumer; supply one whenever the field is `dismissible`.
