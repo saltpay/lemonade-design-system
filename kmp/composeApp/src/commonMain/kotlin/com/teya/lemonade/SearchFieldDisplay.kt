@@ -30,6 +30,8 @@ internal fun SearchFieldDisplay() {
     var searchText1 by remember { mutableStateOf("") }
     var searchText2 by remember { mutableStateOf("Sample search") }
     var searchText3 by remember { mutableStateOf("") }
+    var searchText4 by remember { mutableStateOf("") }
+    var searchText5 by remember { mutableStateOf("") }
 
     val productList = listOf("iPhone 15", "MacBook Pro", "iPad Air", "Apple Watch")
 
@@ -93,6 +95,40 @@ internal fun SearchFieldDisplay() {
                     )
                 }
             }
+        }
+
+        // Cancel Callback
+        SearchFieldSection(title = "Cancel Callback") {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+            ) {
+                @OptIn(ExperimentalLemonadeComponent::class)
+                LemonadeUi.SearchField(
+                    input = searchText4,
+                    onInputChanged = { searchText4 = it },
+                    placeholder = "Search and cancel...",
+                    onCancel = { searchText4 = "" },
+                    cancelContentDescription = "Cancel search",
+                )
+
+                LemonadeUi.Text(
+                    text = "Cancelling always drops the focus and the keyboard; this one also " +
+                        "clears the input from onCancel.",
+                    textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    color = LemonadeTheme.colors.content.contentSecondary,
+                )
+            }
+        }
+
+        // Not Dismissible
+        SearchFieldSection(title = "Not Dismissible") {
+            @OptIn(ExperimentalLemonadeComponent::class)
+            LemonadeUi.SearchField(
+                input = searchText5,
+                onInputChanged = { searchText5 = it },
+                placeholder = "No cancel button...",
+                dismissible = false,
+            )
         }
 
         // Disabled

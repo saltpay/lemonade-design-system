@@ -75,6 +75,23 @@ public extension AnyTransition {
         blur(radius: radius).combined(with: .opacity)
     }
 
+    /// A transition that combines scale with opacity for a "pop" effect, without blur.
+    ///
+    /// Useful for small controls that appear alongside existing content, where a blur would read
+    /// as a rendering glitch at that size.
+    ///
+    /// - Parameters:
+    ///   - scale: The scale factor at the start/end of transition. Defaults to 0.88.
+    ///   - anchor: The anchor point for scaling. Defaults to `.center`.
+    /// - Returns: A combined scale and opacity transition
+    static func scaleOpacity(
+        scale: CGFloat = 0.88,
+        anchor: UnitPoint = .center
+    ) -> AnyTransition {
+        AnyTransition.scale(scale: scale, anchor: anchor)
+            .combined(with: .opacity)
+    }
+
     /// A transition that combines scale, blur, and opacity for a "pop" effect.
     ///
     /// Useful for toast notifications and overlays that need to

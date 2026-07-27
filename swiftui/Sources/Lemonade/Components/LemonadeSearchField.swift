@@ -19,6 +19,16 @@ public extension LemonadeUi {
     ///   - onInputChanged: Callback when the input changes
     ///   - placeholder: Optional placeholder text
     ///   - onInputClear: Callback when user requests input to be cleared
+    ///   - dismissible: Flag controlling the trailing cancel button, on by default. The button shows
+    ///     up as soon as there is something to dismiss (the field is focused or holds input), and
+    ///     tapping it dismisses the keyboard and drops the focus. Turn it off for hosts that already
+    ///     provide their own dismissal affordance.
+    ///   - onCancel: Callback invoked after the search has been dismissed through the cancel button.
+    ///     The input itself is left untouched; clear it from this callback if the search should be
+    ///     reset as well.
+    ///   - cancelContentDescription: Optional content description for the cancel button, for
+    ///     accessibility. The component leaves it unset by default so the label can be localised by
+    ///     the consumer; supply one whenever the field is `dismissible`.
     ///   - enabled: Flag to enable or disable the component
     /// - Returns: A styled SearchField view
     @ViewBuilder
@@ -27,6 +37,9 @@ public extension LemonadeUi {
         onInputChanged: ((String) -> Void)? = nil,
         placeholder: String? = nil,
         onInputClear: (() -> Void)? = nil,
+        dismissible: Bool = true,
+        onCancel: (() -> Void)? = nil,
+        cancelContentDescription: String? = nil,
         enabled: Bool = true
     ) -> some View {
         LemonadeSearchFieldView(
@@ -34,6 +47,9 @@ public extension LemonadeUi {
             onInputChanged: onInputChanged,
             placeholder: placeholder,
             onInputClear: onInputClear,
+            dismissible: dismissible,
+            onCancel: onCancel,
+            cancelContentDescription: cancelContentDescription,
             enabled: enabled
         )
     }
@@ -46,12 +62,28 @@ private struct LemonadeSearchFieldView: View {
     let onInputChanged: ((String) -> Void)?
     let placeholder: String?
     let onInputClear: (() -> Void)?
+    let dismissible: Bool
+    let onCancel: (() -> Void)?
+    let cancelContentDescription: String?
     let enabled: Bool
 
     @FocusState private var isFocused: Bool
 
+    /// Mirrors `shouldShowCancel`, but is only ever written from inside an explicit `withAnimation`.
+    /// `@FocusState` updates arrive without an animation transaction, so an `if` driven straight off
+    /// `isFocused` would insert and remove the button untransitioned no matter what `.transition` it
+    /// carries. Routing the change through plain state is what lets the scale actually run.
+    @State private var isCancelPresented = false
+
     private let height: CGFloat = LemonadeTheme.sizes.size1100
     private let horizontalPadding: CGFloat = LemonadeTheme.spaces.spacing300
+
+    /// The cancel button pops in from — and collapses back to — slightly under its full size, so the
+    /// entrance reads as the button growing into the gap the field gives up rather than blinking in.
+    private let cancelCollapsedScale: CGFloat = 0.8
+
+    /// Shared by the focus styling and the cancel button, so the pill and the button settle together.
+    private let animationDuration: TimeInterval = 0.15
 
     private var backgroundColor: Color {
         isFocused
@@ -65,7 +97,40 @@ private struct LemonadeSearchFieldView: View {
             : .clear
     }
 
+    /// The cancel button only earns its space once there is something to dismiss: an active focus
+    /// or a query already typed in. That mirrors the Figma states, where the resting empty field is
+    /// the only one without it.
+    private var shouldShowCancel: Bool {
+        dismissible && enabled && (isFocused || !input.isEmpty)
+    }
+
     var body: some View {
+        HStack(spacing: LemonadeTheme.spaces.spacing200) {
+            searchField
+
+            if isCancelPresented {
+                LemonadeUi.IconButton(
+                    icon: .times,
+                    contentDescription: cancelContentDescription,
+                    onClick: {
+                        isFocused = false
+                        onCancel?()
+                    },
+                    variant: .neutral,
+                    type: .solid,
+                    size: .small,
+                    shape: .circular
+                )
+                .transition(.scaleOpacity(scale: cancelCollapsedScale))
+            }
+        }
+        .onAppear { isCancelPresented = shouldShowCancel }
+        .onChange(of: shouldShowCancel) { newValue in
+            withAnimation(.easeInOut(duration: animationDuration)) { isCancelPresented = newValue }
+        }
+    }
+
+    private var searchField: some View {
         HStack(spacing: LemonadeTheme.spaces.spacing200) {
             // Search icon
             LemonadeUi.Icon(
@@ -132,7 +197,7 @@ private struct LemonadeSearchFieldView: View {
                 .padding(-2)
         )
         .opacity(enabled ? 1.0 : LemonadeTheme.opacity.state.opacityDisabled)
-        .animation(.easeInOut(duration: 0.15), value: isFocused)
+        .animation(.easeInOut(duration: animationDuration), value: isFocused)
     }
 }
 
@@ -153,6 +218,23 @@ struct LemonadeSearchField_Previews: PreviewProvider {
                 LemonadeUi.SearchField(
                     input: input,
                     placeholder: "Search..."
+                )
+            }
+
+            StatefulPreviewWrapper("Cancel callback") { input in
+                LemonadeUi.SearchField(
+                    input: input,
+                    placeholder: "Search...",
+                    onCancel: { input.wrappedValue = "" },
+                    cancelContentDescription: "Cancel search"
+                )
+            }
+
+            StatefulPreviewWrapper("Not dismissible") { input in
+                LemonadeUi.SearchField(
+                    input: input,
+                    placeholder: "Search...",
+                    dismissible: false
                 )
             }
 
