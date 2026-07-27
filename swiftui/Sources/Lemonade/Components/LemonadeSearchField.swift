@@ -151,7 +151,7 @@ private struct LemonadeSearchFieldView: View {
                     size: .small,
                     shape: .circular
                 )
-                .transition(.scaleOpacity(scale: cancelCollapsedScale))
+                .transition(.scale(scale: cancelCollapsedScale).combined(with: .opacity))
             }
         }
         .onChange(of: shouldShowCancel) { newValue in

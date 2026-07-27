@@ -115,9 +115,6 @@ public fun LemonadeUi.SearchField(
     enabled: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
-    val isFocused by interactionSource.collectIsFocusedAsState()
-    val focusManager = LocalFocusManager.current
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
@@ -136,44 +133,71 @@ public fun LemonadeUi.SearchField(
                 .clearFocusOnKeyboardDismiss(),
         )
 
-        // The cancel button only earns its space once there is something to dismiss: an active
-        // focus or a query already typed in. That mirrors the Figma states, where the resting empty
-        // field is the only one without it.
-        AnimatedVisibility(
-            visible = dismissible && enabled && (isFocused || input.isNotEmpty()),
-            enter = fadeIn(animationSpec = SearchFieldFadeSpec) +
-                scaleIn(
-                    animationSpec = SearchFieldFadeSpec,
-                    initialScale = CANCEL_BUTTON_COLLAPSED_SCALE,
-                ) + expandHorizontally(animationSpec = SearchFieldSizeSpec),
-            exit = fadeOut(animationSpec = SearchFieldFadeSpec) +
-                scaleOut(
-                    animationSpec = SearchFieldFadeSpec,
-                    targetScale = CANCEL_BUTTON_COLLAPSED_SCALE,
-                ) + shrinkHorizontally(animationSpec = SearchFieldSizeSpec),
-        ) {
-            LemonadeUi.IconButton(
-                icon = LemonadeIcons.Times,
+        if (dismissible) {
+            SearchCancelButton(
+                input = input,
+                onInputChanged = onInputChanged,
+                onCancel = onCancel,
                 contentDescription = cancelContentDescription,
-                onClick = {
-                    // `clearFocus` is what dismisses the keyboard too — it is the single dismissal
-                    // idiom this module already uses (see the TopBar search leading icon).
-                    focusManager.clearFocus()
-                    // Deliberately not routed through `onInputClear`: that callback belongs to the
-                    // inner clear icon, and a consumer who overrides it to only log would otherwise
-                    // stop cancel from emptying the field.
-                    onInputChanged("")
-                    onCancel()
-                },
-                variant = LemonadeButtonVariant.Neutral,
-                type = LemonadeButtonType.Solid,
-                size = LemonadeButtonSize.Small,
-                shape = LemonadeIconButtonShape.Circular,
-                // The gap lives inside the animated content so that it collapses together with the
-                // button instead of leaving a permanent trailing gutter next to the field.
-                modifier = Modifier.padding(start = LocalSpaces.current.spacing200),
+                interactionSource = interactionSource,
+                enabled = enabled,
             )
         }
+    }
+}
+
+// Split out so the focus subscription lives in a leaf recomposition scope: reading it here means a
+// focus toggle recomposes the button alone, not the whole [SearchField] body. Skipped entirely when
+// the field is not dismissible, so opting out costs no collector and no transition.
+@Composable
+private fun SearchCancelButton(
+    input: String,
+    onInputChanged: (String) -> Unit,
+    onCancel: () -> Unit,
+    contentDescription: String?,
+    interactionSource: MutableInteractionSource,
+    enabled: Boolean,
+) {
+    val isFocused by interactionSource.collectIsFocusedAsState()
+    val focusManager = LocalFocusManager.current
+
+    // The cancel button only earns its space once there is something to dismiss: an active focus or
+    // a query already typed in. That mirrors the Figma states, where the resting empty field is the
+    // only one without it.
+    AnimatedVisibility(
+        visible = enabled && (isFocused || input.isNotEmpty()),
+        enter = fadeIn(animationSpec = SearchFieldFadeSpec) +
+            scaleIn(
+                animationSpec = SearchFieldFadeSpec,
+                initialScale = CANCEL_BUTTON_COLLAPSED_SCALE,
+            ) + expandHorizontally(animationSpec = SearchFieldSizeSpec),
+        exit = fadeOut(animationSpec = SearchFieldFadeSpec) +
+            scaleOut(
+                animationSpec = SearchFieldFadeSpec,
+                targetScale = CANCEL_BUTTON_COLLAPSED_SCALE,
+            ) + shrinkHorizontally(animationSpec = SearchFieldSizeSpec),
+    ) {
+        LemonadeUi.IconButton(
+            icon = LemonadeIcons.Times,
+            contentDescription = contentDescription,
+            onClick = {
+                // `clearFocus` is what dismisses the keyboard too — it is the single dismissal
+                // idiom this module already uses (see the TopBar search leading icon).
+                focusManager.clearFocus()
+                // Deliberately not routed through `onInputClear`: that callback belongs to the
+                // inner clear icon, and a consumer who overrides it to only log would otherwise
+                // stop cancel from emptying the field.
+                onInputChanged("")
+                onCancel()
+            },
+            variant = LemonadeButtonVariant.Neutral,
+            type = LemonadeButtonType.Solid,
+            size = LemonadeButtonSize.Small,
+            shape = LemonadeIconButtonShape.Circular,
+            // The gap lives inside the animated content so that it collapses together with the
+            // button instead of leaving a permanent trailing gutter next to the field.
+            modifier = Modifier.padding(start = LocalSpaces.current.spacing200),
+        )
     }
 }
 
@@ -394,14 +418,16 @@ private fun CoreSearchFieldDecorationBox(
 private data class SearchFieldPreviewData(
     val withContent: Boolean,
     val enabled: Boolean,
-    val dismissible: Boolean,
-)
+) {
+    // Previews never hold focus, so the cancel button is only on screen for the enabled-with-content
+    // case. Turning it on elsewhere would render a duplicate of an existing variant, so this is
+    // derived rather than a third axis.
+    val dismissible: Boolean get() = withContent && enabled
+}
 
 private class SearchFieldPreviewProvider : PreviewParameterProvider<SearchFieldPreviewData> {
     override val values: Sequence<SearchFieldPreviewData> = buildAllVariants()
 
-    // Previews never hold focus, so the cancel button is only on screen for the enabled-with-content
-    // case. Varying `dismissible` anywhere else would render a duplicate of an existing variant.
     private fun buildAllVariants(): Sequence<SearchFieldPreviewData> =
         buildList {
             listOf(true, false).forEach { withContent ->
@@ -410,7 +436,6 @@ private class SearchFieldPreviewProvider : PreviewParameterProvider<SearchFieldP
                         SearchFieldPreviewData(
                             withContent = withContent,
                             enabled = enabled,
-                            dismissible = withContent && enabled,
                         ),
                     )
                 }
