@@ -172,13 +172,19 @@ private struct LemonadeBoxSelectionView<Content: View>: View {
     }
 
     var body: some View {
-        if let onClick {
-            Button(action: onClick) { styledContent }
-                .buttonStyle(LemonadeBoxSelectionButtonStyle())
-                .disabled(!enabled)
-        } else {
-            styledContent
+        Group {
+            if let onClick {
+                Button(action: onClick) { styledContent }
+                    .buttonStyle(LemonadeBoxSelectionButtonStyle())
+                    .disabled(!enabled)
+            } else {
+                styledContent
+            }
         }
+        // The slot content is arbitrary, so it cannot be relied on to carry the selected state.
+        // Publish it here or VoiceOver announces the box without saying whether it is the
+        // chosen one.
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 

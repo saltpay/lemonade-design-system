@@ -23,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
@@ -116,7 +118,12 @@ public fun LemonadeUi.BoxSelection(
                 width = animatedBorderWidth,
                 color = animatedBorderColor,
                 shape = shape,
-            ).then(
+            ) // The slot content is arbitrary, so it cannot be relied on to carry the selected
+            // state. Publish it here or a screen reader announces the box without saying
+            // whether it is the chosen one. Role stays Button rather than RadioButton/Checkbox
+            // because the box serves both single and multiple selection.
+            .semantics { selected = isSelected }
+            .then(
                 other = if (onClick != null) {
                     Modifier.clickable(
                         onClick = onClick,
