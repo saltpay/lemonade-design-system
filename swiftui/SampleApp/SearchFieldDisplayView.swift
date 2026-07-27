@@ -55,11 +55,11 @@ struct SearchFieldDisplayView: View {
                         LemonadeUi.SearchField(
                             input: $searchText4,
                             placeholder: "Search and cancel...",
-                            onCancel: { searchText4 = "" },
+                            onCancel: { print("Search dismissed") },
                             cancelContentDescription: "Cancel search"
                         )
 
-                        Text("Cancelling always drops the focus and the keyboard; this one also clears the input from onCancel.")
+                        Text("Cancelling drops the focus, hides the keyboard and empties the field. onCancel then runs for whatever the query was driving.")
                             .font(.caption)
                             .foregroundStyle(.content.contentSecondary)
                     }

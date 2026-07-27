@@ -84,11 +84,11 @@ private const val CANCEL_BUTTON_COLLAPSED_SCALE = 0.8f
  * @param onInputClear - Callback to be invoked when the user request the input to be cleared.
  * @param dismissible - [Boolean] flag controlling the trailing cancel button, on by default. The
  * button shows up as soon as there is something to dismiss (the field is focused or holds input),
- * and tapping it hides the keyboard and clears the focus. Turn it off for hosts that already provide
- * their own dismissal affordance.
+ * and tapping it hides the keyboard, clears the focus and empties the input. Turn it off for hosts
+ * that already provide their own dismissal affordance.
  * @param onCancel - Callback to be invoked after the search has been dismissed through the cancel
- * button. The input itself is left untouched; clear it from this callback if the search should be
- * reset as well.
+ * button. The input has already been emptied — [onInputChanged] fires with an empty [String] first —
+ * so use this to drop whatever the query was driving, such as results or a filter.
  * @param cancelContentDescription - optional [String] content description for the cancel button, for
  * accessibility. The component leaves it unset by default so the label can be localised by the
  * consumer; supply one whenever the field is [dismissible].
@@ -159,6 +159,10 @@ public fun LemonadeUi.SearchField(
                     // `clearFocus` is what dismisses the keyboard too — it is the single dismissal
                     // idiom this module already uses (see the TopBar search leading icon).
                     focusManager.clearFocus()
+                    // Deliberately not routed through `onInputClear`: that callback belongs to the
+                    // inner clear icon, and a consumer who overrides it to only log would otherwise
+                    // stop cancel from emptying the field.
+                    onInputChanged("")
                     onCancel()
                 },
                 variant = LemonadeButtonVariant.Neutral,

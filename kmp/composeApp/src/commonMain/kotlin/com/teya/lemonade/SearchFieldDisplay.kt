@@ -107,13 +107,13 @@ internal fun SearchFieldDisplay() {
                     input = searchText4,
                     onInputChanged = { searchText4 = it },
                     placeholder = "Search and cancel...",
-                    onCancel = { searchText4 = "" },
+                    onCancel = { println("Search dismissed") },
                     cancelContentDescription = "Cancel search",
                 )
 
                 LemonadeUi.Text(
-                    text = "Cancelling always drops the focus and the keyboard; this one also " +
-                        "clears the input from onCancel.",
+                    text = "Cancelling drops the focus, hides the keyboard and empties the field. " +
+                        "onCancel then runs for whatever the query was driving.",
                     textStyle = LemonadeTheme.typography.bodySmallRegular,
                     color = LemonadeTheme.colors.content.contentSecondary,
                 )
