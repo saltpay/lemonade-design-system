@@ -60,5 +60,6 @@ extension View {
     /// ```
     func clickableFrame(minSize: LemonadeSizes) -> some View {
         frame(minWidth: minSize.value, minHeight: minSize.value)
+            .contentShape(Rectangle())
     }
 }
