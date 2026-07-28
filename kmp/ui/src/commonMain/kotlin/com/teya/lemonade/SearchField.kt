@@ -21,6 +21,7 @@ import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -41,6 +42,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeButtonSize
 import com.teya.lemonade.core.LemonadeButtonType
 import com.teya.lemonade.core.LemonadeButtonVariant
@@ -65,6 +67,11 @@ private val SearchFieldSizeSpec = tween<IntSize>(
 // The cancel button pops in from — and collapses back to — slightly under its full size, so the
 // entrance reads as the button growing into the gap the field gives up rather than blinking in.
 private const val CANCEL_BUTTON_COLLAPSED_SCALE = 0.8f
+
+// The field takes the row's spare width but is not forced to fill it, so on a wide layout it stops
+// stretching into a full-bleed bar with the cancel button marooned at the far edge. The floor keeps
+// it from collapsing onto its placeholder when the content is short.
+private val SEARCH_FIELD_MIN_WIDTH = 240.dp
 
 /**
  * Input field designated to use for search and querying.
@@ -131,7 +138,8 @@ public fun LemonadeUi.SearchField(
             keyboardOptions = keyboardOptions,
             enabled = enabled,
             modifier = Modifier
-                .weight(weight = 1f)
+                .defaultMinSize(minWidth = SEARCH_FIELD_MIN_WIDTH)
+                .weight(weight = 1f, fill = false)
                 .clearFocusOnKeyboardDismiss(),
         )
 
