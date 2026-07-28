@@ -336,7 +336,7 @@ private fun LemonadeButtonSize.toSizeData(shape: LemonadeIconButtonShape): IconB
         )
 
         LemonadeButtonSize.Small -> IconButtonSizeData(
-            iconSize = LemonadeAssetSize.Small,
+            iconSize = LemonadeAssetSize.Medium,
             spinnerSize = LemonadeAssetSize.XSmall,
             size = LocalSizes.current.size1000,
             shape = shape.resolveShape(roundedShape = LocalShapes.current.radius300),

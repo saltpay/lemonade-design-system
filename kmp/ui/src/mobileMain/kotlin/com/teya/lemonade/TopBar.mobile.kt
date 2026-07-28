@@ -1213,7 +1213,7 @@ private fun CoreTopBarActionContent(
             onClick = navigationAction.onNavigationActionClicked,
             variant = LemonadeButtonVariant.Neutral,
             type = type,
-            size = LemonadeButtonSize.Medium,
+            size = LemonadeButtonSize.Small,
             shape = LemonadeIconButtonShape.Circular,
         )
     }
