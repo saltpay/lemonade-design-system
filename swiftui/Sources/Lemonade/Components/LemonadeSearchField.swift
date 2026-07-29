@@ -33,10 +33,11 @@ public extension LemonadeUi {
     ///     accessibility. The component leaves it unset by default so the label can be localised by
     ///     the consumer; supply one whenever the field is `dismissible`.
     ///   - enabled: Flag to enable or disable the component
-    ///   - isFocused: Optional binding to the host's own `@FocusState`, for hosts that need to read
-    ///     the focus or drive it — moving the field into a toolbar when a search begins, say, or
-    ///     handing focus to a replacement field. Left unset the field keeps its own focus state and
-    ///     behaves exactly as before.
+    ///   - isFocused: Optional two-way binding to the field's focus, for hosts that need to read it
+    ///     or drive it — moving the field into a toolbar when a search begins, say, or handing focus
+    ///     to a replacement field. Writing `true` focuses the field and raises the keyboard; the
+    ///     field writes back whenever the user focuses or dismisses it. Left unset the field keeps
+    ///     its focus entirely to itself and behaves exactly as before.
     /// - Returns: A styled SearchField view
     @ViewBuilder
     static func SearchField(
@@ -48,7 +49,7 @@ public extension LemonadeUi {
         onCancel: (() -> Void)? = nil,
         cancelContentDescription: String? = nil,
         enabled: Bool = true,
-        isFocused: FocusState<Bool>.Binding? = nil
+        isFocused: Binding<Bool>? = nil
     ) -> some View {
         LemonadeSearchFieldView(
             input: input,
@@ -76,12 +77,12 @@ private struct LemonadeSearchFieldView: View {
     let cancelContentDescription: String?
     let enabled: Bool
 
-    /// The host's focus state when it supplied one; otherwise the field falls back to its own.
-    private let externalFocus: FocusState<Bool>.Binding?
-    @FocusState private var ownFocus: Bool
-
-    private var focus: FocusState<Bool>.Binding { externalFocus ?? $ownFocus }
-    private var isFocused: Bool { focus.wrappedValue }
+    /// The host's mirror of the focus, when it supplied one. The field always drives the real
+    /// `@FocusState` itself: a plain binding cannot invalidate this view, so reading focus straight
+    /// off it would leave everything keyed on focus — the cancel button above all — updating only
+    /// when the host happened to redraw us.
+    private let externalFocus: Binding<Bool>?
+    @FocusState private var isFocused: Bool
 
     /// Mirrors `shouldShowCancel`, but is only ever written from inside an explicit `withAnimation`.
     /// `@FocusState` updates arrive without an animation transaction, so an `if` driven straight off
@@ -100,7 +101,7 @@ private struct LemonadeSearchFieldView: View {
         onCancel: (() -> Void)?,
         cancelContentDescription: String?,
         enabled: Bool,
-        externalFocus: FocusState<Bool>.Binding?
+        externalFocus: Binding<Bool>?
     ) {
         self._input = input
         self.onInputChanged = onInputChanged
@@ -158,7 +159,7 @@ private struct LemonadeSearchFieldView: View {
                     icon: .times,
                     contentDescription: cancelContentDescription,
                     onClick: {
-                        focus.wrappedValue = false
+                        isFocused = false
                         // Deliberately not routed through `onInputClear`: that callback belongs to
                         // the inner clear icon, and a consumer who overrides it to only log would
                         // otherwise stop cancel from emptying the field.
@@ -175,6 +176,19 @@ private struct LemonadeSearchFieldView: View {
         }
         .onChange(of: shouldShowCancel) { newValue in
             withAnimation(.easeInOut(duration: animationDuration)) { isCancelPresented = newValue }
+        }
+        .onChange(of: isFocused) { newValue in
+            guard externalFocus?.wrappedValue != newValue else { return }
+            externalFocus?.wrappedValue = newValue
+        }
+        .onChange(of: externalFocus?.wrappedValue) { newValue in
+            guard let newValue, newValue != isFocused else { return }
+            isFocused = newValue
+        }
+        .onAppear {
+            // A host can hand the field focus before it ever renders — a search promoted into a
+            // toolbar does exactly that — so adopt whatever it asked for on the way in.
+            if let wanted = externalFocus?.wrappedValue, wanted != isFocused { isFocused = wanted }
         }
     }
 
@@ -202,7 +216,7 @@ private struct LemonadeSearchFieldView: View {
                     .font(LemonadeTypography.shared.bodyMediumRegular.font)
                     .foregroundStyle(LemonadeTheme.colors.content.contentPrimary)
                     .tint(LemonadeTheme.colors.content.contentPrimary)
-                    .focused(focus)
+                    .focused($isFocused)
                     .disabled(!enabled)
                     .onChange(of: input) { newValue in
                         onInputChanged?(newValue)
