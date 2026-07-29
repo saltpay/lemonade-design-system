@@ -43,7 +43,7 @@ struct SymbolContainerDisplayView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading, spacing: 32) {
                 sizesSection
                 voicesSection
                 shapesSection
@@ -107,7 +107,7 @@ struct SymbolContainerDisplayView: View {
     private var shapesSection: some View {
         sectionView(title: "Shapes") {
             VStack(alignment: .leading, spacing: 16) {
-                HStack(spacing: 16) {
+                FlowLayout(spacing: 16) {
                     ForEach(allShapes, id: \.0) { shape, label in
                         VStack(spacing: 8) {
                             LemonadeUi.SymbolContainer(
@@ -120,7 +120,7 @@ struct SymbolContainerDisplayView: View {
                         }
                     }
                 }
-                HStack(spacing: 16) {
+                FlowLayout(spacing: 16) {
                     ForEach(roundedScalingSizes, id: \.0) { size, label in
                         VStack(spacing: 8) {
                             LemonadeUi.SymbolContainer(
@@ -141,7 +141,7 @@ struct SymbolContainerDisplayView: View {
 
     private var badgeSection: some View {
         sectionView(title: "With Badge") {
-            HStack(spacing: 24) {
+            FlowLayout(spacing: 24) {
                 ForEach(badgeSizes, id: \.0) { size, label in
                     VStack(spacing: 8) {
                         LemonadeUi.SymbolContainer(
@@ -164,7 +164,7 @@ struct SymbolContainerDisplayView: View {
         sectionView(title: "Image Variants") {
             VStack(alignment: .leading, spacing: 16) {
                 Text("fill = false").font(.subheadline)
-                HStack(spacing: 16) {
+                FlowLayout(spacing: 16) {
                     ForEach(imageSizes, id: \.0) { size, label in
                         VStack(spacing: 8) {
                             LemonadeUi.SymbolContainer(
@@ -179,7 +179,7 @@ struct SymbolContainerDisplayView: View {
                 }
 
                 Text("fill = true").font(.subheadline)
-                HStack(spacing: 16) {
+                FlowLayout(spacing: 16) {
                     ForEach(allShapes, id: \.0) { shape, label in
                         VStack(spacing: 8) {
                             LemonadeUi.SymbolContainer(
@@ -220,15 +220,19 @@ struct SymbolContainerDisplayView: View {
 
     private var customContentSection: some View {
         sectionView(title: "Custom Content") {
-            HStack(spacing: 16) {
+            FlowLayout(spacing: 16) {
                 LemonadeUi.SymbolContainer(voice: .neutral, size: .large) {
+                    // A token, not `.yellow`: the container is a `.neutral` voice, and a
+                    // system colour has no contrast guarantee against its surface.
                     Image(systemName: "star.fill")
-                        .foregroundStyle(.yellow)
+                        .foregroundStyle(.content.contentNeutral)
+                        .accessibilityLabel("Star")
                 }
 
                 LemonadeUi.SymbolContainer(voice: .info, size: .large) {
                     Image(systemName: "person.fill")
                         .foregroundStyle(.content.contentInfo)
+                        .accessibilityLabel("Person")
                 }
             }
         }

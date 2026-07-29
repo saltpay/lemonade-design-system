@@ -7,10 +7,11 @@ struct SearchFieldDisplayView: View {
     @State private var searchText3 = ""
     @State private var searchText4 = ""
     @State private var searchText5 = ""
+    @State private var productSearch = ""
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading, spacing: 32) {
                 // Basic
                 sectionView(title: "Basic") {
                     LemonadeUi.SearchField(
@@ -87,11 +88,11 @@ struct SearchFieldDisplayView: View {
                 sectionView(title: "Usage Example") {
                     VStack(spacing: 16) {
                         LemonadeUi.SearchField(
-                            input: $searchText1,
+                            input: $productSearch,
                             placeholder: "Search products..."
                         )
 
-                        if searchText1.isEmpty {
+                        if productSearch.isEmpty {
                             VStack(spacing: 8) {
                                 ForEach(["iPhone 15", "MacBook Pro", "iPad Air", "Apple Watch"], id: \.self) { item in
                                     HStack {
@@ -109,7 +110,7 @@ struct SearchFieldDisplayView: View {
                             }
                         } else {
                             let filtered = ["iPhone 15", "MacBook Pro", "iPad Air", "Apple Watch"].filter {
-                                $0.localizedCaseInsensitiveContains(searchText1)
+                                $0.localizedCaseInsensitiveContains(productSearch)
                             }
 
                             if filtered.isEmpty {

@@ -6,11 +6,16 @@ struct CheckboxDisplayView: View {
     @State private var isChecked2 = true
     @State private var isIndeterminate = true
     @State private var labeledChecked = false
+    @State private var rememberMe = true
+    @State private var selectAllStatus: CheckboxStatus = .indeterminate
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
-                // Basic States
+            LazyVStack(alignment: .leading, spacing: 32) {
+                // Basic States — fixed specimens of the three visual states. Making these
+                // tappable would destroy the demo (you could no longer see `.checked` and
+                // `.indeterminate` side by side), so hit testing is off: they read as
+                // swatches rather than controls that silently ignore a tap.
                 sectionView(title: "States") {
                     VStack(alignment: .leading, spacing: 16) {
                         HStack(spacing: 24) {
@@ -41,6 +46,7 @@ struct CheckboxDisplayView: View {
                                     .font(.caption)
                             }
                         }
+                        .allowsHitTesting(false)
                     }
                 }
 
@@ -75,14 +81,16 @@ struct CheckboxDisplayView: View {
                         )
 
                         LemonadeUi.Checkbox(
-                            status: .checked,
-                            onCheckboxClicked: {},
+                            status: rememberMe ? .checked : .unchecked,
+                            onCheckboxClicked: { rememberMe.toggle() },
                             label: "Remember me"
                         )
 
+                        // Tri-state row: cycles through all three statuses so the
+                        // indeterminate state stays reachable while the row still responds.
                         LemonadeUi.Checkbox(
-                            status: .indeterminate,
-                            onCheckboxClicked: {},
+                            status: selectAllStatus,
+                            onCheckboxClicked: { selectAllStatus = nextStatus(after: selectAllStatus) },
                             label: "Select all items"
                         )
                     }
@@ -132,6 +140,15 @@ struct CheckboxDisplayView: View {
                 .foregroundStyle(.content.contentSecondary)
 
             content()
+        }
+    }
+
+    private func nextStatus(after status: CheckboxStatus) -> CheckboxStatus {
+        switch status {
+        case .indeterminate: return .checked
+        case .checked: return .unchecked
+        case .unchecked: return .indeterminate
+        @unknown default: return .unchecked
         }
     }
 }

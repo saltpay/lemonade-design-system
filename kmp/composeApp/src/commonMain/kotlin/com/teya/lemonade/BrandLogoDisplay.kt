@@ -1,6 +1,5 @@
 package com.teya.lemonade
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,15 +20,14 @@ internal fun BrandLogoDisplay() {
     ) {
         items(
             items = LemonadeBrandLogos.entries,
-            key = { it.ordinal },
+            key = { logo -> logo.ordinal },
         ) { icon ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 70.dp)
-                    .clickable { /* Nothing */ },
+                    .height(height = 70.dp),
             ) {
                 LemonadeUi.BrandLogo(
                     logo = icon,

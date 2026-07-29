@@ -4,7 +4,7 @@ import Lemonade
 struct SpinnerDisplayView: View {
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading, spacing: 32) {
                 // Default
                 sectionView(title: "Default") {
                     LemonadeUi.Spinner()

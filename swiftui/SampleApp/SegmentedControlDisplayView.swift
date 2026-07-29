@@ -9,10 +9,11 @@ struct SegmentedControlDisplayView: View {
     @State private var selectedTabSmall = 0
     @State private var selectedTabIconOnly = 0
     @State private var selectedTabHugContent = 0
+    @State private var selectedTabHugInHStack = 0
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading, spacing: 32) {
                 // Hug content with .fixedSize() — for inline use alongside other content
                 sectionView(title: "Hug Content (.fixedSize)") {
                     VStack(alignment: .leading, spacing: 8) {
@@ -35,14 +36,16 @@ struct SegmentedControlDisplayView: View {
                                 .font(.title2)
                                 .bold()
                             Spacer()
+                            // Its own state: the two demos are separate instances, so moving
+                            // one must not move the other.
                             LemonadeUi.SegmentedControl(
                                 properties: [
                                     .label("Week"),
                                     .label("Day"),
                                 ],
-                                selectedTab: selectedTabHugContent,
+                                selectedTab: selectedTabHugInHStack,
                                 size: .small,
-                                onTabSelected: { selectedTabHugContent = $0 }
+                                onTabSelected: { selectedTabHugInHStack = $0 }
                             )
                             .fixedSize()
                         }

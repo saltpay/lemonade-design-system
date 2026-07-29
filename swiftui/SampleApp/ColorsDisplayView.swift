@@ -1,7 +1,10 @@
 import SwiftUI
+import UIKit
 import Lemonade
 
 struct ColorsDisplayView: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 24) {
@@ -35,8 +38,42 @@ struct ColorsDisplayView: View {
         .navigationTitle("Semantic Colors")
     }
 
+    /// Picks black or white for the swatch label, whichever has the higher WCAG contrast
+    /// against the swatch. `.primary` cannot be used here: it flips with the colour
+    /// scheme, not with the swatch, so it disappears on every token whose lightness runs
+    /// against the current scheme (`bgBrand`, `bgCritical`, `contentPrimary`, …).
     private func textColor(for backgroundColor: Color) -> Color {
-        return .primary
+        let traits = UITraitCollection(userInterfaceStyle: colorScheme == .dark ? .dark : .light)
+        let swatch = UIColor(backgroundColor).resolvedColor(with: traits)
+        let page = UIColor(LemonadeTheme.colors.background.bgDefault).resolvedColor(with: traits)
+
+        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
+        guard swatch.getRed(&red, green: &green, blue: &blue, alpha: &alpha) else { return .primary }
+
+        var pageRed: CGFloat = 0, pageGreen: CGFloat = 0, pageBlue: CGFloat = 0, pageAlpha: CGFloat = 0
+        guard page.getRed(&pageRed, green: &pageGreen, blue: &pageBlue, alpha: &pageAlpha) else {
+            return .primary
+        }
+
+        // Translucent tokens are drawn over the page background, so composite before
+        // measuring — otherwise their own luminance is not the one the eye sees.
+        let composited = (
+            red: red * alpha + pageRed * (1 - alpha),
+            green: green * alpha + pageGreen * (1 - alpha),
+            blue: blue * alpha + pageBlue * (1 - alpha)
+        )
+
+        let luminance = 0.2126 * linearised(composited.red)
+            + 0.7152 * linearised(composited.green)
+            + 0.0722 * linearised(composited.blue)
+
+        // 0.179 is where contrast against black overtakes contrast against white.
+        return luminance > 0.179 ? .black : .white
+    }
+
+    private func linearised(_ channel: CGFloat) -> Double {
+        let value = Double(channel)
+        return value <= 0.03928 ? value / 12.92 : pow((value + 0.055) / 1.055, 2.4)
     }
 }
 

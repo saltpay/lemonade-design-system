@@ -5,36 +5,70 @@ import Lemonade
 
 struct TopBarDisplayView: View {
 
-    private struct DemoItem: Identifiable {
-        let id = UUID()
-        let title: String
-        let destination: AnyView
-    }
-
-    private let demos: [DemoItem] = [
-        DemoItem(title: "Basic (native back)", destination: AnyView(BasicTopBarDemo())),
-        DemoItem(title: "Basic (close button)", destination: AnyView(BasicCloseDemo())),
-        DemoItem(title: "Basic with Trailing Slot", destination: AnyView(BasicTrailingSlotDemo())),
-        DemoItem(title: "Basic with Bottom Slot", destination: AnyView(BasicBottomSlotDemo())),
-        DemoItem(title: "Basic with Subheading", destination: AnyView(BasicSubheadingDemo())),
-        DemoItem(title: "Search", destination: AnyView(SearchTopBarDemo())),
-        DemoItem(title: "Search with Expanded Label", destination: AnyView(SearchExpandedLabelDemo())),
-        DemoItem(title: "Search with Subheading", destination: AnyView(SearchSubheadingDemo())),
-        DemoItem(title: "Compact Large (pill)", destination: AnyView(CompactLargePillDemo())),
-        DemoItem(title: "Compact Large", destination: AnyView(CompactLargeDemo())),
-        DemoItem(title: "Compact Large with Subheading", destination: AnyView(CompactLargeSubheadingDemo())),
-        DemoItem(title: "Compact Large + Search", destination: AnyView(CompactLargeSearchDemo())),
-    ]
-
     var body: some View {
-        List {
-            ForEach(demos) { demo in
-                NavigationLink(demo.title) {
-                    demo.destination
-                }
-            }
+        List(TopBarDemo.allCases) { demo in
+            NavigationLink(demo.title, value: demo)
         }
         .navigationTitle("TopBar")
+        .navigationDestination(for: TopBarDemo.self) { demo in
+            demo.destination
+        }
+    }
+}
+
+// MARK: - Demo Catalogue
+
+/// One case per sub-demo. Value-based navigation keeps each demo unbuilt until it is
+/// pushed, and the raw value doubles as a stable, content-derived identity.
+private enum TopBarDemo: String, CaseIterable, Identifiable {
+    case basic
+    case basicClose
+    case basicTrailingSlot
+    case basicBottomSlot
+    case basicSubheading
+    case search
+    case searchExpandedLabel
+    case searchSubheading
+    case compactLargePill
+    case compactLarge
+    case compactLargeSubheading
+    case compactLargeSearch
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .basic: return "Basic (native back)"
+        case .basicClose: return "Basic (close button)"
+        case .basicTrailingSlot: return "Basic with Trailing Slot"
+        case .basicBottomSlot: return "Basic with Bottom Slot"
+        case .basicSubheading: return "Basic with Subheading"
+        case .search: return "Search"
+        case .searchExpandedLabel: return "Search with Expanded Label"
+        case .searchSubheading: return "Search with Subheading"
+        case .compactLargePill: return "Compact Large (pill)"
+        case .compactLarge: return "Compact Large"
+        case .compactLargeSubheading: return "Compact Large with Subheading"
+        case .compactLargeSearch: return "Compact Large + Search"
+        }
+    }
+
+    @ViewBuilder
+    var destination: some View {
+        switch self {
+        case .basic: BasicTopBarDemo()
+        case .basicClose: BasicCloseDemo()
+        case .basicTrailingSlot: BasicTrailingSlotDemo()
+        case .basicBottomSlot: BasicBottomSlotDemo()
+        case .basicSubheading: BasicSubheadingDemo()
+        case .search: SearchTopBarDemo()
+        case .searchExpandedLabel: SearchExpandedLabelDemo()
+        case .searchSubheading: SearchSubheadingDemo()
+        case .compactLargePill: CompactLargePillDemo()
+        case .compactLarge: CompactLargeDemo()
+        case .compactLargeSubheading: CompactLargeSubheadingDemo()
+        case .compactLargeSearch: CompactLargeSearchDemo()
+        }
     }
 }
 
@@ -315,7 +349,31 @@ private struct GlassCapsuleModifier: ViewModifier {
     }
 }
 
+/// The compact-large top bar is built for top-level screens: it hides the native back
+/// button and fills the leading slot with its own title. Pushed onto a NavigationStack —
+/// which is how the sample reaches these demos — that leaves no way back, so every
+/// compact-large demo adds an explicit close button. It goes in the trailing group
+/// because the leading slot is already occupied by the compact-large title.
+private struct CompactLargeCloseButton: ToolbarContent {
+    let dismiss: DismissAction
+
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            Button(action: { dismiss() }) {
+                LemonadeUi.Icon(icon: .times, contentDescription: "Close")
+                    .frame(
+                        minWidth: LemonadeSizes.size800.value,
+                        minHeight: LemonadeSizes.size800.value
+                    )
+                    .contentShape(Rectangle())
+            }
+        }
+    }
+}
+
 private struct CompactLargePillDemo: View {
+    @Environment(\.dismiss) private var dismiss
+
     var body: some View {
         ScrollView {
             SampleListContent()
@@ -329,11 +387,14 @@ private struct CompactLargePillDemo: View {
                     LemonadeUi.Icon(icon: .gear, contentDescription: "Settings")
                 }
             }
+            CompactLargeCloseButton(dismiss: dismiss)
         }
     }
 }
 
 private struct CompactLargeDemo: View {
+    @Environment(\.dismiss) private var dismiss
+
     var body: some View {
         ScrollView {
             SampleListContent()
@@ -349,11 +410,14 @@ private struct CompactLargeDemo: View {
                     LemonadeUi.Icon(icon: .gear, contentDescription: "Settings")
                 }
             }
+            CompactLargeCloseButton(dismiss: dismiss)
         }
     }
 }
 
 private struct CompactLargeSubheadingDemo: View {
+    @Environment(\.dismiss) private var dismiss
+
     var body: some View {
         ScrollView {
             SampleListContent()
@@ -364,6 +428,7 @@ private struct CompactLargeSubheadingDemo: View {
                     LemonadeUi.Icon(icon: .bell, contentDescription: "Notifications")
                 }
             }
+            CompactLargeCloseButton(dismiss: dismiss)
         }
     }
 }
@@ -371,6 +436,7 @@ private struct CompactLargeSubheadingDemo: View {
 // MARK: - 4. Compact Large + Search Demo
 
 private struct CompactLargeSearchDemo: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var searchQuery = ""
 
     private let categories = [
@@ -419,6 +485,7 @@ private struct CompactLargeSearchDemo: View {
                     LemonadeUi.Icon(icon: .ellipsisHorizontal, contentDescription: "More")
                 }
             }
+            CompactLargeCloseButton(dismiss: dismiss)
         }
     }
 }

@@ -4,7 +4,7 @@ import Lemonade
 struct ShadowsDisplayView: View {
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: .space.spacing1200) {
+            LazyVStack(alignment: .leading, spacing: .space.spacing1200) {
                 ForEach(LemonadeShadow.allCases, id: \.self) { shadow in
                     VStack(alignment: .leading, spacing: .space.spacing100) {
                         Text(shadow.displayName)
@@ -18,7 +18,11 @@ struct ShadowsDisplayView: View {
                     }
                 }
             }
-            .padding(.space.spacing400)
+            // The largest token (.xlarge) draws 20pt below the swatch plus a 25pt blur,
+            // i.e. ~28pt outside the layout bounds. Anything less than that vertically
+            // and the ScrollView clips the bottom shadow of the last swatch.
+            .padding(.horizontal, .space.spacing400)
+            .padding(.vertical, .space.spacing800)
         }
         .background(.bg.bgSubtle)
         .navigationTitle("Shadows")

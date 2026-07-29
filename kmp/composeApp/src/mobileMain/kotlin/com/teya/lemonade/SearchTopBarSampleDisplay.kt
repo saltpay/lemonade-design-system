@@ -116,7 +116,10 @@ internal fun SearchTopBarSampleDisplay() {
                     )
                 }
             } else {
-                items(filteredItems) { item ->
+                items(
+                    items = filteredItems,
+                    key = { item -> item },
+                ) { item ->
                     LemonadeUi.Text(
                         text = item,
                         textStyle = LemonadeTheme.typography.bodyMediumRegular,

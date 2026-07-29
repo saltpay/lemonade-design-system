@@ -12,13 +12,14 @@ struct TooltipDisplayView: View {
     @EnvironmentObject private var toasts: LemonadeToastManager
 
     @State private var closeButtonDismissed = false
+    @State private var footerDismissed = false
     @State private var step = 1
 
     private let totalSteps = 3
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading, spacing: 32) {
                 sectionView(title: "Anchored — on-demand help") {
                     HStack(spacing: 12) {
                         LemonadeUi.Text(
@@ -164,19 +165,26 @@ struct TooltipDisplayView: View {
                 }
 
                 sectionView(title: "With Footer") {
-                    LemonadeUi.Tooltip(
-                        content: "The footer is a scoped slot — only the step counter and actions belong in it.",
-                        title: "Step \(step)",
-                        indicatorPlacement: .topLeft,
-                        onClose: { step = 1 },
-                        closeContentDescription: "Close",
-                        footer: { footer in
-                            footer.stepCounter(currentStep: step, totalSteps: totalSteps)
-                            Spacer()
-                            footer.action("Skip", variant: .secondary) { step = 1 }
-                            footer.action("Next") { step = step < totalSteps ? step + 1 : 1 }
+                    if footerDismissed {
+                        LemonadeUi.Button(label: "Show again") {
+                            footerDismissed = false
+                            step = 1
                         }
-                    )
+                    } else {
+                        LemonadeUi.Tooltip(
+                            content: "The footer is a scoped slot — only the step counter and actions belong in it.",
+                            title: "Step \(step)",
+                            indicatorPlacement: .topLeft,
+                            onClose: { footerDismissed = true },
+                            closeContentDescription: "Close",
+                            footer: { footer in
+                                footer.stepCounter(currentStep: step, totalSteps: totalSteps)
+                                Spacer()
+                                footer.action("Skip", variant: .secondary) { footerDismissed = true }
+                                footer.action("Next") { step = step < totalSteps ? step + 1 : 1 }
+                            }
+                        )
+                    }
                 }
 
                 sectionView(title: "Footer Without Step Counter") {

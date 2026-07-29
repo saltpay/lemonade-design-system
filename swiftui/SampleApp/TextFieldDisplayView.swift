@@ -20,9 +20,11 @@ struct TextFieldDisplayView: View {
     @State private var autofillPasswordText = ""
     @State private var isAutofillPasswordVisible = false
 
+    private let prefixOptions = ["+1", "+44", "+351", "+353"]
+
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading, spacing: 32) {
                 // Basic
                 sectionView(title: "Basic") {
                     LemonadeUi.TextField(
@@ -163,8 +165,11 @@ struct TextFieldDisplayView: View {
                 sectionView(title: "TextField With Selector") {
                     LemonadeUi.TextFieldWithSelector(
                         input: $selectorText,
+                        // Steps through the prefixes so the selector visibly does something;
+                        // `print` was invisible on device, leaving the control feeling dead.
                         leadingAction: {
-                            print("Show country code picker")
+                            let next = (prefixOptions.firstIndex(of: selectedPrefix) ?? 0) + 1
+                            selectedPrefix = prefixOptions[next % prefixOptions.count]
                         },
                         leadingContent: {
                             HStack(spacing: LemonadeTheme.spaces.spacing100) {

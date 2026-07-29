@@ -4,7 +4,7 @@ import Lemonade
 struct HistoryTimelineDisplayView: View {
     var body: some View {
         ScrollView(.vertical) {
-            VStack(spacing: .space.spacing400) {
+            LazyVStack(spacing: .space.spacing400) {
                 // MARK: - Timeline — positive first
                 LemonadeUi.Card(
                     contentPadding: .medium,

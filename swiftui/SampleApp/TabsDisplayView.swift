@@ -12,7 +12,7 @@ struct TabsDisplayView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing800) {
+            LazyVStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing800) {
                 sectionView(title: "Hug (default)") {
                     LemonadeUi.Tabs(
                         tabs: [

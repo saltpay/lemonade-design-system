@@ -2,21 +2,26 @@ import SwiftUI
 import Lemonade
 
 struct TileDisplayView: View {
+    @EnvironmentObject private var toastManager: LemonadeToastManager
+
     @State private var isFilledSelected = true
     @State private var isOutlinedSelected = true
-    @State private var isHorizontalSelected = true
+    @State private var isHorizontalFilledSelected = true
+    @State private var isHorizontalOutlinedSelected = false
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing600) {
+            LazyVStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing600) {
                 // MARK: - Variants
+                // Pure visual gallery: no `onClick`, so the tiles render as swatches with no
+                // press affordance rather than buttons that silently do nothing. The
+                // "Interactive" section below is where tapping is demonstrated.
                 sectionView(title: "Variants") {
                     HStack(spacing: LemonadeTheme.spaces.spacing400) {
                         VStack(spacing: LemonadeTheme.spaces.spacing200) {
                             LemonadeUi.Tile(
                                 label: "Filled",
                                 icon: .heart,
-                                onClick: {},
                                 variant: .filled
                             )
                             LemonadeUi.Text(
@@ -29,7 +34,6 @@ struct TileDisplayView: View {
                             LemonadeUi.Tile(
                                 label: "Outlined",
                                 icon: .star,
-                                onClick: {},
                                 variant: .outlined
                             )
                             LemonadeUi.Text(
@@ -121,18 +125,14 @@ struct TileDisplayView: View {
                         LemonadeUi.Tile(
                             label: "Tap me",
                             icon: .handCoins,
-                            onClick: {
-                                print("Tile tapped!")
-                            },
+                            onClick: { showTap("Tap me") },
                             variant: .filled
                         )
 
                         LemonadeUi.Tile(
                             label: "Click",
                             icon: .fingerPrint,
-                            onClick: {
-                                print("Click!")
-                            },
+                            onClick: { showTap("Click") },
                             variant: .outlined
                         )
                     }
@@ -169,7 +169,7 @@ struct TileDisplayView: View {
                     LemonadeUi.Tile(
                         label: "Single Stretched",
                         icon: .heart,
-                        onClick: {},
+                        onClick: { showTap("Single Stretched") },
                         variant: .filled,
                         stretched: true
                     )
@@ -178,7 +178,7 @@ struct TileDisplayView: View {
                         LemonadeUi.Tile(
                             label: "Transfer",
                             icon: .arrowLeftRight,
-                            onClick: {},
+                            onClick: { showTap("Transfer") },
                             variant: .filled,
                             stretched: true
                         )
@@ -186,7 +186,7 @@ struct TileDisplayView: View {
                         LemonadeUi.Tile(
                             label: "Pay",
                             icon: .card,
-                            onClick: {},
+                            onClick: { showTap("Pay") },
                             variant: .filled,
                             stretched: true
                         )
@@ -194,7 +194,7 @@ struct TileDisplayView: View {
                         LemonadeUi.Tile(
                             label: "Request",
                             icon: .download,
-                            onClick: {},
+                            onClick: { showTap("Request") },
                             variant: .filled,
                             stretched: true
                         )
@@ -244,19 +244,22 @@ struct TileDisplayView: View {
 
                 sectionView(title: "Horizontal / Selected") {
                     VStack(spacing: LemonadeTheme.spaces.spacing300) {
+                        // One flag per tile, matching the vertical "Selected" section above.
+                        // Sharing a single flag (with one tile reading it inverted) made
+                        // tapping either one flip both, so they could never match.
                         LemonadeUi.Tile(
                             label: "Filled",
                             icon: .circleCheck,
-                            isSelected: isHorizontalSelected,
-                            onClick: { isHorizontalSelected.toggle() },
+                            isSelected: isHorizontalFilledSelected,
+                            onClick: { isHorizontalFilledSelected.toggle() },
                             variant: .filled,
                             orientation: .horizontal
                         )
                         LemonadeUi.Tile(
                             label: "Outlined",
                             icon: .circleCheck,
-                            isSelected: !isHorizontalSelected,
-                            onClick: { isHorizontalSelected.toggle() },
+                            isSelected: isHorizontalOutlinedSelected,
+                            onClick: { isHorizontalOutlinedSelected.toggle() },
                             variant: .outlined,
                             orientation: .horizontal
                         )
@@ -322,7 +325,7 @@ struct TileDisplayView: View {
                             label: "Transfer",
                             icon: .arrowLeftRight,
                             supportText: "Send money instantly",
-                            onClick: {},
+                            onClick: { showTap("Transfer") },
                             variant: .filled,
                             orientation: .horizontal
                         )
@@ -330,7 +333,7 @@ struct TileDisplayView: View {
                             label: "Pay",
                             icon: .card,
                             supportText: "Pay with card",
-                            onClick: {},
+                            onClick: { showTap("Pay") },
                             variant: .filled,
                             orientation: .horizontal
                         )
@@ -338,7 +341,7 @@ struct TileDisplayView: View {
                             label: "Top Up",
                             icon: .plus,
                             supportText: "Add funds to your account",
-                            onClick: {},
+                            onClick: { showTap("Top Up") },
                             variant: .filled,
                             orientation: .horizontal
                         )
@@ -346,7 +349,7 @@ struct TileDisplayView: View {
                             label: "Statements",
                             icon: .chart,
                             supportText: "View your transactions",
-                            onClick: {},
+                            onClick: { showTap("Statements") },
                             variant: .filled,
                             orientation: .horizontal
                         )
@@ -363,42 +366,42 @@ struct TileDisplayView: View {
                         LemonadeUi.Tile(
                             label: "Transfer",
                             icon: .arrowLeftRight,
-                            onClick: {},
+                            onClick: { showTap("Transfer") },
                             variant: .filled
                         )
 
                         LemonadeUi.Tile(
                             label: "Pay",
                             icon: .card,
-                            onClick: {},
+                            onClick: { showTap("Pay") },
                             variant: .filled
                         )
 
                         LemonadeUi.Tile(
                             label: "Request",
                             icon: .download,
-                            onClick: {},
+                            onClick: { showTap("Request") },
                             variant: .filled
                         )
 
                         LemonadeUi.Tile(
                             label: "Scan",
                             icon: .qrCode,
-                            onClick: {},
+                            onClick: { showTap("Scan") },
                             variant: .filled
                         )
 
                         LemonadeUi.Tile(
                             label: "Top Up",
                             icon: .plus,
-                            onClick: {},
+                            onClick: { showTap("Top Up") },
                             variant: .filled
                         )
 
                         LemonadeUi.Tile(
                             label: "More",
                             icon: .ellipsisHorizontal,
-                            onClick: {},
+                            onClick: { showTap("More") },
                             variant: .filled
                         )
                     }
@@ -410,14 +413,14 @@ struct TileDisplayView: View {
                             LemonadeUi.Tile(
                                 label: "Orders",
                                 icon: .shoppingBag,
-                                onClick: {},
+                                onClick: { showTap("Orders") },
                                 variant: .outlined
                             )
 
                             LemonadeUi.Tile(
                                 label: "Inventory",
                                 icon: .package,
-                                onClick: {},
+                                onClick: { showTap("Inventory") },
                                 variant: .outlined
                             )
                         }
@@ -426,14 +429,14 @@ struct TileDisplayView: View {
                             LemonadeUi.Tile(
                                 label: "Reports",
                                 icon: .chart,
-                                onClick: {},
+                                onClick: { showTap("Reports") },
                                 variant: .outlined
                             )
 
                             LemonadeUi.Tile(
                                 label: "Settings",
                                 icon: .gear,
-                                onClick: {},
+                                onClick: { showTap("Settings") },
                                 variant: .outlined
                             )
                         }
@@ -456,10 +459,17 @@ struct TileDisplayView: View {
             content()
         }
     }
+
+    // Action tiles have no selection state of their own, so a tap is acknowledged with a
+    // toast. `print` was invisible on device, which is what made these read as broken.
+    private func showTap(_ label: String) {
+        toastManager.show(label: "\(label) tapped", voice: .neutral, duration: .short)
+    }
 }
 
 #Preview {
     NavigationStack {
         TileDisplayView()
     }
+    .lemonadeToastContainer()
 }
