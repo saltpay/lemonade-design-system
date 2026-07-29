@@ -57,7 +57,7 @@ iOS 26.4 for SwiftUI. Screenshots are in the PR.
 | `Button` | KMP | confirmed | Labels clipped at `fontScale 2.0` on all four sizes and both variants. `Button.kt:428` does `.requiredHeight()` then `.clip()`. |
 | `SegmentedControl` | KMP | confirmed | At `2.0` the `Large` size fills its container exactly. Not clipped, but nothing left over. `SegmentedControl.kt:210`. |
 | `SegmentedControl` | SwiftUI | confirmed | At `AX5` the labels sit outside the pill. The descender on "Day" hangs below it. `LemonadeSegmentedControl.swift:167,182`. |
-| `Badge` | SwiftUI | confirmed, cause unclear | At `AX5` the text runs above and below the capsule. `LemonadeBadge.swift:110`. The label font is pinned though, so the cause is not the label growing — see [Text that is already big](#text-that-is-already-big). |
+| `Badge` | SwiftUI | confirmed | At `AX5` the text runs above and below the capsule. `LemonadeBadge.swift:110`. The label grows 2.72× between `large` and `AX5` against a fixed `.frame(height:)`. |
 | `Tabs` | SwiftUI | fine today | Uses `.frame(minHeight:)` instead of `.frame(height:)`, and grows properly at `AX5`. |
 | `Button` | SwiftUI | partly checked | The default size survives `AX5`. I did not check the others. |
 | `InlineCalendar` | KMP | different problem | Branches on `density.fontScale > 1.3`. `InlineCalendar.kt:57,194`. |
@@ -277,11 +277,15 @@ public var font: Font {
 Switching on `fontSize` alone cannot separate `displayXSmall` from `headingSmall`, both 24, so the
 mapping wants to hang off `LemonadeTypography` rather than off the raw size.
 
-Two call sites sit at the other extreme. `LemonadeText.swift:171` and `LemonadeBadge.swift:104`
-build the font with `.custom(_:size:)` and no `relativeTo:` at all, so that text never scales. Both
-should go through the same mapping. It also means the `Badge` row in the table above needs a second
-look: with a pinned label font and a pinned `.frame(height:)`, whatever leaves the capsule at `AX5`
-is not the label growing.
+Two call sites drop the parameter entirely. `LemonadeText.swift:171` and `LemonadeBadge.swift:104`
+build the font with `.custom(_:size:)` and no `relativeTo:`. That is not an opt-out: bare
+`.custom(_:size:)` scales relative to `.body`, the same curve as every other call site. Only
+`.custom(_:fixedSize:)` pins a font. So these two are not a separate problem, they are the same one
+written more quietly, and they should go through the same mapping.
+
+Measured rather than assumed, because the wording invites the opposite reading: the `Badge` label
+grows 2.72× between `large` and `AX5` in the sample app, from a 25px glyph to a 68px one. The `Badge`
+row in the table above stands as written.
 
 ### When the curve is not enough
 
