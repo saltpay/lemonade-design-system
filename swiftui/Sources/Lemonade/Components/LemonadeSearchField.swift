@@ -84,14 +84,6 @@ private struct LemonadeSearchFieldView: View {
     private let externalFocus: Binding<Bool>?
     @FocusState private var isFocused: Bool
 
-    /// Mirrors `shouldShowCancel`, but is only ever written from inside an explicit `withAnimation`.
-    /// `@FocusState` updates arrive without an animation transaction, so an `if` driven straight off
-    /// `isFocused` would insert and remove the button untransitioned no matter what `.transition` it
-    /// carries. Routing the change through plain state is what lets the scale actually run.
-    /// Seeded in `init` rather than `onAppear` so a pre-filled field draws its cancel button on the
-    /// very first frame instead of popping it in one frame late.
-    @State private var isCancelPresented: Bool
-
     init(
         input: Binding<String>,
         onInputChanged: ((String) -> Void)?,
@@ -112,13 +104,6 @@ private struct LemonadeSearchFieldView: View {
         self.cancelContentDescription = cancelContentDescription
         self.enabled = enabled
         self.externalFocus = externalFocus
-        // The full `shouldShowCancel` predicate, focus included: a host that drives focus can hand
-        // the field a caret before its first render, and `onChange` only fires on a change, so a
-        // field born focused would otherwise never draw its cancel button at all.
-        self._isCancelPresented = State(
-            initialValue: dismissible && enabled
-                && (externalFocus?.wrappedValue == true || !input.wrappedValue.isEmpty)
-        )
     }
 
     private let height: CGFloat = LemonadeTheme.sizes.size1100
@@ -154,7 +139,7 @@ private struct LemonadeSearchFieldView: View {
         HStack(spacing: LemonadeTheme.spaces.spacing200) {
             searchField
 
-            if isCancelPresented {
+            if shouldShowCancel {
                 LemonadeUi.IconButton(
                     icon: .times,
                     contentDescription: cancelContentDescription,
@@ -174,9 +159,7 @@ private struct LemonadeSearchFieldView: View {
                 .transition(.scale(scale: cancelCollapsedScale).combined(with: .opacity))
             }
         }
-        .onChange(of: shouldShowCancel) { newValue in
-            withAnimation(.easeInOut(duration: animationDuration)) { isCancelPresented = newValue }
-        }
+        .animation(.easeInOut(duration: animationDuration), value: shouldShowCancel)
         .onChange(of: isFocused) { newValue in
             guard externalFocus?.wrappedValue != newValue else { return }
             externalFocus?.wrappedValue = newValue
