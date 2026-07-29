@@ -224,12 +224,42 @@ size, and it is better than anything we would write.
 
 ### Android already does it
 
-`LemonadeTypographyExtensions.kt:47` emits plain `.sp`, so every style goes through the Android 14
-non-linear converter. `bodyXSmallRegular` at 12sp roughly doubles at 200%. `display3XLarge` at 72sp
-barely moves. That is the whole point of the change that deprecated `scaledDensity`.
+`LemonadeTypographyExtensions.kt:47-48` emits plain `.sp` for both `fontSize` and `lineHeight`, so
+every style goes through the Android 14 non-linear converter. Measured on a Pixel 10a (Android 16)
+at `font_scale 2.0`, the platform ceiling. `actual` is what Compose resolves; `linear` is what a
+naive `sp * fontScale` would have produced.
+
+| style | base | actual | linear | effective sp |
+|---|---|---|---|---|
+| `display3XLarge` | 72sp | **1.04x** | 2.00x | 72 → 75 |
+| `displayLarge` | 48sp | **1.12x** | 2.00x | 48 → 54 |
+| `headingLarge` | 32sp | 1.24x | 2.00x | 32 → 40 |
+| `bodyXLarge` | 20sp | 1.70x | 2.00x | 20 → 34 |
+| `bodyMedium` | 16sp | 1.75x | 2.00x | 16 → 28 |
+| `bodySmall` | 14sp | 1.86x | 2.00x | 14 → 26 |
+| `bodyXSmall` | 12sp | **2.00x** | 2.00x | 12 → 24 |
+
+At `font_scale 1.0` every row is exactly 1.00x, so the design sizes are untouched and the whole
+effect lives above the default.
+
+The two platforms key the curve differently, and that difference is the whole reason iOS had a bug
+and Android did not. Apple keys on a *named style*, so the curve is a parameter separate from the
+size and you can ask for the wrong one — which we did, for every style. Android keys on the *sp
+value itself*, so the size is the key and there is nothing to ask for. Passing `72.sp` already
+determines the curve of 72.
 
 Nothing to add here. A hand-written "display styles do not scale" rule would fight the platform, and
-it would have to read the `fontScale` scalar rule 3 tells us not to read.
+it would have to read the `fontScale` scalar rule 3 tells us not to read. The only way to break
+scaling on Android is to leave the `sp` system — text in `dp`, or reading `fontScale` and doing the
+arithmetic by hand. We do the second in exactly one place, the `InlineCalendar` threshold, which
+rule 3 already covers.
+
+**Assumed baseline: Android 14+.** `minSdk` is 23, and the non-linear converter arrived in 14. On an
+older device Compose falls back to linear `sp * fontScale` — the `linear` column above, 2.00x for
+everything including `display3XLarge`. So the problem the iOS mapping fixes does exist on pre-14
+Android, and there is no API to fix it because the conversion tables are not on the device. We are
+accepting that: it degrades to the old behaviour rather than breaking, and the fleet is moving off
+those versions. Worth knowing rather than acting on.
 
 ### iOS asks for the wrong curve
 
@@ -286,6 +316,26 @@ written more quietly, and they should go through the same mapping.
 Measured rather than assumed, because the wording invites the opposite reading: the `Badge` label
 grows 2.72× between `large` and `AX5` in the sample app, from a 25px glyph to a 68px one. The `Badge`
 row in the table above stands as written.
+
+### The mapping lands where Android already sits
+
+The two ceilings differ — Android stops at 2.0x, iOS AX5 goes past 2.8x — so absolute growth does not
+compare. The ratio between tiers does, and it is the number that says whether the platforms behave
+alike.
+
+| | `display3XLarge` | `bodyMedium` | display as % of body |
+|---|---|---|---|
+| Android at `font_scale 2.0` | 1.04x | 1.75x | **59%** |
+| iOS at AX5, with the mapping | 1.71x | 2.81x | **61%** |
+| iOS at AX5, before the mapping | 2.82x | 2.81x | 100% |
+
+59% against 61%, arrived at independently: the iOS mapping was picked from Apple's own size tables
+without looking at Android.
+
+That reframes the change. It is not a taste call about how big a balance should be. Before it, the
+same design token produced 12% growth on Android and 182% on iOS — the platforms disagreed with each
+other. The mapping is convergence on behaviour Android already ships, and the 100% row is the
+outlier that needed explaining.
 
 ### When the curve is not enough
 
