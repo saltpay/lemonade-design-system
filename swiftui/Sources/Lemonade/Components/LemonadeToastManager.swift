@@ -35,6 +35,13 @@ enum ToastAnimationConfig: Sendable {
     /// Drag threshold to trigger dismiss
     static let dragDismissThreshold: CGFloat = 25
 
+    /// Shortest time a toast stays on screen before a queued toast is allowed to replace it.
+    ///
+    /// Must exceed `duration`, the entry animation: otherwise two `show(_:)` calls in quick
+    /// succession start fading the first toast before it has finished appearing, which reads
+    /// as a flicker rather than a transition.
+    static let minimumVisible: TimeInterval = duration + 0.35
+
     /// Convert seconds to nanoseconds for Task.sleep
     static func nanoseconds(from seconds: TimeInterval) -> UInt64 {
         UInt64(seconds * 1_000_000_000)
@@ -144,6 +151,20 @@ public final class LemonadeToastManager: ObservableObject {
     /// Timer for auto-dismissal.
     private var dismissTask: Task<Void, Never>?
 
+    /// Monotonic timestamp of when the current toast was put on screen, used to hold it there
+    /// for at least `ToastAnimationConfig.minimumVisible` before a queued toast replaces it.
+    ///
+    /// Only read via `remainingMinimumVisible`, which is only reachable while a toast is showing,
+    /// so it needs no "not yet shown" state.
+    private var currentToastShownAt: DispatchTime = .now()
+
+    /// How much longer the visible toast must stay up before a queued one may replace it.
+    private var remainingMinimumVisible: TimeInterval {
+        let elapsedNanoseconds = DispatchTime.now().uptimeNanoseconds - currentToastShownAt.uptimeNanoseconds
+        let elapsed = TimeInterval(elapsedNanoseconds) / 1_000_000_000
+        return max(0, ToastAnimationConfig.minimumVisible - elapsed)
+    }
+
     public init() {}
 
     /// Shows a toast notification.
@@ -215,6 +236,7 @@ public final class LemonadeToastManager: ObservableObject {
     private func displayToast(_ toast: LemonadeToastItem) {
         dismissTask?.cancel()
         currentToast = toast
+        currentToastShownAt = .now()
 
         // A loading toast persists until explicitly dismissed or replaced — skip the auto-dismiss timer.
         guard toast.voice != .loading else { return }
@@ -235,13 +257,13 @@ public final class LemonadeToastManager: ObservableObject {
     }
 
     /// Schedules transition to pending toast.
+    ///
+    /// Holds the visible toast for the remainder of `ToastAnimationConfig.minimumVisible` rather
+    /// than dismissing it on a flat delay — a queued toast must not cut short the one on screen
+    /// before it has finished animating in and been readable.
     private func scheduleTransition() {
         dismissTask?.cancel()
-        dismissTask = Task { @MainActor in
-            try? await Task.sleep(nanoseconds: ToastAnimationConfig.nanoseconds(from: 0.1)) // 100ms
-            guard !Task.isCancelled else { return }
-            dismiss()
-        }
+        scheduleAutoDismiss(after: remainingMinimumVisible)
     }
 
     /// Shows the next pending toast if available.
