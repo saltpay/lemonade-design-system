@@ -23,6 +23,7 @@ public val LemonadeBrandLogos.drawableResource: DrawableResource
         LemonadeBrandLogos.CartesBancaires -> LemonadeRes.drawable.gen_cartes_bancaires
         LemonadeBrandLogos.Diners -> LemonadeRes.drawable.gen_diners
         LemonadeBrandLogos.Dinners -> LemonadeRes.drawable.gen_diners
+        LemonadeBrandLogos.DirectDebit -> LemonadeRes.drawable.gen_direct_debit
         LemonadeBrandLogos.Discover -> LemonadeRes.drawable.gen_discover
         LemonadeBrandLogos.Edenred -> LemonadeRes.drawable.gen_edenred
         LemonadeBrandLogos.GenericMealOrHealthIssuer -> LemonadeRes.drawable.gen_generic_meal_or_health_issuer
@@ -65,6 +66,7 @@ public val LemonadeBrandLogos.darkDrawableResource: DrawableResource
         LemonadeBrandLogos.CartesBancaires -> LemonadeRes.drawable.gen_cartes_bancaires
         LemonadeBrandLogos.Diners -> LemonadeRes.drawable.gen_diners
         LemonadeBrandLogos.Dinners -> LemonadeRes.drawable.gen_diners
+        LemonadeBrandLogos.DirectDebit -> LemonadeRes.drawable.gen_direct_debit_dark
         LemonadeBrandLogos.Discover -> LemonadeRes.drawable.gen_discover_dark
         LemonadeBrandLogos.Edenred -> LemonadeRes.drawable.gen_edenred
         LemonadeBrandLogos.GenericMealOrHealthIssuer -> LemonadeRes.drawable.gen_generic_meal_or_health_issuer

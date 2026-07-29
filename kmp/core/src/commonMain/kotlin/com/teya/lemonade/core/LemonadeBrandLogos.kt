@@ -27,6 +27,7 @@ public enum class LemonadeBrandLogos : LemonadeAsset {
         replaceWith = ReplaceWith("Diners"),
     )
     Dinners,
+    DirectDebit,
     Discover,
     Edenred,
     GenericMealOrHealthIssuer,
