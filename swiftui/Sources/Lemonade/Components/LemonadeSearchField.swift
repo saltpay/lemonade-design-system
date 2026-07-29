@@ -111,9 +111,12 @@ private struct LemonadeSearchFieldView: View {
         self.cancelContentDescription = cancelContentDescription
         self.enabled = enabled
         self.externalFocus = externalFocus
-        // Same predicate as `shouldShowCancel`, minus focus — nothing is focused before first render.
+        // The full `shouldShowCancel` predicate, focus included: a host that drives focus can hand
+        // the field a caret before its first render, and `onChange` only fires on a change, so a
+        // field born focused would otherwise never draw its cancel button at all.
         self._isCancelPresented = State(
-            initialValue: dismissible && enabled && !input.wrappedValue.isEmpty
+            initialValue: dismissible && enabled
+                && (externalFocus?.wrappedValue == true || !input.wrappedValue.isEmpty)
         )
     }
 
