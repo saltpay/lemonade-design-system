@@ -176,6 +176,11 @@ struct HomeView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
                 .environmentObject(styleHandler)
+                // Settings is three rows. Without detents a `.sheet` presents at full height, so it
+                // read as a full-screen takeover rather than a bottom sheet — no visible top inset,
+                // no rounded corners, nothing of the catalog left behind it.
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
         }
     }
 
