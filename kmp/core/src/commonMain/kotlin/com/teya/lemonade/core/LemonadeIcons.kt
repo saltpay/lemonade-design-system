@@ -89,6 +89,7 @@ public enum class LemonadeIcons : LemonadeAsset {
     CardCog,
     CardMachine,
     CardPlus,
+    CardRemove,
     CardRestricted,
     Cards,
     Chart,
