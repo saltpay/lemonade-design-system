@@ -77,34 +77,12 @@ private struct LemonadeSearchFieldView: View {
     let cancelContentDescription: String?
     let enabled: Bool
 
-    /// The host's mirror of the focus, when it supplied one. The field always drives the real
-    /// `@FocusState` itself: a plain binding cannot invalidate this view, so reading focus straight
-    /// off it would leave everything keyed on focus — the cancel button above all — updating only
-    /// when the host happened to redraw us.
-    private let externalFocus: Binding<Bool>?
+    /// The host's mirror of the focus, when it supplied one. The field still owns the real
+    /// `@FocusState`: `.focused(_:)` takes nothing else, and it is what invalidates this view when
+    /// the *user* focuses or dismisses the field — a change the host's binding only learns about
+    /// once we write it back. Everything keyed on focus, the cancel button above all, hangs off it.
+    let externalFocus: Binding<Bool>?
     @FocusState private var isFocused: Bool
-
-    init(
-        input: Binding<String>,
-        onInputChanged: ((String) -> Void)?,
-        placeholder: String?,
-        onInputClear: (() -> Void)?,
-        dismissible: Bool,
-        onCancel: (() -> Void)?,
-        cancelContentDescription: String?,
-        enabled: Bool,
-        externalFocus: Binding<Bool>?
-    ) {
-        self._input = input
-        self.onInputChanged = onInputChanged
-        self.placeholder = placeholder
-        self.onInputClear = onInputClear
-        self.dismissible = dismissible
-        self.onCancel = onCancel
-        self.cancelContentDescription = cancelContentDescription
-        self.enabled = enabled
-        self.externalFocus = externalFocus
-    }
 
     private let height: CGFloat = LemonadeTheme.sizes.size1100
     private let horizontalPadding: CGFloat = LemonadeTheme.spaces.spacing300
@@ -161,8 +139,8 @@ private struct LemonadeSearchFieldView: View {
         }
         .animation(.easeInOut(duration: animationDuration), value: shouldShowCancel)
         .onChange(of: isFocused) { newValue in
-            guard externalFocus?.wrappedValue != newValue else { return }
-            externalFocus?.wrappedValue = newValue
+            guard let externalFocus, externalFocus.wrappedValue != newValue else { return }
+            externalFocus.wrappedValue = newValue
         }
         .onChange(of: externalFocus?.wrappedValue) { newValue in
             guard let newValue, newValue != isFocused else { return }
@@ -170,8 +148,13 @@ private struct LemonadeSearchFieldView: View {
         }
         .onAppear {
             // A host can hand the field focus before it ever renders — a search promoted into a
-            // toolbar does exactly that — so adopt whatever it asked for on the way in.
-            if let wanted = externalFocus?.wrappedValue, wanted != isFocused { isFocused = wanted }
+            // toolbar does exactly that — so adopt what it asked for on the way in. Nothing is
+            // focused yet at this point, so only a requested `true` is worth acting on, and it has
+            // to wait a frame: a `@FocusState` set synchronously from `onAppear` lands before the
+            // field is in the hierarchy and is dropped. `LemonadePinCode` defers auto-focus for the
+            // same reason.
+            guard externalFocus?.wrappedValue == true else { return }
+            DispatchQueue.main.async { isFocused = true }
         }
     }
 
@@ -289,6 +272,21 @@ struct LemonadeSearchField_Previews: PreviewProvider {
                     placeholder: "Disabled search",
                     enabled: false
                 )
+            }
+
+            // Host-owned focus: the button drives the field, the field reports back.
+            StatefulPreviewWrapper(false) { focus in
+                StatefulPreviewWrapper("") { input in
+                    VStack(alignment: .leading, spacing: 8) {
+                        LemonadeUi.SearchField(
+                            input: input,
+                            placeholder: "Host-driven focus...",
+                            isFocused: focus
+                        )
+
+                        SwiftUI.Button("Focus from the host") { focus.wrappedValue = true }
+                    }
+                }
             }
         }
         .padding()
