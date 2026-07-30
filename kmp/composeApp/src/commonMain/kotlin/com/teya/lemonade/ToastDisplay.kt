@@ -55,6 +55,15 @@ internal fun ToastDisplay() {
                     )
                 },
             )
+            LemonadeUi.Button(
+                label = "Long Label",
+                onClick = {
+                    toastState.show(
+                        label = "Something went wrong. Please try again, or contact support if the error persists.",
+                        voice = ToastVoice.Error,
+                    )
+                },
+            )
         }
 
         ToastSection("Loading") {
