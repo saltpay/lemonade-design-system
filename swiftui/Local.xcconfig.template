@@ -1,0 +1,15 @@
+// Local, developer-specific build settings.
+//
+// Do not edit this template. `scripts/generate-ios-project.sh` copies it to
+// Local.xcconfig, which is gitignored, so your Team ID never reaches the
+// repository — this one is public.
+//
+// Your Apple Developer Team ID. Required only for builds onto a physical
+// device; simulator builds sign to run locally and need nothing here.
+//
+// Find it with:
+//     security find-certificate -c "Apple Development" -p \
+//       | openssl x509 -noout -subject
+// and take the OU field. The generate script fills this in automatically when
+// it finds exactly one signing certificate in your keychain.
+DEVELOPMENT_TEAM =

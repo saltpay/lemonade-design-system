@@ -7,10 +7,27 @@ options:
   createIntermediateGroups: true
   generateEmptyDirectories: true
 
+# Developer-specific settings — DEVELOPMENT_TEAM — live here, outside the
+# repository. Local.xcconfig is gitignored and created by
+# `scripts/generate-ios-project.sh` from Local.xcconfig.template.
+#
+# The team is deliberately not committed: this repository is public, and pinning
+# one makes every fork sign against an organisation its contributors don't belong
+# to. Nothing below may set DEVELOPMENT_TEAM — a project-level build setting
+# outranks the base configuration file and would silence Local.xcconfig.
+configFiles:
+  Debug: Local.xcconfig
+  Release: Local.xcconfig
+
 settings:
   base:
     SWIFT_VERSION: "5.9"
     IPHONEOS_DEPLOYMENT_TARGET: "15.0"
+    # Needed for device builds: the generated project holds no signing team, so a
+    # team set through Xcode's Signing & Capabilities editor is wiped by the next
+    # regeneration and device builds fail with "Signing for <target> requires a
+    # development team". Simulator builds sign to run locally and are unaffected.
+    CODE_SIGN_STYLE: Automatic
 
 targets:
   Lemonade:

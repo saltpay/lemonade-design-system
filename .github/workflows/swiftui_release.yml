@@ -37,8 +37,14 @@ jobs:
       - name: Install XcodeGen
         run: brew install xcodegen
 
+      # Via the script, not `xcodegen generate` directly: project.yml reads
+      # signing settings from Local.xcconfig, which is gitignored, and XcodeGen
+      # refuses to generate when a referenced config file is absent. The script
+      # creates it. No signing certificate exists here, so DEVELOPMENT_TEAM is
+      # left empty — harmless, since build_xcframework.sh archives with
+      # CODE_SIGNING_ALLOWED=NO.
       - name: Generate Xcode project
-        run: xcodegen generate
+        run: ./scripts/generate-ios-project.sh
         working-directory: ./swiftui
 
       - name: Build XCFramework
