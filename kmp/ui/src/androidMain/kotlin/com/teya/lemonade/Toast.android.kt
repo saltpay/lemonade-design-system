@@ -12,8 +12,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -23,15 +24,14 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
@@ -53,8 +53,15 @@ internal actual fun PlatformToastHost(
 
 /**
  * Draws the toast in its own [Dialog] window so it z-orders above any open ModalBottomSheet / Dialog.
- * `FLAG_NOT_FOCUSABLE` (implies `FLAG_NOT_TOUCH_MODAL`) passes touches outside the toast through to the
+ * `FLAG_NOT_FOCUSABLE` (implies `FLAG_NOT_TOUCH_MODAL`) passes touches outside the window through to the
  * content beneath and never takes input focus.
+ *
+ * Pass-through is bounded by the *window*, not the pill. The window spans the full width (see
+ * [ConfigureToastWindow]), so while a toast is visible, taps in the horizontal band it occupies are
+ * swallowed even beside a short, narrow pill — they don't reach the content behind. The band is the
+ * height of the toast at the bottom of the screen and lasts only as long as the toast is on screen.
+ * Sizing the window to the pill instead would restore that pass-through, but re-applies the platform's
+ * 320dp dialog width cap and stops a wrapped label from ever filling the width.
  */
 @Composable
 private fun ToastOverlayWindow(toastState: LemonadeToastState) {
@@ -88,11 +95,11 @@ private fun ToastOverlayWindow(toastState: LemonadeToastState) {
         val startInset = margins.calculateStartPadding(layoutDirection)
         val endInset = margins.calculateEndPadding(layoutDirection)
         ConfigureToastWindow(bottomInset = margins.calculateBottomPadding())
-        // The window is centered; start/end insets only cap the width (the toast keeps clear of the
-        // screen edges). Unlike the inline host they don't shift it horizontally — a bottom-centered
-        // toast has no caller that needs asymmetric horizontal positioning.
-        val maxToastWidth = (LocalConfiguration.current.screenWidthDp.dp - startInset - endInset)
-            .coerceAtLeast(0.dp)
+        // The window spans the full width and the insets are applied here, in Compose. Sizing the window
+        // to WRAP_CONTENT instead would re-apply the platform's 320dp dialog width cap that
+        // `usePlatformDefaultWidth = false` exists to remove, which stops a wrapped label from ever
+        // reaching the full width. Unlike the inline host the insets don't shift the toast horizontally —
+        // a bottom-centered toast has no caller that needs asymmetric horizontal positioning.
 
         LaunchedEffect(toast) {
             if (toast != null) {
@@ -103,10 +110,10 @@ private fun ToastOverlayWindow(toastState: LemonadeToastState) {
             }
         }
 
-        // Keep the toast always composed so the wrap-content window measures one fixed size and stays
-        // centered. Animating it in with AnimatedVisibility resized the window as the content appeared,
-        // which made the entrance drift in from the side. Drive enter/exit as a draw-only alpha +
-        // vertical translation instead — those never re-measure the window.
+        // Keep the toast always composed so the window measures one fixed size. Animating it in with
+        // AnimatedVisibility resized the window as the content appeared, which made the entrance drift
+        // in from the side. Drive enter/exit as a draw-only alpha + vertical translation instead —
+        // those never re-measure the window.
         var toastHeightPx by remember { mutableIntStateOf(0) }
         val transition = updateTransition(animState, label = "toast")
         val alpha by transition.animateFloat(label = "alpha") { visible -> if (visible) 1f else 0f }
@@ -117,12 +124,14 @@ private fun ToastOverlayWindow(toastState: LemonadeToastState) {
 
         Box(
             modifier = Modifier
-                .widthIn(max = maxToastWidth)
+                .fillMaxWidth()
+                .padding(start = startInset, end = endInset)
                 .onSizeChanged { toastHeightPx = it.height }
                 .graphicsLayer {
                     this.alpha = alpha
                     this.translationY = translationY
                 },
+            contentAlignment = Alignment.Center,
         ) {
             SwipeableToast(
                 toast = displayToast,
@@ -133,9 +142,12 @@ private fun ToastOverlayWindow(toastState: LemonadeToastState) {
 }
 
 /**
- * Sizes the dialog window to the toast and lifts it [bottomInset] (plus the navigation-bar inset)
- * above the bottom via a window attribute, not padding — so the frame hugs the pill and taps
- * everywhere else fall through. The navigation-bar inset resolves to zero when the window already
+ * Spans the dialog window across the screen and lifts it [bottomInset] (plus the navigation-bar inset)
+ * above the bottom via a window attribute, not padding — so the frame hugs the pill vertically and taps
+ * above and below it fall through (but not beside it — see [ToastOverlayWindow]). `MATCH_PARENT` is
+ * deliberate: `WRAP_CONTENT` re-applies the platform's 320dp dialog width cap that
+ * `usePlatformDefaultWidth = false` exists to remove, which caps the toast well short of the screen.
+ * The navigation-bar inset resolves to zero when the window already
  * sits above the bars and to the bar height on edge-to-edge screens, so the toast never lands under
  * the navigation bar.
  */
@@ -154,7 +166,7 @@ private fun ConfigureToastWindow(bottomInset: Dp) {
                     WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
             )
             setLayout(
-                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
             )
             attributes = attributes.apply {
