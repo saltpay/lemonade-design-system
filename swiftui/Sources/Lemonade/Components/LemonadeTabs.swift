@@ -51,19 +51,23 @@ public extension LemonadeUi {
     ///   - selectedIndex: Index of the currently selected tab
     ///   - onTabSelected: Callback invoked with the tab index when tapped
     ///   - itemsSize: `.hug` for content-sized scrollable tabs, `.stretch` for equal-width tabs
+    ///   - showDivider: Flag to show a divider below the tabs. Defaults to true.
+    ///     Pass `false` when the host already draws its own separator.
     /// - Returns: A styled tabs view
     @ViewBuilder
     static func Tabs(
         tabs: [LemonadeTabItem],
         selectedIndex: Int,
         onTabSelected: @escaping (Int) -> Void,
-        itemsSize: TabItemsSize = .hug
+        itemsSize: TabItemsSize = .hug,
+        showDivider: Bool = true
     ) -> some View {
         LemonadeTabsView(
             tabs: tabs,
             selectedIndex: selectedIndex,
             onTabSelected: onTabSelected,
-            itemsSize: itemsSize
+            itemsSize: itemsSize,
+            showDivider: showDivider
         )
     }
 }
@@ -75,6 +79,7 @@ private struct LemonadeTabsView: View {
     let selectedIndex: Int
     let onTabSelected: (Int) -> Void
     let itemsSize: TabItemsSize
+    let showDivider: Bool
 
     @Namespace private var tabNamespace
     @State private var contentWidth: CGFloat = 0
@@ -154,9 +159,9 @@ private struct LemonadeTabsView: View {
                 tabRow
             }
 
-            Rectangle()
-                .fill(LemonadeTheme.colors.border.borderNeutralLow)
-                .frame(height: LemonadeTheme.borderWidth.base.border25)
+            if showDivider {
+                LemonadeUi.HorizontalDivider()
+            }
         }
     }
 
@@ -455,7 +460,7 @@ struct LemonadeTabs_Previews: PreviewProvider {
                 onTabSelected: { _ in }
             )
 
-            // Stretch mode
+            // Stretch mode, without the bottom divider
             LemonadeUi.Tabs(
                 tabs: [
                     LemonadeTabItem(label: "Tab A"),
@@ -464,7 +469,8 @@ struct LemonadeTabs_Previews: PreviewProvider {
                 ],
                 selectedIndex: 0,
                 onTabSelected: { _ in },
-                itemsSize: .stretch
+                itemsSize: .stretch,
+                showDivider: false
             )
         }
         .previewLayout(.sizeThatFits)
