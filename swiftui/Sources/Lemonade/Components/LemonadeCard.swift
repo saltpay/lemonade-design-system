@@ -56,6 +56,16 @@ public enum LemonadeCardHeadingStyle {
         case .overline: return LemonadeTheme.colors.content.contentSecondary
         }
     }
+
+    /// The overline's own line box is only 16pt, so a header titled with just an overline would
+    /// sit tighter than one with a default heading. Holding the text box to a minimum of size500
+    /// evens that out. The default heading is already taller, so it keeps wrapping its own text.
+    var minTextBoxHeight: CGFloat? {
+        switch self {
+        case .default: return nil
+        case .overline: return LemonadeTheme.sizes.size500
+        }
+    }
 }
 
 // MARK: - Card Header Config
@@ -262,7 +272,13 @@ private struct LemonadeCardHeader<LeadingContent: View, TrailingContent: View>: 
                     )
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            // The vertical half of the alignment is load-bearing: it is what centres an
+            // overline inside the taller box its minimum height opens up.
+            .frame(
+                maxWidth: .infinity,
+                minHeight: config.headingStyle.minTextBoxHeight,
+                alignment: Alignment(horizontal: .leading, vertical: .center)
+            )
 
             if let trailingSlot = config.trailingSlot {
                 trailingSlot()
@@ -278,7 +294,7 @@ private struct LemonadeCardHeader<LeadingContent: View, TrailingContent: View>: 
             }
         }
         .padding(.horizontal, LemonadeTheme.spaces.spacing400)
-        .padding(.top, LemonadeTheme.spaces.spacing400)
+        .padding(.top, LemonadeTheme.spaces.spacing300)
     }
 }
 

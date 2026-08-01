@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -144,7 +145,7 @@ private fun CardHeader(
         modifier = modifier
             .padding(
                 start = LocalSpaces.current.spacing400,
-                top = LocalSpaces.current.spacing400,
+                top = LocalSpaces.current.spacing300,
                 end = LocalSpaces.current.spacing400,
                 bottom = LocalSpaces.current.spacing0,
             ),
@@ -153,7 +154,12 @@ private fun CardHeader(
             config.leadingSlot.invoke(this)
         }
 
-        Column(modifier = Modifier.weight(1F)) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .weight(1F)
+                .defaultMinSize(minHeight = config.headingStyle.minTextBoxHeight),
+        ) {
             LemonadeUi.Text(
                 text = config.title,
                 textStyle = titleTextStyle,
@@ -230,6 +236,17 @@ private val LemonadeCardHeadingStyle.textStyle: LemonadeTextStyle
         return when (this) {
             LemonadeCardHeadingStyle.Default -> LocalTypographies.current.headingXXSmall
             LemonadeCardHeadingStyle.Overline -> LocalTypographies.current.bodyXSmallOverline
+        }
+    }
+
+// The overline's own line box is only 16dp, so a header titled with just an overline would
+// sit tighter than one with a default heading. Holding the text box to a minimum of size500
+// evens that out. The default heading is already taller, so it keeps wrapping its own text.
+private val LemonadeCardHeadingStyle.minTextBoxHeight: Dp
+    @Composable get() {
+        return when (this) {
+            LemonadeCardHeadingStyle.Default -> Dp.Unspecified
+            LemonadeCardHeadingStyle.Overline -> LocalSizes.current.size500
         }
     }
 
@@ -316,6 +333,20 @@ private fun CardHeadingSubtitlePreview() {
             )
         }
     }
+}
+
+// The overline's minimum box height only changes the layout when nothing else in the header
+// row is taller than it — no subtitle, no trailing slot — so keep that case previewed.
+@LemonadePreview
+@Composable
+private fun CardOverlineHeadingPreview() {
+    LemonadeUi.Card(
+        header = CardHeaderConfig(
+            title = "Card heading",
+            headingStyle = LemonadeCardHeadingStyle.Overline,
+        ),
+        content = {},
+    )
 }
 
 @OptIn(InternalLemonadeApi::class)
