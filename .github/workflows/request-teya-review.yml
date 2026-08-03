@@ -1,0 +1,41 @@
+name: Request Teya Review
+
+# When a PR becomes reviewable, ask teya-business-app to draw reviewers from
+# the code-owning team, assign them here, and DM them on Slack. The member
+# list and every credential live in that (private) repo, so nothing personal
+# has to be published here. The only secret on this side is
+# TEYA_REVIEW_DISPATCH_TOKEN, a fine-grained PAT whose single permission is
+# Actions: write on teya-business-app — leaked, it can start or cancel CI
+# runs there, nothing else. It expires; when this job starts failing with
+# 401, rotate it.
+#
+# Security shape, deliberately rigid:
+#   * pull_request_target runs THIS file as it exists on the default branch.
+#     A fork PR that edits it changes nothing about what executes here.
+#   * nothing from the PR is checked out, built, or executed — the job has no
+#     checkout step at all.
+#   * the only event data read is the PR number (an integer) and the draft flag.
+
+on:
+  pull_request_target:
+    types: [opened, ready_for_review]
+
+permissions: {}
+
+jobs:
+  dispatch:
+    name: Dispatch reviewer draw
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fire the draw in teya-business-app
+        env:
+          GH_TOKEN: ${{ secrets.TEYA_REVIEW_DISPATCH_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          gh workflow run lemonade-reviewer-request.yml \
+            --repo saltpay/teya-business-app \
+            --ref main \
+            -f pr="$PR" \
+            -f dry-run=false
