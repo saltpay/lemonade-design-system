@@ -171,7 +171,7 @@ private fun buildAdaptiveThemeCode(
             if (groupName != null) {
                 appendLine("private struct Adaptive${groupName}Colors: ${groupName}Colors {")
                 resources.forEach { (resource, assetName) ->
-                    appendLine("    var ${resource.name}: Color { Color(\"${assetName}\", bundle: .lemonade) }")
+                    appendLine("    let ${resource.name} = Color(\"${assetName}\", bundle: .lemonade)")
                 }
                 appendLine("}")
                 appendLine()

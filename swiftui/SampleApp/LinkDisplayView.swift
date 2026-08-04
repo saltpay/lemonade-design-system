@@ -4,7 +4,7 @@ import Lemonade
 struct LinkDisplayView: View {
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading, spacing: 32) {
                 sectionView(title: "Default") {
                     LemonadeUi.Link(
                         text: "Learn more",

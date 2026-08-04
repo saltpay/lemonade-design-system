@@ -7,57 +7,6 @@ internal expect val platformSpecificEntries: List<Displays>
 internal interface Displays {
     val label: String
 
-    companion object {
-        val entries: List<Displays> = listOf(
-            Home,
-            Colors,
-            Icons,
-            CountryFlag,
-            BrandLogo,
-            Badge,
-            Switch,
-            Checkbox,
-            RadioButton,
-            SelectListItem,
-            ActionListItem,
-            ResourceListItem,
-            ContentListItem,
-            Chip,
-            SegmentedControl,
-            BoxSelection,
-            PinCode,
-            SymbolContainer,
-            Text,
-            Tag,
-            TextField,
-            SearchField,
-            SelectField,
-            Card,
-            Button,
-            IconButton,
-            Link,
-            Shadows,
-            Skeleton,
-            Tile,
-            Spacing,
-            Radius,
-            Sizes,
-            Opacity,
-            BorderWidth,
-            Spinner,
-            Divider,
-            Tabs,
-            BottomTabBar,
-            DatePicker,
-            InlineCalendar,
-            Notice,
-            Toast,
-            HistoryTimeline,
-            Markdown,
-            Tooltip,
-        )
-    }
-
     @Serializable
     data object Home : Displays {
         override val label: String = "Home"

@@ -4,7 +4,7 @@ import Lemonade
 struct NoticeDisplayView: View {
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading, spacing: 32) {
                 // All Voices
                 sectionView(title: "Voices") {
                     VStack(spacing: 12) {

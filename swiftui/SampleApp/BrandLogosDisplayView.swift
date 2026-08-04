@@ -1,26 +1,33 @@
 import SwiftUI
 import Lemonade
 
+/// All brand logos, each paired with a pre-lowercased search haystack.
+/// Built once per process at file scope - see `IconsDisplayView` for the rationale.
+private let brandLogoIndex: [(logo: LemonadeBrandLogo, haystack: String)] =
+    LemonadeBrandLogo.allCases.map { ($0, $0.rawValue.lowercased()) }
+
+private let allBrandLogos: [LemonadeBrandLogo] = brandLogoIndex.map(\.logo)
+
+private func filteredBrandLogos(matching searchText: String) -> [LemonadeBrandLogo] {
+    guard !searchText.isEmpty else { return allBrandLogos }
+    let query = searchText.lowercased()
+    return brandLogoIndex.compactMap { $0.haystack.contains(query) ? $0.logo : nil }
+}
+
 struct BrandLogosDisplayView: View {
     @State private var searchText = ""
-
-    private var filteredLogos: [LemonadeBrandLogo] {
-        if searchText.isEmpty {
-            return Array(LemonadeBrandLogo.allCases)
-        }
-        return LemonadeBrandLogo.allCases.filter { logo in
-            logo.rawValue.localizedCaseInsensitiveContains(searchText)
-        }
-    }
 
     private let columns = [
         GridItem(.adaptive(minimum: 100), spacing: 16)
     ]
 
     var body: some View {
-        ScrollView {
+        // Evaluated once per body pass and reused by both the grid and the title.
+        let logos = filteredBrandLogos(matching: searchText)
+
+        return ScrollView {
             LazyVGrid(columns: columns, spacing: 16) {
-                ForEach(filteredLogos, id: \.rawValue) { logo in
+                ForEach(logos, id: \.rawValue) { logo in
                     VStack(spacing: 8) {
                         LemonadeUi.BrandLogo(
                             logo: logo,
@@ -42,7 +49,7 @@ struct BrandLogosDisplayView: View {
             .padding()
         }
         .searchable(text: $searchText, prompt: "Search brand logos")
-        .navigationTitle("Brand Logos (\(filteredLogos.count))")
+        .navigationTitle("Brand Logos (\(logos.count))")
     }
 }
 

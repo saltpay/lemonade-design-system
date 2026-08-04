@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,47 +21,67 @@ import com.teya.lemonade.LemonadePrimitiveColors.Solid
 
 @Composable
 internal fun ColorsDisplay() {
-    val shadowColors = listOf(
-        ColorData(
+    val shadowColor = LemonadeTheme.colors.shadow.shadowDefault
+    val onLightColor = LemonadeTheme.colors.content.contentPrimary
+    val onDarkColor = LemonadeTheme.colors.content.contentPrimaryInverse
+
+    val allColors = remember(shadowColor) {
+        allColorsLight + ColorData(
             title = "Shadow",
-            items = mapOf(
-                "shadowDefault" to LemonadeTheme.colors.shadow.shadowDefault,
-            ),
-        ),
-    )
-    SampleScreenDisplayLazyColumn("Colors") {
-        item {
-            Column(verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400)) {
-                (allColorsLight + shadowColors).forEach { colorData ->
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100),
-                    ) {
-                        LemonadeUi.Text(
-                            text = colorData.title,
-                            textStyle = LemonadeTheme.typography.bodyXSmallOverline,
-                            color = LemonadeTheme.colors.content.contentTertiary,
-                        )
-                        Row(
-                            Modifier.clip(RoundedCornerShape(LemonadeTheme.radius.radius300)),
-                        ) {
-                            colorData.items.forEach { item ->
-                                Column(
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .height(LemonadeTheme.sizes.size1200)
-                                        .background(item.value),
-                                ) {
-                                    LemonadeUi.Text(
-                                        text = item.key,
-                                        textStyle = LemonadeTheme.typography.bodyXSmallSemiBold,
-                                        color = getTextColor(item.value),
-                                    )
-                                }
-                            }
-                        }
-                    }
+            items = mapOf("shadowDefault" to shadowColor),
+        )
+    }
+
+    SampleScreenDisplayLazyColumn(title = "Colors") {
+        items(
+            items = allColors,
+            key = { colorData -> colorData.title },
+        ) { colorData ->
+            ColorRampRow(
+                colorData = colorData,
+                onLightColor = onLightColor,
+                onDarkColor = onDarkColor,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ColorRampRow(
+    colorData: ColorData,
+    onLightColor: Color,
+    onDarkColor: Color,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing100),
+        modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing400),
+    ) {
+        LemonadeUi.Text(
+            text = colorData.title,
+            textStyle = LemonadeTheme.typography.bodyXSmallOverline,
+            color = LemonadeTheme.colors.content.contentTertiary,
+        )
+        Row(
+            modifier = Modifier.clip(shape = RoundedCornerShape(size = LemonadeTheme.radius.radius300)),
+        ) {
+            colorData.items.forEach { item ->
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .weight(weight = 1f)
+                        .height(height = LemonadeTheme.sizes.size1200)
+                        .background(color = item.value),
+                ) {
+                    LemonadeUi.Text(
+                        text = item.key,
+                        textStyle = LemonadeTheme.typography.bodyXSmallSemiBold,
+                        color = textColorFor(
+                            backgroundColor = item.value,
+                            onLightColor = onLightColor,
+                            onDarkColor = onDarkColor,
+                        ),
+                    )
                 }
             }
         }
@@ -585,8 +608,11 @@ private data class ColorData(
     val items: Map<String, Color>,
 )
 
-@Composable
-private fun getTextColor(backgroundColor: Color): Color {
+private fun textColorFor(
+    backgroundColor: Color,
+    onLightColor: Color,
+    onDarkColor: Color,
+): Color {
     // Extract RGB components (Compose Color uses 0-1 range)
     val r = backgroundColor.red
     val g = backgroundColor.green
@@ -597,8 +623,8 @@ private fun getTextColor(backgroundColor: Color): Color {
 
     // Use threshold of 0.5 (can adjust between 0.4-0.6 based on preference)
     return if (luminance > 0.5) {
-        LemonadeTheme.colors.content.contentPrimary
+        onLightColor
     } else {
-        LemonadeTheme.colors.content.contentPrimaryInverse
+        onDarkColor
     }
 }

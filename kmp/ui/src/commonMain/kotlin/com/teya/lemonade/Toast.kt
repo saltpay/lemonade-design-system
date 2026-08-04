@@ -43,7 +43,6 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -336,6 +335,10 @@ private fun CoreToast(
         ToastVoice.Neutral, ToastVoice.Loading -> colors.content.contentNeutralOnColor
     }
 
+    // A label that wraps stretches the row to the full width the host allows, so a multi-line toast
+    // reads as a block instead of a ragged pill. A single-line label still hugs its content.
+    var labelWraps by remember(label) { mutableStateOf(false) }
+
     Row(
         modifier = modifier
             .heightIn(min = sizes.size1100)
@@ -369,10 +372,9 @@ private fun CoreToast(
             text = label,
             textStyle = LocalTypographies.current.bodySmallMedium,
             color = colors.content.contentPrimaryInverse,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
+            onTextLayout = { labelWraps = it.lineCount > 1 },
             modifier = Modifier
-                .weight(weight = 1f, fill = false)
+                .weight(weight = 1f, fill = labelWraps)
                 .padding(horizontal = spaces.spacing100),
         )
 

@@ -4,13 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,222 +23,228 @@ import com.teya.lemonade.core.SymbolContainerShape
 import com.teya.lemonade.core.SymbolContainerSize
 import com.teya.lemonade.core.TagVoice
 
-@Suppress("LongMethod")
 @Composable
 internal fun BoxSelectionDisplay() {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
-        modifier = Modifier
-            .fillMaxSize()
-            .background(LemonadeTheme.colors.background.bgSubtle)
-            .verticalScroll(state = rememberScrollState())
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .padding(LemonadeTheme.spaces.spacing400),
-    ) {
+    SampleScreenDisplayLazyColumn(title = "BoxSelection") {
         // Variants
-        BoxSelectionSection(title = "Variants") {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-            ) {
-                LemonadeUi.BoxSelection(
-                    variant = LemonadeBoxSelectionVariant.Filled,
-                    modifier = Modifier.weight(weight = 1f),
+        item(key = "Variants") {
+            BoxSelectionSection(title = "Variants") {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 ) {
-                    BoxSelectionSampleContent(label = "Filled")
-                }
+                    LemonadeUi.BoxSelection(
+                        variant = LemonadeBoxSelectionVariant.Filled,
+                        modifier = Modifier.weight(weight = 1f),
+                    ) {
+                        BoxSelectionSampleContent(label = "Filled")
+                    }
 
-                LemonadeUi.BoxSelection(
-                    variant = LemonadeBoxSelectionVariant.Outlined,
-                    modifier = Modifier.weight(weight = 1f),
-                ) {
-                    BoxSelectionSampleContent(label = "Outlined")
+                    LemonadeUi.BoxSelection(
+                        variant = LemonadeBoxSelectionVariant.Outlined,
+                        modifier = Modifier.weight(weight = 1f),
+                    ) {
+                        BoxSelectionSampleContent(label = "Outlined")
+                    }
                 }
             }
         }
 
         // Background
-        BoxSelectionSection(title = "Background") {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-            ) {
-                LemonadeUi.BoxSelection(
-                    background = LemonadeBoxSelectionBackground.Default,
-                    modifier = Modifier.weight(weight = 1f),
+        item(key = "Background") {
+            BoxSelectionSection(title = "Background") {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 ) {
-                    BoxSelectionSampleContent(label = "Default")
-                }
+                    LemonadeUi.BoxSelection(
+                        background = LemonadeBoxSelectionBackground.Default,
+                        modifier = Modifier.weight(weight = 1f),
+                    ) {
+                        BoxSelectionSampleContent(label = "Default")
+                    }
 
-                LemonadeUi.BoxSelection(
-                    background = LemonadeBoxSelectionBackground.Elevated,
-                    modifier = Modifier.weight(weight = 1f),
-                ) {
-                    BoxSelectionSampleContent(label = "Elevated")
+                    LemonadeUi.BoxSelection(
+                        background = LemonadeBoxSelectionBackground.Elevated,
+                        modifier = Modifier.weight(weight = 1f),
+                    ) {
+                        BoxSelectionSampleContent(label = "Elevated")
+                    }
                 }
             }
         }
 
         // Selected
-        BoxSelectionSection(title = "Selected") {
-            var isFilledSelected by remember { mutableStateOf(value = true) }
-            var isOutlinedSelected by remember { mutableStateOf(value = true) }
+        item(key = "Selected") {
+            BoxSelectionSection(title = "Selected") {
+                var isFilledSelected by remember { mutableStateOf(value = true) }
+                var isOutlinedSelected by remember { mutableStateOf(value = true) }
 
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-            ) {
-                LemonadeUi.BoxSelection(
-                    variant = LemonadeBoxSelectionVariant.Filled,
-                    isSelected = isFilledSelected,
-                    onClick = { isFilledSelected = !isFilledSelected },
-                    modifier = Modifier.weight(weight = 1f),
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 ) {
-                    BoxSelectionSampleContent(label = "Filled")
-                }
+                    LemonadeUi.BoxSelection(
+                        variant = LemonadeBoxSelectionVariant.Filled,
+                        isSelected = isFilledSelected,
+                        onClick = { isFilledSelected = !isFilledSelected },
+                        modifier = Modifier.weight(weight = 1f),
+                    ) {
+                        BoxSelectionSampleContent(label = "Filled")
+                    }
 
-                LemonadeUi.BoxSelection(
-                    variant = LemonadeBoxSelectionVariant.Outlined,
-                    isSelected = isOutlinedSelected,
-                    onClick = { isOutlinedSelected = !isOutlinedSelected },
-                    modifier = Modifier.weight(weight = 1f),
-                ) {
-                    BoxSelectionSampleContent(label = "Outlined")
+                    LemonadeUi.BoxSelection(
+                        variant = LemonadeBoxSelectionVariant.Outlined,
+                        isSelected = isOutlinedSelected,
+                        onClick = { isOutlinedSelected = !isOutlinedSelected },
+                        modifier = Modifier.weight(weight = 1f),
+                    ) {
+                        BoxSelectionSampleContent(label = "Outlined")
+                    }
                 }
             }
         }
 
         // Disabled
-        BoxSelectionSection(title = "Disabled") {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-            ) {
-                LemonadeUi.BoxSelection(
-                    variant = LemonadeBoxSelectionVariant.Filled,
-                    enabled = false,
-                    onClick = {},
-                    modifier = Modifier.weight(weight = 1f),
+        item(key = "Disabled") {
+            BoxSelectionSection(title = "Disabled") {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 ) {
-                    BoxSelectionSampleContent(label = "Filled")
-                }
+                    LemonadeUi.BoxSelection(
+                        variant = LemonadeBoxSelectionVariant.Filled,
+                        enabled = false,
+                        onClick = {},
+                        modifier = Modifier.weight(weight = 1f),
+                    ) {
+                        BoxSelectionSampleContent(label = "Filled")
+                    }
 
-                LemonadeUi.BoxSelection(
-                    variant = LemonadeBoxSelectionVariant.Outlined,
-                    enabled = false,
-                    onClick = {},
-                    modifier = Modifier.weight(weight = 1f),
-                ) {
-                    BoxSelectionSampleContent(label = "Outlined")
+                    LemonadeUi.BoxSelection(
+                        variant = LemonadeBoxSelectionVariant.Outlined,
+                        enabled = false,
+                        onClick = {},
+                        modifier = Modifier.weight(weight = 1f),
+                    ) {
+                        BoxSelectionSampleContent(label = "Outlined")
+                    }
                 }
             }
         }
 
         // Content Padding
-        BoxSelectionSection(title = "Content Padding") {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-            ) {
-                LemonadeUi.BoxSelection(
-                    variant = LemonadeBoxSelectionVariant.Outlined,
-                    contentPadding = LemonadeSpaces.Spacing100,
-                    modifier = Modifier.weight(weight = 1f),
+        item(key = "Content Padding") {
+            BoxSelectionSection(title = "Content Padding") {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 ) {
-                    BoxSelectionSampleContent(label = "Spacing100")
-                }
+                    LemonadeUi.BoxSelection(
+                        variant = LemonadeBoxSelectionVariant.Outlined,
+                        contentPadding = LemonadeSpaces.Spacing100,
+                        modifier = Modifier.weight(weight = 1f),
+                    ) {
+                        BoxSelectionSampleContent(label = "Spacing100")
+                    }
 
-                LemonadeUi.BoxSelection(
-                    variant = LemonadeBoxSelectionVariant.Outlined,
-                    modifier = Modifier.weight(weight = 1f),
-                ) {
-                    BoxSelectionSampleContent(label = "Spacing300")
-                }
+                    LemonadeUi.BoxSelection(
+                        variant = LemonadeBoxSelectionVariant.Outlined,
+                        modifier = Modifier.weight(weight = 1f),
+                    ) {
+                        BoxSelectionSampleContent(label = "Spacing300")
+                    }
 
-                LemonadeUi.BoxSelection(
-                    variant = LemonadeBoxSelectionVariant.Outlined,
-                    contentPadding = LemonadeSpaces.Spacing600,
-                    modifier = Modifier.weight(weight = 1f),
-                ) {
-                    BoxSelectionSampleContent(label = "Spacing600")
+                    LemonadeUi.BoxSelection(
+                        variant = LemonadeBoxSelectionVariant.Outlined,
+                        contentPadding = LemonadeSpaces.Spacing600,
+                        modifier = Modifier.weight(weight = 1f),
+                    ) {
+                        BoxSelectionSampleContent(label = "Spacing600")
+                    }
                 }
             }
         }
 
         // Radius
-        BoxSelectionSection(title = "Radius") {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-            ) {
-                LemonadeUi.BoxSelection(
-                    variant = LemonadeBoxSelectionVariant.Outlined,
-                    radius = LemonadeRadius.Radius0,
-                    modifier = Modifier.weight(weight = 1f),
+        item(key = "Radius") {
+            BoxSelectionSection(title = "Radius") {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 ) {
-                    BoxSelectionSampleContent(label = "Radius0")
-                }
+                    LemonadeUi.BoxSelection(
+                        variant = LemonadeBoxSelectionVariant.Outlined,
+                        radius = LemonadeRadius.Radius0,
+                        modifier = Modifier.weight(weight = 1f),
+                    ) {
+                        BoxSelectionSampleContent(label = "Radius0")
+                    }
 
-                LemonadeUi.BoxSelection(
-                    variant = LemonadeBoxSelectionVariant.Outlined,
-                    modifier = Modifier.weight(weight = 1f),
-                ) {
-                    BoxSelectionSampleContent(label = "Radius500")
-                }
+                    LemonadeUi.BoxSelection(
+                        variant = LemonadeBoxSelectionVariant.Outlined,
+                        modifier = Modifier.weight(weight = 1f),
+                    ) {
+                        BoxSelectionSampleContent(label = "Radius500")
+                    }
 
-                LemonadeUi.BoxSelection(
-                    variant = LemonadeBoxSelectionVariant.Outlined,
-                    radius = LemonadeRadius.Radius800,
-                    modifier = Modifier.weight(weight = 1f),
-                ) {
-                    BoxSelectionSampleContent(label = "Radius800")
+                    LemonadeUi.BoxSelection(
+                        variant = LemonadeBoxSelectionVariant.Outlined,
+                        radius = LemonadeRadius.Radius800,
+                        modifier = Modifier.weight(weight = 1f),
+                    ) {
+                        BoxSelectionSampleContent(label = "Radius800")
+                    }
                 }
             }
         }
 
         // Use Case: Plan Cards — a full-width box holding a whole card layout, showing that
         // the slot is not limited to the small icon-and-label content a Tile would carry.
-        BoxSelectionSection(title = "Use Case: Plan Cards") {
-            var selectedPlan by remember { mutableStateOf(value = plans[1].name) }
+        item(key = "Plan Cards") {
+            BoxSelectionSection(title = "Use Case: Plan Cards") {
+                var selectedPlan by remember { mutableStateOf(value = plans[1].name) }
 
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-            ) {
-                plans.forEach { plan ->
-                    val isPlanSelected = selectedPlan == plan.name
-                    val selectPlan = { selectedPlan = plan.name }
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+                ) {
+                    plans.forEach { plan ->
+                        val isPlanSelected = selectedPlan == plan.name
+                        val selectPlan = { selectedPlan = plan.name }
 
-                    LemonadeUi.BoxSelection(
-                        isSelected = isPlanSelected,
-                        onClick = selectPlan,
-                        contentPadding = LemonadeSpaces.Spacing400,
-                        radius = LemonadeRadius.Radius600,
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        PlanCardContent(
-                            plan = plan,
+                        LemonadeUi.BoxSelection(
                             isSelected = isPlanSelected,
-                            onSelect = selectPlan,
-                        )
+                            onClick = selectPlan,
+                            contentPadding = LemonadeSpaces.Spacing400,
+                            radius = LemonadeRadius.Radius600,
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            PlanCardContent(
+                                plan = plan,
+                                isSelected = isPlanSelected,
+                                onSelect = selectPlan,
+                            )
+                        }
                     }
                 }
             }
         }
 
         // Use Case: Single Selection
-        BoxSelectionSection(title = "Use Case: Single Selection") {
-            var selectedOption by remember { mutableStateOf(value = frequencyOptions.first()) }
+        item(key = "Single Selection") {
+            BoxSelectionSection(title = "Use Case: Single Selection") {
+                var selectedOption by remember { mutableStateOf(value = frequencyOptions.first()) }
 
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-            ) {
-                frequencyOptions.forEach { option ->
-                    LemonadeUi.BoxSelection(
-                        variant = LemonadeBoxSelectionVariant.Outlined,
-                        isSelected = selectedOption == option,
-                        onClick = { selectedOption = option },
-                        modifier = Modifier.weight(weight = 1f),
-                    ) {
-                        LemonadeUi.Text(
-                            text = option,
-                            textStyle = LemonadeTheme.typography.bodySmallMedium,
-                            modifier = Modifier.align(alignment = Alignment.Center),
-                        )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+                ) {
+                    frequencyOptions.forEach { option ->
+                        LemonadeUi.BoxSelection(
+                            variant = LemonadeBoxSelectionVariant.Outlined,
+                            isSelected = selectedOption == option,
+                            onClick = { selectedOption = option },
+                            modifier = Modifier.weight(weight = 1f),
+                        ) {
+                            LemonadeUi.Text(
+                                text = option,
+                                textStyle = LemonadeTheme.typography.bodySmallMedium,
+                                modifier = Modifier.align(alignment = Alignment.Center),
+                            )
+                        }
                     }
                 }
             }
@@ -366,7 +367,8 @@ private fun BoxSelectionSection(
     content: @Composable () -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing300),
+        modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
     ) {
         LemonadeUi.Text(
             text = title,

@@ -6,11 +6,15 @@ struct SwitchDisplayView: View {
     @State private var isOn2 = true
     @State private var isOn3 = false
     @State private var isOn4 = true
+    @State private var locationServices = true
+    @State private var analytics = false
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
-                // Basic States
+            LazyVStack(alignment: .leading, spacing: 32) {
+                // Basic States — fixed specimens of the two visual states. They are
+                // deliberately not interactive (hit testing is off) so they read as
+                // swatches instead of controls that silently ignore a tap.
                 sectionView(title: "States") {
                     HStack(spacing: 24) {
                         VStack(spacing: 8) {
@@ -18,6 +22,7 @@ struct SwitchDisplayView: View {
                                 checked: false,
                                 onCheckedChange: { _ in }
                             )
+                            .allowsHitTesting(false)
                             Text("Off")
                                 .font(.caption)
                         }
@@ -27,6 +32,7 @@ struct SwitchDisplayView: View {
                                 checked: true,
                                 onCheckedChange: { _ in }
                             )
+                            .allowsHitTesting(false)
                             Text("On")
                                 .font(.caption)
                         }
@@ -77,15 +83,15 @@ struct SwitchDisplayView: View {
                 sectionView(title: "With Support Text") {
                     VStack(alignment: .leading, spacing: 16) {
                         LemonadeUi.Switch(
-                            checked: true,
-                            onCheckedChange: { _ in },
+                            checked: locationServices,
+                            onCheckedChange: { locationServices = $0 },
                             label: "Location Services",
                             supportText: "Allow app to access your location"
                         )
 
                         LemonadeUi.Switch(
-                            checked: false,
-                            onCheckedChange: { _ in },
+                            checked: analytics,
+                            onCheckedChange: { analytics = $0 },
                             label: "Analytics",
                             supportText: "Help us improve by sharing anonymous usage data"
                         )

@@ -676,7 +676,10 @@ struct SelectListItemPreview: View {
     @State private var singleSelection = 0
     @State private var multipleSelections: Set<Int> = [0]
     @State private var toggleStates: [Bool] = [true, false, true]
-    
+    @State private var leadingSelection = 0
+    @State private var emailDigest = true
+    @State private var marketingEmails = false
+
     var body: some View {
         VStack(alignment: .leading, spacing: .space.spacing400) {
             LemonadeUi.Text("SelectListItem", font: .headingXSmall)
@@ -751,11 +754,14 @@ struct SelectListItemPreview: View {
                     title: "SelectListItem with Leading"
                 )
             ) {
+                // Both rows are `.single`, so they form one radio group backed by a single
+                // selection. Previously both were hardcoded `checked: true` with no-op
+                // handlers, which is a state two radio rows can never legitimately be in.
                 LemonadeUi.SelectListItem(
                     label: "With Icon",
                     type: .single,
-                    checked: true,
-                    onItemClicked: {},
+                    checked: leadingSelection == 0,
+                    onItemClicked: { leadingSelection = 0 },
                     supportText: "Leading icon example",
                     leadingSlot: {
                         LemonadeUi.Icon(
@@ -768,8 +774,8 @@ struct SelectListItemPreview: View {
                 LemonadeUi.SelectListItem(
                     label: "With Leading",
                     type: .single,
-                    checked: true,
-                    onItemClicked: {},
+                    checked: leadingSelection == 1,
+                    onItemClicked: { leadingSelection = 1 },
                     leadingSlot: {
                         LemonadeUi.SymbolContainer(
                             text: "LM",
@@ -789,8 +795,8 @@ struct SelectListItemPreview: View {
                 LemonadeUi.SelectListItem(
                     label: "Email digest",
                     type: .toggle,
-                    checked: true,
-                    onItemClicked: {},
+                    checked: emailDigest,
+                    onItemClicked: { emailDigest.toggle() },
                     showDivider: true,
                     supportText: "Weekly summary of your account",
                     slotContent: {
@@ -801,8 +807,8 @@ struct SelectListItemPreview: View {
                 LemonadeUi.SelectListItem(
                     label: "Marketing emails",
                     type: .toggle,
-                    checked: false,
-                    onItemClicked: {},
+                    checked: marketingEmails,
+                    onItemClicked: { marketingEmails.toggle() },
                     supportText: "Offers from partners",
                     slotContent: {
                         LemonadeUi.Text(
@@ -837,7 +843,8 @@ struct OutlinedSelectListItemPreview: View {
     @State private var outlinedLabelOnly = 0
     @State private var outlinedWithSupport = 0
     @State private var outlinedMultiple: Set<Int> = [0]
-    
+    @State private var outlinedSlotContent = 0
+
     private let outlinedOptions: [OutlinedOption] = [
         OutlinedOption(label: "Option A", icon: .heart),
         OutlinedOption(label: "Option B", icon: .star),
@@ -1026,13 +1033,13 @@ struct OutlinedSelectListItemPreview: View {
                         Array(outlinedOptions.prefix(3).enumerated()),
                         id: \.element.id
                     ) { index, option in
-                        let isChecked = index == 0
+                        let isChecked = outlinedSlotContent == index
                         let preset = trailingPresets[index]
                         LemonadeUi.SelectListItem(
                             label: option.label,
                             type: .single,
                             checked: isChecked,
-                            onItemClicked: {},
+                            onItemClicked: { outlinedSlotContent = index },
                             variant: .outlined,
                             supportText:
                                 "Short description for \(option.label.lowercased())",
@@ -1120,7 +1127,7 @@ struct OutlinedSelectListItemPreview: View {
 struct ListItemDisplayView: View {
     var body: some View {
         ScrollView(.vertical) {
-            VStack(spacing: .space.spacing800) {
+            LazyVStack(spacing: .space.spacing800) {
                 ListItemPriorityPreview()
                 ResourceListItemPreview()
                 SelectListItemPreview()

@@ -4,13 +4,8 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,73 +18,98 @@ import androidx.compose.ui.platform.LocalFocusManager
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 
+private val productList: List<String> = listOf("iPhone 15", "MacBook Pro", "iPad Air", "Apple Watch")
+
 @Suppress("LongMethod")
 @Composable
 internal fun SearchFieldDisplay() {
     val focusManager = LocalFocusManager.current
+    val toasts = LocalLemonadeToastState.current
+
     var searchText1 by remember { mutableStateOf("") }
     var searchText2 by remember { mutableStateOf("Sample search") }
     var searchText3 by remember { mutableStateOf("") }
     var searchText4 by remember { mutableStateOf("") }
     var searchText5 by remember { mutableStateOf("") }
+    var searchText6 by remember { mutableStateOf("") }
 
-    val productList = listOf("iPhone 15", "MacBook Pro", "iPad Air", "Apple Watch")
-
-    Column(
-        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(state = rememberScrollState())
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .padding(LemonadeTheme.spaces.spacing400)
-            .pointerInput(Unit) {
-                detectTapGestures(onTap = {
+    SampleScreenDisplayLazyColumn(
+        title = "SearchField",
+        modifier = Modifier.pointerInput(focusManager) {
+            detectTapGestures(
+                onTap = {
                     focusManager.clearFocus()
-                })
-            },
+                },
+            )
+        },
     ) {
-        // Basic
-        SearchFieldSection(title = "Basic") {
-            @OptIn(ExperimentalLemonadeComponent::class)
-            LemonadeUi.SearchField(
-                input = searchText1,
-                onInputChanged = { searchText1 = it },
-                placeholder = "Search...",
-            )
-        }
-
-        // With Content
-        SearchFieldSection(title = "With Content") {
-            @OptIn(ExperimentalLemonadeComponent::class)
-            LemonadeUi.SearchField(
-                input = searchText2,
-                onInputChanged = { searchText2 = it },
-                placeholder = "Search...",
-            )
-        }
-
-        // With Callbacks
-        SearchFieldSection(title = "With Callbacks") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-            ) {
+        item(key = "basic") {
+            SearchFieldSection(title = "Basic") {
                 @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.SearchField(
-                    input = searchText3,
-                    onInputChanged = { newValue ->
-                        searchText3 = newValue
-                        println("Search changed: $newValue")
-                    },
-                    placeholder = "Type to search...",
-                    onInputClear = {
-                        println("Search cleared")
-                    },
+                    input = searchText1,
+                    onInputChanged = { value -> searchText1 = value },
+                    placeholder = "Search...",
                 )
+            }
+        }
 
-                if (searchText3.isNotEmpty()) {
+        item(key = "with-content") {
+            SearchFieldSection(title = "With Content") {
+                @OptIn(ExperimentalLemonadeComponent::class)
+                LemonadeUi.SearchField(
+                    input = searchText2,
+                    onInputChanged = { value -> searchText2 = value },
+                    placeholder = "Search...",
+                )
+            }
+        }
+
+        item(key = "with-callbacks") {
+            SearchFieldSection(title = "With Callbacks") {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    @OptIn(ExperimentalLemonadeComponent::class)
+                    LemonadeUi.SearchField(
+                        input = searchText3,
+                        onInputChanged = { newValue ->
+                            searchText3 = newValue
+                        },
+                        placeholder = "Type to search...",
+                        onInputClear = {
+                            toasts.show(label = "Search cleared")
+                        },
+                    )
+
+                    if (searchText3.isNotEmpty()) {
+                        LemonadeUi.Text(
+                            text = "Searching for: $searchText3",
+                            textStyle = LemonadeTheme.typography.bodySmallRegular,
+                            color = LemonadeTheme.colors.content.contentSecondary,
+                        )
+                    }
+                }
+            }
+        }
+
+        item(key = "cancel-callback") {
+            SearchFieldSection(title = "Cancel Callback") {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                ) {
+                    @OptIn(ExperimentalLemonadeComponent::class)
+                    LemonadeUi.SearchField(
+                        input = searchText4,
+                        onInputChanged = { value -> searchText4 = value },
+                        placeholder = "Search and cancel...",
+                        onCancel = { toasts.show(label = "Search dismissed") },
+                        cancelContentDescription = "Cancel search",
+                    )
+
                     LemonadeUi.Text(
-                        text = "Searching for: $searchText3",
+                        text = "Cancelling drops the focus, hides the keyboard and empties the field. " +
+                            "onCancel then runs for whatever the query was driving.",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
                         color = LemonadeTheme.colors.content.contentSecondary,
                     )
@@ -97,100 +117,90 @@ internal fun SearchFieldDisplay() {
             }
         }
 
-        // Cancel Callback
-        SearchFieldSection(title = "Cancel Callback") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-            ) {
+        item(key = "not-dismissible") {
+            SearchFieldSection(title = "Not Dismissible") {
                 @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.SearchField(
-                    input = searchText4,
-                    onInputChanged = { searchText4 = it },
-                    placeholder = "Search and cancel...",
-                    onCancel = { println("Search dismissed") },
-                    cancelContentDescription = "Cancel search",
-                )
-
-                LemonadeUi.Text(
-                    text = "Cancelling drops the focus, hides the keyboard and empties the field. " +
-                        "onCancel then runs for whatever the query was driving.",
-                    textStyle = LemonadeTheme.typography.bodySmallRegular,
-                    color = LemonadeTheme.colors.content.contentSecondary,
+                    input = searchText5,
+                    onInputChanged = { value -> searchText5 = value },
+                    placeholder = "No cancel button...",
+                    dismissible = false,
                 )
             }
         }
 
-        // Not Dismissible
-        SearchFieldSection(title = "Not Dismissible") {
-            @OptIn(ExperimentalLemonadeComponent::class)
-            LemonadeUi.SearchField(
-                input = searchText5,
-                onInputChanged = { searchText5 = it },
-                placeholder = "No cancel button...",
-                dismissible = false,
-            )
-        }
-
-        // Disabled
-        SearchFieldSection(title = "Disabled") {
-            @OptIn(ExperimentalLemonadeComponent::class)
-            LemonadeUi.SearchField(
-                input = "",
-                onInputChanged = {},
-                placeholder = "Search disabled...",
-                enabled = false,
-            )
-        }
-
-        // Usage Example
-        SearchFieldSection(title = "Usage Example") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-            ) {
+        item(key = "disabled") {
+            SearchFieldSection(title = "Disabled") {
                 @OptIn(ExperimentalLemonadeComponent::class)
                 LemonadeUi.SearchField(
-                    input = searchText1,
-                    onInputChanged = { searchText1 = it },
-                    placeholder = "Search products...",
+                    input = "",
+                    onInputChanged = {},
+                    placeholder = "Search disabled...",
+                    enabled = false,
                 )
+            }
+        }
 
-                val displayList = if (searchText1.isEmpty()) {
-                    productList
-                } else {
-                    productList.filter { it.contains(searchText1, ignoreCase = true) }
-                }
-
-                if (displayList.isEmpty()) {
-                    LemonadeUi.Text(
-                        text = "No results found",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                        color = LemonadeTheme.colors.content.contentSecondary,
-                        modifier = Modifier.padding(LemonadeTheme.spaces.spacing400),
+        item(key = "usage-example") {
+            SearchFieldSection(title = "Usage Example") {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
+                ) {
+                    @OptIn(ExperimentalLemonadeComponent::class)
+                    LemonadeUi.SearchField(
+                        input = searchText6,
+                        onInputChanged = { value -> searchText6 = value },
+                        placeholder = "Search products...",
                     )
-                } else {
-                    Column {
-                        displayList.forEach { item ->
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = LemonadeTheme.spaces.spacing200),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                LemonadeUi.Text(
-                                    text = item,
-                                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                                )
-                                LemonadeUi.Icon(
-                                    icon = LemonadeIcons.ChevronRight,
-                                    contentDescription = null,
-                                    size = LemonadeAssetSize.Small,
-                                    tint = LemonadeTheme.colors.content.contentTertiary,
-                                )
+
+                    val displayList = remember(searchText6) {
+                        if (searchText6.isEmpty()) {
+                            productList
+                        } else {
+                            productList.filter { product ->
+                                product.contains(other = searchText6, ignoreCase = true)
                             }
                         }
                     }
+
+                    SearchResults(results = displayList)
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SearchResults(results: List<String>) {
+    if (results.isEmpty()) {
+        LemonadeUi.Text(
+            text = "No results found",
+            textStyle = LemonadeTheme.typography.bodyMediumRegular,
+            color = LemonadeTheme.colors.content.contentSecondary,
+            modifier = Modifier.padding(LemonadeTheme.spaces.spacing400),
+        )
+        return
+    }
+
+    Column {
+        results.forEach { item ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = LemonadeTheme.spaces.spacing200),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                LemonadeUi.Text(
+                    text = item,
+                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                )
+                LemonadeUi.Icon(
+                    icon = LemonadeIcons.ChevronRight,
+                    contentDescription = null,
+                    size = LemonadeAssetSize.Small,
+                    tint = LemonadeTheme.colors.content.contentTertiary,
+                )
             }
         }
     }
@@ -203,6 +213,7 @@ private fun SearchFieldSection(
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+        modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
     ) {
         LemonadeUi.Text(
             text = title,

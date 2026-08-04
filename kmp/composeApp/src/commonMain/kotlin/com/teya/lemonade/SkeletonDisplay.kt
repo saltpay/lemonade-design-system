@@ -4,15 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,19 +16,19 @@ import com.teya.lemonade.core.LemonadeSkeletonSize
 
 @Composable
 internal fun SkeletonDisplay() {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(state = rememberScrollState())
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .padding(all = LemonadeTheme.spaces.spacing400),
-    ) {
-        TextLinesSection()
-        AvatarSection()
-        CardSkeletonSection()
-        BlockPlaceholderSection()
+    SampleScreenDisplayLazyColumn(title = "Skeleton") {
+        item(key = "Text Lines") {
+            TextLinesSection()
+        }
+        item(key = "Avatar") {
+            AvatarSection()
+        }
+        item(key = "Card") {
+            CardSkeletonSection()
+        }
+        item(key = "Block Placeholder") {
+            BlockPlaceholderSection()
+        }
     }
 }
 
@@ -112,6 +107,7 @@ private fun SkeletonSection(
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing300),
+        modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
     ) {
         LemonadeUi.Text(
             text = title,

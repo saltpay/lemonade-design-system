@@ -13,8 +13,16 @@ import com.teya.lemonade.Displays
 
 @Composable
 internal actual fun App() {
-    var currentScreenStack: Set<Displays> by remember {
-        mutableStateOf(setOf(Displays.Home))
+    // The desktop layout is a fixed master/detail pair: the list is always Home and the detail pane
+    // holds at most one screen, so a nullable slot models it exactly.
+    var detailScreen: Displays? by remember { mutableStateOf(null) }
+
+    // Remembered so the lambda keeps its identity — otherwise every recomposition hands HomeDisplay
+    // a new onNavigate and it can never skip.
+    val onNavigate = remember {
+        { screen: Displays ->
+            detailScreen = screen
+        }
     }
 
     Row {
@@ -23,9 +31,7 @@ internal actual fun App() {
                 .fillMaxHeight()
                 .weight(weight = 1f),
         ) {
-            screens[Displays.Home]?.invoke { focusScreen ->
-                currentScreenStack = setOf(Displays.Home, focusScreen)
-            }
+            screens[Displays.Home]?.invoke(onNavigate)
         }
 
         Box(
@@ -33,13 +39,9 @@ internal actual fun App() {
                 .fillMaxHeight()
                 .weight(weight = 4f),
         ) {
-            currentScreenStack
-                .elementAtOrNull(1)
-                ?.let { focusScreen ->
-                    screens[focusScreen]?.invoke { replaceScreen ->
-                        currentScreenStack = setOf(Displays.Home, replaceScreen)
-                    }
-                }
+            detailScreen?.let { focusScreen ->
+                screens[focusScreen]?.invoke(onNavigate)
+            }
         }
     }
 }

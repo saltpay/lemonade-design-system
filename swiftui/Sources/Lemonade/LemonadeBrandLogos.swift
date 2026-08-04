@@ -28,6 +28,7 @@ public enum LemonadeBrandLogo: String, CaseIterable {
     case diners = "diners"
     @available(*, deprecated, renamed: "diners")
     case dinners = "dinners"
+    case directDebit = "direct-debit"
     case discover = "discover"
     case edenred = "edenred"
     case genericMealOrHealthIssuer = "generic-meal-or-health-issuer"
@@ -71,6 +72,7 @@ public enum LemonadeBrandLogo: String, CaseIterable {
             .bancomat,
             .cartesBancaires,
             .diners,
+            .directDebit,
             .discover,
             .edenred,
             .genericMealOrHealthIssuer,

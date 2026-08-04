@@ -111,12 +111,6 @@ struct LemonadeTooltipContainerView<Content: View>: View {
     let content: Content
 
     @StateObject private var manager = LemonadeTooltipManager()
-    @State private var tooltipSize: CGSize = .zero
-    @State private var retained: LemonadeTooltipPresentation?
-    @State private var isVisible = false
-    // Tracked apart from `isVisible`, which restarts on every step so each tooltip gets its own
-    // entrance. The scrim spans the whole tour, so it must only fade when the tour itself ends.
-    @State private var isScrimVisible = false
 
     var body: some View {
         // The overlay hangs off `content` rather than wrapping it in a ZStack: a NavigationStack
@@ -126,62 +120,103 @@ struct LemonadeTooltipContainerView<Content: View>: View {
         content
             .environmentObject(manager)
             .overlay {
-                GeometryReader { proxy in
-                    let containerFrame = proxy.frame(in: .global)
+                // Its own view, and not this body, is what observes the anchor geometry. This body
+                // builds `content` — the whole app — so reading scroll-rate geometry here would
+                // re-diff the entire view tree several times a frame.
+                LemonadeTooltipOverlayView(manager: manager)
+                    // Without this the overlay is inset by the safe area while anchors are reported
+                    // in global coordinates, so everything would sit a status bar's height too low.
+                    .ignoresSafeArea()
+            }
+    }
+}
 
-                    ZStack(alignment: .topLeading) {
-                        // `retained` outlives manager.presentation being cleared so the exit
-                        // animation still has something to fade out. Scale and opacity are animated
-                        // explicitly rather than via `.transition`: an insertion transition on a
-                        // subtree that appears in the same pass as its data does not reliably pick
-                        // up the transaction's animation, and the tooltip simply popped in.
-                        if let presentation = retained,
-                           let anchor = manager.anchorFrameInContainer(presentation.anchor) {
-                            overlay(
-                                presentation: presentation,
-                                anchor: anchor,
-                                containerSize: proxy.size
-                            )
+// MARK: - Overlay
+
+private struct LemonadeTooltipOverlayView: View {
+    @ObservedObject private var manager: LemonadeTooltipManager
+    @ObservedObject private var geometry: LemonadeTooltipGeometry
+
+    @State private var tooltipSize: CGSize = .zero
+    @State private var retained: LemonadeTooltipPresentation?
+    @State private var isVisible = false
+    // Tracked apart from `isVisible`, which restarts on every step so each tooltip gets its own
+    // entrance. The scrim spans the whole tour, so it must only fade when the tour itself ends.
+    @State private var isScrimVisible = false
+
+    init(manager: LemonadeTooltipManager) {
+        _manager = ObservedObject(wrappedValue: manager)
+        _geometry = ObservedObject(wrappedValue: manager.geometry)
+    }
+
+    var body: some View {
+        GeometryReader { proxy in
+            let containerFrame = proxy.frame(in: .global)
+
+            ZStack(alignment: .topLeading) {
+                // `retained` outlives manager.presentation being cleared so the exit
+                // animation still has something to fade out. Scale and opacity are animated
+                // explicitly rather than via `.transition`: an insertion transition on a
+                // subtree that appears in the same pass as its data does not reliably pick
+                // up the transaction's animation, and the tooltip simply popped in.
+                //
+                // The anchor comes from the geometry's tracked frame rather than a lookup by key,
+                // so it keeps following its element while the screen scrolls without every other
+                // anchor's movement costing a view update.
+                if let presentation = retained,
+                   let anchor = geometry.presentedAnchorFrame {
+                    overlay(
+                        presentation: presentation,
+                        anchor: anchor,
+                        containerSize: proxy.size
+                    )
+                }
+            }
+            .onChange(of: manager.presentation?.id) { _ in
+                if let presentation = manager.presentation {
+                    setRetained(presentation)
+                    isVisible = false
+                    withAnimation(LemonadeTooltipLayout.scrimAnimation) {
+                        isScrimVisible = true
+                    }
+                    // A frame at the start scale before springing up to 1, so the growth is
+                    // actually animated rather than applied on the same pass as the mount.
+                    DispatchQueue.main.async {
+                        withAnimation(LemonadeTooltipLayout.enterAnimation) {
+                            isVisible = true
                         }
                     }
-                    .onChange(of: manager.presentation?.id) { _ in
-                        if let presentation = manager.presentation {
-                            retained = presentation
-                            isVisible = false
-                            withAnimation(LemonadeTooltipLayout.scrimAnimation) {
-                                isScrimVisible = true
-                            }
-                            // A frame at the start scale before springing up to 1, so the growth is
-                            // actually animated rather than applied on the same pass as the mount.
-                            DispatchQueue.main.async {
-                                withAnimation(LemonadeTooltipLayout.enterAnimation) {
-                                    isVisible = true
-                                }
-                            }
-                        } else {
-                            withAnimation(LemonadeTooltipLayout.exitAnimation) { isVisible = false }
-                            withAnimation(LemonadeTooltipLayout.scrimAnimation) {
-                                isScrimVisible = false
-                            }
-                            let dismissed = retained?.id
-                            DispatchQueue.main.asyncAfter(
-                                deadline: .now() + LemonadeTooltipLayout.exitDuration
-                            ) {
-                                if manager.presentation == nil, retained?.id == dismissed {
-                                    retained = nil
-                                }
-                            }
-                        }
+                } else {
+                    withAnimation(LemonadeTooltipLayout.exitAnimation) { isVisible = false }
+                    withAnimation(LemonadeTooltipLayout.scrimAnimation) {
+                        isScrimVisible = false
                     }
-                    .onAppear { manager.containerFrame = containerFrame }
-                    .onChange(of: containerFrame) { newFrame in
-                        manager.containerFrame = newFrame
+                    let dismissed = retained?.id
+                    DispatchQueue.main.asyncAfter(
+                        deadline: .now() + LemonadeTooltipLayout.exitDuration
+                    ) {
+                        // Cleared only once the exit fade has unmounted it: dropping the
+                        // tracked frame any earlier would cut the tooltip instead of fading it.
+                        if manager.presentation == nil, retained?.id == dismissed {
+                            setRetained(nil)
+                        }
                     }
                 }
-                // Without this the overlay is inset by the safe area while anchors are reported in
-                // global coordinates, so everything would sit a status bar's height too low.
-                .ignoresSafeArea()
             }
+            .onAppear { geometry.updateContainerFrame(containerFrame) }
+            .onChange(of: containerFrame) { newFrame in
+                geometry.updateContainerFrame(newFrame)
+            }
+        }
+    }
+
+    /// Sets the presentation the overlay is mounted for, and the anchor whose frame is tracked.
+    ///
+    /// These two must always move together, in the same transaction: the tooltip's anchor frame
+    /// has to be resolved on the very next pass, or the mount misses the enter animation.
+    private func setRetained(_ presentation: LemonadeTooltipPresentation?) {
+        retained = presentation
+        geometry.track(presentation?.anchor)
     }
 
     // MARK: Overlay

@@ -5,15 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,166 +17,165 @@ import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.TagVoice
 
-@Suppress("LongMethod")
 @Composable
 internal fun TagDisplay() {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(state = rememberScrollState())
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .padding(LemonadeTheme.spaces.spacing400),
-    ) {
+    SampleScreenDisplayLazyColumn(title = "Tag") {
         // Voices
-        TagSection(title = "Voices") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+        item(key = "Voices") {
+            TagSection(title = "Voices") {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
                 ) {
-                    LemonadeUi.Tag(label = "Neutral", voice = TagVoice.Neutral)
-                    LemonadeUi.Tag(label = "Critical", voice = TagVoice.Critical)
-                    LemonadeUi.Tag(label = "Warning", voice = TagVoice.Warning)
-                }
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                    ) {
+                        LemonadeUi.Tag(label = "Neutral", voice = TagVoice.Neutral)
+                        LemonadeUi.Tag(label = "Critical", voice = TagVoice.Critical)
+                        LemonadeUi.Tag(label = "Warning", voice = TagVoice.Warning)
+                    }
 
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-                ) {
-                    LemonadeUi.Tag(label = "Info", voice = TagVoice.Info)
-                    LemonadeUi.Tag(label = "Positive", voice = TagVoice.Positive)
-                }
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                    ) {
+                        LemonadeUi.Tag(label = "Info", voice = TagVoice.Info)
+                        LemonadeUi.Tag(label = "Positive", voice = TagVoice.Positive)
+                    }
 
-                OnColorContainer {
-                    LemonadeUi.Tag(label = "Neutral On Color", voice = TagVoice.NeutralOnColor)
+                    OnColorContainer {
+                        LemonadeUi.Tag(label = "Neutral On Color", voice = TagVoice.NeutralOnColor)
+                    }
                 }
             }
         }
 
         // With Icons
-        TagSection(title = "With Icons") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-            ) {
-                LemonadeUi.Tag(label = "Neutral", icon = LemonadeIcons.Heart, voice = TagVoice.Neutral)
-                LemonadeUi.Tag(label = "Error", icon = LemonadeIcons.CircleX, voice = TagVoice.Critical)
-                LemonadeUi.Tag(label = "Warning", icon = LemonadeIcons.TriangleAlert, voice = TagVoice.Warning)
-                LemonadeUi.Tag(label = "Info", icon = LemonadeIcons.CircleInfo, voice = TagVoice.Info)
-                LemonadeUi.Tag(label = "Success", icon = LemonadeIcons.CircleCheck, voice = TagVoice.Positive)
-                OnColorContainer {
-                    LemonadeUi.Tag(
-                        label = "Neutral On Color",
-                        icon = LemonadeIcons.Heart,
-                        voice = TagVoice.NeutralOnColor,
-                    )
+        item(key = "With Icons") {
+            TagSection(title = "With Icons") {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+                ) {
+                    LemonadeUi.Tag(label = "Neutral", icon = LemonadeIcons.Heart, voice = TagVoice.Neutral)
+                    LemonadeUi.Tag(label = "Error", icon = LemonadeIcons.CircleX, voice = TagVoice.Critical)
+                    LemonadeUi.Tag(label = "Warning", icon = LemonadeIcons.TriangleAlert, voice = TagVoice.Warning)
+                    LemonadeUi.Tag(label = "Info", icon = LemonadeIcons.CircleInfo, voice = TagVoice.Info)
+                    LemonadeUi.Tag(label = "Success", icon = LemonadeIcons.CircleCheck, voice = TagVoice.Positive)
+                    OnColorContainer {
+                        LemonadeUi.Tag(
+                            label = "Neutral On Color",
+                            icon = LemonadeIcons.Heart,
+                            voice = TagVoice.NeutralOnColor,
+                        )
+                    }
                 }
             }
         }
 
         // Use Cases
-        TagSection(title = "Use Cases") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
-            ) {
-                // Status tags
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    LemonadeUi.Text(
-                        text = "Order Status:",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    )
-                    LemonadeUi.Tag(label = "Shipped", icon = LemonadeIcons.Check, voice = TagVoice.Positive)
-                }
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    LemonadeUi.Text(
-                        text = "Payment:",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    )
-                    LemonadeUi.Tag(label = "Pending", voice = TagVoice.Warning)
-                }
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    LemonadeUi.Text(
-                        text = "Account:",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    )
-                    LemonadeUi.Tag(label = "Verified", icon = LemonadeIcons.CircleCheck, voice = TagVoice.Info)
-                }
-
-                // Category tags
+        item(key = "Use Cases") {
+            TagSection(title = "Use Cases") {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing400),
                 ) {
-                    LemonadeUi.Text(
-                        text = "Categories:",
-                        textStyle = LemonadeTheme.typography.bodySmallRegular,
-                    )
+                    // Status tags
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        LemonadeUi.Tag(label = "Electronics", voice = TagVoice.Neutral)
-                        LemonadeUi.Tag(label = "Sale", voice = TagVoice.Critical)
-                        LemonadeUi.Tag(label = "New", voice = TagVoice.Positive)
+                        LemonadeUi.Text(
+                            text = "Order Status:",
+                            textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                        )
+                        LemonadeUi.Tag(label = "Shipped", icon = LemonadeIcons.Check, voice = TagVoice.Positive)
+                    }
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        LemonadeUi.Text(
+                            text = "Payment:",
+                            textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                        )
+                        LemonadeUi.Tag(label = "Pending", voice = TagVoice.Warning)
+                    }
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        LemonadeUi.Text(
+                            text = "Account:",
+                            textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                        )
+                        LemonadeUi.Tag(label = "Verified", icon = LemonadeIcons.CircleCheck, voice = TagVoice.Info)
+                    }
+
+                    // Category tags
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                    ) {
+                        LemonadeUi.Text(
+                            text = "Categories:",
+                            textStyle = LemonadeTheme.typography.bodySmallRegular,
+                        )
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                        ) {
+                            LemonadeUi.Tag(label = "Electronics", voice = TagVoice.Neutral)
+                            LemonadeUi.Tag(label = "Sale", voice = TagVoice.Critical)
+                            LemonadeUi.Tag(label = "New", voice = TagVoice.Positive)
+                        }
                     }
                 }
             }
         }
 
         // In Context
-        TagSection(title = "In Context") {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-                verticalAlignment = Alignment.Top,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(LemonadeTheme.radius.radius300))
-                    .background(LemonadeTheme.colors.background.bgElevated)
-                    .padding(LemonadeTheme.spaces.spacing400),
-            ) {
-                Box(
+        item(key = "In Context") {
+            TagSection(title = "In Context") {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+                    verticalAlignment = Alignment.Top,
                     modifier = Modifier
-                        .size(60.dp)
-                        .clip(RoundedCornerShape(LemonadeTheme.radius.radius200))
-                        .background(LemonadeTheme.colors.background.bgSubtle),
-                )
-
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100),
-                    modifier = Modifier.weight(1f),
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(LemonadeTheme.radius.radius300))
+                        .background(LemonadeTheme.colors.background.bgElevated)
+                        .padding(LemonadeTheme.spaces.spacing400),
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        LemonadeUi.Text(
-                            text = "Product Name",
-                            textStyle = LemonadeTheme.typography.headingXSmall,
-                        )
-                        LemonadeUi.Tag(label = "New", voice = TagVoice.Positive)
-                    }
-
-                    LemonadeUi.Text(
-                        text = "$99.99",
-                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                        color = LemonadeTheme.colors.content.contentSecondary,
+                    Box(
+                        modifier = Modifier
+                            .size(60.dp)
+                            .clip(RoundedCornerShape(LemonadeTheme.radius.radius200))
+                            .background(LemonadeTheme.colors.background.bgSubtle),
                     )
 
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100),
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100),
+                        modifier = Modifier.weight(1f),
                     ) {
-                        LemonadeUi.Tag(label = "In Stock", voice = TagVoice.Info)
-                        LemonadeUi.Tag(label = "Free Shipping", voice = TagVoice.Neutral)
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing200),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            LemonadeUi.Text(
+                                text = "Product Name",
+                                textStyle = LemonadeTheme.typography.headingXSmall,
+                            )
+                            LemonadeUi.Tag(label = "New", voice = TagVoice.Positive)
+                        }
+
+                        LemonadeUi.Text(
+                            text = "$99.99",
+                            textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                            color = LemonadeTheme.colors.content.contentSecondary,
+                        )
+
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing100),
+                        ) {
+                            LemonadeUi.Tag(label = "In Stock", voice = TagVoice.Info)
+                            LemonadeUi.Tag(label = "Free Shipping", voice = TagVoice.Neutral)
+                        }
                     }
                 }
             }
@@ -209,7 +203,8 @@ private fun TagSection(
     content: @Composable () -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing300),
+        modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
     ) {
         LemonadeUi.Text(
             text = title,

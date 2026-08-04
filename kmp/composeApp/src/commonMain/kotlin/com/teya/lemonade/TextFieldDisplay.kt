@@ -4,14 +4,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,9 +20,19 @@ import androidx.compose.ui.text.input.VisualTransformation
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
 
+private const val PHONE_GROUP_SIZE = 3
+
+private fun formatPhoneNumber(raw: String): String =
+    raw
+        .filter(Char::isDigit)
+        .chunked(size = PHONE_GROUP_SIZE)
+        .joinToString(separator = " ")
+
 @Suppress("LongMethod")
 @Composable
 internal fun TextFieldDisplay() {
+    val toasts = LocalLemonadeToastState.current
+
     var basicText by remember { mutableStateOf("") }
     var labeledText by remember { mutableStateOf("") }
     var errorText by remember { mutableStateOf("Invalid input") }
@@ -39,206 +43,193 @@ internal fun TextFieldDisplay() {
     var passwordText by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
-    // Example of TextFieldValue-based usage for cursor control
-    var phoneDisplayText by remember { mutableStateOf("") }
+    // Example of TextFieldValue-based usage for cursor control. The value is formatted synchronously
+    // inside onValueChange so the cursor lands at the end of the formatted text on the same frame.
     var phoneTextFieldValue by remember { mutableStateOf(TextFieldValue("")) }
 
-    // Format phone number and move cursor to end when text changes externally
-    LaunchedEffect(phoneDisplayText) {
-        phoneTextFieldValue = TextFieldValue(
-            text = phoneDisplayText,
-            selection = TextRange(phoneDisplayText.length),
-        )
+    SampleScreenDisplayLazyColumn(title = "TextField") {
+        item(key = "basic") {
+            TextFieldSection(title = "Basic") {
+                LemonadeUi.TextField(
+                    input = basicText,
+                    onInputChanged = { value -> basicText = value },
+                    placeholderText = "Enter text...",
+                )
+            }
+        }
+
+        item(key = "with-label") {
+            TextFieldSection(title = "With Label") {
+                LemonadeUi.TextField(
+                    input = labeledText,
+                    onInputChanged = { value -> labeledText = value },
+                    label = "Email Address",
+                    placeholderText = "you@example.com",
+                )
+            }
+        }
+
+        item(key = "with-error") {
+            TextFieldSection(title = "With Error") {
+                LemonadeUi.TextField(
+                    input = errorText,
+                    onInputChanged = { value -> errorText = value },
+                    label = "Username",
+                    placeholderText = "Enter username",
+                    errorMessage = "Username is already taken",
+                    error = true,
+                )
+            }
+        }
+
+        item(key = "with-support-text") {
+            TextFieldSection(title = "With Support Text") {
+                LemonadeUi.TextField(
+                    input = supportText,
+                    onInputChanged = { value -> supportText = value },
+                    label = "Password",
+                    supportText = "Must be at least 8 characters",
+                    placeholderText = "Enter password",
+                )
+            }
+        }
+
+        item(key = "with-leading-icon") {
+            TextFieldSection(title = "With Leading Icon") {
+                LemonadeUi.TextField(
+                    input = leadingText,
+                    onInputChanged = { value -> leadingText = value },
+                    label = "Search",
+                    placeholderText = "Search...",
+                    leadingContent = {
+                        LemonadeUi.Icon(
+                            icon = LemonadeIcons.Search,
+                            contentDescription = null,
+                            tint = LemonadeTheme.colors.content.contentSecondary,
+                        )
+                    },
+                )
+            }
+        }
+
+        item(key = "with-trailing-icon") {
+            TextFieldSection(title = "With Trailing Icon") {
+                LemonadeUi.TextField(
+                    input = trailingText,
+                    onInputChanged = { value -> trailingText = value },
+                    label = "Amount",
+                    placeholderText = "0.00",
+                    trailingContent = {
+                        LemonadeUi.Icon(
+                            icon = LemonadeIcons.CircleInfo,
+                            contentDescription = null,
+                            tint = LemonadeTheme.colors.content.contentSecondary,
+                        )
+                    },
+                )
+            }
+        }
+
+        item(key = "secure") {
+            TextFieldSection(title = "Secure (Password)") {
+                LemonadeUi.TextField(
+                    input = passwordText,
+                    onInputChanged = { value -> passwordText = value },
+                    label = "Password",
+                    placeholderText = "Enter password",
+                    visualTransformation = if (passwordVisible) {
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    },
+                    leadingContent = {
+                        LemonadeUi.Icon(
+                            icon = LemonadeIcons.Padlock,
+                            contentDescription = null,
+                            tint = LemonadeTheme.colors.content.contentSecondary,
+                        )
+                    },
+                    trailingContent = {
+                        LemonadeUi.Icon(
+                            icon = if (passwordVisible) LemonadeIcons.EyeOpen else LemonadeIcons.EyeClosed,
+                            contentDescription = if (passwordVisible) "Hide password" else "Show password",
+                            tint = LemonadeTheme.colors.content.contentSecondary,
+                            modifier = Modifier.clickable(role = Role.Button) {
+                                passwordVisible = !passwordVisible
+                            },
+                        )
+                    },
+                )
+            }
+        }
+
+        item(key = "with-selector") {
+            TextFieldSection(title = "TextField With Selector") {
+                LemonadeUi.TextFieldWithSelector(
+                    input = selectorText,
+                    onInputChanged = { value -> selectorText = value },
+                    leadingAction = { toasts.show(label = "Show country code picker") },
+                    leadingContent = {
+                        CountryCodeSelectorContent(dialCode = "+1")
+                    },
+                    label = "Phone Number",
+                    placeholderText = "Enter phone number",
+                )
+            }
+        }
+
+        item(key = "with-selector-cursor-control") {
+            TextFieldSection(title = "TextField With Selector (Cursor Control)") {
+                LemonadeUi.TextFieldWithSelector(
+                    value = phoneTextFieldValue,
+                    onValueChange = { newValue ->
+                        // Simulate formatting: add a space after every 3 digits and keep the caret at the end.
+                        val formatted = formatPhoneNumber(raw = newValue.text)
+                        phoneTextFieldValue = TextFieldValue(
+                            text = formatted,
+                            selection = TextRange(formatted.length),
+                        )
+                    },
+                    leadingAction = { toasts.show(label = "Show country code picker") },
+                    leadingContent = {
+                        CountryCodeSelectorContent(dialCode = "+351")
+                    },
+                    label = "Phone (with cursor control)",
+                    placeholderText = "Enter phone number",
+                    supportText = "Try typing - cursor stays at end after formatting",
+                )
+            }
+        }
+
+        item(key = "disabled") {
+            TextFieldSection(title = "Disabled") {
+                LemonadeUi.TextField(
+                    input = "Disabled content",
+                    onInputChanged = {},
+                    label = "Disabled Field",
+                    placeholderText = "Cannot edit",
+                    enabled = false,
+                )
+            }
+        }
     }
+}
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(state = rememberScrollState())
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .padding(LemonadeTheme.spaces.spacing400),
+@Composable
+private fun CountryCodeSelectorContent(dialCode: String) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing100),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        // Basic
-        TextFieldSection(title = "Basic") {
-            LemonadeUi.TextField(
-                input = basicText,
-                onInputChanged = { basicText = it },
-                placeholderText = "Enter text...",
-            )
-        }
-
-        // With Label
-        TextFieldSection(title = "With Label") {
-            LemonadeUi.TextField(
-                input = labeledText,
-                onInputChanged = { labeledText = it },
-                label = "Email Address",
-                placeholderText = "you@example.com",
-            )
-        }
-
-        // With Error
-        TextFieldSection(title = "With Error") {
-            LemonadeUi.TextField(
-                input = errorText,
-                onInputChanged = { errorText = it },
-                label = "Username",
-                placeholderText = "Enter username",
-                errorMessage = "Username is already taken",
-                error = true,
-            )
-        }
-
-        // With Support Text
-        TextFieldSection(title = "With Support Text") {
-            LemonadeUi.TextField(
-                input = supportText,
-                onInputChanged = { supportText = it },
-                label = "Password",
-                supportText = "Must be at least 8 characters",
-                placeholderText = "Enter password",
-            )
-        }
-
-        // With Leading Icon
-        TextFieldSection(title = "With Leading Icon") {
-            LemonadeUi.TextField(
-                input = leadingText,
-                onInputChanged = { leadingText = it },
-                label = "Search",
-                placeholderText = "Search...",
-                leadingContent = {
-                    LemonadeUi.Icon(
-                        icon = LemonadeIcons.Search,
-                        contentDescription = null,
-                        tint = LemonadeTheme.colors.content.contentSecondary,
-                    )
-                },
-            )
-        }
-
-        // With Trailing Icon
-        TextFieldSection(title = "With Trailing Icon") {
-            LemonadeUi.TextField(
-                input = trailingText,
-                onInputChanged = { trailingText = it },
-                label = "Amount",
-                placeholderText = "0.00",
-                trailingContent = {
-                    LemonadeUi.Icon(
-                        icon = LemonadeIcons.CircleInfo,
-                        contentDescription = null,
-                        tint = LemonadeTheme.colors.content.contentSecondary,
-                    )
-                },
-            )
-        }
-
-        // Secure / Password with show-hide toggle
-        TextFieldSection(title = "Secure (Password)") {
-            LemonadeUi.TextField(
-                input = passwordText,
-                onInputChanged = { passwordText = it },
-                label = "Password",
-                placeholderText = "Enter password",
-                visualTransformation = if (passwordVisible) {
-                    VisualTransformation.None
-                } else {
-                    PasswordVisualTransformation()
-                },
-                leadingContent = {
-                    LemonadeUi.Icon(
-                        icon = LemonadeIcons.Padlock,
-                        contentDescription = null,
-                        tint = LemonadeTheme.colors.content.contentSecondary,
-                    )
-                },
-                trailingContent = {
-                    LemonadeUi.Icon(
-                        icon = if (passwordVisible) LemonadeIcons.EyeOpen else LemonadeIcons.EyeClosed,
-                        contentDescription = if (passwordVisible) "Hide password" else "Show password",
-                        tint = LemonadeTheme.colors.content.contentSecondary,
-                        modifier = Modifier.clickable(role = Role.Button) {
-                            passwordVisible = !passwordVisible
-                        },
-                    )
-                },
-            )
-        }
-
-        // TextField With Selector (String-based)
-        TextFieldSection(title = "TextField With Selector") {
-            LemonadeUi.TextFieldWithSelector(
-                input = selectorText,
-                onInputChanged = { selectorText = it },
-                leadingAction = { println("Show country code picker") },
-                leadingContent = {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing100),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        LemonadeUi.Text(
-                            text = "+1",
-                            textStyle = LemonadeTheme.typography.bodyMediumMedium,
-                        )
-                        LemonadeUi.Icon(
-                            icon = LemonadeIcons.ChevronDown,
-                            contentDescription = null,
-                            size = LemonadeAssetSize.Small,
-                        )
-                    }
-                },
-                label = "Phone Number",
-                placeholderText = "Enter phone number",
-            )
-        }
-
-        // TextField With Selector (TextFieldValue-based for cursor control)
-        TextFieldSection(title = "TextField With Selector (Cursor Control)") {
-            LemonadeUi.TextFieldWithSelector(
-                value = phoneTextFieldValue,
-                onValueChange = { newValue ->
-                    // Update internal state
-                    phoneTextFieldValue = newValue
-                    // Simulate formatting: add spaces after every 3 digits
-                    val rawDigits = newValue.text.filter { it.isDigit() }
-                    phoneDisplayText = rawDigits.chunked(3).joinToString(" ")
-                },
-                leadingAction = { println("Show country code picker") },
-                leadingContent = {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing100),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        LemonadeUi.Text(
-                            text = "+351",
-                            textStyle = LemonadeTheme.typography.bodyMediumMedium,
-                        )
-                        LemonadeUi.Icon(
-                            icon = LemonadeIcons.ChevronDown,
-                            contentDescription = null,
-                            size = LemonadeAssetSize.Small,
-                        )
-                    }
-                },
-                label = "Phone (with cursor control)",
-                placeholderText = "Enter phone number",
-                supportText = "Try typing - cursor stays at end after formatting",
-            )
-        }
-
-        // Disabled
-        TextFieldSection(title = "Disabled") {
-            LemonadeUi.TextField(
-                input = "Disabled content",
-                onInputChanged = {},
-                label = "Disabled Field",
-                placeholderText = "Cannot edit",
-                enabled = false,
-            )
-        }
+        LemonadeUi.Text(
+            text = dialCode,
+            textStyle = LemonadeTheme.typography.bodyMediumMedium,
+        )
+        LemonadeUi.Icon(
+            icon = LemonadeIcons.ChevronDown,
+            contentDescription = null,
+            size = LemonadeAssetSize.Small,
+        )
     }
 }
 
@@ -249,6 +240,7 @@ private fun TextFieldSection(
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+        modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
     ) {
         LemonadeUi.Text(
             text = title,

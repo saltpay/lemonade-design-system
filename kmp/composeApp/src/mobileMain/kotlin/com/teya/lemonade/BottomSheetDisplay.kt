@@ -3,14 +3,9 @@ package com.teya.lemonade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,68 +24,69 @@ internal fun BottomSheetSampleDisplay() {
     var showSubtleSheet by remember { mutableStateOf(false) }
     var showNonDismissibleSheet by remember { mutableStateOf(false) }
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(state = rememberScrollState())
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .padding(LemonadeTheme.spaces.spacing400),
-    ) {
+    SampleScreenDisplayLazyColumn(title = "BottomSheet") {
         // Basic Bottom Sheet
-        BottomSheetSection(title = "Basic Bottom Sheet") {
-            LemonadeUi.Button(
-                label = "Open Bottom Sheet",
-                onClick = { showBasicSheet = true },
-                variant = LemonadeButtonVariant.Secondary,
-                size = LemonadeButtonSize.Medium,
-            )
+        item(key = "Basic Bottom Sheet") {
+            BottomSheetSection(title = "Basic Bottom Sheet") {
+                LemonadeUi.Button(
+                    label = "Open Bottom Sheet",
+                    onClick = { showBasicSheet = true },
+                    variant = LemonadeButtonVariant.Secondary,
+                    size = LemonadeButtonSize.Medium,
+                )
+            }
         }
 
         // Without Drag Handle
-        BottomSheetSection(title = "Without Drag Handle") {
-            LemonadeUi.Text(
-                text = "This bottom sheet has no drag handle",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
-            )
-            LemonadeUi.Button(
-                label = "Open Without Drag Handle",
-                onClick = { showNoDragHandleSheet = true },
-                variant = LemonadeButtonVariant.Secondary,
-                size = LemonadeButtonSize.Medium,
-            )
+        item(key = "Without Drag Handle") {
+            BottomSheetSection(title = "Without Drag Handle") {
+                LemonadeUi.Text(
+                    text = "This bottom sheet has no drag handle",
+                    textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    color = LemonadeTheme.colors.content.contentSecondary,
+                )
+                LemonadeUi.Button(
+                    label = "Open Without Drag Handle",
+                    onClick = { showNoDragHandleSheet = true },
+                    variant = LemonadeButtonVariant.Secondary,
+                    size = LemonadeButtonSize.Medium,
+                )
+            }
         }
 
         // Subtle Background
-        BottomSheetSection(title = "Subtle Background") {
-            LemonadeUi.Text(
-                text = "This bottom sheet uses the Subtle background variant (bgSubtle)",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
-            )
-            LemonadeUi.Button(
-                label = "Open Subtle Background",
-                onClick = { showSubtleSheet = true },
-                variant = LemonadeButtonVariant.Secondary,
-                size = LemonadeButtonSize.Medium,
-            )
+        item(key = "Subtle Background") {
+            BottomSheetSection(title = "Subtle Background") {
+                LemonadeUi.Text(
+                    text = "This bottom sheet uses the Subtle background variant (bgSubtle)",
+                    textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    color = LemonadeTheme.colors.content.contentSecondary,
+                )
+                LemonadeUi.Button(
+                    label = "Open Subtle Background",
+                    onClick = { showSubtleSheet = true },
+                    variant = LemonadeButtonVariant.Secondary,
+                    size = LemonadeButtonSize.Medium,
+                )
+            }
         }
 
         // Non-dismissible scrim / back press
-        BottomSheetSection(title = "Non-dismissible") {
-            LemonadeUi.Text(
-                text = "Scrim taps, back presses, and swipe-down are all ignored; the sheet must be closed via the button.",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
-            )
-            LemonadeUi.Button(
-                label = "Open Non-dismissible",
-                onClick = { showNonDismissibleSheet = true },
-                variant = LemonadeButtonVariant.Secondary,
-                size = LemonadeButtonSize.Medium,
-            )
+        item(key = "Non-dismissible") {
+            BottomSheetSection(title = "Non-dismissible") {
+                LemonadeUi.Text(
+                    text = "Scrim taps, back presses, and swipe-down are all ignored; " +
+                        "the sheet must be closed via the button.",
+                    textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    color = LemonadeTheme.colors.content.contentSecondary,
+                )
+                LemonadeUi.Button(
+                    label = "Open Non-dismissible",
+                    onClick = { showNonDismissibleSheet = true },
+                    variant = LemonadeButtonVariant.Secondary,
+                    size = LemonadeButtonSize.Medium,
+                )
+            }
         }
     }
 
@@ -110,7 +106,8 @@ internal fun BottomSheetSampleDisplay() {
                 textStyle = LemonadeTheme.typography.headingSmall,
             )
             LemonadeUi.Text(
-                text = "This is an example bottom sheet with free-form content. Swipe down or tap the scrim to dismiss.",
+                text = "This is an example bottom sheet with free-form content. " +
+                    "Swipe down or tap the scrim to dismiss.",
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
             LemonadeUi.Button(
@@ -175,7 +172,8 @@ internal fun BottomSheetSampleDisplay() {
                 textStyle = LemonadeTheme.typography.headingSmall,
             )
             LemonadeUi.Text(
-                text = "This bottom sheet uses the Subtle background variant, applying bgSubtle from the Lemonade tokens.",
+                text = "This bottom sheet uses the Subtle background variant, " +
+                    "applying bgSubtle from the Lemonade tokens.",
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
             LemonadeUi.Button(
@@ -211,7 +209,8 @@ internal fun BottomSheetSampleDisplay() {
                 textStyle = LemonadeTheme.typography.headingSmall,
             )
             LemonadeUi.Text(
-                text = "Scrim taps, back presses, and swipe-down are ignored, and there's no drag handle. Use the button below to close.",
+                text = "Scrim taps, back presses, and swipe-down are ignored, and there's no drag handle. " +
+                    "Use the button below to close.",
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
             LemonadeUi.Button(
@@ -233,7 +232,8 @@ private fun BottomSheetSection(
     content: @Composable () -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing300),
+        modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
     ) {
         LemonadeUi.Text(
             text = title,

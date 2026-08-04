@@ -4,7 +4,7 @@ import Lemonade
 struct CardDisplayView: View {
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading, spacing: 32) {
                 // Background Variants
                 sectionView(title: "Backgrounds") {
                     VStack(spacing: 16) {

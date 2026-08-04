@@ -44,10 +44,11 @@ public extension LemonadeUi {
 
         if let label = label {
             HStack(spacing: 0) {
-                CoreHorizontalDivider(
+                CoreDivider(
                     color: dividerColor,
                     variant: variant,
-                    thickness: thickness
+                    thickness: thickness,
+                    isHorizontal: true
                 )
 
                 LemonadeUi.Text(
@@ -60,17 +61,19 @@ public extension LemonadeUi {
                 .padding(.horizontal, LemonadeTheme.spaces.spacing300)
                 .layoutPriority(1)
 
-                CoreHorizontalDivider(
+                CoreDivider(
                     color: dividerColor,
                     variant: variant,
-                    thickness: thickness
+                    thickness: thickness,
+                    isHorizontal: true
                 )
             }
         } else {
-            CoreHorizontalDivider(
+            CoreDivider(
                 color: dividerColor,
                 variant: variant,
-                thickness: thickness
+                thickness: thickness,
+                isHorizontal: true
             )
         }
     }
@@ -102,65 +105,66 @@ public extension LemonadeUi {
             ? LemonadeTheme.colors.border.borderNeutralLow
             : LemonadeTheme.colors.border.borderNeutralMedium
 
-        CoreVerticalDivider(
+        CoreDivider(
             color: dividerColor,
             variant: variant,
-            thickness: thickness
+            thickness: thickness,
+            isHorizontal: false
         )
     }
 }
 
 // MARK: - Core Divider Views
 
-private struct CoreHorizontalDivider: View {
-    let color: Color
-    let variant: DividerVariant
-    let thickness: CGFloat
+/// A line down the middle of whatever rect it is given.
+///
+/// A `Shape` receives the resolved rect in `path(in:)`, so neither variant needs a
+/// `GeometryReader` — which is a layout-deferral point that takes all offered space and forces a
+/// second pass. Dividers are the most repeated element in a list-heavy screen, so that mattered.
+private struct DividerLine: Shape {
+    let isHorizontal: Bool
 
-    private var dashWidth: CGFloat { LemonadeTheme.sizes.size100 }
-    private var dashGap: CGFloat { LemonadeTheme.spaces.spacing100 }
-
-    var body: some View {
-        GeometryReader { geometry in
-            Path { path in
-                path.move(to: CGPoint(x: 0, y: thickness / 2))
-                path.addLine(to: CGPoint(x: geometry.size.width, y: thickness / 2))
-            }
-            .stroke(
-                color,
-                style: StrokeStyle(
-                    lineWidth: thickness,
-                    dash: variant == .dashed ? [dashWidth, dashGap] : []
-                )
-            )
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        if isHorizontal {
+            path.move(to: CGPoint(x: rect.minX, y: rect.midY))
+            path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
+        } else {
+            path.move(to: CGPoint(x: rect.midX, y: rect.minY))
+            path.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
         }
-        .frame(height: thickness)
+        return path
     }
 }
 
-private struct CoreVerticalDivider: View {
+private struct CoreDivider: View {
     let color: Color
     let variant: DividerVariant
     let thickness: CGFloat
-
-    private var dashWidth: CGFloat { LemonadeTheme.sizes.size100 }
-    private var dashGap: CGFloat { LemonadeTheme.spaces.spacing100 }
+    let isHorizontal: Bool
 
     var body: some View {
-        GeometryReader { geometry in
-            Path { path in
-                path.move(to: CGPoint(x: thickness / 2, y: 0))
-                path.addLine(to: CGPoint(x: thickness / 2, y: geometry.size.height))
-            }
+        DividerLine(isHorizontal: isHorizontal)
             .stroke(
                 color,
-                style: StrokeStyle(
-                    lineWidth: thickness,
-                    dash: variant == .dashed ? [dashWidth, dashGap] : []
-                )
+                style: StrokeStyle(lineWidth: thickness, dash: variant.dashPattern)
             )
+            .frame(
+                width: isHorizontal ? nil : thickness,
+                height: isHorizontal ? thickness : nil
+            )
+    }
+}
+
+private extension DividerVariant {
+    /// The stroke dash pattern for this variant; empty means a continuous line.
+    var dashPattern: [CGFloat] {
+        switch self {
+        case .solid:
+            return []
+        case .dashed:
+            return [LemonadeTheme.sizes.size100, LemonadeTheme.spaces.spacing100]
         }
-        .frame(width: thickness)
     }
 }
 

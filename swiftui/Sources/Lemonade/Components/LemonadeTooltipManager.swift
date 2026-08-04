@@ -135,6 +135,94 @@ private struct LemonadeTooltipTour {
     let onSkip: () -> Void
 }
 
+// MARK: - Anchor Geometry
+
+/// Where every registered anchor is on screen, kept deliberately apart from the manager's
+/// `objectWillChange`.
+///
+/// Anchors report their frame from a `GeometryReader`, so they are rewritten on every scroll tick.
+/// Publishing that would be ruinous: the container wraps the whole app, so each write would
+/// re-evaluate the root body and diff the entire view tree several times a frame. So `anchors` and
+/// `containerFrame` are plain stored properties, and the single published signal is
+/// ``presentedAnchorFrame`` — the frame of the one anchor a tooltip is currently pointing at, which
+/// does have to stay live while the screen scrolls. Only the overlay observes this object; the
+/// content subtree never does.
+@MainActor
+final class LemonadeTooltipGeometry: ObservableObject {
+
+    /// Movement below this is discarded. Anchor frames jitter by fractions of a point during a
+    /// scroll, and repositioning the tooltip for that is invisible and not worth a view update.
+    private static let movementThreshold: CGFloat = 0.5
+
+    /// Anchor frames in global coordinates, keyed by anchor key. Not published — see the type doc.
+    private var anchors: [String: CGRect] = [:]
+
+    /// The container's own frame in global coordinates, used to translate anchors into it.
+    /// Not published — see the type doc.
+    private var containerFrame: CGRect = .zero
+
+    /// Key of the anchor the presented tooltip points at, or `nil` when nothing is showing.
+    private var trackedKey: String?
+
+    /// Frame of the tracked anchor, already translated into the container's coordinate space, or
+    /// `nil` when nothing is tracked or the tracked anchor is not on screen. The only thing here
+    /// that publishes.
+    @Published private(set) var presentedAnchorFrame: CGRect?
+
+    /// Points the geometry at the anchor of whatever is currently on screen. Driven by the overlay
+    /// rather than by `present`/`dismiss` so that a tooltip retained for its exit animation keeps a
+    /// live frame until it is actually unmounted.
+    func track(_ key: String?) {
+        guard trackedKey != key else { return }
+        trackedKey = key
+        refreshPresentedAnchorFrame()
+    }
+
+    func updateAnchor(_ key: String, frame: CGRect) {
+        // Compared against the stored frame rather than the previous tick's, so a slow drift still
+        // registers once it has accumulated past the threshold.
+        if let existing = anchors[key], Self.isWithinThreshold(existing, frame) { return }
+
+        anchors[key] = frame
+        if key == trackedKey {
+            refreshPresentedAnchorFrame()
+        }
+    }
+
+    func removeAnchor(_ key: String) {
+        guard anchors.removeValue(forKey: key) != nil else { return }
+        if key == trackedKey {
+            refreshPresentedAnchorFrame()
+        }
+    }
+
+    func updateContainerFrame(_ frame: CGRect) {
+        guard !Self.isWithinThreshold(containerFrame, frame) else { return }
+
+        containerFrame = frame
+        refreshPresentedAnchorFrame()
+    }
+
+    private func refreshPresentedAnchorFrame() {
+        let resolved = trackedKey
+            .flatMap { anchors[$0] }
+            .map { $0.offsetBy(dx: -containerFrame.minX, dy: -containerFrame.minY) }
+
+        // The publish itself is guarded too: `refresh` runs for every accepted anchor write, and a
+        // pure container-frame or untracked-anchor change usually leaves this identical.
+        guard presentedAnchorFrame != resolved else { return }
+        presentedAnchorFrame = resolved
+    }
+
+    private static func isWithinThreshold(_ lhs: CGRect, _ rhs: CGRect) -> Bool {
+        let threshold = movementThreshold
+        return abs(lhs.origin.x - rhs.origin.x) < threshold
+            && abs(lhs.origin.y - rhs.origin.y) < threshold
+            && abs(lhs.size.width - rhs.size.width) < threshold
+            && abs(lhs.size.height - rhs.size.height) < threshold
+    }
+}
+
 // MARK: - Tooltip Manager
 
 /// A manager for showing tooltips anchored to elements on screen.
@@ -176,11 +264,10 @@ public final class LemonadeTooltipManager: ObservableObject {
 
     @Published private(set) var presentation: LemonadeTooltipPresentation?
 
-    /// Anchor frames in global coordinates, keyed by anchor key.
-    @Published private(set) var anchors: [String: CGRect] = [:]
-
-    /// The container's own frame in global coordinates, used to translate anchors into it.
-    @Published var containerFrame: CGRect = .zero
+    /// Anchor frames and the container's own frame. A `let` holding its own observable object, so
+    /// the scroll-rate writes it takes never reach this manager's `objectWillChange` — and
+    /// therefore never re-evaluate the content subtree. See ``LemonadeTooltipGeometry``.
+    let geometry = LemonadeTooltipGeometry()
 
     private var tour: LemonadeTooltipTour?
 
@@ -370,18 +457,11 @@ public final class LemonadeTooltipManager: ObservableObject {
     }
 
     func updateAnchor(_ key: String, frame: CGRect) {
-        guard anchors[key] != frame else { return }
-        anchors[key] = frame
+        geometry.updateAnchor(key, frame: frame)
     }
 
     func removeAnchor(_ key: String) {
-        anchors.removeValue(forKey: key)
-    }
-
-    /// Anchor frame translated into the container's own coordinate space, or `nil` if not on screen.
-    func anchorFrameInContainer(_ key: String) -> CGRect? {
-        guard let frame = anchors[key] else { return nil }
-        return frame.offsetBy(dx: -containerFrame.minX, dy: -containerFrame.minY)
+        geometry.removeAnchor(key)
     }
 
     private func presentCurrentStep() {

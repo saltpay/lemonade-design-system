@@ -90,6 +90,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.CardCog -> LemonadeRes.drawable.gen_card_cog
         LemonadeIcons.CardMachine -> LemonadeRes.drawable.gen_card_machine
         LemonadeIcons.CardPlus -> LemonadeRes.drawable.gen_card_plus
+        LemonadeIcons.CardRemove -> LemonadeRes.drawable.gen_card_remove
         LemonadeIcons.CardRestricted -> LemonadeRes.drawable.gen_card_restricted
         LemonadeIcons.Cards -> LemonadeRes.drawable.gen_cards
         LemonadeIcons.Chart -> LemonadeRes.drawable.gen_chart

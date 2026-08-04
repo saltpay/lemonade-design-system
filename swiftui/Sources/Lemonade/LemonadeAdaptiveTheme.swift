@@ -26,158 +26,158 @@ import SwiftUI
 /// 
 
 private struct AdaptiveInteractionColors: InteractionColors {
-    var bgNeutralSubtleInteractive: Color { Color("lemonade-interaction-interactive-background-bg-neutral-subtle-interactive", bundle: .lemonade) }
-    var bgPositiveSubtleInteractive: Color { Color("lemonade-interaction-interactive-background-bg-positive-subtle-interactive", bundle: .lemonade) }
-    var bgInfoSubtleInteractive: Color { Color("lemonade-interaction-interactive-background-bg-info-subtle-interactive", bundle: .lemonade) }
-    var bgNeutralInteractive: Color { Color("lemonade-interaction-interactive-background-bg-neutral-interactive", bundle: .lemonade) }
-    var bgBrandHighInteractive: Color { Color("lemonade-interaction-interactive-background-bg-brand-high-interactive", bundle: .lemonade) }
-    var bgDefaultInteractive: Color { Color("lemonade-interaction-interactive-background-bg-default-interactive", bundle: .lemonade) }
-    var bgCautionInteractive: Color { Color("lemonade-interaction-interactive-background-bg-caution-interactive", bundle: .lemonade) }
-    var bgPositiveInteractive: Color { Color("lemonade-interaction-interactive-background-bg-positive-interactive", bundle: .lemonade) }
-    var bgSubtleInteractive: Color { Color("lemonade-interaction-interactive-background-bg-subtle-interactive", bundle: .lemonade) }
-    var bgInfoInteractive: Color { Color("lemonade-interaction-interactive-background-bg-info-interactive", bundle: .lemonade) }
-    var bgCautionSubtleInteractive: Color { Color("lemonade-interaction-interactive-background-bg-caution-subtle-interactive", bundle: .lemonade) }
-    var bgCriticalInteractive: Color { Color("lemonade-interaction-interactive-background-bg-critical-interactive", bundle: .lemonade) }
-    var bgBrandInteractive: Color { Color("lemonade-interaction-interactive-background-bg-brand-interactive", bundle: .lemonade) }
-    var bgElevatedInteractive: Color { Color("lemonade-interaction-interactive-background-bg-elevated-interactive", bundle: .lemonade) }
-    var bgCriticalSubtleInteractive: Color { Color("lemonade-interaction-interactive-background-bg-critical-subtle-interactive", bundle: .lemonade) }
-    var bgDefaultPressed: Color { Color("lemonade-interaction-pressed-background-bg-default-pressed", bundle: .lemonade) }
-    var bgSubtlePressed: Color { Color("lemonade-interaction-pressed-background-bg-subtle-pressed", bundle: .lemonade) }
-    var bgElevatedPressed: Color { Color("lemonade-interaction-pressed-background-bg-elevated-pressed", bundle: .lemonade) }
-    var bgBrandPressed: Color { Color("lemonade-interaction-pressed-background-bg-brand-pressed", bundle: .lemonade) }
-    var bgBrandHighPressed: Color { Color("lemonade-interaction-pressed-background-bg-brand-high-pressed", bundle: .lemonade) }
-    var bgCriticalPressed: Color { Color("lemonade-interaction-pressed-background-bg-critical-pressed", bundle: .lemonade) }
-    var bgCautionPressed: Color { Color("lemonade-interaction-pressed-background-bg-caution-pressed", bundle: .lemonade) }
-    var bgInfoPressed: Color { Color("lemonade-interaction-pressed-background-bg-info-pressed", bundle: .lemonade) }
-    var bgPositivePressed: Color { Color("lemonade-interaction-pressed-background-bg-positive-pressed", bundle: .lemonade) }
-    var bgNeutralPressed: Color { Color("lemonade-interaction-pressed-background-bg-neutral-pressed", bundle: .lemonade) }
-    var bgCriticalSubtlePressed: Color { Color("lemonade-interaction-pressed-background-bg-critical-subtle-pressed", bundle: .lemonade) }
-    var bgCautionSubtlePressed: Color { Color("lemonade-interaction-pressed-background-bg-caution-subtle-pressed", bundle: .lemonade) }
-    var bgInfoSubtlePressed: Color { Color("lemonade-interaction-pressed-background-bg-info-subtle-pressed", bundle: .lemonade) }
-    var bgPositiveSubtlePressed: Color { Color("lemonade-interaction-pressed-background-bg-positive-subtle-pressed", bundle: .lemonade) }
-    var bgNeutralSubtlePressed: Color { Color("lemonade-interaction-pressed-background-bg-neutral-subtle-pressed", bundle: .lemonade) }
-    var bgElevatedHighInteractive: Color { Color("lemonade-interaction-interactive-background-bg-elevated-high-interactive", bundle: .lemonade) }
-    var bgBrandElevatedInteractive: Color { Color("lemonade-interaction-interactive-background-bg-brand-elevated-interactive", bundle: .lemonade) }
-    var bgBrandElevatedPressed: Color { Color("lemonade-interaction-pressed-background-bg-brand-elevated-pressed", bundle: .lemonade) }
-    var bgAlwaysLightLowInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-light-low-interactive", bundle: .lemonade) }
-    var bgAlwaysLightMediumInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-light-medium-interactive", bundle: .lemonade) }
-    var bgAlwaysLightHighInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-light-high-interactive", bundle: .lemonade) }
-    var bgAlwaysDarkHighInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-dark-high-interactive", bundle: .lemonade) }
-    var bgAlwaysDarkLowInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-dark-low-interactive", bundle: .lemonade) }
-    var bgAlwaysDarkMediumInteractive: Color { Color("lemonade-interaction-interactive-background-bg-always-dark-medium-interactive", bundle: .lemonade) }
+    let bgNeutralSubtleInteractive = Color("lemonade-interaction-interactive-background-bg-neutral-subtle-interactive", bundle: .lemonade)
+    let bgPositiveSubtleInteractive = Color("lemonade-interaction-interactive-background-bg-positive-subtle-interactive", bundle: .lemonade)
+    let bgInfoSubtleInteractive = Color("lemonade-interaction-interactive-background-bg-info-subtle-interactive", bundle: .lemonade)
+    let bgNeutralInteractive = Color("lemonade-interaction-interactive-background-bg-neutral-interactive", bundle: .lemonade)
+    let bgBrandHighInteractive = Color("lemonade-interaction-interactive-background-bg-brand-high-interactive", bundle: .lemonade)
+    let bgDefaultInteractive = Color("lemonade-interaction-interactive-background-bg-default-interactive", bundle: .lemonade)
+    let bgCautionInteractive = Color("lemonade-interaction-interactive-background-bg-caution-interactive", bundle: .lemonade)
+    let bgPositiveInteractive = Color("lemonade-interaction-interactive-background-bg-positive-interactive", bundle: .lemonade)
+    let bgSubtleInteractive = Color("lemonade-interaction-interactive-background-bg-subtle-interactive", bundle: .lemonade)
+    let bgInfoInteractive = Color("lemonade-interaction-interactive-background-bg-info-interactive", bundle: .lemonade)
+    let bgCautionSubtleInteractive = Color("lemonade-interaction-interactive-background-bg-caution-subtle-interactive", bundle: .lemonade)
+    let bgCriticalInteractive = Color("lemonade-interaction-interactive-background-bg-critical-interactive", bundle: .lemonade)
+    let bgBrandInteractive = Color("lemonade-interaction-interactive-background-bg-brand-interactive", bundle: .lemonade)
+    let bgElevatedInteractive = Color("lemonade-interaction-interactive-background-bg-elevated-interactive", bundle: .lemonade)
+    let bgCriticalSubtleInteractive = Color("lemonade-interaction-interactive-background-bg-critical-subtle-interactive", bundle: .lemonade)
+    let bgDefaultPressed = Color("lemonade-interaction-pressed-background-bg-default-pressed", bundle: .lemonade)
+    let bgSubtlePressed = Color("lemonade-interaction-pressed-background-bg-subtle-pressed", bundle: .lemonade)
+    let bgElevatedPressed = Color("lemonade-interaction-pressed-background-bg-elevated-pressed", bundle: .lemonade)
+    let bgBrandPressed = Color("lemonade-interaction-pressed-background-bg-brand-pressed", bundle: .lemonade)
+    let bgBrandHighPressed = Color("lemonade-interaction-pressed-background-bg-brand-high-pressed", bundle: .lemonade)
+    let bgCriticalPressed = Color("lemonade-interaction-pressed-background-bg-critical-pressed", bundle: .lemonade)
+    let bgCautionPressed = Color("lemonade-interaction-pressed-background-bg-caution-pressed", bundle: .lemonade)
+    let bgInfoPressed = Color("lemonade-interaction-pressed-background-bg-info-pressed", bundle: .lemonade)
+    let bgPositivePressed = Color("lemonade-interaction-pressed-background-bg-positive-pressed", bundle: .lemonade)
+    let bgNeutralPressed = Color("lemonade-interaction-pressed-background-bg-neutral-pressed", bundle: .lemonade)
+    let bgCriticalSubtlePressed = Color("lemonade-interaction-pressed-background-bg-critical-subtle-pressed", bundle: .lemonade)
+    let bgCautionSubtlePressed = Color("lemonade-interaction-pressed-background-bg-caution-subtle-pressed", bundle: .lemonade)
+    let bgInfoSubtlePressed = Color("lemonade-interaction-pressed-background-bg-info-subtle-pressed", bundle: .lemonade)
+    let bgPositiveSubtlePressed = Color("lemonade-interaction-pressed-background-bg-positive-subtle-pressed", bundle: .lemonade)
+    let bgNeutralSubtlePressed = Color("lemonade-interaction-pressed-background-bg-neutral-subtle-pressed", bundle: .lemonade)
+    let bgElevatedHighInteractive = Color("lemonade-interaction-interactive-background-bg-elevated-high-interactive", bundle: .lemonade)
+    let bgBrandElevatedInteractive = Color("lemonade-interaction-interactive-background-bg-brand-elevated-interactive", bundle: .lemonade)
+    let bgBrandElevatedPressed = Color("lemonade-interaction-pressed-background-bg-brand-elevated-pressed", bundle: .lemonade)
+    let bgAlwaysLightLowInteractive = Color("lemonade-interaction-interactive-background-bg-always-light-low-interactive", bundle: .lemonade)
+    let bgAlwaysLightMediumInteractive = Color("lemonade-interaction-interactive-background-bg-always-light-medium-interactive", bundle: .lemonade)
+    let bgAlwaysLightHighInteractive = Color("lemonade-interaction-interactive-background-bg-always-light-high-interactive", bundle: .lemonade)
+    let bgAlwaysDarkHighInteractive = Color("lemonade-interaction-interactive-background-bg-always-dark-high-interactive", bundle: .lemonade)
+    let bgAlwaysDarkLowInteractive = Color("lemonade-interaction-interactive-background-bg-always-dark-low-interactive", bundle: .lemonade)
+    let bgAlwaysDarkMediumInteractive = Color("lemonade-interaction-interactive-background-bg-always-dark-medium-interactive", bundle: .lemonade)
 }
 
 private struct AdaptiveBorderColors: BorderColors {
-    var borderBrandInverse: Color { Color("lemonade-border-inverse-border-brand-inverse", bundle: .lemonade) }
-    var borderSelectedInverse: Color { Color("lemonade-border-inverse-border-selected-inverse", bundle: .lemonade) }
-    var borderNeutralMediumInverse: Color { Color("lemonade-border-inverse-border-neutral-medium-inverse", bundle: .lemonade) }
-    var borderNeutralLowInverse: Color { Color("lemonade-border-inverse-border-neutral-low-inverse", bundle: .lemonade) }
-    var borderAlwaysDark: Color { Color("lemonade-border-fixed-border-always-dark", bundle: .lemonade) }
-    var borderPositiveSubtle: Color { Color("lemonade-border-voice-border-positive-subtle", bundle: .lemonade) }
-    var borderInfoSubtle: Color { Color("lemonade-border-voice-border-info-subtle", bundle: .lemonade) }
-    var borderCautionSubtle: Color { Color("lemonade-border-voice-border-caution-subtle", bundle: .lemonade) }
-    var borderCriticalSubtle: Color { Color("lemonade-border-voice-border-critical-subtle", bundle: .lemonade) }
-    var borderPositive: Color { Color("lemonade-border-voice-border-positive", bundle: .lemonade) }
-    var borderInfo: Color { Color("lemonade-border-voice-border-info", bundle: .lemonade) }
-    var borderCaution: Color { Color("lemonade-border-voice-border-caution", bundle: .lemonade) }
-    var borderOnBrandMedium: Color { Color("lemonade-border-brand-border-on-brand-medium", bundle: .lemonade) }
-    var borderBrand: Color { Color("lemonade-border-brand-border-brand", bundle: .lemonade) }
-    var borderSelected: Color { Color("lemonade-border-border-selected", bundle: .lemonade) }
-    var borderOnBrandLow: Color { Color("lemonade-border-brand-border-on-brand-low", bundle: .lemonade) }
-    var borderOnBrandHigh: Color { Color("lemonade-border-brand-border-on-brand-high", bundle: .lemonade) }
-    var borderCritical: Color { Color("lemonade-border-voice-border-critical", bundle: .lemonade) }
-    var borderNeutralLow: Color { Color("lemonade-border-border-neutral-low", bundle: .lemonade) }
-    var borderNeutralMedium: Color { Color("lemonade-border-border-neutral-medium", bundle: .lemonade) }
-    var borderAlwaysLight: Color { Color("lemonade-border-fixed-border-always-light", bundle: .lemonade) }
-    var borderNeutralHigh: Color { Color("lemonade-border-border-neutral-high", bundle: .lemonade) }
-    var borderNeutralHighInverse: Color { Color("lemonade-border-inverse-border-neutral-high-inverse", bundle: .lemonade) }
-    var borderAlwaysLightLow: Color { Color("lemonade-border-fixed-border-always-light-low", bundle: .lemonade) }
-    var borderAlwaysLightMedium: Color { Color("lemonade-border-fixed-border-always-light-medium", bundle: .lemonade) }
-    var borderAlwaysLightHigh: Color { Color("lemonade-border-fixed-border-always-light-high", bundle: .lemonade) }
-    var borderAlwaysDarkLow: Color { Color("lemonade-border-fixed-border-always-dark-low", bundle: .lemonade) }
-    var borderAlwaysDarkMedium: Color { Color("lemonade-border-fixed-border-always-dark-medium", bundle: .lemonade) }
-    var borderAlwaysDarkHigh: Color { Color("lemonade-border-fixed-border-always-dark-high", bundle: .lemonade) }
+    let borderBrandInverse = Color("lemonade-border-inverse-border-brand-inverse", bundle: .lemonade)
+    let borderSelectedInverse = Color("lemonade-border-inverse-border-selected-inverse", bundle: .lemonade)
+    let borderNeutralMediumInverse = Color("lemonade-border-inverse-border-neutral-medium-inverse", bundle: .lemonade)
+    let borderNeutralLowInverse = Color("lemonade-border-inverse-border-neutral-low-inverse", bundle: .lemonade)
+    let borderAlwaysDark = Color("lemonade-border-fixed-border-always-dark", bundle: .lemonade)
+    let borderPositiveSubtle = Color("lemonade-border-voice-border-positive-subtle", bundle: .lemonade)
+    let borderInfoSubtle = Color("lemonade-border-voice-border-info-subtle", bundle: .lemonade)
+    let borderCautionSubtle = Color("lemonade-border-voice-border-caution-subtle", bundle: .lemonade)
+    let borderCriticalSubtle = Color("lemonade-border-voice-border-critical-subtle", bundle: .lemonade)
+    let borderPositive = Color("lemonade-border-voice-border-positive", bundle: .lemonade)
+    let borderInfo = Color("lemonade-border-voice-border-info", bundle: .lemonade)
+    let borderCaution = Color("lemonade-border-voice-border-caution", bundle: .lemonade)
+    let borderOnBrandMedium = Color("lemonade-border-brand-border-on-brand-medium", bundle: .lemonade)
+    let borderBrand = Color("lemonade-border-brand-border-brand", bundle: .lemonade)
+    let borderSelected = Color("lemonade-border-border-selected", bundle: .lemonade)
+    let borderOnBrandLow = Color("lemonade-border-brand-border-on-brand-low", bundle: .lemonade)
+    let borderOnBrandHigh = Color("lemonade-border-brand-border-on-brand-high", bundle: .lemonade)
+    let borderCritical = Color("lemonade-border-voice-border-critical", bundle: .lemonade)
+    let borderNeutralLow = Color("lemonade-border-border-neutral-low", bundle: .lemonade)
+    let borderNeutralMedium = Color("lemonade-border-border-neutral-medium", bundle: .lemonade)
+    let borderAlwaysLight = Color("lemonade-border-fixed-border-always-light", bundle: .lemonade)
+    let borderNeutralHigh = Color("lemonade-border-border-neutral-high", bundle: .lemonade)
+    let borderNeutralHighInverse = Color("lemonade-border-inverse-border-neutral-high-inverse", bundle: .lemonade)
+    let borderAlwaysLightLow = Color("lemonade-border-fixed-border-always-light-low", bundle: .lemonade)
+    let borderAlwaysLightMedium = Color("lemonade-border-fixed-border-always-light-medium", bundle: .lemonade)
+    let borderAlwaysLightHigh = Color("lemonade-border-fixed-border-always-light-high", bundle: .lemonade)
+    let borderAlwaysDarkLow = Color("lemonade-border-fixed-border-always-dark-low", bundle: .lemonade)
+    let borderAlwaysDarkMedium = Color("lemonade-border-fixed-border-always-dark-medium", bundle: .lemonade)
+    let borderAlwaysDarkHigh = Color("lemonade-border-fixed-border-always-dark-high", bundle: .lemonade)
 }
 
 private struct AdaptiveContentColors: ContentColors {
-    var contentOnBrandLow: Color { Color("lemonade-content-brand-content-on-brand-low", bundle: .lemonade) }
-    var contentBrand: Color { Color("lemonade-content-brand-content-brand", bundle: .lemonade) }
-    var contentCaution: Color { Color("lemonade-content-voice-content-caution", bundle: .lemonade) }
-    var contentInfo: Color { Color("lemonade-content-voice-content-info", bundle: .lemonade) }
-    var contentTertiary: Color { Color("lemonade-content-content-tertiary", bundle: .lemonade) }
-    var contentAlwaysLight: Color { Color("lemonade-content-fixed-content-always-light", bundle: .lemonade) }
-    var contentSecondary: Color { Color("lemonade-content-content-secondary", bundle: .lemonade) }
-    var contentPrimaryInverse: Color { Color("lemonade-content-inverse-content-primary-inverse", bundle: .lemonade) }
-    var contentPositive: Color { Color("lemonade-content-voice-content-positive", bundle: .lemonade) }
-    var contentTertiaryInverse: Color { Color("lemonade-content-inverse-content-tertiary-inverse", bundle: .lemonade) }
-    var contentAlwaysDark: Color { Color("lemonade-content-fixed-content-always-dark", bundle: .lemonade) }
-    var contentNeutral: Color { Color("lemonade-content-voice-content-neutral", bundle: .lemonade) }
-    var contentBrandInverse: Color { Color("lemonade-content-inverse-content-brand-inverse", bundle: .lemonade) }
-    var contentSecondaryInverse: Color { Color("lemonade-content-inverse-content-secondary-inverse", bundle: .lemonade) }
-    var contentCritical: Color { Color("lemonade-content-voice-content-critical", bundle: .lemonade) }
-    var contentOnBrandHigh: Color { Color("lemonade-content-brand-content-on-brand-high", bundle: .lemonade) }
-    var contentPrimary: Color { Color("lemonade-content-content-primary", bundle: .lemonade) }
-    var contentCriticalOnColor: Color { Color("lemonade-content-voice-on color-content-critical-on-color", bundle: .lemonade) }
-    var contentCautionOnColor: Color { Color("lemonade-content-voice-on color-content-caution-on-color", bundle: .lemonade) }
-    var contentInfoOnColor: Color { Color("lemonade-content-voice-on color-content-info-on-color", bundle: .lemonade) }
-    var contentPositiveOnColor: Color { Color("lemonade-content-voice-on color-content-positive-on-color", bundle: .lemonade) }
-    var contentNeutralOnColor: Color { Color("lemonade-content-voice-on color-content-neutral-on-color", bundle: .lemonade) }
-    var contentBrandHigh: Color { Color("lemonade-content-brand-content-brand-high", bundle: .lemonade) }
-    var contentInfoAlwaysOnColor: Color { Color("lemonade-content-fixed-content-info-always-on-color", bundle: .lemonade) }
-    var contentNeutralAlwaysOnColor: Color { Color("lemonade-content-fixed-content-neutral-always-on-color", bundle: .lemonade) }
-    var contentPositiveAlwaysOnColor: Color { Color("lemonade-content-fixed-content-positive-always-on-color", bundle: .lemonade) }
-    var contentCautionAlwaysOnColor: Color { Color("lemonade-content-fixed-content-caution-always-on-color", bundle: .lemonade) }
-    var contentCriticalAlwaysOnColor: Color { Color("lemonade-content-fixed-content-critical-always-on-color", bundle: .lemonade) }
+    let contentOnBrandLow = Color("lemonade-content-brand-content-on-brand-low", bundle: .lemonade)
+    let contentBrand = Color("lemonade-content-brand-content-brand", bundle: .lemonade)
+    let contentCaution = Color("lemonade-content-voice-content-caution", bundle: .lemonade)
+    let contentInfo = Color("lemonade-content-voice-content-info", bundle: .lemonade)
+    let contentTertiary = Color("lemonade-content-content-tertiary", bundle: .lemonade)
+    let contentAlwaysLight = Color("lemonade-content-fixed-content-always-light", bundle: .lemonade)
+    let contentSecondary = Color("lemonade-content-content-secondary", bundle: .lemonade)
+    let contentPrimaryInverse = Color("lemonade-content-inverse-content-primary-inverse", bundle: .lemonade)
+    let contentPositive = Color("lemonade-content-voice-content-positive", bundle: .lemonade)
+    let contentTertiaryInverse = Color("lemonade-content-inverse-content-tertiary-inverse", bundle: .lemonade)
+    let contentAlwaysDark = Color("lemonade-content-fixed-content-always-dark", bundle: .lemonade)
+    let contentNeutral = Color("lemonade-content-voice-content-neutral", bundle: .lemonade)
+    let contentBrandInverse = Color("lemonade-content-inverse-content-brand-inverse", bundle: .lemonade)
+    let contentSecondaryInverse = Color("lemonade-content-inverse-content-secondary-inverse", bundle: .lemonade)
+    let contentCritical = Color("lemonade-content-voice-content-critical", bundle: .lemonade)
+    let contentOnBrandHigh = Color("lemonade-content-brand-content-on-brand-high", bundle: .lemonade)
+    let contentPrimary = Color("lemonade-content-content-primary", bundle: .lemonade)
+    let contentCriticalOnColor = Color("lemonade-content-voice-on color-content-critical-on-color", bundle: .lemonade)
+    let contentCautionOnColor = Color("lemonade-content-voice-on color-content-caution-on-color", bundle: .lemonade)
+    let contentInfoOnColor = Color("lemonade-content-voice-on color-content-info-on-color", bundle: .lemonade)
+    let contentPositiveOnColor = Color("lemonade-content-voice-on color-content-positive-on-color", bundle: .lemonade)
+    let contentNeutralOnColor = Color("lemonade-content-voice-on color-content-neutral-on-color", bundle: .lemonade)
+    let contentBrandHigh = Color("lemonade-content-brand-content-brand-high", bundle: .lemonade)
+    let contentInfoAlwaysOnColor = Color("lemonade-content-fixed-content-info-always-on-color", bundle: .lemonade)
+    let contentNeutralAlwaysOnColor = Color("lemonade-content-fixed-content-neutral-always-on-color", bundle: .lemonade)
+    let contentPositiveAlwaysOnColor = Color("lemonade-content-fixed-content-positive-always-on-color", bundle: .lemonade)
+    let contentCautionAlwaysOnColor = Color("lemonade-content-fixed-content-caution-always-on-color", bundle: .lemonade)
+    let contentCriticalAlwaysOnColor = Color("lemonade-content-fixed-content-critical-always-on-color", bundle: .lemonade)
 }
 
 private struct AdaptiveBackgroundColors: BackgroundColors {
-    var bgTransparent: Color { Color("lemonade-background-fixed-bg-transparent", bundle: .lemonade) }
-    var bgAlwaysLight: Color { Color("lemonade-background-fixed-bg-always-light", bundle: .lemonade) }
-    var bgAlwaysDark: Color { Color("lemonade-background-fixed-bg-always-dark", bundle: .lemonade) }
-    var bgDefaultInverse: Color { Color("lemonade-background-inverse-bg-default-inverse", bundle: .lemonade) }
-    var bgNeutralSubtle: Color { Color("lemonade-background-voice-bg-neutral-subtle", bundle: .lemonade) }
-    var bgCautionSubtle: Color { Color("lemonade-background-voice-bg-caution-subtle", bundle: .lemonade) }
-    var bgCriticalSubtle: Color { Color("lemonade-background-voice-bg-critical-subtle", bundle: .lemonade) }
-    var bgNeutral: Color { Color("lemonade-background-voice-bg-neutral", bundle: .lemonade) }
-    var bgBrandSubtle: Color { Color("lemonade-background-brand-bg-brand-subtle", bundle: .lemonade) }
-    var bgSubtleInverse: Color { Color("lemonade-background-inverse-bg-subtle-inverse", bundle: .lemonade) }
-    var bgBrandElevated: Color { Color("lemonade-background-brand-bg-brand-elevated", bundle: .lemonade) }
-    var bgPositiveSubtle: Color { Color("lemonade-background-voice-bg-positive-subtle", bundle: .lemonade) }
-    var bgDefault: Color { Color("lemonade-background-bg-default", bundle: .lemonade) }
-    var bgCritical: Color { Color("lemonade-background-voice-bg-critical", bundle: .lemonade) }
-    var bgBrandHigh: Color { Color("lemonade-background-brand-bg-brand-high", bundle: .lemonade) }
-    var bgCaution: Color { Color("lemonade-background-voice-bg-caution", bundle: .lemonade) }
-    var bgBrand: Color { Color("lemonade-background-brand-bg-brand", bundle: .lemonade) }
-    var bgElevated: Color { Color("lemonade-background-bg-elevated", bundle: .lemonade) }
-    var bgElevatedInverse: Color { Color("lemonade-background-inverse-bg-elevated-inverse", bundle: .lemonade) }
-    var bgSubtle: Color { Color("lemonade-background-bg-subtle", bundle: .lemonade) }
-    var bgInfo: Color { Color("lemonade-background-voice-bg-info", bundle: .lemonade) }
-    var bgPositive: Color { Color("lemonade-background-voice-bg-positive", bundle: .lemonade) }
-    var bgInfoSubtle: Color { Color("lemonade-background-voice-bg-info-subtle", bundle: .lemonade) }
-    var bgElevatedHigh: Color { Color("lemonade-background-bg-elevated-high", bundle: .lemonade) }
-    var bgTransparentLight: Color { Color("lemonade-background-fixed-bg-transparent-light", bundle: .lemonade) }
-    var bgTransparentDark: Color { Color("lemonade-background-fixed-bg-transparent-dark", bundle: .lemonade) }
-    var bgAlwaysLightLow: Color { Color("lemonade-background-fixed-bg-always-light-low", bundle: .lemonade) }
-    var bgAlwaysLightMedium: Color { Color("lemonade-background-fixed-bg-always-light-medium", bundle: .lemonade) }
-    var bgAlwaysLightHigh: Color { Color("lemonade-background-fixed-bg-always-light-high", bundle: .lemonade) }
-    var bgAlwaysDarkLow: Color { Color("lemonade-background-fixed-bg-always-dark-low", bundle: .lemonade) }
-    var bgAlwaysDarkMedium: Color { Color("lemonade-background-fixed-bg-always-dark-medium", bundle: .lemonade) }
-    var bgAlwaysDarkHigh: Color { Color("lemonade-background-fixed-bg-always-dark-high", bundle: .lemonade) }
+    let bgTransparent = Color("lemonade-background-fixed-bg-transparent", bundle: .lemonade)
+    let bgAlwaysLight = Color("lemonade-background-fixed-bg-always-light", bundle: .lemonade)
+    let bgAlwaysDark = Color("lemonade-background-fixed-bg-always-dark", bundle: .lemonade)
+    let bgDefaultInverse = Color("lemonade-background-inverse-bg-default-inverse", bundle: .lemonade)
+    let bgNeutralSubtle = Color("lemonade-background-voice-bg-neutral-subtle", bundle: .lemonade)
+    let bgCautionSubtle = Color("lemonade-background-voice-bg-caution-subtle", bundle: .lemonade)
+    let bgCriticalSubtle = Color("lemonade-background-voice-bg-critical-subtle", bundle: .lemonade)
+    let bgNeutral = Color("lemonade-background-voice-bg-neutral", bundle: .lemonade)
+    let bgBrandSubtle = Color("lemonade-background-brand-bg-brand-subtle", bundle: .lemonade)
+    let bgSubtleInverse = Color("lemonade-background-inverse-bg-subtle-inverse", bundle: .lemonade)
+    let bgBrandElevated = Color("lemonade-background-brand-bg-brand-elevated", bundle: .lemonade)
+    let bgPositiveSubtle = Color("lemonade-background-voice-bg-positive-subtle", bundle: .lemonade)
+    let bgDefault = Color("lemonade-background-bg-default", bundle: .lemonade)
+    let bgCritical = Color("lemonade-background-voice-bg-critical", bundle: .lemonade)
+    let bgBrandHigh = Color("lemonade-background-brand-bg-brand-high", bundle: .lemonade)
+    let bgCaution = Color("lemonade-background-voice-bg-caution", bundle: .lemonade)
+    let bgBrand = Color("lemonade-background-brand-bg-brand", bundle: .lemonade)
+    let bgElevated = Color("lemonade-background-bg-elevated", bundle: .lemonade)
+    let bgElevatedInverse = Color("lemonade-background-inverse-bg-elevated-inverse", bundle: .lemonade)
+    let bgSubtle = Color("lemonade-background-bg-subtle", bundle: .lemonade)
+    let bgInfo = Color("lemonade-background-voice-bg-info", bundle: .lemonade)
+    let bgPositive = Color("lemonade-background-voice-bg-positive", bundle: .lemonade)
+    let bgInfoSubtle = Color("lemonade-background-voice-bg-info-subtle", bundle: .lemonade)
+    let bgElevatedHigh = Color("lemonade-background-bg-elevated-high", bundle: .lemonade)
+    let bgTransparentLight = Color("lemonade-background-fixed-bg-transparent-light", bundle: .lemonade)
+    let bgTransparentDark = Color("lemonade-background-fixed-bg-transparent-dark", bundle: .lemonade)
+    let bgAlwaysLightLow = Color("lemonade-background-fixed-bg-always-light-low", bundle: .lemonade)
+    let bgAlwaysLightMedium = Color("lemonade-background-fixed-bg-always-light-medium", bundle: .lemonade)
+    let bgAlwaysLightHigh = Color("lemonade-background-fixed-bg-always-light-high", bundle: .lemonade)
+    let bgAlwaysDarkLow = Color("lemonade-background-fixed-bg-always-dark-low", bundle: .lemonade)
+    let bgAlwaysDarkMedium = Color("lemonade-background-fixed-bg-always-dark-medium", bundle: .lemonade)
+    let bgAlwaysDarkHigh = Color("lemonade-background-fixed-bg-always-dark-high", bundle: .lemonade)
 }
 
 private struct AdaptiveShadowColors: ShadowColors {
-    var shadowDefault: Color { Color("lemonade-shadow-shadow-default", bundle: .lemonade) }
+    let shadowDefault = Color("lemonade-shadow-shadow-default", bundle: .lemonade)
 }
 
 private struct AdaptiveScopedColors: ScopedColors {
-    var bgSettlementInstant: Color { Color("lemonade-scoped-settlements-bg-settlement-instant", bundle: .lemonade) }
-    var bgSettlementBusinessDays: Color { Color("lemonade-scoped-settlements-bg-settlement-business-days", bundle: .lemonade) }
-    var bgSettlementEveryday: Color { Color("lemonade-scoped-settlements-bg-settlement-everyday", bundle: .lemonade) }
-    var bgSettlementScheduled: Color { Color("lemonade-scoped-settlements-bg-settlement-scheduled", bundle: .lemonade) }
-    var contentOnSettlementInstant: Color { Color("lemonade-scoped-settlements-content-on-settlement-instant", bundle: .lemonade) }
-    var contentOnSettlementBusinessDays: Color { Color("lemonade-scoped-settlements-content-on-settlement-business-days", bundle: .lemonade) }
-    var contentOnSettlementEveryday: Color { Color("lemonade-scoped-settlements-content-on-settlement-everyday", bundle: .lemonade) }
-    var contentOnSettlementScheduled: Color { Color("lemonade-scoped-settlements-content-on-settlement-scheduled", bundle: .lemonade) }
+    let bgSettlementInstant = Color("lemonade-scoped-settlements-bg-settlement-instant", bundle: .lemonade)
+    let bgSettlementBusinessDays = Color("lemonade-scoped-settlements-bg-settlement-business-days", bundle: .lemonade)
+    let bgSettlementEveryday = Color("lemonade-scoped-settlements-bg-settlement-everyday", bundle: .lemonade)
+    let bgSettlementScheduled = Color("lemonade-scoped-settlements-bg-settlement-scheduled", bundle: .lemonade)
+    let contentOnSettlementInstant = Color("lemonade-scoped-settlements-content-on-settlement-instant", bundle: .lemonade)
+    let contentOnSettlementBusinessDays = Color("lemonade-scoped-settlements-content-on-settlement-business-days", bundle: .lemonade)
+    let contentOnSettlementEveryday = Color("lemonade-scoped-settlements-content-on-settlement-everyday", bundle: .lemonade)
+    let contentOnSettlementScheduled = Color("lemonade-scoped-settlements-content-on-settlement-scheduled", bundle: .lemonade)
 }
 
 /// Adaptive theme implementation — colors resolve automatically via Asset Catalog

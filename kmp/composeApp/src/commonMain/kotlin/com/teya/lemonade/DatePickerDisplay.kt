@@ -2,12 +2,7 @@ package com.teya.lemonade
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -45,7 +40,6 @@ private val weekdayAbbreviations = listOf("S", "M", "T", "W", "T", "F", "S")
 
 private fun formatMonth(month: Int): String = monthNames[month - 1]
 
-@Suppress("LongMethod")
 @Composable
 internal fun DatePickerDisplay() {
     @OptIn(ExperimentalTime::class)
@@ -54,131 +48,129 @@ internal fun DatePickerDisplay() {
             .todayIn(TimeZone.currentSystemDefault())
     }
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(state = rememberScrollState())
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .padding(LemonadeTheme.spaces.spacing400),
-    ) {
-        DatePickerSection(title = "Default (all dates selectable)") {
-            val state = rememberDatePickerState(initialDate = today)
-            LemonadeUi.DatePicker(
-                state = state,
-                monthFormatter = ::formatMonth,
-                weekdayAbbreviations = weekdayAbbreviations,
-            )
-            LemonadeUi.Text(
-                text = "Selected: ${state.selectedDate?.let { formatDate(it) }}",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
+    // The picker states are hoisted above the lazy list so a selection survives the item being
+    // scrolled out of the viewport and disposed.
+    val defaultState = rememberDatePickerState(initialDate = today)
+    val futureOnlyState = rememberDatePickerState(minDate = today)
+    val pastOnlyState = rememberDatePickerState(maxDate = today)
+
+    val monthNumber = today.month.number
+    val customRangeState = rememberDatePickerState(
+        minDate = LocalDate(today.year, monthNumber, 1),
+        maxDate = LocalDate(today.year, monthNumber, daysInMonth(today.year, monthNumber)),
+    )
+
+    val dynamicState = rememberDatePickerState(initialDate = today)
+    var currentMonth by remember { mutableStateOf(value = YearMonth(today.year, today.month.number)) }
+
+    // Simulated per-month "sparse" API: every 3rd, 8th, 14th, 21st and 27th of any month
+    // comes back as disabled. Swap for a repository call in real usage.
+    LaunchedEffect(currentMonth) {
+        delay(FAKE_FETCH_DELAY_MS)
+        dynamicState.disabledDates = disabledDatesFor(currentMonth)
+    }
+
+    val rangeState = rememberDateRangePickerState()
+    val limitedRangeState = rememberDateRangePickerState(maxRangeDays = 7)
+
+    SampleScreenDisplayLazyColumn(title = "DatePicker") {
+        item(key = "default") {
+            DatePickerSample(
+                title = "Default (all dates selectable)",
+                state = defaultState,
             )
         }
 
-        DatePickerSection(title = "Future dates only (minDate: today)") {
-            val state = rememberDatePickerState(minDate = today)
-            LemonadeUi.DatePicker(
-                state = state,
-                monthFormatter = ::formatMonth,
-                weekdayAbbreviations = weekdayAbbreviations,
-            )
-            LemonadeUi.Text(
-                text = "Selected: ${state.selectedDate?.let { formatDate(it) }}",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
+        item(key = "future-only") {
+            DatePickerSample(
+                title = "Future dates only (minDate: today)",
+                state = futureOnlyState,
             )
         }
 
-        DatePickerSection(title = "Past dates only (maxDate: today)") {
-            val state = rememberDatePickerState(maxDate = today)
-            LemonadeUi.DatePicker(
-                state = state,
-                monthFormatter = ::formatMonth,
-                weekdayAbbreviations = weekdayAbbreviations,
-            )
-            LemonadeUi.Text(
-                text = "Selected: ${state.selectedDate?.let { formatDate(it) }}",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
+        item(key = "past-only") {
+            DatePickerSample(
+                title = "Past dates only (maxDate: today)",
+                state = pastOnlyState,
             )
         }
 
-        DatePickerSection(title = "Custom range (minDate & maxDate)") {
-            val monthNumber = today.month.number
-            val customMinDate = LocalDate(today.year, monthNumber, 1)
-            val customMaxDate = LocalDate(today.year, monthNumber, daysInMonth(today.year, monthNumber))
-            val state = rememberDatePickerState(
-                minDate = customMinDate,
-                maxDate = customMaxDate,
-            )
-            LemonadeUi.DatePicker(
-                state = state,
-                monthFormatter = ::formatMonth,
-                weekdayAbbreviations = weekdayAbbreviations,
-            )
-            LemonadeUi.Text(
-                text = "Selected: ${state.selectedDate?.let { formatDate(it) }}",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
+        item(key = "custom-range") {
+            DatePickerSample(
+                title = "Custom range (minDate & maxDate)",
+                state = customRangeState,
             )
         }
 
-        DatePickerSection(title = "Dynamic disabled dates (fetched per visible month)") {
-            val state = rememberDatePickerState(initialDate = today)
-            var currentMonth by remember { mutableStateOf(YearMonth(today.year, today.month.number)) }
-
-            // Simulated per-month "sparse" API: every 3rd, 8th, 14th, 21st and 27th of any month
-            // comes back as disabled. Swap for a repository call in real usage.
-            LaunchedEffect(currentMonth) {
-                delay(FAKE_FETCH_DELAY_MS)
-                state.disabledDates = disabledDatesFor(currentMonth)
+        item(key = "dynamic-disabled") {
+            DatePickerSection(title = "Dynamic disabled dates (fetched per visible month)") {
+                LemonadeUi.DatePicker(
+                    state = dynamicState,
+                    monthFormatter = ::formatMonth,
+                    weekdayAbbreviations = weekdayAbbreviations,
+                    onMonthDisplayed = { yearMonth -> currentMonth = yearMonth },
+                )
+                LemonadeUi.Text(
+                    text = "Selected: ${dynamicState.selectedDate?.let { date -> formatDate(date) }} — " +
+                        "disabled this month: ${dynamicState.disabledDates.size}",
+                    textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    color = LemonadeTheme.colors.content.contentSecondary,
+                )
             }
+        }
 
-            LemonadeUi.DatePicker(
-                state = state,
-                monthFormatter = ::formatMonth,
-                weekdayAbbreviations = weekdayAbbreviations,
-                onMonthDisplayed = { yearMonth -> currentMonth = yearMonth },
-            )
-            LemonadeUi.Text(
-                text = "Selected: ${state.selectedDate?.let { formatDate(it) }} — " +
-                    "disabled this month: ${state.disabledDates.size}",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
+        item(key = "range") {
+            DateRangePickerSample(
+                title = "Date Range Mode",
+                state = rangeState,
             )
         }
 
-        DatePickerSection(title = "Date Range Mode") {
-            val state = rememberDateRangePickerState()
-            LemonadeUi.DateRangePicker(
-                state = state,
-                monthFormatter = ::formatMonth,
-                weekdayAbbreviations = weekdayAbbreviations,
-            )
-            LemonadeUi.Text(
-                text = "Range: ${state.selectedStartDate?.let { formatDate(it) }} - " +
-                    "${state.selectedEndDate?.let { formatDate(it) }}",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
+        item(key = "range-max-7") {
+            DateRangePickerSample(
+                title = "Date Range with max 7 days",
+                state = limitedRangeState,
             )
         }
+    }
+}
 
-        DatePickerSection(title = "Date Range with max 7 days") {
-            val state = rememberDateRangePickerState(maxRangeDays = 7)
-            LemonadeUi.DateRangePicker(
-                state = state,
-                monthFormatter = ::formatMonth,
-                weekdayAbbreviations = weekdayAbbreviations,
-            )
-            LemonadeUi.Text(
-                text = "Range: ${state.selectedStartDate?.let { formatDate(it) }} - " +
-                    "${state.selectedEndDate?.let { formatDate(it) }}",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
-            )
-        }
+@Composable
+private fun DatePickerSample(
+    title: String,
+    state: DatePickerState,
+) {
+    DatePickerSection(title = title) {
+        LemonadeUi.DatePicker(
+            state = state,
+            monthFormatter = ::formatMonth,
+            weekdayAbbreviations = weekdayAbbreviations,
+        )
+        LemonadeUi.Text(
+            text = "Selected: ${state.selectedDate?.let { date -> formatDate(date) }}",
+            textStyle = LemonadeTheme.typography.bodySmallRegular,
+            color = LemonadeTheme.colors.content.contentSecondary,
+        )
+    }
+}
+
+@Composable
+private fun DateRangePickerSample(
+    title: String,
+    state: DateRangePickerState,
+) {
+    DatePickerSection(title = title) {
+        LemonadeUi.DateRangePicker(
+            state = state,
+            monthFormatter = ::formatMonth,
+            weekdayAbbreviations = weekdayAbbreviations,
+        )
+        LemonadeUi.Text(
+            text = "Range: ${state.selectedStartDate?.let { date -> formatDate(date) }} - " +
+                "${state.selectedEndDate?.let { date -> formatDate(date) }}",
+            textStyle = LemonadeTheme.typography.bodySmallRegular,
+            color = LemonadeTheme.colors.content.contentSecondary,
+        )
     }
 }
 
@@ -188,7 +180,8 @@ private fun DatePickerSection(
     content: @Composable () -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing300),
+        modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
     ) {
         LemonadeUi.Text(
             text = title,

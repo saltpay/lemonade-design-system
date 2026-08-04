@@ -11,7 +11,7 @@ struct PinCodeDisplayView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading, spacing: 32) {
                 sectionView(title: "Numeric") {
                     VStack(spacing: 16) {
                         LemonadeUi.PinCode(
