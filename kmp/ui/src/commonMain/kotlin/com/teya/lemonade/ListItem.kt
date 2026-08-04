@@ -30,6 +30,11 @@ import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.Measurable
+import androidx.compose.ui.layout.MeasureResult
+import androidx.compose.ui.layout.MeasureScope
+import androidx.compose.ui.layout.MultiContentMeasurePolicy
+import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
@@ -1027,77 +1032,114 @@ private fun ListItemAdaptiveRow(
             },
         ),
         modifier = modifier,
-    ) { measurables, constraints ->
-        val contentMeasurable = measurables[0].first()
-        val trailingMeasurable = measurables[1].firstOrNull()
+        measurePolicy = AdaptiveRowMeasurePolicy(
+            horizontalGapPx = horizontalGapPx,
+            verticalGapPx = verticalGapPx,
+            alignment = trailingVerticalAlignment,
+        ),
+    )
+}
 
-        // An intrinsic query arrives here with an unbounded width — `Row(IntrinsicSize.Min)` asking
-        // for our height is the case that found this. There is infinite room by definition, so the
-        // reflow question is moot, and the subtraction below would overflow what Constraints can
-        // pack if it ran.
+/**
+ * Measures the content and trailing slot, then places them side by side or stacked.
+ *
+ * A policy object rather than a lambda so the decision reads on its own, away from the composable
+ * that declares the structure.
+ */
+private class AdaptiveRowMeasurePolicy(
+    private val horizontalGapPx: Int,
+    private val verticalGapPx: Int,
+    private val alignment: Alignment.Vertical,
+) : MultiContentMeasurePolicy {
+    override fun MeasureScope.measure(
+        measurables: List<List<Measurable>>,
+        constraints: Constraints,
+    ): MeasureResult {
+        val contentMeasurable = measurables[0].first()
+
+        // An intrinsic query arrives with an unbounded width — `Row(IntrinsicSize.Min)` asking for
+        // our height is the case that found this. There is infinite room by definition, so the
+        // reflow question is moot, and the subtraction below would overflow what Constraints packs.
         val boundedWidth = constraints.hasBoundedWidth
 
-        val trailingPlaceable = trailingMeasurable?.measure(
+        val trailing = measurables[1].firstOrNull()?.measure(
             if (boundedWidth) Constraints(maxWidth = constraints.maxWidth) else Constraints(),
         )
 
-        val sideBySideWidth = if (trailingPlaceable == null) {
-            constraints.maxWidth
-        } else {
-            constraints.maxWidth - trailingPlaceable.width - horizontalGapPx
+        val leftover = constraints.maxWidth - (trailing?.width ?: 0) - horizontalGapPx
+        // Non-null exactly when the row has to reflow: a bounded width, something to move, and less
+        // room left over than the content's longest word.
+        val overflowingTrailing = trailing?.takeIf {
+            boundedWidth &&
+                leftover < contentMeasurable.minIntrinsicWidth(height = constraints.maxHeight)
         }
-        val contentFloor = contentMeasurable.minIntrinsicWidth(height = constraints.maxHeight)
-        val stacked = boundedWidth && trailingPlaceable != null && sideBySideWidth < contentFloor
 
-        val contentPlaceable = contentMeasurable.measure(
-            when {
-                !boundedWidth -> constraints.copy(minWidth = 0)
-                stacked -> constraints.copy(minWidth = 0)
-                else -> constraints.copy(minWidth = 0, maxWidth = sideBySideWidth.coerceAtLeast(0))
+        val content = contentMeasurable.measure(
+            if (boundedWidth && overflowingTrailing == null) {
+                constraints.copy(minWidth = 0, maxWidth = leftover.coerceAtLeast(0))
+            } else {
+                constraints.copy(minWidth = 0)
             },
         )
 
-        val rowWidth = if (boundedWidth) {
-            constraints.maxWidth
-        } else {
-            contentPlaceable.width +
-                if (trailingPlaceable != null) horizontalGapPx + trailingPlaceable.width else 0
+        val rowWidth = when {
+            boundedWidth -> constraints.maxWidth
+            trailing == null -> content.width
+            else -> content.width + horizontalGapPx + trailing.width
         }
 
-        if (trailingPlaceable == null) {
-            layout(width = rowWidth, height = contentPlaceable.height) {
-                contentPlaceable.place(x = 0, y = 0)
-            }
-        } else if (stacked) {
-            val height = contentPlaceable.height + verticalGapPx + trailingPlaceable.height
-            layout(width = rowWidth, height = height) {
-                contentPlaceable.place(x = 0, y = 0)
-                // Start-aligned under the content: stacked, the trailing slot reads as a
-                // continuation of the row rather than something pushed to the far edge.
-                trailingPlaceable.place(
-                    x = 0,
-                    y = contentPlaceable.height + verticalGapPx,
-                )
-            }
+        return if (overflowingTrailing != null) {
+            placeStacked(
+                content = content,
+                trailing = overflowingTrailing,
+                rowWidth = rowWidth,
+                verticalGapPx = verticalGapPx,
+            )
         } else {
-            val height = maxOf(contentPlaceable.height, trailingPlaceable.height)
-            layout(width = rowWidth, height = height) {
-                contentPlaceable.place(
-                    x = 0,
-                    y = trailingVerticalAlignment.align(
-                        size = contentPlaceable.height,
-                        space = height,
-                    ),
-                )
-                trailingPlaceable.place(
-                    x = rowWidth - trailingPlaceable.width,
-                    y = trailingVerticalAlignment.align(
-                        size = trailingPlaceable.height,
-                        space = height,
-                    ),
-                )
-            }
+            placeSideBySide(
+                content = content,
+                trailing = trailing,
+                rowWidth = rowWidth,
+                alignment = alignment,
+            )
         }
+    }
+}
+
+/**
+ * Trailing slot on its own line, start-aligned under the content — stacked, it reads as a
+ * continuation of the row rather than something pushed to the far edge.
+ */
+private fun MeasureScope.placeStacked(
+    content: Placeable,
+    trailing: Placeable,
+    rowWidth: Int,
+    verticalGapPx: Int,
+): MeasureResult {
+    val height = content.height + verticalGapPx + trailing.height
+    return layout(width = rowWidth, height = height) {
+        content.place(x = 0, y = 0)
+        trailing.place(x = 0, y = content.height + verticalGapPx)
+    }
+}
+
+/** Content at the start, trailing pinned to the end — the arrangement a plain `Row` would give. */
+private fun MeasureScope.placeSideBySide(
+    content: Placeable,
+    trailing: Placeable?,
+    rowWidth: Int,
+    alignment: Alignment.Vertical,
+): MeasureResult {
+    val height = maxOf(content.height, trailing?.height ?: 0)
+    return layout(width = rowWidth, height = height) {
+        content.place(
+            x = 0,
+            y = alignment.align(size = content.height, space = height),
+        )
+        trailing?.place(
+            x = rowWidth - trailing.width,
+            y = alignment.align(size = trailing.height, space = height),
+        )
     }
 }
 
