@@ -8,10 +8,11 @@ struct TabsDisplayView: View {
     @State private var iconTabsSelectedIndex = 0
     @State private var disabledTabsSelectedIndex = 0
     @State private var rightEdgeSelectedIndex = 5
+    @State private var noDividerSelectedIndex = 0
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing800) {
+            LazyVStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing800) {
                 sectionView(title: "Hug (default)") {
                     LemonadeUi.Tabs(
                         tabs: [
@@ -88,6 +89,19 @@ struct TabsDisplayView: View {
                         ],
                         selectedIndex: disabledTabsSelectedIndex,
                         onTabSelected: { disabledTabsSelectedIndex = $0 }
+                    )
+                }
+
+                sectionView(title: "Without Divider") {
+                    LemonadeUi.Tabs(
+                        tabs: [
+                            LemonadeTabItem(label: "Overview"),
+                            LemonadeTabItem(label: "Details"),
+                            LemonadeTabItem(label: "Reviews")
+                        ],
+                        selectedIndex: noDividerSelectedIndex,
+                        onTabSelected: { noDividerSelectedIndex = $0 },
+                        showDivider: false
                     )
                 }
             }

@@ -2,16 +2,18 @@ import SwiftUI
 import Lemonade
 
 struct SpacingDisplayView: View {
+    private let spaceValues = LemonadeSpaceValuesImpl()
+
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                ForEach(spacingItems, id: \.name) { item in
+            LazyVStack(alignment: .leading, spacing: 16) {
+                ForEach(SpacingItem.items(reflecting: spaceValues)) { item in
                     HStack(spacing: 16) {
                         Text(item.name)
                             .font(.caption)
                             .frame(width: 100, alignment: .leading)
 
-                        Text("\(Int(item.value))pt")
+                        Text(item.measurement)
                             .font(.caption)
                             .foregroundStyle(.content.contentSecondary)
                             .frame(width: 50)
@@ -31,28 +33,25 @@ struct SpacingDisplayView: View {
     }
 }
 
-private struct SpacingItem {
+private struct SpacingItem: Identifiable {
     let name: String
     let value: CGFloat
-}
 
-private let spacingItems: [SpacingItem] = [
-    SpacingItem(name: "spacing0", value: LemonadeSpacing.spacing0.value),
-    SpacingItem(name: "spacing50", value: LemonadeSpacing.spacing50.value),
-    SpacingItem(name: "spacing100", value: LemonadeSpacing.spacing100.value),
-    SpacingItem(name: "spacing200", value: LemonadeSpacing.spacing200.value),
-    SpacingItem(name: "spacing300", value: LemonadeSpacing.spacing300.value),
-    SpacingItem(name: "spacing400", value: LemonadeSpacing.spacing400.value),
-    SpacingItem(name: "spacing500", value: LemonadeSpacing.spacing500.value),
-    SpacingItem(name: "spacing600", value: LemonadeSpacing.spacing600.value),
-    SpacingItem(name: "spacing800", value: LemonadeSpacing.spacing800.value),
-    SpacingItem(name: "spacing1000", value: LemonadeSpacing.spacing1000.value),
-    SpacingItem(name: "spacing1200", value: LemonadeSpacing.spacing1200.value),
-    SpacingItem(name: "spacing1400", value: LemonadeSpacing.spacing1400.value),
-    SpacingItem(name: "spacing1600", value: LemonadeSpacing.spacing1600.value),
-    SpacingItem(name: "spacing1800", value: LemonadeSpacing.spacing1800.value),
-    SpacingItem(name: "spacing2000", value: LemonadeSpacing.spacing2000.value),
-]
+    var id: String { name }
+
+    var measurement: String {
+        value == value.rounded() ? "\(Int(value))pt" : String(format: "%gpt", Double(value))
+    }
+
+    /// Reads the names and values straight off the shipped token object, so the
+    /// gallery always lists every `LemonadeSpacing` case, not a hand-picked subset.
+    static func items(reflecting tokens: Any) -> [SpacingItem] {
+        Mirror(reflecting: tokens).children.compactMap { child in
+            guard let name = child.label, let value = child.value as? CGFloat else { return nil }
+            return SpacingItem(name: name, value: value)
+        }
+    }
+}
 
 #Preview {
     NavigationStack {

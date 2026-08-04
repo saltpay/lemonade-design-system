@@ -88,7 +88,10 @@ internal fun CompactLargeSearchTopBarSampleDisplay() {
                 .nestedScroll(connection = topBarState.nestedScrollConnection)
                 .background(color = LemonadeTheme.colors.background.bgSubtle),
         ) {
-            items(items = filteredItems) { item ->
+            items(
+                items = filteredItems,
+                key = { item -> item },
+            ) { item ->
                 LemonadeUi.Text(
                     text = item,
                     textStyle = LemonadeTheme.typography.bodyMediumRegular,

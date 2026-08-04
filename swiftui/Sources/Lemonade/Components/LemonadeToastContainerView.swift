@@ -243,9 +243,13 @@ struct ToastItemView: View {
                     actionLabel: toast.actionLabel,
                     onAction: toast.onAction
                 )
-                .padding(.top, .space.spacing1800) // Extra space for dismiss gesture
                 .contentShape(Rectangle())
                 .simultaneousGesture(dismissGesture)
+                // Layout spacing only, and deliberately applied *after* the contentShape. Applied
+                // before it, this 72pt of empty space above the pill became hit-testable and
+                // swallowed taps aimed at the content beneath — the same problem the spacers
+                // above solve horizontally.
+                .padding(.top, .space.spacing1800)
                 Spacer(minLength: 0).allowsHitTesting(false)
             }
             .padding(.leading, resolvedPadding(toast.paddingValues?.leading, default: .space.spacing200))

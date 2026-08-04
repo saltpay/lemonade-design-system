@@ -1,44 +1,58 @@
 import SwiftUI
 import Lemonade
 
-struct TextDisplayView: View {
-    private let categorizedStyles: [(category: String, groups: [[TypographyEntry]])] = {
-        let entries = Mirror(reflecting: LemonadeTypography.shared)
-            .children
-            .compactMap { child -> TypographyEntry? in
-                guard let style = child.value as? LemonadeTextStyle,
-                      let name = child.label
-                else { return nil }
-                return TypographyEntry(label: name.typographyDisplayLabel(), style: style)
+/// Every typography token, paired with its camel-cased property name.
+///
+/// Discovered via `Mirror` on purpose: this is a design-system catalog, and a
+/// hand-maintained list silently omits any token added to the library later —
+/// exactly the drift that made the Opacity and BorderWidth galleries wrong.
+/// Reflection is only affordable because this is a file-scope `let`, so it runs
+/// once per process; it used to sit in an *instance* stored property and re-ran
+/// on every construction of the view.
+private let typographyTokens: [(name: String, style: LemonadeTextStyle)] = {
+    Mirror(reflecting: LemonadeTypography.shared).children.compactMap { child in
+        guard let name = child.label, let style = child.value as? LemonadeTextStyle else { return nil }
+        return (name: name, style: style)
+    }
+}()
+
+/// The grouped catalog rendered by ``TextDisplayView``.
+///
+/// A file-scope `let` is lazily initialized exactly once per process, so the
+/// sorting and grouping below never runs again — it used to be an *instance*
+/// stored property, i.e. it re-ran on every construction of the view.
+private let categorizedTypographyStyles: [(category: String, groups: [[TypographyEntry]])] = {
+    let entries = typographyTokens
+        .map { TypographyEntry(label: $0.name.typographyDisplayLabel(), style: $0.style) }
+        .sorted { $0.style.fontSize > $1.style.fontSize }
+
+    let byCategory = Dictionary(grouping: entries) { $0.category }
+    let categoryOrder = ["Display", "Heading", "Body"]
+    let orderedCategories = byCategory.keys.sorted { a, b in
+        let ia = categoryOrder.firstIndex(of: a) ?? categoryOrder.count
+        let ib = categoryOrder.firstIndex(of: b) ?? categoryOrder.count
+        return ia < ib
+    }
+
+    return orderedCategories.compactMap { category in
+        guard let styles = byCategory[category] else { return nil }
+        let groups = Dictionary(grouping: styles) { $0.subCategory ?? "" }
+            .sorted { a, b in
+                // preserve size-descending order by taking the max fontSize in each group
+                let maxA = a.value.map(\.style.fontSize).max() ?? 0
+                let maxB = b.value.map(\.style.fontSize).max() ?? 0
+                return maxA > maxB
             }
-            .sorted { $0.style.fontSize > $1.style.fontSize }
+            .map(\.value)
+        return (category: category, groups: groups)
+    }
+}()
 
-        let byCategory = Dictionary(grouping: entries) { $0.category }
-        let categoryOrder = ["Display", "Heading", "Body"]
-        let orderedCategories = byCategory.keys.sorted { a, b in
-            let ia = categoryOrder.firstIndex(of: a) ?? categoryOrder.count
-            let ib = categoryOrder.firstIndex(of: b) ?? categoryOrder.count
-            return ia < ib
-        }
-
-        return orderedCategories.compactMap { category in
-            guard let styles = byCategory[category] else { return nil }
-            let groups = Dictionary(grouping: styles) { $0.subCategory ?? "" }
-                .sorted { a, b in
-                    // preserve size-descending order by taking the max fontSize in each group
-                    let maxA = a.value.map(\.style.fontSize).max() ?? 0
-                    let maxB = b.value.map(\.style.fontSize).max() ?? 0
-                    return maxA > maxB
-                }
-                .map(\.value)
-            return (category: category, groups: groups)
-        }
-    }()
-
+struct TextDisplayView: View {
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
-                ForEach(categorizedStyles, id: \.category) { section in
+            LazyVStack(alignment: .leading, spacing: 32) {
+                ForEach(categorizedTypographyStyles, id: \.category) { section in
                     sectionView(title: section.category) {
                         VStack(alignment: .leading, spacing: 12) {
                             ForEach(section.groups.indices, id: \.self) { index in
@@ -120,13 +134,27 @@ private struct TypographyEntry: Identifiable {
 }
 
 private extension String {
+    /// Splits a camel-cased token name into words and capitalizes the first letter.
+    ///
+    /// `"bodyXSmallOverline"` -> `"Body XSmall Overline"`. A plain character scan;
+    /// the equivalent `NSRegularExpression` (`([a-z])([A-Z0-9])`) had to be
+    /// compiled on every call.
     func typographyDisplayLabel() -> String {
-        let spaced = replacingOccurrences(
-            of: "([a-z])([A-Z0-9])",
-            with: "$1 $2",
-            options: .regularExpression
-        )
-        return spaced.prefix(1).uppercased() + spaced.dropFirst()
+        var result = ""
+        result.reserveCapacity(count + 4)
+
+        var previousWasLowercase = false
+        for character in self {
+            let startsNewWord = previousWasLowercase
+                && (character.isUppercase || character.isNumber)
+            if startsNewWord {
+                result.append(" ")
+            }
+            result.append(character)
+            previousWasLowercase = character.isLowercase
+        }
+
+        return result.prefix(1).uppercased() + result.dropFirst()
     }
 }
 

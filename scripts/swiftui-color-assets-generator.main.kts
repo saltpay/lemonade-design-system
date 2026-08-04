@@ -228,11 +228,15 @@ fun generateColorShorthand(resources: List<ColorResource>): String {
 
             appendLine("// MARK: - $group Colors Namespace")
             appendLine()
-            appendLine("public struct Lemonade${group}ColorsShorthand {")
+            appendLine("public struct Lemonade${group}ColorsShorthand: Sendable {")
             colors.forEach { color ->
-                appendLine("    public var ${color.name}: Color { Color(\"${color.assetName}\", bundle: .lemonade) }")
+                appendLine("    public let ${color.name} = Color(\"${color.assetName}\", bundle: .lemonade)")
             }
             appendLine("}")
+            appendLine()
+            // Cache a single instance per namespace so the `static var` accessors below
+            // don't rebuild the struct (and its Color values) on every access.
+            appendLine("private let lemonade${group}ColorsShorthand = Lemonade${group}ColorsShorthand()")
             appendLine()
         }
 
@@ -261,7 +265,7 @@ fun generateColorShorthand(resources: List<ColorResource>): String {
                 else -> colors.first().name
             }
             appendLine("    /// Usage: `.foregroundStyle(.$shorthandName.$exampleToken)`")
-            appendLine("    static var $shorthandName: Lemonade${group}ColorsShorthand { Lemonade${group}ColorsShorthand() }")
+            appendLine("    static var $shorthandName: Lemonade${group}ColorsShorthand { lemonade${group}ColorsShorthand }")
             appendLine()
         }
 

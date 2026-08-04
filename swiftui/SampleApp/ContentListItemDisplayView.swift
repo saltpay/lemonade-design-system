@@ -4,7 +4,7 @@ import Lemonade
 struct ContentListItemDisplayView: View {
     var body: some View {
         ScrollView(.vertical) {
-            VStack(spacing: .space.spacing400) {
+            LazyVStack(spacing: .space.spacing400) {
                 // MARK: - Truncation
                 LemonadeUi.Card(
                     header: CardHeaderConfig(title: "Truncation")

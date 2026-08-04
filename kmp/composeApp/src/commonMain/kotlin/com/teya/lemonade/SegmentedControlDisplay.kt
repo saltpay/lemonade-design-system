@@ -14,6 +14,8 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.LemonadeSegmentedControlSize
 import com.teya.lemonade.core.TabButtonProperties
 
+private val iconTabLabels: List<String> = listOf("Home", "Profile", "Settings")
+
 @Suppress("LongMethod")
 @Composable
 internal fun SegmentedControlDisplay() {
@@ -116,7 +118,7 @@ internal fun SegmentedControlDisplay() {
                     ),
                 )
                 LemonadeUi.Text(
-                    text = "Selected: ${listOf("Home", "Profile", "Settings")[selectedIcons]}",
+                    text = "Selected: ${iconTabLabels[selectedIcons]}",
                     textStyle = LemonadeTheme.typography.bodySmallRegular,
                 )
             }

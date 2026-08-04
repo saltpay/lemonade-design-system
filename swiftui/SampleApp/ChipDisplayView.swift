@@ -5,22 +5,22 @@ struct ChipDisplayView: View {
     @State private var selectedChips: Set<String> = ["Option 1"]
 
     var body: some View {
-        NavigationStack {
-            ScrollView(.vertical) {
-                VStack(alignment: .leading, spacing: .space.spacing800) {
-                    statesSection
-                    counterSection
-                    iconsSection
-                    customLeadingSection
-                    interactiveSection
-                    disabledSection
-                    errorSection
-                }
-                .frame(maxWidth: .infinity, alignment: .topLeading)
-                .padding()
-                .navigationTitle("Chip")
+        // No NavigationStack here: this screen is pushed onto HomeView's stack, and
+        // nesting a second stack renders a second nav bar with the wrong insets.
+        ScrollView(.vertical) {
+            LazyVStack(alignment: .leading, spacing: .space.spacing800) {
+                statesSection
+                counterSection
+                iconsSection
+                customLeadingSection
+                interactiveSection
+                disabledSection
+                errorSection
             }
+            .frame(maxWidth: .infinity, alignment: .topLeading)
+            .padding()
         }
+        .navigationTitle("Chip")
     }
 
     private var statesSection: some View {
@@ -155,6 +155,10 @@ struct ChipDisplayView: View {
         }
     }
 
+    // Error styling takes precedence over `selected`, so wiring these up would produce no
+    // visible change on tap. They stay fixed specimens with no `onChipClicked` — exactly
+    // like the States / Counter / Icons galleries above — so the chip renders as a swatch
+    // with no press affordance instead of a button that silently does nothing.
     private var errorSection: some View {
         sectionView(title: "Error") {
             VStack(alignment: .leading, spacing: 12) {
@@ -163,8 +167,7 @@ struct ChipDisplayView: View {
                         LemonadeUi.Chip(
                             label: "Error",
                             selected: false,
-                            error: true,
-                            onChipClicked: {}
+                            error: true
                         )
                         LemonadeUi.Text("Error", font: .bodyXSmallRegular)
                             .foregroundStyle(.content.contentSecondary)
@@ -174,8 +177,7 @@ struct ChipDisplayView: View {
                             label: "Error",
                             selected: false,
                             enabled: false,
-                            error: true,
-                            onChipClicked: {}
+                            error: true
                         )
                         LemonadeUi.Text(
                             "Error Disabled",
@@ -190,15 +192,13 @@ struct ChipDisplayView: View {
                         label: "With Icon",
                         selected: false,
                         leadingIcon: .circleAlert,
-                        error: true,
-                        onChipClicked: {}
+                        error: true
                     )
                     LemonadeUi.Chip(
                         label: "With Trailing",
                         selected: false,
                         trailingIcon: .circleX,
-                        error: true,
-                        onChipClicked: {}
+                        error: true
                     )
                 }
             }
@@ -219,5 +219,7 @@ struct ChipDisplayView: View {
 }
 
 #Preview {
-    ChipDisplayView()
+    NavigationStack {
+        ChipDisplayView()
+    }
 }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,28 +20,27 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.lerp
 
-@Suppress("UnusedParameter")
 @Composable
 internal fun SampleScreenHeader(
-    modifier: Modifier = Modifier,
     title: String?,
+    progress: State<Float>,
     background: Color = LemonadeTheme.colors.background.bgDefault,
-    progress: Float,
-    onBack: (() -> Unit)? = null,
     action: (@Composable () -> Unit)? = null,
 ) {
     if (title.isNullOrBlank()) return
 
+    val collapseProgress by progress
+
     val verticalPad = lerp(
         start = LemonadeTheme.spaces.spacing300,
         stop = LemonadeTheme.spaces.spacing100,
-        fraction = progress,
+        fraction = collapseProgress,
     )
 
-    val targetBgAlpha = if (progress > 0.7f) {
+    val targetBgAlpha = if (collapseProgress > 0.7f) {
         1F
     } else {
-        progress
+        collapseProgress
     }
 
     val animatedAlpha by animateFloatAsState(
@@ -48,7 +48,7 @@ internal fun SampleScreenHeader(
         label = "HeaderBackgroundAlpha",
     )
 
-    val targetFontSize = if (progress > 0f) {
+    val targetFontSize = if (collapseProgress > 0f) {
         LemonadeTheme.typography.headingXXSmall.fontSize
     } else {
         LemonadeTheme.typography.headingSmall.fontSize
@@ -66,7 +66,7 @@ internal fun SampleScreenHeader(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(background.copy(animatedAlpha))
+            .background(background.copy(alpha = animatedAlpha))
             .statusBarsPadding(),
     ) {
         Row(
@@ -90,7 +90,7 @@ internal fun SampleScreenHeader(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(LemonadeTheme.borderWidths.base.border25)
-                .alpha(progress)
+                .alpha(collapseProgress)
                 .background(LemonadeTheme.colors.border.borderNeutralLow),
         )
     }

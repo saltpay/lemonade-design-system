@@ -4,7 +4,7 @@ import Lemonade
 struct IconButtonDisplayView: View {
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading, spacing: 32) {
                 // Primary Solid
                 sectionView(title: "Primary Solid") {
                     sizesRow(icon: .heart, variant: .primary, type: .solid)

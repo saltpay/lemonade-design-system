@@ -3,13 +3,8 @@ package com.teya.lemonade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,38 +20,34 @@ internal fun DialogSampleDisplay() {
     var showBasicDialog by remember { mutableStateOf(false) }
     var showNonDismissableDialog by remember { mutableStateOf(false) }
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(state = rememberScrollState())
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .padding(LemonadeTheme.spaces.spacing400),
-    ) {
+    SampleScreenDisplayLazyColumn(title = "Dialog") {
         // Basic Dialog
-        DialogSection(title = "Basic Dialog") {
-            LemonadeUi.Button(
-                label = "Open Dialog",
-                onClick = { showBasicDialog = true },
-                variant = LemonadeButtonVariant.Secondary,
-                size = LemonadeButtonSize.Medium,
-            )
+        item(key = "Basic Dialog") {
+            DialogSection(title = "Basic Dialog") {
+                LemonadeUi.Button(
+                    label = "Open Dialog",
+                    onClick = { showBasicDialog = true },
+                    variant = LemonadeButtonVariant.Secondary,
+                    size = LemonadeButtonSize.Medium,
+                )
+            }
         }
 
         // Non-Dismissable Dialog
-        DialogSection(title = "Non-Dismissable Dialog") {
-            LemonadeUi.Text(
-                text = "This dialog cannot be dismissed by tapping outside or pressing back",
-                textStyle = LemonadeTheme.typography.bodySmallRegular,
-                color = LemonadeTheme.colors.content.contentSecondary,
-            )
-            LemonadeUi.Button(
-                label = "Open Non-Dismissable Dialog",
-                onClick = { showNonDismissableDialog = true },
-                variant = LemonadeButtonVariant.Secondary,
-                size = LemonadeButtonSize.Medium,
-            )
+        item(key = "Non-Dismissable Dialog") {
+            DialogSection(title = "Non-Dismissable Dialog") {
+                LemonadeUi.Text(
+                    text = "This dialog cannot be dismissed by tapping outside or pressing back",
+                    textStyle = LemonadeTheme.typography.bodySmallRegular,
+                    color = LemonadeTheme.colors.content.contentSecondary,
+                )
+                LemonadeUi.Button(
+                    label = "Open Non-Dismissable Dialog",
+                    onClick = { showNonDismissableDialog = true },
+                    variant = LemonadeButtonVariant.Secondary,
+                    size = LemonadeButtonSize.Medium,
+                )
+            }
         }
     }
 
@@ -120,7 +111,8 @@ internal fun DialogSampleDisplay() {
                 textStyle = LemonadeTheme.typography.headingSmall,
             )
             LemonadeUi.Text(
-                text = "You must use the button below to close this dialog. Tapping outside or pressing back will not dismiss it.",
+                text = "You must use the button below to close this dialog. " +
+                    "Tapping outside or pressing back will not dismiss it.",
                 color = LemonadeTheme.colors.content.contentSecondary,
             )
             Row(
@@ -147,7 +139,8 @@ private fun DialogSection(
     content: @Composable () -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing300),
+        modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
     ) {
         LemonadeUi.Text(
             text = title,

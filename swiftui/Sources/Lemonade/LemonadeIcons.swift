@@ -1,7 +1,4 @@
 import SwiftUI
-#if canImport(UIKit)
-import UIKit
-#endif
 
 /// Lemonade Design System Icons.
 /// Icons are loaded from the asset catalog bundled with this module.
@@ -96,6 +93,7 @@ public enum LemonadeIcon: String, CaseIterable {
     case cardCog = "card-cog"
     case cardMachine = "card-machine"
     case cardPlus = "card-plus"
+    case cardRemove = "card-remove"
     case cardRestricted = "card-restricted"
     case cards = "cards"
     case chart = "chart"
@@ -303,16 +301,15 @@ public enum LemonadeIcon: String, CaseIterable {
     case walletSolid = "wallet-solid"
     case wifi = "wifi"
 
-    /// Returns the Image for this icon from the Lemonade bundle's asset catalog
+    /// Returns the Image for this icon from the Lemonade bundle's asset catalog.
+    ///
+    /// Resolution is deferred to render time rather than eagerly loading a `UIImage`: this is read
+    /// from inside `body` on every icon in the library, and the assets are vector-preserving PDFs,
+    /// so an eager `UIImage(named:)` rasterises on the main thread inside the view update. Naming
+    /// the asset lets SwiftUI cache it and re-resolve it on trait changes. Same approach as
+    /// ``LemonadeUi/CountryFlag(flag:size:shape:)`` and ``LemonadeUi/BrandLogo(logo:size:)``.
     public var image: Image {
-        #if canImport(UIKit)
-        if let uiImage = UIImage(named: rawValue, in: .lemonade, compatibleWith: nil) {
-            return Image(uiImage: uiImage).renderingMode(.template)
-        }
-        return Image(systemName: "questionmark.square")
-        #else
-        return Image(self.rawValue, bundle: .lemonade).renderingMode(.template)
-        #endif
+        Image(rawValue, bundle: .lemonade).renderingMode(.template)
     }
 }
 

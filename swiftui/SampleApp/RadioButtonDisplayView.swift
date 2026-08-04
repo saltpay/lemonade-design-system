@@ -3,11 +3,15 @@ import Lemonade
 
 struct RadioButtonDisplayView: View {
     @State private var selectedOption = 0
+    @State private var selectedShipping = 0
+    @State private var selectedPlan = 0
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
-                // Basic States
+            LazyVStack(alignment: .leading, spacing: 32) {
+                // Basic States — fixed specimens of the two visual states. A single radio
+                // button cannot be unchecked by tapping it, so these stay non-interactive
+                // swatches (hit testing off) instead of controls that ignore a tap.
                 sectionView(title: "States") {
                     HStack(spacing: 24) {
                         VStack(spacing: 8) {
@@ -28,6 +32,7 @@ struct RadioButtonDisplayView: View {
                                 .font(.caption)
                         }
                     }
+                    .allowsHitTesting(false)
                 }
 
                 // Interactive Group
@@ -45,42 +50,43 @@ struct RadioButtonDisplayView: View {
                     }
                 }
 
-                // With Label
+                // With Label — its own radio group, so it does not secretly move the
+                // "Interactive Group" selection above.
                 sectionView(title: "With Label") {
                     VStack(alignment: .leading, spacing: 16) {
                         LemonadeUi.RadioButton(
-                            checked: selectedOption == 0,
-                            onRadioButtonClicked: { selectedOption = 0 },
+                            checked: selectedShipping == 0,
+                            onRadioButtonClicked: { selectedShipping = 0 },
                             label: "Free shipping"
                         )
 
                         LemonadeUi.RadioButton(
-                            checked: selectedOption == 1,
-                            onRadioButtonClicked: { selectedOption = 1 },
+                            checked: selectedShipping == 1,
+                            onRadioButtonClicked: { selectedShipping = 1 },
                             label: "Express delivery"
                         )
 
                         LemonadeUi.RadioButton(
-                            checked: selectedOption == 2,
-                            onRadioButtonClicked: { selectedOption = 2 },
+                            checked: selectedShipping == 2,
+                            onRadioButtonClicked: { selectedShipping = 2 },
                             label: "Same day delivery"
                         )
                     }
                 }
 
-                // With Support Text
+                // With Support Text — a real radio group backed by its own selection.
                 sectionView(title: "With Support Text") {
                     VStack(alignment: .leading, spacing: 16) {
                         LemonadeUi.RadioButton(
-                            checked: true,
-                            onRadioButtonClicked: {},
+                            checked: selectedPlan == 0,
+                            onRadioButtonClicked: { selectedPlan = 0 },
                             label: "Standard Plan",
                             supportText: "$9.99/month - Basic features"
                         )
 
                         LemonadeUi.RadioButton(
-                            checked: false,
-                            onRadioButtonClicked: {},
+                            checked: selectedPlan == 1,
+                            onRadioButtonClicked: { selectedPlan = 1 },
                             label: "Premium Plan",
                             supportText: "$19.99/month - All features included"
                         )

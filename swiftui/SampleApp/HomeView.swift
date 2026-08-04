@@ -1,139 +1,163 @@
 import SwiftUI
 import Lemonade
 
+// MARK: - Catalog Model
+
+/// Value-based route for every demo screen in the catalog.
+///
+/// Using a plain `Hashable` value as the navigation route (instead of eagerly
+/// building an `AnyView` per entry) means a destination view is only constructed
+/// when the user actually pushes it. The raw value doubles as the display title.
+private enum Demo: String, CaseIterable, Identifiable, Hashable {
+    // Foundations
+    case colors = "Colors"
+    case spacing = "Spacing"
+    case radius = "Radius"
+    case shadows = "Shadows"
+    case sizes = "Sizes"
+    case opacity = "Opacity"
+    case borderWidth = "Border Width"
+
+    // Assets
+    case icons = "Icons"
+    case brandLogos = "Brand Logos"
+    case countryFlags = "Country Flags"
+
+    // Typography
+    case text = "Text"
+    case markdown = "Markdown"
+
+    // Form Controls
+    case button = "Button"
+    case iconButton = "IconButton"
+    case checkbox = "Checkbox"
+    case radioButton = "RadioButton"
+    case switchControl = "Switch"
+    case datePicker = "DatePicker"
+    case inlineCalendar = "InlineCalendar"
+
+    // Input Fields
+    case textField = "TextField"
+    case searchField = "SearchField"
+    case selectField = "SelectField"
+    case pinCode = "PinCode"
+
+    // Display Components
+    case tag = "Tag"
+    case badge = "Badge"
+    case symbolContainer = "SymbolContainer"
+    case card = "Card"
+    case divider = "Divider"
+    case notice = "Notice"
+    case tooltip = "Tooltip"
+    case historyTimeline = "HistoryTimeline"
+
+    // Selection & Lists
+    case chip = "Chip"
+    case listItem = "ListItem"
+    case contentListItem = "ContentListItem"
+    case segmentedControl = "SegmentedControl"
+    case boxSelection = "BoxSelection"
+
+    // Navigation
+    case link = "Link"
+    case tabs = "Tabs"
+    case tile = "Tile"
+    case topBar = "TopBar"
+
+    // Feedback
+    case skeleton = "Skeleton"
+    case spinner = "Spinner"
+    case toast = "Toast"
+
+    var id: Self { self }
+
+    var title: String { rawValue }
+}
+
+/// A titled group of demo entries. The id is derived from the content (the title
+/// is unique across the catalog) so `ForEach` can diff sections across body
+/// passes instead of tearing them down and rebuilding them.
+private struct DemoSection: Identifiable {
+    var id: String { title }
+    let title: String
+    let items: [Demo]
+}
+
+/// The catalog itself. A file-scope `let` is lazily initialized exactly once per
+/// process, so the section/item graph is never rebuilt on a body pass.
+private let demoSections: [DemoSection] = [
+    DemoSection(
+        title: "Foundations",
+        items: [.colors, .spacing, .radius, .shadows, .sizes, .opacity, .borderWidth]
+    ),
+    DemoSection(
+        title: "Assets",
+        items: [.icons, .brandLogos, .countryFlags]
+    ),
+    DemoSection(
+        title: "Typography",
+        items: [.text, .markdown]
+    ),
+    DemoSection(
+        title: "Form Controls",
+        items: [.button, .iconButton, .checkbox, .radioButton, .switchControl, .datePicker, .inlineCalendar]
+    ),
+    DemoSection(
+        title: "Input Fields",
+        items: [.textField, .searchField, .selectField, .pinCode]
+    ),
+    DemoSection(
+        title: "Display Components",
+        items: [.tag, .badge, .symbolContainer, .card, .divider, .notice, .tooltip, .historyTimeline]
+    ),
+    DemoSection(
+        title: "Selection & Lists",
+        items: [.chip, .listItem, .contentListItem, .segmentedControl, .boxSelection]
+    ),
+    DemoSection(
+        title: "Navigation",
+        items: [.link, .tabs, .tile, .topBar]
+    ),
+    DemoSection(
+        title: "Feedback",
+        items: [.skeleton, .spinner, .toast]
+    )
+]
+
+private func filteredSections(matching searchText: String) -> [DemoSection] {
+    let text = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !text.isEmpty else { return demoSections }
+
+    // Filter items within each section and drop empty sections
+    return demoSections.compactMap { section in
+        let sectionMatches = section.title.localizedCaseInsensitiveContains(text)
+        let matchedItems = section.items.filter { item in
+            sectionMatches || item.title.localizedCaseInsensitiveContains(text)
+        }
+        return matchedItems.isEmpty ? nil : DemoSection(title: section.title, items: matchedItems)
+    }
+}
+
+// MARK: - Home
+
 struct HomeView: View {
     @EnvironmentObject private var styleHandler: LemonadeStyleHandler
     @State private var searchText: String = ""
     @State private var showSettings: Bool = false
 
-    private struct DemoItem: Identifiable {
-        let id = UUID()
-        let title: String
-        let destination: AnyView
-    }
-
-    private struct DemoSection: Identifiable {
-        let id = UUID()
-        let title: String
-        let items: [DemoItem]
-    }
-
-    private var sections: [DemoSection] {
-        [
-            DemoSection(
-                title: "Foundations",
-                items: [
-                    DemoItem(title: "Colors", destination: AnyView(ColorsDisplayView())),
-                    DemoItem(title: "Spacing", destination: AnyView(SpacingDisplayView())),
-                    DemoItem(title: "Radius", destination: AnyView(RadiusDisplayView())),
-                    DemoItem(title: "Shadows", destination: AnyView(ShadowsDisplayView())),
-                    DemoItem(title: "Sizes", destination: AnyView(SizesDisplayView())),
-                    DemoItem(title: "Opacity", destination: AnyView(OpacityDisplayView())),
-                    DemoItem(title: "Border Width", destination: AnyView(BorderWidthDisplayView()))
-                ]
-            ),
-            DemoSection(
-                title: "Assets",
-                items: [
-                    DemoItem(title: "Icons", destination: AnyView(IconsDisplayView())),
-                    DemoItem(title: "Brand Logos", destination: AnyView(BrandLogosDisplayView())),
-                    DemoItem(title: "Country Flags", destination: AnyView(FlagsDisplayView()))
-                ]
-            ),
-            DemoSection(
-                title: "Typography",
-                items: [
-                    DemoItem(title: "Text", destination: AnyView(TextDisplayView())),
-                    DemoItem(title: "Markdown", destination: AnyView(MarkdownDisplayView()))
-                ]
-            ),
-            DemoSection(
-                title: "Form Controls",
-                items: [
-                    DemoItem(title: "Button", destination: AnyView(ButtonDisplayView())),
-                    DemoItem(title: "IconButton", destination: AnyView(IconButtonDisplayView())),
-                    DemoItem(title: "Checkbox", destination: AnyView(CheckboxDisplayView())),
-                    DemoItem(title: "RadioButton", destination: AnyView(RadioButtonDisplayView())),
-                    DemoItem(title: "Switch", destination: AnyView(SwitchDisplayView())),
-                    DemoItem(title: "DatePicker", destination: AnyView(DatePickerDisplayView())),
-                    DemoItem(title: "InlineCalendar", destination: AnyView(InlineCalendarDisplayView()))
-                ]
-            ),
-            DemoSection(
-                title: "Input Fields",
-                items: [
-                    DemoItem(title: "TextField", destination: AnyView(TextFieldDisplayView())),
-                    DemoItem(title: "SearchField", destination: AnyView(SearchFieldDisplayView())),
-                    DemoItem(title: "SelectField", destination: AnyView(SelectFieldDisplayView())),
-                    DemoItem(title: "PinCode", destination: AnyView(PinCodeDisplayView()))
-                ]
-            ),
-            DemoSection(
-                title: "Display Components",
-                items: [
-                    DemoItem(title: "Tag", destination: AnyView(TagDisplayView())),
-                    DemoItem(title: "Badge", destination: AnyView(BadgeDisplayView())),
-                    DemoItem(title: "SymbolContainer", destination: AnyView(SymbolContainerDisplayView())),
-                    DemoItem(title: "Card", destination: AnyView(CardDisplayView())),
-                    DemoItem(title: "Divider", destination: AnyView(DividerDisplayView())),
-                    DemoItem(title: "Notice", destination: AnyView(NoticeDisplayView())),
-                    DemoItem(title: "Tooltip", destination: AnyView(TooltipDisplayView())),
-                    DemoItem(title: "HistoryTimeline", destination: AnyView(HistoryTimelineDisplayView()))
-                ]
-            ),
-            DemoSection(
-                title: "Selection & Lists",
-                items: [
-                    DemoItem(title: "Chip", destination: AnyView(ChipDisplayView())),
-                    DemoItem(title: "ListItem", destination: AnyView(ListItemDisplayView())),
-                    DemoItem(title: "ContentListItem", destination: AnyView(ContentListItemDisplayView())),
-                    DemoItem(title: "SegmentedControl", destination: AnyView(SegmentedControlDisplayView())),
-                    DemoItem(title: "BoxSelection", destination: AnyView(BoxSelectionDisplayView()))
-                ]
-            ),
-            DemoSection(
-                title: "Navigation",
-                items: [
-                    DemoItem(title: "Link", destination: AnyView(LinkDisplayView())),
-                    DemoItem(title: "Tabs", destination: AnyView(TabsDisplayView())),
-                    DemoItem(title: "Tile", destination: AnyView(TileDisplayView())),
-                    DemoItem(title: "TopBar", destination: AnyView(TopBarDisplayView()))
-                ]
-            ),
-            DemoSection(
-                title: "Feedback",
-                items: [
-                    DemoItem(title: "Skeleton", destination: AnyView(SkeletonDisplayView())),
-                    DemoItem(title: "Spinner", destination: AnyView(SpinnerDisplayView())),
-                    DemoItem(title: "Toast", destination: AnyView(ToastDisplayView()))
-                ]
-            )
-        ]
-    }
-
-    private var filteredSections: [DemoSection] {
-        let text = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !text.isEmpty else { return sections }
-
-        // Filter items within each section and drop empty sections
-        return sections.compactMap { section in
-            let matchedItems = section.items.filter { item in
-                item.title.localizedCaseInsensitiveContains(text) ||
-                section.title.localizedCaseInsensitiveContains(text)
-            }
-            return matchedItems.isEmpty ? nil : DemoSection(title: section.title, items: matchedItems)
-        }
-    }
-
     var body: some View {
         List {
-            ForEach(filteredSections) { section in
+            ForEach(filteredSections(matching: searchText)) { section in
                 Section(section.title) {
                     ForEach(section.items) { item in
-                        NavigationLink(item.title) { item.destination }
+                        NavigationLink(item.title, value: item)
                     }
                 }
             }
+        }
+        .navigationDestination(for: Demo.self) { demo in
+            destination(for: demo)
         }
         .navigationTitle("Lemonade DS")
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .automatic))
@@ -152,6 +176,60 @@ struct HomeView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
                 .environmentObject(styleHandler)
+                // Settings is three rows. Without detents a `.sheet` presents at full height, so it
+                // read as a full-screen takeover rather than a bottom sheet — no visible top inset,
+                // no rounded corners, nothing of the catalog left behind it.
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
+        }
+    }
+
+    @ViewBuilder
+    private func destination(for demo: Demo) -> some View {
+        switch demo {
+        case .colors: ColorsDisplayView()
+        case .spacing: SpacingDisplayView()
+        case .radius: RadiusDisplayView()
+        case .shadows: ShadowsDisplayView()
+        case .sizes: SizesDisplayView()
+        case .opacity: OpacityDisplayView()
+        case .borderWidth: BorderWidthDisplayView()
+        case .icons: IconsDisplayView()
+        case .brandLogos: BrandLogosDisplayView()
+        case .countryFlags: FlagsDisplayView()
+        case .text: TextDisplayView()
+        case .markdown: MarkdownDisplayView()
+        case .button: ButtonDisplayView()
+        case .iconButton: IconButtonDisplayView()
+        case .checkbox: CheckboxDisplayView()
+        case .radioButton: RadioButtonDisplayView()
+        case .switchControl: SwitchDisplayView()
+        case .datePicker: DatePickerDisplayView()
+        case .inlineCalendar: InlineCalendarDisplayView()
+        case .textField: TextFieldDisplayView()
+        case .searchField: SearchFieldDisplayView()
+        case .selectField: SelectFieldDisplayView()
+        case .pinCode: PinCodeDisplayView()
+        case .tag: TagDisplayView()
+        case .badge: BadgeDisplayView()
+        case .symbolContainer: SymbolContainerDisplayView()
+        case .card: CardDisplayView()
+        case .divider: DividerDisplayView()
+        case .notice: NoticeDisplayView()
+        case .tooltip: TooltipDisplayView()
+        case .historyTimeline: HistoryTimelineDisplayView()
+        case .chip: ChipDisplayView()
+        case .listItem: ListItemDisplayView()
+        case .contentListItem: ContentListItemDisplayView()
+        case .segmentedControl: SegmentedControlDisplayView()
+        case .boxSelection: BoxSelectionDisplayView()
+        case .link: LinkDisplayView()
+        case .tabs: TabsDisplayView()
+        case .tile: TileDisplayView()
+        case .topBar: TopBarDisplayView()
+        case .skeleton: SkeletonDisplayView()
+        case .spinner: SpinnerDisplayView()
+        case .toast: ToastDisplayView()
         }
     }
 }

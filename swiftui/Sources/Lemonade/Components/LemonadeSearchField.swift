@@ -33,6 +33,11 @@ public extension LemonadeUi {
     ///     accessibility. The component leaves it unset by default so the label can be localised by
     ///     the consumer; supply one whenever the field is `dismissible`.
     ///   - enabled: Flag to enable or disable the component
+    ///   - isFocused: Optional two-way binding to the field's focus, for hosts that need to read it
+    ///     or drive it — moving the field into a toolbar when a search begins, say, or handing focus
+    ///     to a replacement field. Writing `true` focuses the field and raises the keyboard; the
+    ///     field writes back whenever the user focuses or dismisses it. Left unset the field keeps
+    ///     its focus entirely to itself and behaves exactly as before.
     /// - Returns: A styled SearchField view
     @ViewBuilder
     static func SearchField(
@@ -43,7 +48,8 @@ public extension LemonadeUi {
         dismissible: Bool = true,
         onCancel: (() -> Void)? = nil,
         cancelContentDescription: String? = nil,
-        enabled: Bool = true
+        enabled: Bool = true,
+        isFocused: Binding<Bool>? = nil
     ) -> some View {
         LemonadeSearchFieldView(
             input: input,
@@ -53,7 +59,8 @@ public extension LemonadeUi {
             dismissible: dismissible,
             onCancel: onCancel,
             cancelContentDescription: cancelContentDescription,
-            enabled: enabled
+            enabled: enabled,
+            externalFocus: isFocused
         )
     }
 }
@@ -70,39 +77,12 @@ private struct LemonadeSearchFieldView: View {
     let cancelContentDescription: String?
     let enabled: Bool
 
+    /// The host's mirror of the focus, when it supplied one. The field still owns the real
+    /// `@FocusState`: `.focused(_:)` takes nothing else, and it is what invalidates this view when
+    /// the *user* focuses or dismisses the field — a change the host's binding only learns about
+    /// once we write it back. Everything keyed on focus, the cancel button above all, hangs off it.
+    let externalFocus: Binding<Bool>?
     @FocusState private var isFocused: Bool
-
-    /// Mirrors `shouldShowCancel`, but is only ever written from inside an explicit `withAnimation`.
-    /// `@FocusState` updates arrive without an animation transaction, so an `if` driven straight off
-    /// `isFocused` would insert and remove the button untransitioned no matter what `.transition` it
-    /// carries. Routing the change through plain state is what lets the scale actually run.
-    /// Seeded in `init` rather than `onAppear` so a pre-filled field draws its cancel button on the
-    /// very first frame instead of popping it in one frame late.
-    @State private var isCancelPresented: Bool
-
-    init(
-        input: Binding<String>,
-        onInputChanged: ((String) -> Void)?,
-        placeholder: String?,
-        onInputClear: (() -> Void)?,
-        dismissible: Bool,
-        onCancel: (() -> Void)?,
-        cancelContentDescription: String?,
-        enabled: Bool
-    ) {
-        self._input = input
-        self.onInputChanged = onInputChanged
-        self.placeholder = placeholder
-        self.onInputClear = onInputClear
-        self.dismissible = dismissible
-        self.onCancel = onCancel
-        self.cancelContentDescription = cancelContentDescription
-        self.enabled = enabled
-        // Same predicate as `shouldShowCancel`, minus focus — nothing is focused before first render.
-        self._isCancelPresented = State(
-            initialValue: dismissible && enabled && !input.wrappedValue.isEmpty
-        )
-    }
 
     private let height: CGFloat = LemonadeTheme.sizes.size1100
     private let horizontalPadding: CGFloat = LemonadeTheme.spaces.spacing300
@@ -137,7 +117,7 @@ private struct LemonadeSearchFieldView: View {
         HStack(spacing: LemonadeTheme.spaces.spacing200) {
             searchField
 
-            if isCancelPresented {
+            if shouldShowCancel {
                 LemonadeUi.IconButton(
                     icon: .times,
                     contentDescription: cancelContentDescription,
@@ -157,8 +137,24 @@ private struct LemonadeSearchFieldView: View {
                 .transition(.scale(scale: cancelCollapsedScale).combined(with: .opacity))
             }
         }
-        .onChange(of: shouldShowCancel) { newValue in
-            withAnimation(.easeInOut(duration: animationDuration)) { isCancelPresented = newValue }
+        .animation(.easeInOut(duration: animationDuration), value: shouldShowCancel)
+        .onChange(of: isFocused) { newValue in
+            guard let externalFocus, externalFocus.wrappedValue != newValue else { return }
+            externalFocus.wrappedValue = newValue
+        }
+        .onChange(of: externalFocus?.wrappedValue) { newValue in
+            guard let newValue, newValue != isFocused else { return }
+            isFocused = newValue
+        }
+        .onAppear {
+            // A host can hand the field focus before it ever renders — a search promoted into a
+            // toolbar does exactly that — so adopt what it asked for on the way in. Nothing is
+            // focused yet at this point, so only a requested `true` is worth acting on, and it has
+            // to wait a frame: a `@FocusState` set synchronously from `onAppear` lands before the
+            // field is in the hierarchy and is dropped. `LemonadePinCode` defers auto-focus for the
+            // same reason.
+            guard externalFocus?.wrappedValue == true else { return }
+            DispatchQueue.main.async { isFocused = true }
         }
     }
 
@@ -276,6 +272,21 @@ struct LemonadeSearchField_Previews: PreviewProvider {
                     placeholder: "Disabled search",
                     enabled: false
                 )
+            }
+
+            // Host-owned focus: the button drives the field, the field reports back.
+            StatefulPreviewWrapper(false) { focus in
+                StatefulPreviewWrapper("") { input in
+                    VStack(alignment: .leading, spacing: 8) {
+                        LemonadeUi.SearchField(
+                            input: input,
+                            placeholder: "Host-driven focus...",
+                            isFocused: focus
+                        )
+
+                        SwiftUI.Button("Focus from the host") { focus.wrappedValue = true }
+                    }
+                }
             }
         }
         .padding()

@@ -6,12 +6,12 @@ struct OpacityDisplayView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
+            LazyVStack(alignment: .leading, spacing: 24) {
                 Text("Base Opacities")
                     .font(.headline)
 
                 VStack(alignment: .leading, spacing: 12) {
-                    ForEach(baseOpacityItems, id: \.name) { item in
+                    ForEach(OpacityItem.items(reflecting: opacityTokens.base)) { item in
                         OpacityRow(item: item)
                     }
                 }
@@ -21,7 +21,7 @@ struct OpacityDisplayView: View {
                     .padding(.top, 8)
 
                 VStack(alignment: .leading, spacing: 12) {
-                    ForEach(stateOpacityItems, id: \.name) { item in
+                    ForEach(OpacityItem.items(reflecting: opacityTokens.state)) { item in
                         OpacityRow(item: item)
                     }
                 }
@@ -41,7 +41,7 @@ private struct OpacityRow: View {
                 .font(.caption)
                 .frame(width: 120, alignment: .leading)
 
-            Text("\(Int(item.value * 100))%")
+            Text(item.percentage)
                 .font(.caption)
                 .foregroundStyle(.content.contentSecondary)
                 .frame(width: 50)
@@ -54,30 +54,25 @@ private struct OpacityRow: View {
     }
 }
 
-private struct OpacityItem {
+private struct OpacityItem: Identifiable {
     let name: String
     let value: Double
+
+    var id: String { name }
+
+    var percentage: String {
+        "\(Int((value * 100).rounded()))%"
+    }
+
+    /// Reads the names and values straight off the shipped token object, so the
+    /// gallery can never claim an opacity the SDK does not have.
+    static func items(reflecting tokens: Any) -> [OpacityItem] {
+        Mirror(reflecting: tokens).children.compactMap { child in
+            guard let name = child.label, let value = child.value as? Double else { return nil }
+            return OpacityItem(name: name, value: value)
+        }
+    }
 }
-
-private let baseOpacityItems: [OpacityItem] = [
-    OpacityItem(name: "opacity0", value: 0.0),
-    OpacityItem(name: "opacity5", value: 0.05),
-    OpacityItem(name: "opacity10", value: 0.10),
-    OpacityItem(name: "opacity20", value: 0.20),
-    OpacityItem(name: "opacity30", value: 0.30),
-    OpacityItem(name: "opacity40", value: 0.40),
-    OpacityItem(name: "opacity50", value: 0.50),
-    OpacityItem(name: "opacity60", value: 0.60),
-    OpacityItem(name: "opacity70", value: 0.70),
-    OpacityItem(name: "opacity80", value: 0.80),
-    OpacityItem(name: "opacity90", value: 0.90),
-    OpacityItem(name: "opacity100", value: 1.0),
-]
-
-private let stateOpacityItems: [OpacityItem] = [
-    OpacityItem(name: "opacityPressed", value: 0.20),
-    OpacityItem(name: "opacityDisabled", value: 0.40),
-]
 
 #Preview {
     NavigationStack {

@@ -2,16 +2,18 @@ import SwiftUI
 import Lemonade
 
 struct SizesDisplayView: View {
+    private let sizeValues = LemonadeSizeValuesImpl()
+
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                ForEach(sizeItems, id: \.name) { item in
+            LazyVStack(alignment: .leading, spacing: 16) {
+                ForEach(SizeItem.items(reflecting: sizeValues)) { item in
                     HStack(spacing: 16) {
                         Text(item.name)
                             .font(.caption)
                             .frame(width: 80, alignment: .leading)
 
-                        Text("\(Int(item.value))pt")
+                        Text(item.measurement)
                             .font(.caption)
                             .foregroundStyle(.content.contentSecondary)
                             .frame(width: 50)
@@ -30,25 +32,25 @@ struct SizesDisplayView: View {
     }
 }
 
-private struct SizeItem {
+private struct SizeItem: Identifiable {
     let name: String
     let value: CGFloat
-}
 
-private let sizeItems: [SizeItem] = [
-    SizeItem(name: "size100", value: LemonadeSizes.size100.value),
-    SizeItem(name: "size200", value: LemonadeSizes.size200.value),
-    SizeItem(name: "size300", value: LemonadeSizes.size300.value),
-    SizeItem(name: "size400", value: LemonadeSizes.size400.value),
-    SizeItem(name: "size500", value: LemonadeSizes.size500.value),
-    SizeItem(name: "size600", value: LemonadeSizes.size600.value),
-    SizeItem(name: "size700", value: LemonadeSizes.size700.value),
-    SizeItem(name: "size800", value: LemonadeSizes.size800.value),
-    SizeItem(name: "size900", value: LemonadeSizes.size900.value),
-    SizeItem(name: "size1000", value: LemonadeSizes.size1000.value),
-    SizeItem(name: "size1100", value: LemonadeSizes.size1100.value),
-    SizeItem(name: "size1200", value: LemonadeSizes.size1200.value),
-]
+    var id: String { name }
+
+    var measurement: String {
+        value == value.rounded() ? "\(Int(value))pt" : String(format: "%gpt", Double(value))
+    }
+
+    /// Reads the names and values straight off the shipped token object, so the
+    /// gallery always lists every `LemonadeSizes` case, not a hand-picked subset.
+    static func items(reflecting tokens: Any) -> [SizeItem] {
+        Mirror(reflecting: tokens).children.compactMap { child in
+            guard let name = child.label, let value = child.value as? CGFloat else { return nil }
+            return SizeItem(name: name, value: value)
+        }
+    }
+}
 
 #Preview {
     NavigationStack {

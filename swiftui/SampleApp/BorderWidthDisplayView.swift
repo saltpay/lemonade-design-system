@@ -6,24 +6,20 @@ struct BorderWidthDisplayView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                ForEach(borderWidthItems, id: \.name) { item in
-                    HStack(spacing: 16) {
-                        Text(item.name)
-                            .font(.caption)
-                            .frame(width: 120, alignment: .leading)
+            LazyVStack(alignment: .leading, spacing: 24) {
+                Text("Base Border Widths")
+                    .font(.headline)
 
-                        Text("\(Int(item.value))pt")
-                            .font(.caption)
-                            .foregroundStyle(.content.contentSecondary)
-                            .frame(width: 50)
+                ForEach(BorderWidthItem.items(reflecting: borderWidthTokens.base)) { item in
+                    BorderWidthRow(item: item)
+                }
 
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(.content.contentInfo, lineWidth: item.value)
-                            .frame(width: 80, height: 60)
+                Text("State Border Widths")
+                    .font(.headline)
+                    .padding(.top, 8)
 
-                        Spacer()
-                    }
+                ForEach(BorderWidthItem.items(reflecting: borderWidthTokens.state)) { item in
+                    BorderWidthRow(item: item)
                 }
             }
             .padding()
@@ -32,18 +28,49 @@ struct BorderWidthDisplayView: View {
     }
 }
 
-private struct BorderWidthItem {
-    let name: String
-    let value: CGFloat
+private struct BorderWidthRow: View {
+    let item: BorderWidthItem
+
+    var body: some View {
+        HStack(spacing: 16) {
+            Text(item.name)
+                .font(.caption)
+                .frame(width: 120, alignment: .leading)
+
+            Text(item.measurement)
+                .font(.caption)
+                .foregroundStyle(.content.contentSecondary)
+                .frame(width: 50)
+
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(.content.contentInfo, lineWidth: item.value)
+                .frame(width: 80, height: 60)
+
+            Spacer()
+        }
+    }
 }
 
-private let borderWidthItems: [BorderWidthItem] = [
-    BorderWidthItem(name: "width0", value: 0),
-    BorderWidthItem(name: "width100", value: 1),
-    BorderWidthItem(name: "width200", value: 2),
-    BorderWidthItem(name: "width300", value: 3),
-    BorderWidthItem(name: "width400", value: 4),
-]
+private struct BorderWidthItem: Identifiable {
+    let name: String
+    let value: CGFloat
+
+    var id: String { name }
+
+    /// Fractional tokens such as `border40` (1.5) must not be rounded away.
+    var measurement: String {
+        value == value.rounded() ? "\(Int(value))pt" : String(format: "%gpt", Double(value))
+    }
+
+    /// Reads the names and values straight off the shipped token object, so the
+    /// gallery can never claim a border width the SDK does not have.
+    static func items(reflecting tokens: Any) -> [BorderWidthItem] {
+        Mirror(reflecting: tokens).children.compactMap { child in
+            guard let name = child.label, let value = child.value as? CGFloat else { return nil }
+            return BorderWidthItem(name: name, value: value)
+        }
+    }
+}
 
 #Preview {
     NavigationStack {

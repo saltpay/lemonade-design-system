@@ -1,20 +1,41 @@
 import SwiftUI
 import Lemonade
 
+/// A country flag with its display strings and search haystack resolved up front.
+///
+/// `LemonadeCountryFlag.countryCode` / `.countryName` are *computed* - they
+/// `split`, `capitalized` and `joined` the raw value on every access. Doing that
+/// for 265 cases on every keystroke (and again per visible cell) is pure waste,
+/// so it is done once per process here.
+private struct FlagEntry: Identifiable {
+    let flag: LemonadeCountryFlag
+    let code: String
+    let name: String
+    let haystack: String
+
+    var id: String { flag.rawValue }
+}
+
+private let flagIndex: [FlagEntry] = LemonadeCountryFlag.allCases.map { flag in
+    let code = flag.countryCode
+    let name = flag.countryName
+    return FlagEntry(
+        flag: flag,
+        code: code,
+        name: name,
+        haystack: "\(flag.rawValue)\n\(code)\n\(name)".lowercased()
+    )
+}
+
+private func filteredFlags(matching searchText: String) -> [FlagEntry] {
+    guard !searchText.isEmpty else { return flagIndex }
+    let query = searchText.lowercased()
+    return flagIndex.filter { $0.haystack.contains(query) }
+}
+
 struct FlagsDisplayView: View {
     @State private var searchText = ""
     @State private var shape: LemonadeCountryFlagShape = .circular
-
-    private var filteredFlags: [LemonadeCountryFlag] {
-        if searchText.isEmpty {
-            return Array(LemonadeCountryFlag.allCases)
-        }
-        return LemonadeCountryFlag.allCases.filter { flag in
-            flag.rawValue.localizedCaseInsensitiveContains(searchText) ||
-            flag.countryCode.localizedCaseInsensitiveContains(searchText) ||
-            flag.countryName.localizedCaseInsensitiveContains(searchText)
-        }
-    }
 
     private let columns = [
         GridItem(.adaptive(minimum: 80), spacing: 12)
@@ -61,7 +82,10 @@ struct FlagsDisplayView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
+        // Evaluated once per body pass and reused by both the grid and the title.
+        let flags = filteredFlags(matching: searchText)
+
+        return VStack(spacing: 0) {
             Picker("Shape", selection: $shape) {
                 Text("Circular").tag(LemonadeCountryFlagShape.circular)
                 Text("Rounded").tag(LemonadeCountryFlagShape.rounded)
@@ -76,19 +100,19 @@ struct FlagsDisplayView: View {
                     .padding(.top)
 
                 LazyVGrid(columns: columns, spacing: 12) {
-                    ForEach(filteredFlags, id: \.rawValue) { flag in
+                    ForEach(flags) { entry in
                         VStack(spacing: 6) {
                             LemonadeUi.CountryFlag(
-                                flag: flag,
+                                flag: entry.flag,
                                 size: .xxLarge,
                                 shape: shape
                             )
 
-                            Text(flag.countryCode)
+                            Text(entry.code)
                                 .font(.system(size: 11, weight: .semibold))
                                 .foregroundStyle(.primary)
 
-                            Text(flag.countryName)
+                            Text(entry.name)
                                 .font(.system(size: 8))
                                 .foregroundStyle(.content.contentSecondary)
                                 .lineLimit(2)
@@ -104,7 +128,7 @@ struct FlagsDisplayView: View {
             }
         }
         .searchable(text: $searchText, prompt: "Search by code or country name")
-        .navigationTitle("Country Flags (\(filteredFlags.count))")
+        .navigationTitle("Country Flags (\(flags.count))")
     }
 }
 

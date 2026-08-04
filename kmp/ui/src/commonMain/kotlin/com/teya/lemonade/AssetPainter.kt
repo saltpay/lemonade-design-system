@@ -1,9 +1,11 @@
 package com.teya.lemonade
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
@@ -41,12 +43,10 @@ internal fun rememberAssetPainter(resource: DrawableResource): Painter {
     }
     val density = LocalDensity.current
     val environment = rememberResourceEnvironment()
-    val imageVector by produceState(
-        initialValue = assetVectorCache[resource],
-        key1 = resource,
-    ) {
-        if (value == null) {
-            value = withContext(context = Dispatchers.Default) {
+    var imageVector by remember(resource) { mutableStateOf(assetVectorCache[resource]) }
+    LaunchedEffect(resource) {
+        if (imageVector == null) {
+            imageVector = withContext(context = Dispatchers.Default) {
                 getDrawableResourceBytes(
                     environment = environment,
                     resource = resource,

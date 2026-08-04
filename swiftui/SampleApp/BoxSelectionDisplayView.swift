@@ -43,7 +43,7 @@ struct BoxSelectionDisplayView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing600) {
+            LazyVStack(alignment: .leading, spacing: LemonadeTheme.spaces.spacing600) {
                 // MARK: - Variants
                 sectionView(title: "Variants") {
                     HStack(spacing: LemonadeTheme.spaces.spacing400) {

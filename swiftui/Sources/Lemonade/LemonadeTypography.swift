@@ -28,6 +28,15 @@ public struct LemonadeTextStyle: Sendable {
     /// design system.
     public let relativeTextStyle: Font.TextStyle
 
+    /// The line spacing needed to achieve the desired line height.
+    ///
+    /// Resolved once here rather than on every read. This is read from inside `body` by every
+    /// ``LemonadeUi/Text(_:textStyle:textAlign:color:maxLines:)``, the most instantiated component
+    /// in the library, and asking a `UIFont` for its `lineHeight` is a CoreText lookup roughly
+    /// three orders of magnitude more expensive than a stored-property load. Every input is a
+    /// stored `let`, so the answer cannot change for a given style.
+    public let lineSpacing: CGFloat
+
     /// Fallback line height ratio for Figtree font (used on platforms without UIKit).
     /// Calculated from font metrics: (ascender - descender + lineGap) / unitsPerEm
     /// Figtree: (950 - (-250) + 0) / 1000 = 1.20
@@ -45,10 +54,23 @@ public struct LemonadeTextStyle: Sendable {
         self.fontWeight = fontWeight
         self.letterSpacing = letterSpacing
         self.relativeTextStyle = relativeTextStyle
+
+#if canImport(UIKit)
+        let naturalLineHeight = Self.resolvedUIFont(
+            name: Self.fontName(for: fontWeight),
+            size: fontSize
+        ).lineHeight
+#else
+        let naturalLineHeight = fontSize * Self.fallbackLineHeightRatio
+#endif
+        self.lineSpacing = max(0, lineHeight - naturalLineHeight)
     }
 
-    /// The font name based on the weight
-    public var fontName: String {
+    /// The font name for a weight.
+    ///
+    /// Static so ``init(fontSize:lineHeight:fontWeight:letterSpacing:)`` can resolve the font
+    /// metric before `self` is fully initialized.
+    private static func fontName(for fontWeight: Font.Weight) -> String {
         switch fontWeight {
         case .regular:
             return "Figtree-Regular"
@@ -61,29 +83,33 @@ public struct LemonadeTextStyle: Sendable {
         }
     }
 
+    /// The font name based on the weight
+    public var fontName: String {
+        Self.fontName(for: fontWeight)
+    }
+
     /// Returns a SwiftUI Font based on this text style
     public var font: Font {
         .custom(fontName, size: fontSize, relativeTo: relativeTextStyle)
     }
 
 #if canImport(UIKit)
+    /// The single place a text style turns into a concrete face.
+    ///
+    /// `registerFonts()` is idempotent and cheap after the first call. Calling it here means the
+    /// `.systemFont` fallback is only ever reached if a face is genuinely missing from the bundle,
+    /// rather than because a consumer had not registered yet — which matters now that
+    /// ``lineSpacing`` resolves the metric once and keeps it.
+    private static func resolvedUIFont(name: String, size: CGFloat) -> UIFont {
+        LemonadeFonts.registerFonts()
+        return UIFont(name: name, size: size) ?? .systemFont(ofSize: size)
+    }
+
     /// Returns a UIFont based on this text style
     public var uiFont: UIFont {
-        UIFont(name: fontName, size: fontSize)
-            ?? .systemFont(ofSize: fontSize)
+        Self.resolvedUIFont(name: fontName, size: fontSize)
     }
 #endif
-
-    /// Returns the line spacing needed to achieve the desired line height.
-    /// Uses UIFont.lineHeight for precise calculation on iOS, fallback ratio on other platforms.
-    public var lineSpacing: CGFloat {
-#if canImport(UIKit)
-        let naturalLineHeight = uiFont.lineHeight
-#else
-        let naturalLineHeight = fontSize * Self.fallbackLineHeightRatio
-#endif
-        return max(0, lineHeight - naturalLineHeight)
-    }
 }
 
 /// Protocol defining all available text styles in the Lemonade Design System.
@@ -364,7 +390,8 @@ public struct LemonadeTypography: LemonadeTypographyProtocol {
 // MARK: - Environment Key
 
 private struct LemonadeTypographyKey: EnvironmentKey {
-    static let defaultValue: LemonadeTypographyProtocol = LemonadeTypography()
+    // Reuses the shared instance rather than building a second full set of text styles.
+    static let defaultValue: LemonadeTypographyProtocol = LemonadeTypography.shared
 }
 
 extension EnvironmentValues {

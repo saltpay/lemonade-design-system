@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,11 +19,16 @@ import com.teya.lemonade.core.LemonadeIcons
 import com.teya.lemonade.core.SelectListItemType
 import com.teya.lemonade.core.TabButtonProperties
 
+private val themeVariants: List<LemonadeThemeVariant> = LemonadeThemeVariant.entries
+
+private val themeVariantTabs: List<TabButtonProperties> = themeVariants.map { variant ->
+    TabButtonProperties.label(label = variant.label)
+}
+
 @Composable
 internal fun HomeDisplay(onNavigate: (Displays) -> Unit) {
     val styleHandler = LocalLemonadeStyleHandler.current
-    val variants = LemonadeThemeVariant.entries
-    val selectedVariantIndex = variants.indexOf(styleHandler.currentVariant)
+    val selectedVariantIndex = themeVariants.indexOf(styleHandler.currentVariant)
 
     var showSettings by remember { mutableStateOf(value = false) }
 
@@ -37,37 +43,22 @@ internal fun HomeDisplay(onNavigate: (Displays) -> Unit) {
             )
         },
     ) {
-        item {
+        item(key = "theme-variants") {
             LemonadeUi.SegmentedControl(
                 selectedTab = selectedVariantIndex,
-                onTabSelected = { index -> styleHandler.currentVariant = variants[index] },
-                properties = variants.map { variant -> TabButtonProperties.label(label = variant.label) },
+                onTabSelected = { index -> styleHandler.currentVariant = themeVariants[index] },
+                properties = themeVariantTabs,
                 modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing400),
             )
         }
-        item {
-            DisplayRegistry.homeItems.forEach { display ->
-                LemonadeUi.Card(
-                    header = CardHeaderConfig(display.title),
-                    modifier = Modifier.padding(top = LemonadeTheme.spaces.spacing400),
-                ) {
-                    display.items.forEachIndexed { index, item ->
-                        LemonadeUi.ActionListItem(
-                            label = item.label,
-                            onItemClicked = { onNavigate(item) },
-                            showDivider = display.items.lastIndex != index,
-                            trailingSlot = {
-                                LemonadeUi.Icon(
-                                    icon = LemonadeIcons.ChevronRight,
-                                    size = LemonadeAssetSize.Medium,
-                                    contentDescription = "Navigation indicator",
-                                    tint = LemonadeTheme.colors.content.contentTertiary,
-                                )
-                            },
-                        )
-                    }
-                }
-            }
+        items(
+            items = DisplayRegistry.homeItems,
+            key = { display -> display.title },
+        ) { display ->
+            CardSection(
+                display = display,
+                onNavigate = onNavigate,
+            )
         }
     }
 
@@ -75,6 +66,33 @@ internal fun HomeDisplay(onNavigate: (Displays) -> Unit) {
         expanded = showSettings,
         onDismissRequest = { showSettings = false },
     )
+}
+
+@Composable
+private fun CardSection(
+    display: DisplayRegistry.DisplayData,
+    onNavigate: (Displays) -> Unit,
+) {
+    LemonadeUi.Card(
+        header = CardHeaderConfig(title = display.title),
+        modifier = Modifier.padding(top = LemonadeTheme.spaces.spacing400),
+    ) {
+        display.items.forEachIndexed { index, item ->
+            LemonadeUi.ActionListItem(
+                label = item.label,
+                onItemClicked = { onNavigate(item) },
+                showDivider = display.items.lastIndex != index,
+                trailingSlot = {
+                    LemonadeUi.Icon(
+                        icon = LemonadeIcons.ChevronRight,
+                        size = LemonadeAssetSize.Medium,
+                        contentDescription = "Navigation indicator",
+                        tint = LemonadeTheme.colors.content.contentTertiary,
+                    )
+                },
+            )
+        }
+    }
 }
 
 @Composable

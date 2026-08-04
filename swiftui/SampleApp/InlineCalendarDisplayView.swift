@@ -1,6 +1,18 @@
 import SwiftUI
 import Lemonade
 
+/// Shared medium-style date formatter.
+///
+/// Defined at file scope so it is built exactly once for the process -
+/// `DateFormatter` initialization is expensive due to ObjC bridging and locale
+/// loading, and this view reads it ~9 times per body pass. Matches the precedent
+/// in `Sources/Lemonade/Components/Calendar/CalendarDayCell.swift`.
+private let mediumDateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .medium
+    return formatter
+}()
+
 struct InlineCalendarDisplayView: View {
     @StateObject private var defaultState = LemonadeInlineCalendarState(initialDate: Date())
     @StateObject private var trailingDotsState = LemonadeInlineCalendarState(initialDate: Date())
@@ -12,12 +24,6 @@ struct InlineCalendarDisplayView: View {
 
     private let constrainedMinDate: Date
     private let constrainedMaxDate: Date
-
-    private var dateFormatter: DateFormatter {
-        let f = DateFormatter()
-        f.dateStyle = .medium
-        return f
-    }
 
     init() {
         let today = Calendar.current.startOfDay(for: Date())
@@ -36,7 +42,7 @@ struct InlineCalendarDisplayView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading, spacing: 32) {
                 sectionView(title: "Default (today selected)") {
                     LemonadeUi.InlineCalendar(state: defaultState)
                     selectedDateLabel(for: defaultState)
@@ -66,7 +72,7 @@ struct InlineCalendarDisplayView: View {
                     LemonadeUi.InlineCalendar(state: constrainedState)
 
                     LemonadeUi.Text(
-                        "Range: \(dateFormatter.string(from: constrainedMinDate)) - \(dateFormatter.string(from: constrainedMaxDate))",
+                        "Range: \(mediumDateFormatter.string(from: constrainedMinDate)) - \(mediumDateFormatter.string(from: constrainedMaxDate))",
                         textStyle: LemonadeTypography.shared.bodySmallRegular,
                         color: LemonadeTheme.colors.content.contentSecondary
                     )
@@ -125,7 +131,7 @@ struct InlineCalendarDisplayView: View {
     @ViewBuilder
     private func selectedDateLabel(for state: LemonadeInlineCalendarState) -> some View {
         LemonadeUi.Text(
-            "Selected: \(state.selectedDate.map { dateFormatter.string(from: $0) } ?? "none")",
+            "Selected: \(state.selectedDate.map { mediumDateFormatter.string(from: $0) } ?? "none")",
             textStyle: LemonadeTypography.shared.bodySmallRegular,
             color: LemonadeTheme.colors.content.contentSecondary
         )

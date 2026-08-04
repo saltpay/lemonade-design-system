@@ -27,6 +27,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,70 +40,74 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 
-private interface ScrollStateAdapter {
-    val firstVisibleItemIndex: Int
-    val firstVisibleItemScrollOffset: Int
-}
+private val DefaultCollapseDistance: Dp = 64.dp
 
-private class ListStateAdapter(
-    private val state: LazyListState,
-) : ScrollStateAdapter {
-    override val firstVisibleItemIndex: Int
-        get() {
-            return state.firstVisibleItemIndex
-        }
-    override val firstVisibleItemScrollOffset: Int
-        get() {
-            return state.firstVisibleItemScrollOffset
-        }
-}
-
-private class GridStateAdapter(
-    private val state: LazyGridState,
-) : ScrollStateAdapter {
-    override val firstVisibleItemIndex: Int
-        get() {
-            return state.firstVisibleItemIndex
-        }
-    override val firstVisibleItemScrollOffset: Int
-        get() {
-            return state.firstVisibleItemScrollOffset
-        }
-}
-
-private class ColumnStateAdapter(
-    private val state: ScrollState,
-) : ScrollStateAdapter {
-    override val firstVisibleItemIndex: Int
-        get() {
-            return 0
-        }
-    override val firstVisibleItemScrollOffset: Int
-        get() {
-            return state.value
-        }
+private fun collapseProgress(
+    firstVisibleItemIndex: Int,
+    firstVisibleItemScrollOffset: Int,
+    collapsePx: Float,
+): Float {
+    val offset = if (firstVisibleItemIndex > 0) {
+        collapsePx
+    } else {
+        firstVisibleItemScrollOffset.toFloat()
+    }
+    return (offset / collapsePx).coerceIn(minimumValue = 0f, maximumValue = 1f)
 }
 
 @Composable
 private fun rememberCollapseProgress(
-    listState: ScrollStateAdapter,
-    collapseDistance: Dp = 64.dp,
-): Float {
-    val density = LocalDensity.current
-    val collapsePx = with(density) { collapseDistance.toPx() }
+    listState: LazyListState,
+    collapseDistance: Dp = DefaultCollapseDistance,
+): State<Float> {
+    val collapsePx = with(LocalDensity.current) { collapseDistance.toPx() }
 
-    return remember(listState, density) {
+    return remember(listState, collapsePx) {
         derivedStateOf {
-            val offset = if (listState.firstVisibleItemIndex > 0) {
-                collapsePx
-            } else {
-                listState.firstVisibleItemScrollOffset.toFloat()
-            }
-            (offset / collapsePx).coerceIn(0f, 1f)
+            collapseProgress(
+                firstVisibleItemIndex = listState.firstVisibleItemIndex,
+                firstVisibleItemScrollOffset = listState.firstVisibleItemScrollOffset,
+                collapsePx = collapsePx,
+            )
         }
-    }.value
+    }
+}
+
+@Composable
+private fun rememberCollapseProgress(
+    gridState: LazyGridState,
+    collapseDistance: Dp = DefaultCollapseDistance,
+): State<Float> {
+    val collapsePx = with(LocalDensity.current) { collapseDistance.toPx() }
+
+    return remember(gridState, collapsePx) {
+        derivedStateOf {
+            collapseProgress(
+                firstVisibleItemIndex = gridState.firstVisibleItemIndex,
+                firstVisibleItemScrollOffset = gridState.firstVisibleItemScrollOffset,
+                collapsePx = collapsePx,
+            )
+        }
+    }
+}
+
+@Composable
+private fun rememberCollapseProgress(
+    scrollState: ScrollState,
+    collapseDistance: Dp = DefaultCollapseDistance,
+): State<Float> {
+    val collapsePx = with(LocalDensity.current) { collapseDistance.toPx() }
+
+    return remember(scrollState, collapsePx) {
+        derivedStateOf {
+            collapseProgress(
+                firstVisibleItemIndex = 0,
+                firstVisibleItemScrollOffset = scrollState.value,
+                collapsePx = collapsePx,
+            )
+        }
+    }
 }
 
 @Composable
@@ -112,7 +117,7 @@ internal fun SampleScreenDisplayLazyColumn(
     contentHorizontalPadding: Dp = LemonadeTheme.spaces.spacing400,
     background: Color = LemonadeTheme.colors.background.bgSubtle,
     action: (@Composable () -> Unit)? = null,
-    header: @Composable (progress: Float) -> Unit = { progress ->
+    header: @Composable (progress: State<Float>) -> Unit = { progress ->
         SampleScreenHeader(title = title, progress = progress, action = action)
     },
     content: LazyListScope.() -> Unit,
@@ -122,14 +127,10 @@ internal fun SampleScreenDisplayLazyColumn(
 
     val bottomGesturePadding = WindowInsets.safeGestures.getBottom(density).dp / 2
 
-    val progress = rememberCollapseProgress(ListStateAdapter(listState))
-    var headerHeightDp by remember { mutableStateOf(0.dp) }
+    val progress = rememberCollapseProgress(listState = listState)
+    var headerHeightDp by remember { mutableStateOf(value = 0.dp) }
 
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(background),
-    ) {
+    Box(modifier = modifier.fillMaxSize()) {
         LazyColumn(
             state = listState,
             modifier = Modifier
@@ -144,17 +145,16 @@ internal fun SampleScreenDisplayLazyColumn(
             ),
             content = content,
         )
-    }
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .zIndex(1f)
-            .onSizeChanged {
-                headerHeightDp = with(density) { it.height.toDp() }
-            },
-    ) {
-        header(progress)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .onSizeChanged { size ->
+                    headerHeightDp = with(density) { size.height.toDp() }
+                },
+        ) {
+            header(progress)
+        }
     }
 }
 
@@ -164,36 +164,33 @@ internal fun SampleScreenDisplayLazyGrid(
     modifier: Modifier = Modifier,
     contentHorizontalPadding: Dp = LemonadeTheme.spaces.spacing400,
     background: Color = LemonadeTheme.colors.background.bgSubtle,
-    header: @Composable (progress: Float) -> Unit = { progress ->
+    header: @Composable (progress: State<Float>) -> Unit = { progress ->
         SampleScreenHeader(title = title, progress = progress)
     },
-    columns: GridCells = GridCells.Adaptive(100.dp),
+    columns: GridCells = GridCells.Adaptive(minSize = 100.dp),
     columnsGap: Dp = LemonadeTheme.spaces.spacing200,
     content: LazyGridScope.() -> Unit,
 ) {
     val density = LocalDensity.current
     val bottomGesturePadding = WindowInsets.safeGestures.getBottom(density).dp / 2
 
-    val listState = rememberLazyGridState()
+    val gridState = rememberLazyGridState()
 
-    val progress = rememberCollapseProgress(GridStateAdapter(listState))
-    var headerHeightDp by remember { mutableStateOf(0.dp) }
+    val progress = rememberCollapseProgress(gridState = gridState)
+    var headerHeightDp by remember { mutableStateOf(value = 0.dp) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(background),
-    ) {
-        Spacer(modifier = Modifier.height(headerHeightDp))
-
-        Box(
-            modifier = modifier
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
                 .fillMaxSize()
                 .background(background),
         ) {
+            Spacer(modifier = Modifier.height(height = headerHeightDp))
+
             LazyVerticalGrid(
-                state = listState,
+                state = gridState,
                 columns = columns,
+                modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(
                     start = contentHorizontalPadding,
                     end = contentHorizontalPadding,
@@ -210,17 +207,16 @@ internal fun SampleScreenDisplayLazyGrid(
                 content = content,
             )
         }
-    }
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .zIndex(1f)
-            .onSizeChanged {
-                headerHeightDp = with(density) { it.height.toDp() }
-            },
-    ) {
-        header(progress)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .onSizeChanged { size ->
+                    headerHeightDp = with(density) { size.height.toDp() }
+                },
+        ) {
+            header(progress)
+        }
     }
 }
 
@@ -232,26 +228,22 @@ internal fun SampleScreenDisplayColumn(
     contentBottomPadding: Dp = LemonadeTheme.spaces.spacing400,
     background: Color = LemonadeTheme.colors.background.bgSubtle,
     itemsSpacing: Dp = LemonadeTheme.spaces.spacing300,
-    header: @Composable (progress: Float) -> Unit = { progress ->
+    header: @Composable (progress: State<Float>) -> Unit = { progress ->
         SampleScreenHeader(title = title, progress = progress)
     },
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val density = LocalDensity.current
-    val listState = rememberScrollState()
+    val scrollState = rememberScrollState()
 
-    val progress = rememberCollapseProgress(ColumnStateAdapter(listState))
-    var headerHeightDp by remember { mutableStateOf(0.dp) }
+    val progress = rememberCollapseProgress(scrollState = scrollState)
+    var headerHeightDp by remember { mutableStateOf(value = 0.dp) }
 
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(background),
-    ) {
+    Box(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(state = listState)
+                .verticalScroll(state = scrollState)
                 .navigationBarsPadding()
                 .background(background)
                 .padding(
@@ -262,19 +254,18 @@ internal fun SampleScreenDisplayColumn(
                         bottom = contentBottomPadding,
                     ),
                 ),
-            verticalArrangement = Arrangement.spacedBy(itemsSpacing),
+            verticalArrangement = Arrangement.spacedBy(space = itemsSpacing),
             content = content,
         )
-    }
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .zIndex(1f)
-            .onSizeChanged {
-                headerHeightDp = with(density) { it.height.toDp() }
-            },
-    ) {
-        header(progress)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .onSizeChanged { size ->
+                    headerHeightDp = with(density) { size.height.toDp() }
+                },
+        ) {
+            header(progress)
+        }
     }
 }

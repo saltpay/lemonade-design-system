@@ -4,7 +4,7 @@ import Lemonade
 struct DividerDisplayView: View {
     var body: some View {
         ScrollView(.vertical) {
-            VStack(alignment: .leading, spacing: .space.spacing600) {
+            LazyVStack(alignment: .leading, spacing: .space.spacing600) {
                 // Horizontal Divider
                 dividerSection(title: "Horizontal Divider") {
                     VStack(alignment: .leading, spacing: .space.spacing400) {

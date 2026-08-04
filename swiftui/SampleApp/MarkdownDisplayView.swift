@@ -6,7 +6,7 @@ struct MarkdownDisplayView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading, spacing: 32) {
                 sectionView(title: "Markdown Input") {
                     TextField("Type markdown here...", text: $input, axis: .vertical)
                         .textFieldStyle(.roundedBorder)

@@ -4,7 +4,7 @@ import Lemonade
 struct ButtonDisplayView: View {
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading, spacing: 32) {
                 // Primary Variant
                 sectionView(title: "Primary") {
                     VStack(spacing: 16) {

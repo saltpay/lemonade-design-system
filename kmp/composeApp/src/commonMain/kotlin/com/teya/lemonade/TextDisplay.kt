@@ -2,149 +2,159 @@ package com.teya.lemonade
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.teya.lemonade.core.LemonadeTypography
 
-@Composable
-internal fun TextDisplay() {
-    val categorizedStyles = remember {
-        LemonadeTypography.entries
-            .groupBy { it.category() }
-            .mapValues { (_, styles) -> styles.sortedByDescending { it.style.fontSize } }
+private data class TypographyCategory(
+    val title: String,
+    val styles: List<LemonadeTypography>,
+)
+
+private val categorizedStyles: List<TypographyCategory> = LemonadeTypography.entries
+    .groupBy { typography -> typography.category() }
+    .map { (category, styles) ->
+        TypographyCategory(
+            title = category,
+            styles = styles.sortedByDescending { typography -> typography.style.fontSize },
+        )
     }
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(state = rememberScrollState())
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .padding(LemonadeTheme.spaces.spacing400),
-    ) {
-        categorizedStyles.forEach { (category, styles) ->
-            TextSection(title = category) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-                ) {
-                    styles.forEachIndexed { index, typography ->
-                        if (index > 0 && typography.subCategory() != styles[index - 1].subCategory()) {
-                            LemonadeUi.HorizontalDivider()
-                        }
-                        LemonadeUi.Text(
-                            text = typography.toDisplayLabel(),
-                            textStyle = typography.style,
-                        )
-                    }
-                }
+@Composable
+internal fun TextDisplay() {
+    SampleScreenDisplayLazyColumn(title = "Text") {
+        items(
+            items = categorizedStyles,
+            key = { category -> category.title },
+        ) { category ->
+            TextSection(title = category.title) {
+                TypographyCategoryColumn(styles = category.styles)
             }
         }
 
         // Text Colors — not part of the typography enum, kept manual
-        TextSection(title = "Colors") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-            ) {
-                LemonadeUi.Text(
-                    text = "Primary",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentPrimary,
-                )
-                LemonadeUi.Text(
-                    text = "Secondary",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentSecondary,
-                )
-                LemonadeUi.Text(
-                    text = "Tertiary",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentTertiary,
-                )
-                LemonadeUi.Text(
-                    text = "Critical",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentCritical,
-                )
-                LemonadeUi.Text(
-                    text = "Positive",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentPositive,
-                )
-                LemonadeUi.Text(
-                    text = "Info",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    color = LemonadeTheme.colors.content.contentInfo,
-                )
+        item(key = "Colors") {
+            TextSection(title = "Colors") {
+                TextSectionColumn {
+                    LemonadeUi.Text(
+                        text = "Primary",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                        color = LemonadeTheme.colors.content.contentPrimary,
+                    )
+                    LemonadeUi.Text(
+                        text = "Secondary",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                        color = LemonadeTheme.colors.content.contentSecondary,
+                    )
+                    LemonadeUi.Text(
+                        text = "Tertiary",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                        color = LemonadeTheme.colors.content.contentTertiary,
+                    )
+                    LemonadeUi.Text(
+                        text = "Critical",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                        color = LemonadeTheme.colors.content.contentCritical,
+                    )
+                    LemonadeUi.Text(
+                        text = "Positive",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                        color = LemonadeTheme.colors.content.contentPositive,
+                    )
+                    LemonadeUi.Text(
+                        text = "Info",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                        color = LemonadeTheme.colors.content.contentInfo,
+                    )
+                }
             }
         }
 
         // Line Spacing — additional space between lines on top of the natural line height
-        TextSection(title = "Line Spacing") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-            ) {
-                LemonadeUi.Text(
-                    text = "Default (no lineSpacing override).\n" +
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n" +
-                        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                )
-                LemonadeUi.Text(
-                    text = "lineSpacing = 0.sp\n" +
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n" +
-                        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    lineSpacing = 0.sp,
-                )
-                LemonadeUi.Text(
-                    text = "lineSpacing = 8.sp\n" +
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n" +
-                        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    lineSpacing = 8.sp,
-                )
-                LemonadeUi.Text(
-                    text = "lineSpacing = 16.sp\n" +
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n" +
-                        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    lineSpacing = 16.sp,
-                )
+        item(key = "Line Spacing") {
+            TextSection(title = "Line Spacing") {
+                TextSectionColumn {
+                    LemonadeUi.Text(
+                        text = "Default (no lineSpacing override).\n" +
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n" +
+                            "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                    )
+                    LemonadeUi.Text(
+                        text = "lineSpacing = 0.sp\n" +
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n" +
+                            "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                        lineSpacing = 0.sp,
+                    )
+                    LemonadeUi.Text(
+                        text = "lineSpacing = 8.sp\n" +
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n" +
+                            "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                        lineSpacing = 8.sp,
+                    )
+                    LemonadeUi.Text(
+                        text = "lineSpacing = 16.sp\n" +
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n" +
+                            "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                        lineSpacing = 16.sp,
+                    )
+                }
             }
         }
 
         // Overflow — behavioural examples, kept manual
-        TextSection(title = "Overflow") {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
-            ) {
-                LemonadeUi.Text(
-                    text = "This is a very long text that will be truncated at the end " +
-                        "with ellipsis because it exceeds the available width",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                )
-                LemonadeUi.Text(
-                    text = "This text allows multiple lines but is limited to 2 lines " +
-                        "maximum. Lorem ipsum dolor sit amet, consectetur adipiscing " +
-                        "elit. Sed do eiusmod tempor incididunt ut labore.",
-                    textStyle = LemonadeTheme.typography.bodyMediumRegular,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
+        item(key = "Overflow") {
+            TextSection(title = "Overflow") {
+                TextSectionColumn {
+                    LemonadeUi.Text(
+                        text = "This is a very long text that will be truncated at the end " +
+                            "with ellipsis because it exceeds the available width",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                    )
+                    LemonadeUi.Text(
+                        text = "This text allows multiple lines but is limited to 2 lines " +
+                            "maximum. Lorem ipsum dolor sit amet, consectetur adipiscing " +
+                            "elit. Sed do eiusmod tempor incididunt ut labore.",
+                        textStyle = LemonadeTheme.typography.bodyMediumRegular,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
             }
         }
+    }
+}
+
+@Composable
+private fun TypographyCategoryColumn(styles: List<LemonadeTypography>) {
+    TextSectionColumn {
+        styles.forEachIndexed { index, typography ->
+            if (index > 0 && typography.subCategory() != styles[index - 1].subCategory()) {
+                LemonadeUi.HorizontalDivider()
+            }
+            LemonadeUi.Text(
+                text = typography.toDisplayLabel(),
+                textStyle = typography.style,
+            )
+        }
+    }
+}
+
+@Composable
+private fun TextSectionColumn(content: @Composable () -> Unit) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing300),
+    ) {
+        content()
     }
 }
 
@@ -182,7 +192,8 @@ private fun TextSection(
     content: @Composable () -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing300),
+        modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
     ) {
         LemonadeUi.Text(
             text = title,

@@ -6,14 +6,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -32,22 +27,28 @@ import kotlin.time.ExperimentalTime
 internal fun InlineCalendarDisplay() {
     val today = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) }
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(state = rememberScrollState())
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .padding(LemonadeTheme.spaces.spacing400),
-    ) {
-        DefaultSection(today = today)
-        TrailingDotsSection(today = today)
-        ShortLabelsSection(today = today)
-        ConstrainedRangeSection(today = today)
-        CompactSelectionSection(today = today)
-        CompactDotsSection(today = today)
-        CustomColorsSection(today = today)
+    SampleScreenDisplayLazyColumn(title = "InlineCalendar") {
+        item(key = "Default") {
+            DefaultSection(today = today)
+        }
+        item(key = "Trailing Dots") {
+            TrailingDotsSection(today = today)
+        }
+        item(key = "Short Labels") {
+            ShortLabelsSection(today = today)
+        }
+        item(key = "Constrained Range") {
+            ConstrainedRangeSection(today = today)
+        }
+        item(key = "Compact Selection") {
+            CompactSelectionSection(today = today)
+        }
+        item(key = "Compact Dots") {
+            CompactDotsSection(today = today)
+        }
+        item(key = "Custom Colors") {
+            CustomColorsSection(today = today)
+        }
     }
 }
 
@@ -201,7 +202,8 @@ private fun InlineCalendarSection(
     content: @Composable () -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(LemonadeTheme.spaces.spacing300),
+        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing300),
+        modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
     ) {
         LemonadeUi.Text(
             text = title,

@@ -4,7 +4,7 @@ import Lemonade
 struct BadgeDisplayView: View {
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading, spacing: 32) {
                 // Sizes
                 sectionView(title: "Sizes") {
                     HStack(spacing: 16) {
@@ -47,35 +47,27 @@ struct BadgeDisplayView: View {
                     VStack(spacing: 24) {
                         // Notification icon with badge
                         HStack(spacing: 32) {
-                            ZStack(alignment: .topTrailing) {
-                                LemonadeUi.Icon(
-                                    icon: .bell,
-                                    contentDescription: "Notifications",
-                                    size: .large
-                                )
-                                LemonadeUi.Badge(text: "3", size: .xSmall)
-                                    .offset(x: 8, y: -8)
-                            }
+                            BadgedIcon(
+                                icon: .bell,
+                                contentDescription: "Notifications",
+                                size: .large,
+                                badgeText: "3"
+                            )
 
-                            ZStack(alignment: .topTrailing) {
-                                LemonadeUi.Icon(
-                                    icon: .envelope,
-                                    contentDescription: "Messages",
-                                    size: .large
-                                )
-                                LemonadeUi.Badge(text: "12", size: .xSmall)
-                                    .offset(x: 8, y: -8)
-                            }
+                            BadgedIcon(
+                                icon: .envelope,
+                                contentDescription: "Messages",
+                                size: .large,
+                                badgeText: "12"
+                            )
 
-                            ZStack(alignment: .topTrailing) {
-                                LemonadeUi.Icon(
-                                    icon: .shoppingBag,
-                                    contentDescription: "Cart",
-                                    size: .large
-                                )
-                                LemonadeUi.Badge(text: "99+", size: .xSmall)
-                                    .offset(x: 12, y: -8)
-                            }
+                            BadgedIcon(
+                                icon: .shoppingBag,
+                                contentDescription: "Cart",
+                                size: .large,
+                                badgeText: "99+",
+                                overhang: 12
+                            )
                         }
 
                         // Menu item with badge
@@ -93,44 +85,39 @@ struct BadgeDisplayView: View {
                         .background(.bg.bgSubtle)
                         .clipShape(.rect(cornerRadius: 12))
 
-                        // Tab-like item with badge
+                        // Tab-like item with badge — "Home" is the unbadged counterpart,
+                        // padded to match so the three labels stay on one baseline.
                         HStack(spacing: 24) {
                             VStack(spacing: 4) {
-                                ZStack(alignment: .topTrailing) {
-                                    LemonadeUi.Icon(
-                                        icon: .home,
-                                        contentDescription: nil,
-                                        size: .medium
-                                    )
-                                }
+                                BadgedIcon(
+                                    icon: .home,
+                                    contentDescription: nil,
+                                    size: .medium,
+                                    badgeText: nil
+                                )
                                 Text("Home")
                                     .font(.caption)
                             }
 
                             VStack(spacing: 4) {
-                                ZStack(alignment: .topTrailing) {
-                                    LemonadeUi.Icon(
-                                        icon: .bell,
-                                        contentDescription: nil,
-                                        size: .medium
-                                    )
-                                    LemonadeUi.Badge(text: "2", size: .xSmall)
-                                        .offset(x: 8, y: -8)
-                                }
+                                BadgedIcon(
+                                    icon: .bell,
+                                    contentDescription: nil,
+                                    size: .medium,
+                                    badgeText: "2"
+                                )
                                 Text("Alerts")
                                     .font(.caption)
                             }
 
                             VStack(spacing: 4) {
-                                ZStack(alignment: .topTrailing) {
-                                    LemonadeUi.Icon(
-                                        icon: .user,
-                                        contentDescription: nil,
-                                        size: .medium
-                                    )
-                                    LemonadeUi.Badge(text: "New", size: .xSmall)
-                                        .offset(x: 12, y: -8)
-                                }
+                                BadgedIcon(
+                                    icon: .user,
+                                    contentDescription: nil,
+                                    size: .medium,
+                                    badgeText: "New",
+                                    overhang: 12
+                                )
                                 Text("Profile")
                                     .font(.caption)
                             }
@@ -152,6 +139,42 @@ struct BadgeDisplayView: View {
             content()
         }
     }
+}
+
+// MARK: - Badged Icon
+
+/// An icon with a badge pinned to its top-trailing corner.
+///
+/// The badge is an overlay, so the icon alone decides the layout size no matter how wide
+/// the badge text gets, and the overhang the badge introduces is paid back as padding.
+/// Offsetting a badge inside a `ZStack` instead — the obvious first attempt — draws it
+/// outside the measured frame, so nothing reserves room for it and "99+" or "New" clips
+/// against the trailing edge as soon as the text size grows.
+private struct BadgedIcon: View {
+    let icon: LemonadeIcon
+    let contentDescription: String?
+    let size: LemonadeUiIconSize
+    let badgeText: String?
+    var overhang: CGFloat = 8
+
+    var body: some View {
+        LemonadeUi.Icon(
+            icon: icon,
+            contentDescription: contentDescription,
+            size: size
+        )
+        .overlay(alignment: .topTrailing) {
+            if let badgeText {
+                LemonadeUi.Badge(text: badgeText, size: .xSmall)
+                    .fixedSize()
+                    .offset(x: overhang, y: -verticalOverhang)
+            }
+        }
+        .padding(.top, verticalOverhang)
+        .padding(.trailing, overhang)
+    }
+
+    private var verticalOverhang: CGFloat { 8 }
 }
 
 #Preview {

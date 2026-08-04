@@ -3,12 +3,8 @@ package com.teya.lemonade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,182 +14,183 @@ import com.teya.lemonade.core.LemonadeButtonVariant
 import com.teya.lemonade.core.LemonadeIconButtonShape
 import com.teya.lemonade.core.LemonadeIcons
 
-@Suppress("LongMethod")
+private data class IconButtonSectionSpec(
+    val title: String,
+    val variant: LemonadeButtonVariant,
+    val type: LemonadeButtonType,
+)
+
+private val iconButtonSectionSpecs: List<IconButtonSectionSpec> = listOf(
+    IconButtonSectionSpec(
+        title = "Primary Solid",
+        variant = LemonadeButtonVariant.Primary,
+        type = LemonadeButtonType.Solid,
+    ),
+    IconButtonSectionSpec(
+        title = "Secondary Solid",
+        variant = LemonadeButtonVariant.Secondary,
+        type = LemonadeButtonType.Solid,
+    ),
+    IconButtonSectionSpec(
+        title = "Neutral Subtle",
+        variant = LemonadeButtonVariant.Neutral,
+        type = LemonadeButtonType.Subtle,
+    ),
+    IconButtonSectionSpec(
+        title = "Neutral Ghost",
+        variant = LemonadeButtonVariant.Neutral,
+        type = LemonadeButtonType.Ghost,
+    ),
+    IconButtonSectionSpec(
+        title = "Critical Subtle",
+        variant = LemonadeButtonVariant.Critical,
+        type = LemonadeButtonType.Subtle,
+    ),
+    IconButtonSectionSpec(
+        title = "Critical Solid",
+        variant = LemonadeButtonVariant.Critical,
+        type = LemonadeButtonType.Solid,
+    ),
+)
+
+private val differentIcons: List<LemonadeIcons> = listOf(
+    LemonadeIcons.Heart,
+    LemonadeIcons.Star,
+    LemonadeIcons.CircleCheck,
+    LemonadeIcons.CircleX,
+    LemonadeIcons.CircleInfo,
+)
+
 @Composable
 internal fun IconButtonDisplay() {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing600),
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(state = rememberScrollState())
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .padding(all = LemonadeTheme.spaces.spacing400),
-    ) {
-        // Primary Solid
-        IconButtonSection(title = "Primary Solid") {
-            SizesRow(
-                variant = LemonadeButtonVariant.Primary,
-                type = LemonadeButtonType.Solid,
-            )
-        }
-
-        // Secondary Solid
-        IconButtonSection(title = "Secondary Solid") {
-            SizesRow(
-                variant = LemonadeButtonVariant.Secondary,
-                type = LemonadeButtonType.Solid,
-            )
-        }
-
-        // Neutral Subtle (default)
-        IconButtonSection(title = "Neutral Subtle") {
-            SizesRow(
-                variant = LemonadeButtonVariant.Neutral,
-                type = LemonadeButtonType.Subtle,
-            )
-        }
-
-        // Neutral Ghost
-        IconButtonSection(title = "Neutral Ghost") {
-            SizesRow(
-                variant = LemonadeButtonVariant.Neutral,
-                type = LemonadeButtonType.Ghost,
-            )
-        }
-
-        // Critical Subtle
-        IconButtonSection(title = "Critical Subtle") {
-            SizesRow(
-                variant = LemonadeButtonVariant.Critical,
-                type = LemonadeButtonType.Subtle,
-            )
-        }
-
-        // Critical Solid
-        IconButtonSection(title = "Critical Solid") {
-            SizesRow(
-                variant = LemonadeButtonVariant.Critical,
-                type = LemonadeButtonType.Solid,
-            )
-        }
-
-        // Loading
-        IconButtonSection(title = "Loading") {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing400),
-            ) {
-                LemonadeUi.IconButton(
-                    icon = LemonadeIcons.Heart,
-                    contentDescription = null,
-                    onClick = {},
-                    variant = LemonadeButtonVariant.Primary,
-                    type = LemonadeButtonType.Solid,
-                    loading = true,
-                )
-                LemonadeUi.IconButton(
-                    icon = LemonadeIcons.Heart,
-                    contentDescription = null,
-                    onClick = {},
-                    variant = LemonadeButtonVariant.Neutral,
-                    type = LemonadeButtonType.Subtle,
-                    loading = true,
-                )
-                LemonadeUi.IconButton(
-                    icon = LemonadeIcons.Heart,
-                    contentDescription = null,
-                    onClick = {},
-                    variant = LemonadeButtonVariant.Critical,
-                    type = LemonadeButtonType.Solid,
-                    loading = true,
+    SampleScreenDisplayLazyColumn(title = "IconButton") {
+        items(
+            items = iconButtonSectionSpecs,
+            key = { spec -> spec.title },
+        ) { spec ->
+            IconButtonSection(title = spec.title) {
+                SizesRow(
+                    variant = spec.variant,
+                    type = spec.type,
                 )
             }
         }
 
-        // Circular
-        IconButtonSection(title = "Circular") {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing400),
-            ) {
-                LemonadeUi.IconButton(
-                    icon = LemonadeIcons.Heart,
-                    contentDescription = null,
-                    onClick = {},
-                    variant = LemonadeButtonVariant.Primary,
-                    type = LemonadeButtonType.Solid,
-                    shape = LemonadeIconButtonShape.Circular,
-                )
-                LemonadeUi.IconButton(
-                    icon = LemonadeIcons.Heart,
-                    contentDescription = null,
-                    onClick = {},
-                    variant = LemonadeButtonVariant.Neutral,
-                    type = LemonadeButtonType.Subtle,
-                    shape = LemonadeIconButtonShape.Circular,
-                )
-                LemonadeUi.IconButton(
-                    icon = LemonadeIcons.Heart,
-                    contentDescription = null,
-                    onClick = {},
-                    variant = LemonadeButtonVariant.Critical,
-                    type = LemonadeButtonType.Solid,
-                    shape = LemonadeIconButtonShape.Circular,
-                )
-            }
-        }
-
-        // Disabled
-        IconButtonSection(title = "Disabled") {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing400),
-            ) {
-                LemonadeUi.IconButton(
-                    icon = LemonadeIcons.Heart,
-                    contentDescription = null,
-                    onClick = {},
-                    enabled = false,
-                    variant = LemonadeButtonVariant.Primary,
-                    type = LemonadeButtonType.Solid,
-                )
-                LemonadeUi.IconButton(
-                    icon = LemonadeIcons.Heart,
-                    contentDescription = null,
-                    onClick = {},
-                    enabled = false,
-                    variant = LemonadeButtonVariant.Neutral,
-                    type = LemonadeButtonType.Subtle,
-                )
-                LemonadeUi.IconButton(
-                    icon = LemonadeIcons.Heart,
-                    contentDescription = null,
-                    onClick = {},
-                    enabled = false,
-                    variant = LemonadeButtonVariant.Neutral,
-                    type = LemonadeButtonType.Ghost,
-                )
-            }
-        }
-
-        // Different Icons
-        IconButtonSection(title = "Different Icons") {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing400),
-            ) {
-                listOf(
-                    LemonadeIcons.Heart,
-                    LemonadeIcons.Star,
-                    LemonadeIcons.CircleCheck,
-                    LemonadeIcons.CircleX,
-                    LemonadeIcons.CircleInfo,
-                ).forEach { icon ->
+        item(key = "Loading") {
+            IconButtonSection(title = "Loading") {
+                IconButtonRow {
                     LemonadeUi.IconButton(
-                        icon = icon,
+                        icon = LemonadeIcons.Heart,
                         contentDescription = null,
                         onClick = {},
+                        variant = LemonadeButtonVariant.Primary,
+                        type = LemonadeButtonType.Solid,
+                        loading = true,
+                    )
+                    LemonadeUi.IconButton(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        onClick = {},
+                        variant = LemonadeButtonVariant.Neutral,
+                        type = LemonadeButtonType.Subtle,
+                        loading = true,
+                    )
+                    LemonadeUi.IconButton(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        onClick = {},
+                        variant = LemonadeButtonVariant.Critical,
+                        type = LemonadeButtonType.Solid,
+                        loading = true,
                     )
                 }
             }
         }
+
+        item(key = "Circular") {
+            IconButtonSection(title = "Circular") {
+                IconButtonRow {
+                    LemonadeUi.IconButton(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        onClick = {},
+                        variant = LemonadeButtonVariant.Primary,
+                        type = LemonadeButtonType.Solid,
+                        shape = LemonadeIconButtonShape.Circular,
+                    )
+                    LemonadeUi.IconButton(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        onClick = {},
+                        variant = LemonadeButtonVariant.Neutral,
+                        type = LemonadeButtonType.Subtle,
+                        shape = LemonadeIconButtonShape.Circular,
+                    )
+                    LemonadeUi.IconButton(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        onClick = {},
+                        variant = LemonadeButtonVariant.Critical,
+                        type = LemonadeButtonType.Solid,
+                        shape = LemonadeIconButtonShape.Circular,
+                    )
+                }
+            }
+        }
+
+        item(key = "Disabled") {
+            IconButtonSection(title = "Disabled") {
+                IconButtonRow {
+                    LemonadeUi.IconButton(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        onClick = {},
+                        enabled = false,
+                        variant = LemonadeButtonVariant.Primary,
+                        type = LemonadeButtonType.Solid,
+                    )
+                    LemonadeUi.IconButton(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        onClick = {},
+                        enabled = false,
+                        variant = LemonadeButtonVariant.Neutral,
+                        type = LemonadeButtonType.Subtle,
+                    )
+                    LemonadeUi.IconButton(
+                        icon = LemonadeIcons.Heart,
+                        contentDescription = null,
+                        onClick = {},
+                        enabled = false,
+                        variant = LemonadeButtonVariant.Neutral,
+                        type = LemonadeButtonType.Ghost,
+                    )
+                }
+            }
+        }
+
+        item(key = "Different Icons") {
+            IconButtonSection(title = "Different Icons") {
+                IconButtonRow {
+                    differentIcons.forEach { icon ->
+                        LemonadeUi.IconButton(
+                            icon = icon,
+                            contentDescription = null,
+                            onClick = {},
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun IconButtonRow(content: @Composable () -> Unit) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing400),
+    ) {
+        content()
     }
 }
 
@@ -235,6 +232,7 @@ private fun IconButtonSection(
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing300),
+        modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
     ) {
         LemonadeUi.Text(
             text = title,

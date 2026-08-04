@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -23,6 +24,7 @@ private const val TAKINGS_ANCHOR = "takings"
 private const val REPORTS_ANCHOR = "reports"
 private const val BESIDE_LEADING_ANCHOR = "beside-leading"
 private const val BESIDE_TRAILING_ANCHOR = "beside-trailing"
+private const val TOOLTIP_TOTAL_STEPS = 3
 
 @Composable
 internal fun TooltipDisplay() {
@@ -244,8 +246,7 @@ private fun TooltipWithCloseButton() {
 
 @Composable
 private fun TooltipTourExample() {
-    val totalSteps = 3
-    var step by remember { mutableStateOf(1) }
+    var step by remember { mutableIntStateOf(1) }
 
     LemonadeUi.Tooltip(
         content = "The footer is a scoped slot — only the step counter and actions belong in it.",
@@ -256,7 +257,7 @@ private fun TooltipTourExample() {
         footer = {
             StepCounter(
                 currentStep = step,
-                totalSteps = totalSteps,
+                totalSteps = TOOLTIP_TOTAL_STEPS,
                 modifier = Modifier.weight(weight = 1f),
             )
             Action(
@@ -266,7 +267,7 @@ private fun TooltipTourExample() {
             )
             Action(
                 label = "Next",
-                onClick = { step = if (step < totalSteps) step + 1 else 1 },
+                onClick = { step = if (step < TOOLTIP_TOTAL_STEPS) step + 1 else 1 },
             )
         },
     )
