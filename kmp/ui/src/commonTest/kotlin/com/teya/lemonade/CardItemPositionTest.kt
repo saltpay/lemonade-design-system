@@ -82,6 +82,15 @@ class CardItemPositionTest {
     }
 
     @Test
+    fun `a footer with no rows or header fills the whole card`() {
+        val totalCount = cardTotalSlotCount(rowCount = 0, hasHeader = false, hasFooter = true)
+        assertEquals(
+            expected = LemonadeCardItemPosition.Single,
+            actual = resolveCardSlotPosition(visualIndex = 0, totalCount = totalCount),
+        )
+    }
+
+    @Test
     fun `an empty card has no slots`() {
         assertEquals(
             expected = 0,
