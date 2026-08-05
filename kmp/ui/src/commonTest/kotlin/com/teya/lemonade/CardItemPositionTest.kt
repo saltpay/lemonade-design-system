@@ -4,7 +4,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class CardItemPositionTest {
-
     @Test
     fun `the only slot in a card gets every corner`() {
         assertEquals(
