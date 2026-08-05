@@ -3,7 +3,10 @@ package com.teya.lemonade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.layout.LazyScopeMarker
@@ -13,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeCardBackground
 import com.teya.lemonade.core.LemonadeCardPadding
 
@@ -323,3 +327,64 @@ private val LemonadeCardItemPosition.shape: Shape
             )
         }
     }
+
+@LemonadePreview
+@Composable
+private fun CardItemsPreview() {
+    LazyColumn(
+        modifier = Modifier.height(480.dp),
+    ) {
+        lemonadeCardItems(
+            contentPadding = LemonadeCardPadding.Small,
+            header = CardHeaderConfig(
+                title = "Card heading",
+                subtitle = "Lazy rows",
+            ),
+            footerAction = CardFooterActionConfig(
+                label = "See all",
+                onClick = {},
+            ),
+        ) {
+            items(count = 5) { index: Int ->
+                CardItemsPreviewRow(text = "Row ${index + 1}")
+            }
+        }
+    }
+}
+
+@LemonadePreview
+@Composable
+private fun CardItemsHeaderlessPreview() {
+    LazyColumn(
+        modifier = Modifier.height(280.dp),
+    ) {
+        lemonadeCardItems(
+            contentPadding = LemonadeCardPadding.Small,
+        ) {
+            items(count = 3) { index: Int ->
+                CardItemsPreviewRow(text = "Row ${index + 1}")
+            }
+        }
+        item {
+            Spacer(modifier = Modifier.height(LocalSpaces.current.spacing400))
+        }
+        lemonadeCardItems {
+            item {
+                CardItemsPreviewRow(text = "Single row card")
+            }
+        }
+    }
+}
+
+@Composable
+private fun CardItemsPreviewRow(text: String) {
+    Box(
+        modifier = Modifier.padding(all = LocalSpaces.current.spacing200),
+    ) {
+        LemonadeUi.Text(
+            text = text,
+            textStyle = LocalTypographies.current.bodyMediumRegular,
+            color = LocalColors.current.content.contentPrimary,
+        )
+    }
+}
