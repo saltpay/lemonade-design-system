@@ -132,7 +132,7 @@ public data class CardHeaderConfig(
 }
 
 @Composable
-private fun CardHeader(
+internal fun CardHeader(
     config: CardHeaderConfig,
     modifier: Modifier = Modifier,
 ) {
@@ -199,7 +199,7 @@ public data class CardFooterActionConfig(
 )
 
 @Composable
-private fun CardFooterAction(config: CardFooterActionConfig) {
+internal fun CardFooterAction(config: CardFooterActionConfig) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val alpha by animateFloatAsState(
@@ -260,7 +260,7 @@ private val LemonadeCardHeadingStyle.color: Color
         }
     }
 
-private val LemonadeCardPadding.spacing: Dp
+internal val LemonadeCardPadding.spacing: Dp
     @Composable get() {
         return when (this) {
             LemonadeCardPadding.None -> LocalSpaces.current.spacing0
@@ -270,7 +270,7 @@ private val LemonadeCardPadding.spacing: Dp
         }
     }
 
-private val LemonadeCardBackground.background: Color
+internal val LemonadeCardBackground.background: Color
     @Composable get() {
         return when (this) {
             LemonadeCardBackground.Default -> LocalColors.current.background.bgDefault
