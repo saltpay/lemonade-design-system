@@ -90,8 +90,10 @@ public enum class TabsItemSize {
  * )
  * ```
  *
- * @param tabs A list of [TabItem] instances to display.
- * @param selectedIndex The index of the currently selected tab.
+ * @param tabs A list of [TabItem] instances to display. An empty list renders nothing, so a host
+ *   whose tabs are still loading can pass one straight through.
+ * @param selectedIndex The index of the currently selected tab. Clamped into [tabs]' indices — an
+ *   index left over from a longer list selects the nearest tab instead of failing.
  * @param onTabSelected A callback invoked when a tab is selected with the tab index.
  * @param modifier The [Modifier] to be applied to the root container of the component.
  * @param itemsSize The sizing strategy for tab items, defaults to [TabsItemSize.Hug].
@@ -124,15 +126,19 @@ internal fun CoreTabs(
     modifier: Modifier = Modifier,
     itemsSize: TabsItemSize = TabsItemSize.Hug,
 ) {
-    require(
-        value = tabs.isNotEmpty(),
-        lazyMessage = { "Tabs list should not be empty." },
-    )
-    require(
-        value = selectedIndex in tabs.indices,
-        lazyMessage = {
-            "Selected index ($selectedIndex) is out of bounds for tabs list of size ${tabs.size}."
-        },
+    // Nothing to draw, not even the separator — a bare rule under an empty strip reads as a
+    // rendering glitch. Hosts routinely pass an empty list for a frame while the tabs they are
+    // derived from load, and a composable body re-runs on every recomposition, so throwing here
+    // would turn that transient state into a crash of the host app.
+    if (tabs.isEmpty()) {
+        return
+    }
+
+    // A stale index outlives its list whenever the two are held apart — the list shrinks, and the
+    // index catches up a frame later. Clamp rather than throw, matching CoreSegmentedControl.
+    val resolvedIndex = selectedIndex.coerceIn(
+        minimumValue = 0,
+        maximumValue = tabs.lastIndex,
     )
 
     val density = LocalDensity.current
@@ -154,25 +160,25 @@ internal fun CoreTabs(
         tween<Dp>(durationMillis = 0)
     }
 
-    LaunchedEffect(key1 = contentWidths[selectedIndex]) {
-        if (contentWidths[selectedIndex] != null && !hasInitialMeasurement) {
+    LaunchedEffect(key1 = contentWidths[resolvedIndex]) {
+        if (contentWidths[resolvedIndex] != null && !hasInitialMeasurement) {
             hasInitialMeasurement = true
         }
     }
 
     // Indicator width = content wrapper width (text + icon only)
     val indicatorWidth by animateDpAsState(
-        targetValue = contentWidths[selectedIndex]
-            ?: tabWidths[selectedIndex]
+        targetValue = contentWidths[resolvedIndex]
+            ?: tabWidths[resolvedIndex]
             ?: 0.dp,
         animationSpec = animationSpec,
     )
     // Indicator offset = tab offset + centering within the tab
-    val selectedTabWidth = tabWidths[selectedIndex]
+    val selectedTabWidth = tabWidths[resolvedIndex]
         ?: 0.dp
-    val selectedContentWidth = contentWidths[selectedIndex]
+    val selectedContentWidth = contentWidths[resolvedIndex]
         ?: selectedTabWidth
-    val selectedTabOffset = tabOffsets[selectedIndex]
+    val selectedTabOffset = tabOffsets[resolvedIndex]
         ?: 0.dp
     val indicatorOffset by animateDpAsState(
         targetValue = selectedTabOffset + (selectedTabWidth - selectedContentWidth) / 2,
@@ -191,7 +197,7 @@ internal fun CoreTabs(
             TabsItemSize.Hug -> {
                 HugModeTabs(
                     tabs = tabs,
-                    selectedIndex = selectedIndex,
+                    selectedIndex = resolvedIndex,
                     onTabSelected = onTabSelected,
                     density = density,
                     tabWidths = tabWidths,
@@ -207,7 +213,7 @@ internal fun CoreTabs(
             TabsItemSize.Stretch -> {
                 StretchModeTabs(
                     tabs = tabs,
-                    selectedIndex = selectedIndex,
+                    selectedIndex = resolvedIndex,
                     onTabSelected = onTabSelected,
                     density = density,
                     tabWidths = tabWidths,
