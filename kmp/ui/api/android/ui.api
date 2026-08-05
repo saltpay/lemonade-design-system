@@ -60,6 +60,15 @@ public final class com/teya/lemonade/CardHeaderConfig {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/teya/lemonade/CardItemsKt {
+	public static final fun items (Lcom/teya/lemonade/LemonadeCardItemsScope;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;)V
+	public static synthetic fun items$default (Lcom/teya/lemonade/LemonadeCardItemsScope;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;ILjava/lang/Object;)V
+	public static final fun itemsIndexed (Lcom/teya/lemonade/LemonadeCardItemsScope;Ljava/util/List;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function5;)V
+	public static synthetic fun itemsIndexed$default (Lcom/teya/lemonade/LemonadeCardItemsScope;Ljava/util/List;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function5;ILjava/lang/Object;)V
+	public static final fun lemonadeCardItems (Landroidx/compose/foundation/lazy/LazyListScope;Lcom/teya/lemonade/core/LemonadeCardPadding;Lcom/teya/lemonade/core/LemonadeCardBackground;Lcom/teya/lemonade/CardHeaderConfig;Lcom/teya/lemonade/CardFooterActionConfig;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun lemonadeCardItems$default (Landroidx/compose/foundation/lazy/LazyListScope;Lcom/teya/lemonade/core/LemonadeCardPadding;Lcom/teya/lemonade/core/LemonadeCardBackground;Lcom/teya/lemonade/CardHeaderConfig;Lcom/teya/lemonade/CardFooterActionConfig;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+}
+
 public final class com/teya/lemonade/CardKt {
 	public static final fun Card (Lcom/teya/lemonade/LemonadeUi;Landroidx/compose/ui/Modifier;Lcom/teya/lemonade/core/LemonadeCardPadding;Lcom/teya/lemonade/core/LemonadeCardBackground;Lcom/teya/lemonade/CardHeaderConfig;Lcom/teya/lemonade/CardFooterActionConfig;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
@@ -79,6 +88,15 @@ public final class com/teya/lemonade/ComposableSingletons$BoxSelectionKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$BoxSelectionKt;
 	public fun <init> ()V
 	public final fun getLambda$1508943510$ui_release ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/teya/lemonade/ComposableSingletons$CardItemsKt {
+	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$CardItemsKt;
+	public fun <init> ()V
+	public final fun getLambda$-1532015688$ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-201731540$ui_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$1337565024$ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$343069030$ui_release ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$CardKt {
@@ -221,6 +239,18 @@ public final class com/teya/lemonade/LemonadeButtonColors {
 	public final fun getContentColor-0d7_KjU ()J
 	public final fun getPressedBackgroundColor-0d7_KjU ()J
 	public final fun getSolidBackgroundColor-0d7_KjU ()J
+}
+
+public abstract interface class com/teya/lemonade/LemonadeCardItemsScope {
+	public abstract fun item (Ljava/lang/Object;Ljava/lang/Object;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun item$default (Lcom/teya/lemonade/LemonadeCardItemsScope;Ljava/lang/Object;Ljava/lang/Object;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public abstract fun items (ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;)V
+	public static synthetic fun items$default (Lcom/teya/lemonade/LemonadeCardItemsScope;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;ILjava/lang/Object;)V
+}
+
+public final class com/teya/lemonade/LemonadeCardItemsScope$DefaultImpls {
+	public static synthetic fun item$default (Lcom/teya/lemonade/LemonadeCardItemsScope;Ljava/lang/Object;Ljava/lang/Object;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public static synthetic fun items$default (Lcom/teya/lemonade/LemonadeCardItemsScope;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;ILjava/lang/Object;)V
 }
 
 public final class com/teya/lemonade/LemonadeCountryFlagsExtensionKt {
