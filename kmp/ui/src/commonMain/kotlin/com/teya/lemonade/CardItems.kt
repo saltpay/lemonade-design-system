@@ -163,6 +163,44 @@ public sealed interface LemonadeCardItemsScope {
     )
 }
 
+public inline fun <T> LemonadeCardItemsScope.items(
+    items: List<T>,
+    noinline key: ((item: T) -> Any)? = null,
+    crossinline contentType: (item: T) -> Any? = { _ -> null },
+    crossinline itemContent: @Composable LazyItemScope.(item: T) -> Unit,
+) {
+    items(
+        count = items.size,
+        key = if (key != null) {
+            { index: Int -> key(items[index]) }
+        } else {
+            null
+        },
+        contentType = { index: Int -> contentType(items[index]) },
+    ) { index: Int ->
+        itemContent(items[index])
+    }
+}
+
+public inline fun <T> LemonadeCardItemsScope.itemsIndexed(
+    items: List<T>,
+    noinline key: ((index: Int, item: T) -> Any)? = null,
+    crossinline contentType: (index: Int, item: T) -> Any? = { _, _ -> null },
+    crossinline itemContent: @Composable LazyItemScope.(index: Int, item: T) -> Unit,
+) {
+    items(
+        count = items.size,
+        key = if (key != null) {
+            { index: Int -> key(index, items[index]) }
+        } else {
+            null
+        },
+        contentType = { index: Int -> contentType(index, items[index]) },
+    ) { index: Int ->
+        itemContent(index, items[index])
+    }
+}
+
 private class CardItemsInterval(
     val count: Int,
     val key: ((index: Int) -> Any)?,
