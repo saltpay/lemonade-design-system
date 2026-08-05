@@ -67,6 +67,11 @@ internal fun cardRowVisualIndex(
  * The host list must not use `verticalArrangement = Arrangement.spacedBy(...)`: the gaps
  * would appear between the card's own rows and visually split the card. Give rows their
  * own internal padding, and separate consecutive cards with a spacer item instead.
+ *
+ * [content] only exposes [LemonadeCardItemsScope.item] and [LemonadeCardItemsScope.items];
+ * any other `LazyListScope` call (for example `stickyHeader`) resolves to the host
+ * [LazyListScope] instead and is emitted immediately, before this card's own header, rows,
+ * and footer, rather than becoming part of it.
  */
 public fun LazyListScope.lemonadeCardItems(
     contentPadding: LemonadeCardPadding = LemonadeCardPadding.None,
@@ -164,6 +169,12 @@ public sealed interface LemonadeCardItemsScope {
     )
 }
 
+/**
+ * Adds a row for each element of [items], mirroring [LazyListScope.items].
+ *
+ * When provided, [key] values must be unique across the entire host [LazyListScope], not
+ * just within this card, since every row becomes a real lazy item of the host list.
+ */
 public inline fun <T> LemonadeCardItemsScope.items(
     items: List<T>,
     noinline key: ((item: T) -> Any)? = null,
@@ -183,6 +194,13 @@ public inline fun <T> LemonadeCardItemsScope.items(
     }
 }
 
+/**
+ * Adds a row for each element of [items], exposing its index, mirroring
+ * [LazyListScope.itemsIndexed].
+ *
+ * When provided, [key] values must be unique across the entire host [LazyListScope], not
+ * just within this card, since every row becomes a real lazy item of the host list.
+ */
 public inline fun <T> LemonadeCardItemsScope.itemsIndexed(
     items: List<T>,
     noinline key: ((index: Int, item: T) -> Any)? = null,
