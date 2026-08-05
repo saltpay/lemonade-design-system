@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.layout.LazyScopeMarker
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -150,9 +149,7 @@ public fun LazyListScope.lemonadeCardItems(
  * Receiver for [lemonadeCardItems] content. Mirrors the [LazyListScope] item DSL; every
  * entry becomes a real lazy item of the host list.
  */
-@LazyScopeMarker
 public sealed interface LemonadeCardItemsScope {
-
     public fun item(
         key: Any? = null,
         contentType: Any? = null,
