@@ -112,36 +112,13 @@ public fun LazyListScope.lemonadeCardItems(
         }
     }
 
-    var emittedRows = 0
-    recorder.intervals.forEach { interval ->
-        val intervalStart = emittedRows
-        items(
-            count = interval.count,
-            key = interval.key,
-            contentType = { localIndex: Int ->
-                CardRowContentType(userType = interval.contentType(localIndex))
-            },
-        ) { localIndex: Int ->
-            val itemScope = this
-            val rowIndex = intervalStart + localIndex
-            CardRowContainer(
-                position = resolveCardSlotPosition(
-                    visualIndex = cardRowVisualIndex(
-                        rowIndex = rowIndex,
-                        hasHeader = header != null,
-                    ),
-                    totalCount = totalCount,
-                ),
-                background = background,
-                contentPadding = contentPadding,
-                isFirstRow = rowIndex == 0,
-                isLastRow = rowIndex == rowCount - 1,
-            ) {
-                interval.itemContent(itemScope, localIndex)
-            }
-        }
-        emittedRows += interval.count
-    }
+    cardRowItems(
+        recorder = recorder,
+        background = background,
+        contentPadding = contentPadding,
+        hasHeader = header != null,
+        totalCount = totalCount,
+    )
 
     if (footerAction != null) {
         item(contentType = CardSlotContentType.Footer) {
@@ -284,6 +261,46 @@ private data class CardRowContentType(
 private enum class CardSlotContentType {
     Header,
     Footer,
+}
+
+private fun LazyListScope.cardRowItems(
+    recorder: CardItemsRecorder,
+    background: LemonadeCardBackground,
+    contentPadding: LemonadeCardPadding,
+    hasHeader: Boolean,
+    totalCount: Int,
+) {
+    val rowCount = recorder.rowCount
+    var emittedRows = 0
+    recorder.intervals.forEach { interval ->
+        val intervalStart = emittedRows
+        items(
+            count = interval.count,
+            key = interval.key,
+            contentType = { localIndex: Int ->
+                CardRowContentType(userType = interval.contentType(localIndex))
+            },
+        ) { localIndex: Int ->
+            val itemScope = this
+            val rowIndex = intervalStart + localIndex
+            CardRowContainer(
+                position = resolveCardSlotPosition(
+                    visualIndex = cardRowVisualIndex(
+                        rowIndex = rowIndex,
+                        hasHeader = hasHeader,
+                    ),
+                    totalCount = totalCount,
+                ),
+                background = background,
+                contentPadding = contentPadding,
+                isFirstRow = rowIndex == 0,
+                isLastRow = rowIndex == rowCount - 1,
+            ) {
+                interval.itemContent(itemScope, localIndex)
+            }
+        }
+        emittedRows += interval.count
+    }
 }
 
 @Composable
