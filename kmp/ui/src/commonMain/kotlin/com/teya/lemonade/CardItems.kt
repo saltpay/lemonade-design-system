@@ -1,5 +1,7 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -11,13 +13,15 @@ import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeCardBackground
 import com.teya.lemonade.core.LemonadeCardPadding
+
+private const val CARD_ITEM_ANIMATION_DURATION_MS = 450
 
 internal enum class LemonadeCardItemPosition {
     Single,
@@ -72,6 +76,10 @@ internal fun cardRowVisualIndex(
  * any other `LazyListScope` call (for example `stickyHeader`) resolves to the host
  * [LazyListScope] instead and is emitted immediately, before this card's own header, rows,
  * and footer, rather than becoming part of it.
+ *
+ * As rows are added, removed, or reordered, each slot fades and slides into place and its
+ * corners round or square off in step, so the card reshapes smoothly instead of snapping.
+ * Give rows stable keys through [LemonadeCardItemsScope.items] so those changes animate.
  */
 public fun LazyListScope.lemonadeCardItems(
     contentPadding: LemonadeCardPadding = LemonadeCardPadding.None,
@@ -279,15 +287,15 @@ private enum class CardSlotContentType {
 }
 
 @Composable
-private fun CardSlotContainer(
+private fun LazyItemScope.CardSlotContainer(
     position: LemonadeCardItemPosition,
     background: LemonadeCardBackground,
     content: @Composable () -> Unit,
 ) {
     Box(
-        modifier = Modifier
+        modifier = cardItemAnimationModifier()
             .fillMaxWidth()
-            .clip(shape = position.shape)
+            .clip(shape = animatedCardItemShape(position = position))
             .background(color = background.background),
     ) {
         content()
@@ -295,7 +303,7 @@ private fun CardSlotContainer(
 }
 
 @Composable
-private fun CardRowContainer(
+private fun LazyItemScope.CardRowContainer(
     position: LemonadeCardItemPosition,
     background: LemonadeCardBackground,
     contentPadding: LemonadeCardPadding,
@@ -306,9 +314,9 @@ private fun CardRowContainer(
     val padding = contentPadding.spacing
     val zero = LocalSpaces.current.spacing0
     Box(
-        modifier = Modifier
+        modifier = cardItemAnimationModifier()
             .fillMaxWidth()
-            .clip(shape = position.shape)
+            .clip(shape = animatedCardItemShape(position = position))
             .background(color = background.background)
             .padding(
                 start = padding,
@@ -321,27 +329,37 @@ private fun CardRowContainer(
     }
 }
 
-private val LemonadeCardItemPosition.shape: Shape
-    @Composable get() {
-        val radius = LocalRadius.current.semantic.radiusContainerDefault
-        val zero = LocalRadius.current.radius0
-        return when (this) {
-            LemonadeCardItemPosition.Single -> LocalShapes.current.semantic.radiusContainerDefault
-            LemonadeCardItemPosition.First -> RoundedCornerShape(
-                topStart = radius,
-                topEnd = radius,
-                bottomEnd = zero,
-                bottomStart = zero,
-            )
-            LemonadeCardItemPosition.Middle -> RectangleShape
-            LemonadeCardItemPosition.Last -> RoundedCornerShape(
-                topStart = zero,
-                topEnd = zero,
-                bottomEnd = radius,
-                bottomStart = radius,
-            )
-        }
-    }
+// Fades and slides a card slot into place as rows are added, removed, or reordered.
+private fun LazyItemScope.cardItemAnimationModifier(): Modifier =
+    Modifier.animateItem(
+        fadeInSpec = tween(durationMillis = CARD_ITEM_ANIMATION_DURATION_MS),
+        placementSpec = tween(durationMillis = CARD_ITEM_ANIMATION_DURATION_MS),
+        fadeOutSpec = tween(durationMillis = CARD_ITEM_ANIMATION_DURATION_MS),
+    )
+
+@Composable
+private fun animatedCardItemShape(position: LemonadeCardItemPosition): Shape {
+    val radius = LocalRadius.current.semantic.radiusContainerDefault
+    val zero = LocalRadius.current.radius0
+    val roundsTop = position == LemonadeCardItemPosition.First || position == LemonadeCardItemPosition.Single
+    val roundsBottom = position == LemonadeCardItemPosition.Last || position == LemonadeCardItemPosition.Single
+    val topRadius by animateDpAsState(
+        targetValue = if (roundsTop) radius else zero,
+        animationSpec = tween(durationMillis = CARD_ITEM_ANIMATION_DURATION_MS),
+        label = "cardItemTopRadius",
+    )
+    val bottomRadius by animateDpAsState(
+        targetValue = if (roundsBottom) radius else zero,
+        animationSpec = tween(durationMillis = CARD_ITEM_ANIMATION_DURATION_MS),
+        label = "cardItemBottomRadius",
+    )
+    return RoundedCornerShape(
+        topStart = topRadius,
+        topEnd = topRadius,
+        bottomStart = bottomRadius,
+        bottomEnd = bottomRadius,
+    )
+}
 
 @LemonadePreview
 @Composable
