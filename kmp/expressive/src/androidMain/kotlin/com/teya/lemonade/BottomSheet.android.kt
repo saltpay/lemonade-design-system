@@ -1,35 +1,25 @@
 package com.teya.lemonade
 
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.window.DialogWindowProvider
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import com.teya.lemonade.core.LemonadeBottomSheetVariant
 
 /**
- * Android-specific [BottomSheet][LemonadeUi.BottomSheet] variant that can hide the system
- * navigation bar (back / home / recent buttons) inside the sheet's dialog window.
+ * Android-specific [BottomSheet][LemonadeUi.BottomSheet] variant that forces the system
+ * navigation bar (back / home / recent buttons) hidden inside the sheet's dialog window.
  *
- * When [hideNavigationBar] is `true`, the dialog window is configured edge-to-edge and
- * the navigation bar is hidden using [WindowInsetsControllerCompat]. The sheet's content
- * window insets are adjusted to [WindowInsets] status bar so that the
- * [ModalBottomSheet] does not miscalculate its offset from the now-hidden navigation bar.
+ * Every [LemonadeUi.BottomSheet] already keeps whichever system bars the host window hides, so an
+ * app running fully immersive needs nothing from this overload. Reach for it only to hide the
+ * navigation bar in the sheet while the host window still shows it.
  *
  * When [hideNavigationBar] is `false`, this behaves identically to the common
- * [LemonadeUi.BottomSheet].
+ * [LemonadeUi.BottomSheet]: the sheet inherits the host window's system bars.
  *
  * @param expanded Whether the bottom sheet is currently visible.
  * @param onDismissRequest Callback invoked when the user requests to dismiss the bottom sheet.
- * @param hideNavigationBar Whether to hide the system navigation bar in the dialog window.
+ * @param hideNavigationBar Whether to hide the system navigation bar in the dialog window even
+ *   when the host window shows it. Inheriting the host window's bars does not need this flag.
  * @param showDragHandle Whether to display the drag handle at the top of the sheet.
  * @param skipPartiallyExpanded Whether the partially expanded state should be skipped.
  * @param gesturesEnabled Whether the sheet responds to swipe/drag gestures. When `false`, the
@@ -62,17 +52,8 @@ public fun LemonadeUi.BottomSheet(
         gesturesEnabled = gesturesEnabled,
         background = background,
         properties = properties,
-        contentWindowInsets = if (hideNavigationBar) {
-            { WindowInsets.statusBars }
-        } else {
-            { BottomSheetDefaults.windowInsets }
-        },
-        content = {
-            if (hideNavigationBar) {
-                HideNavigationBarEffect()
-            }
-            content()
-        },
+        forcedHiddenSystemBars = HiddenSystemBars(navigationBar = hideNavigationBar),
+        content = content,
     )
 }
 
@@ -137,37 +118,4 @@ public fun LemonadeUi.BottomSheet(
         properties = LemonadeBottomSheetProperties(),
         content = content,
     )
-}
-
-/**
- * Configures the dialog window created by [ModalBottomSheet] to be edge-to-edge and
- * hides its navigation bar.
- *
- * [ModalBottomSheet] renders inside its own dialog window, so the dialog window must be
- * obtained via [DialogWindowProvider] and configured independently from the Activity window.
- * [DisposableEffect] with key [Unit] runs once when the dialog enters composition, which
- * is early enough — layout happens after composition.
- */
-@Composable
-private fun HideNavigationBarEffect() {
-    val view = LocalView.current
-    DisposableEffect(Unit) {
-        val dialogWindow = (view.parent as? DialogWindowProvider)
-            ?.window
-            ?: return@DisposableEffect onDispose { }
-
-        val insetsController = WindowCompat.getInsetsController(
-            dialogWindow,
-            dialogWindow.decorView,
-        )
-        WindowCompat.setDecorFitsSystemWindows(
-            dialogWindow,
-            false,
-        )
-        with(insetsController) {
-            hide(WindowInsetsCompat.Type.navigationBars())
-            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
-        onDispose { }
-    }
 }

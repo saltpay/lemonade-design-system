@@ -1,7 +1,6 @@
 package com.teya.lemonade
 
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -71,6 +70,8 @@ import com.teya.lemonade.core.LemonadeBottomSheetVariant
  *   [LemonadeTheme.colors.background.bgSubtle].
  * - Tonal elevation is set to 0.dp; the sheet relies on Lemonade color tokens for visual hierarchy.
  * - The drag handle uses the default [BottomSheetDefaults.DragHandle] styling.
+ * - The sheet keeps whichever system bars the host window hides, so an app running fully immersive
+ *   stays immersive while the sheet is open. Bars are only ever inherited hidden, never shown.
  * - For overlay components with a unified visibility API, see also [LemonadeUi.Dialog] and
  *   [LemonadeUi.Dropdown], which share the same `expanded` flag pattern.
  *
@@ -171,7 +172,7 @@ internal fun CoreBottomSheet(
     gesturesEnabled: Boolean = true,
     background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
     properties: LemonadeBottomSheetProperties = LemonadeBottomSheetProperties(),
-    contentWindowInsets: @Composable () -> WindowInsets = { BottomSheetDefaults.windowInsets },
+    forcedHiddenSystemBars: HiddenSystemBars = HiddenSystemBars(),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(
@@ -187,6 +188,9 @@ internal fun CoreBottomSheet(
         LemonadeBottomSheetVariant.Default -> LemonadeTheme.colors.background.bgDefault
         LemonadeBottomSheetVariant.Subtle -> LemonadeTheme.colors.background.bgSubtle
     }
+
+    // Read from the host composition, before the sheet's own window exists.
+    val hiddenSystemBars = hostHiddenSystemBars() + forcedHiddenSystemBars
 
     if (expanded || sheetState.isVisible) {
         ModalBottomSheet(
@@ -204,9 +208,11 @@ internal fun CoreBottomSheet(
             } else {
                 null
             },
-            contentWindowInsets = contentWindowInsets,
             properties = properties.toMaterial(),
-            content = content,
+            content = {
+                MirrorHiddenSystemBars(hidden = hiddenSystemBars)
+                content()
+            },
         )
     }
 }

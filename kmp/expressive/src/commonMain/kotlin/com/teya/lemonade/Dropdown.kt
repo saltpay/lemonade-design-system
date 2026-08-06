@@ -62,6 +62,8 @@ import androidx.compose.material3.Text as M3Text
  * - Uses [LemonadeTheme.shapes.radius500] for rounded corners.
  * - Background color is [LemonadeTheme.colors.background.bgDefault].
  * - Vertical offset is [LemonadeTheme.spaces.spacing200] from the anchor.
+ * - The dropdown keeps whichever system bars the host window hides, so an app running fully
+ *   immersive stays immersive while the menu is open.
  *
  * @see LemonadeUi.DropdownItem For individual menu items within this dropdown.
  * @see LemonadeUi.Dialog For a dialog overlay with the same visibility pattern.
@@ -77,6 +79,9 @@ public fun LemonadeUi.Dropdown(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val dropdownMinWidth = 248.dp
+
+    // Read from the host composition, before the popup's own window exists.
+    val hiddenSystemBars = hostHiddenSystemBars()
 
     DropdownMenu(
         expanded = expanded,
@@ -95,7 +100,10 @@ public fun LemonadeUi.Dropdown(
             dismissOnBackPress = dismissOnBackPress,
             dismissOnClickOutside = dismissOnClickOutside,
         ),
-        content = content,
+        content = {
+            MirrorHiddenSystemBars(hidden = hiddenSystemBars)
+            content()
+        },
     )
 }
 
