@@ -35,7 +35,7 @@ public final class com/teya/lemonade/BottomTabBarKt {
 public final class com/teya/lemonade/ComposableSingletons$BottomSheetKt {
 	public static final field INSTANCE Lcom/teya/lemonade/ComposableSingletons$BottomSheetKt;
 	public fun <init> ()V
-	public final fun getLambda$-754337708$expressive_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1054669062$expressive_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/teya/lemonade/ComposableSingletons$BottomTabBarKt {
