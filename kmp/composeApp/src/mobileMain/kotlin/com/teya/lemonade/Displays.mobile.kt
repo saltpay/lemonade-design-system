@@ -47,6 +47,11 @@ internal data object BottomSheetDisplay : Displays {
     override val label: String = "BottomSheet"
 }
 
+@Serializable
+internal data object ImmersiveOverlaysDisplay : Displays {
+    override val label: String = "ImmersiveOverlays"
+}
+
 internal actual val platformSpecificEntries: List<Displays> = listOf(
     TopBarDisplay,
     SearchTopBarDisplay,
@@ -57,4 +62,5 @@ internal actual val platformSpecificEntries: List<Displays> = listOf(
     DropdownDisplay,
     DialogDisplay,
     BottomSheetDisplay,
+    ImmersiveOverlaysDisplay,
 )
