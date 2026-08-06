@@ -3,9 +3,9 @@ package com.teya.lemonade
 import android.os.Build
 import android.view.View
 import android.view.Window
-import android.view.WindowInsets as AndroidWindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.areNavigationBarsVisible
@@ -17,6 +17,7 @@ import androidx.compose.ui.window.DialogWindowProvider
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import android.view.WindowInsets as AndroidWindowInsets
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -78,14 +79,18 @@ private fun Window.hideSystemBars(hidden: HiddenSystemBars) {
  */
 private fun View.hidePopupSystemBars(hidden: HiddenSystemBars) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        val controller = windowInsetsController ?: return
-        controller.systemBarsBehavior =
-            WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        controller.hide(hidden.insetTypes())
+        hidePopupSystemBarsFromView(hidden)
     } else {
         @Suppress("DEPRECATION")
         rootView.systemUiVisibility = rootView.systemUiVisibility or hidden.legacySystemUiFlags()
     }
+}
+
+@RequiresApi(Build.VERSION_CODES.R)
+private fun View.hidePopupSystemBarsFromView(hidden: HiddenSystemBars) {
+    val controller = windowInsetsController ?: return
+    controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+    controller.hide(hidden.insetTypes())
 }
 
 private fun WindowInsetsControllerCompat.hideBars(hidden: HiddenSystemBars) {
@@ -98,6 +103,7 @@ private fun WindowInsetsControllerCompat.hideBars(hidden: HiddenSystemBars) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.R)
 private fun HiddenSystemBars.insetTypes(): Int {
     var types = 0
     if (statusBar) {

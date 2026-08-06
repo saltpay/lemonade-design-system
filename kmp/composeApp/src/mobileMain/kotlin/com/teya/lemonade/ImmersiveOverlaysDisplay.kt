@@ -23,23 +23,6 @@ import com.teya.lemonade.core.LemonadeIcons
 private const val IMMERSIVE_TOOLTIP_ANCHOR = "immersive-overlays-tooltip"
 
 /**
- * Hides the host window's system bars while [enabled], and restores them when it flips back or
- * when this composable leaves composition. Only Android has per-window system-bar state.
- */
-@Composable
-internal expect fun HideSystemBarsEffect(enabled: Boolean)
-
-/**
- * The Android-only `hideNavigationBar = true` [LemonadeUi.BottomSheet] overload, so the forced
- * override can be exercised from this shared screen. A no-op on every other target.
- */
-@Composable
-internal expect fun ForcedHiddenNavBarBottomSheet(
-    expanded: Boolean,
-    onDismissRequest: () -> Unit,
-)
-
-/**
  * Reproduction surface for overlays opened by an app that runs fully immersive: the screen hides
  * the Activity's system bars, then opens each overlay so the bars can be watched for a flash on
  * open and on dismiss.
