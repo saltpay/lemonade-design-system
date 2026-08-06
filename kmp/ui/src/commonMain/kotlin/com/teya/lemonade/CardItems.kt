@@ -1,5 +1,6 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -17,11 +18,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeCardBackground
 import com.teya.lemonade.core.LemonadeCardPadding
 
 private const val CARD_ITEM_ANIMATION_DURATION_MS = 450
+
+// Hoisted so every slot shares one immutable spec instead of allocating specs per item.
+private val cardItemFadeSpec: FiniteAnimationSpec<Float> =
+    tween(durationMillis = CARD_ITEM_ANIMATION_DURATION_MS)
+
+private val cardItemPlacementSpec: FiniteAnimationSpec<IntOffset> =
+    tween(durationMillis = CARD_ITEM_ANIMATION_DURATION_MS)
+
+private val cardItemRadiusSpec: FiniteAnimationSpec<Dp> =
+    tween(durationMillis = CARD_ITEM_ANIMATION_DURATION_MS)
 
 internal enum class LemonadeCardItemPosition {
     Single,
@@ -349,9 +362,9 @@ private fun LazyItemScope.CardRowContainer(
 // Fades and slides a card slot into place as rows are added, removed, or reordered.
 private fun LazyItemScope.cardItemAnimationModifier(): Modifier =
     Modifier.animateItem(
-        fadeInSpec = tween(durationMillis = CARD_ITEM_ANIMATION_DURATION_MS),
-        placementSpec = tween(durationMillis = CARD_ITEM_ANIMATION_DURATION_MS),
-        fadeOutSpec = tween(durationMillis = CARD_ITEM_ANIMATION_DURATION_MS),
+        fadeInSpec = cardItemFadeSpec,
+        placementSpec = cardItemPlacementSpec,
+        fadeOutSpec = cardItemFadeSpec,
     )
 
 @Composable
@@ -362,12 +375,12 @@ private fun animatedCardItemShape(position: LemonadeCardItemPosition): Shape {
     val roundsBottom = position == LemonadeCardItemPosition.Last || position == LemonadeCardItemPosition.Single
     val topRadius by animateDpAsState(
         targetValue = if (roundsTop) radius else zero,
-        animationSpec = tween(durationMillis = CARD_ITEM_ANIMATION_DURATION_MS),
+        animationSpec = cardItemRadiusSpec,
         label = "cardItemTopRadius",
     )
     val bottomRadius by animateDpAsState(
         targetValue = if (roundsBottom) radius else zero,
-        animationSpec = tween(durationMillis = CARD_ITEM_ANIMATION_DURATION_MS),
+        animationSpec = cardItemRadiusSpec,
         label = "cardItemBottomRadius",
     )
     return RoundedCornerShape(
