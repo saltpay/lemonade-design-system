@@ -3,8 +3,12 @@ package com.teya.lemonade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeCardBackground
@@ -232,6 +236,59 @@ internal fun CardDisplay() {
                 }
             }
         }
+
+        lazyGroupedCardSection()
+    }
+}
+
+// A card whose rows are emitted straight into the host LazyColumn, so each row
+// composes lazily as it scrolls into view instead of all at once.
+private fun LazyListScope.lazyGroupedCardSection() {
+    item(key = "Lazy Grouped List title") {
+        CardSectionTitle(
+            title = "Lazy Grouped List",
+            modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing300),
+        )
+    }
+
+    lemonadeCardItems(
+        contentPadding = LemonadeCardPadding.Medium,
+        header = CardHeaderConfig(
+            title = "Transactions",
+            subtitle = "Rows compose lazily as they scroll into view",
+        ),
+        footerAction = CardFooterActionConfig(
+            label = "See all",
+            onClick = {},
+        ),
+    ) {
+        items(
+            count = 20,
+            key = { index -> "transaction-$index" },
+        ) { index ->
+            LazyGroupedCardRow(index = index)
+        }
+    }
+}
+
+@Composable
+private fun LazyGroupedCardRow(index: Int) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = LemonadeTheme.spaces.spacing200),
+    ) {
+        LemonadeUi.Text(
+            text = "Transaction ${index + 1}",
+            textStyle = LemonadeTheme.typography.bodyMediumRegular,
+            modifier = Modifier.weight(weight = 1f),
+        )
+        LemonadeUi.Text(
+            text = "£${index + 1}.00",
+            textStyle = LemonadeTheme.typography.bodyMediumSemiBold,
+            color = LemonadeTheme.colors.content.contentSecondary,
+        )
     }
 }
 
@@ -244,11 +301,20 @@ private fun CardSection(
         verticalArrangement = Arrangement.spacedBy(space = LemonadeTheme.spaces.spacing300),
         modifier = Modifier.padding(bottom = LemonadeTheme.spaces.spacing600),
     ) {
-        LemonadeUi.Text(
-            text = title,
-            textStyle = LemonadeTheme.typography.headingXSmall,
-            color = LemonadeTheme.colors.content.contentSecondary,
-        )
+        CardSectionTitle(title = title)
         content()
     }
+}
+
+@Composable
+private fun CardSectionTitle(
+    title: String,
+    modifier: Modifier = Modifier,
+) {
+    LemonadeUi.Text(
+        text = title,
+        textStyle = LemonadeTheme.typography.headingXSmall,
+        color = LemonadeTheme.colors.content.contentSecondary,
+        modifier = modifier,
+    )
 }
