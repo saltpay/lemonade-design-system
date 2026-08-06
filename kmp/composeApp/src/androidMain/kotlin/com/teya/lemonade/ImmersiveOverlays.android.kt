@@ -3,6 +3,7 @@ package com.teya.lemonade
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.view.ViewTreeObserver
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalView
@@ -23,11 +24,20 @@ internal actual fun HideSystemBarsEffect(enabled: Boolean) {
 
         val controller = WindowCompat.getInsetsController(window, view)
         val previousBehavior = controller.systemBarsBehavior
-        controller.systemBarsBehavior =
-            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        controller.hide(WindowInsetsCompat.Type.systemBars())
+        hideSystemBars(controller = controller)
+
+        // Below API 30 the platform drops the hide flags whenever the window loses focus, so an
+        // overlay opening and closing would otherwise leave the bars up for good. Re-asserting on
+        // focus is what an immersive host is expected to do there.
+        val onWindowFocus = ViewTreeObserver.OnWindowFocusChangeListener { hasFocus ->
+            if (hasFocus) {
+                hideSystemBars(controller = controller)
+            }
+        }
+        view.viewTreeObserver.addOnWindowFocusChangeListener(onWindowFocus)
 
         onDispose {
+            view.viewTreeObserver.removeOnWindowFocusChangeListener(onWindowFocus)
             controller.show(WindowInsetsCompat.Type.systemBars())
             controller.systemBarsBehavior = previousBehavior
         }
@@ -50,6 +60,11 @@ internal actual fun ForcedHiddenNavBarBottomSheet(
             onClose = onDismissRequest,
         )
     }
+}
+
+private fun hideSystemBars(controller: WindowInsetsControllerCompat) {
+    controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+    controller.hide(WindowInsetsCompat.Type.systemBars())
 }
 
 private tailrec fun Context.findActivity(): Activity? =

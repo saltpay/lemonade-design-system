@@ -13,6 +13,11 @@ internal val NoOpSystemBarsMirror: @Composable () -> Unit = {}
  * system bar. Call this from the composition hosting the overlay, then invoke the result as the
  * first thing inside the overlay's content.
  *
+ * Below API 30 this is inert — measured on an API 23 emulator, mirroring changes nothing. There the
+ * platform drops the host's hide flags on every window focus change, so an immersive host has to
+ * re-assert them from `onWindowFocusChanged`, and a brief flash as an overlay is dismissed is not
+ * something the overlay can prevent.
+ *
  * @param forceHideNavigationBar Hide the navigation bar even when the host window shows it.
  */
 @Composable
