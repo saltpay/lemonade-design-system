@@ -26,9 +26,8 @@ internal actual fun HideSystemBarsEffect(enabled: Boolean) {
         val previousBehavior = controller.systemBarsBehavior
         hideSystemBars(controller = controller)
 
-        // Below API 30 the platform drops the hide flags whenever the window loses focus, so an
-        // overlay opening and closing would otherwise leave the bars up for good. Re-asserting on
-        // focus is what an immersive host is expected to do there.
+        // Below API 30 the platform drops the hide flags on every focus change, so without this one
+        // overlay opening and closing leaves the bars up for good.
         val onWindowFocus = ViewTreeObserver.OnWindowFocusChangeListener { hasFocus ->
             if (hasFocus) {
                 hideSystemBars(controller = controller)

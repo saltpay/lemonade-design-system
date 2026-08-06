@@ -11,15 +11,11 @@ import com.teya.lemonade.core.LemonadeBottomSheetVariant
  *
  * Every [LemonadeUi.BottomSheet] already keeps whichever system bars the host window hides, so an
  * app running fully immersive needs nothing from this overload. Reach for it only to hide the
- * navigation bar in the sheet while the host window still shows it.
- *
- * When [hideNavigationBar] is `false`, this behaves identically to the common
- * [LemonadeUi.BottomSheet]: the sheet inherits the host window's system bars.
+ * navigation bar while the host window still shows it.
  *
  * @param expanded Whether the bottom sheet is currently visible.
  * @param onDismissRequest Callback invoked when the user requests to dismiss the bottom sheet.
- * @param hideNavigationBar Whether to hide the system navigation bar in the dialog window even
- *   when the host window shows it. Inheriting the host window's bars does not need this flag.
+ * @param hideNavigationBar Whether to hide the navigation bar even when the host window shows it.
  * @param showDragHandle Whether to display the drag handle at the top of the sheet.
  * @param skipPartiallyExpanded Whether the partially expanded state should be skipped.
  * @param gesturesEnabled Whether the sheet responds to swipe/drag gestures. When `false`, the

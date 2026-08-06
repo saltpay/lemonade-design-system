@@ -40,8 +40,7 @@ internal actual fun systemBarsMirror(forceHideNavigationBar: Boolean): @Composab
 @Composable
 private fun MirrorSystemBars(hidden: HiddenSystemBars) {
     val view = LocalView.current
-    // Keyed on Unit, so the host state is captured when the overlay opens and held for its
-    // lifetime: a transient swipe-to-reveal underneath cannot bring an open overlay's bars back.
+    // Keyed on Unit: a transient swipe-to-reveal underneath must not bring an open overlay's bars back.
     DisposableEffect(Unit) {
         if (hidden.any) {
             view.hideOverlaySystemBars(hidden)
@@ -61,8 +60,7 @@ private fun View.hideOverlaySystemBars(hidden: HiddenSystemBars) {
 
 /**
  * [WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE] leaves this window out of the system-bar policy,
- * so the insets request lands before the window ever gets to decide what the bars do. Clearing the
- * flag afterwards restores input, by which point the window already asks for them to stay hidden.
+ * so the insets request lands before the window gets to decide what the bars do.
  */
 private fun Window.hideSystemBars(hidden: HiddenSystemBars) {
     val wasFocusable =
