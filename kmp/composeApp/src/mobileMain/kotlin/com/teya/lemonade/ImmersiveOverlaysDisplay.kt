@@ -23,13 +23,9 @@ import com.teya.lemonade.core.LemonadeIcons
 private const val IMMERSIVE_TOOLTIP_ANCHOR = "immersive-overlays-tooltip"
 
 /**
- * Reproduction surface for overlays opened by an app that runs fully immersive: the screen hides
- * the Activity's system bars, then opens each overlay so the bars can be watched for a flash on
- * open and on dismiss.
- *
- * The host bars can be switched back on, which is how the two behaviours are told apart — an
- * inherited overlay follows the host, while `hideNavigationBar = true` hides the navigation bar
- * either way.
+ * Reproduction surface for overlays opened by an app that runs fully immersive. Switching the host
+ * bars back on is what tells the two behaviours apart: an inherited overlay follows the host, while
+ * `hideNavigationBar = true` hides the navigation bar either way.
  */
 @Composable
 internal fun ImmersiveOverlaysSampleDisplay() {

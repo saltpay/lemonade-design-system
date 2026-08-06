@@ -19,27 +19,33 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import android.view.WindowInsets as AndroidWindowInsets
 
+private data class HiddenSystemBars(
+    val statusBar: Boolean,
+    val navigationBar: Boolean,
+) {
+    val any: Boolean
+        get() = statusBar || navigationBar
+}
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal actual fun hostHiddenSystemBars(): HiddenSystemBars =
-    HiddenSystemBars(
+internal actual fun systemBarsMirror(forceHideNavigationBar: Boolean): @Composable () -> Unit {
+    val hidden = HiddenSystemBars(
         statusBar = !WindowInsets.areStatusBarsVisible,
-        navigationBar = !WindowInsets.areNavigationBarsVisible,
+        navigationBar = forceHideNavigationBar || !WindowInsets.areNavigationBarsVisible,
     )
+    return { MirrorSystemBars(hidden = hidden) }
+}
 
 @Composable
-internal actual fun MirrorHiddenSystemBars(hidden: HiddenSystemBars) {
+private fun MirrorSystemBars(hidden: HiddenSystemBars) {
     val view = LocalView.current
-    // Keyed on Unit rather than on `hidden`: the host state is captured once, when the overlay
-    // opens, and held for its lifetime. A transient swipe-to-reveal underneath therefore cannot
-    // make an already-open overlay bring its bars back halfway through.
+    // Keyed on Unit, so the host state is captured when the overlay opens and held for its
+    // lifetime: a transient swipe-to-reveal underneath cannot bring an open overlay's bars back.
     DisposableEffect(Unit) {
         if (hidden.any) {
             view.hideOverlaySystemBars(hidden)
         }
-        // The controller targets the overlay's own window, which is about to be destroyed, so
-        // there is nothing to restore. Showing the bars here animates them back in over the dying
-        // window, which is the flicker #230 removed.
         onDispose { }
     }
 }
@@ -56,8 +62,7 @@ private fun View.hideOverlaySystemBars(hidden: HiddenSystemBars) {
 /**
  * [WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE] leaves this window out of the system-bar policy,
  * so the insets request lands before the window ever gets to decide what the bars do. Clearing the
- * flag straight afterwards restores input, by which point the window already asks for the bars to
- * stay hidden.
+ * flag afterwards restores input, by which point the window already asks for them to stay hidden.
  */
 private fun Window.hideSystemBars(hidden: HiddenSystemBars) {
     val wasFocusable =
@@ -73,10 +78,7 @@ private fun Window.hideSystemBars(hidden: HiddenSystemBars) {
     }
 }
 
-/**
- * A Compose `Popup` — what [LemonadeUi.Dropdown] draws into — is a bare view added straight to the
- * [WindowManager], with no [Window] to hang a controller off.
- */
+/** A Compose `Popup` is added straight to the [WindowManager], with no [Window] of its own. */
 private fun View.hidePopupSystemBars(hidden: HiddenSystemBars) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         hidePopupSystemBarsFromView(hidden)

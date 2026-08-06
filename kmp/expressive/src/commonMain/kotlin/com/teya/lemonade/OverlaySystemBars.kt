@@ -1,47 +1,19 @@
 package com.teya.lemonade
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
+
+/** The mirror returned by platforms that have no per-window system bars. */
+internal val NoOpSystemBarsMirror: @Composable () -> Unit = {}
 
 /**
- * Which system bars a window keeps hidden.
+ * Captures the system bars the host window hides, and returns a composable that mirrors them onto
+ * an overlay's own window. Bars are only ever mirrored hidden, never shown.
  *
- * [LemonadeUi.BottomSheet], [LemonadeUi.Dialog] and [LemonadeUi.Dropdown] each draw into a window
- * of their own on Android. A new window starts out asking for every system bar, so an app running
- * fully immersive would see the bars come back the moment an overlay opens. Capturing the host
- * window's state and mirroring it onto the overlay window keeps them hidden.
- */
-@Immutable
-internal data class HiddenSystemBars(
-    val statusBar: Boolean = false,
-    val navigationBar: Boolean = false,
-) {
-    val any: Boolean
-        get() = statusBar || navigationBar
-
-    operator fun plus(other: HiddenSystemBars): HiddenSystemBars =
-        HiddenSystemBars(
-            statusBar = statusBar || other.statusBar,
-            navigationBar = navigationBar || other.navigationBar,
-        )
-}
-
-/**
- * The system bars the *host* window currently hides.
+ * Overlays draw into a window of their own on Android, and a new window starts out asking for every
+ * system bar. Call this from the composition hosting the overlay, then invoke the result as the
+ * first thing inside the overlay's content.
  *
- * Call this from the composition that hosts the overlay — outside the overlay itself — so it reads
- * the host window rather than the overlay's own. Returns nothing hidden on platforms that have no
- * per-window system bars.
+ * @param forceHideNavigationBar Hide the navigation bar even when the host window shows it.
  */
 @Composable
-internal expect fun hostHiddenSystemBars(): HiddenSystemBars
-
-/**
- * Mirrors [hidden] onto the overlay window this is composed into, so the overlay keeps the same
- * bars hidden as its host. Bars are only ever hidden, never shown.
- *
- * Call this as the first thing inside the overlay's content, where [androidx.compose.ui.platform.LocalView]
- * resolves to the overlay's own window.
- */
-@Composable
-internal expect fun MirrorHiddenSystemBars(hidden: HiddenSystemBars)
+internal expect fun systemBarsMirror(forceHideNavigationBar: Boolean = false): @Composable () -> Unit

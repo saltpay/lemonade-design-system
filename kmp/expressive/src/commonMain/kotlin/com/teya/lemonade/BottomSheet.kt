@@ -70,8 +70,7 @@ import com.teya.lemonade.core.LemonadeBottomSheetVariant
  *   [LemonadeTheme.colors.background.bgSubtle].
  * - Tonal elevation is set to 0.dp; the sheet relies on Lemonade color tokens for visual hierarchy.
  * - The drag handle uses the default [BottomSheetDefaults.DragHandle] styling.
- * - The sheet keeps whichever system bars the host window hides, so an app running fully immersive
- *   stays immersive while the sheet is open. Bars are only ever inherited hidden, never shown.
+ * - The sheet keeps whichever system bars the host window hides, never shows one the host hides.
  * - For overlay components with a unified visibility API, see also [LemonadeUi.Dialog] and
  *   [LemonadeUi.Dropdown], which share the same `expanded` flag pattern.
  *
@@ -172,7 +171,7 @@ internal fun CoreBottomSheet(
     gesturesEnabled: Boolean = true,
     background: LemonadeBottomSheetVariant = LemonadeBottomSheetVariant.Default,
     properties: LemonadeBottomSheetProperties = LemonadeBottomSheetProperties(),
-    forcedHiddenSystemBars: HiddenSystemBars = HiddenSystemBars(),
+    forceHideNavigationBar: Boolean = false,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(
@@ -189,8 +188,7 @@ internal fun CoreBottomSheet(
         LemonadeBottomSheetVariant.Subtle -> LemonadeTheme.colors.background.bgSubtle
     }
 
-    // Read from the host composition, before the sheet's own window exists.
-    val hiddenSystemBars = hostHiddenSystemBars() + forcedHiddenSystemBars
+    val mirrorSystemBars = systemBarsMirror(forceHideNavigationBar = forceHideNavigationBar)
 
     if (expanded || sheetState.isVisible) {
         ModalBottomSheet(
@@ -210,7 +208,7 @@ internal fun CoreBottomSheet(
             },
             properties = properties.toMaterial(),
             content = {
-                MirrorHiddenSystemBars(hidden = hiddenSystemBars)
+                mirrorSystemBars()
                 content()
             },
         )

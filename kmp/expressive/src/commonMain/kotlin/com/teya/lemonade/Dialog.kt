@@ -52,8 +52,7 @@ import androidx.compose.ui.window.DialogProperties
  * - The dialog surface uses [LemonadeTheme.radius.radius400] for rounded corners.
  * - Background color is [LemonadeTheme.colors.background.bgDefault].
  * - Tonal elevation is set to 0.dp; the dialog relies on Lemonade color tokens for visual hierarchy.
- * - The dialog keeps whichever system bars the host window hides, so an app running fully immersive
- *   stays immersive while the dialog is open. Bars are only ever inherited hidden, never shown.
+ * - The dialog keeps whichever system bars the host window hides, never shows one the host hides.
  * - For overlay components with a unified visibility API, see also [LemonadeUi.Dropdown] and
  *   [LemonadeUi.BottomSheet], which share the same `expanded` flag pattern.
  *
@@ -70,8 +69,7 @@ public fun LemonadeUi.Dialog(
     dismissOnBackPress: Boolean = true,
     content: @Composable () -> Unit,
 ) {
-    // Read from the host composition, before the dialog's own window exists.
-    val hiddenSystemBars = hostHiddenSystemBars()
+    val mirrorSystemBars = systemBarsMirror()
 
     if (expanded) {
         BasicAlertDialog(
@@ -81,7 +79,7 @@ public fun LemonadeUi.Dialog(
                 dismissOnBackPress = dismissOnBackPress,
             ),
         ) {
-            MirrorHiddenSystemBars(hidden = hiddenSystemBars)
+            mirrorSystemBars()
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(size = LemonadeTheme.radius.radius400),

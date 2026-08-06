@@ -52,7 +52,7 @@ public fun LemonadeUi.BottomSheet(
         gesturesEnabled = gesturesEnabled,
         background = background,
         properties = properties,
-        forcedHiddenSystemBars = HiddenSystemBars(navigationBar = hideNavigationBar),
+        forceHideNavigationBar = hideNavigationBar,
         content = content,
     )
 }
