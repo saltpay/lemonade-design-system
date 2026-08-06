@@ -23,11 +23,11 @@ import com.teya.lemonade.core.LemonadeIcons
 private const val IMMERSIVE_TOOLTIP_ANCHOR = "immersive-overlays-tooltip"
 
 /**
- * Hides the host window's system bars for as long as this composable stays in composition, and
- * restores them on the way out. Only Android has per-window system-bar state.
+ * Hides the host window's system bars while [enabled], and restores them when it flips back or
+ * when this composable leaves composition. Only Android has per-window system-bar state.
  */
 @Composable
-internal expect fun HideSystemBarsEffect()
+internal expect fun HideSystemBarsEffect(enabled: Boolean)
 
 /**
  * The Android-only `hideNavigationBar = true` [LemonadeUi.BottomSheet] overload, so the forced
@@ -43,10 +43,15 @@ internal expect fun ForcedHiddenNavBarBottomSheet(
  * Reproduction surface for overlays opened by an app that runs fully immersive: the screen hides
  * the Activity's system bars, then opens each overlay so the bars can be watched for a flash on
  * open and on dismiss.
+ *
+ * The host bars can be switched back on, which is how the two behaviours are told apart — an
+ * inherited overlay follows the host, while `hideNavigationBar = true` hides the navigation bar
+ * either way.
  */
 @Composable
 internal fun ImmersiveOverlaysSampleDisplay() {
-    HideSystemBarsEffect()
+    var hideHostSystemBars by remember { mutableStateOf(true) }
+    HideSystemBarsEffect(enabled = hideHostSystemBars)
 
     val toasts = LocalLemonadeToastState.current
     val tooltips = LocalLemonadeTooltipState.current
@@ -71,6 +76,13 @@ internal fun ImmersiveOverlaysSampleDisplay() {
             text = "The system bars are hidden for this screen. Every overlay below should keep " +
                 "them hidden, with no flash when it opens or closes.",
             color = LemonadeTheme.colors.content.contentSecondary,
+        )
+
+        LemonadeUi.Switch(
+            checked = hideHostSystemBars,
+            onCheckedChange = { hideHostSystemBars = it },
+            label = "Hide host system bars",
+            supportText = "Turn off to check that overlays leave visible bars alone.",
         )
 
         ImmersiveOverlaySection(title = "Bottom Sheet — inherited") {

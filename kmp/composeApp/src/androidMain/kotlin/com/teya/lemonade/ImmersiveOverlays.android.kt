@@ -11,13 +11,15 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 
 @Composable
-internal actual fun HideSystemBarsEffect() {
+internal actual fun HideSystemBarsEffect(enabled: Boolean) {
     val view = LocalView.current
-    DisposableEffect(Unit) {
+    DisposableEffect(enabled) {
         val window = view.context
             .findActivity()
             ?.window
-            ?: return@DisposableEffect onDispose { }
+        if (window == null || !enabled) {
+            return@DisposableEffect onDispose { }
+        }
 
         val controller = WindowCompat.getInsetsController(window, view)
         val previousBehavior = controller.systemBarsBehavior

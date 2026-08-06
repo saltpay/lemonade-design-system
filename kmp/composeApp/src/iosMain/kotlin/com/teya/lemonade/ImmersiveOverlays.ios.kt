@@ -3,7 +3,7 @@ package com.teya.lemonade
 import androidx.compose.runtime.Composable
 
 @Composable
-internal actual fun HideSystemBarsEffect() {
+internal actual fun HideSystemBarsEffect(enabled: Boolean) {
 }
 
 @Composable
