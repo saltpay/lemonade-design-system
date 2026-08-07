@@ -39,6 +39,7 @@ public enum class LemonadeBrandLogos : LemonadeAsset {
     Multibanco,
     NfcLogo,
     PagoBancomat,
+    Paypal,
     Pluxee,
     Sepa,
     Sodexo,

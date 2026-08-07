@@ -40,6 +40,7 @@ public enum LemonadeBrandLogo: String, CaseIterable {
     case multibanco = "multibanco"
     case nfcLogo = "nfc-logo"
     case pagoBancomat = "pago-bancomat"
+    case paypal = "paypal"
     case pluxee = "pluxee"
     case sepa = "sepa"
     case sodexo = "sodexo"
@@ -84,6 +85,7 @@ public enum LemonadeBrandLogo: String, CaseIterable {
             .multibanco,
             .nfcLogo,
             .pagoBancomat,
+            .paypal,
             .pluxee,
             .sepa,
             .sodexo,

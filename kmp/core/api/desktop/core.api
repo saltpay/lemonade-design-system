@@ -109,6 +109,7 @@ public final class com/teya/lemonade/core/LemonadeBrandLogos : java/lang/Enum, c
 	public static final field Multibanco Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field NfcLogo Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field PagoBancomat Lcom/teya/lemonade/core/LemonadeBrandLogos;
+	public static final field Paypal Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Pluxee Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Sepa Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Sodexo Lcom/teya/lemonade/core/LemonadeBrandLogos;

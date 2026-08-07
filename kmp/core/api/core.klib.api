@@ -144,6 +144,7 @@ final enum class com.teya.lemonade.core/LemonadeBrandLogos : com.teya.lemonade.c
     enum entry Multibanco // com.teya.lemonade.core/LemonadeBrandLogos.Multibanco|null[0]
     enum entry NfcLogo // com.teya.lemonade.core/LemonadeBrandLogos.NfcLogo|null[0]
     enum entry PagoBancomat // com.teya.lemonade.core/LemonadeBrandLogos.PagoBancomat|null[0]
+    enum entry Paypal // com.teya.lemonade.core/LemonadeBrandLogos.Paypal|null[0]
     enum entry Pluxee // com.teya.lemonade.core/LemonadeBrandLogos.Pluxee|null[0]
     enum entry Sepa // com.teya.lemonade.core/LemonadeBrandLogos.Sepa|null[0]
     enum entry Sodexo // com.teya.lemonade.core/LemonadeBrandLogos.Sodexo|null[0]
