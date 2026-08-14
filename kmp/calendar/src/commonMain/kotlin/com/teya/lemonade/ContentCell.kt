@@ -167,7 +167,8 @@ private fun contentCellTextColor(
         !isEnabled -> LocalColors.current.content.contentTertiary
         isSelected && selectionContentColor != null -> selectionContentColor
         isSelected && !showSelectionBackground -> LocalColors.current.content.contentOnBrandHigh
-        isSelected || isInsideSelectedRange -> LocalColors.current.content.contentOnBrandHigh
+        isSelected -> LocalColors.current.content.contentOnBrandHigh
+        isInsideSelectedRange -> LocalColors.current.content.contentPrimary
         isCurrent -> LocalColors.current.content.contentBrand
         isOutsideVisibleRange -> LocalColors.current.content.contentSecondary
         else -> LocalColors.current.content.contentPrimary
