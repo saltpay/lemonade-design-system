@@ -16,7 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
@@ -197,20 +198,23 @@ private fun CoreSkeleton(
     variant: SkeletonVariant,
     modifier: Modifier = Modifier,
 ) {
-    val infiniteTransition = rememberInfiniteTransition(label = "SkeletonShimmer")
-
-    val shimmerOffset by infiniteTransition.animateFloat(
-        initialValue = -1f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = 1000,
-                easing = EaseInOut,
+    val animationsEnabled = LemonadeTheme.animationsEnabled
+    val shimmerOffset = if (animationsEnabled) {
+        rememberInfiniteTransition(label = "SkeletonShimmer").animateFloat(
+            initialValue = -1f,
+            targetValue = 1f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(
+                    durationMillis = 1000,
+                    easing = EaseInOut,
+                ),
+                repeatMode = RepeatMode.Reverse,
             ),
-            repeatMode = RepeatMode.Reverse,
-        ),
-        label = "ShimmerOffset",
-    )
+            label = "ShimmerOffset",
+        )
+    } else {
+        remember { mutableStateOf(value = -1f) }
+    }
 
     val baseColor = LocalColors.current.background.bgElevated
     val highlightColor = LocalColors.current.background.bgElevatedHigh
@@ -235,11 +239,11 @@ private fun CoreSkeleton(
                         brush = Brush.linearGradient(
                             colors = listOf(baseColor, highlightColor, baseColor),
                             start = Offset(
-                                x = width * (shimmerOffset - 0.5f),
+                                x = width * (shimmerOffset.value - 0.5f),
                                 y = 0f,
                             ),
                             end = Offset(
-                                x = width * (shimmerOffset + 0.5f),
+                                x = width * (shimmerOffset.value + 0.5f),
                                 y = 0f,
                             ),
                         ),
