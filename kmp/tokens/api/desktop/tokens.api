@@ -31,11 +31,15 @@ public abstract interface class com/teya/lemonade/LemonadeBorderWidth$State {
 }
 
 public abstract interface class com/teya/lemonade/LemonadeEffects {
+	public fun getAnimations ()Lcom/teya/lemonade/LemonadeAnimationMode;
 	public abstract fun getInteractionIndication ()Landroidx/compose/foundation/Indication;
 }
 
+public final class com/teya/lemonade/LemonadeEffects$DefaultImpls {
+	public static fun getAnimations (Lcom/teya/lemonade/LemonadeEffects;)Lcom/teya/lemonade/LemonadeAnimationMode;
+}
+
 public final class com/teya/lemonade/LemonadeLocalsKt {
-	public static final fun getLocalAnimations ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalAnimationsEnabled ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalBorderWidths ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalColors ()Landroidx/compose/runtime/ProvidableCompositionLocal;

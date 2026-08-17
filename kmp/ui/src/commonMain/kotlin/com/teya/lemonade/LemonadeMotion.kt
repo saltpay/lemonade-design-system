@@ -33,7 +33,7 @@ private val FloatDefaultSpring: AnimationSpec<Float> =
     spring(visibilityThreshold = FLOAT_VISIBILITY_THRESHOLD)
 
 /**
- * Returns this spec while animations are enabled, or [snap] when [LemonadeTheme.animations]
+ * Returns this spec while animations are enabled, or [snap] when [LemonadeEffects.animations]
  * disables them, so the value applies in a single frame.
  */
 @Composable
@@ -46,7 +46,7 @@ internal fun <T> AnimationSpec<T>.orSnap(): AnimationSpec<T> =
     }
 
 /**
- * Returns this spec while animations are enabled, or [snap] when [LemonadeTheme.animations]
+ * Returns this spec while animations are enabled, or [snap] when [LemonadeEffects.animations]
  * disables them, so the value applies in a single frame.
  */
 @Composable
@@ -78,7 +78,7 @@ private fun snapContentTransform(): ContentTransform =
     )
 
 /**
- * Composes [animated] while [LemonadeTheme.animations] allows motion. When animations are
+ * Composes [animated] while [LemonadeEffects.animations] allows motion. When animations are
  * disabled the animation is never composed at all — the returned state is fixed at [static]'s
  * value, evaluated once, so nothing ever invalidates. Use for continuously running animations
  * (e.g. an infinite shimmer) where the win is skipping the animation machinery entirely, not
@@ -107,7 +107,7 @@ internal fun <T> lemonadeAnimation(
     }
 
 /**
- * [animateColorAsState] honoring [LemonadeTheme.animations]. Defaults match the stock overload.
+ * [animateColorAsState] honoring [LemonadeEffects.animations]. Defaults match the stock overload.
  */
 @Composable
 internal fun lemonadeAnimateColorAsState(
@@ -122,7 +122,7 @@ internal fun lemonadeAnimateColorAsState(
     )
 
 /**
- * [animateDpAsState] honoring [LemonadeTheme.animations]. Defaults match the stock overload.
+ * [animateDpAsState] honoring [LemonadeEffects.animations]. Defaults match the stock overload.
  */
 @Composable
 internal fun lemonadeAnimateDpAsState(
@@ -137,7 +137,7 @@ internal fun lemonadeAnimateDpAsState(
     )
 
 /**
- * [animateFloatAsState] honoring [LemonadeTheme.animations]. Defaults match the stock overload.
+ * [animateFloatAsState] honoring [LemonadeEffects.animations]. Defaults match the stock overload.
  */
 @Composable
 internal fun lemonadeAnimateFloatAsState(
@@ -152,7 +152,7 @@ internal fun lemonadeAnimateFloatAsState(
     )
 
 /**
- * [animateValueAsState] honoring [LemonadeTheme.animations].
+ * [animateValueAsState] honoring [LemonadeEffects.animations].
  */
 @Composable
 internal fun <T, V : AnimationVector> lemonadeAnimateValueAsState(

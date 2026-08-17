@@ -34,16 +34,22 @@ internal fun LemonadeStyledTheme(
 ) {
     CompositionLocalProvider(LocalLemonadeStyleHandler provides handler) {
         val colors = handler.currentStyle.resolveColors()
+        val baseEffects = LemonadeTheme.effects
+        val effects = remember(baseEffects, handler.animations) {
+            object : LemonadeEffects by baseEffects {
+                override val animations: LemonadeAnimationMode = handler.animations
+            }
+        }
         when (handler.currentVariant) {
             LemonadeThemeVariant.Standard -> LemonadeTheme(
                 colors = colors,
-                animations = handler.animations,
+                effects = effects,
             ) {
                 content()
             }
             LemonadeThemeVariant.Expressive -> LemonadeExpressiveTheme(
                 colors = colors,
-                animations = handler.animations,
+                effects = effects,
             ) {
                 content()
             }

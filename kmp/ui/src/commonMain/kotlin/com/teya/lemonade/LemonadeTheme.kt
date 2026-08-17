@@ -20,10 +20,9 @@ public fun LemonadeTheme(
     borderWidths: LemonadeBorderWidth = LemonadeTheme.borderWidths,
     sizes: LemonadeSizeValues = LemonadeTheme.sizes,
     effects: LemonadeEffects = LemonadeTheme.effects,
-    animations: LemonadeAnimationMode = LemonadeTheme.animations,
     content: @Composable () -> Unit,
 ) {
-    val animationsEnabled = when (animations) {
+    val animationsEnabled = when (effects.animations) {
         LemonadeAnimationMode.Full -> true
         LemonadeAnimationMode.None -> false
         LemonadeAnimationMode.System -> rememberSystemAnimationsEnabled()
@@ -40,48 +39,7 @@ public fun LemonadeTheme(
         LocalBorderWidths provides borderWidths,
         LocalSizes provides sizes,
         LocalEffects provides effects,
-        LocalAnimations provides animations,
         LocalAnimationsEnabled provides animationsEnabled,
-        content = content,
-    )
-}
-
-@Deprecated(
-    message = "Use the overload with an animations parameter.",
-    replaceWith = ReplaceWith(
-        expression = "LemonadeTheme(colors, typography, radius, shapes, opacities, spaces, " +
-            "borderWidths, sizes, effects, content = content)",
-    ),
-    level = DeprecationLevel.HIDDEN,
-)
-@Composable
-public fun LemonadeTheme(
-    colors: LemonadeSemanticColors = if (isSystemInDarkTheme()) {
-        LemonadeDarkTheme
-    } else {
-        LemonadeLightTheme
-    },
-    typography: LemonadeTypographyProvider = LemonadeTheme.typography,
-    radius: LemonadeRadiusValues = LemonadeTheme.radius,
-    shapes: LemonadeShapes = LemonadeTheme.shapes,
-    opacities: LemonadeOpacity = LemonadeTheme.opacities,
-    spaces: LemonadeSpaceValues = LemonadeTheme.spaces,
-    borderWidths: LemonadeBorderWidth = LemonadeTheme.borderWidths,
-    sizes: LemonadeSizeValues = LemonadeTheme.sizes,
-    effects: LemonadeEffects = LemonadeTheme.effects,
-    content: @Composable () -> Unit,
-) {
-    LemonadeTheme(
-        colors = colors,
-        typography = typography,
-        radius = radius,
-        shapes = shapes,
-        opacities = opacities,
-        spaces = spaces,
-        borderWidths = borderWidths,
-        sizes = sizes,
-        effects = effects,
-        animations = LemonadeTheme.animations,
         content = content,
     )
 }
@@ -148,13 +106,6 @@ public object LemonadeTheme {
         @ReadOnlyComposable
         get() {
             return LocalEffects.current
-        }
-
-    public val animations: LemonadeAnimationMode
-        @Composable
-        @ReadOnlyComposable
-        get() {
-            return LocalAnimations.current
         }
 
     public val animationsEnabled: Boolean

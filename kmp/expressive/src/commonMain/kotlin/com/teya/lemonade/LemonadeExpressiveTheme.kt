@@ -25,7 +25,6 @@ public fun LemonadeExpressiveTheme(
     borderWidths: LemonadeBorderWidth = LemonadeTheme.borderWidths,
     sizes: LemonadeSizeValues = LemonadeTheme.sizes,
     effects: LemonadeEffects = LemonadeTheme.effects,
-    animations: LemonadeAnimationMode = LemonadeTheme.animations,
     content: @Composable () -> Unit,
 ) {
     LemonadeTheme(
@@ -38,7 +37,6 @@ public fun LemonadeExpressiveTheme(
         borderWidths = borderWidths,
         sizes = sizes,
         effects = lemonadeExpressiveEffects(effects = effects),
-        animations = animations,
     ) {
         MaterialExpressiveTheme(
             colorScheme = lemonadeExpressiveColorScheme(),
@@ -52,42 +50,6 @@ public fun LemonadeExpressiveTheme(
             content = content,
         )
     }
-}
-
-@Deprecated(
-    message = "Use the overload with an animations parameter.",
-    replaceWith = ReplaceWith(
-        expression = "LemonadeExpressiveTheme(colors, typography, radius, shapes, opacities, " +
-            "spaces, borderWidths, sizes, effects, content = content)",
-    ),
-    level = DeprecationLevel.HIDDEN,
-)
-@Composable
-public fun LemonadeExpressiveTheme(
-    colors: LemonadeSemanticColors = LemonadeTheme.colors,
-    typography: LemonadeTypographyProvider = LemonadeTheme.typography,
-    radius: LemonadeRadiusValues = LemonadeTheme.radius,
-    shapes: LemonadeShapes = LemonadeTheme.shapes,
-    opacities: LemonadeOpacity = LemonadeTheme.opacities,
-    spaces: LemonadeSpaceValues = LemonadeTheme.spaces,
-    borderWidths: LemonadeBorderWidth = LemonadeTheme.borderWidths,
-    sizes: LemonadeSizeValues = LemonadeTheme.sizes,
-    effects: LemonadeEffects = LemonadeTheme.effects,
-    content: @Composable () -> Unit,
-) {
-    LemonadeExpressiveTheme(
-        colors = colors,
-        typography = typography,
-        radius = radius,
-        shapes = shapes,
-        opacities = opacities,
-        spaces = spaces,
-        borderWidths = borderWidths,
-        sizes = sizes,
-        effects = effects,
-        animations = LemonadeTheme.animations,
-        content = content,
-    )
 }
 
 @Composable
