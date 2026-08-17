@@ -7,6 +7,7 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.AnimationVector
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.TwoWayConverter
+import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateValueAsState
@@ -14,13 +15,11 @@ import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.State
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.VisibilityThreshold
 
 private const val FLOAT_VISIBILITY_THRESHOLD = 0.01f
 
@@ -58,8 +57,11 @@ internal fun ContentTransform.orSnap(animationsEnabled: Boolean): ContentTransfo
     if (animationsEnabled) this else snapContentTransform()
 
 private fun snapContentTransform(): ContentTransform =
-    (fadeIn(animationSpec = snap()) togetherWith fadeOut(animationSpec = snap()))
-        .using(sizeTransform = SizeTransform { _, _ -> snap() })
+    ContentTransform(
+        targetContentEnter = fadeIn(animationSpec = snap()),
+        initialContentExit = fadeOut(animationSpec = snap()),
+        sizeTransform = SizeTransform { _, _ -> snap() },
+    )
 
 /**
  * [animateColorAsState] honoring [LemonadeTheme.animations]. Defaults match the stock overload.
