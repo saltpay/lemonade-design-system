@@ -25,21 +25,9 @@ import kotlin.time.ExperimentalTime
 
 private const val EVENT_DAY_INTERVAL = 3
 
-/**
- * The predicate the "trailing dots" samples use to decide which days carry an event.
- * Shared by `enabledDates` and `trailingContent` so the dot and the enabled state can
- * never disagree.
- */
 private fun hasEvent(date: LocalDate): Boolean = date.day % EVENT_DAY_INTERVAL == 0
 
-/**
- * First day on or after [date] that satisfies [hasEvent].
- *
- * The dot samples disable every day without an event, so seeding their state with
- * today would leave the calendar opened on a selection the user cannot re-select and
- * that renders as disabled text on the selection background. Deriving the initial
- * date from the same predicate keeps the sample valid whatever today happens to be.
- */
+/** Today is not always an event day, and the dot samples disable every day without one. */
 private fun firstEventDateOnOrAfter(date: LocalDate): LocalDate =
     generateSequence(date) { candidate -> candidate.plus(1, DateTimeUnit.DAY) }
         .first { candidate -> hasEvent(candidate) }
