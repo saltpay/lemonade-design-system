@@ -921,10 +921,10 @@ private fun CoreListItem(
     leadingVerticalAlignment: Alignment.Vertical,
     priority: LemonadeListItemPriority,
 ) {
-    SafeArea(modifier = modifier, showDivider = showDivider) {
+    SafeArea(modifier = modifier, showDivider = showDivider) { rowModifier ->
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
+            modifier = rowModifier
                 .then(
                     other = if (onListItemClick != null) {
                         Modifier.clickable(
@@ -1064,18 +1064,19 @@ private fun RowScope.ListItemTrailingContent(
     }
 }
 
+/**
+ * Wraps a list-item row in its outer gutter padding and, when requested, the divider below it.
+ * Inline, and in the no-divider case it emits no wrapper node at all: the gutter padding is handed
+ * to [content] to apply on the row itself.
+ */
 @Composable
-private fun SafeArea(
-    modifier: Modifier = Modifier,
+private inline fun SafeArea(
+    modifier: Modifier,
     showDivider: Boolean,
-    content: @Composable ColumnScope.() -> Unit,
+    content: @Composable (rowModifier: Modifier) -> Unit,
 ) {
     if (!showDivider) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            modifier = modifier.padding(all = LocalSpaces.current.spacing100),
-            content = content,
-        )
+        content(modifier.padding(all = LocalSpaces.current.spacing100))
         return
     }
 
@@ -1083,11 +1084,7 @@ private fun SafeArea(
         verticalArrangement = Arrangement.Center,
         modifier = modifier,
     ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(all = LocalSpaces.current.spacing100),
-            content = content,
-        )
+        content(Modifier.padding(all = LocalSpaces.current.spacing100))
 
         LemonadeUi.HorizontalDivider(
             modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing400),
@@ -1108,10 +1105,10 @@ private fun ListItemSkeleton(
     modifier: Modifier = Modifier,
     showDivider: Boolean = false,
 ) {
-    SafeArea(modifier = modifier, showDivider = showDivider) {
+    SafeArea(modifier = modifier, showDivider = showDivider) { rowModifier ->
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
+            modifier = rowModifier
                 .padding(
                     horizontal = LocalSpaces.current.spacing300,
                     vertical = LocalSpaces.current.spacing300,
