@@ -967,19 +967,26 @@ private fun CoreListItem(
                 Modifier
             }
 
-            if (priority == LemonadeListItemPriority.Label) {
+            val hasTrailingContent = trailingSlot != null || navigationIndicator
+            if (!hasTrailingContent) {
+                // With nothing trailing there is no width contention, so the content column sits
+                // directly in the row. A filling weight reproduces the Trailing-priority forced
+                // width; Label priority lets the column wrap inside the remaining space.
+                Column(
+                    content = contentSlot,
+                    modifier = Modifier
+                        .weight(
+                            weight = 1f,
+                            fill = priority == LemonadeListItemPriority.Trailing,
+                        ).then(other = contentAlpha),
+                )
+            } else if (priority == LemonadeListItemPriority.Label) {
                 // Content keeps its width; the trailing slot yields and truncates. The content is
-                // capped so the trailing slot always retains a readable floor instead of vanishing —
-                // but only when there is trailing content to keep visible.
-                val hasTrailingContent = trailingSlot != null || navigationIndicator
+                // capped so the trailing slot always retains a readable floor instead of vanishing.
                 BoxWithConstraints(modifier = Modifier.weight(weight = 1f)) {
                     val trailingFloor = LocalSizes.current.size2000
                     val gap = LocalSpaces.current.spacing300
-                    val contentMaxWidth = if (hasTrailingContent) {
-                        (maxWidth - trailingFloor - gap).coerceAtLeast(0.dp)
-                    } else {
-                        maxWidth
-                    }
+                    val contentMaxWidth = (maxWidth - trailingFloor - gap).coerceAtLeast(0.dp)
 
                     Row(verticalAlignment = trailingVerticalAlignment) {
                         Column(
@@ -989,20 +996,18 @@ private fun CoreListItem(
                                 .then(other = contentAlpha),
                         )
 
-                        if (hasTrailingContent) {
-                            Row(
-                                horizontalArrangement = Arrangement.End,
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .weight(weight = 1f)
-                                    .padding(start = gap),
-                            ) {
-                                ListItemTrailingContent(
-                                    trailingSlot = trailingSlot,
-                                    navigationIndicator = navigationIndicator,
-                                    enabled = enabled,
-                                )
-                            }
+                        Row(
+                            horizontalArrangement = Arrangement.End,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .weight(weight = 1f)
+                                .padding(start = gap),
+                        ) {
+                            ListItemTrailingContent(
+                                trailingSlot = trailingSlot,
+                                navigationIndicator = navigationIndicator,
+                                enabled = enabled,
+                            )
                         }
                     }
                 }
@@ -1019,16 +1024,14 @@ private fun CoreListItem(
                             .then(other = contentAlpha),
                     )
 
-                    if (trailingSlot != null || navigationIndicator) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            ListItemTrailingContent(
-                                trailingSlot = trailingSlot,
-                                navigationIndicator = navigationIndicator,
-                                enabled = enabled,
-                            )
-                        }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        ListItemTrailingContent(
+                            trailingSlot = trailingSlot,
+                            navigationIndicator = navigationIndicator,
+                            enabled = enabled,
+                        )
                     }
                 }
             }
