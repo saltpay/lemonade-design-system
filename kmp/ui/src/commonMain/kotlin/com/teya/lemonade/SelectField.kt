@@ -1,7 +1,6 @@
 package com.teya.lemonade
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -76,7 +75,7 @@ public fun LemonadeUi.SelectField(
     leadingContent: (@Composable RowScope.() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
-    val animatedAlpha by animateFloatAsState(
+    val animatedAlpha by lemonadeAnimateFloatAsState(
         targetValue = if (enabled) {
             LocalOpacities.current.base.opacity100
         } else {

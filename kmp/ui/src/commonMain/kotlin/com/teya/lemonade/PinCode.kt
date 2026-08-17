@@ -2,10 +2,8 @@
 
 package com.teya.lemonade
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -110,16 +108,19 @@ public fun LemonadeUi.PinCode(
     val haptic = LocalHapticFeedback.current
     val shakeOffset = remember { Animatable(initialValue = 0f) }
     var focused by remember { mutableStateOf(value = false) }
+    val animationsEnabled = LemonadeTheme.animationsEnabled
 
     LaunchedEffect(error) {
         if (error) {
             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
             shakeOffset.snapTo(targetValue = 0f)
-            ShakeKeyframes.forEach { target ->
-                shakeOffset.animateTo(
-                    targetValue = target,
-                    animationSpec = tween(durationMillis = SHAKE_STEP_MILLIS, easing = LinearEasing),
-                )
+            if (animationsEnabled) {
+                ShakeKeyframes.forEach { target ->
+                    shakeOffset.animateTo(
+                        targetValue = target,
+                        animationSpec = tween(durationMillis = SHAKE_STEP_MILLIS, easing = LinearEasing),
+                    )
+                }
             }
         }
     }
@@ -310,7 +311,7 @@ private fun PinCodeBox(
 ) {
     val shape = LocalShapes.current.radius400
 
-    val backgroundColor by animateColorAsState(
+    val backgroundColor by lemonadeAnimateColorAsState(
         targetValue = when {
             !enabled -> LocalColors.current.background.bgElevated
             error && !isActive -> LocalColors.current.background.bgCriticalSubtle
@@ -319,7 +320,7 @@ private fun PinCodeBox(
             )
         },
     )
-    val borderColor by animateColorAsState(
+    val borderColor by lemonadeAnimateColorAsState(
         targetValue = when {
             // Keep a muted but visible outline when disabled — the boxes have no label/content to
             // fall back on, so a transparent border (as the text field uses) makes them vanish into
@@ -330,7 +331,7 @@ private fun PinCodeBox(
             else -> LocalColors.current.border.borderNeutralMedium
         },
     )
-    val focusRingWidth by animateDpAsState(
+    val focusRingWidth by lemonadeAnimateDpAsState(
         targetValue = if (isActive) {
             LocalBorderWidths.current.base.border50
         } else {

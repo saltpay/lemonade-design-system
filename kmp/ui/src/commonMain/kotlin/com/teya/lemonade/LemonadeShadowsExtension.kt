@@ -1,9 +1,7 @@
 package com.teya.lemonade
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.AnimationVector4D
 import androidx.compose.animation.core.TwoWayConverter
-import androidx.compose.animation.core.animateValueAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -40,7 +38,7 @@ public fun Modifier.animateLemonadeShadow(
 ): Modifier {
     var modifier = this
     val shadowColor = LocalColors.current.shadow.shadowDefault
-    val animatedColor by animateColorAsState(
+    val animatedColor by lemonadeAnimateColorAsState(
         targetValue = if (shadow == LemonadeShadow.None) {
             shadowColor.copy(alpha = LocalOpacities.current.base.opacity0)
         } else {
@@ -89,7 +87,7 @@ private fun Modifier.dropShadow(
 
 @Composable
 private fun animatedShadowDataAsState(targetValue: LemonadeShadowData): State<LemonadeShadowData> =
-    animateValueAsState(
+    lemonadeAnimateValueAsState(
         targetValue = targetValue,
         animationSpec = remember { tween(durationMillis = 200) },
         typeConverter = TwoWayConverter(

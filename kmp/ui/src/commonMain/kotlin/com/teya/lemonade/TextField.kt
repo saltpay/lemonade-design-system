@@ -1,8 +1,5 @@
 package com.teya.lemonade
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -104,7 +101,7 @@ public fun LemonadeUi.TextField(
     trailingContent: (@Composable RowScope.() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
-    val animatedAlpha by animateFloatAsState(
+    val animatedAlpha by lemonadeAnimateFloatAsState(
         targetValue = if (enabled) {
             LocalOpacities.current.base.opacity100
         } else {
@@ -196,7 +193,7 @@ public fun LemonadeUi.TextField(
     trailingContent: (@Composable RowScope.() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
-    val animatedAlpha by animateFloatAsState(
+    val animatedAlpha by lemonadeAnimateFloatAsState(
         targetValue = if (enabled) {
             LocalOpacities.current.base.opacity100
         } else {
@@ -569,7 +566,7 @@ internal fun CoreTextFieldDecorator(
     val isHovering by interactionSource.collectIsHoveredAsState()
     val isFocused by interactionSource.collectIsFocusedAsState()
 
-    val animatedBackgroundColor by animateColorAsState(
+    val animatedBackgroundColor by lemonadeAnimateColorAsState(
         targetValue = when {
             !enabled -> LocalColors.current.background.bgElevated
             error && !isFocused -> LocalColors.current.background.bgCriticalSubtle
@@ -579,7 +576,7 @@ internal fun CoreTextFieldDecorator(
             )
         },
     )
-    val animatedBorderColor by animateColorAsState(
+    val animatedBorderColor by lemonadeAnimateColorAsState(
         targetValue = when {
             !enabled -> LocalColors.current.border.borderNeutralMedium.copy(
                 alpha = LocalOpacities.current.base.opacity0,
@@ -590,7 +587,7 @@ internal fun CoreTextFieldDecorator(
             else -> LocalColors.current.border.borderNeutralMedium
         },
     )
-    val focusShadowBorderWidth by animateDpAsState(
+    val focusShadowBorderWidth by lemonadeAnimateDpAsState(
         targetValue = if (isFocused) {
             LocalBorderWidths.current.base.border50
         } else {
@@ -695,7 +692,7 @@ internal fun BoxScope.DefaultTextFieldWithSelector(
     innerTextField: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val animatedAlpha by animateFloatAsState(
+    val animatedAlpha by lemonadeAnimateFloatAsState(
         targetValue = if (enabled) {
             LocalOpacities.current.base.opacity100
         } else {

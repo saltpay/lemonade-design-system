@@ -1,7 +1,6 @@
 package com.teya.lemonade
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
@@ -169,7 +168,7 @@ private fun CoreRadioButton(
     val isHovered by interactionSource.collectIsHoveredAsState()
     val isFocused by interactionSource.collectIsFocusedAsState()
 
-    val animatedBackgroundColor by animateColorAsState(
+    val animatedBackgroundColor by lemonadeAnimateColorAsState(
         targetValue = when {
             !enabled -> LocalColors.current.background.bgElevatedHigh
             checked -> LocalColors.current.background.bgBrandHigh
@@ -177,7 +176,7 @@ private fun CoreRadioButton(
             else -> LocalColors.current.background.bgDefault
         },
     )
-    val animatedBorderColor by animateColorAsState(
+    val animatedBorderColor by lemonadeAnimateColorAsState(
         targetValue = if (checked && enabled) {
             LocalColors.current.background.bgBrandHigh
         } else {
@@ -236,7 +235,7 @@ private fun CoreRadioButton(
             modifier = Modifier.matchParentSize(),
             content = { isChecked ->
                 if (isChecked) {
-                    val animatedCenterColor by animateColorAsState(
+                    val animatedCenterColor by lemonadeAnimateColorAsState(
                         targetValue = when {
                             checked && !enabled -> LocalColors.current.background.bgDefaultInverse.copy(
                                 alpha = LocalOpacities.current.state.opacityDisabled,

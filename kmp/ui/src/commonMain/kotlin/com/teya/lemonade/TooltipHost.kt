@@ -3,7 +3,6 @@ package com.teya.lemonade
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -585,7 +584,7 @@ private fun TooltipOverlay(
     val density = LocalDensity.current
 
     // The scrim only fades — scaling it with the tooltip would sweep the dimming across the screen.
-    val scrimProgress by animateFloatAsState(
+    val scrimProgress by lemonadeAnimateFloatAsState(
         targetValue = if (visibleState.targetState) 1f else 0f,
         animationSpec = tween(
             durationMillis = if (visibleState.targetState) {

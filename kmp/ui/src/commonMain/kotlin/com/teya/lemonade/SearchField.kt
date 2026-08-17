@@ -2,9 +2,7 @@ package com.teya.lemonade
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.EaseInOut
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
@@ -310,14 +308,14 @@ private fun CoreSearchFieldDecorationBox(
     val searchFieldShape = LocalShapes.current.radiusFull
     val isFocused by interactionSource.collectIsFocusedAsState()
 
-    val animatedBackgroundColor by animateColorAsState(
+    val animatedBackgroundColor by lemonadeAnimateColorAsState(
         targetValue = if (isFocused) {
             LocalColors.current.background.bgDefault
         } else {
             LocalColors.current.background.bgElevated
         },
     )
-    val animatedSelectionColor by animateColorAsState(
+    val animatedSelectionColor by lemonadeAnimateColorAsState(
         targetValue = if (isFocused) {
             LocalColors.current.border.borderSelected
         } else {
@@ -327,7 +325,7 @@ private fun CoreSearchFieldDecorationBox(
         },
     )
 
-    val animatedFocusedShadowColor by animateColorAsState(
+    val animatedFocusedShadowColor by lemonadeAnimateColorAsState(
         targetValue = if (isFocused) {
             LocalColors.current.background.bgElevatedHigh
         } else {
@@ -337,7 +335,7 @@ private fun CoreSearchFieldDecorationBox(
         },
     )
 
-    val animatedFocusedShadowSpread by animateDpAsState(
+    val animatedFocusedShadowSpread by lemonadeAnimateDpAsState(
         targetValue = if (isFocused) {
             LocalBorderWidths.current.base.border50
         } else {
