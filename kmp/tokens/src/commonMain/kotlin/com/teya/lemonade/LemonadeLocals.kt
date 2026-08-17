@@ -70,3 +70,15 @@ public val LocalEffects: ProvidableCompositionLocal<LemonadeEffects> = staticCom
         override val interactionIndication: Indication? = null
     }
 }
+
+@InternalLemonadeApi
+public val LocalAnimations: ProvidableCompositionLocal<LemonadeAnimationMode> =
+    staticCompositionLocalOf {
+        LemonadeAnimationMode.System
+    }
+
+@InternalLemonadeApi
+public val LocalAnimationsEnabled: ProvidableCompositionLocal<Boolean> =
+    staticCompositionLocalOf {
+        true
+    }

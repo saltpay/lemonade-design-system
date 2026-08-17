@@ -13,6 +13,18 @@ open annotation class com.teya.lemonade/InternalLemonadeApi : kotlin/Annotation 
         final fun <get-message>(): kotlin/String // com.teya.lemonade/InternalLemonadeApi.message.<get-message>|<get-message>(){}[0]
 }
 
+final enum class com.teya.lemonade/LemonadeAnimationMode : kotlin/Enum<com.teya.lemonade/LemonadeAnimationMode> { // com.teya.lemonade/LemonadeAnimationMode|null[0]
+    enum entry Full // com.teya.lemonade/LemonadeAnimationMode.Full|null[0]
+    enum entry None // com.teya.lemonade/LemonadeAnimationMode.None|null[0]
+    enum entry System // com.teya.lemonade/LemonadeAnimationMode.System|null[0]
+
+    final val entries // com.teya.lemonade/LemonadeAnimationMode.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.teya.lemonade/LemonadeAnimationMode> // com.teya.lemonade/LemonadeAnimationMode.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.teya.lemonade/LemonadeAnimationMode // com.teya.lemonade/LemonadeAnimationMode.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.teya.lemonade/LemonadeAnimationMode> // com.teya.lemonade/LemonadeAnimationMode.values|values#static(){}[0]
+}
+
 abstract interface com.teya.lemonade/LemonadeBorderWidth { // com.teya.lemonade/LemonadeBorderWidth|null[0]
     abstract val base // com.teya.lemonade/LemonadeBorderWidth.base|{}base[0]
         abstract fun <get-base>(): com.teya.lemonade/LemonadeBorderWidth.Base // com.teya.lemonade/LemonadeBorderWidth.base.<get-base>|<get-base>(){}[0]
@@ -1672,6 +1684,10 @@ sealed class com.teya.lemonade/LemonadePrimitiveColors { // com.teya.lemonade/Le
     }
 }
 
+final val com.teya.lemonade/LocalAnimations // com.teya.lemonade/LocalAnimations|{}LocalAnimations[0]
+    final fun <get-LocalAnimations>(): androidx.compose.runtime/ProvidableCompositionLocal<com.teya.lemonade/LemonadeAnimationMode> // com.teya.lemonade/LocalAnimations.<get-LocalAnimations>|<get-LocalAnimations>(){}[0]
+final val com.teya.lemonade/LocalAnimationsEnabled // com.teya.lemonade/LocalAnimationsEnabled|{}LocalAnimationsEnabled[0]
+    final fun <get-LocalAnimationsEnabled>(): androidx.compose.runtime/ProvidableCompositionLocal<kotlin/Boolean> // com.teya.lemonade/LocalAnimationsEnabled.<get-LocalAnimationsEnabled>|<get-LocalAnimationsEnabled>(){}[0]
 final val com.teya.lemonade/LocalBorderWidths // com.teya.lemonade/LocalBorderWidths|{}LocalBorderWidths[0]
     final fun <get-LocalBorderWidths>(): androidx.compose.runtime/ProvidableCompositionLocal<com.teya.lemonade/LemonadeBorderWidth> // com.teya.lemonade/LocalBorderWidths.<get-LocalBorderWidths>|<get-LocalBorderWidths>(){}[0]
 final val com.teya.lemonade/LocalColors // com.teya.lemonade/LocalColors|{}LocalColors[0]

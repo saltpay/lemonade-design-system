@@ -2,6 +2,15 @@ public abstract interface annotation class com/teya/lemonade/InternalLemonadeApi
 	public abstract fun message ()Ljava/lang/String;
 }
 
+public final class com/teya/lemonade/LemonadeAnimationMode : java/lang/Enum {
+	public static final field Full Lcom/teya/lemonade/LemonadeAnimationMode;
+	public static final field None Lcom/teya/lemonade/LemonadeAnimationMode;
+	public static final field System Lcom/teya/lemonade/LemonadeAnimationMode;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/teya/lemonade/LemonadeAnimationMode;
+	public static fun values ()[Lcom/teya/lemonade/LemonadeAnimationMode;
+}
+
 public abstract interface class com/teya/lemonade/LemonadeBorderWidth {
 	public abstract fun getBase ()Lcom/teya/lemonade/LemonadeBorderWidth$Base;
 	public abstract fun getState ()Lcom/teya/lemonade/LemonadeBorderWidth$State;
@@ -26,6 +35,8 @@ public abstract interface class com/teya/lemonade/LemonadeEffects {
 }
 
 public final class com/teya/lemonade/LemonadeLocalsKt {
+	public static final fun getLocalAnimations ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalAnimationsEnabled ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalBorderWidths ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalColors ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalContentColors ()Landroidx/compose/runtime/ProvidableCompositionLocal;
