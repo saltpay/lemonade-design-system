@@ -634,7 +634,20 @@ public fun LemonadeUi.ListItem(
             showDivider = showDivider,
         )
     } else {
-        LemonadeUi.ListItem(
+        CoreListItem(
+            contentSlot = {
+                ListItemTextContent(
+                    label = label,
+                    topLabel = topLabel,
+                    supportText = supportText,
+                    voice = voice,
+                    labelMaxLines = labelMaxLines,
+                    labelOverflow = labelOverflow,
+                    supportTextMaxLines = supportTextMaxLines,
+                    supportTextOverflow = supportTextOverflow,
+                    slotContent = slotContent,
+                )
+            },
             leadingSlot = leadingSlot,
             trailingSlot = trailingSlot,
             voice = voice,
@@ -648,37 +661,6 @@ public fun LemonadeUi.ListItem(
             leadingVerticalAlignment = leadingVerticalAlignment,
             trailingVerticalAlignment = trailingVerticalAlignment,
             priority = priority,
-            contentSlot = {
-                if (topLabel != null) {
-                    LemonadeUi.Text(
-                        text = topLabel,
-                        textStyle = LocalTypographies.current.bodySmallRegular,
-                        color = LocalColors.current.content.contentSecondary,
-                    )
-                }
-
-                LemonadeUi.Text(
-                    text = label,
-                    textStyle = LocalTypographies.current.bodyMediumMedium,
-                    color = voice.contentColor,
-                    maxLines = labelMaxLines,
-                    overflow = labelOverflow,
-                )
-
-                if (supportText != null) {
-                    LemonadeUi.Text(
-                        text = supportText,
-                        textStyle = LocalTypographies.current.bodySmallRegular,
-                        color = LocalColors.current.content.contentSecondary,
-                        maxLines = supportTextMaxLines,
-                        overflow = supportTextOverflow,
-                    )
-                }
-
-                if (slotContent != null) {
-                    slotContent()
-                }
-            },
         )
     }
 }
@@ -841,22 +823,70 @@ private fun singleLineLeadingAlignment(
         Alignment.Top
     }
 
+/**
+ * The text stack shared by the string-based overloads: optional top label, the label itself, the
+ * optional support text and the optional [slotContent] below them. Inline, so it adds no
+ * restartable scope on top of the content slot it is called from.
+ */
+@Composable
+private inline fun ColumnScope.ListItemTextContent(
+    label: String,
+    topLabel: String?,
+    supportText: String?,
+    voice: LemonadeListItemVoice,
+    labelMaxLines: Int,
+    labelOverflow: TextOverflow,
+    supportTextMaxLines: Int,
+    supportTextOverflow: TextOverflow,
+    noinline slotContent: (@Composable ColumnScope.() -> Unit)?,
+) {
+    if (topLabel != null) {
+        LemonadeUi.Text(
+            text = topLabel,
+            textStyle = LocalTypographies.current.bodySmallRegular,
+            color = LocalColors.current.content.contentSecondary,
+        )
+    }
+
+    LemonadeUi.Text(
+        text = label,
+        textStyle = LocalTypographies.current.bodyMediumMedium,
+        color = voice.contentColor,
+        maxLines = labelMaxLines,
+        overflow = labelOverflow,
+    )
+
+    if (supportText != null) {
+        LemonadeUi.Text(
+            text = supportText,
+            textStyle = LocalTypographies.current.bodySmallRegular,
+            color = LocalColors.current.content.contentSecondary,
+            maxLines = supportTextMaxLines,
+            overflow = supportTextOverflow,
+        )
+    }
+
+    if (slotContent != null) {
+        slotContent()
+    }
+}
+
 @Composable
 private fun CoreListItem(
     contentSlot: @Composable ColumnScope.() -> Unit,
     leadingSlot: (@Composable RowScope.() -> Unit)?,
     trailingSlot: (@Composable RowScope.() -> Unit)?,
-    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
-    navigationIndicator: Boolean = false,
+    voice: LemonadeListItemVoice,
+    navigationIndicator: Boolean,
     onListItemClick: (() -> Unit)?,
     role: Role?,
     enabled: Boolean,
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
     showDivider: Boolean,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
-    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
-    priority: LemonadeListItemPriority = LemonadeListItemPriority.Trailing,
+    interactionSource: MutableInteractionSource,
+    trailingVerticalAlignment: Alignment.Vertical,
+    leadingVerticalAlignment: Alignment.Vertical,
+    priority: LemonadeListItemPriority,
 ) {
     SafeArea(modifier = modifier, showDivider = showDivider) {
         Row(
