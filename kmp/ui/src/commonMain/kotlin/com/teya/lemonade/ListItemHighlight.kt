@@ -154,11 +154,10 @@ private class ListItemHighlightNode(
     private fun ContentDrawScope.obtainOutline(): Outline {
         val shape = currentValueOf(LocalShapes).radius500
         val existing = cachedOutline
-        if (existing != null &&
-            cachedSize == size &&
+        val cacheValid = cachedSize == size &&
             cachedLayoutDirection == layoutDirection &&
             cachedShape == shape
-        ) {
+        if (existing != null && cacheValid) {
             return existing
         }
         val outline = shape.createOutline(
