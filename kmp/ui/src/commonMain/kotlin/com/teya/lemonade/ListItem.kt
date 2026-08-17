@@ -81,10 +81,28 @@ public fun LemonadeUi.ResourceListItem(
     supportText: String? = null,
     showDivider: Boolean = false,
 ) {
-    LemonadeUi.ListItem(
-        label = label,
-        supportText = supportText,
-        isLoading = isLoading,
+    if (isLoading) {
+        ListItemSkeleton(
+            modifier = modifier,
+            showDivider = showDivider,
+        )
+        return
+    }
+
+    CoreListItem(
+        contentSlot = {
+            ListItemTextContent(
+                label = label,
+                topLabel = null,
+                supportText = supportText,
+                voice = LemonadeListItemVoice.Neutral,
+                labelMaxLines = Int.MAX_VALUE,
+                labelOverflow = TextOverflow.Clip,
+                supportTextMaxLines = Int.MAX_VALUE,
+                supportTextOverflow = TextOverflow.Clip,
+                slotContent = null,
+            )
+        },
         leadingSlot = {
             Box(
                 content = leadingSlot,
@@ -117,6 +135,8 @@ public fun LemonadeUi.ResourceListItem(
                 }
             }
         },
+        voice = LemonadeListItemVoice.Neutral,
+        navigationIndicator = false,
         onListItemClick = onItemClicked,
         role = null,
         enabled = enabled,
@@ -126,6 +146,11 @@ public fun LemonadeUi.ResourceListItem(
         // Keep the value top-aligned with the label's first line: the label can wrap (no maxLines cap),
         // and the outer Row already centers a single-line row, so this handles both without extra logic.
         trailingVerticalAlignment = Alignment.Top,
+        leadingVerticalAlignment = singleLineLeadingAlignment(
+            topLabel = null,
+            supportText = supportText,
+        ),
+        priority = LemonadeListItemPriority.Trailing,
     )
 }
 
@@ -308,45 +333,57 @@ public fun LemonadeUi.ActionListItem(
     supportTextMaxLines: Int = Int.MAX_VALUE,
     supportTextOverflow: TextOverflow = TextOverflow.Clip,
 ) {
-    LemonadeUi.ListItem(
-        label = label,
-        topLabel = topLabel,
-        supportText = supportText,
-        isLoading = isLoading,
-        labelMaxLines = labelMaxLines,
-        labelOverflow = labelOverflow,
-        supportTextMaxLines = supportTextMaxLines,
-        supportTextOverflow = supportTextOverflow,
-        leadingSlot = leadingSlot,
-        trailingSlot = if (trailingSlot != null) {
-            {
-                Row(
-                    modifier = Modifier.then(
-                        other = if (enabled) {
-                            Modifier
-                        } else {
-                            Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                        },
-                    ),
-                ) {
-                    trailingSlot()
+    if (isLoading) {
+        ListItemSkeleton(
+            modifier = modifier,
+            showDivider = showDivider,
+        )
+    } else {
+        CoreListItem(
+            contentSlot = {
+                ListItemTextContent(
+                    label = label,
+                    topLabel = topLabel,
+                    supportText = supportText,
+                    voice = voice,
+                    labelMaxLines = labelMaxLines,
+                    labelOverflow = labelOverflow,
+                    supportTextMaxLines = supportTextMaxLines,
+                    supportTextOverflow = supportTextOverflow,
+                    slotContent = slotContent,
+                )
+            },
+            leadingSlot = leadingSlot,
+            trailingSlot = if (trailingSlot != null) {
+                {
+                    Row(
+                        modifier = Modifier.then(
+                            other = if (enabled) {
+                                Modifier
+                            } else {
+                                Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+                            },
+                        ),
+                    ) {
+                        trailingSlot()
+                    }
                 }
-            }
-        } else {
-            null
-        },
-        slotContent = slotContent,
-        navigationIndicator = showNavigationIndicator,
-        voice = voice,
-        onListItemClick = onItemClicked,
-        role = role,
-        enabled = enabled,
-        modifier = modifier,
-        showDivider = showDivider,
-        interactionSource = interactionSource,
-        leadingVerticalAlignment = leadingVerticalAlignment,
-        trailingVerticalAlignment = trailingVerticalAlignment,
-    )
+            } else {
+                null
+            },
+            voice = voice,
+            navigationIndicator = showNavigationIndicator,
+            onListItemClick = onItemClicked,
+            role = role,
+            enabled = enabled,
+            modifier = modifier,
+            showDivider = showDivider,
+            interactionSource = interactionSource,
+            leadingVerticalAlignment = leadingVerticalAlignment,
+            trailingVerticalAlignment = trailingVerticalAlignment,
+            priority = LemonadeListItemPriority.Trailing,
+        )
+    }
 }
 
 @Deprecated(
