@@ -1,5 +1,7 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.snap
 import androidx.compose.foundation.Indication
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ColorScheme
@@ -23,6 +25,7 @@ public fun LemonadeExpressiveTheme(
     borderWidths: LemonadeBorderWidth = LemonadeTheme.borderWidths,
     sizes: LemonadeSizeValues = LemonadeTheme.sizes,
     effects: LemonadeEffects = LemonadeTheme.effects,
+    animations: LemonadeAnimationMode = LemonadeTheme.animations,
     content: @Composable () -> Unit,
 ) {
     LemonadeTheme(
@@ -35,15 +38,56 @@ public fun LemonadeExpressiveTheme(
         borderWidths = borderWidths,
         sizes = sizes,
         effects = lemonadeExpressiveEffects(effects = effects),
+        animations = animations,
     ) {
         MaterialExpressiveTheme(
             colorScheme = lemonadeExpressiveColorScheme(),
             shapes = lemonadeExpressiveShapes(),
             typography = lemonadeExpressiveTypography(),
-            motionScheme = MotionScheme.expressive(),
+            motionScheme = if (LemonadeTheme.animationsEnabled) {
+                MotionScheme.expressive()
+            } else {
+                SnapMotionScheme
+            },
             content = content,
         )
     }
+}
+
+@Deprecated(
+    message = "Use the overload with an animations parameter.",
+    replaceWith = ReplaceWith(
+        expression = "LemonadeExpressiveTheme(colors, typography, radius, shapes, opacities, " +
+            "spaces, borderWidths, sizes, effects, content = content)",
+    ),
+    level = DeprecationLevel.HIDDEN,
+)
+@Composable
+public fun LemonadeExpressiveTheme(
+    colors: LemonadeSemanticColors = LemonadeTheme.colors,
+    typography: LemonadeTypographyProvider = LemonadeTheme.typography,
+    radius: LemonadeRadiusValues = LemonadeTheme.radius,
+    shapes: LemonadeShapes = LemonadeTheme.shapes,
+    opacities: LemonadeOpacity = LemonadeTheme.opacities,
+    spaces: LemonadeSpaceValues = LemonadeTheme.spaces,
+    borderWidths: LemonadeBorderWidth = LemonadeTheme.borderWidths,
+    sizes: LemonadeSizeValues = LemonadeTheme.sizes,
+    effects: LemonadeEffects = LemonadeTheme.effects,
+    content: @Composable () -> Unit,
+) {
+    LemonadeExpressiveTheme(
+        colors = colors,
+        typography = typography,
+        radius = radius,
+        shapes = shapes,
+        opacities = opacities,
+        spaces = spaces,
+        borderWidths = borderWidths,
+        sizes = sizes,
+        effects = effects,
+        animations = LemonadeTheme.animations,
+        content = content,
+    )
 }
 
 @Composable
@@ -141,3 +185,26 @@ private fun lemonadeExpressiveEffects(effects: LemonadeEffects): LemonadeEffects
     object : LemonadeEffects by effects {
         override val interactionIndication: Indication = ripple()
     }
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+private object SnapMotionScheme : MotionScheme {
+    private val snapSpec: FiniteAnimationSpec<Any> = snap()
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> defaultSpatialSpec(): FiniteAnimationSpec<T> = snapSpec as FiniteAnimationSpec<T>
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> fastSpatialSpec(): FiniteAnimationSpec<T> = snapSpec as FiniteAnimationSpec<T>
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> slowSpatialSpec(): FiniteAnimationSpec<T> = snapSpec as FiniteAnimationSpec<T>
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> defaultEffectsSpec(): FiniteAnimationSpec<T> = snapSpec as FiniteAnimationSpec<T>
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> fastEffectsSpec(): FiniteAnimationSpec<T> = snapSpec as FiniteAnimationSpec<T>
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> slowEffectsSpec(): FiniteAnimationSpec<T> = snapSpec as FiniteAnimationSpec<T>
+}
