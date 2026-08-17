@@ -181,7 +181,6 @@ public fun LemonadeUi.ActionListItem(
     showDivider: Boolean = false,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
 ) {
-    @Suppress("DEPRECATION")
     ActionListItem(
         label = label,
         modifier = modifier,
@@ -415,7 +414,6 @@ public fun LemonadeUi.ActionListItem(
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
 ) {
-    @Suppress("DEPRECATION")
     ActionListItem(
         label = label,
         modifier = modifier,
@@ -465,7 +463,6 @@ public fun LemonadeUi.ListItem(
     slotContent: (@Composable ColumnScope.() -> Unit)? = null,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
 ) {
-    @Suppress("DEPRECATION")
     ListItem(
         label = label,
         modifier = modifier,
@@ -726,7 +723,6 @@ public fun LemonadeUi.ListItem(
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
 ) {
-    @Suppress("DEPRECATION")
     ListItem(
         contentSlot = contentSlot,
         modifier = modifier,
