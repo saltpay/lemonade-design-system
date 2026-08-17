@@ -390,6 +390,8 @@ public final class com/teya/lemonade/LemonadeShadowsExtensionKt {
 public final class com/teya/lemonade/LemonadeTheme {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/teya/lemonade/LemonadeTheme;
+	public final fun getAnimations (Landroidx/compose/runtime/Composer;I)Lcom/teya/lemonade/LemonadeAnimationMode;
+	public final fun getAnimationsEnabled (Landroidx/compose/runtime/Composer;I)Z
 	public final fun getBorderWidths (Landroidx/compose/runtime/Composer;I)Lcom/teya/lemonade/LemonadeBorderWidth;
 	public final fun getColors (Landroidx/compose/runtime/Composer;I)Lcom/teya/lemonade/LemonadeSemanticColors;
 	public final fun getEffects (Landroidx/compose/runtime/Composer;I)Lcom/teya/lemonade/LemonadeEffects;
@@ -402,7 +404,8 @@ public final class com/teya/lemonade/LemonadeTheme {
 }
 
 public final class com/teya/lemonade/LemonadeThemeKt {
-	public static final fun LemonadeTheme (Lcom/teya/lemonade/LemonadeSemanticColors;Lcom/teya/lemonade/LemonadeTypographyProvider;Lcom/teya/lemonade/LemonadeRadiusValues;Lcom/teya/lemonade/LemonadeShapes;Lcom/teya/lemonade/LemonadeOpacity;Lcom/teya/lemonade/LemonadeSpaceValues;Lcom/teya/lemonade/LemonadeBorderWidth;Lcom/teya/lemonade/LemonadeSizeValues;Lcom/teya/lemonade/LemonadeEffects;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LemonadeTheme (Lcom/teya/lemonade/LemonadeSemanticColors;Lcom/teya/lemonade/LemonadeTypographyProvider;Lcom/teya/lemonade/LemonadeRadiusValues;Lcom/teya/lemonade/LemonadeShapes;Lcom/teya/lemonade/LemonadeOpacity;Lcom/teya/lemonade/LemonadeSpaceValues;Lcom/teya/lemonade/LemonadeBorderWidth;Lcom/teya/lemonade/LemonadeSizeValues;Lcom/teya/lemonade/LemonadeEffects;Lcom/teya/lemonade/LemonadeAnimationMode;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
+	public static final synthetic fun LemonadeTheme (Lcom/teya/lemonade/LemonadeSemanticColors;Lcom/teya/lemonade/LemonadeTypographyProvider;Lcom/teya/lemonade/LemonadeRadiusValues;Lcom/teya/lemonade/LemonadeShapes;Lcom/teya/lemonade/LemonadeOpacity;Lcom/teya/lemonade/LemonadeSpaceValues;Lcom/teya/lemonade/LemonadeBorderWidth;Lcom/teya/lemonade/LemonadeSizeValues;Lcom/teya/lemonade/LemonadeEffects;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/teya/lemonade/LemonadeToastState {
