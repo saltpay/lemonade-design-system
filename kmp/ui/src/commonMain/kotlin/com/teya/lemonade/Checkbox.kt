@@ -230,9 +230,13 @@ private fun CoreCheckbox(
             ).background(color = animatedBackgroundColor)
             .requiredSize(size = platformProps.checkboxSize),
     ) {
+        val animationsEnabled = LemonadeTheme.animationsEnabled
         AnimatedContent(
             targetState = status.icon,
-            transitionSpec = { fadeIn() + scaleIn() togetherWith fadeOut() + scaleOut() },
+            transitionSpec = {
+                (fadeIn() + scaleIn() togetherWith fadeOut() + scaleOut())
+                    .orSnap(animationsEnabled = animationsEnabled)
+            },
             content = { icon ->
                 if (icon != null) {
                     LemonadeUi.Icon(

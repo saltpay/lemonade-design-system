@@ -174,16 +174,16 @@ private fun SearchCancelButton(
     // only one without it.
     AnimatedVisibility(
         visible = enabled && (isFocused || input.isNotEmpty()),
-        enter = fadeIn(animationSpec = SearchFieldFadeSpec) +
+        enter = fadeIn(animationSpec = SearchFieldFadeSpec.orSnap()) +
             scaleIn(
-                animationSpec = SearchFieldFadeSpec,
+                animationSpec = SearchFieldFadeSpec.orSnap(),
                 initialScale = CANCEL_BUTTON_COLLAPSED_SCALE,
-            ) + expandHorizontally(animationSpec = SearchFieldSizeSpec),
-        exit = fadeOut(animationSpec = SearchFieldFadeSpec) +
+            ) + expandHorizontally(animationSpec = SearchFieldSizeSpec.orSnap()),
+        exit = fadeOut(animationSpec = SearchFieldFadeSpec.orSnap()) +
             scaleOut(
-                animationSpec = SearchFieldFadeSpec,
+                animationSpec = SearchFieldFadeSpec.orSnap(),
                 targetScale = CANCEL_BUTTON_COLLAPSED_SCALE,
-            ) + shrinkHorizontally(animationSpec = SearchFieldSizeSpec),
+            ) + shrinkHorizontally(animationSpec = SearchFieldSizeSpec.orSnap()),
     ) {
         LemonadeUi.IconButton(
             icon = LemonadeIcons.Times,
@@ -360,14 +360,17 @@ private fun CoreSearchFieldDecorationBox(
                 color = animatedSelectionColor,
             ).padding(horizontal = LocalSpaces.current.spacing300),
     ) {
+        val animationsEnabled = LemonadeTheme.animationsEnabled
         AnimatedContent(
             targetState = leadingIcon,
             transitionSpec = {
-                fadeIn(
-                    animationSpec = tween(150),
-                ) togetherWith fadeOut(
-                    animationSpec = tween(150),
-                )
+                (
+                    fadeIn(
+                        animationSpec = tween(150),
+                    ) togetherWith fadeOut(
+                        animationSpec = tween(150),
+                    )
+                ).orSnap(animationsEnabled = animationsEnabled)
             },
         ) { icon ->
             LemonadeUi.Icon(
@@ -405,8 +408,8 @@ private fun CoreSearchFieldDecorationBox(
 
         AnimatedVisibility(
             visible = input.isNotEmpty() && enabled,
-            enter = fadeIn(animationSpec = SearchFieldFadeSpec),
-            exit = fadeOut(animationSpec = SearchFieldFadeSpec),
+            enter = fadeIn(animationSpec = SearchFieldFadeSpec.orSnap()),
+            exit = fadeOut(animationSpec = SearchFieldFadeSpec.orSnap()),
         ) {
             LemonadeUi.Icon(
                 icon = LemonadeIcons.CircleXSolid,

@@ -1,6 +1,11 @@
 package com.teya.lemonade
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -114,9 +119,19 @@ public fun LemonadeUi.SelectField(
                 leadingContent()
             }
 
+            val animationsEnabled = LemonadeTheme.animationsEnabled
             AnimatedContent(
                 targetState = selectedValue ?: placeholderText,
                 modifier = Modifier.weight(weight = 1f),
+                transitionSpec = {
+                    val enter = fadeIn(animationSpec = tween(durationMillis = 220, delayMillis = 90)) +
+                        scaleIn(
+                            initialScale = 0.92f,
+                            animationSpec = tween(durationMillis = 220, delayMillis = 90),
+                        )
+                    (enter togetherWith fadeOut(animationSpec = tween(durationMillis = 90)))
+                        .orSnap(animationsEnabled = animationsEnabled)
+                },
                 content = { showingText ->
                     if (showingText != null) {
                         LemonadeUi.Text(

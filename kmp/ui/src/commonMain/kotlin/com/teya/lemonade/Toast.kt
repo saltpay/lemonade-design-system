@@ -471,6 +471,7 @@ internal fun InlineToastHost(
         val toast = toastState.currentToast
         val padding = rememberToastPadding(toast?.paddingValues, LocalLayoutDirection.current)
 
+        val animationsEnabled = LemonadeTheme.animationsEnabled
         AnimatedContent(
             targetState = toast,
             contentAlignment = Alignment.BottomCenter,
@@ -490,6 +491,7 @@ internal fun InlineToastHost(
                         targetOffsetY = { hostHeightPx },
                     ),
                 ).using(SizeTransform(clip = false) { _, _ -> snap() })
+                    .orSnap(animationsEnabled = animationsEnabled)
             },
             contentKey = { it?.id },
             modifier = Modifier

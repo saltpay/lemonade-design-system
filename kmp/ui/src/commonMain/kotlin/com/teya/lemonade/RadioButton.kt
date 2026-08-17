@@ -229,9 +229,13 @@ private fun CoreRadioButton(
                 },
             ),
     ) {
+        val animationsEnabled = LemonadeTheme.animationsEnabled
         AnimatedContent(
             targetState = checked,
-            transitionSpec = { scaleIn() togetherWith scaleOut() },
+            transitionSpec = {
+                (scaleIn() togetherWith scaleOut())
+                    .orSnap(animationsEnabled = animationsEnabled)
+            },
             modifier = Modifier.matchParentSize(),
             content = { isChecked ->
                 if (isChecked) {

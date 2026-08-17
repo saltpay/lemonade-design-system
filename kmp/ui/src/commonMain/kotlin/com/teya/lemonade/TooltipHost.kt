@@ -643,16 +643,19 @@ private fun TooltipOverlay(
                 // grow out of its indicator instead of the centre of the screen.
                 AnimatedVisibility(
                     visibleState = visibleState,
-                    enter = fadeIn(animationSpec = tween(durationMillis = TOOLTIP_ENTER_FADE_MILLIS)) +
-                        scaleIn(
-                            animationSpec = spring(
-                                dampingRatio = TOOLTIP_ENTER_DAMPING_RATIO,
-                                stiffness = Spring.StiffnessMediumLow,
-                            ),
-                            initialScale = TOOLTIP_ENTER_INITIAL_SCALE,
-                            transformOrigin = placement.transformOrigin(density = density),
-                        ),
-                    exit = fadeOut(animationSpec = tween(durationMillis = TOOLTIP_EXIT_FADE_MILLIS)),
+                    enter = fadeIn(
+                        animationSpec = tween<Float>(durationMillis = TOOLTIP_ENTER_FADE_MILLIS).orSnap(),
+                    ) + scaleIn(
+                        animationSpec = spring<Float>(
+                            dampingRatio = TOOLTIP_ENTER_DAMPING_RATIO,
+                            stiffness = Spring.StiffnessMediumLow,
+                        ).orSnap(),
+                        initialScale = TOOLTIP_ENTER_INITIAL_SCALE,
+                        transformOrigin = placement.transformOrigin(density = density),
+                    ),
+                    exit = fadeOut(
+                        animationSpec = tween<Float>(durationMillis = TOOLTIP_EXIT_FADE_MILLIS).orSnap(),
+                    ),
                 ) {
                     Box(
                         // Swallow taps on the tooltip itself so they never reach the dismiss handler.

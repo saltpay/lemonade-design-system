@@ -116,9 +116,14 @@ private fun ToastOverlayWindow(toastState: LemonadeToastState) {
         // those never re-measure the window.
         var toastHeightPx by remember { mutableIntStateOf(0) }
         val transition = updateTransition(animState, label = "toast")
-        val alpha by transition.animateFloat(label = "alpha") { visible -> if (visible) 1f else 0f }
+        val alpha by transition.animateFloat(
+            transitionSpec = { spring<Float>().orSnap() },
+            label = "alpha",
+        ) { visible -> if (visible) 1f else 0f }
         val translationY by transition.animateFloat(
-            transitionSpec = { spring(dampingRatio = 0.8f, stiffness = Spring.StiffnessMediumLow) },
+            transitionSpec = {
+                spring<Float>(dampingRatio = 0.8f, stiffness = Spring.StiffnessMediumLow).orSnap()
+            },
             label = "translationY",
         ) { visible -> if (visible) 0f else toastHeightPx.toFloat() }
 

@@ -1,14 +1,20 @@
 package com.teya.lemonade
 
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.AnimationVector
+import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.TwoWayConverter
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateValueAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.State
@@ -33,6 +39,27 @@ private val FloatDefaultSpring: AnimationSpec<Float> =
 @ReadOnlyComposable
 internal fun <T> AnimationSpec<T>.orSnap(): AnimationSpec<T> =
     if (LemonadeTheme.animationsEnabled) this else snap()
+
+/**
+ * Returns this spec while animations are enabled, or [snap] when [LemonadeTheme.animations]
+ * disables them, so the value applies in a single frame.
+ */
+@Composable
+@ReadOnlyComposable
+internal fun <T> FiniteAnimationSpec<T>.orSnap(): FiniteAnimationSpec<T> =
+    if (LemonadeTheme.animationsEnabled) this else snap()
+
+/**
+ * Returns this transform while [animationsEnabled] is true, or a fully snapping transform
+ * otherwise. Meant for `transitionSpec` lambdas, which are not composable — hoist
+ * [LemonadeTheme.animationsEnabled] in the enclosing composable and pass it in.
+ */
+internal fun ContentTransform.orSnap(animationsEnabled: Boolean): ContentTransform =
+    if (animationsEnabled) this else snapContentTransform()
+
+private fun snapContentTransform(): ContentTransform =
+    (fadeIn(animationSpec = snap()) togetherWith fadeOut(animationSpec = snap()))
+        .using(sizeTransform = SizeTransform { _, _ -> snap() })
 
 /**
  * [animateColorAsState] honoring [LemonadeTheme.animations]. Defaults match the stock overload.
