@@ -18,6 +18,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 
@@ -74,6 +76,24 @@ private fun snapContentTransform(): ContentTransform =
         initialContentExit = fadeOut(animationSpec = snap()),
         sizeTransform = SizeTransform { _, _ -> snap() },
     )
+
+/**
+ * Composes [animated] while [LemonadeTheme.animations] allows motion. When animations are
+ * disabled the animation is never composed at all — the returned state is fixed at [static]'s
+ * value, evaluated once, so nothing ever invalidates. Use for continuously running animations
+ * (e.g. an infinite shimmer) where the win is skipping the animation machinery entirely, not
+ * just snapping a spec.
+ */
+@Composable
+internal fun <T> lemonadeAnimation(
+    animated: @Composable () -> State<T>,
+    static: () -> T,
+): State<T> =
+    if (LemonadeTheme.animationsEnabled) {
+        animated()
+    } else {
+        remember { mutableStateOf(value = static()) }
+    }
 
 /**
  * [animateColorAsState] honoring [LemonadeTheme.animations]. Defaults match the stock overload.
