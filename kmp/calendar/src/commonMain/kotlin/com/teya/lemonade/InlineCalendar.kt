@@ -285,12 +285,13 @@ public fun LemonadeUi.InlineCalendar(
 
     // Scroll to a specific date, centering it in the viewport.
     val coroutineScope = rememberCoroutineScope()
+    val animationsEnabled = LemonadeTheme.animationsEnabled
 
     val scrollToDate: (LocalDate) -> Unit = { date ->
         val targetIndex = (dateToGlobalIndex(date, anchorDate) - firstIndex)
             .coerceIn(0, itemCount - 1)
         coroutineScope.launch {
-            listState.scrollToCenteredIndex(targetIndex, visibleCells, animate = true)
+            listState.scrollToCenteredIndex(targetIndex, visibleCells, animate = animationsEnabled)
         }
         Unit
     }
@@ -318,7 +319,11 @@ public fun LemonadeUi.InlineCalendar(
         snapshotFlow { listState.layoutInfo.viewportSize.width }
             .filter { width -> width > 0 }
             .first()
-        listState.scrollToCenteredIndex(targetIndex = targetIndex, visibleCells = visibleCells, animate = true)
+        listState.scrollToCenteredIndex(
+            targetIndex = targetIndex,
+            visibleCells = visibleCells,
+            animate = animationsEnabled,
+        )
     }
 
     // Responds to external navigateToMonth() calls by observing the dedicated

@@ -1,7 +1,6 @@
 package com.teya.lemonade
 
 import androidx.compose.animation.core.FiniteAnimationSpec
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -360,12 +359,21 @@ private fun LazyItemScope.CardRowContainer(
 }
 
 // Fades and slides a card slot into place as rows are added, removed, or reordered.
+@Composable
 private fun LazyItemScope.cardItemAnimationModifier(): Modifier =
-    Modifier.animateItem(
-        fadeInSpec = cardItemFadeSpec,
-        placementSpec = cardItemPlacementSpec,
-        fadeOutSpec = cardItemFadeSpec,
-    )
+    if (LemonadeTheme.animationsEnabled) {
+        Modifier.animateItem(
+            fadeInSpec = cardItemFadeSpec,
+            placementSpec = cardItemPlacementSpec,
+            fadeOutSpec = cardItemFadeSpec,
+        )
+    } else {
+        Modifier.animateItem(
+            fadeInSpec = null,
+            placementSpec = null,
+            fadeOutSpec = null,
+        )
+    }
 
 @Composable
 private fun animatedCardItemShape(position: LemonadeCardItemPosition): Shape {
@@ -373,12 +381,12 @@ private fun animatedCardItemShape(position: LemonadeCardItemPosition): Shape {
     val zero = LocalRadius.current.radius0
     val roundsTop = position == LemonadeCardItemPosition.First || position == LemonadeCardItemPosition.Single
     val roundsBottom = position == LemonadeCardItemPosition.Last || position == LemonadeCardItemPosition.Single
-    val topRadius by animateDpAsState(
+    val topRadius by lemonadeAnimateDpAsState(
         targetValue = if (roundsTop) radius else zero,
         animationSpec = cardItemRadiusSpec,
         label = "cardItemTopRadius",
     )
-    val bottomRadius by animateDpAsState(
+    val bottomRadius by lemonadeAnimateDpAsState(
         targetValue = if (roundsBottom) radius else zero,
         animationSpec = cardItemRadiusSpec,
         label = "cardItemBottomRadius",

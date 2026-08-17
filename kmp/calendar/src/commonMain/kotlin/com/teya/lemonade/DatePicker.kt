@@ -515,6 +515,7 @@ private fun CoreDatePicker(
         } ?: true
 
     val horizontalPadding = LocalSpaces.current.spacing400
+    val animationsEnabled = LemonadeTheme.animationsEnabled
 
     Column(
         modifier = modifier,
@@ -530,7 +531,11 @@ private fun CoreDatePicker(
                 val diff = centerYearMonth.monthsUntil(newYearMonth)
                 val targetPage = (pagerState.currentPage + diff).coerceIn(0, PAGES_TOTAL - 1)
                 coroutineScope.launch {
-                    pagerState.animateScrollToPage(targetPage)
+                    if (animationsEnabled) {
+                        pagerState.animateScrollToPage(targetPage)
+                    } else {
+                        pagerState.scrollToPage(targetPage)
+                    }
                 }
             },
             onNext = {
@@ -538,7 +543,11 @@ private fun CoreDatePicker(
                 val diff = centerYearMonth.monthsUntil(newYearMonth)
                 val targetPage = (pagerState.currentPage + diff).coerceIn(0, PAGES_TOTAL - 1)
                 coroutineScope.launch {
-                    pagerState.animateScrollToPage(targetPage)
+                    if (animationsEnabled) {
+                        pagerState.animateScrollToPage(targetPage)
+                    } else {
+                        pagerState.scrollToPage(targetPage)
+                    }
                 }
             },
         )

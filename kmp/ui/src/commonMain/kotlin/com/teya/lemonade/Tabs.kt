@@ -243,6 +243,7 @@ private fun HugModeTabs(
     indicatorColor: Color,
 ) {
     val scrollState = rememberScrollState()
+    val animationsEnabled = LemonadeTheme.animationsEnabled
 
     LaunchedEffect(key1 = selectedIndex) {
         val offset = tabOffsets[selectedIndex]
@@ -257,9 +258,17 @@ private fun HugModeTabs(
             val visibleEnd = currentScroll + viewportWidth
 
             if (offsetPx < currentScroll) {
-                scrollState.animateScrollTo(value = offsetPx)
+                if (animationsEnabled) {
+                    scrollState.animateScrollTo(value = offsetPx)
+                } else {
+                    scrollState.scrollTo(value = offsetPx)
+                }
             } else if (tabEnd > visibleEnd) {
-                scrollState.animateScrollTo(value = tabEnd - viewportWidth)
+                if (animationsEnabled) {
+                    scrollState.animateScrollTo(value = tabEnd - viewportWidth)
+                } else {
+                    scrollState.scrollTo(value = tabEnd - viewportWidth)
+                }
             }
         }
     }
