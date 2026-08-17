@@ -20,6 +20,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Measurable
@@ -929,90 +931,89 @@ private fun CoreListItem(
     leadingVerticalAlignment: Alignment.Vertical,
     priority: LemonadeListItemPriority,
 ) {
-    SafeArea(modifier = modifier, showDivider = showDivider) { rowModifier ->
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = rowModifier
-                .then(
-                    other = if (onListItemClick != null) {
-                        Modifier.clickable(
-                            enabled = enabled,
-                            role = role,
-                            onClick = onListItemClick,
-                            interactionSource = interactionSource,
-                            indication = ListItemHighlightIndication(voice = voice),
-                        )
-                    } else {
-                        Modifier
-                    },
-                ).defaultMinSize(minHeight = LocalSizes.current.size1200)
-                .padding(
-                    horizontal = LocalSpaces.current.spacing300,
-                    vertical = LocalSpaces.current.spacing300,
-                ),
-        ) {
-            if (leadingSlot != null) {
-                Row(
-                    modifier = Modifier
-                        .align(leadingVerticalAlignment)
-                        .padding(end = LocalSpaces.current.spacing300)
-                        .padding(vertical = LocalSpaces.current.spacing50)
-                        .then(
-                            other = if (!enabled) {
-                                Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                            } else {
-                                Modifier
-                            },
-                        ),
-                ) {
-                    leadingSlot()
-                }
-            }
-
-            val contentAlpha: Modifier = if (!enabled) {
-                Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-            } else {
-                Modifier
-            }
-
-            val hasTrailingContent = trailingSlot != null || navigationIndicator
-            if (!hasTrailingContent) {
-                // With nothing trailing there is no width contention, so the content column sits
-                // directly in the row. A filling weight reproduces the Trailing-priority forced
-                // width; Label priority lets the column wrap inside the remaining space.
-                Column(
-                    content = contentSlot,
-                    modifier = Modifier
-                        .weight(
-                            weight = 1f,
-                            fill = priority == LemonadeListItemPriority.Trailing,
-                        ).then(other = contentAlpha),
-                )
-            } else {
-                Layout(
-                    modifier = Modifier.weight(weight = 1f),
-                    measurePolicy = ListItemBodyMeasurePolicy(
-                        priority = priority,
-                        trailingAlignment = trailingVerticalAlignment,
-                        trailingGap = LocalSpaces.current.spacing300,
-                        trailingFloor = LocalSizes.current.size2000,
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .listItemSafeArea(showDivider = showDivider)
+            .then(
+                other = if (onListItemClick != null) {
+                    Modifier.clickable(
+                        enabled = enabled,
+                        role = role,
+                        onClick = onListItemClick,
+                        interactionSource = interactionSource,
+                        indication = ListItemHighlightIndication(voice = voice),
+                    )
+                } else {
+                    Modifier
+                },
+            ).defaultMinSize(minHeight = LocalSizes.current.size1200)
+            .padding(
+                horizontal = LocalSpaces.current.spacing300,
+                vertical = LocalSpaces.current.spacing300,
+            ),
+    ) {
+        if (leadingSlot != null) {
+            Row(
+                modifier = Modifier
+                    .align(leadingVerticalAlignment)
+                    .padding(end = LocalSpaces.current.spacing300)
+                    .padding(vertical = LocalSpaces.current.spacing50)
+                    .then(
+                        other = if (!enabled) {
+                            Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+                        } else {
+                            Modifier
+                        },
                     ),
-                    content = {
-                        Column(
-                            content = contentSlot,
-                            modifier = contentAlpha,
-                        )
-
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            ListItemTrailingContent(
-                                trailingSlot = trailingSlot,
-                                navigationIndicator = navigationIndicator,
-                                enabled = enabled,
-                            )
-                        }
-                    },
-                )
+            ) {
+                leadingSlot()
             }
+        }
+
+        val contentAlpha: Modifier = if (!enabled) {
+            Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+        } else {
+            Modifier
+        }
+
+        val hasTrailingContent = trailingSlot != null || navigationIndicator
+        if (!hasTrailingContent) {
+            // With nothing trailing there is no width contention, so the content column sits
+            // directly in the row. A filling weight reproduces the Trailing-priority forced
+            // width; Label priority lets the column wrap inside the remaining space.
+            Column(
+                content = contentSlot,
+                modifier = Modifier
+                    .weight(
+                        weight = 1f,
+                        fill = priority == LemonadeListItemPriority.Trailing,
+                    ).then(other = contentAlpha),
+            )
+        } else {
+            Layout(
+                modifier = Modifier.weight(weight = 1f),
+                measurePolicy = ListItemBodyMeasurePolicy(
+                    priority = priority,
+                    trailingAlignment = trailingVerticalAlignment,
+                    trailingGap = LocalSpaces.current.spacing300,
+                    trailingFloor = LocalSizes.current.size2000,
+                ),
+                content = {
+                    Column(
+                        content = contentSlot,
+                        modifier = contentAlpha,
+                    )
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        ListItemTrailingContent(
+                            trailingSlot = trailingSlot,
+                            navigationIndicator = navigationIndicator,
+                            enabled = enabled,
+                        )
+                    }
+                },
+            )
         }
     }
 }
@@ -1154,31 +1155,41 @@ private fun RowScope.ListItemTrailingContent(
 }
 
 /**
- * Wraps a list-item row in its outer gutter padding and, when requested, the divider below it.
- * Inline, and in the no-divider case it emits no wrapper node at all: the gutter padding is handed
- * to [content] to apply on the row itself.
+ * The outer treatment of a list-item row: the optional divider below it and the gutter padding
+ * around it. Pure modifiers, so a row composes no wrapper node for either.
  */
 @Composable
-private inline fun SafeArea(
-    modifier: Modifier,
-    showDivider: Boolean,
-    content: @Composable (rowModifier: Modifier) -> Unit,
-) {
-    if (!showDivider) {
-        content(modifier.padding(all = LocalSpaces.current.spacing100))
-        return
+private fun Modifier.listItemSafeArea(showDivider: Boolean): Modifier {
+    val withDivider = if (showDivider) {
+        listItemDivider()
+    } else {
+        this
     }
+    return withDivider.padding(all = LocalSpaces.current.spacing100)
+}
 
-    Column(
-        verticalArrangement = Arrangement.Center,
-        modifier = modifier,
-    ) {
-        content(Modifier.padding(all = LocalSpaces.current.spacing100))
-
-        LemonadeUi.HorizontalDivider(
-            modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing400),
-        )
-    }
+/**
+ * Draws the row divider the way [LemonadeUi.HorizontalDivider] renders its solid variant — same
+ * thickness, colour and horizontal insets — while reserving the divider's height with padding so
+ * the row's total height matches the former divider sibling.
+ */
+@Composable
+private fun Modifier.listItemDivider(): Modifier {
+    val thickness = LocalBorderWidths.current.base.border25
+    val inset = LocalSpaces.current.spacing400
+    val color = LocalColors.current.border.borderNeutralLow
+    return this
+        .drawBehind {
+            val reserved = thickness.roundToPx()
+            val insetPx = inset.roundToPx().toFloat()
+            val centerY = size.height - reserved / 2f
+            drawLine(
+                color = color,
+                start = Offset(x = insetPx, y = centerY),
+                end = Offset(x = size.width - insetPx, y = centerY),
+                strokeWidth = thickness.toPx(),
+            )
+        }.padding(bottom = thickness)
 }
 
 private val LemonadeListItemVoice.contentColor: Color
@@ -1194,45 +1205,44 @@ private fun ListItemSkeleton(
     modifier: Modifier = Modifier,
     showDivider: Boolean = false,
 ) {
-    SafeArea(modifier = modifier, showDivider = showDivider) { rowModifier ->
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .listItemSafeArea(showDivider = showDivider)
+            .padding(
+                horizontal = LocalSpaces.current.spacing300,
+                vertical = LocalSpaces.current.spacing300,
+            ),
+    ) {
+        LemonadeUi.CircleSkeleton(
+            size = LemonadeSkeletonSize.XLarge,
+            modifier = Modifier.padding(end = LocalSpaces.current.spacing300),
+        )
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = rowModifier
-                .padding(
-                    horizontal = LocalSpaces.current.spacing300,
-                    vertical = LocalSpaces.current.spacing300,
-                ),
+            modifier = Modifier.weight(weight = 1f),
         ) {
-            LemonadeUi.CircleSkeleton(
-                size = LemonadeSkeletonSize.XLarge,
-                modifier = Modifier.padding(end = LocalSpaces.current.spacing300),
-            )
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            Column(
+                verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing100),
                 modifier = Modifier.weight(weight = 1f),
             ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing100),
-                    modifier = Modifier.weight(weight = 1f),
-                ) {
-                    LemonadeUi.LineSkeleton(
-                        size = LemonadeSkeletonSize.Medium,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                    LemonadeUi.LineSkeleton(
-                        size = LemonadeSkeletonSize.Small,
-                        modifier = Modifier.fillMaxWidth(fraction = 0.6f),
-                    )
-                }
-
                 LemonadeUi.LineSkeleton(
                     size = LemonadeSkeletonSize.Medium,
-                    modifier = Modifier
-                        .padding(start = LocalSpaces.current.spacing300)
-                        .width(width = 54.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                LemonadeUi.LineSkeleton(
+                    size = LemonadeSkeletonSize.Small,
+                    modifier = Modifier.fillMaxWidth(fraction = 0.6f),
                 )
             }
+
+            LemonadeUi.LineSkeleton(
+                size = LemonadeSkeletonSize.Medium,
+                modifier = Modifier
+                    .padding(start = LocalSpaces.current.spacing300)
+                    .width(width = 54.dp),
+            )
         }
     }
 }
