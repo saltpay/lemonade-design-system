@@ -164,7 +164,7 @@ private fun rememberLabelsFit(items: List<Item>, rowWidthPx: Int): Boolean {
     }
 
     return remember(rowWidthPx, items, labelStyle, textMeasurer, gutterPx) {
-        if (rowWidthPx == 0) return@remember true
+        if (rowWidthPx == 0 || items.isEmpty()) return@remember true
         val availableWidthPx = rowWidthPx / items.size - gutterPx
         items.all { item ->
             textMeasurer.measure(
