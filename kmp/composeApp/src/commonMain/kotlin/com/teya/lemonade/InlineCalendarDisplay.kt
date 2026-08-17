@@ -23,6 +23,27 @@ import kotlinx.datetime.todayIn
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
+private const val EVENT_DAY_INTERVAL = 3
+
+/**
+ * The predicate the "trailing dots" samples use to decide which days carry an event.
+ * Shared by `enabledDates` and `trailingContent` so the dot and the enabled state can
+ * never disagree.
+ */
+private fun hasEvent(date: LocalDate): Boolean = date.day % EVENT_DAY_INTERVAL == 0
+
+/**
+ * First day on or after [date] that satisfies [hasEvent].
+ *
+ * The dot samples disable every day without an event, so seeding their state with
+ * today would leave the calendar opened on a selection the user cannot re-select and
+ * that renders as disabled text on the selection background. Deriving the initial
+ * date from the same predicate keeps the sample valid whatever today happens to be.
+ */
+private fun firstEventDateOnOrAfter(date: LocalDate): LocalDate =
+    generateSequence(date) { candidate -> candidate.plus(1, DateTimeUnit.DAY) }
+        .first { candidate -> hasEvent(candidate) }
+
 @Composable
 internal fun InlineCalendarDisplay() {
     val today = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) }
@@ -69,13 +90,14 @@ private fun DefaultSection(today: LocalDate) {
 @Composable
 private fun TrailingDotsSection(today: LocalDate) {
     InlineCalendarSection(title = "With trailing content (dot on every 3rd day)") {
-        val state = rememberInlineCalendarState(initialDate = today)
+        val initialDate = remember(today) { firstEventDateOnOrAfter(today) }
+        val state = rememberInlineCalendarState(initialDate = initialDate)
         LemonadeUi.InlineCalendar(
             state = state,
             onDateSelected = { /* observe state.selectedDate */ },
-            enabledDates = { date -> date.day % 3 == 0 },
+            enabledDates = { date -> hasEvent(date) },
             trailingContent = { date, isSelected ->
-                if (date.day % 3 == 0) {
+                if (hasEvent(date)) {
                     EventDot(isSelected = isSelected)
                 }
             },
@@ -140,14 +162,15 @@ private fun CompactSelectionSection(today: LocalDate) {
 @Composable
 private fun CompactDotsSection(today: LocalDate) {
     InlineCalendarSection(title = "Compact selection with trailing dots") {
-        val state = rememberInlineCalendarState(initialDate = today)
+        val initialDate = remember(today) { firstEventDateOnOrAfter(today) }
+        val state = rememberInlineCalendarState(initialDate = initialDate)
         LemonadeUi.InlineCalendar(
             state = state,
             expandSelectionToLabel = false,
             onDateSelected = { /* observe state.selectedDate */ },
-            enabledDates = { date -> date.day % 3 == 0 },
+            enabledDates = { date -> hasEvent(date) },
             trailingContent = { date, isSelected ->
-                if (date.day % 3 == 0) {
+                if (hasEvent(date)) {
                     EventDot(isSelected = isSelected)
                 }
             },
