@@ -6,6 +6,7 @@ package com.teya.lemonade
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -114,7 +115,11 @@ public fun LemonadeUi.BottomTabBar(
     )
     val selectionPosition by animateFloatAsState(
         targetValue = selectedIndex.toFloat(),
-        animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
+        animationSpec = if (LemonadeTheme.animationsEnabled) {
+            spring(stiffness = Spring.StiffnessMediumLow)
+        } else {
+            snap()
+        },
         label = "bottomTabBarSelection",
     )
     CoreBottomTabBar(
@@ -275,10 +280,14 @@ private fun BottomTabBarItemContent(
         // Selected icon pops (spring) and crossfades to its variant.
         val iconScale by animateFloatAsState(
             targetValue = if (isSelected) SELECTED_ICON_SCALE else 1f,
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioMediumBouncy,
-                stiffness = Spring.StiffnessMediumLow,
-            ),
+            animationSpec = if (LemonadeTheme.animationsEnabled) {
+                spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessMediumLow,
+                )
+            } else {
+                snap()
+            },
             label = "tabIconScale",
         )
 
@@ -290,7 +299,11 @@ private fun BottomTabBarItemContent(
         ) {
             Crossfade(
                 targetState = displayedIcon,
-                animationSpec = tween(durationMillis = ICON_CROSSFADE_MS),
+                animationSpec = if (LemonadeTheme.animationsEnabled) {
+                    tween(durationMillis = ICON_CROSSFADE_MS)
+                } else {
+                    snap()
+                },
                 label = "tabIcon",
             ) { icon ->
                 LemonadeUi.Icon(
