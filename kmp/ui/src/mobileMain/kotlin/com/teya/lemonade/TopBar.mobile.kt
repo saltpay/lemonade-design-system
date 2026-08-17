@@ -1,12 +1,10 @@
 package com.teya.lemonade
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeOut
@@ -30,6 +28,7 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.requiredSizeIn
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -85,6 +84,8 @@ public class TopBarState internal constructor(
     lockGestureAnimation: Boolean = false,
 ) {
     private var lockGestureAnimation by mutableStateOf(lockGestureAnimation)
+
+    internal var motionEnabled: Boolean = true
 
     internal val isPermanentlyCollapsed: Boolean by derivedStateOf {
         startCollapsed && lockGestureAnimation
@@ -152,7 +153,7 @@ public class TopBarState internal constructor(
             coroutineScope.launch {
                 scrollOffsetAnimatable.animateTo(
                     targetValue = maxScrollOffset,
-                    animationSpec = animationSpec,
+                    animationSpec = if (motionEnabled) animationSpec else snap(),
                 )
             }
         }
@@ -169,7 +170,7 @@ public class TopBarState internal constructor(
             coroutineScope.launch {
                 scrollOffsetAnimatable.animateTo(
                     targetValue = 0f,
-                    animationSpec = animationSpec,
+                    animationSpec = if (motionEnabled) animationSpec else snap(),
                 )
             }
         }
@@ -421,7 +422,7 @@ public fun LemonadeUi.TopBar(
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
-    val effectiveBackgroundColor by animateColorAsState(
+    val effectiveBackgroundColor by lemonadeAnimateColorAsState(
         targetValue = if (state.isScrolled) scrolledBackgroundColor else backgroundColor,
         animationSpec = TopBarBackgroundAnimationSpec,
         label = "TopBarBackgroundColor",
@@ -638,7 +639,8 @@ public fun LemonadeUi.TopBar(
     var isSearchFocused by remember {
         mutableStateOf(false)
     }
-    val effectiveBackgroundColor by animateColorAsState(
+    val animationsEnabled = LemonadeTheme.animationsEnabled
+    val effectiveBackgroundColor by lemonadeAnimateColorAsState(
         targetValue = if (state.isScrolled) scrolledBackgroundColor else backgroundColor,
         animationSpec = TopBarBackgroundAnimationSpec,
         label = "TopBarBackgroundColor",
@@ -655,7 +657,7 @@ public fun LemonadeUi.TopBar(
                         vertical = LocalSpaces.current.spacing50,
                     ),
                 targetState = isSearchFocused,
-                transitionSpec = { expandVertically() togetherWith shrinkVertically() },
+                transitionSpec = { (expandVertically() togetherWith shrinkVertically()).orSnap(animationsEnabled = animationsEnabled) },
                 content = { searchFocused ->
                     if (!searchFocused) {
                         CoreTopBarContent(
@@ -690,7 +692,10 @@ public fun LemonadeUi.TopBar(
             ) {
                 AnimatedContent(
                     targetState = expandedLabel != null && !isSearchFocused,
-                    transitionSpec = { expandVertically() togetherWith shrinkVertically() + fadeOut() },
+                    transitionSpec = {
+                        (expandVertically() togetherWith shrinkVertically() + fadeOut())
+                            .orSnap(animationsEnabled = animationsEnabled)
+                    },
                     content = { shouldShow ->
                         if (shouldShow) {
                             Column(
@@ -742,7 +747,7 @@ public fun LemonadeUi.TopBar(
             {
                 AnimatedContent(
                     targetState = isSearchFocused,
-                    transitionSpec = { expandVertically() togetherWith shrinkVertically() },
+                    transitionSpec = { (expandVertically() togetherWith shrinkVertically()).orSnap(animationsEnabled = animationsEnabled) },
                     content = { searchFocused ->
                         if (searchFocused) {
                             bottomSlot()
@@ -905,7 +910,7 @@ public fun LemonadeUi.TopBar(
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
-    val effectiveBackgroundColor by animateColorAsState(
+    val effectiveBackgroundColor by lemonadeAnimateColorAsState(
         targetValue = if (state.isScrolled) scrolledBackgroundColor else backgroundColor,
         animationSpec = TopBarBackgroundAnimationSpec,
         label = "TopBarBackgroundColor",
@@ -1063,7 +1068,8 @@ public fun LemonadeUi.TopBar(
     var isSearchFocused by remember {
         mutableStateOf(false)
     }
-    val effectiveBackgroundColor by animateColorAsState(
+    val animationsEnabled = LemonadeTheme.animationsEnabled
+    val effectiveBackgroundColor by lemonadeAnimateColorAsState(
         targetValue = if (state.isScrolled) scrolledBackgroundColor else backgroundColor,
         animationSpec = TopBarBackgroundAnimationSpec,
         label = "TopBarBackgroundColor",
@@ -1077,7 +1083,7 @@ public fun LemonadeUi.TopBar(
                 modifier = fixedHeaderModifier
                     .zIndex(zIndex = 1f),
                 targetState = isSearchFocused,
-                transitionSpec = { expandVertically() togetherWith shrinkVertically() },
+                transitionSpec = { (expandVertically() togetherWith shrinkVertically()).orSnap(animationsEnabled = animationsEnabled) },
                 content = { searchFocused ->
                     if (!searchFocused) {
                         CompactLargeTopBarHeading(
@@ -1228,6 +1234,10 @@ private fun CoreTopBar(
     bottomSlot: @Composable (BoxScope.() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
+    val animationsEnabled = LemonadeTheme.animationsEnabled
+    SideEffect {
+        state.motionEnabled = animationsEnabled
+    }
     TopBarLayout(
         state = state,
         modifier = Modifier
@@ -1247,7 +1257,7 @@ private fun CoreTopBar(
             }
         },
         dividerSlot = { dividerModifier ->
-            val dividerAlpha by animateFloatAsState(
+            val dividerAlpha by lemonadeAnimateFloatAsState(
                 targetValue = if (state.collapseProgress == 1f && !state.isPermanentlyCollapsed) {
                     LocalOpacities.current.base.opacity100
                 } else {
@@ -1390,7 +1400,7 @@ internal fun CoreTopBarContent(
     subtitle: String? = null,
     isCollapsed: Boolean,
 ) {
-    val animatedLabelOffsetY by animateDpAsState(
+    val animatedLabelOffsetY by lemonadeAnimateDpAsState(
         targetValue = if (isCollapsed) {
             LocalSpaces.current.spacing0
         } else {
@@ -1402,7 +1412,7 @@ internal fun CoreTopBarContent(
         ),
     )
 
-    val animatedLabelAlpha by animateFloatAsState(
+    val animatedLabelAlpha by lemonadeAnimateFloatAsState(
         targetValue = if (isCollapsed) {
             LocalOpacities.current.base.opacity100
         } else {
