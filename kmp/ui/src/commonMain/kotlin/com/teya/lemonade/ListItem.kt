@@ -7,7 +7,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -16,18 +15,27 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.Measurable
+import androidx.compose.ui.layout.MeasurePolicy
+import androidx.compose.ui.layout.MeasureResult
+import androidx.compose.ui.layout.MeasureScope
+import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.constrainHeight
+import androidx.compose.ui.unit.constrainWidth
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
@@ -980,62 +988,140 @@ private fun CoreListItem(
                             fill = priority == LemonadeListItemPriority.Trailing,
                         ).then(other = contentAlpha),
                 )
-            } else if (priority == LemonadeListItemPriority.Label) {
-                // Content keeps its width; the trailing slot yields and truncates. The content is
-                // capped so the trailing slot always retains a readable floor instead of vanishing.
-                BoxWithConstraints(modifier = Modifier.weight(weight = 1f)) {
-                    val trailingFloor = LocalSizes.current.size2000
-                    val gap = LocalSpaces.current.spacing300
-                    val contentMaxWidth = (maxWidth - trailingFloor - gap).coerceAtLeast(0.dp)
-
-                    Row(verticalAlignment = trailingVerticalAlignment) {
+            } else {
+                Layout(
+                    modifier = Modifier.weight(weight = 1f),
+                    measurePolicy = ListItemBodyMeasurePolicy(
+                        priority = priority,
+                        trailingAlignment = trailingVerticalAlignment,
+                        trailingGap = LocalSpaces.current.spacing300,
+                        trailingFloor = LocalSizes.current.size2000,
+                    ),
+                    content = {
                         Column(
                             content = contentSlot,
-                            modifier = Modifier
-                                .widthIn(max = contentMaxWidth)
-                                .then(other = contentAlpha),
+                            modifier = contentAlpha,
                         )
 
-                        Row(
-                            horizontalArrangement = Arrangement.End,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .weight(weight = 1f)
-                                .padding(start = gap),
-                        ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
                             ListItemTrailingContent(
                                 trailingSlot = trailingSlot,
                                 navigationIndicator = navigationIndicator,
                                 enabled = enabled,
                             )
                         }
-                    }
-                }
-            } else {
-                // Default: the trailing slot keeps its width; the content column truncates to fit.
-                Row(
-                    modifier = Modifier.weight(weight = 1f),
-                    verticalAlignment = trailingVerticalAlignment,
-                ) {
-                    Column(
-                        content = contentSlot,
-                        modifier = Modifier
-                            .weight(weight = 1f)
-                            .then(other = contentAlpha),
-                    )
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        ListItemTrailingContent(
-                            trailingSlot = trailingSlot,
-                            navigationIndicator = navigationIndicator,
-                            enabled = enabled,
-                        )
-                    }
-                }
+                    },
+                )
             }
         }
+    }
+}
+
+/**
+ * Measures the list-item body — the content column and the trailing content — without the
+ * subcomposition a `BoxWithConstraints` would cost per row. Exactly two measurables: the content
+ * at index 0 and the trailing content at index 1.
+ *
+ * [LemonadeListItemPriority.Trailing] measures the trailing content at its natural width and
+ * forces the content to exactly the remainder, matching the former weighted content column.
+ * [LemonadeListItemPriority.Label] caps the content so the trailing content always retains a
+ * [trailingFloor] of readable space, then lets the trailing content wrap into what is left after
+ * [trailingGap]; the trailing content is placed end-anchored either way.
+ *
+ * Children's alignment lines propagate through placement, and the default derived intrinsics
+ * re-run this measurement — which also gives Label-priority rows working intrinsic sizes, where
+ * the previous subcomposition threw on intrinsic measurement.
+ */
+private data class ListItemBodyMeasurePolicy(
+    private val priority: LemonadeListItemPriority,
+    private val trailingAlignment: Alignment.Vertical,
+    private val trailingGap: Dp,
+    private val trailingFloor: Dp,
+) : MeasurePolicy {
+    override fun MeasureScope.measure(
+        measurables: List<Measurable>,
+        constraints: Constraints,
+    ): MeasureResult {
+        val loose = constraints.copy(minWidth = 0, minHeight = 0)
+        val gapPx = trailingGap.roundToPx()
+        val content: Placeable
+        val trailing: Placeable
+        if (priority == LemonadeListItemPriority.Label) {
+            content = measureLabelPriorityContent(
+                measurable = measurables[0],
+                loose = loose,
+                gapPx = gapPx,
+                floorPx = trailingFloor.roundToPx(),
+            )
+            trailing = measureLabelPriorityTrailing(
+                measurable = measurables[1],
+                loose = loose,
+                gapPx = gapPx,
+                contentWidth = content.width,
+            )
+        } else {
+            trailing = measurables[1].measure(constraints = loose)
+            content = measureTrailingPriorityContent(
+                measurable = measurables[0],
+                loose = loose,
+                trailingWidth = trailing.width,
+            )
+        }
+        val gapUsed = if (priority == LemonadeListItemPriority.Label) gapPx else 0
+        val width = constraints.constrainWidth(width = content.width + gapUsed + trailing.width)
+        val height = constraints.constrainHeight(height = maxOf(content.height, trailing.height))
+        return layout(width = width, height = height) {
+            content.placeRelative(
+                x = 0,
+                y = trailingAlignment.align(size = content.height, space = height),
+            )
+            trailing.placeRelative(
+                x = width - trailing.width,
+                y = trailingAlignment.align(size = trailing.height, space = height),
+            )
+        }
+    }
+
+    private fun measureLabelPriorityContent(
+        measurable: Measurable,
+        loose: Constraints,
+        gapPx: Int,
+        floorPx: Int,
+    ): Placeable {
+        val capped = if (loose.hasBoundedWidth) {
+            loose.copy(maxWidth = (loose.maxWidth - floorPx - gapPx).coerceAtLeast(0))
+        } else {
+            loose
+        }
+        return measurable.measure(constraints = capped)
+    }
+
+    private fun measureLabelPriorityTrailing(
+        measurable: Measurable,
+        loose: Constraints,
+        gapPx: Int,
+        contentWidth: Int,
+    ): Placeable {
+        val leftover = if (loose.hasBoundedWidth) {
+            loose.copy(maxWidth = (loose.maxWidth - contentWidth - gapPx).coerceAtLeast(0))
+        } else {
+            loose
+        }
+        return measurable.measure(constraints = leftover)
+    }
+
+    private fun measureTrailingPriorityContent(
+        measurable: Measurable,
+        loose: Constraints,
+        trailingWidth: Int,
+    ): Placeable {
+        val remainder = if (loose.hasBoundedWidth) {
+            val contentWidth = (loose.maxWidth - trailingWidth).coerceAtLeast(0)
+            loose.copy(minWidth = contentWidth, maxWidth = contentWidth)
+        } else {
+            loose
+        }
+        return measurable.measure(constraints = remainder)
     }
 }
 
