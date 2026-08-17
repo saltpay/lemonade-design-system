@@ -16,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -420,9 +419,10 @@ private fun OutlinedSelectListItem(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .clip(shape = shapes.radius500)
-            .background(color = animatedBackgroundColor)
-            .border(
+            .background(
+                color = animatedBackgroundColor,
+                shape = shapes.radius500,
+            ).border(
                 width = borderWidth,
                 color = animatedBorderColor,
                 shape = shapes.radius500,
