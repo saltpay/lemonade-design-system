@@ -1,6 +1,5 @@
 package com.teya.lemonade
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -397,14 +396,14 @@ private fun OutlinedSelectListItem(
     val typographies = LocalTypographies.current
     val opacities = LocalOpacities.current
 
-    val animatedBackgroundColor by animateColorAsState(
+    val animatedBackgroundColor by lemonadeAnimateColorAsState(
         targetValue = if (checked) {
             colors.background.bgBrandSubtle
         } else {
             colors.background.bgDefault
         },
     )
-    val animatedBorderColor by animateColorAsState(
+    val animatedBorderColor by lemonadeAnimateColorAsState(
         targetValue = if (checked) {
             colors.border.borderSelected
         } else {

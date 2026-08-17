@@ -1,7 +1,5 @@
 package com.teya.lemonade
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -398,13 +396,13 @@ private fun CoreTile(
     } else {
         baseTileData
     }
-    val animatedBackgroundColor by animateColorAsState(
+    val animatedBackgroundColor by lemonadeAnimateColorAsState(
         targetValue = tileData.backgroundColor,
     )
-    val animatedBorderColor by animateColorAsState(
+    val animatedBorderColor by lemonadeAnimateColorAsState(
         targetValue = tileData.borderColor,
     )
-    val animatedBorderWidth by animateDpAsState(
+    val animatedBorderWidth by lemonadeAnimateDpAsState(
         targetValue = tileData.borderWidth,
     )
 

@@ -1,6 +1,5 @@
 package com.teya.lemonade
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -405,7 +404,7 @@ private fun CoreButton(
     modifier: Modifier = Modifier,
 ) {
     val isPressed by interactionSource.collectIsPressedAsState()
-    val animatedBackgroundColor by animateColorAsState(
+    val animatedBackgroundColor by lemonadeAnimateColorAsState(
         targetValue = if (isPressed) {
             colors.pressedBackgroundColor
         } else {

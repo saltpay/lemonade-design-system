@@ -1,6 +1,5 @@
 package com.teya.lemonade
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -320,10 +319,10 @@ internal fun CoreChip(
     val isHover by interactionSource.collectIsHoveredAsState()
     val isPressed by interactionSource.collectIsPressedAsState()
 
-    val animatedContentColor by animateColorAsState(targetValue = props.contentColor)
-    val animatedLeadingIconColor by animateColorAsState(targetValue = props.leadingIconColor)
-    val animatedBorderColor by animateColorAsState(targetValue = props.borderColor)
-    val animatedBackgroundColor by animateColorAsState(
+    val animatedContentColor by lemonadeAnimateColorAsState(targetValue = props.contentColor)
+    val animatedLeadingIconColor by lemonadeAnimateColorAsState(targetValue = props.leadingIconColor)
+    val animatedBorderColor by lemonadeAnimateColorAsState(targetValue = props.borderColor)
+    val animatedBackgroundColor by lemonadeAnimateColorAsState(
         targetValue = if (isHover || isPressed) {
             props.pressedBackgroundColor
         } else {

@@ -1,8 +1,5 @@
 package com.teya.lemonade
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -95,10 +92,10 @@ public fun LemonadeUi.BoxSelection(
         else -> LocalOpacities.current.base.opacity100
     }
 
-    val animatedAlpha by animateFloatAsState(targetValue = targetAlpha)
-    val animatedBackgroundColor by animateColorAsState(targetValue = style.backgroundColor)
-    val animatedBorderColor by animateColorAsState(targetValue = style.borderColor)
-    val animatedBorderWidth by animateDpAsState(targetValue = style.borderWidth)
+    val animatedAlpha by lemonadeAnimateFloatAsState(targetValue = targetAlpha)
+    val animatedBackgroundColor by lemonadeAnimateColorAsState(targetValue = style.backgroundColor)
+    val animatedBorderColor by lemonadeAnimateColorAsState(targetValue = style.borderColor)
+    val animatedBorderWidth by lemonadeAnimateDpAsState(targetValue = style.borderWidth)
 
     Box(
         content = content,

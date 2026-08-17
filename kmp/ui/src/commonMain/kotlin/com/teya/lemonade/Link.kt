@@ -1,6 +1,5 @@
 package com.teya.lemonade
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
@@ -84,7 +83,7 @@ private fun CoreLink(
         else -> defaultColor
     }
 
-    val animatedColor by animateColorAsState(targetValue = targetColor)
+    val animatedColor by lemonadeAnimateColorAsState(targetValue = targetColor)
 
     val textStyle = LocalTypographies.current.bodyMediumMedium.textStyle.copy(
         textDecoration = TextDecoration.Underline,

@@ -1,8 +1,5 @@
 package com.teya.lemonade
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -178,15 +175,15 @@ private fun CoreSwitch(
     }
     val switchProps = switchState.getSwitchProps()
 
-    val animatedBallWidth by animateDpAsState(targetValue = switchProps.minIndicatorWidth)
-    val horizontalBias by animateFloatAsState(
+    val animatedBallWidth by lemonadeAnimateDpAsState(targetValue = switchProps.minIndicatorWidth)
+    val horizontalBias by lemonadeAnimateFloatAsState(
         targetValue = if (checked) {
             1f
         } else {
             -1f
         },
     )
-    val animatedBaseColor by animateColorAsState(
+    val animatedBaseColor by lemonadeAnimateColorAsState(
         targetValue = when {
             !enabled -> LocalColors.current.background.bgElevatedHigh
             checked && isPressed -> LocalColors.current.interaction.bgBrandHighPressed
@@ -195,7 +192,7 @@ private fun CoreSwitch(
             else -> LocalColors.current.background.bgElevatedHigh
         },
     )
-    val animatedKnobColor by animateColorAsState(
+    val animatedKnobColor by lemonadeAnimateColorAsState(
         targetValue = if (!enabled) {
             LocalColors.current.background.bgElevatedHigh
         } else {

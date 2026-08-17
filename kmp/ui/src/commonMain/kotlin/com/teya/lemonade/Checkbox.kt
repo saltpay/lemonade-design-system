@@ -1,7 +1,6 @@
 package com.teya.lemonade
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -172,7 +171,7 @@ private fun CoreCheckbox(
         status in setOf(CheckboxStatus.Checked, CheckboxStatus.Indeterminate)
     }
 
-    val animatedBorderColor by animateColorAsState(
+    val animatedBorderColor by lemonadeAnimateColorAsState(
         targetValue = when {
             !enabled && status == CheckboxStatus.Unchecked -> LocalColors.current.border.borderNeutralMedium
             enabled && status == CheckboxStatus.Unchecked -> LocalColors.current.border.borderNeutralHigh
@@ -181,7 +180,7 @@ private fun CoreCheckbox(
             )
         },
     )
-    val animatedBackgroundColor by animateColorAsState(
+    val animatedBackgroundColor by lemonadeAnimateColorAsState(
         targetValue = when {
             !enabled -> LocalColors.current.background.bgElevatedHigh
             !isChecked && isHovering -> LocalColors.current.interaction.bgSubtleInteractive
@@ -191,7 +190,7 @@ private fun CoreCheckbox(
             else -> LocalColors.current.background.bgBrandHigh
         },
     )
-    val animatedIconTint by animateColorAsState(
+    val animatedIconTint by lemonadeAnimateColorAsState(
         targetValue = if (enabled) {
             LocalColors.current.content.contentPrimaryInverse
         } else {

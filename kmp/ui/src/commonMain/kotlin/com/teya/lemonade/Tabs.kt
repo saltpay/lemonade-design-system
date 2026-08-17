@@ -1,7 +1,5 @@
 package com.teya.lemonade
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -161,7 +159,7 @@ internal fun CoreTabs(
     }
 
     // Indicator width = content wrapper width (text + icon only)
-    val indicatorWidth by animateDpAsState(
+    val indicatorWidth by lemonadeAnimateDpAsState(
         targetValue = contentWidths[selectedIndex]
             ?: tabWidths[selectedIndex]
             ?: 0.dp,
@@ -174,7 +172,7 @@ internal fun CoreTabs(
         ?: selectedTabWidth
     val selectedTabOffset = tabOffsets[selectedIndex]
         ?: 0.dp
-    val indicatorOffset by animateDpAsState(
+    val indicatorOffset by lemonadeAnimateDpAsState(
         targetValue = selectedTabOffset + (selectedTabWidth - selectedContentWidth) / 2,
         animationSpec = animationSpec,
     )
@@ -436,7 +434,7 @@ private fun TabItemContent(
     val opacityDisabled = LocalOpacities.current.state.opacityDisabled
     val opacityPressed = LocalOpacities.current.state.opacityPressed
 
-    val textColor by animateColorAsState(
+    val textColor by lemonadeAnimateColorAsState(
         targetValue = if (isSelected) {
             contentBrandColor
         } else {
@@ -444,7 +442,7 @@ private fun TabItemContent(
         },
     )
 
-    val iconColor by animateColorAsState(
+    val iconColor by lemonadeAnimateColorAsState(
         targetValue = if (isSelected) {
             contentBrandColor
         } else {
@@ -459,7 +457,7 @@ private fun TabItemContent(
     }
 
     val isInteracting = (isHovered || isPressed) && !tab.isDisabled
-    val wrapperBackgroundColor by animateColorAsState(
+    val wrapperBackgroundColor by lemonadeAnimateColorAsState(
         targetValue = if (isInteracting) {
             bgSubtleInteractive
         } else {

@@ -1,6 +1,5 @@
 package com.teya.lemonade
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -102,7 +101,7 @@ private fun CoreIconButton(
         variant = variant,
         type = type,
     ).adjustedForDisabledFill(dimmed = !enabled || loading, variant = variant, type = type)
-    val animatedBackgroundColor by animateColorAsState(
+    val animatedBackgroundColor by lemonadeAnimateColorAsState(
         targetValue = when {
             isPressed -> colors.backgroundPressedColor
             isHovering -> colors.backgroundHoverColor

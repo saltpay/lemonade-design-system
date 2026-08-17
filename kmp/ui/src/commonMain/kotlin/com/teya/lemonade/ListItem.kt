@@ -2,7 +2,6 @@
 
 package com.teya.lemonade
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
@@ -1035,7 +1034,7 @@ private fun Modifier.interactiveBackground(
     val transparentColor = voice.interactionBackground.copy(
         alpha = LocalOpacities.current.base.opacity0,
     )
-    val highlightColor by animateColorAsState(
+    val highlightColor by lemonadeAnimateColorAsState(
         targetValue = if (isHovering || isPressed) {
             voice.interactionBackground
         } else {

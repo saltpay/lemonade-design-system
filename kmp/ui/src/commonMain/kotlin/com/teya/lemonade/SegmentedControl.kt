@@ -1,8 +1,6 @@
 package com.teya.lemonade
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
@@ -193,11 +191,11 @@ internal fun CoreSegmentedControl(
         if (hasMeasurements) hasInitialMeasurement[0] = true
     }
 
-    val indicatorWidth by animateDpAsState(
+    val indicatorWidth by lemonadeAnimateDpAsState(
         targetValue = targetWidth,
         animationSpec = animationSpec,
     )
-    val indicatorOffset by animateDpAsState(
+    val indicatorOffset by lemonadeAnimateDpAsState(
         targetValue = targetOffset,
         animationSpec = animationSpec,
     )
@@ -279,7 +277,7 @@ private fun SegmentedControlTabRow(
                 pressedTabIndex[tabIndex] = isPressed
             }
 
-            val animatedBackgroundColor by animateColorAsState(
+            val animatedBackgroundColor by lemonadeAnimateColorAsState(
                 targetValue = when {
                     tabIndex == selectedTab -> LocalColors.current.background.bgDefault.copy(
                         alpha = LocalOpacities.current.base.opacity0,

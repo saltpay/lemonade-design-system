@@ -1,6 +1,5 @@
 package com.teya.lemonade
 
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -202,7 +201,7 @@ public data class CardFooterActionConfig(
 internal fun CardFooterAction(config: CardFooterActionConfig) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
-    val alpha by animateFloatAsState(
+    val alpha by lemonadeAnimateFloatAsState(
         targetValue = if (isPressed) 0.5f else 1f,
         label = "CardFooterActionAlpha",
     )
