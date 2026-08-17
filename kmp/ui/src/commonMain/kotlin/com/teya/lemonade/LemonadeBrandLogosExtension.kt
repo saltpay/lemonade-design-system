@@ -79,7 +79,7 @@ public val LemonadeBrandLogos.darkDrawableResource: DrawableResource
         LemonadeBrandLogos.Multibanco -> LemonadeRes.drawable.gen_multibanco_dark
         LemonadeBrandLogos.NfcLogo -> LemonadeRes.drawable.gen_nfc_logo_dark
         LemonadeBrandLogos.PagoBancomat -> LemonadeRes.drawable.gen_pago_bancomat
-        LemonadeBrandLogos.Paypal -> LemonadeRes.drawable.gen_paypal
+        LemonadeBrandLogos.Paypal -> LemonadeRes.drawable.gen_paypal_dark
         LemonadeBrandLogos.Pluxee -> LemonadeRes.drawable.gen_pluxee_dark
         LemonadeBrandLogos.Sepa -> LemonadeRes.drawable.gen_sepa_dark
         LemonadeBrandLogos.Sodexo -> LemonadeRes.drawable.gen_sodexo
