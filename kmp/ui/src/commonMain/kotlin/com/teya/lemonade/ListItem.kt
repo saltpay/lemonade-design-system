@@ -2,11 +2,8 @@
 
 package com.teya.lemonade
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsHoveredAsState
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -21,14 +18,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -870,12 +864,12 @@ private fun CoreListItem(
             modifier = Modifier
                 .then(
                     other = if (onListItemClick != null) {
-                        Modifier.interactiveBackground(
-                            interactionSource = interactionSource,
-                            voice = voice,
+                        Modifier.clickable(
                             enabled = enabled,
                             role = role,
                             onClick = onListItemClick,
+                            interactionSource = interactionSource,
+                            indication = ListItemHighlightIndication(voice = voice),
                         )
                     } else {
                         Modifier
@@ -1007,63 +1001,6 @@ private fun RowScope.ListItemTrailingContent(
     }
 }
 
-/**
- * Applies click handling and the animated press/hover highlight for interactive rows.
- *
- * Only used for clickable rows: a row without an `onListItemClick` can never be pressed or
- * hovered, so it needs none of this apparatus and is left untouched.
- *
- * The highlight is painted directly in the draw phase via [drawWithCache], reading the animated
- * colour at draw time (not composition time) and using the row's rounded [androidx.compose.ui.graphics.Shape]
- * outline instead of a [androidx.compose.ui.draw.clip] graphics layer. During a scroll the colour is fully
- * transparent, so the row draws nothing and pays no clip/background cost — this removes the
- * per-row draw floor seen in the scroll-jank profiling. The click indication is `null` (no
- * ripple); press feedback is the animated fill, mirroring the iOS `ListItemButtonStyle`.
- */
-@Composable
-private fun Modifier.interactiveBackground(
-    interactionSource: MutableInteractionSource,
-    voice: LemonadeListItemVoice,
-    enabled: Boolean,
-    role: Role?,
-    onClick: () -> Unit,
-): Modifier {
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val isHovering by interactionSource.collectIsHoveredAsState()
-
-    val highlightShape = LocalShapes.current.radius500
-    val transparentColor = voice.interactionBackground.copy(
-        alpha = LocalOpacities.current.base.opacity0,
-    )
-    val highlightColor by animateColorAsState(
-        targetValue = if (isHovering || isPressed) {
-            voice.interactionBackground
-        } else {
-            transparentColor
-        },
-    )
-
-    return this
-        .clickable(
-            enabled = enabled,
-            role = role,
-            onClick = onClick,
-            interactionSource = interactionSource,
-            indication = null,
-        ).drawWithCache {
-            val outline = highlightShape.createOutline(
-                size = size,
-                layoutDirection = layoutDirection,
-                density = this,
-            )
-            onDrawBehind {
-                if (highlightColor.alpha > 0f) {
-                    drawOutline(outline = outline, color = highlightColor)
-                }
-            }
-        }
-}
-
 @Composable
 private fun SafeArea(
     modifier: Modifier = Modifier,
@@ -1094,14 +1031,6 @@ private fun SafeArea(
         )
     }
 }
-
-private val LemonadeListItemVoice.interactionBackground: Color
-    @Composable get() {
-        return when (this) {
-            LemonadeListItemVoice.Neutral -> LocalColors.current.interaction.bgSubtleInteractive
-            LemonadeListItemVoice.Critical -> LocalColors.current.interaction.bgCriticalSubtleInteractive
-        }
-    }
 
 private val LemonadeListItemVoice.contentColor: Color
     @Composable get() {
