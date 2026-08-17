@@ -14,6 +14,7 @@ internal class LemonadeStyleHandler(
 ) {
     var currentStyle: LemonadeStyle by mutableStateOf(initialStyle)
     var currentVariant: LemonadeThemeVariant by mutableStateOf(initialVariant)
+    var animations: LemonadeAnimationMode by mutableStateOf(LemonadeAnimationMode.System)
 }
 
 internal val LocalLemonadeStyleHandler = staticCompositionLocalOf {
@@ -34,10 +35,16 @@ internal fun LemonadeStyledTheme(
     CompositionLocalProvider(LocalLemonadeStyleHandler provides handler) {
         val colors = handler.currentStyle.resolveColors()
         when (handler.currentVariant) {
-            LemonadeThemeVariant.Standard -> LemonadeTheme(colors = colors) {
+            LemonadeThemeVariant.Standard -> LemonadeTheme(
+                colors = colors,
+                animations = handler.animations,
+            ) {
                 content()
             }
-            LemonadeThemeVariant.Expressive -> LemonadeExpressiveTheme(colors = colors) {
+            LemonadeThemeVariant.Expressive -> LemonadeExpressiveTheme(
+                colors = colors,
+                animations = handler.animations,
+            ) {
                 content()
             }
         }

@@ -131,6 +131,21 @@ private fun SettingsSheet(
                 }
             }
 
+            LemonadeUi.Card(
+                header = CardHeaderConfig(title = "Animations"),
+            ) {
+                val modes = LemonadeAnimationMode.entries
+                modes.forEachIndexed { index, mode ->
+                    LemonadeUi.SelectListItem(
+                        label = mode.name,
+                        type = SelectListItemType.Single,
+                        checked = styleHandler.animations == mode,
+                        onItemClicked = { styleHandler.animations = mode },
+                        showDivider = index != modes.lastIndex,
+                    )
+                }
+            }
+
             Spacer(modifier = Modifier.height(height = LemonadeTheme.spaces.spacing400))
         }
     }
