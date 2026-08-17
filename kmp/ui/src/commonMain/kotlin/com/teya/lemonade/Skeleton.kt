@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
@@ -196,7 +197,7 @@ private fun CoreSkeleton(
     variant: SkeletonVariant,
     modifier: Modifier = Modifier,
 ) {
-    val shimmerOffset = lemonadeAnimation(
+    val shimmerOffset by lemonadeAnimation(
         animated = {
             rememberInfiniteTransition(label = "SkeletonShimmer").animateFloat(
                 initialValue = -1f,
@@ -237,11 +238,11 @@ private fun CoreSkeleton(
                         brush = Brush.linearGradient(
                             colors = listOf(baseColor, highlightColor, baseColor),
                             start = Offset(
-                                x = width * (shimmerOffset.value - 0.5f),
+                                x = width * (shimmerOffset - 0.5f),
                                 y = 0f,
                             ),
                             end = Offset(
-                                x = width * (shimmerOffset.value + 0.5f),
+                                x = width * (shimmerOffset + 0.5f),
                                 y = 0f,
                             ),
                         ),

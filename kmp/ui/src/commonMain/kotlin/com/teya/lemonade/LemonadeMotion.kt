@@ -83,6 +83,17 @@ private fun snapContentTransform(): ContentTransform =
  * value, evaluated once, so nothing ever invalidates. Use for continuously running animations
  * (e.g. an infinite shimmer) where the win is skipping the animation machinery entirely, not
  * just snapping a spec.
+ *
+ * Bind the result with `by` like any other Compose state, and keep the value read in the same
+ * phase the animation was consumed in (e.g. inside the draw lambda) so invalidation stays as
+ * narrow as before:
+ *
+ * ```kotlin
+ * val shimmerOffset by lemonadeAnimation(
+ *     animated = { rememberInfiniteTransition().animateFloat(...) },
+ *     static = { -1f },
+ * )
+ * ```
  */
 @Composable
 internal fun <T> lemonadeAnimation(
