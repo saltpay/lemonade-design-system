@@ -37,7 +37,11 @@ private val FloatDefaultSpring: AnimationSpec<Float> =
 @Composable
 @ReadOnlyComposable
 internal fun <T> AnimationSpec<T>.orSnap(): AnimationSpec<T> =
-    if (LemonadeTheme.animationsEnabled) this else snap()
+    if (LemonadeTheme.animationsEnabled) {
+        this
+    } else {
+        snap()
+    }
 
 /**
  * Returns this spec while animations are enabled, or [snap] when [LemonadeTheme.animations]
@@ -46,7 +50,11 @@ internal fun <T> AnimationSpec<T>.orSnap(): AnimationSpec<T> =
 @Composable
 @ReadOnlyComposable
 internal fun <T> FiniteAnimationSpec<T>.orSnap(): FiniteAnimationSpec<T> =
-    if (LemonadeTheme.animationsEnabled) this else snap()
+    if (LemonadeTheme.animationsEnabled) {
+        this
+    } else {
+        snap()
+    }
 
 /**
  * Returns this transform while [animationsEnabled] is true, or a fully snapping transform
@@ -54,7 +62,11 @@ internal fun <T> FiniteAnimationSpec<T>.orSnap(): FiniteAnimationSpec<T> =
  * [LemonadeTheme.animationsEnabled] in the enclosing composable and pass it in.
  */
 internal fun ContentTransform.orSnap(animationsEnabled: Boolean): ContentTransform =
-    if (animationsEnabled) this else snapContentTransform()
+    if (animationsEnabled) {
+        this
+    } else {
+        snapContentTransform()
+    }
 
 private fun snapContentTransform(): ContentTransform =
     ContentTransform(

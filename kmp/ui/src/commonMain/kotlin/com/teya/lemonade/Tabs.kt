@@ -1,6 +1,7 @@
 package com.teya.lemonade
 
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -258,17 +259,9 @@ private fun HugModeTabs(
             val visibleEnd = currentScroll + viewportWidth
 
             if (offsetPx < currentScroll) {
-                if (animationsEnabled) {
-                    scrollState.animateScrollTo(value = offsetPx)
-                } else {
-                    scrollState.scrollTo(value = offsetPx)
-                }
+                scrollState.scrollIntoView(value = offsetPx, animate = animationsEnabled)
             } else if (tabEnd > visibleEnd) {
-                if (animationsEnabled) {
-                    scrollState.animateScrollTo(value = tabEnd - viewportWidth)
-                } else {
-                    scrollState.scrollTo(value = tabEnd - viewportWidth)
-                }
+                scrollState.scrollIntoView(value = tabEnd - viewportWidth, animate = animationsEnabled)
             }
         }
     }
@@ -545,6 +538,17 @@ private fun TabItemContent(
                 )
             }
         }
+    }
+}
+
+private suspend fun ScrollState.scrollIntoView(
+    value: Int,
+    animate: Boolean,
+) {
+    if (animate) {
+        animateScrollTo(value = value)
+    } else {
+        scrollTo(value = value)
     }
 }
 
