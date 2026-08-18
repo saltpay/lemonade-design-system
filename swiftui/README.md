@@ -55,7 +55,7 @@ nothing to do. If it reports the field was left empty:
 1. Find your Team ID (it is the `OU` field):
 
    ```bash
-   security find-certificate -c "Apple Development" -p | openssl x509 -noout -subject
+   security find-certificate -a -c "Apple Development" -p | openssl x509 -noout -subject
    ```
 
 2. Set it in `swiftui/Local.xcconfig`:

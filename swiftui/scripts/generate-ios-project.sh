@@ -21,20 +21,23 @@ TEMPLATE="Local.xcconfig.template"
 # A signing certificate's subject carries it in the OU field:
 #   subject= /UID=.../CN=Apple Development: Name (XXXX)/OU=<TEAM ID>/O=Org/C=US
 detect_team_id() {
-    local teams
-    teams=$(security find-certificate -a -c "Apple Development" -p 2>/dev/null \
-        | openssl x509 -noout -subject 2>/dev/null \
-        | sed -n 's/.*OU *= *\([A-Z0-9]*\).*/\1/p' \
-        | sort -u) || return 0
+    local pems
+    pems=$(security find-certificate -a -c "Apple Development" -p 2>/dev/null) || return 0
 
-    # Ambiguous (several teams) or absent: leave it blank rather than guess wrong.
-    if [ "$(printf '%s' "$teams" | grep -c . || true)" -eq 1 ]; then
-        printf '%s' "$teams"
+    # openssl x509 reads only the first PEM block, so several certificates
+    # cannot be told apart after the pipe — refuse to guess unless there is
+    # exactly one. Two certificates of the same team (a renewal, say) also land
+    # here; blank is the safe default and the caller prints what to do.
+    if [ "$(printf '%s\n' "$pems" | grep -c 'BEGIN CERTIFICATE')" -ne 1 ]; then
+        return 0
     fi
 
-    # Must succeed even when nothing was found: under `set -e` a non-zero return
-    # here would abort the caller's `TEAM_ID=$(detect_team_id)` assignment.
-    return 0
+    # `|| return 0`: under `set -e` a non-zero pipeline here would abort the
+    # caller's `TEAM_ID=$(detect_team_id)` assignment.
+    printf '%s\n' "$pems" \
+        | openssl x509 -noout -subject 2>/dev/null \
+        | sed -n 's/.*OU *= *\([A-Z0-9]*\).*/\1/p' \
+        || return 0
 }
 
 if [ ! -f "$LOCAL_CONFIG" ]; then
@@ -49,7 +52,7 @@ if [ ! -f "$LOCAL_CONFIG" ]; then
         echo "📝 Created $LOCAL_CONFIG"
         echo "   No unambiguous signing certificate found, so DEVELOPMENT_TEAM is empty."
         echo "   Simulator builds work as-is. For device builds, set your Team ID:"
-        echo "     security find-certificate -c \"Apple Development\" -p | openssl x509 -noout -subject"
+        echo "     security find-certificate -a -c \"Apple Development\" -p | openssl x509 -noout -subject"
         echo "   and put the OU value in $SWIFTUI_DIR/$LOCAL_CONFIG"
     fi
 fi
