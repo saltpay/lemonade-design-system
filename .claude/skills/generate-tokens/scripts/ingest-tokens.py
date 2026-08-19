@@ -7,9 +7,17 @@ Figma's filenames are not a contract: the `Size` collection exports as
 overlap of its Figma variable ids with the file already committed there.
 
 Usage (from the repo root):
-    python3 .claude/skills/generate-tokens/scripts/ingest-tokens.py <export-dir>
+    python3 .claude/skills/generate-tokens/scripts/ingest-tokens.py <export-dir> [--allow-shrink]
 
-Writes nothing unless every file routes unambiguously.
+(--allow-shrink may appear before or after <export-dir>.)
+
+Writes nothing unless every file routes unambiguously. A collection whose
+token count decreases from what's already committed refuses by default —
+in a published design system, a token disappearing means public API surface
+disappearing, and that should require a human to say so out loud rather than
+be absorbed silently by a percentage threshold. Pass --allow-shrink to permit
+a decrease (e.g. a token was intentionally removed upstream); each shrink is
+then announced on stdout.
 """
 import json
 import pathlib
@@ -33,7 +41,6 @@ TARGETS = {
 
 MIN_OVERLAP = 0.5
 MIN_MARGIN = 0.2
-MAX_SHRINK = 0.10  # a collection may not lose more than 10% of its tokens
 
 
 def leaves(node, path=()):
@@ -85,9 +92,12 @@ def reference_ids(collection):
 
 
 def main():
-    if len(sys.argv) != 2:
+    args = sys.argv[1:]
+    allow_shrink = "--allow-shrink" in args
+    positional = [a for a in args if a != "--allow-shrink"]
+    if len(positional) != 1:
         sys.exit(__doc__)
-    export_dir = pathlib.Path(sys.argv[1]).expanduser()
+    export_dir = pathlib.Path(positional[0]).expanduser()
     if not export_dir.is_dir():
         sys.exit(f"error: {export_dir} is not a directory")
     if not TOKENS.is_dir():
@@ -136,12 +146,14 @@ def main():
             continue
 
         count = dtcg_count(doc)
-        if ref_count and count < ref_count * (1 - MAX_SHRINK):
-            problems.append(
-                f"{source.name}: only {count} tokens vs {ref_count} committed "
-                f"— looks like a partial export"
-            )
-            continue
+        if ref_count and count < ref_count:
+            if not allow_shrink:
+                problems.append(
+                    f"{source.name}: {best_name} shrank from {ref_count} to {count} tokens "
+                    f"(pass --allow-shrink to allow)"
+                )
+                continue
+            print(f"note: {best_name} shrank from {ref_count} to {count} tokens (--allow-shrink)")
 
         new_name, _ = TARGETS[best_name]
         if "{mode}" in new_name:
