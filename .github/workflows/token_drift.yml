@@ -1,5 +1,12 @@
 name: Token Drift
 
+# This job catches the accidental case: a tokens/*.json value changed and the
+# generated KMP/SwiftUI code was never regenerated to match. It intentionally
+# does NOT trigger on changes under kmp/**, swiftui/**, or flutter/** — a
+# deliberate hand-edit of a generated file (against its DO NOT MODIFY banner)
+# is a different, rarer failure mode that code review is expected to catch.
+# Watching those trees would also run a multi-minute cold-Kotlin job on nearly
+# every PR, since they are the repo's main source trees.
 on:
   pull_request:
     paths:
@@ -7,11 +14,17 @@ on:
       - 'scripts/*token*'
       - 'scripts/*resource-file-loading*'
       - '.claude/skills/generate-tokens/**'
+      - '.github/workflows/token_drift.yml'
+
+concurrency:
+  group: token-drift-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   token-drift:
     name: Generated code matches tokens
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -30,6 +43,9 @@ jobs:
           if [ -n "$(git status --porcelain -- kmp/ swiftui/)" ]; then
             echo "::error::Generated token code does not match tokens/. Run:"
             echo "  .claude/skills/generate-tokens/scripts/run-converters.sh --all"
+            echo "--- changed paths ---"
+            git status --porcelain -- kmp/ swiftui/
+            echo "--- diff (tracked files, truncated) ---"
             git --no-pager diff --stat -- kmp/ swiftui/
             git --no-pager diff -- kmp/ swiftui/ | head -100
             exit 1
