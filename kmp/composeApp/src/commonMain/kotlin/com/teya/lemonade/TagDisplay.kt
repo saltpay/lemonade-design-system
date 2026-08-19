@@ -39,6 +39,7 @@ internal fun TagDisplay() {
                     ) {
                         LemonadeUi.Tag(label = "Info", voice = TagVoice.Info)
                         LemonadeUi.Tag(label = "Positive", voice = TagVoice.Positive)
+                        LemonadeUi.Tag(label = "Featured", voice = TagVoice.Featured)
                     }
 
                     OnColorContainer {
@@ -59,6 +60,7 @@ internal fun TagDisplay() {
                     LemonadeUi.Tag(label = "Warning", icon = LemonadeIcons.TriangleAlert, voice = TagVoice.Warning)
                     LemonadeUi.Tag(label = "Info", icon = LemonadeIcons.CircleInfo, voice = TagVoice.Info)
                     LemonadeUi.Tag(label = "Success", icon = LemonadeIcons.CircleCheck, voice = TagVoice.Positive)
+                    LemonadeUi.Tag(label = "Featured", icon = LemonadeIcons.Sparkles, voice = TagVoice.Featured)
                     OnColorContainer {
                         LemonadeUi.Tag(
                             label = "Neutral On Color",

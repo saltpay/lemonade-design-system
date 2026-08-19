@@ -11,6 +11,7 @@ public enum TagVoice {
     case info
     case positive
     case neutralOnColor
+    case featured
 
     var tintColor: Color {
         switch self {
@@ -20,6 +21,7 @@ public enum TagVoice {
         case .info: return LemonadeTheme.colors.content.contentInfo
         case .positive: return LemonadeTheme.colors.content.contentPositive
         case .neutralOnColor: return LemonadeTheme.colors.content.contentAlwaysDark
+        case .featured: return LemonadeTheme.colors.content.contentFeatured
         }
     }
 
@@ -31,6 +33,7 @@ public enum TagVoice {
         case .info: return LemonadeTheme.colors.background.bgInfoSubtle
         case .positive: return LemonadeTheme.colors.background.bgPositiveSubtle
         case .neutralOnColor: return LemonadeTheme.colors.background.bgAlwaysLight
+        case .featured: return LemonadeTheme.colors.background.bgFeaturedSubtle
         }
     }
 
@@ -42,6 +45,7 @@ public enum TagVoice {
         case .info: return LemonadeTheme.colors.border.borderInfoSubtle
         case .positive: return LemonadeTheme.colors.border.borderPositiveSubtle
         case .neutralOnColor: return LemonadeTheme.colors.border.borderNeutralLow
+        case .featured: return LemonadeTheme.colors.border.borderFeaturedSubtle
         }
     }
 }
@@ -136,6 +140,7 @@ struct LemonadeTag_Previews: PreviewProvider {
                 LemonadeUi.Tag(label: "Warning", voice: .warning)
                 LemonadeUi.Tag(label: "Info", voice: .info)
                 LemonadeUi.Tag(label: "Positive", voice: .positive)
+                LemonadeUi.Tag(label: "Featured", voice: .featured)
                 LemonadeUi.Tag(label: "Neutral On Color", voice: .neutralOnColor)
                     .padding(.all)
                     .background(LemonadeTheme.colors.background.bgAlwaysDark)
@@ -148,6 +153,7 @@ struct LemonadeTag_Previews: PreviewProvider {
                 LemonadeUi.Tag(label: "Warning", icon: .triangleAlert, voice: .warning)
                 LemonadeUi.Tag(label: "Info", icon: .circleInfo, voice: .info)
                 LemonadeUi.Tag(label: "Positive", icon: .circleCheck, voice: .positive)
+                LemonadeUi.Tag(label: "Featured", icon: .sparkles, voice: .featured)
                 LemonadeUi.Tag(label: "Neutral On Color", icon: .heart, voice: .neutralOnColor)
                     .padding(.all)
                     .background(LemonadeTheme.colors.background.bgAlwaysDark)

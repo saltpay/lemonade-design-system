@@ -57,6 +57,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.BatteryHalf -> LemonadeRes.drawable.gen_battery_half
         LemonadeIcons.Bell -> LemonadeRes.drawable.gen_bell
         LemonadeIcons.BlocksFitting -> LemonadeRes.drawable.gen_blocks_fitting
+        LemonadeIcons.Bluetooth -> LemonadeRes.drawable.gen_bluetooth
         LemonadeIcons.Board -> LemonadeRes.drawable.gen_board
         LemonadeIcons.BrandAndroid -> LemonadeRes.drawable.gen_brand_android
         LemonadeIcons.BrandApple -> LemonadeRes.drawable.gen_brand_apple
@@ -234,6 +235,7 @@ public val LemonadeIcons.drawableResource: DrawableResource
         LemonadeIcons.Pig -> LemonadeRes.drawable.gen_pig
         LemonadeIcons.PigPlus -> LemonadeRes.drawable.gen_pig_plus
         LemonadeIcons.Pin -> LemonadeRes.drawable.gen_pin
+        LemonadeIcons.PinFlag -> LemonadeRes.drawable.gen_pin_flag
         LemonadeIcons.Plus -> LemonadeRes.drawable.gen_plus
         LemonadeIcons.Pound -> LemonadeRes.drawable.gen_pound
         LemonadeIcons.PoundPlus -> LemonadeRes.drawable.gen_pound_plus

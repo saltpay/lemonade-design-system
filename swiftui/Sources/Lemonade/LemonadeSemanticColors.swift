@@ -60,6 +60,10 @@ public protocol InteractionColors {
     var bgAlwaysDarkHighInteractive: Color { get }
     var bgAlwaysDarkLowInteractive: Color { get }
     var bgAlwaysDarkMediumInteractive: Color { get }
+    var bgFeaturedInteractive: Color { get }
+    var bgFeaturedSubtleInteractive: Color { get }
+    var bgFeaturedPressed: Color { get }
+    var bgFeaturedSubtlePressed: Color { get }
 }
 
 /// Border color definitions
@@ -93,6 +97,8 @@ public protocol BorderColors {
     var borderAlwaysDarkLow: Color { get }
     var borderAlwaysDarkMedium: Color { get }
     var borderAlwaysDarkHigh: Color { get }
+    var borderFeatured: Color { get }
+    var borderFeaturedSubtle: Color { get }
 }
 
 /// Content color definitions
@@ -125,6 +131,8 @@ public protocol ContentColors {
     var contentPositiveAlwaysOnColor: Color { get }
     var contentCautionAlwaysOnColor: Color { get }
     var contentCriticalAlwaysOnColor: Color { get }
+    var contentFeatured: Color { get }
+    var contentFeaturedOnColor: Color { get }
 }
 
 /// Background color definitions
@@ -161,6 +169,8 @@ public protocol BackgroundColors {
     var bgAlwaysDarkLow: Color { get }
     var bgAlwaysDarkMedium: Color { get }
     var bgAlwaysDarkHigh: Color { get }
+    var bgFeatured: Color { get }
+    var bgFeaturedSubtle: Color { get }
 }
 
 /// Shadow color definitions

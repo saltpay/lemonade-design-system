@@ -17,6 +17,7 @@ struct TagDisplayView: View {
                         HStack(spacing: 8) {
                             LemonadeUi.Tag(label: "Info", voice: .info)
                             LemonadeUi.Tag(label: "Positive", voice: .positive)
+                            LemonadeUi.Tag(label: "Featured", voice: .featured)
                         }
 
                         LemonadeUi.Tag(label: "Neutral On Color", voice: .neutralOnColor)
@@ -34,6 +35,7 @@ struct TagDisplayView: View {
                         LemonadeUi.Tag(label: "Warning", icon: .triangleAlert, voice: .warning)
                         LemonadeUi.Tag(label: "Info", icon: .circleInfo, voice: .info)
                         LemonadeUi.Tag(label: "Success", icon: .circleCheck, voice: .positive)
+                        LemonadeUi.Tag(label: "Featured", icon: .sparkles, voice: .featured)
                         LemonadeUi.Tag(label: "Neutral On Color", icon: .heart, voice: .neutralOnColor)
                             .padding(.all, 8)
                             .background(LemonadeTheme.colors.background.bgAlwaysDark)

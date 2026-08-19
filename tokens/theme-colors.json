@@ -21,11 +21,13 @@
     "VariableID:3037:2055",
     "VariableID:3037:2072",
     "VariableID:3037:2074",
+    "VariableID:5063:3128",
     "VariableID:3037:2039",
     "VariableID:3037:2037",
     "VariableID:3037:2035",
     "VariableID:3037:2080",
     "VariableID:3037:2049",
+    "VariableID:5063:3129",
     "VariableID:3037:2034",
     "VariableID:3037:2031",
     "VariableID:3037:2043",
@@ -52,6 +54,7 @@
     "VariableID:3037:2036",
     "VariableID:3037:2045",
     "VariableID:3037:2064",
+    "VariableID:5063:3126",
     "VariableID:3037:2070",
     "VariableID:3037:2062",
     "VariableID:3037:2075",
@@ -77,10 +80,12 @@
     "VariableID:3037:2021",
     "VariableID:3037:2020",
     "VariableID:3037:2019",
+    "VariableID:5063:3130",
     "VariableID:3037:2018",
     "VariableID:3037:2017",
     "VariableID:3037:2015",
     "VariableID:3037:2014",
+    "VariableID:5063:3131",
     "VariableID:3037:2012",
     "VariableID:3037:2011",
     "VariableID:3106:2204",
@@ -105,11 +110,13 @@
     "VariableID:3037:2026",
     "VariableID:3037:2044",
     "VariableID:3037:2032",
+    "VariableID:5063:3132",
     "VariableID:3037:2005",
     "VariableID:3037:2079",
     "VariableID:3037:2056",
     "VariableID:3037:2004",
     "VariableID:3037:2003",
+    "VariableID:5063:3133",
     "VariableID:3037:2002",
     "VariableID:4979:275",
     "VariableID:4979:278",
@@ -127,16 +134,19 @@
     "VariableID:3125:1892",
     "VariableID:3125:1893",
     "VariableID:3125:1894",
+    "VariableID:5063:3134",
     "VariableID:3125:1895",
     "VariableID:3125:1896",
     "VariableID:3125:1897",
     "VariableID:3125:1898",
     "VariableID:3125:1899",
+    "VariableID:5063:3135",
     "VariableID:3125:1900",
     "VariableID:3146:2419",
     "VariableID:3146:2420",
     "VariableID:3146:2421",
     "VariableID:3146:2422",
+    "VariableID:5063:3127",
     "VariableID:3146:2423",
     "VariableID:4668:13941",
     "VariableID:4913:10",
@@ -5075,7 +5085,7 @@
     {
       "id": "VariableID:3146:2423",
       "name": "Content/Voice/On Color/content-neutral-on-color",
-      "description": "A strong background used to confirm success, completion, or positive feedback that needs visual emphasis.",
+      "description": "A neutral background used to present default or non-semantic content that carries no positive, caution, or critical meaning.",
       "type": "COLOR",
       "valuesByMode": {
         "3037:0": {
@@ -6882,6 +6892,484 @@
       "codeSyntax": {
         "ANDROID": "LemonadeTheme.colors.interaction.bgAlwaysDarkMediumInteractive",
         "iOS": "LemonadeTheme.colors.interaction.bgAlwaysDarkMediumInteractive"
+      }
+    },
+    {
+      "id": "VariableID:5063:3126",
+      "name": "Content/Voice/content-featured",
+      "description": "Use for featured text/icons, such as highlights or promoted content.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:7d1020840663e8b173eb558ae2c466851c709cdc/72:100"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:dacb1222ed4c4104b8d0559a90c6ab357666d2cb/72:99"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.5099056959152222,
+            "g": 0,
+            "b": 0.8572576642036438,
+            "a": 1
+          },
+          "alias": "VariableID:7d1020840663e8b173eb558ae2c466851c709cdc/72:100",
+          "aliasName": "purple/700"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.7595676779747009,
+            "g": 0.47980010509490967,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:dacb1222ed4c4104b8d0559a90c6ab357666d2cb/72:99",
+          "aliasName": "purple/400"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentFeatured",
+        "iOS": "LemonadeTheme.colors.content.contentFeatured"
+      }
+    },
+    {
+      "id": "VariableID:5063:3127",
+      "name": "Content/Voice/On Color/content-featured-on-color",
+      "description": "A strong background used to highlight featured, premium, or promoted content that needs visual emphasis.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:dacb1222ed4c4104b8d0559a90c6ab357666d2cb/72:99"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:7d1020840663e8b173eb558ae2c466851c709cdc/72:100"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.7595676779747009,
+            "g": 0.47980010509490967,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:dacb1222ed4c4104b8d0559a90c6ab357666d2cb/72:99",
+          "aliasName": "purple/400"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.5099056959152222,
+            "g": 0,
+            "b": 0.8572576642036438,
+            "a": 1
+          },
+          "alias": "VariableID:7d1020840663e8b173eb558ae2c466851c709cdc/72:100",
+          "aliasName": "purple/700"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "TEXT_FILL"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.content.contentFeaturedOnColor",
+        "iOS": "LemonadeTheme.colors.content.contentFeaturedOnColor"
+      }
+    },
+    {
+      "id": "VariableID:5063:3128",
+      "name": "Background/Voice/bg-featured",
+      "description": "Use for featured states, such as highlighted or promoted content.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:011ea411eb574b5e11c463705d0c2ab278382006/72:103"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:dacb1222ed4c4104b8d0559a90c6ab357666d2cb/72:99"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.596839427947998,
+            "g": 0.061729349195957184,
+            "b": 0.9813578128814697,
+            "a": 1
+          },
+          "alias": "VariableID:011ea411eb574b5e11c463705d0c2ab278382006/72:103",
+          "aliasName": "purple/600"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.7595676779747009,
+            "g": 0.47980010509490967,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:dacb1222ed4c4104b8d0559a90c6ab357666d2cb/72:99",
+          "aliasName": "purple/400"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgFeatured",
+        "iOS": "LemonadeTheme.colors.background.bgFeatured"
+      }
+    },
+    {
+      "id": "VariableID:5063:3129",
+      "name": "Background/Voice/bg-featured-subtle",
+      "description": "Use for subtle backgrounds indicating featured content.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:8ffd1ae610cfa4da75bd2e7d489cfbee2bdbeec9/76:249"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:73020466b32a42e1b45c1c09d853472ad082ec72/76:251"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.6779096126556396,
+            "g": 0.27594193816185,
+            "b": 1,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:8ffd1ae610cfa4da75bd2e7d489cfbee2bdbeec9/76:249",
+          "aliasName": "purple/alpha/100"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.6779096126556396,
+            "g": 0.27594193816185,
+            "b": 1,
+            "a": 0.20000000298023224
+          },
+          "alias": "VariableID:73020466b32a42e1b45c1c09d853472ad082ec72/76:251",
+          "aliasName": "purple/alpha/200"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.background.bgFeaturedSubtle",
+        "iOS": "LemonadeTheme.colors.background.bgFeaturedSubtle"
+      }
+    },
+    {
+      "id": "VariableID:5063:3130",
+      "name": "Border/Voice/border-featured",
+      "description": "Use for borders that indicate featured or highlighted content.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:011ea411eb574b5e11c463705d0c2ab278382006/72:103"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:dacb1222ed4c4104b8d0559a90c6ab357666d2cb/72:99"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.596839427947998,
+            "g": 0.061729349195957184,
+            "b": 0.9813578128814697,
+            "a": 1
+          },
+          "alias": "VariableID:011ea411eb574b5e11c463705d0c2ab278382006/72:103",
+          "aliasName": "purple/600"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.7595676779747009,
+            "g": 0.47980010509490967,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:dacb1222ed4c4104b8d0559a90c6ab357666d2cb/72:99",
+          "aliasName": "purple/400"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderFeatured",
+        "iOS": "LemonadeTheme.colors.border.borderFeatured"
+      }
+    },
+    {
+      "id": "VariableID:5063:3131",
+      "name": "Border/Voice/border-featured-subtle",
+      "description": "Use for subtle borders that convey featured or highlighted content.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:8ffd1ae610cfa4da75bd2e7d489cfbee2bdbeec9/76:249"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:73020466b32a42e1b45c1c09d853472ad082ec72/76:251"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.6779096126556396,
+            "g": 0.27594193816185,
+            "b": 1,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:8ffd1ae610cfa4da75bd2e7d489cfbee2bdbeec9/76:249",
+          "aliasName": "purple/alpha/100"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.6779096126556396,
+            "g": 0.27594193816185,
+            "b": 1,
+            "a": 0.20000000298023224
+          },
+          "alias": "VariableID:73020466b32a42e1b45c1c09d853472ad082ec72/76:251",
+          "aliasName": "purple/alpha/200"
+        }
+      },
+      "scopes": [
+        "SHAPE_FILL",
+        "STROKE_COLOR",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.border.borderFeaturedSubtle",
+        "iOS": "LemonadeTheme.colors.border.borderFeaturedSubtle"
+      }
+    },
+    {
+      "id": "VariableID:5063:3132",
+      "name": "Interaction/Interactive/Background/bg-featured-interactive",
+      "description": "Use for interactive states in featured scenarios.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:0eac4904f3cf71141e8adcfe4ac8fa3bc2740e03/72:102"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:298c56b7edce228089c1f4f978ffbf6f97c6848f/72:97"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.6779096126556396,
+            "g": 0.27594193816185,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:0eac4904f3cf71141e8adcfe4ac8fa3bc2740e03/72:102",
+          "aliasName": "purple/500"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.8544051647186279,
+            "g": 0.6977941989898682,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:298c56b7edce228089c1f4f978ffbf6f97c6848f/72:97",
+          "aliasName": "purple/300"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgFeaturedInteractive",
+        "iOS": "LemonadeTheme.colors.interaction.bgFeaturedInteractive"
+      }
+    },
+    {
+      "id": "VariableID:5063:3133",
+      "name": "Interaction/Interactive/Background/bg-featured-subtle-interactive",
+      "description": "Use for interactive states on subtle featured backgrounds.",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:73020466b32a42e1b45c1c09d853472ad082ec72/76:251"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:a6a70dd6026b14e00ae9d4d83893548ba28d7c73/76:253"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.6779096126556396,
+            "g": 0.27594193816185,
+            "b": 1,
+            "a": 0.20000000298023224
+          },
+          "alias": "VariableID:73020466b32a42e1b45c1c09d853472ad082ec72/76:251",
+          "aliasName": "purple/alpha/200"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.6779096126556396,
+            "g": 0.27594193816185,
+            "b": 1,
+            "a": 0.30000001192092896
+          },
+          "alias": "VariableID:a6a70dd6026b14e00ae9d4d83893548ba28d7c73/76:253",
+          "aliasName": "purple/alpha/300"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgFeaturedSubtleInteractive",
+        "iOS": "LemonadeTheme.colors.interaction.bgFeaturedSubtleInteractive"
+      }
+    },
+    {
+      "id": "VariableID:5063:3134",
+      "name": "Interaction/Pressed/Background/bg-featured-pressed",
+      "description": "Use for pressed/tap feedback in featured contexts",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:7d1020840663e8b173eb558ae2c466851c709cdc/72:100"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:0eac4904f3cf71141e8adcfe4ac8fa3bc2740e03/72:102"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.5099056959152222,
+            "g": 0,
+            "b": 0.8572576642036438,
+            "a": 1
+          },
+          "alias": "VariableID:7d1020840663e8b173eb558ae2c466851c709cdc/72:100",
+          "aliasName": "purple/700"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.6779096126556396,
+            "g": 0.27594193816185,
+            "b": 1,
+            "a": 1
+          },
+          "alias": "VariableID:0eac4904f3cf71141e8adcfe4ac8fa3bc2740e03/72:102",
+          "aliasName": "purple/500"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgFeaturedPressed",
+        "iOS": "LemonadeTheme.colors.interaction.bgFeaturedPressed"
+      }
+    },
+    {
+      "id": "VariableID:5063:3135",
+      "name": "Interaction/Pressed/Background/bg-featured-subtle-pressed",
+      "description": "Use for pressed/tap feedback on subtle featured backgrounds",
+      "type": "COLOR",
+      "valuesByMode": {
+        "3037:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:a6a70dd6026b14e00ae9d4d83893548ba28d7c73/76:253"
+        },
+        "4431:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:8ffd1ae610cfa4da75bd2e7d489cfbee2bdbeec9/76:249"
+        }
+      },
+      "resolvedValuesByMode": {
+        "3037:0": {
+          "resolvedValue": {
+            "r": 0.6779096126556396,
+            "g": 0.27594193816185,
+            "b": 1,
+            "a": 0.30000001192092896
+          },
+          "alias": "VariableID:a6a70dd6026b14e00ae9d4d83893548ba28d7c73/76:253",
+          "aliasName": "purple/alpha/300"
+        },
+        "4431:0": {
+          "resolvedValue": {
+            "r": 0.6779096126556396,
+            "g": 0.27594193816185,
+            "b": 1,
+            "a": 0.10000000149011612
+          },
+          "alias": "VariableID:8ffd1ae610cfa4da75bd2e7d489cfbee2bdbeec9/76:249",
+          "aliasName": "purple/alpha/100"
+        }
+      },
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL",
+        "EFFECT_COLOR"
+      ],
+      "hiddenFromPublishing": false,
+      "codeSyntax": {
+        "ANDROID": "LemonadeTheme.colors.interaction.bgFeaturedSubtlePressed",
+        "iOS": "LemonadeTheme.colors.interaction.bgFeaturedSubtlePressed"
       }
     }
   ]

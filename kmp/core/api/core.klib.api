@@ -628,6 +628,7 @@ final enum class com.teya.lemonade.core/LemonadeIcons : com.teya.lemonade.core/L
     enum entry BatteryHalf // com.teya.lemonade.core/LemonadeIcons.BatteryHalf|null[0]
     enum entry Bell // com.teya.lemonade.core/LemonadeIcons.Bell|null[0]
     enum entry BlocksFitting // com.teya.lemonade.core/LemonadeIcons.BlocksFitting|null[0]
+    enum entry Bluetooth // com.teya.lemonade.core/LemonadeIcons.Bluetooth|null[0]
     enum entry Board // com.teya.lemonade.core/LemonadeIcons.Board|null[0]
     enum entry BrandAndroid // com.teya.lemonade.core/LemonadeIcons.BrandAndroid|null[0]
     enum entry BrandApple // com.teya.lemonade.core/LemonadeIcons.BrandApple|null[0]
@@ -805,6 +806,7 @@ final enum class com.teya.lemonade.core/LemonadeIcons : com.teya.lemonade.core/L
     enum entry Pig // com.teya.lemonade.core/LemonadeIcons.Pig|null[0]
     enum entry PigPlus // com.teya.lemonade.core/LemonadeIcons.PigPlus|null[0]
     enum entry Pin // com.teya.lemonade.core/LemonadeIcons.Pin|null[0]
+    enum entry PinFlag // com.teya.lemonade.core/LemonadeIcons.PinFlag|null[0]
     enum entry Plus // com.teya.lemonade.core/LemonadeIcons.Plus|null[0]
     enum entry Pound // com.teya.lemonade.core/LemonadeIcons.Pound|null[0]
     enum entry PoundPlus // com.teya.lemonade.core/LemonadeIcons.PoundPlus|null[0]
@@ -1222,6 +1224,7 @@ final enum class com.teya.lemonade.core/SymbolContainerVoice : kotlin/Enum<com.t
 
 final enum class com.teya.lemonade.core/TagVoice : kotlin/Enum<com.teya.lemonade.core/TagVoice> { // com.teya.lemonade.core/TagVoice|null[0]
     enum entry Critical // com.teya.lemonade.core/TagVoice.Critical|null[0]
+    enum entry Featured // com.teya.lemonade.core/TagVoice.Featured|null[0]
     enum entry Info // com.teya.lemonade.core/TagVoice.Info|null[0]
     enum entry Neutral // com.teya.lemonade.core/TagVoice.Neutral|null[0]
     enum entry NeutralOnColor // com.teya.lemonade.core/TagVoice.NeutralOnColor|null[0]

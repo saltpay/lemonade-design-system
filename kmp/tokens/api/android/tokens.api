@@ -818,6 +818,8 @@ public abstract interface class com/teya/lemonade/LemonadeSemanticColors$Backgro
 	public abstract fun getBgElevated-0d7_KjU ()J
 	public abstract fun getBgElevatedHigh-0d7_KjU ()J
 	public abstract fun getBgElevatedInverse-0d7_KjU ()J
+	public abstract fun getBgFeatured-0d7_KjU ()J
+	public abstract fun getBgFeaturedSubtle-0d7_KjU ()J
 	public abstract fun getBgInfo-0d7_KjU ()J
 	public abstract fun getBgInfoSubtle-0d7_KjU ()J
 	public abstract fun getBgNeutral-0d7_KjU ()J
@@ -843,6 +845,8 @@ public abstract interface class com/teya/lemonade/LemonadeSemanticColors$BorderC
 	public abstract fun getBorderCautionSubtle-0d7_KjU ()J
 	public abstract fun getBorderCritical-0d7_KjU ()J
 	public abstract fun getBorderCriticalSubtle-0d7_KjU ()J
+	public abstract fun getBorderFeatured-0d7_KjU ()J
+	public abstract fun getBorderFeaturedSubtle-0d7_KjU ()J
 	public abstract fun getBorderInfo-0d7_KjU ()J
 	public abstract fun getBorderInfoSubtle-0d7_KjU ()J
 	public abstract fun getBorderNeutralHigh-0d7_KjU ()J
@@ -872,6 +876,8 @@ public abstract interface class com/teya/lemonade/LemonadeSemanticColors$Content
 	public abstract fun getContentCritical-0d7_KjU ()J
 	public abstract fun getContentCriticalAlwaysOnColor-0d7_KjU ()J
 	public abstract fun getContentCriticalOnColor-0d7_KjU ()J
+	public abstract fun getContentFeatured-0d7_KjU ()J
+	public abstract fun getContentFeaturedOnColor-0d7_KjU ()J
 	public abstract fun getContentInfo-0d7_KjU ()J
 	public abstract fun getContentInfoAlwaysOnColor-0d7_KjU ()J
 	public abstract fun getContentInfoOnColor-0d7_KjU ()J
@@ -921,6 +927,10 @@ public abstract interface class com/teya/lemonade/LemonadeSemanticColors$Interac
 	public abstract fun getBgElevatedHighInteractive-0d7_KjU ()J
 	public abstract fun getBgElevatedInteractive-0d7_KjU ()J
 	public abstract fun getBgElevatedPressed-0d7_KjU ()J
+	public abstract fun getBgFeaturedInteractive-0d7_KjU ()J
+	public abstract fun getBgFeaturedPressed-0d7_KjU ()J
+	public abstract fun getBgFeaturedSubtleInteractive-0d7_KjU ()J
+	public abstract fun getBgFeaturedSubtlePressed-0d7_KjU ()J
 	public abstract fun getBgInfoInteractive-0d7_KjU ()J
 	public abstract fun getBgInfoPressed-0d7_KjU ()J
 	public abstract fun getBgInfoSubtleInteractive-0d7_KjU ()J
