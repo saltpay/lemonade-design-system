@@ -109,8 +109,18 @@ fi
 
 # New generated files that were never staged/committed don't show up in
 # `git diff` at all — catch them separately so a converter emitting a
-# brand-new file can't silently slip past the harness.
-untracked="$(git status --porcelain -- kmp/ swiftui/ flutter/ | grep '^??' | cut -c4- || true)"
+# brand-new file can't silently slip past the harness. Check the git exit
+# code before the grep, so a git-status failure (lock contention, corrupt
+# or inaccessible .git, permission/disk errors) FAILs loudly instead of
+# looking identical to "zero untracked files" once it hits grep.
+if ! status_out="$(git status --porcelain -- kmp/ swiftui/ flutter/)"; then
+  echo "FAIL: could not read git status"
+  exit 1
+fi
+untracked=""
+if [ -n "$status_out" ]; then
+  untracked="$(printf '%s\n' "$status_out" | grep '^??' | cut -c4- || true)"
+fi
 
 if [ -z "$changed" ] && [ -z "$untracked" ]; then
   echo "PASS: generated output is byte-identical to $REF"
