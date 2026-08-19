@@ -106,6 +106,26 @@ reorderable() {
   esac
 }
 
+# Color+Lemonade.swift's `/// Usage:` examples name each namespace's first member,
+# so they track ordering by construction and change whenever members reorder.
+# Compare its code lines only; the guarantee on every non-comment line is unchanged.
+doc_comment_volatile() {
+  case "$1" in
+    */Color+Lemonade.swift) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+# Strips `///` doc-comment lines for files where doc_comment_volatile() applies;
+# otherwise passes the stream through unchanged.
+strip_volatile_docs() {
+  if doc_comment_volatile "$1"; then
+    grep -v '^[[:space:]]*///'
+  else
+    cat
+  fi
+}
+
 if ! changed="$(git diff --name-only "$REF" -- kmp/ swiftui/ flutter/)"; then
   echo "FAIL: could not diff against $REF (bad or unreachable ref?)"
   exit 1
@@ -147,11 +167,15 @@ while IFS= read -r f; do
     continue
   fi
   if reorderable "$f"; then
-    if diff -q <(git show "$REF:$f" | sort) <(sort "$f") >/dev/null 2>&1; then
-      echo "ok    $f (reordered only)"
+    if diff -q <(git show "$REF:$f" | strip_volatile_docs "$f" | sort) <(strip_volatile_docs "$f" < "$f" | sort) >/dev/null 2>&1; then
+      if doc_comment_volatile "$f"; then
+        echo "ok    $f (reordered only, doc comments excluded)"
+      else
+        echo "ok    $f (reordered only)"
+      fi
     else
       echo "FAIL  $f (content changed, not just order)"
-      diff <(git show "$REF:$f" | sort) <(sort "$f") | head -20
+      diff <(git show "$REF:$f" | strip_volatile_docs "$f" | sort) <(strip_volatile_docs "$f" < "$f" | sort) | head -20
       fail=1
     fi
   else
@@ -1527,6 +1551,19 @@ done
 ```
 
 Because `--all` now lists only the light theme file, running it still triggers all three theme converters exactly once, which is the desired behaviour.
+
+Keep the cache-clearing line added in the tokenFiles hotfix (after `ensure_kotlin`, before the converter loop) — it must survive this rewrite:
+
+```bash
+ensure_kotlin
+
+# A converter's compiled script is cached, and editing an @file:Import'ed loader
+# does NOT invalidate it — the converter would silently run the previous loader's
+# code and produce stale output that still looks freshly generated. Clear it.
+rm -rf "$HOME/Library/Caches/main.kts.compiled.cache"
+
+echo "==> Token files: ${files[*]}"
+```
 
 - [ ] **Step 5: Regenerate everything and verify**
 
