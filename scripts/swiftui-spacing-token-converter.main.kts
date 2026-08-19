@@ -9,7 +9,7 @@ data class SpacingResource(
 )
 
 fun main() {
-    val spaceTokensFile = tokenFile("spacing.tokens.json", "spacing.json")
+    val spaceTokensFile = tokenFile("spacing.tokens.json")
     val outputDir = File("swiftui/Sources/Lemonade")
 
     try {

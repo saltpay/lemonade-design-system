@@ -9,7 +9,7 @@ data class DimensionResource(
 )
 
 fun main() {
-    val sizeTokensFile = tokenFile("size.tokens.json", "size.json")
+    val sizeTokensFile = tokenFile("size.tokens.json")
     val definitionOutputDir = File("kmp/core/src/commonMain/kotlin/com/teya/lemonade/core")
     val implementationOutputDir = File("kmp/tokens/src/commonMain/kotlin/com/teya/lemonade")
 

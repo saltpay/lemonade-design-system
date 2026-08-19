@@ -10,7 +10,7 @@ private data class OpacityResource(
 )
 
 fun main() {
-    val inputFile = tokenFile("opacity.tokens.json", "opacity.json")
+    val inputFile = tokenFile("opacity.tokens.json")
     val outputDirs = listOf(
         File("kmp/tokens/src/commonMain/kotlin/com/teya/lemonade"),
     )

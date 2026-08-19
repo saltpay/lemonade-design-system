@@ -10,7 +10,7 @@ private data class RadiusResource(
 )
 
 fun main() {
-    val radiusTokensFile = tokenFile("radius.tokens.json", "radius.json")
+    val radiusTokensFile = tokenFile("radius.tokens.json")
     val outputDir = File("swiftui/Sources/Lemonade")
 
     try {

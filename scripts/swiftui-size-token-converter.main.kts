@@ -9,7 +9,7 @@ data class SizeResource(
 )
 
 fun main() {
-    val sizeTokensFile = tokenFile("size.tokens.json", "size.json")
+    val sizeTokensFile = tokenFile("size.tokens.json")
     val outputDir = File("swiftui/Sources/Lemonade")
 
     try {

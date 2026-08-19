@@ -23,7 +23,7 @@ fun fontWeightValue(styleName: String?): Int = when (styleName) {
 }
 
 fun main() {
-    val typographyTokensFile = tokenFile("typography.tokens.json", "typography.json")
+    val typographyTokensFile = tokenFile("typography.tokens.json")
     val definitionOutputDir = File("kmp/core/src/commonMain/kotlin/com/teya/lemonade/core")
     val implementationOutputDir = File("kmp/ui/src/commonMain/kotlin/com/teya/lemonade")
 

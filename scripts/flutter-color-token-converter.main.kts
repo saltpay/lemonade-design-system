@@ -5,7 +5,7 @@
 import java.io.File
 
 fun main() {
-    val colorTokensFile = tokenFile("primitive-colors.tokens.json", "primitive-colors.json")
+    val colorTokensFile = tokenFile("primitive-colors.tokens.json")
     val outputDir = File("flutter/lib/src/foundation")
     try {
         if (!colorTokensFile.exists() || !colorTokensFile.isFile) {

@@ -23,7 +23,7 @@ fun fontWeightValue(styleName: String?): Int = when (styleName) {
 }
 
 fun main() {
-    val typographyTokensFile = tokenFile("typography.tokens.json", "typography.json")
+    val typographyTokensFile = tokenFile("typography.tokens.json")
     val outputDir = File("swiftui/Sources/Lemonade")
 
     try {

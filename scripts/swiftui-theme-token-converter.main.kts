@@ -6,7 +6,7 @@ import org.json.JSONObject
 import java.io.File
 
 fun main() {
-    val colorTokensFile = tokenFile("theme-colors.light.tokens.json", "theme-colors.json")
+    val colorTokensFile = tokenFile("theme-colors.light.tokens.json")
     val outputDir = File("swiftui/Sources/Lemonade")
 
     try {
@@ -24,25 +24,18 @@ fun main() {
 
         val lightFile = themeFiles.first { file ->
             val json = JSONObject(file.readText())
-            if (isDtcgDocument(json)) dtcgModeName(json).equals(lightMode, ignoreCase = true) else true
+            dtcgModeName(json).equals(lightMode, ignoreCase = true)
         }
         val lightJson = JSONObject(lightFile.readText())
+        require(isDtcgDocument(lightJson)) { "${lightFile.path} is not a Figma native DTCG export" }
 
-        val tokenNames = if (isDtcgDocument(lightJson)) {
-            val tokens = dtcgTokens(lightJson)
-            tokens.keys
-                .sortedWith(::canonicalTokenOrder)
-                .filterNot { name ->
-                    tokens.getValue(name).optJSONObject("\$extensions")
-                        ?.optBoolean("com.figma.hiddenFromPublishing") ?: false
-                }
-        } else {
-            val variablesJson = lightJson.getJSONArray("variables")
-            (0 until variablesJson.length())
-                .map { variablesJson.getJSONObject(it) }
-                .filterNot { it.optBoolean("hiddenFromPublishing") }
-                .map { it.getString("name") }
-        }
+        val tokens = dtcgTokens(lightJson)
+        val tokenNames = tokens.keys
+            .sortedWith(::canonicalTokenOrder)
+            .filterNot { name ->
+                tokens.getValue(name).optJSONObject("\$extensions")
+                    ?.optBoolean("com.figma.hiddenFromPublishing") ?: false
+            }
 
         val themeResources = readFileResourceFileByMode(
             files = themeFiles,

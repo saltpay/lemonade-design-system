@@ -12,7 +12,7 @@ private data class OpacityToken(
 )
 
 fun main() {
-    val opacityTokensFile = tokenFile("opacity.tokens.json", "opacity.json")
+    val opacityTokensFile = tokenFile("opacity.tokens.json")
     val outputDir = File("flutter/lib/src/foundation")
 
     try {

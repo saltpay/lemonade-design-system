@@ -12,7 +12,7 @@ private data class Color(
 )
 
 fun main() {
-    val colorTokensFile = tokenFile("primitive-colors.tokens.json", "primitive-colors.json")
+    val colorTokensFile = tokenFile("primitive-colors.tokens.json")
     val outputDir = File("swiftui/Sources/Lemonade")
     try {
         if (!colorTokensFile.exists() || !colorTokensFile.isFile) {

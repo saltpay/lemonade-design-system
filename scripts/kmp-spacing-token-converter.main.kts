@@ -9,7 +9,7 @@ data class SpacingResource(
 )
 
 fun main() {
-    val spaceTokensFile = tokenFile("spacing.tokens.json", "spacing.json")
+    val spaceTokensFile = tokenFile("spacing.tokens.json")
     val definitionOutputDir = File("kmp/core/src/commonMain/kotlin/com/teya/lemonade/core")
     val implementationOutputDir = File("kmp/tokens/src/commonMain/kotlin/com/teya/lemonade")
 

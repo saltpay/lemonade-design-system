@@ -38,20 +38,21 @@ ensure_kotlin() {
 # Flutter converters are intentionally excluded — this repo generates KMP + SwiftUI only.
 converters_for() {
   case "$1" in
-    primitive-colors.json) echo "kmp-color-token-converter swiftui-color-token-converter" ;;
-    theme-colors.json)     echo "kmp-theme-token-converter swiftui-theme-token-converter swiftui-color-assets-generator" ;;
-    radius.json)           echo "kmp-radius-token-converter swiftui-radius-token-converter" ;;
-    spacing.json)          echo "kmp-spacing-token-converter swiftui-spacing-token-converter" ;;
-    size.json)             echo "kmp-dimension-token-converter swiftui-size-token-converter" ;;
-    opacity.json)          echo "kmp-opacity-token-converter swiftui-opacity-token-converter" ;;
-    border-width.json)     echo "kmp-border-width-token-converter swiftui-border-token-converter" ;;
-    shadow.json)           echo "kmp-shadow-token-converter swiftui-shadow-token-converter" ;;
-    typography.json)       echo "kmp-typography-token-converter swiftui-typography-token-converter" ;;
+    primitive-colors.tokens.json) echo "kmp-color-token-converter swiftui-color-token-converter" ;;
+    theme-colors.light.tokens.json|theme-colors.dark.tokens.json)
+                                  echo "kmp-theme-token-converter swiftui-theme-token-converter swiftui-color-assets-generator" ;;
+    radius.tokens.json)           echo "kmp-radius-token-converter swiftui-radius-token-converter" ;;
+    spacing.tokens.json)          echo "kmp-spacing-token-converter swiftui-spacing-token-converter" ;;
+    size.tokens.json)             echo "kmp-dimension-token-converter swiftui-size-token-converter" ;;
+    opacity.tokens.json)          echo "kmp-opacity-token-converter swiftui-opacity-token-converter" ;;
+    border-width.tokens.json)     echo "kmp-border-width-token-converter swiftui-border-token-converter" ;;
+    shadow.tokens.json)           echo "kmp-shadow-token-converter swiftui-shadow-token-converter" ;;
+    typography.tokens.json)       echo "kmp-typography-token-converter swiftui-typography-token-converter" ;;
     *) echo "" ;;
   esac
 }
 
-ALL_FILES="primitive-colors.json theme-colors.json radius.json spacing.json size.json opacity.json border-width.json shadow.json typography.json"
+ALL_FILES="primitive-colors.tokens.json theme-colors.light.tokens.json radius.tokens.json spacing.tokens.json size.tokens.json opacity.tokens.json border-width.tokens.json shadow.tokens.json typography.tokens.json"
 
 # Resolve the target token files from args.
 mode="${1:---changed}"
@@ -59,7 +60,7 @@ files=()
 case "$mode" in
   --all)     files=($ALL_FILES) ;;
   --changed) while IFS= read -r f; do files+=("$(basename "$f")"); done \
-               < <(git diff --name-only HEAD -- 'tokens/*.json'; git diff --cached --name-only -- 'tokens/*.json') ;;
+               < <(git diff --name-only HEAD -- 'tokens/*.tokens.json'; git diff --cached --name-only -- 'tokens/*.tokens.json') ;;
   *)         for a in "$@"; do files+=("$(basename "$a")"); done ;;
 esac
 
@@ -79,14 +80,6 @@ ensure_kotlin
 rm -rf "$HOME/Library/Caches/main.kts.compiled.cache"
 
 echo "==> Token files: ${files[*]}"
-
-# theme-colors.json must be stripped of stray Figma modes before conversion.
-for f in "${files[@]}"; do
-  if [ "$f" = "theme-colors.json" ]; then
-    echo "==> Stripping stray modes from tokens/theme-colors.json"
-    python3 "$SKILL_DIR/strip-stray-modes.py" tokens/theme-colors.json
-  fi
-done
 
 # Run each converter.
 ran=0

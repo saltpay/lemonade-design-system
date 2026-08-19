@@ -9,7 +9,7 @@ private data class OpacityResource(
 )
 
 fun main() {
-    val inputFile = tokenFile("opacity.tokens.json", "opacity.json")
+    val inputFile = tokenFile("opacity.tokens.json")
     val outputDir = File("swiftui/Sources/Lemonade")
     try {
         if (!inputFile.exists() || !inputFile.isFile) {

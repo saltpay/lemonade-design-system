@@ -9,7 +9,7 @@ data class BorderWidthResource(
 )
 
 fun main() {
-    val borderWidthTokensFile = tokenFile("border-width.tokens.json", "border-width.json")
+    val borderWidthTokensFile = tokenFile("border-width.tokens.json")
     val outputDir = File("swiftui/Sources/Lemonade")
 
     try {

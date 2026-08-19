@@ -12,7 +12,7 @@ private data class RadiusToken(
 )
 
 fun main() {
-    val radiusTokensFile = tokenFile("radius.tokens.json", "radius.json")
+    val radiusTokensFile = tokenFile("radius.tokens.json")
     val outputDir = File("flutter/lib/src/foundation")
 
     try {

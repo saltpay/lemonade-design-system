@@ -10,7 +10,7 @@ data class ThemeResourceData(
 )
 
 fun main() {
-    val colorTokensFile = tokenFile("theme-colors.light.tokens.json", "theme-colors.json")
+    val colorTokensFile = tokenFile("theme-colors.light.tokens.json")
     val themesOutputDir = File("kmp/ui/src/commonMain/kotlin/com/teya/lemonade")
     val interfaceOutputDir = File("kmp/tokens/src/commonMain/kotlin/com/teya/lemonade")
 

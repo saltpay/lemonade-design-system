@@ -35,7 +35,7 @@ data class ColorResource(
 )
 
 fun main() {
-    val themeFile = tokenFile("theme-colors.light.tokens.json", "theme-colors.json")
+    val themeFile = tokenFile("theme-colors.light.tokens.json")
 
     val assetsDir = File("swiftui/Sources/Lemonade/Resources/Assets.xcassets/Colors")
     val swiftOutputDir = File("swiftui/Sources/Lemonade")

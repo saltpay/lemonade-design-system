@@ -32,7 +32,7 @@ data class ShadowResource(
 )
 
 fun main() {
-    val shadowTokensFile = tokenFile("shadow.tokens.json", "shadow.json")
+    val shadowTokensFile = tokenFile("shadow.tokens.json")
     val outputDir = File("swiftui/Sources/Lemonade")
 
     try {

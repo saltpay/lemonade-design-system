@@ -56,32 +56,9 @@ fun <T> readFileResourceFile(
     resourceMap: (JSONObject) -> T,
 ): List<ResourceData<T>> {
     val json = JSONObject(file.readText())
-    if (isDtcgDocument(json)) {
-        val resources = dtcgResources(json, resourceMap)
-        println("Found ${resources.size} variables")
-        return resources
-    }
-    val variablesJsonArray = json.getJSONArray("variables")
-    val resources = mutableListOf<ResourceData<T>>()
-    println("Found ${variablesJsonArray.length()} variables")
-    repeat(times = variablesJsonArray.length()) { index ->
-        val variableJsonObject = variablesJsonArray.getJSONObject(index)
-        if (!variableJsonObject.optBoolean("hiddenFromPublishing")) {
-            val name = variableJsonObject.getString("name")
-            val resolvedValues = variableJsonObject.getJSONObject("resolvedValuesByMode")
-            resolvedValues.keys().asSequence().firstOrNull()?.let { resolvedValueKey ->
-                val resolvedValueKeyObject = resolvedValues.getJSONObject(resolvedValueKey)
-                resources.add(
-                    ResourceData(
-                        groups = name.sanitizedGroups(),
-                        groupFullName = name.sanitizedClassName(),
-                        name = name.sanitizedValueName(),
-                        value = resourceMap(resolvedValueKeyObject),
-                    )
-                )
-            }
-        }
-    }
+    require(isDtcgDocument(json)) { "${file.path} is not a Figma native DTCG export" }
+    val resources = dtcgResources(json, resourceMap)
+    println("Found ${resources.size} variables")
     return resources
 }
 
@@ -296,29 +273,22 @@ private fun isHidden(node: JSONObject): Boolean =
 fun dtcgModeName(json: JSONObject): String =
     json.optJSONObject(EXTENSIONS)?.optString("com.figma.modeName").orEmpty()
 
-/** The distinct mode names across [files], in file order. Works for both formats. */
+/** The distinct mode names across [files], in file order. */
 fun availableModeNames(files: List<File>): List<String> {
     val names = mutableListOf<String>()
     files.forEach { file ->
         val json = JSONObject(file.readText())
-        if (isDtcgDocument(json)) {
-            val mode = dtcgModeName(json)
-            if (mode.isNotBlank() && mode !in names) names.add(mode)
-        } else {
-            val modes = json.getJSONObject("modes")
-            modes.keys().asSequence().toList().sorted().forEach { key ->
-                val mode = modes.getString(key)
-                if (mode !in names) names.add(mode)
-            }
-        }
+        require(isDtcgDocument(json)) { "${file.path} is not a Figma native DTCG export" }
+        val mode = dtcgModeName(json)
+        if (mode.isNotBlank() && mode !in names) names.add(mode)
     }
     return names
 }
 
-/** First existing file among [candidates], resolved under `tokens/`. */
-fun tokenFile(vararg candidates: String): File =
-    candidates.map { File("tokens/$it") }.firstOrNull { it.isFile }
-        ?: error("None of ${candidates.joinToString()} exist under tokens/")
+/** Resolves a token file under `tokens/`, failing loudly when it is absent. */
+fun tokenFile(name: String): File =
+    File("tokens/$name").takeIf { it.isFile }
+        ?: error("tokens/$name does not exist — run ingest-tokens.py first")
 
 /**
  * All `tokens/` files whose name starts with [prefix], sorted by name.
