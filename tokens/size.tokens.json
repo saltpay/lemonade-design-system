@@ -1,0 +1,410 @@
+{
+  "size-0": {
+    "$type": "number",
+    "$value": 0,
+    "$description": "0px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2055",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size0",
+        "iOS": "LemonadeTheme.sizes.size0"
+      }
+    }
+  },
+  "size-50": {
+    "$type": "number",
+    "$value": 2,
+    "$description": "2px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2056",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size50",
+        "iOS": "LemonadeTheme.sizes.size50"
+      }
+    }
+  },
+  "size-100": {
+    "$type": "number",
+    "$value": 4,
+    "$description": "4px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2057",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size100",
+        "iOS": "LemonadeTheme.sizes.size100"
+      }
+    }
+  },
+  "size-150": {
+    "$type": "number",
+    "$value": 6,
+    "$description": "6px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2058",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size150",
+        "iOS": "LemonadeTheme.sizes.size150"
+      }
+    }
+  },
+  "size-200": {
+    "$type": "number",
+    "$value": 8,
+    "$description": "8px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2059",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size200",
+        "iOS": "LemonadeTheme.sizes.size200"
+      }
+    }
+  },
+  "size-250": {
+    "$type": "number",
+    "$value": 10,
+    "$description": "10px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2060",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size250",
+        "iOS": "LemonadeTheme.sizes.size250"
+      }
+    }
+  },
+  "size-300": {
+    "$type": "number",
+    "$value": 12,
+    "$description": "12px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2061",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size300",
+        "iOS": "LemonadeTheme.sizes.size300"
+      }
+    }
+  },
+  "size-350": {
+    "$type": "number",
+    "$value": 14,
+    "$description": "14px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2062",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size350",
+        "iOS": "LemonadeTheme.sizes.size350"
+      }
+    }
+  },
+  "size-400": {
+    "$type": "number",
+    "$value": 16,
+    "$description": "16px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2063",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size400",
+        "iOS": "LemonadeTheme.sizes.size400"
+      }
+    }
+  },
+  "size-450": {
+    "$type": "number",
+    "$value": 18,
+    "$description": "18px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2064",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size450",
+        "iOS": "LemonadeTheme.sizes.size450"
+      }
+    }
+  },
+  "size-500": {
+    "$type": "number",
+    "$value": 20,
+    "$description": "20px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2065",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size500",
+        "iOS": "LemonadeTheme.sizes.size500"
+      }
+    }
+  },
+  "size-550": {
+    "$type": "number",
+    "$value": 22,
+    "$description": "22px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3260:5769",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size550",
+        "iOS": "LemonadeTheme.sizes.size550"
+      }
+    }
+  },
+  "size-600": {
+    "$type": "number",
+    "$value": 24,
+    "$description": "24px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2066",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size600",
+        "iOS": "LemonadeTheme.sizes.size600"
+      }
+    }
+  },
+  "size-700": {
+    "$type": "number",
+    "$value": 28,
+    "$description": "28px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2067",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size700",
+        "iOS": "LemonadeTheme.sizes.size700"
+      }
+    }
+  },
+  "size-750": {
+    "$type": "number",
+    "$value": 30,
+    "$description": "30px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2068",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size750",
+        "iOS": "LemonadeTheme.sizes.size750"
+      }
+    }
+  },
+  "size-800": {
+    "$type": "number",
+    "$value": 32,
+    "$description": "32px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2069",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size800",
+        "iOS": "LemonadeTheme.sizes.size800"
+      }
+    }
+  },
+  "size-900": {
+    "$type": "number",
+    "$value": 36,
+    "$description": "36px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2070",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size900",
+        "iOS": "LemonadeTheme.sizes.size900"
+      }
+    }
+  },
+  "size-1000": {
+    "$type": "number",
+    "$value": 40,
+    "$description": "40px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2071",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size1000",
+        "iOS": "LemonadeTheme.sizes.size1000"
+      }
+    }
+  },
+  "size-1100": {
+    "$type": "number",
+    "$value": 44,
+    "$description": "44px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2072",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size1100",
+        "iOS": "LemonadeTheme.sizes.size1100"
+      }
+    }
+  },
+  "size-1200": {
+    "$type": "number",
+    "$value": 48,
+    "$description": "48px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2073",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size1200",
+        "iOS": "LemonadeTheme.sizes.size1200"
+      }
+    }
+  },
+  "size-1400": {
+    "$type": "number",
+    "$value": 56,
+    "$description": "56px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2074",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size1400",
+        "iOS": "LemonadeTheme.sizes.size1400"
+      }
+    }
+  },
+  "size-1600": {
+    "$type": "number",
+    "$value": 64,
+    "$description": "64px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3183:2075",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size1600",
+        "iOS": "LemonadeTheme.sizes.size1600"
+      }
+    }
+  },
+  "size-1800": {
+    "$type": "number",
+    "$value": 72,
+    "$description": "72px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3912:3366",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size1800",
+        "iOS": "LemonadeTheme.sizes.size1800"
+      }
+    }
+  },
+  "size-2000": {
+    "$type": "number",
+    "$value": 80,
+    "$description": "80px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3912:3367",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size2000",
+        "iOS": "LemonadeTheme.sizes.size2000"
+      }
+    }
+  },
+  "size-2200": {
+    "$type": "number",
+    "$value": 88,
+    "$description": "88px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3912:3368",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size2200",
+        "iOS": "LemonadeTheme.sizes.size2200"
+      }
+    }
+  },
+  "size-2400": {
+    "$type": "number",
+    "$value": 96,
+    "$description": "96px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3912:3369",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size2400",
+        "iOS": "LemonadeTheme.sizes.size2400"
+      }
+    }
+  },
+  "size-2500": {
+    "$type": "number",
+    "$value": 100,
+    "$description": "100px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3912:3370",
+      "com.figma.scopes": [
+        "WIDTH_HEIGHT"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.sizes.size2500",
+        "iOS": "LemonadeTheme.sizes.size2500"
+      }
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "Default"
+  }
+}

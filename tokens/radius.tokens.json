@@ -1,0 +1,232 @@
+{
+  "radius-0": {
+    "$type": "number",
+    "$value": 0,
+    "$description": "0px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3131:2103",
+      "com.figma.scopes": [
+        "CORNER_RADIUS"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius0",
+        "iOS": "LemonadeTheme.radius.radius0"
+      }
+    }
+  },
+  "radius-50": {
+    "$type": "number",
+    "$value": 2,
+    "$description": "2px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3096:1601",
+      "com.figma.scopes": [
+        "CORNER_RADIUS"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius50",
+        "iOS": "LemonadeTheme.radius.radius50"
+      }
+    }
+  },
+  "radius-100": {
+    "$type": "number",
+    "$value": 4,
+    "$description": "4px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3096:1602",
+      "com.figma.scopes": [
+        "CORNER_RADIUS"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius100",
+        "iOS": "LemonadeTheme.radius.radius100"
+      }
+    }
+  },
+  "radius-150": {
+    "$type": "number",
+    "$value": 6,
+    "$description": "6px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3096:1603",
+      "com.figma.scopes": [
+        "CORNER_RADIUS"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius150",
+        "iOS": "LemonadeTheme.radius.radius150"
+      }
+    }
+  },
+  "radius-200": {
+    "$type": "number",
+    "$value": 8,
+    "$description": "8px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3096:1604",
+      "com.figma.scopes": [
+        "CORNER_RADIUS"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius200",
+        "iOS": "LemonadeTheme.radius.radius200"
+      }
+    }
+  },
+  "radius-250": {
+    "$type": "number",
+    "$value": 10,
+    "$description": "10px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:4254:2705",
+      "com.figma.scopes": [
+        "CORNER_RADIUS"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius250",
+        "iOS": "LemonadeTheme.radius.radius250"
+      }
+    }
+  },
+  "radius-300": {
+    "$type": "number",
+    "$value": 12,
+    "$description": "12px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3096:1605",
+      "com.figma.scopes": [
+        "CORNER_RADIUS"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius300",
+        "iOS": "LemonadeTheme.radius.radius300"
+      }
+    }
+  },
+  "radius-350": {
+    "$type": "number",
+    "$value": 14,
+    "$description": "14px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:4977:222",
+      "com.figma.scopes": [
+        "CORNER_RADIUS"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.r adius.radius350",
+        "iOS": "LemonadeTheme.radius.radius350"
+      }
+    }
+  },
+  "radius-400": {
+    "$type": "number",
+    "$value": 16,
+    "$description": "16px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3096:1606",
+      "com.figma.scopes": [
+        "CORNER_RADIUS"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius400",
+        "iOS": "LemonadeTheme.radius.radius400"
+      }
+    }
+  },
+  "radius-500": {
+    "$type": "number",
+    "$value": 20,
+    "$description": "20px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3096:1607",
+      "com.figma.scopes": [
+        "CORNER_RADIUS"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius500",
+        "iOS": "LemonadeTheme.radius.radius500"
+      }
+    }
+  },
+  "radius-600": {
+    "$type": "number",
+    "$value": 24,
+    "$description": "24px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3096:1608",
+      "com.figma.scopes": [
+        "CORNER_RADIUS"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius600",
+        "iOS": "LemonadeTheme.radius.radius600"
+      }
+    }
+  },
+  "radius-800": {
+    "$type": "number",
+    "$value": 32,
+    "$description": "32px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3096:1609",
+      "com.figma.scopes": [
+        "CORNER_RADIUS"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius800",
+        "iOS": "LemonadeTheme.radius.radius800"
+      }
+    }
+  },
+  "radius-900": {
+    "$type": "number",
+    "$value": 40,
+    "$description": "40px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:4409:821",
+      "com.figma.scopes": [
+        "CORNER_RADIUS"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radius900",
+        "iOS": "LemonadeTheme.radius.radius900"
+      }
+    }
+  },
+  "radius-full": {
+    "$type": "number",
+    "$value": 999,
+    "$description": "999px",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3097:1600",
+      "com.figma.scopes": [
+        "CORNER_RADIUS"
+      ],
+      "com.figma.codeSyntax": {
+        "ANDROID": "LemonadeTheme.radius.radiusfull",
+        "iOS": "LemonadeTheme.radius.radiusfull"
+      }
+    }
+  },
+  "semantic": {
+    "radius-container-default": {
+      "$type": "number",
+      "$value": "{radius-600}",
+      "$description": "The default corner radius for containers. Used for cards, modals, and other surfaces.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:4199:2020",
+        "com.figma.scopes": [
+          "CORNER_RADIUS"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.radius.semantic.radiusContainerDefault",
+          "iOS": "LemonadeTheme.radius.semantic.radiusContainerDefault"
+        }
+      }
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "Default"
+  }
+}

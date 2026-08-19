@@ -1,0 +1,4827 @@
+{
+  "Content": {
+    "content-primary": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          1,
+          1
+        ],
+        "alpha": 0.8999999761581421,
+        "hex": "#FFFFFF"
+      },
+      "$description": "Use for main text, titles, and essential content.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:3037:2081",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.colors.content.contentPrimary",
+          "iOS": "LemonadeTheme.colors.content.contentPrimary"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:1cde25931e5330368f430707ddecf5da880df6d6/109:32",
+          "targetVariableName": "white/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-secondary": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          1,
+          1
+        ],
+        "alpha": 0.6000000238418579,
+        "hex": "#FFFFFF"
+      },
+      "$description": "Use for secondary text, such as body copy or supporting content.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:3037:2054",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.colors.content.contentSecondary",
+          "iOS": "LemonadeTheme.colors.content.contentSecondary"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:34078c143a73dc340a495ef80e13d1db6dd8cf2a/109:29",
+          "targetVariableName": "white/600",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "content-tertiary": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          1,
+          1
+        ],
+        "alpha": 0.5,
+        "hex": "#FFFFFF"
+      },
+      "$description": "Use for tertiary text, such as metadata, placeholders, or helper text.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:3037:2047",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "TEXT_FILL"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.colors.content.contentTertiary",
+          "iOS": "LemonadeTheme.colors.content.contentTertiary"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:6b52be630b90a02df7b3a03f5e58a12ed596a2c3/109:28",
+          "targetVariableName": "white/500",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "Brand": {
+      "content-brand": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.7802666425704956,
+            0.7919999957084656,
+            0.08800001442432404
+          ],
+          "alpha": 1,
+          "hex": "#C7CA16"
+        },
+        "$description": "Use for brand-coloured text or icons to reinforce identity.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2030",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentBrand",
+            "iOS": "LemonadeTheme.colors.content.contentBrand"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:e101b2da4e92f186cf4f636e7e0ac67eb6e5bd72/405:10",
+            "targetVariableName": "yellow-lime/600",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-brand-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8820960521697998,
+            0.8995633125305176,
+            0.10043667256832123
+          ],
+          "alpha": 1,
+          "hex": "#E1E51A"
+        },
+        "$description": "Use for brand-colored text or icons to reinforce identity.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3409:1865",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentBrand",
+            "iOS": "LemonadeTheme.colors.content.contentBrand"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87",
+            "targetVariableName": "yellow-lime/500",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-on-brand-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1595725268125534,
+            0.19419847428798676,
+            0.04580152779817581
+          ],
+          "alpha": 1,
+          "hex": "#29320C"
+        },
+        "$description": "Use for text/icons on high-emphasis brand backgrounds.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2078",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentOnBrandHigh",
+            "iOS": "LemonadeTheme.colors.content.contentOnBrandHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:32edd553f4f45306d1ba866c5595851700a96c50/121:75",
+            "targetVariableName": "yellow-lime/900",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-on-brand-low": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.42639997601509094,
+            0.46799999475479126,
+            0.052000001072883606
+          ],
+          "alpha": 1,
+          "hex": "#6D770D"
+        },
+        "$description": "Use for text/icons on subtle or low-emphasis brand backgrounds.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2016",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentOnBrandLow",
+            "iOS": "LemonadeTheme.colors.content.contentOnBrandLow"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:6d9c92c71562a356221eeae95c51cd6962648e80/394:22",
+            "targetVariableName": "yellow-lime/700",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-accent": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0.7218724489212036,
+            0.8573380708694458
+          ],
+          "alpha": 1,
+          "hex": "#00B8DB"
+        },
+        "$description": "Use for emphasis or highlights outside the brand palette.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2008",
+          "com.figma.hiddenFromPublishing": true,
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentAccent",
+            "iOS": "LemonadeTheme.colors.content.contentAccent"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:db6da18beb938960e3f7cecd2f3872015c2941c9/72:145",
+            "targetVariableName": "cyan/500",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      }
+    },
+    "Voice": {
+      "content-critical": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9686274528503418,
+            0.23529411852359772,
+            0.2823529541492462
+          ],
+          "alpha": 1,
+          "hex": "#F73C48"
+        },
+        "$description": "Use for critical text/icons, such as errors or destructive actions.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2077",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentCritical",
+            "iOS": "LemonadeTheme.colors.content.contentCritical"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/559:6",
+            "targetVariableName": "red/500",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-caution": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.994271457195282,
+            0.6020927429199219,
+            0
+          ],
+          "alpha": 1,
+          "hex": "#FE9A00"
+        },
+        "$description": "Use for cautionary text/icons, such as warnings.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2036",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentCaution",
+            "iOS": "LemonadeTheme.colors.content.contentCaution"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:e3ab5d3fbd334f17ae675438aef3f615622a6182/72:199",
+            "targetVariableName": "amber/500",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-info": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3157993257045746,
+            0.6355904340744019,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#51A2FF"
+        },
+        "$description": "Use for informational text/icons, such as neutral alerts.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2045",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentInfo",
+            "iOS": "LemonadeTheme.colors.content.contentInfo"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134",
+            "targetVariableName": "blue/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-positive": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.4872932434082031,
+            0.8099173903465271,
+            0
+          ],
+          "alpha": 1,
+          "hex": "#7CCF00"
+        },
+        "$description": "Use for positive text/icons, such as confirmations.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2064",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentPositive",
+            "iOS": "LemonadeTheme.colors.content.contentPositive"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:278146ddbf77f7d3dbf67d4311ade5a56d494056/72:179",
+            "targetVariableName": "green-lime/500",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-featured": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.7595676779747009,
+            0.47980010509490967,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#C27AFF"
+        },
+        "$description": "Use for featured text/icons, such as highlights or promoted content.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5063:3126",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentFeatured",
+            "iOS": "LemonadeTheme.colors.content.contentFeatured"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:dacb1222ed4c4104b8d0559a90c6ab357666d2cb/72:99",
+            "targetVariableName": "purple/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-neutral": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.8999999761581421,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for neutral or non-semantic text/icons.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2070",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentNeutral",
+            "iOS": "LemonadeTheme.colors.content.contentNeutral"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:1cde25931e5330368f430707ddecf5da880df6d6/109:32",
+            "targetVariableName": "white/900",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "On Color": {
+        "content-critical-on-color": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.8941176533699036,
+              0.11764705926179886,
+              0.16862745583057404
+            ],
+            "alpha": 1,
+            "hex": "#E41E2B"
+          },
+          "$description": "A strong background used for critical messages, errors, or destructive actions that require high visibility.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3146:2419",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.content.contentCriticalOnColor",
+              "iOS": "LemonadeTheme.colors.content.contentCriticalOnColor"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:e6c96e14c9541d1e76e4baba16c232c24d7cd29d/559:7",
+              "targetVariableName": "red/600",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "content-caution-on-color": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.8837689161300659,
+              0.4433509111404419,
+              0
+            ],
+            "alpha": 1,
+            "hex": "#E17100"
+          },
+          "$description": "A strong background used to signal warnings or cautionary states that require user attention without implying error.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3146:2420",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.content.contentCautionOnColor",
+              "iOS": "LemonadeTheme.colors.content.contentCautionOnColor"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:41033fa93dfdd2518235ad4db6a7935a815f5e18/72:201",
+              "targetVariableName": "amber/600",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "content-info-on-color": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.0779077485203743,
+              0.27913516759872437,
+              0.9017744660377502
+            ],
+            "alpha": 1,
+            "hex": "#1447E6"
+          },
+          "$description": "A clear background used to present informative messages or neutral system states that guide the user.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3146:2421",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.content.contentInfoOnColor",
+              "iOS": "LemonadeTheme.colors.content.contentInfoOnColor"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:a6ed5840402749dbf76d19a0d797da45c091b8a4/72:129",
+              "targetVariableName": "blue/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "content-positive-on-color": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.2848081886768341,
+              0.49150213599205017,
+              0
+            ],
+            "alpha": 1,
+            "hex": "#497D00"
+          },
+          "$description": "A strong background used to confirm success, completion, or positive feedback that needs visual emphasis.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3146:2422",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.content.contentPositiveOnColor",
+              "iOS": "LemonadeTheme.colors.content.contentPositiveOnColor"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:372abfe05c6244900e8b1a9bf4e6fb335bc63437/72:181",
+              "targetVariableName": "green-lime/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "content-featured-on-color": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.5099056959152222,
+              0,
+              0.8572576642036438
+            ],
+            "alpha": 1,
+            "hex": "#8200DB"
+          },
+          "$description": "A strong background used to highlight featured, premium, or promoted content that needs visual emphasis.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5063:3127",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.content.contentFeaturedOnColor",
+              "iOS": "LemonadeTheme.colors.content.contentFeaturedOnColor"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:7d1020840663e8b173eb558ae2c466851c709cdc/72:100",
+              "targetVariableName": "purple/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "content-neutral-on-color": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.03529411926865578,
+              0.0313725508749485,
+              0.0235294122248888
+            ],
+            "alpha": 0.925000011920929,
+            "hex": "#090806"
+          },
+          "$description": "A neutral background used to present default or non-semantic content that carries no positive, caution, or critical meaning.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3146:2423",
+            "com.figma.scopes": [
+              "SHAPE_FILL",
+              "TEXT_FILL"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.content.contentNeutralOnColor",
+              "iOS": "LemonadeTheme.colors.content.contentNeutralOnColor"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+              "targetVariableName": "neutral/alpha/900",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
+      }
+    },
+    "Inverse": {
+      "content-primary-inverse": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.03529411926865578,
+            0.0313725508749485,
+            0.0235294122248888
+          ],
+          "alpha": 0.925000011920929,
+          "hex": "#090806"
+        },
+        "$description": "Use as the primary content colour on dark backgrounds.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2062",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentPrimaryInverse",
+            "iOS": "LemonadeTheme.colors.content.contentPrimaryInverse"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+            "targetVariableName": "neutral/alpha/900",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-secondary-inverse": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.0625,
+            0.05625000596046448,
+            0.03750000149011612
+          ],
+          "alpha": 0.7099999785423279,
+          "hex": "#100E0A"
+        },
+        "$description": "Use as the secondary content colour on dark backgrounds.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2075",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentSecondaryInverse",
+            "iOS": "LemonadeTheme.colors.content.contentSecondaryInverse"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:6fa2ed1327e0bd729cf431fbfdf0a2e6e70741be/501:439",
+            "targetVariableName": "neutral/alpha/600",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-tertiary-inverse": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.08540000766515732,
+            0.08026666939258575,
+            0.054600007832050323
+          ],
+          "alpha": 0.550000011920929,
+          "hex": "#16140E"
+        },
+        "$description": "Use as the tertiary content colour on dark backgrounds.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2067",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentTertiaryInverse",
+            "iOS": "LemonadeTheme.colors.content.contentTertiaryInverse"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:e87e5a5b448c18803b70ce0b53acb4845f898ba6/501:386",
+            "targetVariableName": "neutral/alpha/500",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-brand-inverse": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.2726779878139496,
+            0.32054421305656433,
+            0.05945578217506409
+          ],
+          "alpha": 1,
+          "hex": "#46520F"
+        },
+        "$description": "Use for brand-coloured text/icons on dark backgrounds.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2073",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentBrandInverse",
+            "iOS": "LemonadeTheme.colors.content.contentBrandInverse"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:db0c89a3c7ec6dc8f937d204e16c7e56e408d8d8/121:68",
+            "targetVariableName": "yellow-lime/800",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      }
+    },
+    "Fixed": {
+      "content-always-light": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for text or icons that must always appear light, regardless of theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2053",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentAlwaysLight",
+            "iOS": "LemonadeTheme.colors.content.contentAlwaysLight"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/115:49",
+            "targetVariableName": "white/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-always-dark": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.03235294297337532,
+            0.030392156913876534,
+            0.026470588520169258
+          ],
+          "alpha": 0.9599999785423279,
+          "hex": "#080807"
+        },
+        "$description": "Use for text or icons that must always appear dark, regardless of theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2069",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentAlwaysDark",
+            "iOS": "LemonadeTheme.colors.content.contentAlwaysDark"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:e2ff829425d0c35a1fd5d5f7e58553fb93d8c5ec/503:32",
+            "targetVariableName": "neutral/alpha/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-critical-always-on-color": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9960784316062927,
+            0.32549020648002625,
+            0.3686274588108063
+          ],
+          "alpha": 1,
+          "hex": "#FE535E"
+        },
+        "$description": "A fixed foreground colour for text and icons placed on critical or error backgrounds, ensuring consistent visibility regardless of theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4792:1964",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentCriticalAlwaysOnColor",
+            "iOS": "LemonadeTheme.colors.content.contentCriticalAlwaysOnColor"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5",
+            "targetVariableName": "red/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-caution-always-on-color": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9930035471916199,
+            0.7819446325302124,
+            0
+          ],
+          "alpha": 1,
+          "hex": "#FDC700"
+        },
+        "$description": "A fixed foreground colour for text and icons placed on cautionary backgrounds, ensuring consistent visibility regardless of theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4792:1963",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentCautionAlwaysOnColor",
+            "iOS": "LemonadeTheme.colors.content.contentCautionAlwaysOnColor"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:e37bef0d14979b03cf97c6b3c7608ebf73123a5c/72:200",
+            "targetVariableName": "amber/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-info-always-on-color": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3157993257045746,
+            0.6355904340744019,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#51A2FF"
+        },
+        "$description": "A fixed foreground colour for text and icons placed on informative backgrounds, ensuring consistent visibility regardless of theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4792:1951",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentInfoAlwaysOnColor",
+            "iOS": "LemonadeTheme.colors.content.contentInfoAlwaysOnColor"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134",
+            "targetVariableName": "blue/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-positive-always-on-color": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6024433970451355,
+            0.9016712307929993,
+            0
+          ],
+          "alpha": 1,
+          "hex": "#9AE600"
+        },
+        "$description": "A fixed foreground colour for text and icons placed on positive or success backgrounds, ensuring consistent visibility regardless of theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4792:1962",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentPositiveAlwaysOnColor",
+            "iOS": "LemonadeTheme.colors.content.contentPositiveAlwaysOnColor"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175",
+            "targetVariableName": "green-lime/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-neutral-always-on-color": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.8999999761581421,
+          "hex": "#FFFFFF"
+        },
+        "$description": "A fixed foreground colour for text and icons placed on neutral backgrounds, ensuring consistent visibility regardless of theme.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4792:1961",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.content.contentNeutralAlwaysOnColor",
+            "iOS": "LemonadeTheme.colors.content.contentNeutralAlwaysOnColor"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:1cde25931e5330368f430707ddecf5da880df6d6/109:32",
+            "targetVariableName": "white/900",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      }
+    }
+  },
+  "Background": {
+    "bg-default": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.125490203499794,
+          0.12156862765550613,
+          0.11372549086809158
+        ],
+        "alpha": 1,
+        "hex": "#201F1D"
+      },
+      "$description": "Use for the primary background of screens and surfaces.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:3037:2050",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.colors.background.bgDefault",
+          "iOS": "LemonadeTheme.colors.background.bgDefault"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:7d9595539067d82e8aadb39f37080c2221e2dbea/554:0",
+          "targetVariableName": "neutral/900",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-subtle": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.08235294371843338,
+          0.08235294371843338,
+          0.07450980693101883
+        ],
+        "alpha": 1,
+        "hex": "#151513"
+      },
+      "$description": "Use for secondary backgrounds, such as cards, containers, or inputs placed on bg-default.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:3037:2068",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.colors.background.bgSubtle",
+          "iOS": "LemonadeTheme.colors.background.bgSubtle"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:c97bf8aac4abe5f86d9d48fdf23be25e851540b1/554:1",
+          "targetVariableName": "neutral/950",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-elevated": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          1,
+          1
+        ],
+        "alpha": 0.05000000074505806,
+        "hex": "#FFFFFF"
+      },
+      "$description": "Use to create a higher elevation background against bg-default or bg-subtle.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:3037:2060",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.colors.background.bgElevated",
+          "iOS": "LemonadeTheme.colors.background.bgElevated"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:644365395869c07f1342bc4eda3f2d2a8aed61c7/109:23",
+          "targetVariableName": "white/50",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "bg-elevated-high": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          1,
+          1
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#FFFFFF"
+      },
+      "$extensions": {
+        "com.figma.variableId": "VariableID:3139:2120",
+        "com.figma.scopes": [
+          "FRAME_FILL",
+          "SHAPE_FILL",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.colors.background.bgElevatedHigh",
+          "iOS": "LemonadeTheme.colors.background.bgElevatedHigh"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24",
+          "targetVariableName": "white/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "Brand": {
+      "bg-brand": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8820960521697998,
+            0.8995633125305176,
+            0.10043667256832123
+          ],
+          "alpha": 1,
+          "hex": "#E1E51A"
+        },
+        "$description": "Use for primary brand surfaces, such as key actions or highlights.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2058",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgBrand",
+            "iOS": "LemonadeTheme.colors.background.bgBrand"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87",
+            "targetVariableName": "yellow-lime/500",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-brand-elevated": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.5,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for brand surfaces with subtle emphasis, such as secondary actions or accents.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2048",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgBrandElevated",
+            "iOS": "LemonadeTheme.colors.background.bgBrandElevated"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:6b52be630b90a02df7b3a03f5e58a12ed596a2c3/109:28",
+            "targetVariableName": "white/500",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-brand-subtle": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8823529481887817,
+            0.8980392217636108,
+            0.10196078568696976
+          ],
+          "alpha": 0.05000000074505806,
+          "hex": "#E1E51A"
+        },
+        "$description": "Use for elevated brand surfaces, such as cards or containers with brand emphasis.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2042",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgBrandSubtle",
+            "iOS": "LemonadeTheme.colors.background.bgBrandSubtle"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:97b2663b051c3f1d26d66a426de283e05898a964/90:29",
+            "targetVariableName": "yellow-lime/alpha/50",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-brand-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9160000085830688,
+            0.9160000085830688,
+            0.2840000092983246
+          ],
+          "alpha": 1,
+          "hex": "#EAEA48"
+        },
+        "$description": "Use for strong brand emphasis, such as headers, banners, or high-priority surfaces.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2052",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgBrandHigh",
+            "iOS": "LemonadeTheme.colors.background.bgBrandHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:3d29360b74ce2b1f363eda98f910b1182240f8f9/406:13",
+            "targetVariableName": "yellow-lime/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-accent": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0.8273619413375854,
+            0.9509646892547607
+          ],
+          "alpha": 1,
+          "hex": "#00D3F2"
+        },
+        "$description": "Use for brand accent areas, such as highlights or supporting UI elements.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2040",
+          "com.figma.hiddenFromPublishing": true,
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgAccent",
+            "iOS": "LemonadeTheme.colors.background.bgAccent"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:d85eb1eb7b3cb3574b4e4f28507b4128ede11b9b/72:144",
+            "targetVariableName": "cyan/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-accent-subtle": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0.7218724489212036,
+            0.8573380708694458
+          ],
+          "alpha": 0.20000000298023224,
+          "hex": "#00B8DB"
+        },
+        "$description": "Use for background fills that need a light accent emphasis without overwhelming other elements.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2076",
+          "com.figma.hiddenFromPublishing": true,
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgAccentSubtle",
+            "iOS": "LemonadeTheme.colors.background.bgAccentSubtle"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:e28203fb60f5e7f4f66b956b4c0a3e4c0592e010/76:339",
+            "targetVariableName": "cyan/alpha/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      }
+    },
+    "Voice": {
+      "bg-critical": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9960784316062927,
+            0.32549020648002625,
+            0.3686274588108063
+          ],
+          "alpha": 1,
+          "hex": "#FE535E"
+        },
+        "$description": "Use for critical states, such as destructive actions or errors.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2051",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgCritical",
+            "iOS": "LemonadeTheme.colors.background.bgCritical"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5",
+            "targetVariableName": "red/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-caution": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9930035471916199,
+            0.7819446325302124,
+            0
+          ],
+          "alpha": 1,
+          "hex": "#FDC700"
+        },
+        "$description": "Use for cautionary states, such as warnings or potential risks.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2055",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgCaution",
+            "iOS": "LemonadeTheme.colors.background.bgCaution"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:e37bef0d14979b03cf97c6b3c7608ebf73123a5c/72:200",
+            "targetVariableName": "amber/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-info": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3157993257045746,
+            0.6355904340744019,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#51A2FF"
+        },
+        "$description": "Use for informational states, such as system feedback or neutral alerts.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2072",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgInfo",
+            "iOS": "LemonadeTheme.colors.background.bgInfo"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134",
+            "targetVariableName": "blue/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-positive": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6024433970451355,
+            0.9016712307929993,
+            0
+          ],
+          "alpha": 1,
+          "hex": "#9AE600"
+        },
+        "$description": "Use for positive states, such as success messages or confirmations.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2074",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgPositive",
+            "iOS": "LemonadeTheme.colors.background.bgPositive"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175",
+            "targetVariableName": "green-lime/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-featured": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.7595676779747009,
+            0.47980010509490967,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#C27AFF"
+        },
+        "$description": "Use for featured states, such as highlighted or promoted content.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5063:3128",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgFeatured",
+            "iOS": "LemonadeTheme.colors.background.bgFeatured"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:dacb1222ed4c4104b8d0559a90c6ab357666d2cb/72:99",
+            "targetVariableName": "purple/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-neutral": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6500392556190491,
+            0.6419216394424438,
+            0.6283921599388123
+          ],
+          "alpha": 1,
+          "hex": "#A6A4A0"
+        },
+        "$description": "Use for neutral states that don’t carry positive, caution, or critical meaning.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2039",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgNeutral",
+            "iOS": "LemonadeTheme.colors.background.bgNeutral"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:3343c47086185f2662fc85622239fae01a0a4297/424:101",
+            "targetVariableName": "neutral/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-critical-subtle": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9686274528503418,
+            0.23529411852359772,
+            0.2823529541492462
+          ],
+          "alpha": 0.10000000149011612,
+          "hex": "#F73C48"
+        },
+        "$description": "Use for subtle backgrounds indicating critical context.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2037",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgCriticalSubtle",
+            "iOS": "LemonadeTheme.colors.background.bgCriticalSubtle"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/559:13",
+            "targetVariableName": "red/alpha/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-caution-subtle": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.994271457195282,
+            0.6020927429199219,
+            0
+          ],
+          "alpha": 0.10000000149011612,
+          "hex": "#FE9A00"
+        },
+        "$description": "Use for subtle backgrounds indicating caution.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2035",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgCautionSubtle",
+            "iOS": "LemonadeTheme.colors.background.bgCautionSubtle"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:0aa49d6b6d51cd34a538da859f6db0a2c5c62dbf/76:139",
+            "targetVariableName": "amber/alpha/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-info-subtle": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.16933248937129974,
+            0.49804946780204773,
+            1
+          ],
+          "alpha": 0.10000000149011612,
+          "hex": "#2B7FFF"
+        },
+        "$description": "Use for subtle backgrounds indicating information.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2080",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgInfoSubtle",
+            "iOS": "LemonadeTheme.colors.background.bgInfoSubtle"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315",
+            "targetVariableName": "blue/alpha/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-positive-subtle": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.4872932434082031,
+            0.8099173903465271,
+            0
+          ],
+          "alpha": 0.10000000149011612,
+          "hex": "#7CCF00"
+        },
+        "$description": "Use for subtle backgrounds indicating positivity or success.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2049",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgPositiveSubtle",
+            "iOS": "LemonadeTheme.colors.background.bgPositiveSubtle"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:169b48022f4a60164b3d49fb0e10aced4427846a/76:403",
+            "targetVariableName": "green-lime/alpha/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-featured-subtle": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6779096126556396,
+            0.27594193816185,
+            1
+          ],
+          "alpha": 0.20000000298023224,
+          "hex": "#AD46FF"
+        },
+        "$description": "Use for subtle backgrounds indicating featured content.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5063:3129",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgFeaturedSubtle",
+            "iOS": "LemonadeTheme.colors.background.bgFeaturedSubtle"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:73020466b32a42e1b45c1c09d853472ad082ec72/76:251",
+            "targetVariableName": "purple/alpha/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-neutral-subtle": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.10000000149011612,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for subtle backgrounds without strong semantic meaning.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2034",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgNeutralSubtle",
+            "iOS": "LemonadeTheme.colors.background.bgNeutralSubtle"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24",
+            "targetVariableName": "white/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      }
+    },
+    "Inverse": {
+      "bg-default-inverse": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use as the inverse of bg-default, typically for dark backgrounds.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2031",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgDefaultInverse",
+            "iOS": "LemonadeTheme.colors.background.bgDefaultInverse"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/115:49",
+            "targetVariableName": "white/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-subtle-inverse": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9137254953384399,
+            0.9058823585510254,
+            0.8901960849761963
+          ],
+          "alpha": 1,
+          "hex": "#E9E7E3"
+        },
+        "$description": "Use as the inverse of bg-subtle, for elevated surfaces on dark backgrounds.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2043",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgSubtleInverse",
+            "iOS": "LemonadeTheme.colors.background.bgSubtleInverse"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:3b11184460b5dad6bf35aa745af56e56c2378b54/424:2",
+            "targetVariableName": "neutral/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-elevated-inverse": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.46000000834465027,
+            0.4200000762939453,
+            0.3400000035762787
+          ],
+          "alpha": 0.10000000149011612,
+          "hex": "#756B57"
+        },
+        "$description": "Use as the inverse of bg-elevated, for higher elevation on dark backgrounds.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2066",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgElevatedInverse",
+            "iOS": "LemonadeTheme.colors.background.bgElevatedInverse"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/504:61",
+            "targetVariableName": "neutral/alpha/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      }
+    },
+    "Fixed": {
+      "bg-always-dark": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.03529411926865578,
+            0.0313725508749485,
+            0.0235294122248888
+          ],
+          "alpha": 0.925000011920929,
+          "hex": "#090806"
+        },
+        "$description": "Use for surfaces that must always appear dark, regardless of theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2029",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgAlwaysDark",
+            "iOS": "LemonadeTheme.colors.background.bgAlwaysDark"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+            "targetVariableName": "neutral/alpha/900",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-always-dark-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.46619999408721924,
+            0.4354000389575958,
+            0.37380000948905945
+          ],
+          "alpha": 0.30000001192092896,
+          "hex": "#776F5F"
+        },
+        "$description": "Use for high-emphasis surfaces that must always appear dark, regardless of theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4974:197",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgAlwaysDarkHigh",
+            "iOS": "LemonadeTheme.colors.background.bgAlwaysDarkHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270",
+            "targetVariableName": "neutral/alpha/300",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-always-dark-medium": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5589999556541443,
+            0.5263333916664124,
+            0.4610000252723694
+          ],
+          "alpha": 0.20000000298023224,
+          "hex": "#8F8676"
+        },
+        "$description": "Use for medium-emphasis surfaces that must always appear dark, regardless of theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4974:196",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgAlwaysDarkMedium",
+            "iOS": "LemonadeTheme.colors.background.bgAlwaysDarkMedium"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/501:251",
+            "targetVariableName": "neutral/alpha/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-always-dark-low": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3724000155925751,
+            0.3107999563217163,
+            0.1876000016927719
+          ],
+          "alpha": 0.05000000074505806,
+          "hex": "#5F4F30"
+        },
+        "$description": "Use for low-emphasis surfaces that must always appear dark, regardless of theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4974:195",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgAlwaysDarkLow",
+            "iOS": "LemonadeTheme.colors.background.bgAlwaysDarkLow"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:592bebe32cb3538b9658b266a4f3988cafef06c5/504:94",
+            "targetVariableName": "neutral/alpha/50",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-always-light": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for surfaces that must always appear light, regardless of theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2028",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgAlwaysLight",
+            "iOS": "LemonadeTheme.colors.background.bgAlwaysLight"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/115:49",
+            "targetVariableName": "white/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-always-light-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.20000000298023224,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for high-emphasis surfaces that must always appear light, regardless of theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4974:194",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgAlwaysLightHigh",
+            "iOS": "LemonadeTheme.colors.background.bgAlwaysLightHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:51e3632fa986388868a89fd3aa4a4833f2febbf5/109:25",
+            "targetVariableName": "white/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-always-light-medium": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.10000000149011612,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for medium-emphasis surfaces that must always appear light, regardless of theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4974:193",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgAlwaysLightMedium",
+            "iOS": "LemonadeTheme.colors.background.bgAlwaysLightMedium"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24",
+            "targetVariableName": "white/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-always-light-low": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.05000000074505806,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for low-emphasis surfaces that must always appear light, regardless of theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4974:192",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgAlwaysLightLow",
+            "iOS": "LemonadeTheme.colors.background.bgAlwaysLightLow"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:644365395869c07f1342bc4eda3f2d2a8aed61c7/109:23",
+            "targetVariableName": "white/50",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-transparent": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for transparent surfaces or when layering elements.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2027",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgTransparent",
+            "iOS": "LemonadeTheme.colors.background.bgTransparent"
+          }
+        }
+      },
+      "bg-transparent-light": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0,
+          "hex": "#000000"
+        },
+        "$description": "Use for transparent light surfaces or when layering elements over darker content.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4664:26753",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgTransparentLight",
+            "iOS": "LemonadeTheme.colors.background.bgTransparentLight"
+          }
+        }
+      },
+      "bg-transparent-dark": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for transparent dark surfaces or when layering elements over lighter content.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4664:26754",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.background.bgTransparentDark",
+            "iOS": "LemonadeTheme.colors.background.bgTransparentDark"
+          }
+        }
+      }
+    }
+  },
+  "Border": {
+    "border-neutral-low": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          1,
+          1
+        ],
+        "alpha": 0.10000000149011612,
+        "hex": "#FFFFFF"
+      },
+      "$description": "Use for subtle dividers or low-emphasis element boundaries.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:3037:2061",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.colors.border.borderNeutralLow",
+          "iOS": "LemonadeTheme.colors.border.borderNeutralLow"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24",
+          "targetVariableName": "white/100",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-neutral-medium": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          1,
+          1
+        ],
+        "alpha": 0.20000000298023224,
+        "hex": "#FFFFFF"
+      },
+      "$description": "Use for standard borders and general element outlines.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:3037:2065",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.colors.border.borderNeutralMedium",
+          "iOS": "LemonadeTheme.colors.border.borderNeutralMedium"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:51e3632fa986388868a89fd3aa4a4833f2febbf5/109:25",
+          "targetVariableName": "white/200",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-neutral-high": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          1,
+          1
+        ],
+        "alpha": 0.30000001192092896,
+        "hex": "#FFFFFF"
+      },
+      "$description": "Use for high-contrast borders or strong dividers that require clear visual separation.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:3106:2190",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.colors.border.borderNeutralHigh",
+          "iOS": "LemonadeTheme.colors.border.borderNeutralHigh"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:a55954920e7c4af5b152459fc69045e42fb15a48/109:26",
+          "targetVariableName": "white/300",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "border-selected": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.8820960521697998,
+          0.8995633125305176,
+          0.10043667256832123
+        ],
+        "alpha": 1,
+        "hex": "#E1E51A"
+      },
+      "$description": "Use to indicate a selected or active state on components.",
+      "$extensions": {
+        "com.figma.variableId": "VariableID:3037:2025",
+        "com.figma.scopes": [
+          "SHAPE_FILL",
+          "STROKE",
+          "EFFECT_COLOR"
+        ],
+        "com.figma.codeSyntax": {
+          "ANDROID": "LemonadeTheme.colors.border.borderSelected",
+          "iOS": "LemonadeTheme.colors.border.borderSelected"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87",
+          "targetVariableName": "yellow-lime/500",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    },
+    "Brand": {
+      "border-brand": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8820960521697998,
+            0.8995633125305176,
+            0.10043667256832123
+          ],
+          "alpha": 1,
+          "hex": "#E1E51A"
+        },
+        "$description": "Use for borders that reinforce brand identity or highlight key interactive elements.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2024",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderBrand",
+            "iOS": "LemonadeTheme.colors.border.borderBrand"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87",
+            "targetVariableName": "yellow-lime/500",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-on-brand-low": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.4000000059604645,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for subtle borders placed on brand-coloured surfaces.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2033",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderOnBrandLow",
+            "iOS": "LemonadeTheme.colors.border.borderOnBrandLow"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:53fdaf2207681c3d4096ddebf8e27b6ebff08f55/109:27",
+            "targetVariableName": "white/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-on-brand-medium": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.6000000238418579,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for medium-emphasis borders on brand surfaces.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2023",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderOnBrandMedium",
+            "iOS": "LemonadeTheme.colors.border.borderOnBrandMedium"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:34078c143a73dc340a495ef80e13d1db6dd8cf2a/109:29",
+            "targetVariableName": "white/600",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-on-brand-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.699999988079071,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for strong or high-contrast borders on brand surfaces.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2041",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderOnBrandHigh",
+            "iOS": "LemonadeTheme.colors.border.borderOnBrandHigh"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:da189a1c97802242459d05a6be7f95e529766c99/109:30",
+            "targetVariableName": "white/700",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-accent": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0.7218724489212036,
+            0.8573380708694458
+          ],
+          "alpha": 1,
+          "hex": "#00B8DB"
+        },
+        "$description": "Use for borders that need visual emphasis outside the brand palette.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2022",
+          "com.figma.hiddenFromPublishing": true,
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderAccent",
+            "iOS": "LemonadeTheme.colors.border.borderAccent"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:db6da18beb938960e3f7cecd2f3872015c2941c9/72:145",
+            "targetVariableName": "cyan/500",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      }
+    },
+    "Voice": {
+      "border-critical": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9960784316062927,
+            0.32549020648002625,
+            0.3686274588108063
+          ],
+          "alpha": 1,
+          "hex": "#FE535E"
+        },
+        "$description": "Use for borders that indicate errors or destructive actions.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2046",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderCritical",
+            "iOS": "LemonadeTheme.colors.border.borderCritical"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:bad3c888e7f2e3103cbf19a6285876cec639af8e/559:5",
+            "targetVariableName": "red/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-caution": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9930035471916199,
+            0.7819446325302124,
+            0
+          ],
+          "alpha": 1,
+          "hex": "#FDC700"
+        },
+        "$description": "Use for borders that indicate warnings or potential risks.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2021",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderCaution",
+            "iOS": "LemonadeTheme.colors.border.borderCaution"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:e37bef0d14979b03cf97c6b3c7608ebf73123a5c/72:200",
+            "targetVariableName": "amber/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-info": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3157993257045746,
+            0.6355904340744019,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#51A2FF"
+        },
+        "$description": "Use for borders that indicate informational or neutral states.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2020",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderInfo",
+            "iOS": "LemonadeTheme.colors.border.borderInfo"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:487eb71aacc92391f3958cabf5a1d53cceec9879/72:134",
+            "targetVariableName": "blue/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-positive": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6024433970451355,
+            0.9016712307929993,
+            0
+          ],
+          "alpha": 1,
+          "hex": "#9AE600"
+        },
+        "$description": "Use for borders that indicate success or confirmation states.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2019",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderPositive",
+            "iOS": "LemonadeTheme.colors.border.borderPositive"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:6f2e22d3b16c2868dc5d087c3ea7fa7d662c58c3/72:175",
+            "targetVariableName": "green-lime/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-featured": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.7595676779747009,
+            0.47980010509490967,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#C27AFF"
+        },
+        "$description": "Use for borders that indicate featured or highlighted content.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5063:3130",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderFeatured",
+            "iOS": "LemonadeTheme.colors.border.borderFeatured"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:dacb1222ed4c4104b8d0559a90c6ab357666d2cb/72:99",
+            "targetVariableName": "purple/400",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-critical-subtle": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9686274528503418,
+            0.23529411852359772,
+            0.2823529541492462
+          ],
+          "alpha": 0.10000000149011612,
+          "hex": "#F73C48"
+        },
+        "$description": "Use for subtle borders related to error or destructive contexts.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2018",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderCriticalSubtle",
+            "iOS": "LemonadeTheme.colors.border.borderCriticalSubtle"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:f25e0bd72b68a66c5a7b27932765d5287f4feda9/559:13",
+            "targetVariableName": "red/alpha/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-caution-subtle": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            0.4107343256473541,
+            0
+          ],
+          "alpha": 0.10000000149011612,
+          "hex": "#FF6900"
+        },
+        "$description": "Use for subtle borders that signal caution with low emphasis.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2017",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderCautionSubtle",
+            "iOS": "LemonadeTheme.colors.border.borderCautionSubtle"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:798357b6c28271a579acd379d7528d833b57a34f/76:457",
+            "targetVariableName": "orange/alpha/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-info-subtle": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.16933248937129974,
+            0.49804946780204773,
+            1
+          ],
+          "alpha": 0.10000000149011612,
+          "hex": "#2B7FFF"
+        },
+        "$description": "Use for subtle borders that support informational messages.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2015",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderInfoSubtle",
+            "iOS": "LemonadeTheme.colors.border.borderInfoSubtle"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:7cd7058df2a998d42d3e62a9e236e7917c78161d/76:315",
+            "targetVariableName": "blue/alpha/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-positive-subtle": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.4872932434082031,
+            0.8099173903465271,
+            0
+          ],
+          "alpha": 0.10000000149011612,
+          "hex": "#7CCF00"
+        },
+        "$description": "Use for subtle borders that convey success or positive feedback.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2014",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderPositiveSubtle",
+            "iOS": "LemonadeTheme.colors.border.borderPositiveSubtle"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:169b48022f4a60164b3d49fb0e10aced4427846a/76:403",
+            "targetVariableName": "green-lime/alpha/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-featured-subtle": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6779096126556396,
+            0.27594193816185,
+            1
+          ],
+          "alpha": 0.20000000298023224,
+          "hex": "#AD46FF"
+        },
+        "$description": "Use for subtle borders that convey featured or highlighted content.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:5063:3131",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderFeaturedSubtle",
+            "iOS": "LemonadeTheme.colors.border.borderFeaturedSubtle"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:73020466b32a42e1b45c1c09d853472ad082ec72/76:251",
+            "targetVariableName": "purple/alpha/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      }
+    },
+    "Inverse": {
+      "border-neutral-low-inverse": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.46000000834465027,
+            0.4200000762939453,
+            0.3400000035762787
+          ],
+          "alpha": 0.10000000149011612,
+          "hex": "#756B57"
+        },
+        "$description": "Use for subtle borders on dark or inverted backgrounds.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2012",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderNeutralLowInverse",
+            "iOS": "LemonadeTheme.colors.border.borderNeutralLowInverse"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/504:61",
+            "targetVariableName": "neutral/alpha/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-neutral-medium-inverse": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5589999556541443,
+            0.5263333916664124,
+            0.4610000252723694
+          ],
+          "alpha": 0.20000000298023224,
+          "hex": "#8F8676"
+        },
+        "$description": "Use for standard borders on dark or inverted backgrounds.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2011",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderNeutralMediumInverse",
+            "iOS": "LemonadeTheme.colors.border.borderNeutralMediumInverse"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/501:251",
+            "targetVariableName": "neutral/alpha/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-neutral-high-inverse": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.46619999408721924,
+            0.4354000389575958,
+            0.37380000948905945
+          ],
+          "alpha": 0.30000001192092896,
+          "hex": "#776F5F"
+        },
+        "$description": "Use for standard borders on dark or inverted backgrounds.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3106:2204",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderNeutralHighInverse",
+            "iOS": "LemonadeTheme.colors.border.borderNeutralHighInverse"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270",
+            "targetVariableName": "neutral/alpha/300",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-selected-inverse": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.8999999761581421,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use to indicate selection or active state on dark or inverted backgrounds.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2010",
+          "com.figma.scopes": [
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderSelectedInverse",
+            "iOS": "LemonadeTheme.colors.border.borderSelectedInverse"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:1cde25931e5330368f430707ddecf5da880df6d6/109:32",
+            "targetVariableName": "white/900",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-brand-inverse": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.7802666425704956,
+            0.7919999957084656,
+            0.08800001442432404
+          ],
+          "alpha": 1,
+          "hex": "#C7CA16"
+        },
+        "$description": "Use for brand borders on dark or inverted backgrounds.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2009",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderBrandInverse",
+            "iOS": "LemonadeTheme.colors.border.borderBrandInverse"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:e101b2da4e92f186cf4f636e7e0ac67eb6e5bd72/405:10",
+            "targetVariableName": "yellow-lime/600",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      }
+    },
+    "Fixed": {
+      "border-always-light": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for borders that must always appear light, regardless of theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2071",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderAlwaysLight",
+            "iOS": "LemonadeTheme.colors.border.borderAlwaysLight"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:586822080d8c9ff1143af7e527ac570881d2aac6/115:49",
+            "targetVariableName": "white/950",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-always-light-low": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.10000000149011612,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for subtle light borders that require minimal emphasis, regardless of theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3447:1876",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderAlwaysLight",
+            "iOS": "LemonadeTheme.colors.border.borderAlwaysLight"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24",
+            "targetVariableName": "white/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-always-light-medium": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.30000001192092896,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for standard light borders that need clear visibility in any theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3447:1877",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderAlwaysLight",
+            "iOS": "LemonadeTheme.colors.border.borderAlwaysLight"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:a55954920e7c4af5b152459fc69045e42fb15a48/109:26",
+            "targetVariableName": "white/300",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-always-light-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.5,
+          "hex": "#FFFFFF"
+        },
+        "$description": "Use for strong light borders that require high contrast or clear separation, independent of theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3447:1878",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderAlwaysLight",
+            "iOS": "LemonadeTheme.colors.border.borderAlwaysLight"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:6b52be630b90a02df7b3a03f5e58a12ed596a2c3/109:28",
+            "targetVariableName": "white/500",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-always-dark": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.03529411926865578,
+            0.0313725508749485,
+            0.0235294122248888
+          ],
+          "alpha": 0.925000011920929,
+          "hex": "#090806"
+        },
+        "$description": "Use for borders that must always appear dark, regardless of theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3037:2013",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderAlwaysDark",
+            "iOS": "LemonadeTheme.colors.border.borderAlwaysDark"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:23654674cbdb8671c55108ccce491e16c33a1d57/501:487",
+            "targetVariableName": "neutral/alpha/900",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-always-dark-low": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.46000000834465027,
+            0.4200000762939453,
+            0.3400000035762787
+          ],
+          "alpha": 0.10000000149011612,
+          "hex": "#756B57"
+        },
+        "$description": "Use for subtle dark borders that require minimal emphasis, regardless of theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3447:1879",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderAlwaysDark",
+            "iOS": "LemonadeTheme.colors.border.borderAlwaysDark"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/504:61",
+            "targetVariableName": "neutral/alpha/100",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-always-dark-medium": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5589999556541443,
+            0.5263333916664124,
+            0.4610000252723694
+          ],
+          "alpha": 0.20000000298023224,
+          "hex": "#8F8676"
+        },
+        "$description": "Use for standard dark borders that need clear visibility in any theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3447:1880",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderAlwaysDark",
+            "iOS": "LemonadeTheme.colors.border.borderAlwaysDark"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/501:251",
+            "targetVariableName": "neutral/alpha/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "border-always-dark-high": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.46619999408721924,
+            0.4354000389575958,
+            0.37380000948905945
+          ],
+          "alpha": 0.30000001192092896,
+          "hex": "#776F5F"
+        },
+        "$description": "Use for strong dark borders that require high contrast or clear separation, independent of theme or mode.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3447:1881",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "STROKE",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.border.borderAlwaysDark",
+            "iOS": "LemonadeTheme.colors.border.borderAlwaysDark"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270",
+            "targetVariableName": "neutral/alpha/300",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      }
+    }
+  },
+  "Interaction": {
+    "Interactive": {
+      "Background": {
+        "bg-default-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.9656000137329102,
+              0.9611200094223022,
+              0.9544000029563904
+            ],
+            "alpha": 1,
+            "hex": "#F6F5F3"
+          },
+          "$description": "Use for interactive states on the default background.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3037:2007",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgDefaultInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgDefaultInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:9f761b742653cb7d7a95963c2ba467fe50bc2c15/503:33",
+              "targetVariableName": "neutral/50",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-subtle-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.5589999556541443,
+              0.5263333916664124,
+              0.4610000252723694
+            ],
+            "alpha": 0.20000000298023224,
+            "hex": "#8F8676"
+          },
+          "$description": "Use for interactive states on subtle neutral backgrounds.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3037:2038",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgSubtleInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgSubtleInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/501:251",
+              "targetVariableName": "neutral/alpha/200",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-elevated-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.46619999408721924,
+              0.4354000389575958,
+              0.37380000948905945
+            ],
+            "alpha": 0.30000001192092896,
+            "hex": "#776F5F"
+          },
+          "$description": "Use for interactive states on elevated backgrounds.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3037:2063",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgElevatedInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgElevatedInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270",
+              "targetVariableName": "neutral/alpha/300",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-elevated-high-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.46619999408721924,
+              0.4354000389575958,
+              0.37380000948905945
+            ],
+            "alpha": 0.30000001192092896,
+            "hex": "#776F5F"
+          },
+          "$description": "Use for interactive states on high-emphasis elevated backgrounds.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3139:2121",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgElevatedHighInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgElevatedHighInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270",
+              "targetVariableName": "neutral/alpha/300",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-brand-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.9160000085830688,
+              0.9160000085830688,
+              0.2840000092983246
+            ],
+            "alpha": 1,
+            "hex": "#EAEA48"
+          },
+          "$description": "Use for interactive states on brand backgrounds.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3037:2059",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgBrandInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgBrandInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:3d29360b74ce2b1f363eda98f910b1182240f8f9/406:13",
+              "targetVariableName": "yellow-lime/400",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-brand-elevated-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              1,
+              1,
+              1
+            ],
+            "alpha": 0.6000000238418579,
+            "hex": "#FFFFFF"
+          },
+          "$description": "Use for interactive states on brand elevated backgrounds.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3383:9871",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgBrandElevatedInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgBrandElevatedInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:34078c143a73dc340a495ef80e13d1db6dd8cf2a/109:29",
+              "targetVariableName": "white/600",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-brand-high-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.1595725268125534,
+              0.19419847428798676,
+              0.04580152779817581
+            ],
+            "alpha": 1,
+            "hex": "#29320C"
+          },
+          "$description": "Use for interactive states on brand backgrounds.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3037:2006",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgBrandHighInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgBrandHighInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:32edd553f4f45306d1ba866c5595851700a96c50/121:75",
+              "targetVariableName": "yellow-lime/900",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-critical-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.9686274528503418,
+              0.23529411852359772,
+              0.2823529541492462
+            ],
+            "alpha": 1,
+            "hex": "#F73C48"
+          },
+          "$description": "Use for interactive states in critical scenarios.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3037:2057",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgCriticalInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgCriticalInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:b93633816c211298fb8a037293933a4bc8c5ab90/559:6",
+              "targetVariableName": "red/500",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-caution-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              1,
+              0.4107343256473541,
+              0
+            ],
+            "alpha": 1,
+            "hex": "#FF6900"
+          },
+          "$description": "Use for interactive states in cautionary scenarios.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3037:2026",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgCautionInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgCautionInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:1b2a1da020bdb66db7385499511d6ffcaf1a79ba/72:245",
+              "targetVariableName": "orange/500",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-info-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.16933248937129974,
+              0.49804946780204773,
+              1
+            ],
+            "alpha": 1,
+            "hex": "#2B7FFF"
+          },
+          "$description": "Use for interactive states in informational scenarios.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3037:2044",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgInfoInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgInfoInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:b8b810fa0c26ca11a9f631f05ae63ec646f8aab6/72:135",
+              "targetVariableName": "blue/500",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-positive-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.4872932434082031,
+              0.8099173903465271,
+              0
+            ],
+            "alpha": 1,
+            "hex": "#7CCF00"
+          },
+          "$description": "Use for interactive states in positive scenarios.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3037:2032",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgPositiveInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgPositiveInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:278146ddbf77f7d3dbf67d4311ade5a56d494056/72:179",
+              "targetVariableName": "green-lime/500",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-featured-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.8544051647186279,
+              0.6977941989898682,
+              1
+            ],
+            "alpha": 1,
+            "hex": "#DAB2FF"
+          },
+          "$description": "Use for interactive states in featured scenarios.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5063:3132",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgFeaturedInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgFeaturedInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:298c56b7edce228089c1f4f978ffbf6f97c6848f/72:97",
+              "targetVariableName": "purple/300",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-neutral-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.25882354378700256,
+              0.2549019753932953,
+              0.24313725531101227
+            ],
+            "alpha": 1,
+            "hex": "#42413E"
+          },
+          "$description": "Use for interactive states in neutral scenarios.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3037:2005",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgNeutralInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgNeutralInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:0ca47174bf1ac58faf64ed34cb58524c31493729/424:10",
+              "targetVariableName": "neutral/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-critical-subtle-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.9686274528503418,
+              0.23529411852359772,
+              0.2823529541492462
+            ],
+            "alpha": 0.20000000298023224,
+            "hex": "#F73C48"
+          },
+          "$description": "Use for interactive states on subtle critical backgrounds.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3037:2079",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgCriticalSubtleInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgCriticalSubtleInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:b1fe30e3320da67c3864e50f532848b06c78b19e/559:14",
+              "targetVariableName": "red/alpha/200",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-caution-subtle-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              1,
+              0.4107343256473541,
+              0
+            ],
+            "alpha": 0.20000000298023224,
+            "hex": "#FF6900"
+          },
+          "$description": "Use for interactive states on subtle caution backgrounds.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3037:2056",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgCautionSubtleInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgCautionSubtleInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:034080f4f6e812d5e9ae5cd4bf8bf4f223134028/76:458",
+              "targetVariableName": "orange/alpha/200",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-info-subtle-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.16862745583057404,
+              0.49803921580314636,
+              1
+            ],
+            "alpha": 0.20000000298023224,
+            "hex": "#2B7FFF"
+          },
+          "$description": "Use for interactive states on subtle info backgrounds.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3037:2004",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgInfoSubtleInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgInfoSubtleInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:8f72eca7a9211f9081c968931c670339bf8a84a6/76:317",
+              "targetVariableName": "blue/alpha/200",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-positive-subtle-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.4872932434082031,
+              0.8099173903465271,
+              0
+            ],
+            "alpha": 0.20000000298023224,
+            "hex": "#7CCF00"
+          },
+          "$description": "Use for interactive states on subtle positive backgrounds.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3037:2003",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgPositiveSubtleInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgPositiveSubtleInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:cd519cce5202dd4608f48c522bd2274976028603/76:405",
+              "targetVariableName": "green-lime/alpha/200",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-featured-subtle-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.6779096126556396,
+              0.27594193816185,
+              1
+            ],
+            "alpha": 0.30000001192092896,
+            "hex": "#AD46FF"
+          },
+          "$description": "Use for interactive states on subtle featured backgrounds.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5063:3133",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgFeaturedSubtleInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgFeaturedSubtleInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:a6a70dd6026b14e00ae9d4d83893548ba28d7c73/76:253",
+              "targetVariableName": "purple/alpha/300",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-neutral-subtle-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0,
+              0,
+              0
+            ],
+            "alpha": 0.20000000298023224,
+            "hex": "#000000"
+          },
+          "$description": "Use for interactive states on subtle neutral backgrounds.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3037:2002",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgNeutralSubtleInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgNeutralSubtleInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:ae8560772211bb8815cd52e02cc9732ea401524e/109:39",
+              "targetVariableName": "black/200",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-always-dark-high-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.12999999523162842,
+              0.10999999940395355,
+              0.07000000029802322
+            ],
+            "alpha": 0.4000000059604645,
+            "hex": "#211C12"
+          },
+          "$description": "Use for interactive states on high-emphasis surfaces that must always appear dark, regardless of theme or mode.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:4979:275",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgAlwaysDarkHighInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgAlwaysDarkHighInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:c3574904535c2bf808ae1ecb322386bbc65fdcca/501:271",
+              "targetVariableName": "neutral/alpha/400",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-always-dark-medium-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.46619999408721924,
+              0.4354000389575958,
+              0.37380000948905945
+            ],
+            "alpha": 0.30000001192092896,
+            "hex": "#776F5F"
+          },
+          "$description": "Use for interactive states on medium-emphasis surfaces that must always appear dark, regardless of theme or mode.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:4979:278",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgAlwaysDarkMediumInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgAlwaysDarkMediumInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270",
+              "targetVariableName": "neutral/alpha/300",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-always-dark-low-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.46000000834465027,
+              0.4200000762939453,
+              0.3400000035762787
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#756B57"
+          },
+          "$description": "Use for interactive states on low-emphasis surfaces that must always appear dark, regardless of theme or mode.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:4979:277",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgAlwaysDarkLowInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgAlwaysDarkLowInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/504:61",
+              "targetVariableName": "neutral/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-always-light-high-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              1,
+              1,
+              1
+            ],
+            "alpha": 0.30000001192092896,
+            "hex": "#FFFFFF"
+          },
+          "$description": "Use for interactive states on high-emphasis surfaces that must always appear light, regardless of theme or mode.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:4979:274",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgAlwaysLightHighInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgAlwaysLightHighInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:a55954920e7c4af5b152459fc69045e42fb15a48/109:26",
+              "targetVariableName": "white/300",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-always-light-medium-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              1,
+              1,
+              1
+            ],
+            "alpha": 0.20000000298023224,
+            "hex": "#FFFFFF"
+          },
+          "$description": "Use for interactive states on medium-emphasis surfaces that must always appear light, regardless of theme or mode.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:4979:273",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgAlwaysLightMediumInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgAlwaysLightMediumInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:51e3632fa986388868a89fd3aa4a4833f2febbf5/109:25",
+              "targetVariableName": "white/200",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-always-light-low-interactive": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              1,
+              1,
+              1
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#FFFFFF"
+          },
+          "$description": "Use for interactive states on low-emphasis surfaces that must always appear light, regardless of theme or mode.",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:4979:272",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgAlwaysLightLowInteractive",
+              "iOS": "LemonadeTheme.colors.interaction.bgAlwaysLightLowInteractive"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:d175324ad92cea8ee3b097b57bb73d13da8cdd70/109:24",
+              "targetVariableName": "white/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
+      }
+    },
+    "Pressed": {
+      "Background": {
+        "bg-default-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.46000000834465027,
+              0.4200000762939453,
+              0.3400000035762787
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#756B57"
+          },
+          "$description": "Use for pressed/tap feedback on elements over bg-default",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3125:1886",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgDefaultPressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgDefaultPressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:3e60db74526babb1f7604d96d9fc18c74e9ba0a5/504:61",
+              "targetVariableName": "neutral/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-subtle-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.5589999556541443,
+              0.5263333916664124,
+              0.4610000252723694
+            ],
+            "alpha": 0.20000000298023224,
+            "hex": "#8F8676"
+          },
+          "$description": "Use for pressed/tap feedback on elements over bg-subtle",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3125:1887",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgSubtlePressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgSubtlePressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:61c64f1f3c0aaf3c52d1ea6d9ae8176afa98b5f0/501:251",
+              "targetVariableName": "neutral/alpha/200",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-elevated-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.46619999408721924,
+              0.4354000389575958,
+              0.37380000948905945
+            ],
+            "alpha": 0.30000001192092896,
+            "hex": "#776F5F"
+          },
+          "$description": "Use for pressed/tap feedback on elements over bg-elevated",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3125:1888",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgElevatedPressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgElevatedPressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:8f9840f9388ee8dbd60f7fc6be48455e0f9d90f1/501:270",
+              "targetVariableName": "neutral/alpha/300",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-brand-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.7802666425704956,
+              0.7919999957084656,
+              0.08800001442432404
+            ],
+            "alpha": 1,
+            "hex": "#C7CA16"
+          },
+          "$description": "Use for pressed/tap feedback on brand surfaces",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3125:1889",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgBrandPressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgBrandPressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:e101b2da4e92f186cf4f636e7e0ac67eb6e5bd72/405:10",
+              "targetVariableName": "yellow-lime/600",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-brand-elevated-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              1,
+              1,
+              1
+            ],
+            "alpha": 0.6000000238418579,
+            "hex": "#FFFFFF"
+          },
+          "$description": "Use for pressed/tap feedback on brand elevated surfaces",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3384:9896",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgBrandElevatedPressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgBrandElevatedPressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:34078c143a73dc340a495ef80e13d1db6dd8cf2a/109:29",
+              "targetVariableName": "white/600",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-brand-high-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.11600000411272049,
+              0.1550000011920929,
+              0.02500000037252903
+            ],
+            "alpha": 1,
+            "hex": "#1E2806"
+          },
+          "$description": "Use for pressed/tap feedback on high-emphasis brand surfaces",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3125:1890",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgBrandHighPressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgBrandHighPressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:42c4e072fa330a540702e501522d153308f72deb/121:80",
+              "targetVariableName": "yellow-lime/950",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-critical-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.7529411911964417,
+              0.08235294371843338,
+              0.125490203499794
+            ],
+            "alpha": 1,
+            "hex": "#C01520"
+          },
+          "$description": "Use for pressed/tap feedback in critical contexts",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3125:1891",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgCriticalPressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgCriticalPressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:a17656e99cc45a002894f8a0fc808807399ae7f0/559:8",
+              "targetVariableName": "red/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-caution-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.7317888140678406,
+              0.30102330446243286,
+              0
+            ],
+            "alpha": 1,
+            "hex": "#BB4D00"
+          },
+          "$description": "Use for pressed/tap feedback in caution contexts",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3125:1892",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgCautionPressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgCautionPressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:deae95126cb95b53a3cbd5871b992b3bfca35319/72:202",
+              "targetVariableName": "amber/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-info-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.0779077485203743,
+              0.27913516759872437,
+              0.9017744660377502
+            ],
+            "alpha": 1,
+            "hex": "#1447E6"
+          },
+          "$description": "Use for pressed/tap feedback in info contexts",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3125:1893",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgInfoPressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgInfoPressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:a6ed5840402749dbf76d19a0d797da45c091b8a4/72:129",
+              "targetVariableName": "blue/700",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-positive-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0,
+              0.6513022780418396,
+              0.24199268221855164
+            ],
+            "alpha": 1,
+            "hex": "#00A63E"
+          },
+          "$description": "Use for pressed/tap feedback in positive contexts",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3125:1894",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgPositivePressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgPositivePressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:8c51290ae15a1290cab12aa6056843e544bf7a7b/72:161",
+              "targetVariableName": "green/600",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-featured-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.6779096126556396,
+              0.27594193816185,
+              1
+            ],
+            "alpha": 1,
+            "hex": "#AD46FF"
+          },
+          "$description": "Use for pressed/tap feedback in featured contexts",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5063:3134",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgFeaturedPressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgFeaturedPressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:0eac4904f3cf71141e8adcfe4ac8fa3bc2740e03/72:102",
+              "targetVariableName": "purple/500",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-neutral-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.145454540848732,
+              0.14181818068027496,
+              0.1345454603433609
+            ],
+            "alpha": 1,
+            "hex": "#252422"
+          },
+          "$description": "Use for pressed/tap feedback in neutral contexts",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3125:1895",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgNeutralPressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgNeutralPressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:b0e81dc5713f650a189d2dc33e1b7cd95f66e545/427:0",
+              "targetVariableName": "neutral/800",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-critical-subtle-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.9686274528503418,
+              0.23529411852359772,
+              0.2823529541492462
+            ],
+            "alpha": 0.30000001192092896,
+            "hex": "#F73C48"
+          },
+          "$description": "Use for pressed/tap feedback on subtle critical backgrounds",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3125:1896",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgCriticalSubtlePressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgCriticalSubtlePressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:c790ede1def9d75bed80ac58f94f03e66bd9cf8a/559:15",
+              "targetVariableName": "red/alpha/300",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-caution-subtle-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.994271457195282,
+              0.6020927429199219,
+              0
+            ],
+            "alpha": 0.30000001192092896,
+            "hex": "#FE9A00"
+          },
+          "$description": "Use for pressed/tap feedback on subtle caution backgrounds",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3125:1897",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgCautionSubtlePressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgCautionSubtlePressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:f834d81784c5a60e2d3b1d8f7c9cd809d125f9cf/76:143",
+              "targetVariableName": "amber/alpha/300",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-info-subtle-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.16933248937129974,
+              0.49804946780204773,
+              1
+            ],
+            "alpha": 0.30000001192092896,
+            "hex": "#2B7FFF"
+          },
+          "$description": "Use for pressed/tap feedback on subtle info backgrounds",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3125:1898",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgInfoSubtlePressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgInfoSubtlePressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:1c3bca3074c95cca953150dced0b68c56a5b4cf7/76:319",
+              "targetVariableName": "blue/alpha/300",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-positive-subtle-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.4872932434082031,
+              0.8099173903465271,
+              0
+            ],
+            "alpha": 0.30000001192092896,
+            "hex": "#7CCF00"
+          },
+          "$description": "Use for pressed/tap feedback on subtle positive backgrounds",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3125:1899",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgPositiveSubtlePressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgPositiveSubtlePressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:b32450d86a0a89b66789a934ac8c531e6fb946eb/76:407",
+              "targetVariableName": "green-lime/alpha/300",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-featured-subtle-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.6779096126556396,
+              0.27594193816185,
+              1
+            ],
+            "alpha": 0.10000000149011612,
+            "hex": "#AD46FF"
+          },
+          "$description": "Use for pressed/tap feedback on subtle featured backgrounds",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:5063:3135",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgFeaturedSubtlePressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgFeaturedSubtlePressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:8ffd1ae610cfa4da75bd2e7d489cfbee2bdbeec9/76:249",
+              "targetVariableName": "purple/alpha/100",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        },
+        "bg-neutral-subtle-pressed": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0,
+              0,
+              0
+            ],
+            "alpha": 0.30000001192092896,
+            "hex": "#000000"
+          },
+          "$description": "Use for pressed/tap feedback on subtle neutral backgrounds",
+          "$extensions": {
+            "com.figma.variableId": "VariableID:3125:1900",
+            "com.figma.scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL",
+              "EFFECT_COLOR"
+            ],
+            "com.figma.codeSyntax": {
+              "ANDROID": "LemonadeTheme.colors.interaction.bgNeutralSubtlePressed",
+              "iOS": "LemonadeTheme.colors.interaction.bgNeutralSubtlePressed"
+            },
+            "com.figma.aliasData": {
+              "targetVariableId": "VariableID:d4d4f121adfa1b7ca3f43b12471f34202a373690/109:40",
+              "targetVariableName": "black/300",
+              "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+              "targetVariableSetName": "Colors"
+            }
+          }
+        }
+      }
+    }
+  },
+  "Shadow": {
+    "shadow-default": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0,
+          0
+        ],
+        "alpha": 0.5,
+        "hex": "#000000"
+      },
+      "$extensions": {
+        "com.figma.variableId": "VariableID:4668:13941",
+        "com.figma.scopes": [
+          "ALL_SCOPES"
+        ],
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:a02ea9d633f4c2d9ed9202d4f4068bc6e8472efb/109:42",
+          "targetVariableName": "black/500",
+          "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+          "targetVariableSetName": "Colors"
+        }
+      }
+    }
+  },
+  "Scoped": {
+    "Settlements": {
+      "bg-settlement-instant": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8820960521697998,
+            0.8995633125305176,
+            0.10043667256832123
+          ],
+          "alpha": 1,
+          "hex": "#E1E51A"
+        },
+        "$description": "Use as the background for the Instant settlement frequency.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4913:10",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.scoped.bgSettlementInstant",
+            "iOS": "LemonadeTheme.colors.scoped.bgSettlementInstant"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:108bd7e242693fc88285aa40fbffaacb28702a24/74:87",
+            "targetVariableName": "yellow-lime/500",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-settlement-business-days": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.7450929880142212,
+            0.85866379737854,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#BEDBFF"
+        },
+        "$description": "Use as the background for the Business days settlement frequency.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4913:11",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.scoped.bgSettlementBusinessDays",
+            "iOS": "LemonadeTheme.colors.scoped.bgSettlementBusinessDays"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:e7a43f5f223b2f0b746883b020076263bcfc0be5/72:131",
+            "targetVariableName": "blue/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-settlement-everyday": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8665415048599243,
+            0.8378734588623047,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#DDD6FF"
+        },
+        "$description": "Use as the background for the Everyday settlement frequency.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4913:12",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.scoped.bgSettlementEveryday",
+            "iOS": "LemonadeTheme.colors.scoped.bgSettlementEveryday"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:2d2cc3f79b64963d3e72f5648e7e22c13ffaa79d/74:5",
+            "targetVariableName": "violet/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "bg-settlement-scheduled": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9647058844566345,
+            0.8117647171020508,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#F6CFFF"
+        },
+        "$description": "Use as the background for the Scheduled settlement frequency.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4913:13",
+          "com.figma.scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "EFFECT_COLOR"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.scoped.bgSettlementScheduled",
+            "iOS": "LemonadeTheme.colors.scoped.bgSettlementScheduled"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:50c055b9f05351877f395adb63b29db579bb226a/590:9",
+            "targetVariableName": "fuchsia/200",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-on-settlement-instant": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1595725268125534,
+            0.19419847428798676,
+            0.04580152779817581
+          ],
+          "alpha": 1,
+          "hex": "#29320C"
+        },
+        "$description": "Use for text and icons on the Instant settlement background.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4913:14",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.scoped.contentOnSettlementInstant",
+            "iOS": "LemonadeTheme.colors.scoped.contentOnSettlementInstant"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:32edd553f4f45306d1ba866c5595851700a96c50/121:75",
+            "targetVariableName": "yellow-lime/900",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-on-settlement-business-days": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.09978122264146805,
+            0.23377007246017456,
+            0.7229224443435669
+          ],
+          "alpha": 1,
+          "hex": "#193CB8"
+        },
+        "$description": "Use for text and icons on the Business days settlement background.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4913:15",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.scoped.contentOnSettlementBusinessDays",
+            "iOS": "LemonadeTheme.colors.scoped.contentOnSettlementBusinessDays"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:3a44dd03043bca6b311f1a5548657a613b9e0a86/72:136",
+            "targetVariableName": "blue/800",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-on-settlement-everyday": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3653835356235504,
+            0.05553901195526123,
+            0.7533063292503357
+          ],
+          "alpha": 1,
+          "hex": "#5D0EC0"
+        },
+        "$description": "Use for text and icons on the Everyday settlement background.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4913:16",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.scoped.contentOnSettlementEveryday",
+            "iOS": "LemonadeTheme.colors.scoped.contentOnSettlementEveryday"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:9b66780d5fa36be34d7e3b1ad3e08a49221fef04/74:17",
+            "targetVariableName": "violet/800",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      },
+      "content-on-settlement-scheduled": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5411764979362488,
+            0.003921568859368563,
+            0.5803921818733215
+          ],
+          "alpha": 1,
+          "hex": "#8A0194"
+        },
+        "$description": "Use for text and icons on the Scheduled settlement background.",
+        "$extensions": {
+          "com.figma.variableId": "VariableID:4913:17",
+          "com.figma.scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "com.figma.codeSyntax": {
+            "ANDROID": "LemonadeTheme.colors.scoped.contentOnSettlementScheduled",
+            "iOS": "LemonadeTheme.colors.scoped.contentOnSettlementScheduled"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:fd341a5e984cf6009b254c64463111dc963912b9/590:27",
+            "targetVariableName": "fuchsia/800",
+            "targetVariableSetId": "VariableCollectionId:f53610b1131d0ba179f2a0753cd90fbfc7d21a3a/5:785",
+            "targetVariableSetName": "Colors"
+          }
+        }
+      }
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "Dark"
+  }
+}
