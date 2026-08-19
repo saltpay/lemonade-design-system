@@ -59,6 +59,10 @@ public struct LemonadeInteractionColorsShorthand: Sendable {
     public let bgAlwaysDarkHighInteractive = Color("lemonade-interaction-interactive-background-bg-always-dark-high-interactive", bundle: .lemonade)
     public let bgAlwaysDarkLowInteractive = Color("lemonade-interaction-interactive-background-bg-always-dark-low-interactive", bundle: .lemonade)
     public let bgAlwaysDarkMediumInteractive = Color("lemonade-interaction-interactive-background-bg-always-dark-medium-interactive", bundle: .lemonade)
+    public let bgFeaturedInteractive = Color("lemonade-interaction-interactive-background-bg-featured-interactive", bundle: .lemonade)
+    public let bgFeaturedSubtleInteractive = Color("lemonade-interaction-interactive-background-bg-featured-subtle-interactive", bundle: .lemonade)
+    public let bgFeaturedPressed = Color("lemonade-interaction-pressed-background-bg-featured-pressed", bundle: .lemonade)
+    public let bgFeaturedSubtlePressed = Color("lemonade-interaction-pressed-background-bg-featured-subtle-pressed", bundle: .lemonade)
 }
 
 private let lemonadeInteractionColorsShorthand = LemonadeInteractionColorsShorthand()
@@ -95,6 +99,8 @@ public struct LemonadeBorderColorsShorthand: Sendable {
     public let borderAlwaysDarkLow = Color("lemonade-border-fixed-border-always-dark-low", bundle: .lemonade)
     public let borderAlwaysDarkMedium = Color("lemonade-border-fixed-border-always-dark-medium", bundle: .lemonade)
     public let borderAlwaysDarkHigh = Color("lemonade-border-fixed-border-always-dark-high", bundle: .lemonade)
+    public let borderFeatured = Color("lemonade-border-voice-border-featured", bundle: .lemonade)
+    public let borderFeaturedSubtle = Color("lemonade-border-voice-border-featured-subtle", bundle: .lemonade)
 }
 
 private let lemonadeBorderColorsShorthand = LemonadeBorderColorsShorthand()
@@ -130,6 +136,8 @@ public struct LemonadeContentColorsShorthand: Sendable {
     public let contentPositiveAlwaysOnColor = Color("lemonade-content-fixed-content-positive-always-on-color", bundle: .lemonade)
     public let contentCautionAlwaysOnColor = Color("lemonade-content-fixed-content-caution-always-on-color", bundle: .lemonade)
     public let contentCriticalAlwaysOnColor = Color("lemonade-content-fixed-content-critical-always-on-color", bundle: .lemonade)
+    public let contentFeatured = Color("lemonade-content-voice-content-featured", bundle: .lemonade)
+    public let contentFeaturedOnColor = Color("lemonade-content-voice-on color-content-featured-on-color", bundle: .lemonade)
 }
 
 private let lemonadeContentColorsShorthand = LemonadeContentColorsShorthand()
@@ -169,6 +177,8 @@ public struct LemonadeBackgroundColorsShorthand: Sendable {
     public let bgAlwaysDarkLow = Color("lemonade-background-fixed-bg-always-dark-low", bundle: .lemonade)
     public let bgAlwaysDarkMedium = Color("lemonade-background-fixed-bg-always-dark-medium", bundle: .lemonade)
     public let bgAlwaysDarkHigh = Color("lemonade-background-fixed-bg-always-dark-high", bundle: .lemonade)
+    public let bgFeatured = Color("lemonade-background-voice-bg-featured", bundle: .lemonade)
+    public let bgFeaturedSubtle = Color("lemonade-background-voice-bg-featured-subtle", bundle: .lemonade)
 }
 
 private let lemonadeBackgroundColorsShorthand = LemonadeBackgroundColorsShorthand()

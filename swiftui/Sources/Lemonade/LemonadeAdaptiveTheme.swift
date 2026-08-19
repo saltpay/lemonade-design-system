@@ -65,6 +65,10 @@ private struct AdaptiveInteractionColors: InteractionColors {
     let bgAlwaysDarkHighInteractive = Color("lemonade-interaction-interactive-background-bg-always-dark-high-interactive", bundle: .lemonade)
     let bgAlwaysDarkLowInteractive = Color("lemonade-interaction-interactive-background-bg-always-dark-low-interactive", bundle: .lemonade)
     let bgAlwaysDarkMediumInteractive = Color("lemonade-interaction-interactive-background-bg-always-dark-medium-interactive", bundle: .lemonade)
+    let bgFeaturedInteractive = Color("lemonade-interaction-interactive-background-bg-featured-interactive", bundle: .lemonade)
+    let bgFeaturedSubtleInteractive = Color("lemonade-interaction-interactive-background-bg-featured-subtle-interactive", bundle: .lemonade)
+    let bgFeaturedPressed = Color("lemonade-interaction-pressed-background-bg-featured-pressed", bundle: .lemonade)
+    let bgFeaturedSubtlePressed = Color("lemonade-interaction-pressed-background-bg-featured-subtle-pressed", bundle: .lemonade)
 }
 
 private struct AdaptiveBorderColors: BorderColors {
@@ -97,6 +101,8 @@ private struct AdaptiveBorderColors: BorderColors {
     let borderAlwaysDarkLow = Color("lemonade-border-fixed-border-always-dark-low", bundle: .lemonade)
     let borderAlwaysDarkMedium = Color("lemonade-border-fixed-border-always-dark-medium", bundle: .lemonade)
     let borderAlwaysDarkHigh = Color("lemonade-border-fixed-border-always-dark-high", bundle: .lemonade)
+    let borderFeatured = Color("lemonade-border-voice-border-featured", bundle: .lemonade)
+    let borderFeaturedSubtle = Color("lemonade-border-voice-border-featured-subtle", bundle: .lemonade)
 }
 
 private struct AdaptiveContentColors: ContentColors {
@@ -128,6 +134,8 @@ private struct AdaptiveContentColors: ContentColors {
     let contentPositiveAlwaysOnColor = Color("lemonade-content-fixed-content-positive-always-on-color", bundle: .lemonade)
     let contentCautionAlwaysOnColor = Color("lemonade-content-fixed-content-caution-always-on-color", bundle: .lemonade)
     let contentCriticalAlwaysOnColor = Color("lemonade-content-fixed-content-critical-always-on-color", bundle: .lemonade)
+    let contentFeatured = Color("lemonade-content-voice-content-featured", bundle: .lemonade)
+    let contentFeaturedOnColor = Color("lemonade-content-voice-on color-content-featured-on-color", bundle: .lemonade)
 }
 
 private struct AdaptiveBackgroundColors: BackgroundColors {
@@ -163,6 +171,8 @@ private struct AdaptiveBackgroundColors: BackgroundColors {
     let bgAlwaysDarkLow = Color("lemonade-background-fixed-bg-always-dark-low", bundle: .lemonade)
     let bgAlwaysDarkMedium = Color("lemonade-background-fixed-bg-always-dark-medium", bundle: .lemonade)
     let bgAlwaysDarkHigh = Color("lemonade-background-fixed-bg-always-dark-high", bundle: .lemonade)
+    let bgFeatured = Color("lemonade-background-voice-bg-featured", bundle: .lemonade)
+    let bgFeaturedSubtle = Color("lemonade-background-voice-bg-featured-subtle", bundle: .lemonade)
 }
 
 private struct AdaptiveShadowColors: ShadowColors {

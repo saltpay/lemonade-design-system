@@ -82,6 +82,10 @@ public interface LemonadeSemanticColors {
         public val bgAlwaysDarkHighInteractive: Color
         public val bgAlwaysDarkLowInteractive: Color
         public val bgAlwaysDarkMediumInteractive: Color
+        public val bgFeaturedInteractive: Color
+        public val bgFeaturedSubtleInteractive: Color
+        public val bgFeaturedPressed: Color
+        public val bgFeaturedSubtlePressed: Color
     }
 
     public interface BorderColors {
@@ -114,6 +118,8 @@ public interface LemonadeSemanticColors {
         public val borderAlwaysDarkLow: Color
         public val borderAlwaysDarkMedium: Color
         public val borderAlwaysDarkHigh: Color
+        public val borderFeatured: Color
+        public val borderFeaturedSubtle: Color
     }
 
     public interface ContentColors {
@@ -145,6 +151,8 @@ public interface LemonadeSemanticColors {
         public val contentPositiveAlwaysOnColor: Color
         public val contentCautionAlwaysOnColor: Color
         public val contentCriticalAlwaysOnColor: Color
+        public val contentFeatured: Color
+        public val contentFeaturedOnColor: Color
     }
 
     public interface BackgroundColors {
@@ -177,6 +185,8 @@ public interface LemonadeSemanticColors {
         public val bgAlwaysDarkLow: Color
         public val bgAlwaysDarkMedium: Color
         public val bgAlwaysDarkHigh: Color
+        public val bgFeatured: Color
+        public val bgFeaturedSubtle: Color
     }
 
     public interface ShadowColors {
