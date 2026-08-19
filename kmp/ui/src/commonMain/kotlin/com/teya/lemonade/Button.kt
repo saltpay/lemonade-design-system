@@ -7,11 +7,13 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -24,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
@@ -86,29 +89,13 @@ public fun LemonadeUi.Button(
         trailingSlot = null,
         expandContents = false,
         contentSlot = {
-            if (leadingIcon != null) {
-                LemonadeUi.Icon(
-                    icon = leadingIcon,
-                    tint = colors.contentColor,
-                    contentDescription = null,
-                )
-            }
-
-            LemonadeUi.Text(
-                text = label,
+            ButtonAdaptiveContent(
+                label = label,
                 textStyle = size.contentData.textStyle,
-                color = colors.contentColor,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing200),
+                contentColor = colors.contentColor,
+                leadingIcon = leadingIcon,
+                trailingIcon = trailingIcon,
             )
-
-            if (trailingIcon != null) {
-                LemonadeUi.Icon(
-                    icon = trailingIcon,
-                    tint = colors.contentColor,
-                    contentDescription = null,
-                )
-            }
         },
     )
 }
@@ -167,6 +154,8 @@ public fun LemonadeUi.Button(
                 textStyle = size.contentData.textStyle,
                 color = colors.contentColor,
                 textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing200),
             )
         },
@@ -409,12 +398,18 @@ private fun CoreButton(
     } else {
         Modifier
     }
+    val slotHeightModifier = if (leadingSlot != null || trailingSlot != null) {
+        Modifier.height(intrinsicSize = IntrinsicSize.Min)
+    } else {
+        Modifier
+    }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
             .defaultMinSize(minWidth = size.contentData.minWidth)
-            .requiredHeight(height = size.contentData.requiredHeight)
+            .requiredHeightIn(min = size.contentData.requiredHeight)
+            .then(other = slotHeightModifier)
             .clip(shape = size.contentData.shape)
             .then(other = disabledModifier)
             .clickable(
@@ -440,8 +435,6 @@ private fun CoreButton(
                         horizontal = size.contentData.horizontalPadding,
                     ),
             ) {
-                // Keep the content in the layout while loading so the button holds its size; the
-                // spinner draws over it.
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
