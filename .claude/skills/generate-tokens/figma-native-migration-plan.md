@@ -95,7 +95,9 @@ reorderable() {
     */LemonadeLightTheme.kt|*/LemonadeDarkTheme.kt) return 0 ;;
     */LemonadeSemanticColors.kt|*/LemonadeSemanticColors.swift) return 0 ;;
     */LemonadeAdaptiveTheme.swift|*/Color+Lemonade.swift) return 0 ;;
-    flutter/lib/src/tokens/*colors*.dart|flutter/lib/src/tokens/*theme*.dart) return 0 ;;
+    flutter/lib/src/foundation/primitive_colors.dart) return 0 ;;
+    flutter/lib/src/foundation/semantic_colors.dart) return 0 ;;
+    flutter/lib/src/theme/colors.dart) return 0 ;;
     *) return 1 ;;
   esac
 }
@@ -1189,7 +1191,15 @@ Change the file handle at the top of `main()` to:
 
 - [ ] **Step 3: Rework the colour assets generator**
 
-In `scripts/swiftui-color-assets-generator.main.kts`, replace `parseThemeColors(file, modeKey)` with a form that reads a whole file, and drive it from the mode list. Replace the `modes`-reading preamble in `main()`:
+**First**, `scripts/swiftui-color-assets-generator.main.kts` does not currently import the shared loader — it parses the token JSON itself. Add the import directly beneath the existing `@file:DependsOn` line, so the helpers below are in scope:
+
+```kotlin
+@file:Import("swiftui-resource-file-loading.main.kts")
+```
+
+There is no symbol collision: the generator's `ColorValue`, `sanitizeGroup()` and `sanitizeSwiftName()` do not exist in the loader, and the loader declares no `main()`.
+
+Then replace `parseThemeColors(file, modeKey)` with a form that reads a whole file, and drive it from the mode list. Replace the `modes`-reading preamble in `main()`:
 
 ```kotlin
         val themeFiles = tokenFiles("theme-colors")
