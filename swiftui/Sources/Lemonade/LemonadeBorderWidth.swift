@@ -30,8 +30,8 @@ public protocol BaseBorderWidth {
 
 /// State border width values
 public protocol StateBorderWidth {
-    var focusRing: CGFloat { get }
     var borderSelected: CGFloat { get }
+    var focusRing: CGFloat { get }
 }
 
 /// Protocol defining border width categories
@@ -50,8 +50,8 @@ internal struct BaseBorderWidthImpl: BaseBorderWidth {
 }
 
 internal struct StateBorderWidthImpl: StateBorderWidth {
-    let focusRing: CGFloat = 2.0
     let borderSelected: CGFloat = 2.0
+    let focusRing: CGFloat = 2.0
 }
 
 /// Default border width implementation

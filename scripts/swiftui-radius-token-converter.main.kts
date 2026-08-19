@@ -10,7 +10,7 @@ private data class RadiusResource(
 )
 
 fun main() {
-    val radiusTokensFile = File("tokens/radius.json")
+    val radiusTokensFile = tokenFile("radius.tokens.json", "radius.json")
     val outputDir = File("swiftui/Sources/Lemonade")
 
     try {
@@ -29,7 +29,7 @@ fun main() {
                     aliasName = if (jsonObject.has("aliasName")) jsonObject.getString("aliasName") else null,
                 )
             },
-        ).sortedBy { it.value.radiusValue }
+        ).sortedWith(compareBy({ it.value.radiusValue }, { it.name }))
         println("✓ Loaded radius resources")
 
         val code = buildRadiusCode(

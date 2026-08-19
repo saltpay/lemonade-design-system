@@ -2,6 +2,7 @@
 
 @file:Repository("https://repo1.maven.org/maven2/")
 @file:DependsOn("org.json:json:20240303")
+@file:Import("swiftui-resource-file-loading.main.kts")
 
 import org.json.JSONObject
 import java.io.File
@@ -60,18 +61,11 @@ fun main() {
             error("File $themeFile does not exist")
         }
 
-        // Read modes from theme file to identify light and dark mode keys
-        val json = JSONObject(themeFile.readText())
-        val modesObject = json.getJSONObject("modes")
-        val modeEntries = modesObject.keys().asSequence().toList()
-        val lightModeKey = modeEntries.first { modesObject.getString(it).equals("Light", ignoreCase = true) }
-        val darkModeKey = modeEntries.first { modesObject.getString(it).equals("Dark", ignoreCase = true) }
-
-        // Parse light and dark theme colors
-        val lightColors = parseThemeColors(themeFile, lightModeKey)
+        val themeFiles = tokenFiles("theme-colors")
+        val modeNames = availableModeNames(themeFiles)
+        val lightColors = parseThemeColors(themeFiles, modeNames.first { it.equals("Light", ignoreCase = true) })
         println("✓ Loaded ${lightColors.size} colors from light theme")
-
-        val darkColors = parseThemeColors(themeFile, darkModeKey)
+        val darkColors = parseThemeColors(themeFiles, modeNames.first { it.equals("Dark", ignoreCase = true) })
         println("✓ Loaded ${darkColors.size} colors from dark theme")
 
         // Create color resources with both light and dark values
@@ -110,22 +104,9 @@ fun main() {
     }
 }
 
-fun parseThemeColors(file: File, modeKey: String): Map<String, ColorValue> {
-    val content = file.readText()
-    val json = JSONObject(content)
-    val variables = json.getJSONArray("variables")
-    val colors = mutableMapOf<String, ColorValue>()
-
-    for (i in 0 until variables.length()) {
-        val variable = variables.getJSONObject(i)
-        if (variable.optBoolean("hiddenFromPublishing")) continue
-
-        val name = variable.getString("name")
-        val resolvedValues = variable.getJSONObject("resolvedValuesByMode")
-
-        val modeValue = resolvedValues.optJSONObject(modeKey) ?: continue
-        val resolved = modeValue.optJSONObject("resolvedValue") ?: continue
-
+fun parseThemeColors(files: List<File>, modeName: String): Map<String, ColorValue> {
+    val colors = linkedMapOf<String, ColorValue>()
+    readFileResourceFileByModeRaw(files, modeName) { name, resolved ->
         colors[name] = ColorValue(
             r = resolved.getDouble("r"),
             g = resolved.getDouble("g"),
@@ -133,7 +114,6 @@ fun parseThemeColors(file: File, modeKey: String): Map<String, ColorValue> {
             a = resolved.optDouble("a", 1.0),
         )
     }
-
     return colors
 }
 

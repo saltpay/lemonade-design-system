@@ -9,7 +9,7 @@ data class SpacingResource(
 )
 
 fun main() {
-    val spaceTokensFile = File("tokens/spacing.json")
+    val spaceTokensFile = tokenFile("spacing.tokens.json", "spacing.json")
     val outputDir = File("swiftui/Sources/Lemonade")
 
     try {
@@ -27,7 +27,7 @@ fun main() {
                     spacingValue = jsonObject.getInt("resolvedValue"),
                 )
             },
-        ).sortedBy { it.value.spacingValue }
+        ).sortedWith(compareBy({ it.value.spacingValue }, { it.name }))
         println("✓ Loaded space resources")
 
         val code = buildSpacingCode(

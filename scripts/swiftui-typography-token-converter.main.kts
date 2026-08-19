@@ -9,8 +9,21 @@ data class TypographyTokenValue(
     val stringValue: String?,
 )
 
+/**
+ * Numeric weight for a Figma font-weight token. The token itself carries only
+ * the style name, so this mapping is the single source of truth for both the
+ * emitted value and the enum's entry order.
+ */
+fun fontWeightValue(styleName: String?): Int = when (styleName) {
+    "Bold" -> 700
+    "SemiBold" -> 600
+    "Medium" -> 500
+    "Regular" -> 400
+    else -> 400
+}
+
 fun main() {
-    val typographyTokensFile = File("tokens/typography.json")
+    val typographyTokensFile = tokenFile("typography.tokens.json", "typography.json")
     val outputDir = File("swiftui/Sources/Lemonade")
 
     try {
@@ -35,12 +48,13 @@ fun main() {
 
         val fontSizeResources = allResources
             .filter { it.groups.firstOrNull() == "FontSize" }
-            .sortedBy { it.value.floatValue }
+            .sortedWith(compareBy({ it.value.floatValue }, { it.name }))
         val fontWeightResources = allResources
             .filter { it.groups.firstOrNull() == "FontWeight" }
+            .sortedByDescending { fontWeightValue(it.value.stringValue) }
         val lineHeightResources = allResources
             .filter { it.groups.firstOrNull() == "LineHeight" }
-            .sortedBy { it.value.floatValue }
+            .sortedWith(compareBy({ it.value.floatValue }, { it.name }))
         val scriptFilePath = "scripts/swiftui-typography-token-converter.main.kts"
 
         File(outputDir, "LemonadeFontSizes.swift").writeText(
