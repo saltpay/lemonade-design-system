@@ -51,6 +51,7 @@ fun main() {
         println("✓ Converted ${opacityTokensFile.path} -> ${outputFile.path}")
     } catch (error: Throwable) {
         println("✗ Failed to convert ${opacityTokensFile.path}: ${error.message}")
+        throw error
     }
 }
 

@@ -74,6 +74,7 @@ fun main() {
         println("✓ Definition & Implementation files created")
     } catch (error: Throwable) {
         println("✗ Failed to convert ${colorTokensFile.name}: ${error.message}")
+        throw error
     }
 }
 

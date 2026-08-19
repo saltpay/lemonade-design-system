@@ -101,6 +101,7 @@ fun main() {
     } catch (error: Throwable) {
         println("✗ Failed: ${error.message}")
         error.printStackTrace()
+        throw error
     }
 }
 

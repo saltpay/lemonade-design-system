@@ -229,6 +229,7 @@ fun dtcgResolvedValueObject(tokens: Map<String, JSONObject>, name: String): JSON
     when (val resolved = dtcgResolvedValue(tokens, name, mutableSetOf())) {
         is JSONObject -> {
             val components = resolved.getJSONArray("components")
+            require(components.length() >= 3) { "Color token '$name' has fewer than 3 components" }
             result.put(
                 "resolvedValue",
                 JSONObject()

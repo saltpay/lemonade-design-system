@@ -19,7 +19,7 @@ fun fontWeightValue(styleName: String?): Int = when (styleName) {
     "SemiBold" -> 600
     "Medium" -> 500
     "Regular" -> 400
-    else -> 400
+    else -> error("Unknown font weight style '$styleName' — add it to fontWeightValue")
 }
 
 fun main() {

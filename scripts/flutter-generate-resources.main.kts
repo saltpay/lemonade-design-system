@@ -24,6 +24,7 @@ fun main() {
                 .waitFor()
         } catch (error: Throwable) {
             println("Failed to run script '$script': $error")
+            throw error
         }
         println("-----------------------")
     }

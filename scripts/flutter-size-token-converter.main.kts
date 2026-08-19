@@ -49,6 +49,7 @@ fun main() {
         println("✓ Converted ${sizeTokensFile.path} -> ${outputFile.path}")
     } catch (error: Throwable) {
         println("✗ Failed to convert ${sizeTokensFile.path}: ${error.message}")
+        throw error
     }
 }
 

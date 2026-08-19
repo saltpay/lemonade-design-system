@@ -21,26 +21,28 @@ then announced on stdout.
 """
 import json
 import pathlib
+import re
 import shutil
 import sys
 
 TOKENS = pathlib.Path("tokens")
 
-# Logical collection -> (new DTCG filename(s), legacy plugin filename)
+# Logical collection -> new DTCG filename(s)
 TARGETS = {
-    "border-width": ("border-width.tokens.json", "border-width.json"),
-    "opacity": ("opacity.tokens.json", "opacity.json"),
-    "primitive-colors": ("primitive-colors.tokens.json", "primitive-colors.json"),
-    "radius": ("radius.tokens.json", "radius.json"),
-    "shadow": ("shadow.tokens.json", "shadow.json"),
-    "size": ("size.tokens.json", "size.json"),
-    "spacing": ("spacing.tokens.json", "spacing.json"),
-    "theme-colors": ("theme-colors.{mode}.tokens.json", "theme-colors.json"),
-    "typography": ("typography.tokens.json", "typography.json"),
+    "border-width": "border-width.tokens.json",
+    "opacity": "opacity.tokens.json",
+    "primitive-colors": "primitive-colors.tokens.json",
+    "radius": "radius.tokens.json",
+    "shadow": "shadow.tokens.json",
+    "size": "size.tokens.json",
+    "spacing": "spacing.tokens.json",
+    "theme-colors": "theme-colors.{mode}.tokens.json",
+    "typography": "typography.tokens.json",
 }
 
 MIN_OVERLAP = 0.5
 MIN_MARGIN = 0.2
+MODE_NAME_RE = re.compile(r"^[a-z0-9-]+$")
 
 
 def leaves(node, path=()):
@@ -67,27 +69,20 @@ def dtcg_count(doc):
 
 
 def reference_ids(collection):
-    """Variable ids currently committed for `collection`, in either format."""
-    new_name, legacy_name = TARGETS[collection]
+    """Variable ids currently committed for `collection`."""
+    new_name = TARGETS[collection]
     if "{mode}" in new_name:
         ids, count = set(), 0
         for path in sorted(TOKENS.glob("theme-colors.*.tokens.json")):
             doc = json.loads(path.read_text())
             ids |= dtcg_ids(doc)
             count = max(count, dtcg_count(doc))
-        if ids:
-            return ids, count
-    else:
-        path = TOKENS / new_name
-        if path.is_file():
-            doc = json.loads(path.read_text())
-            return dtcg_ids(doc), dtcg_count(doc)
+        return ids, count
 
-    legacy = TOKENS / legacy_name
-    if legacy.is_file():
-        doc = json.loads(legacy.read_text())
-        variables = doc.get("variables", [])
-        return {v["id"] for v in variables}, len(variables)
+    path = TOKENS / new_name
+    if path.is_file():
+        doc = json.loads(path.read_text())
+        return dtcg_ids(doc), dtcg_count(doc)
     return set(), 0
 
 
@@ -155,13 +150,20 @@ def main():
                 continue
             print(f"note: {best_name} shrank from {ref_count} to {count} tokens (--allow-shrink)")
 
-        new_name, _ = TARGETS[best_name]
+        new_name = TARGETS[best_name]
         if "{mode}" in new_name:
             mode = doc.get("$extensions", {}).get("com.figma.modeName", "")
             if not mode:
                 problems.append(f"{source.name}: multi-mode collection with no com.figma.modeName")
                 continue
-            destination = new_name.format(mode=mode.lower())
+            mode_slug = mode.lower()
+            if not MODE_NAME_RE.match(mode_slug):
+                problems.append(
+                    f"{source.name}: mode name '{mode}' is not safe for a filename "
+                    f"(must match [a-z0-9-]+ once lowercased)"
+                )
+                continue
+            destination = new_name.format(mode=mode_slug)
         else:
             destination = new_name
 
@@ -174,7 +176,7 @@ def main():
         planned.append((source, destination))
         print(f"  {source.name:32} -> tokens/{destination}   (overlap {best_score:.3f})")
 
-    expected = {new_name for new_name, _ in TARGETS.values() if "{mode}" not in new_name}
+    expected = {new_name for new_name in TARGETS.values() if "{mode}" not in new_name}
     missing = expected - set(claimed)
     if missing:
         problems.append(f"no incoming file for: {', '.join(sorted(missing))}")
@@ -183,6 +185,15 @@ def main():
     if len(theme_files) < 2:
         problems.append(
             f"expected a light and a dark theme file, got {len(theme_files)}: {theme_files}"
+        )
+
+    committed_theme_files = {p.name for p in TOKENS.glob("theme-colors.*.tokens.json")}
+    superseded = committed_theme_files - set(theme_files)
+    if superseded:
+        problems.append(
+            f"committed theme file(s) not among this export's destinations: "
+            f"{', '.join(sorted(superseded))} — a mode appears to have been renamed or removed; "
+            f"delete the stale file deliberately before re-running"
         )
 
     if problems:

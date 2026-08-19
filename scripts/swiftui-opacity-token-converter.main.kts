@@ -40,6 +40,7 @@ fun main() {
         println("✓ Converted ${inputFile.name} -> ${outputTokenFile.name}")
     } catch (error: Throwable) {
         println("✗ Failed to convert ${inputFile.name}: ${error.message}")
+        throw error
     }
 }
 

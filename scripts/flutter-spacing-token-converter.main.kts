@@ -49,6 +49,7 @@ fun main() {
         println("✓ Converted ${spacingTokensFile.path} -> ${outputFile.path}")
     } catch (error: Throwable) {
         println("✗ Failed to convert ${spacingTokensFile.path}: ${error.message}")
+        throw error
     }
 }
 

@@ -43,6 +43,7 @@ fun main() {
         println("✓ Converted ${colorTokensFile.name} -> ${outputFile.name}!")
     } catch (error: Throwable) {
         println("✗ Failed to convert ${colorTokensFile.name}: ${error.message}")
+        throw error
     }
 }
 

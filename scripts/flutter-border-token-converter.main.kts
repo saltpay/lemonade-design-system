@@ -56,6 +56,7 @@ fun main() {
         println("✓ Converted ${borderTokensFile.path} -> ${outputFile.path}")
     } catch (error: Throwable) {
         println("✗ Failed to convert ${borderTokensFile.path}: ${error.message}")
+        throw error
     }
 }
 

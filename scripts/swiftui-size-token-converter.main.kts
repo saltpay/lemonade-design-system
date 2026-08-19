@@ -41,6 +41,7 @@ fun main() {
         println("✓ Implementation generated")
     } catch (error: Throwable) {
         println("✗ Failed to convert ${sizeTokensFile.name}: ${error.message}")
+        throw error
     }
 }
 

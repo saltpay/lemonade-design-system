@@ -58,6 +58,7 @@ fun main() {
         println("✓ Converted ${radiusTokensFile.path} -> ${shapesOutputFile.path}")
     } catch (error: Throwable) {
         println("✗ Failed to convert ${radiusTokensFile.path}: ${error.message}")
+        throw error
     }
 }
 

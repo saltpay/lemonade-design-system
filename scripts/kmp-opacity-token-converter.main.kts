@@ -42,6 +42,7 @@ fun main() {
         println("✓ Converted ${inputFile.name} -> LemonadeOpacity.kt")
     } catch (error: Throwable) {
         println("✗ Failed to convert ${inputFile.name}: ${error.message}")
+        throw error
     }
 }
 

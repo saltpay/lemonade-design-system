@@ -32,15 +32,21 @@ python3 .claude/skills/generate-tokens/scripts/ingest-tokens.py ~/Downloads/<exp
 
 # 2. Regenerate only what changed vs HEAD (recommended)
 .claude/skills/generate-tokens/scripts/run-converters.sh --changed
-
-# 3. Confirm nothing consumer-visible moved unexpectedly
-.claude/skills/generate-tokens/scripts/verify-generated.sh
 ```
 
 Tokens are exported from Figma with **File → Export variables** (the native
 export, not a plugin). It emits one `*.tokens.json` per collection, and one per
 *mode* for multi-mode collections. Run it twice: once in the design-system file,
 once in the **Colors** library file that holds the primitives.
+
+`ingest-tokens.py` also accepts `--allow-shrink`: by default it refuses to
+ingest a collection whose token count decreased from what's committed (public
+API disappearing should be a deliberate call), so pass the flag the first time
+a token is legitimately removed upstream.
+
+That's the routine flow for the common case — a token *value* changed and the
+generated code needs rebuilding. `verify-generated.sh` is a separate, narrower
+tool; see below for when to reach for it.
 
 ## One hard requirement (it bites silently)
 
@@ -56,9 +62,9 @@ repo root — never bare `kotlin`.
 ## How the converters work
 
 - Each converter is a standalone `kotlin` script run **from the repo root** — it
-  reads `tokens/<x>.json` via a relative path and writes generated source into the
-  platform module. Running from any other directory silently reads/writes nothing
-  useful.
+  reads `tokens/<x>.tokens.json` via a relative path and writes generated source
+  into the platform module. Running from any other directory silently
+  reads/writes nothing useful.
 - Converters overwrite their output files wholesale (each carries a
   "DO NOT MODIFY THIS FILE MANUALLY" banner). Never hand-edit generated files.
 - `primitive-colors.tokens.json` did **not** change? Skip its converters — they're
@@ -82,6 +88,22 @@ repo root — never bare `kotlin`.
 (Converter names above omit the `-token-converter.main.kts` suffix, except
 `swiftui-color-assets-generator.main.kts`. `flutter-*` converters exist in
 `scripts/` but are deliberately not run — see the note at the top.)
+
+## When to run verify-generated.sh
+
+`verify-generated.sh` is **not** a routine step after a normal token edit — an
+intentional token *value* change is expected to fail it, every time, because
+the new value is (correctly) not byte-identical to what's on `origin/main`.
+Running it there and seeing `FAIL … (must be byte-identical)` is not a
+problem to chase down; it is the harness confirming the value actually
+changed.
+
+It exists for the opposite case: a change that is **not supposed to alter any
+generated output** — a converter refactor, a loader edit, a format migration,
+reordering cleanup. For those, run it against the appropriate ref (default
+`origin/main`, or a specific commit/tag when comparing against a known-good
+snapshot) and expect `PASS: only permitted reordering found`. Anything else
+means the "no-op" change actually moved something consumer-visible.
 
 ## After generating
 

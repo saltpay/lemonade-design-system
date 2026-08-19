@@ -71,6 +71,7 @@ fun main() {
         println("✓ Shadows file created")
     } catch (error: Throwable) {
         println("✗ Failed to convert ${shadowTokensFile.name}: ${error.message}")
+        throw error
     }
 }
 

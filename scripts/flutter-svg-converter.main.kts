@@ -67,6 +67,7 @@ fun main() {
     } catch (error: Throwable) {
         println("✗ Failed to generate assets: ${error.message}")
         error.printStackTrace()
+        throw error
     }
 }
 

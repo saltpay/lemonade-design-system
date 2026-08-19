@@ -104,6 +104,7 @@ fun main() {
     } catch (error: Throwable) {
         println("✗ Failed to convert ${colorTokensFile.name}: ${error.message}")
         error.printStackTrace()
+        throw error
     }
 }
 
