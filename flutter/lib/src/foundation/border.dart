@@ -166,11 +166,11 @@ class LemonadeStateBorder {
     );
   }
 
-  /// Border width value of 2.0px from token `focusRing` (references base/border-50)
-  double get focusRing => base.border50;
-
   /// Border width value of 2.0px from token `borderSelected` (references base/border-50)
   double get borderSelected => base.border50;
+
+  /// Border width value of 2.0px from token `focusRing` (references base/border-50)
+  double get focusRing => base.border50;
 
   @override
   bool operator ==(Object other) =>

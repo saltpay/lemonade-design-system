@@ -27,14 +27,32 @@ abstract final class LemonadePrimitiveColors {
 }
 
 class _Solid {
-  /// YellowLime color palette
-  final _YellowLimeSolid yellowLime = _YellowLimeSolid();
-
-  /// White color palette
-  final _WhiteSolid white = _WhiteSolid();
-
   /// Amber color palette
   final _AmberSolid amber = _AmberSolid();
+
+  /// Black color palette
+  final _BlackSolid black = _BlackSolid();
+
+  /// Blue color palette
+  final _BlueSolid blue = _BlueSolid();
+
+  /// Cyan color palette
+  final _CyanSolid cyan = _CyanSolid();
+
+  /// Fuchsia color palette
+  final _FuchsiaSolid fuchsia = _FuchsiaSolid();
+
+  /// Green color palette
+  final _GreenSolid green = _GreenSolid();
+
+  /// GreenLime color palette
+  final _GreenLimeSolid greenLime = _GreenLimeSolid();
+
+  /// Indigo color palette
+  final _IndigoSolid indigo = _IndigoSolid();
+
+  /// Neutral color palette
+  final _NeutralSolid neutral = _NeutralSolid();
 
   /// Orange color palette
   final _OrangeSolid orange = _OrangeSolid();
@@ -42,479 +60,125 @@ class _Solid {
   /// Pink color palette
   final _PinkSolid pink = _PinkSolid();
 
-  /// Neutral color palette
-  final _NeutralSolid neutral = _NeutralSolid();
+  /// Purple color palette
+  final _PurpleSolid purple = _PurpleSolid();
 
   /// Red color palette
   final _RedSolid red = _RedSolid();
 
-  /// Cyan color palette
-  final _CyanSolid cyan = _CyanSolid();
-
-  /// Purple color palette
-  final _PurpleSolid purple = _PurpleSolid();
-
   /// Rose color palette
   final _RoseSolid rose = _RoseSolid();
-
-  /// Black color palette
-  final _BlackSolid black = _BlackSolid();
-
-  /// Green color palette
-  final _GreenSolid green = _GreenSolid();
 
   /// Teal color palette
   final _TealSolid teal = _TealSolid();
 
-  /// Blue color palette
-  final _BlueSolid blue = _BlueSolid();
+  /// Violet color palette
+  final _VioletSolid violet = _VioletSolid();
+
+  /// White color palette
+  final _WhiteSolid white = _WhiteSolid();
 
   /// Yellow color palette
   final _YellowSolid yellow = _YellowSolid();
 
-  /// Indigo color palette
-  final _IndigoSolid indigo = _IndigoSolid();
-
-  /// GreenLime color palette
-  final _GreenLimeSolid greenLime = _GreenLimeSolid();
-
-  /// Violet color palette
-  final _VioletSolid violet = _VioletSolid();
-
-  /// Fuchsia color palette
-  final _FuchsiaSolid fuchsia = _FuchsiaSolid();
-}
-
-class _YellowLimeSolid {
-  final Color yellowLime900 = const Color(0xFF28310B);
-
-  final Color yellowLime600 = const Color(0xFFC6C916);
-
-  final Color yellowLime400 = const Color(0xFFE9E948);
-
-  final Color yellowLime300 = const Color(0xFFF1F187);
-
-  final Color yellowLime200 = const Color(0xFFF6F6A6);
-
-  final Color yellowLime800 = const Color(0xFF45510F);
-
-  final Color yellowLime100 = const Color(0xFFFAFAC7);
-
-  final Color yellowLime700 = const Color(0xFF6C770D);
-
-  final Color yellowLime500 = const Color(0xFFE1E51A);
-
-  final Color yellowLime50 = const Color(0xFFFCFCEA);
-
-  final Color yellowLime950 = const Color(0xFF1D2706);
-}
-
-class _WhiteSolid {
-  final Color white800 = const Color(0xCCFFFFFF);
-
-  final Color white700 = const Color(0xB2FFFFFF);
-
-  final Color white500 = const Color(0x7FFFFFFF);
-
-  final Color white400 = const Color(0x66FFFFFF);
-
-  final Color white50 = const Color(0x0CFFFFFF);
-
-  final Color white600 = const Color(0x99FFFFFF);
-
-  final Color white300 = const Color(0x4CFFFFFF);
-
-  final Color white950 = const Color(0xFFFFFFFF);
-
-  final Color white900 = const Color(0xE5FFFFFF);
-
-  final Color white100 = const Color(0x19FFFFFF);
-
-  final Color white200 = const Color(0x33FFFFFF);
+  /// YellowLime color palette
+  final _YellowLimeSolid yellowLime = _YellowLimeSolid();
 }
 
 class _AmberSolid {
-  final Color amber900 = const Color(0xFF7A3206);
-
-  final Color amber800 = const Color(0xFF963B00);
-
-  final Color amber700 = const Color(0xFFBA4C00);
-
-  final Color amber200 = const Color(0xFFFDE585);
+  final Color amber50 = const Color(0xFFFFFBEA);
 
   final Color amber100 = const Color(0xFFFEF3C6);
 
-  final Color amber600 = const Color(0xFFE17100);
+  final Color amber200 = const Color(0xFFFDE585);
 
   final Color amber300 = const Color(0xFFFFD22F);
 
-  final Color amber500 = const Color(0xFFFD9900);
-
   final Color amber400 = const Color(0xFFFDC700);
 
-  final Color amber50 = const Color(0xFFFFFBEA);
+  final Color amber500 = const Color(0xFFFD9900);
+
+  final Color amber600 = const Color(0xFFE17100);
+
+  final Color amber700 = const Color(0xFFBA4C00);
+
+  final Color amber800 = const Color(0xFF963B00);
+
+  final Color amber900 = const Color(0xFF7A3206);
 
   final Color amber950 = const Color(0xFF451901);
 }
 
-class _OrangeSolid {
-  final Color orange900 = const Color(0xFF7E2A0B);
-
-  final Color orange800 = const Color(0xFF9F2D00);
-
-  final Color orange700 = const Color(0xFFC93400);
-
-  final Color orange600 = const Color(0xFFF44900);
-
-  final Color orange500 = const Color(0xFFFF6800);
-
-  final Color orange400 = const Color(0xFFFF8803);
-
-  final Color orange200 = const Color(0xFFFFD6A7);
-
-  final Color orange300 = const Color(0xFFFFB869);
-
-  final Color orange100 = const Color(0xFFFFECD4);
-
-  final Color orange50 = const Color(0xFFFFF7EC);
-
-  final Color orange950 = const Color(0xFF431205);
-}
-
-class _PinkSolid {
-  final Color pink200 = const Color(0xFFFBCEE8);
-
-  final Color pink300 = const Color(0xFFFDA4D5);
-
-  final Color pink100 = const Color(0xFFFCE6F3);
-
-  final Color pink900 = const Color(0xFF851042);
-
-  final Color pink800 = const Color(0xFFA2004C);
-
-  final Color pink700 = const Color(0xFFC6005B);
-
-  final Color pink600 = const Color(0xFFE50076);
-
-  final Color pink500 = const Color(0xFFF6329A);
-
-  final Color pink400 = const Color(0xFFFB63B6);
-
-  final Color pink50 = const Color(0xFFFCF1F7);
-
-  final Color pink950 = const Color(0xFF510323);
-}
-
-class _NeutralSolid {
-  final Color neutral600 = const Color(0xFF555450);
-
-  final Color neutral100 = const Color(0xFFF1F0ED);
-
-  final Color neutral400 = const Color(0xFFA5A3A0);
-
-  final Color neutral300 = const Color(0xFFD6D3D0);
-
-  final Color neutral200 = const Color(0xFFE9E7E3);
-
-  final Color neutral500 = const Color(0xFF807E78);
-
-  final Color neutral700 = const Color(0xFF42413E);
-
-  final Color neutral800 = const Color(0xFF252422);
-
-  final Color neutral900 = const Color(0xFF201F1D);
-
-  final Color neutral50 = const Color(0xFFF6F5F3);
-
-  final Color neutral950 = const Color(0xFF151513);
-}
-
-class _RedSolid {
-  final Color red300 = const Color(0xFFFFC8CC);
-
-  final Color red100 = const Color(0xFFFFE1E3);
-
-  final Color red700 = const Color(0xFFC01520);
-
-  final Color red900 = const Color(0xFF831920);
-
-  final Color red400 = const Color(0xFFFE535E);
-
-  final Color red800 = const Color(0xFF9F151E);
-
-  final Color red500 = const Color(0xFFF73C48);
-
-  final Color red600 = const Color(0xFFE41E2B);
-
-  final Color red200 = const Color(0xFFFFC8CC);
-
-  final Color red50 = const Color(0xFFFFF1F2);
-
-  final Color red950 = const Color(0xFF48070B);
-}
-
-class _CyanSolid {
-  final Color cyan500 = const Color(0xFF00B8DA);
-
-  final Color cyan900 = const Color(0xFF104E64);
-
-  final Color cyan300 = const Color(0xFF53E9FC);
-
-  final Color cyan200 = const Color(0xFFA2F3FC);
-
-  final Color cyan100 = const Color(0xFFCEFAFE);
-
-  final Color cyan400 = const Color(0xFF00D2F2);
-
-  final Color cyan600 = const Color(0xFF0092B8);
-
-  final Color cyan800 = const Color(0xFF005E78);
-
-  final Color cyan700 = const Color(0xFF007594);
-
-  final Color cyan50 = const Color(0xFFEBFDFE);
-
-  final Color cyan950 = const Color(0xFF053344);
-}
-
-class _PurpleSolid {
-  final Color purple700 = const Color(0xFF8200DA);
-
-  final Color purple800 = const Color(0xFF6D10B0);
-
-  final Color purple600 = const Color(0xFF980FFA);
-
-  final Color purple400 = const Color(0xFFC17AFF);
-
-  final Color purple500 = const Color(0xFFAC46FF);
-
-  final Color purple200 = const Color(0xFFE9D4FF);
-
-  final Color purple900 = const Color(0xFF59168B);
-
-  final Color purple300 = const Color(0xFFD9B1FF);
-
-  final Color purple100 = const Color(0xFFF2E7FE);
-
-  final Color purple50 = const Color(0xFFFAF5FE);
-
-  final Color purple950 = const Color(0xFF330759);
-}
-
-class _RoseSolid {
-  final Color rose900 = const Color(0xFF8A0735);
-
-  final Color rose700 = const Color(0xFFC60035);
-
-  final Color rose600 = const Color(0xFFEC003F);
-
-  final Color rose400 = const Color(0xFFFF637E);
-
-  final Color rose200 = const Color(0xFFFFCCD2);
-
-  final Color rose300 = const Color(0xFFFFA0AD);
-
-  final Color rose800 = const Color(0xFFA40035);
-
-  final Color rose500 = const Color(0xFFFF1F56);
-
-  final Color rose100 = const Color(0xFFFFE3E5);
-
-  final Color rose50 = const Color(0xFFFEF0F1);
-
-  final Color rose950 = const Color(0xFF4D0218);
-}
-
 class _BlackSolid {
-  final Color black900 = const Color(0xE5000000);
-
-  final Color black950 = const Color(0xFF000000);
-
-  final Color black300 = const Color(0x4C000000);
-
-  final Color black600 = const Color(0x99000000);
-
-  final Color black800 = const Color(0xCC000000);
-
-  final Color black400 = const Color(0x66000000);
-
   final Color black50 = const Color(0x0C000000);
-
-  final Color black500 = const Color(0x7F000000);
-
-  final Color black200 = const Color(0x33000000);
 
   final Color black100 = const Color(0x19000000);
 
+  final Color black200 = const Color(0x33000000);
+
+  final Color black300 = const Color(0x4C000000);
+
+  final Color black400 = const Color(0x66000000);
+
+  final Color black500 = const Color(0x7F000000);
+
+  final Color black600 = const Color(0x99000000);
+
   final Color black700 = const Color(0xB2000000);
-}
 
-class _GreenSolid {
-  final Color green800 = const Color(0xFF016630);
+  final Color black800 = const Color(0xCC000000);
 
-  final Color green700 = const Color(0xFF008235);
+  final Color black900 = const Color(0xE5000000);
 
-  final Color green200 = const Color(0xFFB8F7CF);
-
-  final Color green400 = const Color(0xFF05DF72);
-
-  final Color green300 = const Color(0xFF7AF1A7);
-
-  final Color green600 = const Color(0xFF00A63D);
-
-  final Color green500 = const Color(0xFF00C850);
-
-  final Color green900 = const Color(0xFF0D532B);
-
-  final Color green100 = const Color(0xFFDBFBE6);
-
-  final Color green50 = const Color(0xFFF0FDF4);
-
-  final Color green950 = const Color(0xFF032E15);
-}
-
-class _TealSolid {
-  final Color teal900 = const Color(0xFF0A4E4A);
-
-  final Color teal800 = const Color(0xFF005F59);
-
-  final Color teal600 = const Color(0xFF009689);
-
-  final Color teal500 = const Color(0xFF00BBA6);
-
-  final Color teal400 = const Color(0xFF00D4BD);
-
-  final Color teal300 = const Color(0xFF46ECD4);
-
-  final Color teal200 = const Color(0xFF95F6E4);
-
-  final Color teal100 = const Color(0xFFCBFBF1);
-
-  final Color teal700 = const Color(0xFF00776E);
-
-  final Color teal50 = const Color(0xFFF0FDFA);
-
-  final Color teal950 = const Color(0xFF022F2E);
+  final Color black950 = const Color(0xFF000000);
 }
 
 class _BlueSolid {
+  final Color blue50 = const Color(0xFFEEF5FE);
+
   final Color blue100 = const Color(0xFFDAEAFE);
 
-  final Color blue400 = const Color(0xFF50A2FF);
-
-  final Color blue900 = const Color(0xFF1B388E);
+  final Color blue200 = const Color(0xFFBDDAFF);
 
   final Color blue300 = const Color(0xFF8DC5FF);
 
-  final Color blue800 = const Color(0xFF193BB8);
+  final Color blue400 = const Color(0xFF50A2FF);
+
+  final Color blue500 = const Color(0xFF2B7FFF);
 
   final Color blue600 = const Color(0xFF155CFB);
 
   final Color blue700 = const Color(0xFF1347E5);
 
-  final Color blue200 = const Color(0xFFBDDAFF);
+  final Color blue800 = const Color(0xFF193BB8);
 
-  final Color blue500 = const Color(0xFF2B7FFF);
-
-  final Color blue50 = const Color(0xFFEEF5FE);
+  final Color blue900 = const Color(0xFF1B388E);
 
   final Color blue950 = const Color(0xFF162455);
 }
 
-class _YellowSolid {
-  final Color yellow900 = const Color(0xFF723D0A);
+class _CyanSolid {
+  final Color cyan50 = const Color(0xFFEBFDFE);
 
-  final Color yellow800 = const Color(0xFF884A00);
+  final Color cyan100 = const Color(0xFFCEFAFE);
 
-  final Color yellow600 = const Color(0xFFD08700);
+  final Color cyan200 = const Color(0xFFA2F3FC);
 
-  final Color yellow300 = const Color(0xFFFFDF20);
+  final Color cyan300 = const Color(0xFF53E9FC);
 
-  final Color yellow200 = const Color(0xFFFEEF85);
+  final Color cyan400 = const Color(0xFF00D2F2);
 
-  final Color yellow400 = const Color(0xFFFDC700);
+  final Color cyan500 = const Color(0xFF00B8DA);
 
-  final Color yellow100 = const Color(0xFFFEF9C1);
+  final Color cyan600 = const Color(0xFF0092B8);
 
-  final Color yellow500 = const Color(0xFFF0B000);
+  final Color cyan700 = const Color(0xFF007594);
 
-  final Color yellow700 = const Color(0xFFA65F00);
+  final Color cyan800 = const Color(0xFF005E78);
 
-  final Color yellow50 = const Color(0xFFFDFBE8);
+  final Color cyan900 = const Color(0xFF104E64);
 
-  final Color yellow950 = const Color(0xFF421F04);
-}
-
-class _IndigoSolid {
-  final Color indigo800 = const Color(0xFF3629AB);
-
-  final Color indigo600 = const Color(0xFF4F39F6);
-
-  final Color indigo500 = const Color(0xFF615EFF);
-
-  final Color indigo400 = const Color(0xFF7C86FF);
-
-  final Color indigo300 = const Color(0xFFA2B3FF);
-
-  final Color indigo100 = const Color(0xFFDFE7FF);
-
-  final Color indigo700 = const Color(0xFF432DD7);
-
-  final Color indigo200 = const Color(0xFFC6D1FF);
-
-  final Color indigo900 = const Color(0xFF302C85);
-
-  final Color indigo50 = const Color(0xFFEEF2FF);
-
-  final Color indigo950 = const Color(0xFF1D1A4C);
-}
-
-class _GreenLimeSolid {
-  final Color greenLime50 = const Color(0xFFF7FEE7);
-
-  final Color greenLime100 = const Color(0xFFEBFCCA);
-
-  final Color greenLime200 = const Color(0xFFD8F998);
-
-  final Color greenLime300 = const Color(0xFFBAF351);
-
-  final Color greenLime400 = const Color(0xFF99E500);
-
-  final Color greenLime500 = const Color(0xFF7CCE00);
-
-  final Color greenLime600 = const Color(0xFF5EA500);
-
-  final Color greenLime700 = const Color(0xFF487D00);
-
-  final Color greenLime800 = const Color(0xFF3C6200);
-
-  final Color greenLime900 = const Color(0xFF34530E);
-
-  final Color greenLime950 = const Color(0xFF192E02);
-}
-
-class _VioletSolid {
-  final Color violet50 = const Color(0xFFF4F2FE);
-
-  final Color violet100 = const Color(0xFFECE8FE);
-
-  final Color violet200 = const Color(0xFFDCD5FF);
-
-  final Color violet300 = const Color(0xFFC4B3FF);
-
-  final Color violet400 = const Color(0xFFA683FF);
-
-  final Color violet500 = const Color(0xFF8D51FF);
-
-  final Color violet600 = const Color(0xFF7F22FD);
-
-  final Color violet700 = const Color(0xFF7008E7);
-
-  final Color violet800 = const Color(0xFF5D0EC0);
-
-  final Color violet900 = const Color(0xFF4D1699);
-
-  final Color violet950 = const Color(0xFF2E0C67);
+  final Color cyan950 = const Color(0xFF053344);
 }
 
 class _FuchsiaSolid {
@@ -541,36 +205,345 @@ class _FuchsiaSolid {
   final Color fuchsia950 = const Color(0xFF4B004F);
 }
 
+class _GreenSolid {
+  final Color green50 = const Color(0xFFF0FDF4);
+
+  final Color green100 = const Color(0xFFDBFBE6);
+
+  final Color green200 = const Color(0xFFB8F7CF);
+
+  final Color green300 = const Color(0xFF7AF1A7);
+
+  final Color green400 = const Color(0xFF05DF72);
+
+  final Color green500 = const Color(0xFF00C850);
+
+  final Color green600 = const Color(0xFF00A63D);
+
+  final Color green700 = const Color(0xFF008235);
+
+  final Color green800 = const Color(0xFF016630);
+
+  final Color green900 = const Color(0xFF0D532B);
+
+  final Color green950 = const Color(0xFF032E15);
+}
+
+class _GreenLimeSolid {
+  final Color greenLime50 = const Color(0xFFF7FEE7);
+
+  final Color greenLime100 = const Color(0xFFEBFCCA);
+
+  final Color greenLime200 = const Color(0xFFD8F998);
+
+  final Color greenLime300 = const Color(0xFFBAF351);
+
+  final Color greenLime400 = const Color(0xFF99E500);
+
+  final Color greenLime500 = const Color(0xFF7CCE00);
+
+  final Color greenLime600 = const Color(0xFF5EA500);
+
+  final Color greenLime700 = const Color(0xFF487D00);
+
+  final Color greenLime800 = const Color(0xFF3C6200);
+
+  final Color greenLime900 = const Color(0xFF34530E);
+
+  final Color greenLime950 = const Color(0xFF192E02);
+}
+
+class _IndigoSolid {
+  final Color indigo50 = const Color(0xFFEEF2FF);
+
+  final Color indigo100 = const Color(0xFFDFE7FF);
+
+  final Color indigo200 = const Color(0xFFC6D1FF);
+
+  final Color indigo300 = const Color(0xFFA2B3FF);
+
+  final Color indigo400 = const Color(0xFF7C86FF);
+
+  final Color indigo500 = const Color(0xFF615EFF);
+
+  final Color indigo600 = const Color(0xFF4F39F6);
+
+  final Color indigo700 = const Color(0xFF432DD7);
+
+  final Color indigo800 = const Color(0xFF3629AB);
+
+  final Color indigo900 = const Color(0xFF302C85);
+
+  final Color indigo950 = const Color(0xFF1D1A4C);
+}
+
+class _NeutralSolid {
+  final Color neutral50 = const Color(0xFFF6F5F3);
+
+  final Color neutral100 = const Color(0xFFF1F0ED);
+
+  final Color neutral200 = const Color(0xFFE9E7E3);
+
+  final Color neutral300 = const Color(0xFFD6D3D0);
+
+  final Color neutral400 = const Color(0xFFA5A3A0);
+
+  final Color neutral500 = const Color(0xFF807E78);
+
+  final Color neutral600 = const Color(0xFF555450);
+
+  final Color neutral700 = const Color(0xFF42413E);
+
+  final Color neutral800 = const Color(0xFF252422);
+
+  final Color neutral900 = const Color(0xFF201F1D);
+
+  final Color neutral950 = const Color(0xFF151513);
+}
+
+class _OrangeSolid {
+  final Color orange50 = const Color(0xFFFFF7EC);
+
+  final Color orange100 = const Color(0xFFFFECD4);
+
+  final Color orange200 = const Color(0xFFFFD6A7);
+
+  final Color orange300 = const Color(0xFFFFB869);
+
+  final Color orange400 = const Color(0xFFFF8803);
+
+  final Color orange500 = const Color(0xFFFF6800);
+
+  final Color orange600 = const Color(0xFFF44900);
+
+  final Color orange700 = const Color(0xFFC93400);
+
+  final Color orange800 = const Color(0xFF9F2D00);
+
+  final Color orange900 = const Color(0xFF7E2A0B);
+
+  final Color orange950 = const Color(0xFF431205);
+}
+
+class _PinkSolid {
+  final Color pink50 = const Color(0xFFFCF1F7);
+
+  final Color pink100 = const Color(0xFFFCE6F3);
+
+  final Color pink200 = const Color(0xFFFBCEE8);
+
+  final Color pink300 = const Color(0xFFFDA4D5);
+
+  final Color pink400 = const Color(0xFFFB63B6);
+
+  final Color pink500 = const Color(0xFFF6329A);
+
+  final Color pink600 = const Color(0xFFE50076);
+
+  final Color pink700 = const Color(0xFFC6005B);
+
+  final Color pink800 = const Color(0xFFA2004C);
+
+  final Color pink900 = const Color(0xFF851042);
+
+  final Color pink950 = const Color(0xFF510323);
+}
+
+class _PurpleSolid {
+  final Color purple50 = const Color(0xFFFAF5FE);
+
+  final Color purple100 = const Color(0xFFF2E7FE);
+
+  final Color purple200 = const Color(0xFFE9D4FF);
+
+  final Color purple300 = const Color(0xFFD9B1FF);
+
+  final Color purple400 = const Color(0xFFC17AFF);
+
+  final Color purple500 = const Color(0xFFAC46FF);
+
+  final Color purple600 = const Color(0xFF980FFA);
+
+  final Color purple700 = const Color(0xFF8200DA);
+
+  final Color purple800 = const Color(0xFF6D10B0);
+
+  final Color purple900 = const Color(0xFF59168B);
+
+  final Color purple950 = const Color(0xFF330759);
+}
+
+class _RedSolid {
+  final Color red50 = const Color(0xFFFFF1F2);
+
+  final Color red100 = const Color(0xFFFFE1E3);
+
+  final Color red200 = const Color(0xFFFFC8CC);
+
+  final Color red300 = const Color(0xFFFFC8CC);
+
+  final Color red400 = const Color(0xFFFE535E);
+
+  final Color red500 = const Color(0xFFF73C48);
+
+  final Color red600 = const Color(0xFFE41E2B);
+
+  final Color red700 = const Color(0xFFC01520);
+
+  final Color red800 = const Color(0xFF9F151E);
+
+  final Color red900 = const Color(0xFF831920);
+
+  final Color red950 = const Color(0xFF48070B);
+}
+
+class _RoseSolid {
+  final Color rose50 = const Color(0xFFFEF0F1);
+
+  final Color rose100 = const Color(0xFFFFE3E5);
+
+  final Color rose200 = const Color(0xFFFFCCD2);
+
+  final Color rose300 = const Color(0xFFFFA0AD);
+
+  final Color rose400 = const Color(0xFFFF637E);
+
+  final Color rose500 = const Color(0xFFFF1F56);
+
+  final Color rose600 = const Color(0xFFEC003F);
+
+  final Color rose700 = const Color(0xFFC60035);
+
+  final Color rose800 = const Color(0xFFA40035);
+
+  final Color rose900 = const Color(0xFF8A0735);
+
+  final Color rose950 = const Color(0xFF4D0218);
+}
+
+class _TealSolid {
+  final Color teal50 = const Color(0xFFF0FDFA);
+
+  final Color teal100 = const Color(0xFFCBFBF1);
+
+  final Color teal200 = const Color(0xFF95F6E4);
+
+  final Color teal300 = const Color(0xFF46ECD4);
+
+  final Color teal400 = const Color(0xFF00D4BD);
+
+  final Color teal500 = const Color(0xFF00BBA6);
+
+  final Color teal600 = const Color(0xFF009689);
+
+  final Color teal700 = const Color(0xFF00776E);
+
+  final Color teal800 = const Color(0xFF005F59);
+
+  final Color teal900 = const Color(0xFF0A4E4A);
+
+  final Color teal950 = const Color(0xFF022F2E);
+}
+
+class _VioletSolid {
+  final Color violet50 = const Color(0xFFF4F2FE);
+
+  final Color violet100 = const Color(0xFFECE8FE);
+
+  final Color violet200 = const Color(0xFFDCD5FF);
+
+  final Color violet300 = const Color(0xFFC4B3FF);
+
+  final Color violet400 = const Color(0xFFA683FF);
+
+  final Color violet500 = const Color(0xFF8D51FF);
+
+  final Color violet600 = const Color(0xFF7F22FD);
+
+  final Color violet700 = const Color(0xFF7008E7);
+
+  final Color violet800 = const Color(0xFF5D0EC0);
+
+  final Color violet900 = const Color(0xFF4D1699);
+
+  final Color violet950 = const Color(0xFF2E0C67);
+}
+
+class _WhiteSolid {
+  final Color white50 = const Color(0x0CFFFFFF);
+
+  final Color white100 = const Color(0x19FFFFFF);
+
+  final Color white200 = const Color(0x33FFFFFF);
+
+  final Color white300 = const Color(0x4CFFFFFF);
+
+  final Color white400 = const Color(0x66FFFFFF);
+
+  final Color white500 = const Color(0x7FFFFFFF);
+
+  final Color white600 = const Color(0x99FFFFFF);
+
+  final Color white700 = const Color(0xB2FFFFFF);
+
+  final Color white800 = const Color(0xCCFFFFFF);
+
+  final Color white900 = const Color(0xE5FFFFFF);
+
+  final Color white950 = const Color(0xFFFFFFFF);
+}
+
+class _YellowSolid {
+  final Color yellow50 = const Color(0xFFFDFBE8);
+
+  final Color yellow100 = const Color(0xFFFEF9C1);
+
+  final Color yellow200 = const Color(0xFFFEEF85);
+
+  final Color yellow300 = const Color(0xFFFFDF20);
+
+  final Color yellow400 = const Color(0xFFFDC700);
+
+  final Color yellow500 = const Color(0xFFF0B000);
+
+  final Color yellow600 = const Color(0xFFD08700);
+
+  final Color yellow700 = const Color(0xFFA65F00);
+
+  final Color yellow800 = const Color(0xFF884A00);
+
+  final Color yellow900 = const Color(0xFF723D0A);
+
+  final Color yellow950 = const Color(0xFF421F04);
+}
+
+class _YellowLimeSolid {
+  final Color yellowLime50 = const Color(0xFFFCFCEA);
+
+  final Color yellowLime100 = const Color(0xFFFAFAC7);
+
+  final Color yellowLime200 = const Color(0xFFF6F6A6);
+
+  final Color yellowLime300 = const Color(0xFFF1F187);
+
+  final Color yellowLime400 = const Color(0xFFE9E948);
+
+  final Color yellowLime500 = const Color(0xFFE1E51A);
+
+  final Color yellowLime600 = const Color(0xFFC6C916);
+
+  final Color yellowLime700 = const Color(0xFF6C770D);
+
+  final Color yellowLime800 = const Color(0xFF45510F);
+
+  final Color yellowLime900 = const Color(0xFF28310B);
+
+  final Color yellowLime950 = const Color(0xFF1D2706);
+}
+
 class _Alpha {
-  /// Neutral color palette
-  final _NeutralAlpha neutral = _NeutralAlpha();
-
-  /// Yellow color palette
-  final _YellowAlpha yellow = _YellowAlpha();
-
   /// Amber color palette
   final _AmberAlpha amber = _AmberAlpha();
-
-  /// Orange color palette
-  final _OrangeAlpha orange = _OrangeAlpha();
-
-  /// Red color palette
-  final _RedAlpha red = _RedAlpha();
-
-  /// Rose color palette
-  final _RoseAlpha rose = _RoseAlpha();
-
-  /// Pink color palette
-  final _PinkAlpha pink = _PinkAlpha();
-
-  /// Purple color palette
-  final _PurpleAlpha purple = _PurpleAlpha();
-
-  /// Violet color palette
-  final _VioletAlpha violet = _VioletAlpha();
-
-  /// Indigo color palette
-  final _IndigoAlpha indigo = _IndigoAlpha();
 
   /// Blue color palette
   final _BlueAlpha blue = _BlueAlpha();
@@ -578,8 +551,8 @@ class _Alpha {
   /// Cyan color palette
   final _CyanAlpha cyan = _CyanAlpha();
 
-  /// Teal color palette
-  final _TealAlpha teal = _TealAlpha();
+  /// Fuchsia color palette
+  final _FuchsiaAlpha fuchsia = _FuchsiaAlpha();
 
   /// Green color palette
   final _GreenAlpha green = _GreenAlpha();
@@ -587,59 +560,38 @@ class _Alpha {
   /// GreenLime color palette
   final _GreenLimeAlpha greenLime = _GreenLimeAlpha();
 
+  /// Indigo color palette
+  final _IndigoAlpha indigo = _IndigoAlpha();
+
+  /// Neutral color palette
+  final _NeutralAlpha neutral = _NeutralAlpha();
+
+  /// Orange color palette
+  final _OrangeAlpha orange = _OrangeAlpha();
+
+  /// Pink color palette
+  final _PinkAlpha pink = _PinkAlpha();
+
+  /// Purple color palette
+  final _PurpleAlpha purple = _PurpleAlpha();
+
+  /// Red color palette
+  final _RedAlpha red = _RedAlpha();
+
+  /// Rose color palette
+  final _RoseAlpha rose = _RoseAlpha();
+
+  /// Teal color palette
+  final _TealAlpha teal = _TealAlpha();
+
+  /// Violet color palette
+  final _VioletAlpha violet = _VioletAlpha();
+
+  /// Yellow color palette
+  final _YellowAlpha yellow = _YellowAlpha();
+
   /// YellowLime color palette
   final _YellowLimeAlpha yellowLime = _YellowLimeAlpha();
-
-  /// Fuchsia color palette
-  final _FuchsiaAlpha fuchsia = _FuchsiaAlpha();
-}
-
-class _NeutralAlpha {
-  final Color neutral900 = const Color(0xEB090806);
-
-  final Color neutral700 = const Color(0xC60C0A07);
-
-  final Color neutral600 = const Color(0xB50F0E09);
-
-  final Color neutral300 = const Color(0x4C766F5F);
-
-  final Color neutral200 = const Color(0x338E8675);
-
-  final Color neutral500 = const Color(0x8C15140D);
-
-  final Color neutral800 = const Color(0xE1090805);
-
-  final Color neutral100 = const Color(0x19756B56);
-
-  final Color neutral400 = const Color(0x66211C11);
-
-  final Color neutral50 = const Color(0x0C5E4F2F);
-
-  final Color neutral950 = const Color(0xF4080706);
-}
-
-class _YellowAlpha {
-  final Color yellow50 = const Color(0x0CF0B000);
-
-  final Color yellow100 = const Color(0x19F0B000);
-
-  final Color yellow200 = const Color(0x33F0B000);
-
-  final Color yellow300 = const Color(0x4CF0B000);
-
-  final Color yellow400 = const Color(0x66F0B000);
-
-  final Color yellow500 = const Color(0x7FF0B000);
-
-  final Color yellow600 = const Color(0x99F0B000);
-
-  final Color yellow700 = const Color(0xB2F0B000);
-
-  final Color yellow800 = const Color(0xCCF0B000);
-
-  final Color yellow900 = const Color(0xE5F0B000);
-
-  final Color yellow950 = const Color(0xF2F0B000);
 }
 
 class _AmberAlpha {
@@ -664,174 +616,6 @@ class _AmberAlpha {
   final Color amber900 = const Color(0xE5FD9900);
 
   final Color amber950 = const Color(0xF2FD9900);
-}
-
-class _OrangeAlpha {
-  final Color orange50 = const Color(0x0CFF6800);
-
-  final Color orange100 = const Color(0x19FF6800);
-
-  final Color orange200 = const Color(0x33FF6800);
-
-  final Color orange300 = const Color(0x4CFF6800);
-
-  final Color orange400 = const Color(0x66FF6800);
-
-  final Color orange500 = const Color(0x7FFF6800);
-
-  final Color orange600 = const Color(0x99FF6800);
-
-  final Color orange700 = const Color(0xB2FF6800);
-
-  final Color orange800 = const Color(0xCCFF6800);
-
-  final Color orange900 = const Color(0xE5FF6800);
-
-  final Color orange950 = const Color(0xF2FF6800);
-}
-
-class _RedAlpha {
-  final Color red50 = const Color(0x0CF73C48);
-
-  final Color red100 = const Color(0x19F73C48);
-
-  final Color red200 = const Color(0x33F73C48);
-
-  final Color red300 = const Color(0x4CF73C48);
-
-  final Color red400 = const Color(0x66F73C48);
-
-  final Color red500 = const Color(0x7FF73C48);
-
-  final Color red600 = const Color(0x99F73C48);
-
-  final Color red700 = const Color(0xB2F73C48);
-
-  final Color red800 = const Color(0xCCF73C48);
-
-  final Color red900 = const Color(0xE5F73C48);
-
-  final Color red950 = const Color(0xF2FA2B36);
-}
-
-class _RoseAlpha {
-  final Color rose50 = const Color(0x0CFF1F56);
-
-  final Color rose100 = const Color(0x19FF1F56);
-
-  final Color rose200 = const Color(0x33FF1F56);
-
-  final Color rose300 = const Color(0x4CFF1F56);
-
-  final Color rose400 = const Color(0x66FF1F56);
-
-  final Color rose500 = const Color(0x7FFF1F56);
-
-  final Color rose600 = const Color(0x99FF1F56);
-
-  final Color rose700 = const Color(0xB2FF1F56);
-
-  final Color rose800 = const Color(0xCCFF1F56);
-
-  final Color rose900 = const Color(0xE5FF1F56);
-
-  final Color rose950 = const Color(0xF2FF1F56);
-}
-
-class _PinkAlpha {
-  final Color pink50 = const Color(0x0CF6329A);
-
-  final Color pink100 = const Color(0x19F6329A);
-
-  final Color pink200 = const Color(0x33F6329A);
-
-  final Color pink300 = const Color(0x4CF6329A);
-
-  final Color pink400 = const Color(0x66F6329A);
-
-  final Color pink500 = const Color(0x7FF6329A);
-
-  final Color pink600 = const Color(0x99F6329A);
-
-  final Color pink700 = const Color(0xB2F6329A);
-
-  final Color pink800 = const Color(0xCCF6329A);
-
-  final Color pink900 = const Color(0xE5F6329A);
-
-  final Color pink950 = const Color(0xF2F6329A);
-}
-
-class _PurpleAlpha {
-  final Color purple50 = const Color(0x0CAC46FF);
-
-  final Color purple100 = const Color(0x19AC46FF);
-
-  final Color purple200 = const Color(0x33AC46FF);
-
-  final Color purple300 = const Color(0x4CAC46FF);
-
-  final Color purple400 = const Color(0x66AC46FF);
-
-  final Color purple500 = const Color(0x7FAC46FF);
-
-  final Color purple600 = const Color(0x99AC46FF);
-
-  final Color purple700 = const Color(0xB2AC46FF);
-
-  final Color purple800 = const Color(0xCCAC46FF);
-
-  final Color purple900 = const Color(0xE5AC46FF);
-
-  final Color purple950 = const Color(0xF2AC46FF);
-}
-
-class _VioletAlpha {
-  final Color violet50 = const Color(0x0C8D51FF);
-
-  final Color violet100 = const Color(0x198D51FF);
-
-  final Color violet200 = const Color(0x338E51FF);
-
-  final Color violet300 = const Color(0x4C8D51FF);
-
-  final Color violet400 = const Color(0x668D51FF);
-
-  final Color violet500 = const Color(0x7F8E51FF);
-
-  final Color violet600 = const Color(0x998D51FF);
-
-  final Color violet700 = const Color(0xB28D51FF);
-
-  final Color violet800 = const Color(0xCC8D51FF);
-
-  final Color violet900 = const Color(0xE58D51FF);
-
-  final Color violet950 = const Color(0xF28D51FF);
-}
-
-class _IndigoAlpha {
-  final Color indigo50 = const Color(0x0C615EFF);
-
-  final Color indigo100 = const Color(0x19615EFF);
-
-  final Color indigo200 = const Color(0x33615EFF);
-
-  final Color indigo300 = const Color(0x4C615EFF);
-
-  final Color indigo400 = const Color(0x66615EFF);
-
-  final Color indigo500 = const Color(0x7F615EFF);
-
-  final Color indigo600 = const Color(0x99615EFF);
-
-  final Color indigo700 = const Color(0xB2615EFF);
-
-  final Color indigo800 = const Color(0xCC615EFF);
-
-  final Color indigo900 = const Color(0xE5615EFF);
-
-  final Color indigo950 = const Color(0xF2615EFF);
 }
 
 class _BlueAlpha {
@@ -882,28 +666,28 @@ class _CyanAlpha {
   final Color cyan950 = const Color(0xF200B8DA);
 }
 
-class _TealAlpha {
-  final Color teal50 = const Color(0x0C00BBA6);
+class _FuchsiaAlpha {
+  final Color fuchsia50 = const Color(0x0DE12AFB);
 
-  final Color teal100 = const Color(0x1900BBA6);
+  final Color fuchsia100 = const Color(0x1AE12AFB);
 
-  final Color teal200 = const Color(0x3300BBA6);
+  final Color fuchsia200 = const Color(0x33E12AFB);
 
-  final Color teal300 = const Color(0x4C00BBA6);
+  final Color fuchsia300 = const Color(0x4DE12AFB);
 
-  final Color teal400 = const Color(0x6600BBA6);
+  final Color fuchsia400 = const Color(0x66E12AFB);
 
-  final Color teal500 = const Color(0x7F00BBA6);
+  final Color fuchsia500 = const Color(0x80E12AFB);
 
-  final Color teal600 = const Color(0x9900BBA6);
+  final Color fuchsia600 = const Color(0x99E12AFB);
 
-  final Color teal700 = const Color(0xB200BBA6);
+  final Color fuchsia700 = const Color(0xB2E12AFB);
 
-  final Color teal800 = const Color(0xCC00BBA6);
+  final Color fuchsia800 = const Color(0xCCE12AFB);
 
-  final Color teal900 = const Color(0xE500BBA6);
+  final Color fuchsia900 = const Color(0xE5E12AFB);
 
-  final Color teal950 = const Color(0xF200BBA6);
+  final Color fuchsia950 = const Color(0xF2E12AFB);
 }
 
 class _GreenAlpha {
@@ -954,6 +738,246 @@ class _GreenLimeAlpha {
   final Color greenLime950 = const Color(0xF27CCE00);
 }
 
+class _IndigoAlpha {
+  final Color indigo50 = const Color(0x0C615EFF);
+
+  final Color indigo100 = const Color(0x19615EFF);
+
+  final Color indigo200 = const Color(0x33615EFF);
+
+  final Color indigo300 = const Color(0x4C615EFF);
+
+  final Color indigo400 = const Color(0x66615EFF);
+
+  final Color indigo500 = const Color(0x7F615EFF);
+
+  final Color indigo600 = const Color(0x99615EFF);
+
+  final Color indigo700 = const Color(0xB2615EFF);
+
+  final Color indigo800 = const Color(0xCC615EFF);
+
+  final Color indigo900 = const Color(0xE5615EFF);
+
+  final Color indigo950 = const Color(0xF2615EFF);
+}
+
+class _NeutralAlpha {
+  final Color neutral50 = const Color(0x0C5E4F2F);
+
+  final Color neutral100 = const Color(0x19756B56);
+
+  final Color neutral200 = const Color(0x338E8675);
+
+  final Color neutral300 = const Color(0x4C766F5F);
+
+  final Color neutral400 = const Color(0x66211C11);
+
+  final Color neutral500 = const Color(0x8C15140D);
+
+  final Color neutral600 = const Color(0xB50F0E09);
+
+  final Color neutral700 = const Color(0xC60C0A07);
+
+  final Color neutral800 = const Color(0xE1090805);
+
+  final Color neutral900 = const Color(0xEB090806);
+
+  final Color neutral950 = const Color(0xF4080706);
+}
+
+class _OrangeAlpha {
+  final Color orange50 = const Color(0x0CFF6800);
+
+  final Color orange100 = const Color(0x19FF6800);
+
+  final Color orange200 = const Color(0x33FF6800);
+
+  final Color orange300 = const Color(0x4CFF6800);
+
+  final Color orange400 = const Color(0x66FF6800);
+
+  final Color orange500 = const Color(0x7FFF6800);
+
+  final Color orange600 = const Color(0x99FF6800);
+
+  final Color orange700 = const Color(0xB2FF6800);
+
+  final Color orange800 = const Color(0xCCFF6800);
+
+  final Color orange900 = const Color(0xE5FF6800);
+
+  final Color orange950 = const Color(0xF2FF6800);
+}
+
+class _PinkAlpha {
+  final Color pink50 = const Color(0x0CF6329A);
+
+  final Color pink100 = const Color(0x19F6329A);
+
+  final Color pink200 = const Color(0x33F6329A);
+
+  final Color pink300 = const Color(0x4CF6329A);
+
+  final Color pink400 = const Color(0x66F6329A);
+
+  final Color pink500 = const Color(0x7FF6329A);
+
+  final Color pink600 = const Color(0x99F6329A);
+
+  final Color pink700 = const Color(0xB2F6329A);
+
+  final Color pink800 = const Color(0xCCF6329A);
+
+  final Color pink900 = const Color(0xE5F6329A);
+
+  final Color pink950 = const Color(0xF2F6329A);
+}
+
+class _PurpleAlpha {
+  final Color purple50 = const Color(0x0CAC46FF);
+
+  final Color purple100 = const Color(0x19AC46FF);
+
+  final Color purple200 = const Color(0x33AC46FF);
+
+  final Color purple300 = const Color(0x4CAC46FF);
+
+  final Color purple400 = const Color(0x66AC46FF);
+
+  final Color purple500 = const Color(0x7FAC46FF);
+
+  final Color purple600 = const Color(0x99AC46FF);
+
+  final Color purple700 = const Color(0xB2AC46FF);
+
+  final Color purple800 = const Color(0xCCAC46FF);
+
+  final Color purple900 = const Color(0xE5AC46FF);
+
+  final Color purple950 = const Color(0xF2AC46FF);
+}
+
+class _RedAlpha {
+  final Color red50 = const Color(0x0CF73C48);
+
+  final Color red100 = const Color(0x19F73C48);
+
+  final Color red200 = const Color(0x33F73C48);
+
+  final Color red300 = const Color(0x4CF73C48);
+
+  final Color red400 = const Color(0x66F73C48);
+
+  final Color red500 = const Color(0x7FF73C48);
+
+  final Color red600 = const Color(0x99F73C48);
+
+  final Color red700 = const Color(0xB2F73C48);
+
+  final Color red800 = const Color(0xCCF73C48);
+
+  final Color red900 = const Color(0xE5F73C48);
+
+  final Color red950 = const Color(0xF2FA2B36);
+}
+
+class _RoseAlpha {
+  final Color rose50 = const Color(0x0CFF1F56);
+
+  final Color rose100 = const Color(0x19FF1F56);
+
+  final Color rose200 = const Color(0x33FF1F56);
+
+  final Color rose300 = const Color(0x4CFF1F56);
+
+  final Color rose400 = const Color(0x66FF1F56);
+
+  final Color rose500 = const Color(0x7FFF1F56);
+
+  final Color rose600 = const Color(0x99FF1F56);
+
+  final Color rose700 = const Color(0xB2FF1F56);
+
+  final Color rose800 = const Color(0xCCFF1F56);
+
+  final Color rose900 = const Color(0xE5FF1F56);
+
+  final Color rose950 = const Color(0xF2FF1F56);
+}
+
+class _TealAlpha {
+  final Color teal50 = const Color(0x0C00BBA6);
+
+  final Color teal100 = const Color(0x1900BBA6);
+
+  final Color teal200 = const Color(0x3300BBA6);
+
+  final Color teal300 = const Color(0x4C00BBA6);
+
+  final Color teal400 = const Color(0x6600BBA6);
+
+  final Color teal500 = const Color(0x7F00BBA6);
+
+  final Color teal600 = const Color(0x9900BBA6);
+
+  final Color teal700 = const Color(0xB200BBA6);
+
+  final Color teal800 = const Color(0xCC00BBA6);
+
+  final Color teal900 = const Color(0xE500BBA6);
+
+  final Color teal950 = const Color(0xF200BBA6);
+}
+
+class _VioletAlpha {
+  final Color violet50 = const Color(0x0C8D51FF);
+
+  final Color violet100 = const Color(0x198D51FF);
+
+  final Color violet200 = const Color(0x338E51FF);
+
+  final Color violet300 = const Color(0x4C8D51FF);
+
+  final Color violet400 = const Color(0x668D51FF);
+
+  final Color violet500 = const Color(0x7F8E51FF);
+
+  final Color violet600 = const Color(0x998D51FF);
+
+  final Color violet700 = const Color(0xB28D51FF);
+
+  final Color violet800 = const Color(0xCC8D51FF);
+
+  final Color violet900 = const Color(0xE58D51FF);
+
+  final Color violet950 = const Color(0xF28D51FF);
+}
+
+class _YellowAlpha {
+  final Color yellow50 = const Color(0x0CF0B000);
+
+  final Color yellow100 = const Color(0x19F0B000);
+
+  final Color yellow200 = const Color(0x33F0B000);
+
+  final Color yellow300 = const Color(0x4CF0B000);
+
+  final Color yellow400 = const Color(0x66F0B000);
+
+  final Color yellow500 = const Color(0x7FF0B000);
+
+  final Color yellow600 = const Color(0x99F0B000);
+
+  final Color yellow700 = const Color(0xB2F0B000);
+
+  final Color yellow800 = const Color(0xCCF0B000);
+
+  final Color yellow900 = const Color(0xE5F0B000);
+
+  final Color yellow950 = const Color(0xF2F0B000);
+}
+
 class _YellowLimeAlpha {
   final Color yellowLime50 = const Color(0x0CE1E51A);
 
@@ -976,28 +1000,4 @@ class _YellowLimeAlpha {
   final Color yellowLime900 = const Color(0xE5E1E51A);
 
   final Color yellowLime950 = const Color(0xF2E1E51A);
-}
-
-class _FuchsiaAlpha {
-  final Color fuchsia50 = const Color(0x0DE12AFB);
-
-  final Color fuchsia100 = const Color(0x1AE12AFB);
-
-  final Color fuchsia200 = const Color(0x33E12AFB);
-
-  final Color fuchsia300 = const Color(0x4DE12AFB);
-
-  final Color fuchsia400 = const Color(0x66E12AFB);
-
-  final Color fuchsia500 = const Color(0x80E12AFB);
-
-  final Color fuchsia600 = const Color(0x99E12AFB);
-
-  final Color fuchsia700 = const Color(0xB2E12AFB);
-
-  final Color fuchsia800 = const Color(0xCCE12AFB);
-
-  final Color fuchsia900 = const Color(0xE5E12AFB);
-
-  final Color fuchsia950 = const Color(0xF2E12AFB);
 }

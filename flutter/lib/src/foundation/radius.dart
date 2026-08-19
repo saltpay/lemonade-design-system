@@ -63,10 +63,12 @@ class LemonadeRadius {
     this.radius200 = 8.0,
     this.radius250 = 10.0,
     this.radius300 = 12.0,
+    this.radius350 = 14.0,
     this.radius400 = 16.0,
     this.radius500 = 20.0,
     this.radius600 = 24.0,
     this.radius800 = 32.0,
+    this.radius900 = 40.0,
     this.radiusFull = 999.0,
     this.semantic = const LemonadeSemanticRadius(),
   });
@@ -88,10 +90,12 @@ class LemonadeRadius {
       radius200: lerpDouble(a.radius200, b.radius200, t)!,
       radius250: lerpDouble(a.radius250, b.radius250, t)!,
       radius300: lerpDouble(a.radius300, b.radius300, t)!,
+      radius350: lerpDouble(a.radius350, b.radius350, t)!,
       radius400: lerpDouble(a.radius400, b.radius400, t)!,
       radius500: lerpDouble(a.radius500, b.radius500, t)!,
       radius600: lerpDouble(a.radius600, b.radius600, t)!,
       radius800: lerpDouble(a.radius800, b.radius800, t)!,
+      radius900: lerpDouble(a.radius900, b.radius900, t)!,
       radiusFull: lerpDouble(a.radiusFull, b.radiusFull, t)!,
       semantic: LemonadeSemanticRadius.lerp(a.semantic, b.semantic, t),
     );
@@ -118,6 +122,9 @@ class LemonadeRadius {
   /// Radius value of 12px from token `radius300`
   final double radius300;
 
+  /// Radius value of 14px from token `radius350`
+  final double radius350;
+
   /// Radius value of 16px from token `radius400`
   final double radius400;
 
@@ -129,6 +136,9 @@ class LemonadeRadius {
 
   /// Radius value of 32px from token `radius800`
   final double radius800;
+
+  /// Radius value of 40px from token `radius900`
+  final double radius900;
 
   /// Radius value of 999px from token `radiusFull`
   final double radiusFull;
@@ -148,10 +158,12 @@ class LemonadeRadius {
           radius200 == other.radius200 &&
           radius250 == other.radius250 &&
           radius300 == other.radius300 &&
+          radius350 == other.radius350 &&
           radius400 == other.radius400 &&
           radius500 == other.radius500 &&
           radius600 == other.radius600 &&
           radius800 == other.radius800 &&
+          radius900 == other.radius900 &&
           radiusFull == other.radiusFull &&
           semantic == other.semantic;
 
@@ -164,10 +176,12 @@ class LemonadeRadius {
     radius200,
     radius250,
     radius300,
+    radius350,
     radius400,
     radius500,
     radius600,
     radius800,
+    radius900,
     radiusFull,
     semantic,
   );

@@ -20,19 +20,19 @@ class LemonadeShadows {
   const LemonadeShadows({
     this.xsmall = const <BoxShadow>[
       BoxShadow(
-        color: Color(0x19000000),
+        color: Color(0x0C000000),
         blurRadius: 2,
         offset: Offset(0, 1),
       ),
     ],
     this.small = const <BoxShadow>[
       BoxShadow(
-        color: Color(0x19000000),
+        color: Color(0x0C000000),
         blurRadius: 3,
         offset: Offset(0, 1),
       ),
       BoxShadow(
-        color: Color(0x19000000),
+        color: Color(0x0C000000),
         blurRadius: 2,
         offset: Offset(0, 1),
         spreadRadius: -1,
@@ -40,13 +40,13 @@ class LemonadeShadows {
     ],
     this.medium = const <BoxShadow>[
       BoxShadow(
-        color: Color(0x19000000),
+        color: Color(0x0C000000),
         blurRadius: 3,
         offset: Offset(0, 2),
         spreadRadius: -2,
       ),
       BoxShadow(
-        color: Color(0x19000000),
+        color: Color(0x0C000000),
         blurRadius: 6,
         offset: Offset(0, 4),
         spreadRadius: -2,
@@ -54,13 +54,13 @@ class LemonadeShadows {
     ],
     this.large = const <BoxShadow>[
       BoxShadow(
-        color: Color(0x19000000),
+        color: Color(0x0C000000),
         blurRadius: 6,
         offset: Offset(0, 4),
         spreadRadius: -4,
       ),
       BoxShadow(
-        color: Color(0x19000000),
+        color: Color(0x0C000000),
         blurRadius: 15,
         offset: Offset(0, 10),
         spreadRadius: -3,
@@ -68,13 +68,13 @@ class LemonadeShadows {
     ],
     this.xlarge = const <BoxShadow>[
       BoxShadow(
-        color: Color(0x19000000),
+        color: Color(0x0C000000),
         blurRadius: 10,
         offset: Offset(0, 8),
         spreadRadius: -6,
       ),
       BoxShadow(
-        color: Color(0x19000000),
+        color: Color(0x0C000000),
         blurRadius: 25,
         offset: Offset(0, 20),
         spreadRadius: -5,

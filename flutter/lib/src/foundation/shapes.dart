@@ -77,6 +77,9 @@ class LemonadeShapes {
     this.radius300 = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(12.0)),
     ),
+    this.radius350 = const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(14.0)),
+    ),
     this.radius400 = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(16.0)),
     ),
@@ -88,6 +91,9 @@ class LemonadeShapes {
     ),
     this.radius800 = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(32.0)),
+    ),
+    this.radius900 = const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(40.0)),
     ),
     this.radiusFull = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(999.0)),
@@ -112,10 +118,12 @@ class LemonadeShapes {
       radius200: ShapeBorder.lerp(a.radius200, b.radius200, t)!,
       radius250: ShapeBorder.lerp(a.radius250, b.radius250, t)!,
       radius300: ShapeBorder.lerp(a.radius300, b.radius300, t)!,
+      radius350: ShapeBorder.lerp(a.radius350, b.radius350, t)!,
       radius400: ShapeBorder.lerp(a.radius400, b.radius400, t)!,
       radius500: ShapeBorder.lerp(a.radius500, b.radius500, t)!,
       radius600: ShapeBorder.lerp(a.radius600, b.radius600, t)!,
       radius800: ShapeBorder.lerp(a.radius800, b.radius800, t)!,
+      radius900: ShapeBorder.lerp(a.radius900, b.radius900, t)!,
       radiusFull: ShapeBorder.lerp(a.radiusFull, b.radiusFull, t)!,
       semantic: LemonadeSemanticShapes.lerp(a.semantic, b.semantic, t),
     );
@@ -142,6 +150,9 @@ class LemonadeShapes {
   /// Radius value of 12px from token `radius300`
   final ShapeBorder radius300;
 
+  /// Radius value of 14px from token `radius350`
+  final ShapeBorder radius350;
+
   /// Radius value of 16px from token `radius400`
   final ShapeBorder radius400;
 
@@ -153,6 +164,9 @@ class LemonadeShapes {
 
   /// Radius value of 32px from token `radius800`
   final ShapeBorder radius800;
+
+  /// Radius value of 40px from token `radius900`
+  final ShapeBorder radius900;
 
   /// Radius value of 999px from token `radiusFull`
   final ShapeBorder radiusFull;
@@ -172,10 +186,12 @@ class LemonadeShapes {
           radius200 == other.radius200 &&
           radius250 == other.radius250 &&
           radius300 == other.radius300 &&
+          radius350 == other.radius350 &&
           radius400 == other.radius400 &&
           radius500 == other.radius500 &&
           radius600 == other.radius600 &&
           radius800 == other.radius800 &&
+          radius900 == other.radius900 &&
           radiusFull == other.radiusFull &&
           semantic == other.semantic;
 
@@ -188,10 +204,12 @@ class LemonadeShapes {
     radius200,
     radius250,
     radius300,
+    radius350,
     radius400,
     radius500,
     radius600,
     radius800,
+    radius900,
     radiusFull,
     semantic,
   );
