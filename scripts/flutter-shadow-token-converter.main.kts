@@ -24,7 +24,7 @@ private data class ShadowResource(
 )
 
 fun main() {
-    val shadowTokensFile = File("tokens/shadow.json")
+    val shadowTokensFile = tokenFile("shadow.tokens.json", "shadow.json")
     val outputDir = File("flutter/lib/src/foundation")
 
     try {
@@ -78,7 +78,7 @@ private fun List<ResourceData<ShadowResourceValue>>.toShadowResource(): List<Sha
     val groups = groupBy { resourceData -> resourceData.groups[1] }
     return groups.map { (groupName, resources) ->
         val groupLevels = resources.groupBy { groupResource -> groupResource.groups[2] }
-        val levels = groupLevels.map { (_, levelResources) ->
+        val levels = groupLevels.entries.sortedBy { (levelName, _) -> levelName }.map { (_, levelResources) ->
             var levelResource = ShadowResource()
             levelResources.forEach { resourceValue ->
                 levelResource = when {

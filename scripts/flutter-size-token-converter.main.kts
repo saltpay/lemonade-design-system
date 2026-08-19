@@ -12,7 +12,7 @@ private data class SizeToken(
 )
 
 fun main() {
-    val sizeTokensFile = File("tokens/size.json")
+    val sizeTokensFile = tokenFile("size.tokens.json", "size.json")
     val outputDir = File("flutter/lib/src/foundation")
 
     try {

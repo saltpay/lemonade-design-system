@@ -12,7 +12,7 @@ private data class SpacingToken(
 )
 
 fun main() {
-    val spacingTokensFile = File("tokens/spacing.json")
+    val spacingTokensFile = tokenFile("spacing.tokens.json", "spacing.json")
     val outputDir = File("flutter/lib/src/foundation")
 
     try {

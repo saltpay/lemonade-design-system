@@ -10,7 +10,7 @@ data class ThemeResourceData(
 )
 
 fun main() {
-    val colorTokensFile = File("tokens/theme-colors.json")
+    val colorTokensFile = tokenFile("theme-colors.light.tokens.json", "theme-colors.json")
     val outputDir = File("flutter/lib/src")
 
     try {

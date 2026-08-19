@@ -99,6 +99,7 @@ reorderable() {
     # no enum, no ordered collection — so declaration order is not consumer-visible.
     */LemonadeBorderWidthExtension.kt) return 0 ;;
     */LemonadeBorderWidth.swift) return 0 ;;
+    flutter/lib/src/foundation/border.dart) return 0 ;;
     flutter/lib/src/foundation/primitive_colors.dart) return 0 ;;
     flutter/lib/src/foundation/semantic_colors.dart) return 0 ;;
     flutter/lib/src/theme/colors.dart) return 0 ;;
@@ -175,7 +176,8 @@ while IFS= read -r f; do
       fi
     else
       echo "FAIL  $f (content changed, not just order)"
-      diff <(git show "$REF:$f" | strip_volatile_docs "$f" | sort) <(strip_volatile_docs "$f" < "$f" | sort) | head -20
+      diff_out="$(diff <(git show "$REF:$f" | strip_volatile_docs "$f" | sort) <(strip_volatile_docs "$f" < "$f" | sort) || true)"
+      printf '%s\n' "$diff_out" | head -20
       fail=1
     fi
   else

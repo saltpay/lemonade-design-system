@@ -13,7 +13,7 @@ private data class BorderToken(
 )
 
 fun main() {
-    val borderTokensFile = File("tokens/border-width.json")
+    val borderTokensFile = tokenFile("border-width.tokens.json", "border-width.json")
     val outputDir = File("flutter/lib/src/foundation")
 
     try {
