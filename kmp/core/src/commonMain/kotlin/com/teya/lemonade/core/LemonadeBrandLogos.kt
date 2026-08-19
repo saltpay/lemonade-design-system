@@ -34,6 +34,7 @@ public enum class LemonadeBrandLogos : LemonadeAsset {
     Girocard,
     GooglePay,
     Jcb,
+    Maestro,
     Mastercard,
     MbWay,
     Multibanco,

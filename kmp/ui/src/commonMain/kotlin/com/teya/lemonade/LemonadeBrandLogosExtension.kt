@@ -30,6 +30,7 @@ public val LemonadeBrandLogos.drawableResource: DrawableResource
         LemonadeBrandLogos.Girocard -> LemonadeRes.drawable.gen_girocard
         LemonadeBrandLogos.GooglePay -> LemonadeRes.drawable.gen_google_pay
         LemonadeBrandLogos.Jcb -> LemonadeRes.drawable.gen_jcb
+        LemonadeBrandLogos.Maestro -> LemonadeRes.drawable.gen_maestro
         LemonadeBrandLogos.Mastercard -> LemonadeRes.drawable.gen_mastercard
         LemonadeBrandLogos.MbWay -> LemonadeRes.drawable.gen_mb_way
         LemonadeBrandLogos.Multibanco -> LemonadeRes.drawable.gen_multibanco
@@ -74,6 +75,7 @@ public val LemonadeBrandLogos.darkDrawableResource: DrawableResource
         LemonadeBrandLogos.Girocard -> LemonadeRes.drawable.gen_girocard_dark
         LemonadeBrandLogos.GooglePay -> LemonadeRes.drawable.gen_google_pay_dark
         LemonadeBrandLogos.Jcb -> LemonadeRes.drawable.gen_jcb_dark
+        LemonadeBrandLogos.Maestro -> LemonadeRes.drawable.gen_maestro
         LemonadeBrandLogos.Mastercard -> LemonadeRes.drawable.gen_mastercard
         LemonadeBrandLogos.MbWay -> LemonadeRes.drawable.gen_mb_way_dark
         LemonadeBrandLogos.Multibanco -> LemonadeRes.drawable.gen_multibanco_dark

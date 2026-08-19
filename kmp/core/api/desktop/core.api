@@ -104,6 +104,7 @@ public final class com/teya/lemonade/core/LemonadeBrandLogos : java/lang/Enum, c
 	public static final field Girocard Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field GooglePay Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Jcb Lcom/teya/lemonade/core/LemonadeBrandLogos;
+	public static final field Maestro Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Mastercard Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field MbWay Lcom/teya/lemonade/core/LemonadeBrandLogos;
 	public static final field Multibanco Lcom/teya/lemonade/core/LemonadeBrandLogos;

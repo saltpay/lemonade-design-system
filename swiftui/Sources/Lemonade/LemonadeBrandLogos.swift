@@ -35,6 +35,7 @@ public enum LemonadeBrandLogo: String, CaseIterable {
     case girocard = "girocard"
     case googlePay = "google-pay"
     case jcb = "jcb"
+    case maestro = "maestro"
     case mastercard = "mastercard"
     case mbWay = "mb-way"
     case multibanco = "multibanco"
@@ -80,6 +81,7 @@ public enum LemonadeBrandLogo: String, CaseIterable {
             .girocard,
             .googlePay,
             .jcb,
+            .maestro,
             .mastercard,
             .mbWay,
             .multibanco,

@@ -139,6 +139,7 @@ final enum class com.teya.lemonade.core/LemonadeBrandLogos : com.teya.lemonade.c
     enum entry Girocard // com.teya.lemonade.core/LemonadeBrandLogos.Girocard|null[0]
     enum entry GooglePay // com.teya.lemonade.core/LemonadeBrandLogos.GooglePay|null[0]
     enum entry Jcb // com.teya.lemonade.core/LemonadeBrandLogos.Jcb|null[0]
+    enum entry Maestro // com.teya.lemonade.core/LemonadeBrandLogos.Maestro|null[0]
     enum entry Mastercard // com.teya.lemonade.core/LemonadeBrandLogos.Mastercard|null[0]
     enum entry MbWay // com.teya.lemonade.core/LemonadeBrandLogos.MbWay|null[0]
     enum entry Multibanco // com.teya.lemonade.core/LemonadeBrandLogos.Multibanco|null[0]
