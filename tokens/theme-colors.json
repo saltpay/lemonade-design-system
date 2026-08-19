@@ -6937,8 +6937,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.content.contentPositive",
-        "iOS": "LemonadeTheme.colors.content.contentPositive"
+        "ANDROID": "LemonadeTheme.colors.content.contentFeatured",
+        "iOS": "LemonadeTheme.colors.content.contentFeatured"
       }
     },
     {
@@ -6984,8 +6984,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.content.contentPositiveOnColor",
-        "iOS": "LemonadeTheme.colors.content.contentPositiveOnColor"
+        "ANDROID": "LemonadeTheme.colors.content.contentFeaturedOnColor",
+        "iOS": "LemonadeTheme.colors.content.contentFeaturedOnColor"
       }
     },
     {
@@ -7032,8 +7032,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.background.bgPositive",
-        "iOS": "LemonadeTheme.colors.background.bgPositive"
+        "ANDROID": "LemonadeTheme.colors.background.bgFeatured",
+        "iOS": "LemonadeTheme.colors.background.bgFeatured"
       }
     },
     {
@@ -7080,8 +7080,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.background.bgPositiveSubtle",
-        "iOS": "LemonadeTheme.colors.background.bgPositiveSubtle"
+        "ANDROID": "LemonadeTheme.colors.background.bgFeaturedSubtle",
+        "iOS": "LemonadeTheme.colors.background.bgFeaturedSubtle"
       }
     },
     {
@@ -7128,8 +7128,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.border.borderPositive",
-        "iOS": "LemonadeTheme.colors.border.borderPositive"
+        "ANDROID": "LemonadeTheme.colors.border.borderFeatured",
+        "iOS": "LemonadeTheme.colors.border.borderFeatured"
       }
     },
     {
@@ -7176,8 +7176,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.border.borderPositiveSubtle",
-        "iOS": "LemonadeTheme.colors.border.borderPositiveSubtle"
+        "ANDROID": "LemonadeTheme.colors.border.borderFeaturedSubtle",
+        "iOS": "LemonadeTheme.colors.border.borderFeaturedSubtle"
       }
     },
     {
@@ -7224,8 +7224,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.interaction.bgPositiveInteractive",
-        "iOS": "LemonadeTheme.colors.interaction.bgPositiveInteractive"
+        "ANDROID": "LemonadeTheme.colors.interaction.bgFeaturedInteractive",
+        "iOS": "LemonadeTheme.colors.interaction.bgFeaturedInteractive"
       }
     },
     {
@@ -7272,8 +7272,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.interaction.bgPositiveSubtleInteractive",
-        "iOS": "LemonadeTheme.colors.interaction.bgPositiveSubtleInteractive"
+        "ANDROID": "LemonadeTheme.colors.interaction.bgFeaturedSubtleInteractive",
+        "iOS": "LemonadeTheme.colors.interaction.bgFeaturedSubtleInteractive"
       }
     },
     {
@@ -7320,8 +7320,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.interaction.bgPositivePressed",
-        "iOS": "LemonadeTheme.colors.interaction.bgPositivePressed"
+        "ANDROID": "LemonadeTheme.colors.interaction.bgFeaturedPressed",
+        "iOS": "LemonadeTheme.colors.interaction.bgFeaturedPressed"
       }
     },
     {
@@ -7368,8 +7368,8 @@
       ],
       "hiddenFromPublishing": false,
       "codeSyntax": {
-        "ANDROID": "LemonadeTheme.colors.interaction.bgPositiveSubtlePressed",
-        "iOS": "LemonadeTheme.colors.interaction.bgPositiveSubtlePressed"
+        "ANDROID": "LemonadeTheme.colors.interaction.bgFeaturedSubtlePressed",
+        "iOS": "LemonadeTheme.colors.interaction.bgFeaturedSubtlePressed"
       }
     }
   ]
