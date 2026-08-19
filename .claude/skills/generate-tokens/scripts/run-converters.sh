@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Generate platform token code (KMP + SwiftUI) from tokens/*.json.
+# Generate platform token code (KMP + SwiftUI) from tokens/*.tokens.json.
 #
 # Usage (run from the repo root):
-#   .claude/skills/generate-tokens/scripts/run-converters.sh [--changed | --all | <file.json>...]
+#   .claude/skills/generate-tokens/scripts/run-converters.sh [--changed | --all | <file.tokens.json>...]
 #
-#   --changed   (default) run converters only for tokens/*.json changed vs HEAD
+#   --changed   (default) run converters only for tokens/*.tokens.json changed vs HEAD
 #   --all       run every converter
-#   <file>...   run converters for the named token files (e.g. theme-colors.json radius.json)
+#   <file>...   run converters for the named token files (e.g. theme-colors.light.tokens.json radius.tokens.json)
 #
 # Requires Kotlin 2.3.20 — Homebrew's 2.4.0 crashes the .main.kts converters with
 # a FIR compiler error. This script installs 2.3.20 into ~/.local on first run
@@ -68,7 +68,7 @@ esac
 files=($(printf '%s\n' "${files[@]}" | sort -u))
 
 if [ "${#files[@]}" -eq 0 ]; then
-  echo "No token files to process. Pass file names, --all, or change a tokens/*.json first."
+  echo "No token files to process. Pass file names, --all, or change a tokens/*.tokens.json first."
   exit 0
 fi
 

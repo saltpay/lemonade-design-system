@@ -2,10 +2,11 @@
 name: generate-tokens
 description: >
   Regenerate the Lemonade platform token code (KMP + SwiftUI) from the Figma token
-  exports in `tokens/*.json`. Use when a `tokens/*.json` file changes (theme-colors,
-  radius, spacing, size, opacity, border-width, shadow, typography, primitive-colors)
-  and the generated Kotlin / Swift needs to be rebuilt, or when the user asks to
-  "generate tokens", "run the token converters", or "sync tokens to code".
+  exports in `tokens/*.tokens.json`. Use when a `tokens/*.tokens.json` file changes
+  (theme-colors, radius, spacing, size, opacity, border-width, shadow, typography,
+  primitive-colors) and the generated Kotlin / Swift needs to be rebuilt, or when
+  the user asks to "generate tokens", "run the token converters", or "sync tokens
+  to code".
 ---
 
 # Generate Lemonade tokens
@@ -26,46 +27,31 @@ below.
 From the repo root:
 
 ```bash
-# Regenerate only what changed vs HEAD (recommended)
+# 1. Ingest a fresh Figma native export (routes files by content, not by name)
+python3 .claude/skills/generate-tokens/scripts/ingest-tokens.py ~/Downloads/<export-dir>
+
+# 2. Regenerate only what changed vs HEAD (recommended)
 .claude/skills/generate-tokens/scripts/run-converters.sh --changed
 
-# Or target specific token files
-.claude/skills/generate-tokens/scripts/run-converters.sh theme-colors.json radius.json
-
-# Or regenerate everything
-.claude/skills/generate-tokens/scripts/run-converters.sh --all
+# 3. Confirm nothing consumer-visible moved unexpectedly
+.claude/skills/generate-tokens/scripts/verify-generated.sh
 ```
 
-The runner pins Kotlin 2.3.20, strips stray modes from `theme-colors.json`, runs
-the mapped converters, and prints the generated files that changed. Then review
-the diff and, for color/theme changes, glance at the KMP API baseline (see
-[Binary compatibility](#binary-compatibility)).
+Tokens are exported from Figma with **File → Export variables** (the native
+export, not a plugin). It emits one `*.tokens.json` per collection, and one per
+*mode* for multi-mode collections. Run it twice: once in the design-system file,
+once in the **Colors** library file that holds the primitives.
 
-## Two hard requirements (both bite silently)
+## One hard requirement (it bites silently)
 
-1. **Kotlin 2.3.20 — NOT Homebrew's 2.4.0.** The `.main.kts` converters fail to
-   compile on Kotlin 2.4.0 with:
-   `Expected FirResolvedTypeRef with ConeKotlinType but was FirUserTypeRefImpl`.
-   The runner installs 2.3.20 into `~/.local/kotlin-2.3.20` on first use and
-   always calls it by absolute path, ignoring whatever `kotlin` is on `PATH`. If
-   you run a converter by hand, invoke
-   `~/.local/kotlin-2.3.20/kotlinc/bin/kotlin scripts/<name>.main.kts` from the
-   repo root — never bare `kotlin`.
-
-2. **Strip stray modes from `theme-colors.json` first.** Figma re-exports carry an
-   extra mode id in every variable's `valuesByMode` / `resolvedValuesByMode`
-   (historically `3932:0`) that is not one of the two real modes declared in the
-   top-level `modes` map (`3037:0` = Light, `4431:0` = Dark). The committed file
-   must never contain it. Run:
-   ```bash
-   python3 .claude/skills/generate-tokens/scripts/strip-stray-modes.py tokens/theme-colors.json
-   # or check without editing:
-   python3 .claude/skills/generate-tokens/scripts/strip-stray-modes.py --check tokens/theme-colors.json
-   ```
-   The stripper removes any mode key absent from `modes` (so it also handles a
-   future stray id) and rewrites with 2-space indent + trailing newline, matching
-   Figma's native format so the diff stays clean. `run-converters.sh` does this
-   automatically whenever `theme-colors.json` is in scope.
+**Kotlin 2.3.20 — NOT Homebrew's 2.4.0.** The `.main.kts` converters fail to
+compile on Kotlin 2.4.0 with:
+`Expected FirResolvedTypeRef with ConeKotlinType but was FirUserTypeRefImpl`.
+The runner installs 2.3.20 into `~/.local/kotlin-2.3.20` on first use and
+always calls it by absolute path, ignoring whatever `kotlin` is on `PATH`. If
+you run a converter by hand, invoke
+`~/.local/kotlin-2.3.20/kotlinc/bin/kotlin scripts/<name>.main.kts` from the
+repo root — never bare `kotlin`.
 
 ## How the converters work
 
@@ -75,22 +61,23 @@ the diff and, for color/theme changes, glance at the KMP API baseline (see
   useful.
 - Converters overwrite their output files wholesale (each carries a
   "DO NOT MODIFY THIS FILE MANUALLY" banner). Never hand-edit generated files.
-- `primitive-colors.json` did **not** change? Skip its converters — they're only
-  needed when the raw color ramp changes, not for semantic (`theme-colors`) edits.
+- `primitive-colors.tokens.json` did **not** change? Skip its converters — they're
+  only needed when the raw color ramp changes, not for semantic (`theme-colors`)
+  edits.
 
 ## Token file → converter map
 
-| `tokens/` file          | KMP                              | SwiftUI                                             |
-|-------------------------|----------------------------------|-----------------------------------------------------|
-| `primitive-colors.json` | `kmp-color`                      | `swiftui-color`                                     |
-| `theme-colors.json`     | `kmp-theme`                      | `swiftui-theme` + `swiftui-color-assets-generator`  |
-| `radius.json`           | `kmp-radius`                     | `swiftui-radius`                                    |
-| `spacing.json`          | `kmp-spacing`                    | `swiftui-spacing`                                   |
-| `size.json`             | `kmp-dimension`                  | `swiftui-size`                                      |
-| `opacity.json`          | `kmp-opacity`                    | `swiftui-opacity`                                   |
-| `border-width.json`     | `kmp-border-width`               | `swiftui-border`                                    |
-| `shadow.json`           | `kmp-shadow`                     | `swiftui-shadow`                                    |
-| `typography.json`       | `kmp-typography`                 | `swiftui-typography`                                |
+| `tokens/` file                                                   | KMP                               | SwiftUI                                             |
+|-------------------------------------------------------------------|----------------------------------|-----------------------------------------------------|
+| `primitive-colors.tokens.json`                                     | `kmp-color`                      | `swiftui-color`                                     |
+| `theme-colors.light.tokens.json` / `theme-colors.dark.tokens.json` | `kmp-theme`                      | `swiftui-theme` + `swiftui-color-assets-generator`  |
+| `radius.tokens.json`                                               | `kmp-radius`                     | `swiftui-radius`                                    |
+| `spacing.tokens.json`                                              | `kmp-spacing`                    | `swiftui-spacing`                                   |
+| `size.tokens.json`                                                 | `kmp-dimension`                  | `swiftui-size`                                      |
+| `opacity.tokens.json`                                              | `kmp-opacity`                    | `swiftui-opacity`                                   |
+| `border-width.tokens.json`                                         | `kmp-border-width`               | `swiftui-border`                                    |
+| `shadow.tokens.json`                                               | `kmp-shadow`                     | `swiftui-shadow`                                    |
+| `typography.tokens.json`                                           | `kmp-typography`                 | `swiftui-typography`                                |
 
 (Converter names above omit the `-token-converter.main.kts` suffix, except
 `swiftui-color-assets-generator.main.kts`. `flutter-*` converters exist in
@@ -109,5 +96,5 @@ the diff and, for color/theme changes, glance at the KMP API baseline (see
   If public API may have shifted, run the classifier from `kmp/` and follow the
   **binary-compatibility** skill:
   `.claude/skills/binary-compatibility/scripts/bcv-check.sh --ci`.
-- Commit the cleaned `tokens/*.json` alongside the regenerated source in the same
-  change.
+- Commit the cleaned `tokens/*.tokens.json` alongside the regenerated source in
+  the same change.
