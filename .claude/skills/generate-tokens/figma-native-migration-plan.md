@@ -95,6 +95,10 @@ reorderable() {
     */LemonadeLightTheme.kt|*/LemonadeDarkTheme.kt) return 0 ;;
     */LemonadeSemanticColors.kt|*/LemonadeSemanticColors.swift) return 0 ;;
     */LemonadeAdaptiveTheme.swift|*/Color+Lemonade.swift) return 0 ;;
+    # Emits only independent scalar constants and interface/protocol members —
+    # no enum, no ordered collection — so declaration order is not consumer-visible.
+    */LemonadeBorderWidthExtension.kt) return 0 ;;
+    */LemonadeBorderWidth.swift) return 0 ;;
     flutter/lib/src/foundation/primitive_colors.dart) return 0 ;;
     flutter/lib/src/foundation/semantic_colors.dart) return 0 ;;
     flutter/lib/src/theme/colors.dart) return 0 ;;
