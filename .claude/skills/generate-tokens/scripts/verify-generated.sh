@@ -28,14 +28,29 @@ reorderable() {
   esac
 }
 
-changed="$(git diff --name-only "$REF" -- kmp/ swiftui/ flutter/ || true)"
+if ! changed="$(git diff --name-only "$REF" -- kmp/ swiftui/ flutter/)"; then
+  echo "FAIL: could not diff against $REF (bad or unreachable ref?)"
+  exit 1
+fi
 
-if [ -z "$changed" ]; then
+# New generated files that were never staged/committed don't show up in
+# `git diff` at all — catch them separately so a converter emitting a
+# brand-new file can't silently slip past the harness.
+untracked="$(git status --porcelain -- kmp/ swiftui/ flutter/ | grep '^??' | cut -c4- || true)"
+
+if [ -z "$changed" ] && [ -z "$untracked" ]; then
   echo "PASS: generated output is byte-identical to $REF"
   exit 0
 fi
 
 fail=0
+
+while IFS= read -r f; do
+  [ -z "$f" ] && continue
+  echo "FAIL  $f (untracked new file, not compared against $REF)"
+  fail=1
+done <<< "$untracked"
+
 while IFS= read -r f; do
   [ -z "$f" ] && continue
   if [ ! -f "$f" ]; then
