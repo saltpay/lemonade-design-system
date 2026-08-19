@@ -548,11 +548,20 @@ fun tokenFile(vararg candidates: String): File =
     candidates.map { File("tokens/$it") }.firstOrNull { it.isFile }
         ?: error("None of ${candidates.joinToString()} exist under tokens/")
 
-/** All `tokens/` files whose name starts with [prefix], sorted by name. */
-fun tokenFiles(prefix: String): List<File> =
-    (File("tokens").listFiles() ?: emptyArray())
+/**
+ * All `tokens/` files whose name starts with [prefix], sorted by name.
+ *
+ * While both export formats coexist, a DTCG file supersedes the legacy plugin
+ * file for the same collection: otherwise mode lookup can land on the legacy
+ * file first purely by filename order.
+ */
+fun tokenFiles(prefix: String): List<File> {
+    val matches = (File("tokens").listFiles() ?: emptyArray())
         .filter { it.isFile && it.name.startsWith(prefix) && it.name.endsWith(".json") }
         .sortedBy { it.name }
+    val dtcg = matches.filter { it.name.endsWith(".tokens.json") }
+    return dtcg.ifEmpty { matches }
+}
 
 private fun <T> dtcgResources(
     json: JSONObject,

@@ -35,172 +35,172 @@ public interface LemonadeSemanticColors {
     public val isDark: Boolean
         get() = false
 
-    public val interaction: InteractionColors
+    public val background: BackgroundColors
     public val border: BorderColors
     public val content: ContentColors
-    public val background: BackgroundColors
-    public val shadow: ShadowColors
+    public val interaction: InteractionColors
     public val scoped: ScopedColors
+    public val shadow: ShadowColors
 
-    public interface InteractionColors {
-        public val bgNeutralSubtleInteractive: Color
-        public val bgPositiveSubtleInteractive: Color
-        public val bgInfoSubtleInteractive: Color
-        public val bgNeutralInteractive: Color
-        public val bgBrandHighInteractive: Color
-        public val bgDefaultInteractive: Color
-        public val bgCautionInteractive: Color
-        public val bgPositiveInteractive: Color
-        public val bgSubtleInteractive: Color
-        public val bgInfoInteractive: Color
-        public val bgCautionSubtleInteractive: Color
-        public val bgCriticalInteractive: Color
-        public val bgBrandInteractive: Color
-        public val bgElevatedInteractive: Color
-        public val bgCriticalSubtleInteractive: Color
-        public val bgDefaultPressed: Color
-        public val bgSubtlePressed: Color
-        public val bgElevatedPressed: Color
-        public val bgBrandPressed: Color
-        public val bgBrandHighPressed: Color
-        public val bgCriticalPressed: Color
-        public val bgCautionPressed: Color
-        public val bgInfoPressed: Color
-        public val bgPositivePressed: Color
-        public val bgNeutralPressed: Color
-        public val bgCriticalSubtlePressed: Color
-        public val bgCautionSubtlePressed: Color
-        public val bgInfoSubtlePressed: Color
-        public val bgPositiveSubtlePressed: Color
-        public val bgNeutralSubtlePressed: Color
-        public val bgElevatedHighInteractive: Color
-        public val bgBrandElevatedInteractive: Color
-        public val bgBrandElevatedPressed: Color
-        public val bgAlwaysLightLowInteractive: Color
-        public val bgAlwaysLightMediumInteractive: Color
-        public val bgAlwaysLightHighInteractive: Color
-        public val bgAlwaysDarkHighInteractive: Color
-        public val bgAlwaysDarkLowInteractive: Color
-        public val bgAlwaysDarkMediumInteractive: Color
-        public val bgFeaturedInteractive: Color
-        public val bgFeaturedSubtleInteractive: Color
-        public val bgFeaturedPressed: Color
-        public val bgFeaturedSubtlePressed: Color
+    public interface BackgroundColors {
+        public val bgBrand: Color
+        public val bgBrandElevated: Color
+        public val bgBrandHigh: Color
+        public val bgBrandSubtle: Color
+        public val bgAlwaysDark: Color
+        public val bgAlwaysDarkHigh: Color
+        public val bgAlwaysDarkLow: Color
+        public val bgAlwaysDarkMedium: Color
+        public val bgAlwaysLight: Color
+        public val bgAlwaysLightHigh: Color
+        public val bgAlwaysLightLow: Color
+        public val bgAlwaysLightMedium: Color
+        public val bgDefaultInverse: Color
+        public val bgElevatedInverse: Color
+        public val bgSubtleInverse: Color
+        public val bgCaution: Color
+        public val bgCautionSubtle: Color
+        public val bgCritical: Color
+        public val bgCriticalSubtle: Color
+        public val bgFeatured: Color
+        public val bgFeaturedSubtle: Color
+        public val bgInfo: Color
+        public val bgInfoSubtle: Color
+        public val bgNeutral: Color
+        public val bgNeutralSubtle: Color
+        public val bgPositive: Color
+        public val bgPositiveSubtle: Color
+        public val bgDefault: Color
+        public val bgElevated: Color
+        public val bgElevatedHigh: Color
+        public val bgSubtle: Color
     }
 
     public interface BorderColors {
-        public val borderBrandInverse: Color
-        public val borderSelectedInverse: Color
-        public val borderNeutralMediumInverse: Color
-        public val borderNeutralLowInverse: Color
-        public val borderAlwaysDark: Color
-        public val borderPositiveSubtle: Color
-        public val borderInfoSubtle: Color
-        public val borderCautionSubtle: Color
-        public val borderCriticalSubtle: Color
-        public val borderPositive: Color
-        public val borderInfo: Color
-        public val borderCaution: Color
-        public val borderOnBrandMedium: Color
         public val borderBrand: Color
-        public val borderSelected: Color
-        public val borderOnBrandLow: Color
         public val borderOnBrandHigh: Color
-        public val borderCritical: Color
-        public val borderNeutralLow: Color
-        public val borderNeutralMedium: Color
-        public val borderAlwaysLight: Color
-        public val borderNeutralHigh: Color
-        public val borderNeutralHighInverse: Color
-        public val borderAlwaysLightLow: Color
-        public val borderAlwaysLightMedium: Color
-        public val borderAlwaysLightHigh: Color
+        public val borderOnBrandLow: Color
+        public val borderOnBrandMedium: Color
+        public val borderAlwaysDark: Color
+        public val borderAlwaysDarkHigh: Color
         public val borderAlwaysDarkLow: Color
         public val borderAlwaysDarkMedium: Color
-        public val borderAlwaysDarkHigh: Color
+        public val borderAlwaysLight: Color
+        public val borderAlwaysLightHigh: Color
+        public val borderAlwaysLightLow: Color
+        public val borderAlwaysLightMedium: Color
+        public val borderBrandInverse: Color
+        public val borderNeutralHighInverse: Color
+        public val borderNeutralLowInverse: Color
+        public val borderNeutralMediumInverse: Color
+        public val borderSelectedInverse: Color
+        public val borderCaution: Color
+        public val borderCautionSubtle: Color
+        public val borderCritical: Color
+        public val borderCriticalSubtle: Color
         public val borderFeatured: Color
         public val borderFeaturedSubtle: Color
+        public val borderInfo: Color
+        public val borderInfoSubtle: Color
+        public val borderPositive: Color
+        public val borderPositiveSubtle: Color
+        public val borderNeutralHigh: Color
+        public val borderNeutralLow: Color
+        public val borderNeutralMedium: Color
+        public val borderSelected: Color
     }
 
     public interface ContentColors {
-        public val contentOnBrandLow: Color
         public val contentBrand: Color
-        public val contentCaution: Color
-        public val contentInfo: Color
-        public val contentTertiary: Color
-        public val contentAlwaysLight: Color
-        public val contentSecondary: Color
-        public val contentPrimaryInverse: Color
-        public val contentPositive: Color
-        public val contentTertiaryInverse: Color
-        public val contentAlwaysDark: Color
-        public val contentNeutral: Color
-        public val contentBrandInverse: Color
-        public val contentSecondaryInverse: Color
-        public val contentCritical: Color
-        public val contentOnBrandHigh: Color
-        public val contentPrimary: Color
-        public val contentCriticalOnColor: Color
-        public val contentCautionOnColor: Color
-        public val contentInfoOnColor: Color
-        public val contentPositiveOnColor: Color
-        public val contentNeutralOnColor: Color
         public val contentBrandHigh: Color
+        public val contentOnBrandHigh: Color
+        public val contentOnBrandLow: Color
+        public val contentAlwaysDark: Color
+        public val contentAlwaysLight: Color
+        public val contentCautionAlwaysOnColor: Color
+        public val contentCriticalAlwaysOnColor: Color
         public val contentInfoAlwaysOnColor: Color
         public val contentNeutralAlwaysOnColor: Color
         public val contentPositiveAlwaysOnColor: Color
-        public val contentCautionAlwaysOnColor: Color
-        public val contentCriticalAlwaysOnColor: Color
-        public val contentFeatured: Color
+        public val contentBrandInverse: Color
+        public val contentPrimaryInverse: Color
+        public val contentSecondaryInverse: Color
+        public val contentTertiaryInverse: Color
+        public val contentCautionOnColor: Color
+        public val contentCriticalOnColor: Color
         public val contentFeaturedOnColor: Color
+        public val contentInfoOnColor: Color
+        public val contentNeutralOnColor: Color
+        public val contentPositiveOnColor: Color
+        public val contentCaution: Color
+        public val contentCritical: Color
+        public val contentFeatured: Color
+        public val contentInfo: Color
+        public val contentNeutral: Color
+        public val contentPositive: Color
+        public val contentPrimary: Color
+        public val contentSecondary: Color
+        public val contentTertiary: Color
     }
 
-    public interface BackgroundColors {
-        public val bgAlwaysLight: Color
-        public val bgAlwaysDark: Color
-        public val bgDefaultInverse: Color
-        public val bgNeutralSubtle: Color
-        public val bgCautionSubtle: Color
-        public val bgCriticalSubtle: Color
-        public val bgNeutral: Color
-        public val bgBrandSubtle: Color
-        public val bgSubtleInverse: Color
-        public val bgBrandElevated: Color
-        public val bgPositiveSubtle: Color
-        public val bgDefault: Color
-        public val bgCritical: Color
-        public val bgBrandHigh: Color
-        public val bgCaution: Color
-        public val bgBrand: Color
-        public val bgElevated: Color
-        public val bgElevatedInverse: Color
-        public val bgSubtle: Color
-        public val bgInfo: Color
-        public val bgPositive: Color
-        public val bgInfoSubtle: Color
-        public val bgElevatedHigh: Color
-        public val bgAlwaysLightLow: Color
-        public val bgAlwaysLightMedium: Color
-        public val bgAlwaysLightHigh: Color
-        public val bgAlwaysDarkLow: Color
-        public val bgAlwaysDarkMedium: Color
-        public val bgAlwaysDarkHigh: Color
-        public val bgFeatured: Color
-        public val bgFeaturedSubtle: Color
+    public interface InteractionColors {
+        public val bgAlwaysDarkHighInteractive: Color
+        public val bgAlwaysDarkLowInteractive: Color
+        public val bgAlwaysDarkMediumInteractive: Color
+        public val bgAlwaysLightHighInteractive: Color
+        public val bgAlwaysLightLowInteractive: Color
+        public val bgAlwaysLightMediumInteractive: Color
+        public val bgBrandElevatedInteractive: Color
+        public val bgBrandHighInteractive: Color
+        public val bgBrandInteractive: Color
+        public val bgCautionInteractive: Color
+        public val bgCautionSubtleInteractive: Color
+        public val bgCriticalInteractive: Color
+        public val bgCriticalSubtleInteractive: Color
+        public val bgDefaultInteractive: Color
+        public val bgElevatedHighInteractive: Color
+        public val bgElevatedInteractive: Color
+        public val bgFeaturedInteractive: Color
+        public val bgFeaturedSubtleInteractive: Color
+        public val bgInfoInteractive: Color
+        public val bgInfoSubtleInteractive: Color
+        public val bgNeutralInteractive: Color
+        public val bgNeutralSubtleInteractive: Color
+        public val bgPositiveInteractive: Color
+        public val bgPositiveSubtleInteractive: Color
+        public val bgSubtleInteractive: Color
+        public val bgBrandElevatedPressed: Color
+        public val bgBrandHighPressed: Color
+        public val bgBrandPressed: Color
+        public val bgCautionPressed: Color
+        public val bgCautionSubtlePressed: Color
+        public val bgCriticalPressed: Color
+        public val bgCriticalSubtlePressed: Color
+        public val bgDefaultPressed: Color
+        public val bgElevatedPressed: Color
+        public val bgFeaturedPressed: Color
+        public val bgFeaturedSubtlePressed: Color
+        public val bgInfoPressed: Color
+        public val bgInfoSubtlePressed: Color
+        public val bgNeutralPressed: Color
+        public val bgNeutralSubtlePressed: Color
+        public val bgPositivePressed: Color
+        public val bgPositiveSubtlePressed: Color
+        public val bgSubtlePressed: Color
+    }
+
+    public interface ScopedColors {
+        public val bgSettlementBusinessDays: Color
+        public val bgSettlementEveryday: Color
+        public val bgSettlementInstant: Color
+        public val bgSettlementScheduled: Color
+        public val contentOnSettlementBusinessDays: Color
+        public val contentOnSettlementEveryday: Color
+        public val contentOnSettlementInstant: Color
+        public val contentOnSettlementScheduled: Color
     }
 
     public interface ShadowColors {
         public val shadowDefault: Color
-    }
-
-    public interface ScopedColors {
-        public val bgSettlementInstant: Color
-        public val bgSettlementBusinessDays: Color
-        public val bgSettlementEveryday: Color
-        public val bgSettlementScheduled: Color
-        public val contentOnSettlementInstant: Color
-        public val contentOnSettlementBusinessDays: Color
-        public val contentOnSettlementEveryday: Color
-        public val contentOnSettlementScheduled: Color
     }
 }
