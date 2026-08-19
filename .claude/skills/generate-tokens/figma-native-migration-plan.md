@@ -387,9 +387,11 @@ Append to `scripts/kmp-resource-file-loading.main.kts`, after the existing `isVa
 // generated output would be non-deterministic.
 // ---------------------------------------------------------------------------
 
-private const val EXTENSIONS = "\$extensions"
-private const val TYPE = "\$type"
-private const val VALUE = "\$value"
+// `const val` is not permitted at the top level of a .main.kts script —
+// script declarations become members of a generated class. Plain `val`.
+private val EXTENSIONS = "\$extensions"
+private val TYPE = "\$type"
+private val VALUE = "\$value"
 
 /** A plugin export has a top-level `variables` array; a DTCG document does not. */
 fun isDtcgDocument(json: JSONObject): Boolean = !json.has("variables")
