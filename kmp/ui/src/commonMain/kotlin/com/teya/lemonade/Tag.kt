@@ -103,6 +103,7 @@ private val TagVoice.tintColor: Color
             TagVoice.Info -> LocalColors.current.content.contentInfo
             TagVoice.Positive -> LocalColors.current.content.contentPositive
             TagVoice.NeutralOnColor -> LocalColors.current.content.contentAlwaysDark
+            TagVoice.Featured -> LocalColors.current.content.contentFeatured
         }
     }
 
@@ -115,6 +116,7 @@ private val TagVoice.containerColor: Color
             TagVoice.Info -> LocalColors.current.background.bgInfoSubtle
             TagVoice.Positive -> LocalColors.current.background.bgPositiveSubtle
             TagVoice.NeutralOnColor -> LocalColors.current.background.bgAlwaysLight
+            TagVoice.Featured -> LocalColors.current.background.bgFeaturedSubtle
         }
     }
 
@@ -127,6 +129,7 @@ private val TagVoice.borderColor: Color
             TagVoice.Info -> LocalColors.current.border.borderInfoSubtle
             TagVoice.Positive -> LocalColors.current.border.borderPositiveSubtle
             TagVoice.NeutralOnColor -> LocalColors.current.border.borderNeutralLow
+            TagVoice.Featured -> LocalColors.current.border.borderFeaturedSubtle
         }
     }
 

@@ -1224,6 +1224,7 @@ final enum class com.teya.lemonade.core/SymbolContainerVoice : kotlin/Enum<com.t
 
 final enum class com.teya.lemonade.core/TagVoice : kotlin/Enum<com.teya.lemonade.core/TagVoice> { // com.teya.lemonade.core/TagVoice|null[0]
     enum entry Critical // com.teya.lemonade.core/TagVoice.Critical|null[0]
+    enum entry Featured // com.teya.lemonade.core/TagVoice.Featured|null[0]
     enum entry Info // com.teya.lemonade.core/TagVoice.Info|null[0]
     enum entry Neutral // com.teya.lemonade.core/TagVoice.Neutral|null[0]
     enum entry NeutralOnColor // com.teya.lemonade.core/TagVoice.NeutralOnColor|null[0]

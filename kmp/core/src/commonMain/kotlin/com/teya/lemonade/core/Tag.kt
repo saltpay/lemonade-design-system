@@ -9,4 +9,5 @@ public enum class TagVoice {
     Info,
     Positive,
     NeutralOnColor,
+    Featured,
 }
