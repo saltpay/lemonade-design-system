@@ -49,8 +49,12 @@ fun <T> readFileResourceFile(
     file: File,
     resourceMap: (JSONObject) -> T,
 ): List<ResourceData<T>> {
-    val fileContent = file.readText()
-    val json = JSONObject(fileContent)
+    val json = JSONObject(file.readText())
+    if (isDtcgDocument(json)) {
+        val resources = dtcgResources(json, resourceMap)
+        println("Found ${resources.size} variables")
+        return resources
+    }
     val variablesJsonArray = json.getJSONArray("variables")
     val resources = mutableListOf<ResourceData<T>>()
     println("Found ${variablesJsonArray.length()} variables")
@@ -75,35 +79,53 @@ fun <T> readFileResourceFile(
     return resources
 }
 
+/**
+ * Resources for one mode. Accepts both formats: a DTCG export splits modes
+ * across files (matched on `com.figma.modeName`), a plugin export keeps them
+ * in one file's `modes` map (matched on the mode's display name).
+ */
 fun <T> readFileResourceFileByMode(
-    file: File,
-    modeKey: String,
+    files: List<File>,
+    modeName: String,
     resourceMap: (JSONObject) -> T,
 ): List<ResourceData<T>> {
-    val fileContent = file.readText()
-    val json = JSONObject(fileContent)
-    val variablesJsonArray = json.getJSONArray("variables")
-    val resources = mutableListOf<ResourceData<T>>()
-    println("Found ${variablesJsonArray.length()} variables")
-    repeat(times = variablesJsonArray.length()) { index ->
-        val variableJsonObject = variablesJsonArray.getJSONObject(index)
-        if (!variableJsonObject.optBoolean("hiddenFromPublishing")) {
-            val name = variableJsonObject.getString("name")
-            val resolvedValues = variableJsonObject.getJSONObject("resolvedValuesByMode")
-            if (resolvedValues.has(modeKey)) {
-                val resolvedValueKeyObject = resolvedValues.getJSONObject(modeKey)
-                resources.add(
-                    ResourceData(
-                        groups = name.sanitizedGroups(),
-                        groupFullName = name.sanitizedClassName(),
-                        name = name.sanitizedValueName(),
-                        value = resourceMap(resolvedValueKeyObject),
+    files.forEach { file ->
+        val json = JSONObject(file.readText())
+        if (isDtcgDocument(json)) {
+            if (!dtcgModeName(json).equals(modeName, ignoreCase = true)) return@forEach
+            val resources = dtcgResources(json, resourceMap)
+            println("Found ${resources.size} variables for mode $modeName")
+            return resources
+        }
+
+        val modes = json.getJSONObject("modes")
+        val modeKey = modes.keys().asSequence().firstOrNull { key ->
+            modes.getString(key).equals(modeName, ignoreCase = true)
+        } ?: return@forEach
+
+        val variablesJsonArray = json.getJSONArray("variables")
+        val resources = mutableListOf<ResourceData<T>>()
+        println("Found ${variablesJsonArray.length()} variables")
+        repeat(times = variablesJsonArray.length()) { index ->
+            val variableJsonObject = variablesJsonArray.getJSONObject(index)
+            if (!variableJsonObject.optBoolean("hiddenFromPublishing")) {
+                val name = variableJsonObject.getString("name")
+                val resolvedValues = variableJsonObject.getJSONObject("resolvedValuesByMode")
+                if (resolvedValues.has(modeKey)) {
+                    resources.add(
+                        ResourceData(
+                            groups = name.sanitizedGroups(),
+                            groupFullName = name.sanitizedClassName(),
+                            name = name.sanitizedValueName(),
+                            value = resourceMap(resolvedValues.getJSONObject(modeKey)),
+                        )
                     )
-                )
+                }
             }
         }
+        return resources
     }
-    return resources
+    error("No token file provides mode '$modeName'")
 }
 
 fun String.sanitizedGroups(): List<String> {
@@ -154,4 +176,191 @@ fun String.sanitizedClassName(): String {
 
 fun String.isValueNumberOnly(): Boolean {
     return all { it.isDigit() }
+}
+
+// ---------------------------------------------------------------------------
+// Figma native (DTCG) support
+//
+// org.json's JSONObject is backed by a HashMap, so keys() does NOT return file
+// order. Every traversal below therefore sorts explicitly — without it the
+// generated output would be non-deterministic.
+// ---------------------------------------------------------------------------
+
+private val EXTENSIONS = "\$extensions"
+private val TYPE = "\$type"
+private val VALUE = "\$value"
+
+/** A plugin export has a top-level `variables` array; a DTCG document does not. */
+fun isDtcgDocument(json: JSONObject): Boolean = !json.has("variables")
+
+/** Compares digit runs numerically, so `border-50` sorts before `border-100`. */
+fun naturalCompare(left: String, right: String): Int {
+    var i = 0
+    var j = 0
+    while (i < left.length && j < right.length) {
+        val leftChar = left[i]
+        val rightChar = right[j]
+        if (leftChar.isDigit() && rightChar.isDigit()) {
+            var leftEnd = i
+            while (leftEnd < left.length && left[leftEnd].isDigit()) leftEnd++
+            var rightEnd = j
+            while (rightEnd < right.length && right[rightEnd].isDigit()) rightEnd++
+            val leftNumber = left.substring(i, leftEnd).trimStart('0').ifEmpty { "0" }
+            val rightNumber = right.substring(j, rightEnd).trimStart('0').ifEmpty { "0" }
+            if (leftNumber.length != rightNumber.length) return leftNumber.length - rightNumber.length
+            val comparison = leftNumber.compareTo(rightNumber)
+            if (comparison != 0) return comparison
+            i = leftEnd
+            j = rightEnd
+        } else {
+            if (leftChar != rightChar) return leftChar.compareTo(rightChar)
+            i++
+            j++
+        }
+    }
+    return (left.length - i) - (right.length - j)
+}
+
+/** Canonical token ordering: segment by segment, numerically aware. */
+fun canonicalTokenOrder(left: String, right: String): Int {
+    val leftSegments = left.split("/")
+    val rightSegments = right.split("/")
+    for (index in 0 until minOf(leftSegments.size, rightSegments.size)) {
+        val comparison = naturalCompare(leftSegments[index], rightSegments[index])
+        if (comparison != 0) return comparison
+    }
+    return leftSegments.size - rightSegments.size
+}
+
+/** Every leaf token in a DTCG document, keyed by its slash-joined group path. */
+fun dtcgTokens(root: JSONObject): Map<String, JSONObject> {
+    val tokens = linkedMapOf<String, JSONObject>()
+    fun walk(node: JSONObject, path: List<String>) {
+        node.keys().asSequence().toList().sortedWith(::naturalCompare).forEach { key ->
+            if (key.startsWith("\$")) return@forEach
+            val child = node.optJSONObject(key) ?: return@forEach
+            if (child.has(TYPE)) {
+                tokens[(path + key).joinToString("/")] = child
+            } else {
+                walk(child, path + key)
+            }
+        }
+    }
+    walk(root, emptyList())
+    return tokens
+}
+
+/** `{a.b.c}` -> `a/b/c`, or null when the value is not a DTCG reference. */
+private fun dtcgReferenceTarget(node: JSONObject): String? {
+    val value = node.opt(VALUE)
+    if (value !is String) return null
+    if (!value.startsWith("{") || !value.endsWith("}")) return null
+    return value.substring(1, value.length - 1).replace('.', '/')
+}
+
+private fun dtcgResolvedValue(tokens: Map<String, JSONObject>, name: String, seen: MutableSet<String>): Any {
+    val node = tokens[name] ?: error("DTCG reference '$name' does not exist in this document")
+    val target = dtcgReferenceTarget(node)
+    if (target != null) {
+        if (!seen.add(name)) error("DTCG reference cycle involving '$name'")
+        return dtcgResolvedValue(tokens, target, seen)
+    }
+    return node.get(VALUE)
+}
+
+/**
+ * Builds the object the converters already expect:
+ * `{ "resolvedValue": <number|string|{r,g,b,a}>, "alias": .., "aliasName": .. }`.
+ */
+fun dtcgResolvedValueObject(tokens: Map<String, JSONObject>, name: String): JSONObject {
+    val node = tokens.getValue(name)
+    val result = JSONObject()
+
+    val declaredType = node.optString(TYPE)
+    require(declaredType in setOf("color", "number", "string")) {
+        "Unsupported DTCG \$type '$declaredType' on token '$name'"
+    }
+
+    when (val resolved = dtcgResolvedValue(tokens, name, mutableSetOf())) {
+        is JSONObject -> {
+            val components = resolved.getJSONArray("components")
+            result.put(
+                "resolvedValue",
+                JSONObject()
+                    .put("r", components.getDouble(0))
+                    .put("g", components.getDouble(1))
+                    .put("b", components.getDouble(2))
+                    .put("a", resolved.optDouble("alpha", 1.0)),
+            )
+        }
+        else -> result.put("resolvedValue", resolved)
+    }
+
+    val aliasData = node.optJSONObject(EXTENSIONS)?.optJSONObject("com.figma.aliasData")
+    if (aliasData != null) {
+        result.put("alias", aliasData.optString("targetVariableId"))
+        result.put("aliasName", aliasData.optString("targetVariableName"))
+    } else {
+        val target = dtcgReferenceTarget(node)
+        if (target != null) {
+            result.put("aliasName", target)
+            val targetId = tokens[target]?.optJSONObject(EXTENSIONS)?.optString("com.figma.variableId")
+            if (!targetId.isNullOrBlank()) result.put("alias", targetId)
+        }
+    }
+    return result
+}
+
+private fun isHidden(node: JSONObject): Boolean =
+    node.optJSONObject(EXTENSIONS)?.optBoolean("com.figma.hiddenFromPublishing") ?: false
+
+fun dtcgModeName(json: JSONObject): String =
+    json.optJSONObject(EXTENSIONS)?.optString("com.figma.modeName").orEmpty()
+
+/** The distinct mode names across [files], in file order. Works for both formats. */
+fun availableModeNames(files: List<File>): List<String> {
+    val names = mutableListOf<String>()
+    files.forEach { file ->
+        val json = JSONObject(file.readText())
+        if (isDtcgDocument(json)) {
+            val mode = dtcgModeName(json)
+            if (mode.isNotBlank() && mode !in names) names.add(mode)
+        } else {
+            val modes = json.getJSONObject("modes")
+            modes.keys().asSequence().toList().sorted().forEach { key ->
+                val mode = modes.getString(key)
+                if (mode !in names) names.add(mode)
+            }
+        }
+    }
+    return names
+}
+
+/** First existing file among [candidates], resolved under `tokens/`. */
+fun tokenFile(vararg candidates: String): File =
+    candidates.map { File("tokens/$it") }.firstOrNull { it.isFile }
+        ?: error("None of ${candidates.joinToString()} exist under tokens/")
+
+/** All `tokens/` files whose name starts with [prefix], sorted by name. */
+fun tokenFiles(prefix: String): List<File> =
+    (File("tokens").listFiles() ?: emptyArray())
+        .filter { it.isFile && it.name.startsWith(prefix) && it.name.endsWith(".json") }
+        .sortedBy { it.name }
+
+private fun <T> dtcgResources(
+    json: JSONObject,
+    resourceMap: (JSONObject) -> T,
+): List<ResourceData<T>> {
+    val tokens = dtcgTokens(json)
+    return tokens.keys
+        .sortedWith(::canonicalTokenOrder)
+        .filterNot { isHidden(tokens.getValue(it)) }
+        .map { name ->
+            ResourceData(
+                groups = name.sanitizedGroups(),
+                groupFullName = name.sanitizedClassName(),
+                name = name.sanitizedValueName(),
+                value = resourceMap(dtcgResolvedValueObject(tokens, name)),
+            )
+        }
 }

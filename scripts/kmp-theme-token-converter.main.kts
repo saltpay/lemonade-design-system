@@ -2,7 +2,6 @@
 
 @file:Import("kmp-resource-file-loading.main.kts")
 
-import org.json.JSONObject
 import java.io.File
 
 data class ThemeResourceData(
@@ -11,7 +10,7 @@ data class ThemeResourceData(
 )
 
 fun main() {
-    val colorTokensFile = File("tokens/theme-colors.json")
+    val colorTokensFile = tokenFile("theme-colors.light.tokens.json", "theme-colors.json")
     val themesOutputDir = File("kmp/ui/src/commonMain/kotlin/com/teya/lemonade")
     val interfaceOutputDir = File("kmp/tokens/src/commonMain/kotlin/com/teya/lemonade")
 
@@ -27,24 +26,19 @@ fun main() {
             error(message = "File $colorTokensFile does not exist in system")
         }
 
-        // Read the JSON to extract mode keys
-        val fileContent = colorTokensFile.readText()
-        val json = JSONObject(fileContent)
-        val modesObject = json.getJSONObject("modes")
-        val modeKeys = modesObject.keys().asSequence().toList()
-        
-        // Generate code for each theme mode
-        modeKeys.forEach { modeKey ->
-            val modeName = modesObject.getString(modeKey)
+        val themeFiles = tokenFiles("theme-colors")
+        val modeNames = availableModeNames(themeFiles)
+
+        modeNames.forEach { modeName ->
             val themeName = when {
                 modeName.equals("Light", ignoreCase = true) -> "LemonadeLightTheme"
                 modeName.equals("Dark", ignoreCase = true) -> "LemonadeDarkTheme"
                 else -> "Lemonade${modeName}Theme"
             }
-            
+
             val themeResources = readFileResourceFileByMode(
-                file = colorTokensFile,
-                modeKey = modeKey,
+                files = themeFiles,
+                modeName = modeName,
                 resourceMap = { jsonObject ->
                     val aliasName = jsonObject.optString("aliasName")
                     val groups = aliasName?.sanitizedGroups().orEmpty()
@@ -62,7 +56,7 @@ fun main() {
                     }
                 },
             ).filterNull()
-            
+
             println("✓ Loaded $modeName theme resource")
 
             val classCode = buildThemeCode(
@@ -73,16 +67,13 @@ fun main() {
             )
             println("✓ $modeName implementation generated")
 
-            val classOutputFile = File(themesOutputDir, "$themeName.kt")
-            classOutputFile.writeText(classCode)
+            File(themesOutputDir, "$themeName.kt").writeText(classCode)
             println("✓ $themeName.kt created")
         }
 
-        // Generate the interface using the Light mode's resources
-        val lightModeKey = modeKeys.first { modeKey -> modesObject.getString(modeKey).equals("Light", ignoreCase = true) }
         val themeResources = readFileResourceFileByMode(
-            file = colorTokensFile,
-            modeKey = lightModeKey,
+            files = themeFiles,
+            modeName = modeNames.first { it.equals("Light", ignoreCase = true) },
             resourceMap = { jsonObject ->
                 val aliasName = jsonObject.optString("aliasName")
                 val groups = aliasName?.sanitizedGroups().orEmpty()
