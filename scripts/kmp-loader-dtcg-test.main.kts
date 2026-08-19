@@ -53,6 +53,10 @@ fun main() {
     check(colour.getDouble("b") == 0.125, "colour blue component comes from components[2]")
     check(colour.getDouble("a") == 0.8, "colour alpha comes from \$value.alpha")
     check(brand.value.getString("aliasName") == "purple/500", "remote alias name comes from aliasData")
+    check(
+        brand.value.getString("alias") == "VariableID:9:9",
+        "remote alias id comes from aliasData",
+    )
 
     val modes = availableModeNames(listOf(fixture))
     check(modes == listOf("Default"), "mode name is read from the file-level extensions, got $modes")
