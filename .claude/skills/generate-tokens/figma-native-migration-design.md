@@ -77,7 +77,7 @@ Field-level mapping, all verified against the real exports:
 | `hiddenFromPublishing` | `$extensions."com.figma.hiddenFromPublishing"` | present on all 4 hidden theme vars |
 | `description` | `$description` | 151/151 identical |
 | `scopes` | `$extensions."com.figma.scopes"` | 151/151 as sets; `STROKE_COLOR` renamed `STROKE`. No converter reads scopes. |
-| `codeSyntax` | `$extensions."com.figma.codeSyntax"` | 141/151 — see [Stale code syntax](#stale-code-syntax-in-figma). No converter reads codeSyntax. |
+| `codeSyntax` | `$extensions."com.figma.codeSyntax"` | 151/151 on theme; older elsewhere — see [Metadata freshness](#metadata-freshness). No converter reads codeSyntax. |
 | `modes` map | `$extensions."com.figma.modeName"` (file-level) | one file per mode |
 | collection `id` / `name` / `variableIds` | *absent* | unused by any converter |
 
@@ -106,23 +106,29 @@ Three tokens per mode (`bg-transparent`, `bg-transparent-light`,
 `bg-transparent-dark`) carry no alias in either export; the converter already
 skips blank-alias tokens.
 
-### Stale code syntax in Figma
+### Metadata freshness
 
-The ten Voice/featured tokens are the one place where the committed file and
-Figma disagree. `tokens/theme-colors.json` on `main` carries the correct code
-syntax (`LemonadeTheme.colors.background.bgFeatured`), while Figma still holds
-the values these tokens were duplicated from
-(`LemonadeTheme.colors.background.bgPositive`), on all ten and both platforms.
+`theme-colors` matches the committed baseline on every metadata field — 151/151
+on `description`, `scopes` and `codeSyntax`, and 0 hidden-flag drift.
 
-`b32247e` notes that the copy-pasted *descriptions* were corrected and written
-back to the Figma variables so a re-export would not undo them. The code syntax
-did not get the same treatment.
+The non-theme collections do differ on metadata, but in every case the *export*
+is newer than the committed file, which was last written by the plugin some time
+ago:
 
-No converter reads `codeSyntax`, so this cannot affect generated output. But a
-native re-export *will* overwrite the committed values with Figma's stale ones,
-which reads as a regression in the token diff. **This should be fixed in Figma
-before the migration export is taken**, not patched in the repo — otherwise the
-same divergence returns on the next export.
+| Collection | Field | Committed | Export |
+|---|---|---|---|
+| `border-width`, `spacing`, `size` | `codeSyntax` iOS | `context.lemonade.spaces.spacing0` | `LemonadeTheme.spaces.spacing0` |
+| `spacing` | `description` | empty | `"0px"`, `"4px"`, … |
+
+No converter reads `codeSyntax`, `description` or `scopes`, so none of this can
+reach generated output. It will appear in the `tokens/` diff on migration as a
+one-time metadata refresh, and should be described as such in the PR rather than
+mistaken for drift.
+
+One genuine defect surfaces from this: `radius-350` carries a **typo in its
+Figma code syntax** — `LemonadeTheme.r adius.radius350`, with a space inside
+`radius`. It is the only such case. Worth fixing at source in Figma; it has no
+effect on anything generated.
 
 ## Design
 
@@ -380,9 +386,8 @@ from the migration.
 
 Recorded here so they are not lost, and explicitly out of scope:
 
-- **Stale code syntax on the ten Voice/featured tokens in Figma** — must be
-  corrected at source before the migration export is taken. See
-  [Stale code syntax](#stale-code-syntax-in-figma).
+- **`radius-350` code-syntax typo in Figma** (`LemonadeTheme.r adius.radius350`).
+  Cosmetic, unread by any converter, but worth correcting at source.
 - **Orphaned colour assets.** `swiftui-color-assets-generator` creates
   `.colorset` directories but never deletes them, so a removed or renamed
   semantic token leaves an orphan shipped in the SDK forever.
