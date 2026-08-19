@@ -36,7 +36,7 @@ with it.
 - Rewriting the converters, or changing the language they are written in.
 - Automating the export (Figma's REST variables endpoint is Enterprise-only;
   the manual download ritual is unchanged).
-- Picking up the Figma-side token drift that exists today. See
+- Picking up the two drifted shadow values. See
   [Baseline drift](#baseline-drift).
 - Fixing the orphaned `.colorset` issue. See [Follow-ups](#follow-ups).
 
@@ -45,6 +45,9 @@ with it.
 The two formats were compared field by field across all nine collections. Both
 exports were reduced to a common shape — `{name, resolvedValue, aliasName,
 hiddenFromPublishing}` per token, with DTCG aliases resolved — and diffed.
+
+The baseline is `origin/main` at `b32247e`, which added the ten Voice/featured
+theme tokens.
 
 | Collection | Tokens | Missing | Extra | Value diffs | Alias diffs | Hidden diffs |
 |---|---|---|---|---|---|---|
@@ -55,11 +58,12 @@ hiddenFromPublishing}` per token, with DTCG aliases resolved — and diffed.
 | `size` | 27 | 0 | 0 | 0 | 0 | 0 |
 | `spacing` | 15 | 0 | 0 | 0 | 0 | 0 |
 | `typography` | 38 | 0 | 0 | 0 | 0 | 0 |
-| `theme-colors` (×2 modes) | 141 | 0 | **10** | 0 | 0 | 0 |
+| `theme-colors` (×2 modes) | 151 | 0 | 0 | 0 | 0 | 0 |
 | `primitive-colors` | 396 | 0 | 0 | 0 | 0 | 0 |
 
-699 tokens. Every extra and every value difference is real Figma drift, not a
-format artifact — see [Baseline drift](#baseline-drift).
+709 tokens, and the *only* discrepancy in the entire export is two shadow
+numbers — real Figma drift, not a format artifact. See
+[Baseline drift](#baseline-drift).
 
 Field-level mapping, all verified against the real exports:
 
@@ -68,12 +72,12 @@ Field-level mapping, all verified against the real exports:
 | `variables[].name` | nested group path + leaf key | `Content/Brand/content-accent` reconstructs exactly |
 | `resolvedValue.{r,g,b,a}` | `$value.components[]` + `$value.alpha` | bit-identical floats |
 | `resolvedValue` (number/string) | `$value` | direct |
-| `aliasName` | `$extensions."com.figma.aliasData".targetVariableName` | 141/141 identical |
+| `aliasName` | `$extensions."com.figma.aliasData".targetVariableName` | 151/151 identical |
 | `alias` | `$extensions."com.figma.aliasData".targetVariableId` | direct |
 | `hiddenFromPublishing` | `$extensions."com.figma.hiddenFromPublishing"` | present on all 4 hidden theme vars |
-| `codeSyntax` | `$extensions."com.figma.codeSyntax"` | 141/141 identical |
-| `description` | `$description` | 140/141 (one real content edit) |
-| `scopes` | `$extensions."com.figma.scopes"` | same sets; `STROKE_COLOR` renamed `STROKE`. No converter reads scopes. |
+| `description` | `$description` | 151/151 identical |
+| `scopes` | `$extensions."com.figma.scopes"` | 151/151 as sets; `STROKE_COLOR` renamed `STROKE`. No converter reads scopes. |
+| `codeSyntax` | `$extensions."com.figma.codeSyntax"` | 141/151 — see [Stale code syntax](#stale-code-syntax-in-figma). No converter reads codeSyntax. |
 | `modes` map | `$extensions."com.figma.modeName"` (file-level) | one file per mode |
 | collection `id` / `name` / `variableIds` | *absent* | unused by any converter |
 
@@ -96,10 +100,29 @@ Three behaviours of the native format that the design has to accommodate:
 
 The theme→primitives linkage was checked directly, since
 `kmp-theme-token-converter` maps each semantic token onto a primitive property
-by `aliasName`: **302/302 alias targets across light and dark resolve into
+by `aliasName`: **296/296 alias targets across light and dark resolve into
 `primitive-colors.tokens.json`**, including nested ones like `neutral/alpha/900`.
-Three tokens (`bg-transparent`, `bg-transparent-light`, `bg-transparent-dark`)
-carry no alias in either export; the converter already skips blank-alias tokens.
+Three tokens per mode (`bg-transparent`, `bg-transparent-light`,
+`bg-transparent-dark`) carry no alias in either export; the converter already
+skips blank-alias tokens.
+
+### Stale code syntax in Figma
+
+The ten Voice/featured tokens are the one place where the committed file and
+Figma disagree. `tokens/theme-colors.json` on `main` carries the correct code
+syntax (`LemonadeTheme.colors.background.bgFeatured`), while Figma still holds
+the values these tokens were duplicated from
+(`LemonadeTheme.colors.background.bgPositive`), on all ten and both platforms.
+
+`b32247e` notes that the copy-pasted *descriptions* were corrected and written
+back to the Figma variables so a re-export would not undo them. The code syntax
+did not get the same treatment.
+
+No converter reads `codeSyntax`, so this cannot affect generated output. But a
+native re-export *will* overwrite the committed values with Figma's stale ones,
+which reads as a regression in the token diff. **This should be fixed in Figma
+before the migration export is taken**, not patched in the repo — otherwise the
+same divergence returns on the next export.
 
 ## Design
 
@@ -232,21 +255,12 @@ empty.
 export. It **routes by content, never by filename**, matching each incoming file
 against the committed files by `com.figma.variableId` set overlap:
 
-| native file | routes to | overlap | runner-up |
-|---|---|---|---|
-| `border-width` | `border-width` | 1.000 | 0.000 |
-| `opacity` | `opacity` | 1.000 | 0.000 |
-| `radius` | `radius` | 1.000 | 0.000 |
-| `shadow` | `shadow` | 1.000 | 0.000 |
-| `sizing` | `size` | 1.000 | 0.000 |
-| `spacing` | `spacing` | 1.000 | 0.000 |
-| `typography` | `typography` | 1.000 | 0.000 |
-| `primitive-colors` | `primitive-colors` | 1.000 | 0.000 |
-| `light` / `dark` | `theme-colors` | 0.934 | 0.000 |
+All ten files route with an overlap of **1.000** against the `main` baseline, and
+a runner-up of **0.000** in every case — including `light` / `dark` →
+`theme-colors`, and `sizing` → `size` where the names disagree.
 
 Figma variable ids are stable across both exporters and disjoint between
-collections, so every file identifies its destination unambiguously — including
-`sizing → size`, where the names disagree. The 0.934 is the 10 drifted tokens.
+collections, so every file identifies its destination unambiguously.
 
 It refuses to write when:
 
@@ -318,10 +332,9 @@ The acceptance criterion is mechanical, not editorial.
 1. Regenerate with the **current** pipeline and confirm `kmp/`, `swiftui/` and
    `flutter/` are clean. This proves the baseline is reproducible before
    anything changes.
-2. Trim the native export down to exactly the committed baseline (drop the 10
-   Voice/featured tokens, restore the 2 shadow values). The trim script is
-   committed under the skill directory so the proof is reproducible by a
-   reviewer.
+2. Trim the native export to the committed baseline by restoring the two
+   drifted shadow values (`sd-xs-lv1-blur` to 2, `sd-xs-lv1-offset-y` to 1).
+   Two numbers, stated in the PR description so a reviewer can reproduce it.
 3. Run the new pipeline against the trimmed export. Then:
 
 | Surface | Criterion |
@@ -340,28 +353,36 @@ If step 3 fails, the diff itself names the defect.
 
 ## Baseline drift
 
-The current native export is ahead of the committed tokens by:
+Work must start from `origin/main` at `b32247e` or later — that commit added the
+ten Voice/featured tokens, and against it the export shows no missing or extra
+tokens at all.
 
-- **10 new theme tokens** — the Voice/featured set (`bg-featured`,
-  `bg-featured-subtle`, `border-featured`, `border-featured-subtle`,
-  `content-featured`, `content-featured-on-color`, and four interactive/pressed
-  variants), present in both light and dark.
-- **2 changed shadow values** — `sd-xs-lv1-blur` 2 → 1 and `sd-xs-lv1-offset-y`
-  1 → 0.5. Notably these halve exactly the values behind the known
-  "KMP shadows render ~2× darker than Figma" problem.
+Against that baseline the export differs in exactly **two values**:
+`sd-xs-lv1-blur` 2 → 1 and `sd-xs-lv1-offset-y` 1 → 0.5. Notably these halve
+exactly the values behind the known "KMP shadows render ~2× darker than Figma"
+problem, so this looks like an intentional Figma-side fix rather than noise.
 
-`primitive-colors` shows **zero** drift, making it a clean control.
+Everything else — all 709 tokens across nine collections, including the 396
+primitives and both theme modes — matches exactly.
+
+Because the drift is now two numbers rather than ten tokens, the trim needed to
+produce a zero-diff baseline is trivial: restore those two values in
+`shadow.tokens.json` before the verification run. A reviewer can check the trim
+by eye; no tooling is required.
 
 The migration PR proves itself against the trimmed export out-of-tree, then
-commits the honest untrimmed export together with the generated changes that
-drift produces. The repo never holds a doctored export, and the PR description
-carries the zero-diff proof plus the command to reproduce it. The drift is
-called out explicitly as separate from the migration.
+commits the honest untrimmed export together with the shadow changes it
+produces. The repo never holds a doctored export, and the PR description carries
+the zero-diff proof plus the two-value delta, called out explicitly as separate
+from the migration.
 
 ## Follow-ups
 
 Recorded here so they are not lost, and explicitly out of scope:
 
+- **Stale code syntax on the ten Voice/featured tokens in Figma** — must be
+  corrected at source before the migration export is taken. See
+  [Stale code syntax](#stale-code-syntax-in-figma).
 - **Orphaned colour assets.** `swiftui-color-assets-generator` creates
   `.colorset` directories but never deletes them, so a removed or renamed
   semantic token leaves an orphan shipped in the SDK forever.
@@ -377,4 +398,4 @@ Recorded here so they are not lost, and explicitly out of scope:
 | A future Figma change alters the DTCG output shape | Loader fails loudly on unknown `$type` or unresolvable reference rather than emitting defaults; the Token Drift CI job catches silent output changes |
 | A partial export truncates a collection | `ingest-tokens.sh` refuses on sharp token-count drops |
 | A designer reorders variables in Figma | Explicit sorts make generated ordering independent of input order |
-| Primitive colours and theme fall out of sync (separate Figma files) | Loader fails loudly on an alias target missing from the primitives; verified 302/302 today |
+| Primitive colours and theme fall out of sync (separate Figma files) | Loader fails loudly on an alias target missing from the primitives; verified 296/296 today |
