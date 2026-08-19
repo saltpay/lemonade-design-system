@@ -77,7 +77,7 @@ ensure_kotlin
 # A converter's compiled script is cached, and editing an @file:Import'ed loader
 # does NOT invalidate it — the converter would silently run the previous loader's
 # code and produce stale output that still looks freshly generated. Clear it.
-rm -rf "$HOME/Library/Caches/main.kts.compiled.cache"
+rm -rf "$HOME/Library/Caches/main.kts.compiled.cache" "$HOME/.cache/main.kts.compiled.cache"
 
 echo "==> Token files: ${files[*]}"
 
