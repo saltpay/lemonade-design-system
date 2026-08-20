@@ -35,8 +35,14 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+      - name: Loader parity
+        run: python3 .claude/skills/generate-tokens/scripts/check-loader-parity.py
+
       - name: Regenerate tokens
         run: .claude/skills/generate-tokens/scripts/run-converters.sh --all
+
+      - name: DTCG loader unit test
+        run: '"$HOME/.local/kotlin-2.3.20/kotlinc/bin/kotlin" scripts/kmp-loader-dtcg-test.main.kts'
 
       - name: Fail if generated code drifted
         run: |
