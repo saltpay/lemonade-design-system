@@ -24,29 +24,65 @@ below.
 
 ## TL;DR
 
-From the repo root:
+Export from Figma, copy the files into `tokens/` under the names below, then:
 
 ```bash
-# 1. Ingest a fresh Figma native export (routes files by content, not by name)
-python3 .claude/skills/generate-tokens/scripts/ingest-tokens.py ~/Downloads/<export-dir>
-
-# 2. Regenerate only what changed vs HEAD (recommended)
+# From the repo root — regenerate only what changed vs HEAD
 .claude/skills/generate-tokens/scripts/run-converters.sh --changed
 ```
 
-Tokens are exported from Figma with **File → Export variables** (the native
-export, not a plugin). It emits one `*.tokens.json` per collection, and one per
-*mode* for multi-mode collections. Run it twice: once in the design-system file,
-once in the **Colors** library file that holds the primitives.
+## Getting the tokens out of Figma
 
-`ingest-tokens.py` also accepts `--allow-shrink`: by default it refuses to
-ingest a collection whose token count decreased from what's committed (public
-API disappearing should be a deliberate call), so pass the flag the first time
-a token is legitimately removed upstream.
+Use **File → Export variables** — the native export, not a plugin. Figma only
+exports variables *local to the file you run it in*, so run it **twice**:
 
-That's the routine flow for the common case — a token *value* changed and the
-generated code needs rebuilding. `verify-generated.sh` is a separate, narrower
-tool; see below for when to reach for it.
+1. In the design-system file — the nine local collections.
+2. In the **Colors** library file — the primitives every theme colour aliases
+   into. Skip this and the theme converters will emit references to primitive
+   properties that do not exist, which fails at compile time.
+
+## Naming the files — read this before copying
+
+The export is a **zip of per-collection folders**, and inside each one the file
+is named after the *mode*, not the collection. Most collections have a single
+`Default` mode, so after unzipping you are looking at eight or more files all
+called `Default.tokens.json`, and **the folder they came from is the only thing
+identifying them**. Rename as you copy:
+
+| From the export | To `tokens/` |
+|---|---|
+| `Border Width/Default.tokens.json` | `border-width.tokens.json` |
+| `Opacity/Default.tokens.json` | `opacity.tokens.json` |
+| `Radius/Default.tokens.json` | `radius.tokens.json` |
+| `.Shadow/Default.tokens.json` | `shadow.tokens.json` |
+| `Sizing/Default.tokens.json` | `size.tokens.json` |
+| `Spacing/Default.tokens.json` | `spacing.tokens.json` |
+| `Typography/Default.tokens.json` | `typography.tokens.json` |
+| `Theme/Light.tokens.json` | `theme-colors.light.tokens.json` |
+| `Theme/Dark.tokens.json` | `theme-colors.dark.tokens.json` |
+| `Colors/Default.tokens.json` (library file) | `primitive-colors.tokens.json` |
+
+`tokens/` must end up holding exactly those ten names and nothing else.
+
+Two mistakes to watch for, because neither announces itself:
+
+- **Swapping two collections.** `Sizing` and `Spacing` both hold plain numbers,
+  so a mix-up produces a file that parses fine and generates plausible-looking
+  values in the wrong place. Check the diff.
+- **A renamed mode.** If a Figma mode is ever renamed — `Light` becoming `Day` —
+  copying it to a new filename leaves the old one behind, and the converters
+  generate a new public theme class *alongside* the stale one, with no error.
+  Delete the superseded file yourself.
+
+Figma's files end without a trailing newline; add one so diffs stay clean.
+
+## What happens next
+
+`run-converters.sh --changed` regenerates from whatever changed against `HEAD`.
+Then review the diff and commit. That is the routine flow for the common case —
+a token *value* changed and the generated code needs rebuilding.
+`verify-generated.sh` is a separate, narrower tool; see below for when to reach
+for it.
 
 ## One hard requirement (it bites silently)
 

@@ -289,7 +289,7 @@ fun availableModeNames(files: List<File>): List<String> {
 /** Resolves a token file under `tokens/`, failing loudly when it is absent. */
 fun tokenFile(name: String): File =
     File("tokens/$name").takeIf { it.isFile }
-        ?: error("tokens/$name does not exist — run ingest-tokens.py first")
+        ?: error("tokens/$name does not exist — copy it in from a Figma variable export")
 
 /**
  * All `tokens/` files whose name starts with [prefix], sorted by name.
