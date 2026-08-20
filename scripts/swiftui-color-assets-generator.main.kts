@@ -62,6 +62,7 @@ fun main() {
         }
 
         val themeFiles = tokenFiles("theme-colors")
+        requireModes(themeFiles, "Light", "Dark")
         val modeNames = availableModeNames(themeFiles)
         val lightColors = parseThemeColors(themeFiles, modeNames.first { it.equals("Light", ignoreCase = true) })
         println("✓ Loaded ${lightColors.size} colors from light theme")

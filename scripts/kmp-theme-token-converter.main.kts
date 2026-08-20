@@ -27,6 +27,7 @@ fun main() {
         }
 
         val themeFiles = tokenFiles("theme-colors")
+        requireModes(themeFiles, "Light", "Dark")
         val modeNames = availableModeNames(themeFiles)
 
         modeNames.forEach { modeName ->

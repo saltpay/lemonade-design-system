@@ -19,6 +19,7 @@ fun main() {
         }
 
         val themeFiles = tokenFiles("theme-colors")
+        requireModes(themeFiles, "Light", "Dark")
         val modeNames = availableModeNames(themeFiles)
         val lightMode = modeNames.first { it.equals("Light", ignoreCase = true) }
 
@@ -43,10 +44,14 @@ fun main() {
             resourceMap = { _ -> Unit },
         )
 
+        // Indexed once rather than scanned per token — first-wins, matching the
+        // previous `find` semantics if two names ever sanitize to the same value.
+        val resourcesByName = themeResources.groupBy { it.name }.mapValues { it.value.first() }
+
         val resourcesWithAssets = mutableListOf<Pair<ResourceData<Unit>, String>>()
         tokenNames.forEach { name ->
             val assetName = "lemonade-${name.split("/").joinToString("-") { it.lowercase().replace("_", "-") }}"
-            val resource = themeResources.find { it.name == name.sanitizedSwiftValueName() }
+            val resource = resourcesByName[name.sanitizedSwiftValueName()]
             if (resource != null) {
                 resourcesWithAssets.add(resource to assetName)
             }

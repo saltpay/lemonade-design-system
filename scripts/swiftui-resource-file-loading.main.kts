@@ -276,6 +276,25 @@ fun availableModeNames(files: List<File>): List<String> {
 }
 
 /** Resolves a token file under `tokens/`, failing loudly when it is absent. */
+/**
+ * Fails unless [files] provide every mode in [required].
+ *
+ * A theme converter writes only the modes it was given and exits 0, so
+ * regenerating from a subset — copying Light in but forgetting Dark — silently
+ * leaves the other modes' generated files stale at their previous values, with
+ * nothing to catch it: the tree stays clean, so the drift job stays green.
+ */
+fun requireModes(files: List<File>, vararg required: String) {
+    val found = availableModeNames(files)
+    val missing = required.filter { want -> found.none { it.equals(want, ignoreCase = true) } }
+    require(missing.isEmpty()) {
+        "theme tokens are missing mode(s) ${missing.joinToString()} — found " +
+            "${found.joinToString().ifEmpty { "none" }}. Copy every " +
+            "theme-colors.<mode>.tokens.json from the export; regenerating from a " +
+            "subset leaves the other themes stale."
+    }
+}
+
 fun tokenFile(name: String): File =
     File("tokens/$name").takeIf { it.isFile }
         ?: error("tokens/$name does not exist — copy it in from a Figma variable export")
