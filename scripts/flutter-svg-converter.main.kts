@@ -56,8 +56,6 @@ fun main() {
         // Write the generated code
         outputFile.writeText(generatedCode)
 
-        // Format the file using dart format
-        ProcessBuilder("dart", "format", outputFile.absolutePath).start().waitFor()
 
         println("✓ Successfully generated ${outputFile.name}!")
         println("  Total categories: ${assetCategories.size}")

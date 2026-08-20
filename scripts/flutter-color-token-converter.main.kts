@@ -37,8 +37,6 @@ fun main() {
         val outputFile = File(outputDir, "primitive_colors.dart")
         outputFile.writeText(generatedCode)
 
-        // Format the file using dart format
-        ProcessBuilder("dart", "format", outputFile.absolutePath).start().waitFor()
 
         println("✓ Converted ${colorTokensFile.name} -> ${outputFile.name}!")
     } catch (error: Throwable) {

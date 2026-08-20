@@ -65,8 +65,6 @@ fun main() {
         val outputFile = File(outputDir, "shadows.dart")
         outputFile.writeText(generatedCode)
 
-        // Format the file using dart format
-        ProcessBuilder("dart", "format", outputFile.absolutePath).start().waitFor()
 
         println("✓ Shadows file created")
     } catch (error: Throwable) {
