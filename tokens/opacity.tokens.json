@@ -3,7 +3,7 @@
     "opacity-disabled": {
       "$type": "number",
       "$value": "{base.opacity-50}",
-      "$description": "Add for when it need to define a disabled state through opacity.",
+      "$description": "Add when you need to define a disabled state through opacity.",
       "$extensions": {
         "com.figma.variableId": "VariableID:236:17468",
         "com.figma.scopes": [
