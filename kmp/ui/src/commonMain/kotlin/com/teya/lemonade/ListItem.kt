@@ -2,15 +2,11 @@
 
 package com.teya.lemonade
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsHoveredAsState
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -19,21 +15,29 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawOutline
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.Measurable
+import androidx.compose.ui.layout.MeasurePolicy
+import androidx.compose.ui.layout.MeasureResult
+import androidx.compose.ui.layout.MeasureScope
+import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.constrainHeight
+import androidx.compose.ui.unit.constrainWidth
 import androidx.compose.ui.unit.dp
 import com.teya.lemonade.core.LemonadeAssetSize
 import com.teya.lemonade.core.LemonadeIcons
@@ -87,10 +91,28 @@ public fun LemonadeUi.ResourceListItem(
     supportText: String? = null,
     showDivider: Boolean = false,
 ) {
-    LemonadeUi.ListItem(
-        label = label,
-        supportText = supportText,
-        isLoading = isLoading,
+    if (isLoading) {
+        ListItemSkeleton(
+            modifier = modifier,
+            showDivider = showDivider,
+        )
+        return
+    }
+
+    CoreListItem(
+        contentSlot = {
+            ListItemTextContent(
+                label = label,
+                topLabel = null,
+                supportText = supportText,
+                voice = LemonadeListItemVoice.Neutral,
+                labelMaxLines = Int.MAX_VALUE,
+                labelOverflow = TextOverflow.Clip,
+                supportTextMaxLines = Int.MAX_VALUE,
+                supportTextOverflow = TextOverflow.Clip,
+                slotContent = null,
+            )
+        },
         leadingSlot = {
             Box(
                 content = leadingSlot,
@@ -123,6 +145,8 @@ public fun LemonadeUi.ResourceListItem(
                 }
             }
         },
+        voice = LemonadeListItemVoice.Neutral,
+        navigationIndicator = false,
         onListItemClick = onItemClicked,
         role = null,
         enabled = enabled,
@@ -132,6 +156,11 @@ public fun LemonadeUi.ResourceListItem(
         // Keep the value top-aligned with the label's first line: the label can wrap (no maxLines cap),
         // and the outer Row already centers a single-line row, so this handles both without extra logic.
         trailingVerticalAlignment = Alignment.Top,
+        leadingVerticalAlignment = singleLineLeadingAlignment(
+            topLabel = null,
+            supportText = supportText,
+        ),
+        priority = LemonadeListItemPriority.Trailing,
     )
 }
 
@@ -162,7 +191,6 @@ public fun LemonadeUi.ActionListItem(
     showDivider: Boolean = false,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
 ) {
-    @Suppress("DEPRECATION")
     ActionListItem(
         label = label,
         modifier = modifier,
@@ -314,45 +342,57 @@ public fun LemonadeUi.ActionListItem(
     supportTextMaxLines: Int = Int.MAX_VALUE,
     supportTextOverflow: TextOverflow = TextOverflow.Clip,
 ) {
-    LemonadeUi.ListItem(
-        label = label,
-        topLabel = topLabel,
-        supportText = supportText,
-        isLoading = isLoading,
-        labelMaxLines = labelMaxLines,
-        labelOverflow = labelOverflow,
-        supportTextMaxLines = supportTextMaxLines,
-        supportTextOverflow = supportTextOverflow,
-        leadingSlot = leadingSlot,
-        trailingSlot = if (trailingSlot != null) {
-            {
-                Row(
-                    modifier = Modifier.then(
-                        other = if (enabled) {
-                            Modifier
-                        } else {
-                            Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                        },
-                    ),
-                ) {
-                    trailingSlot()
+    if (isLoading) {
+        ListItemSkeleton(
+            modifier = modifier,
+            showDivider = showDivider,
+        )
+    } else {
+        CoreListItem(
+            contentSlot = {
+                ListItemTextContent(
+                    label = label,
+                    topLabel = topLabel,
+                    supportText = supportText,
+                    voice = voice,
+                    labelMaxLines = labelMaxLines,
+                    labelOverflow = labelOverflow,
+                    supportTextMaxLines = supportTextMaxLines,
+                    supportTextOverflow = supportTextOverflow,
+                    slotContent = slotContent,
+                )
+            },
+            leadingSlot = leadingSlot,
+            trailingSlot = if (trailingSlot != null) {
+                {
+                    Row(
+                        modifier = Modifier.then(
+                            other = if (enabled) {
+                                Modifier
+                            } else {
+                                Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+                            },
+                        ),
+                    ) {
+                        trailingSlot()
+                    }
                 }
-            }
-        } else {
-            null
-        },
-        slotContent = slotContent,
-        navigationIndicator = showNavigationIndicator,
-        voice = voice,
-        onListItemClick = onItemClicked,
-        role = role,
-        enabled = enabled,
-        modifier = modifier,
-        showDivider = showDivider,
-        interactionSource = interactionSource,
-        leadingVerticalAlignment = leadingVerticalAlignment,
-        trailingVerticalAlignment = trailingVerticalAlignment,
-    )
+            } else {
+                null
+            },
+            voice = voice,
+            navigationIndicator = showNavigationIndicator,
+            onListItemClick = onItemClicked,
+            role = role,
+            enabled = enabled,
+            modifier = modifier,
+            showDivider = showDivider,
+            interactionSource = interactionSource,
+            leadingVerticalAlignment = leadingVerticalAlignment,
+            trailingVerticalAlignment = trailingVerticalAlignment,
+            priority = LemonadeListItemPriority.Trailing,
+        )
+    }
 }
 
 @Deprecated(
@@ -384,7 +424,6 @@ public fun LemonadeUi.ActionListItem(
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
 ) {
-    @Suppress("DEPRECATION")
     ActionListItem(
         label = label,
         modifier = modifier,
@@ -434,7 +473,6 @@ public fun LemonadeUi.ListItem(
     slotContent: (@Composable ColumnScope.() -> Unit)? = null,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
 ) {
-    @Suppress("DEPRECATION")
     ListItem(
         label = label,
         modifier = modifier,
@@ -640,7 +678,20 @@ public fun LemonadeUi.ListItem(
             showDivider = showDivider,
         )
     } else {
-        LemonadeUi.ListItem(
+        CoreListItem(
+            contentSlot = {
+                ListItemTextContent(
+                    label = label,
+                    topLabel = topLabel,
+                    supportText = supportText,
+                    voice = voice,
+                    labelMaxLines = labelMaxLines,
+                    labelOverflow = labelOverflow,
+                    supportTextMaxLines = supportTextMaxLines,
+                    supportTextOverflow = supportTextOverflow,
+                    slotContent = slotContent,
+                )
+            },
             leadingSlot = leadingSlot,
             trailingSlot = trailingSlot,
             voice = voice,
@@ -654,37 +705,6 @@ public fun LemonadeUi.ListItem(
             leadingVerticalAlignment = leadingVerticalAlignment,
             trailingVerticalAlignment = trailingVerticalAlignment,
             priority = priority,
-            contentSlot = {
-                if (topLabel != null) {
-                    LemonadeUi.Text(
-                        text = topLabel,
-                        textStyle = LocalTypographies.current.bodySmallRegular,
-                        color = LocalColors.current.content.contentSecondary,
-                    )
-                }
-
-                LemonadeUi.Text(
-                    text = label,
-                    textStyle = LocalTypographies.current.bodyMediumMedium,
-                    color = voice.contentColor,
-                    maxLines = labelMaxLines,
-                    overflow = labelOverflow,
-                )
-
-                if (supportText != null) {
-                    LemonadeUi.Text(
-                        text = supportText,
-                        textStyle = LocalTypographies.current.bodySmallRegular,
-                        color = LocalColors.current.content.contentSecondary,
-                        maxLines = supportTextMaxLines,
-                        overflow = supportTextOverflow,
-                    )
-                }
-
-                if (slotContent != null) {
-                    slotContent()
-                }
-            },
         )
     }
 }
@@ -713,7 +733,6 @@ public fun LemonadeUi.ListItem(
     trailingSlot: (@Composable RowScope.() -> Unit)? = null,
     trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
 ) {
-    @Suppress("DEPRECATION")
     ListItem(
         contentSlot = contentSlot,
         modifier = modifier,
@@ -847,135 +866,263 @@ private fun singleLineLeadingAlignment(
         Alignment.Top
     }
 
+/**
+ * The text stack shared by the string-based overloads: optional top label, the label itself, the
+ * optional support text and the optional [slotContent] below them. Inline, so it adds no
+ * restartable scope on top of the content slot it is called from.
+ */
+@Composable
+private inline fun ColumnScope.ListItemTextContent(
+    label: String,
+    topLabel: String?,
+    supportText: String?,
+    voice: LemonadeListItemVoice,
+    labelMaxLines: Int,
+    labelOverflow: TextOverflow,
+    supportTextMaxLines: Int,
+    supportTextOverflow: TextOverflow,
+    noinline slotContent: (@Composable ColumnScope.() -> Unit)?,
+) {
+    if (topLabel != null) {
+        LemonadeUi.Text(
+            text = topLabel,
+            textStyle = LocalTypographies.current.bodySmallRegular,
+            color = LocalColors.current.content.contentSecondary,
+        )
+    }
+
+    LemonadeUi.Text(
+        text = label,
+        textStyle = LocalTypographies.current.bodyMediumMedium,
+        color = voice.contentColor,
+        maxLines = labelMaxLines,
+        overflow = labelOverflow,
+    )
+
+    if (supportText != null) {
+        LemonadeUi.Text(
+            text = supportText,
+            textStyle = LocalTypographies.current.bodySmallRegular,
+            color = LocalColors.current.content.contentSecondary,
+            maxLines = supportTextMaxLines,
+            overflow = supportTextOverflow,
+        )
+    }
+
+    if (slotContent != null) {
+        slotContent()
+    }
+}
+
 @Composable
 private fun CoreListItem(
     contentSlot: @Composable ColumnScope.() -> Unit,
     leadingSlot: (@Composable RowScope.() -> Unit)?,
     trailingSlot: (@Composable RowScope.() -> Unit)?,
-    voice: LemonadeListItemVoice = LemonadeListItemVoice.Neutral,
-    navigationIndicator: Boolean = false,
+    voice: LemonadeListItemVoice,
+    navigationIndicator: Boolean,
     onListItemClick: (() -> Unit)?,
     role: Role?,
     enabled: Boolean,
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
     showDivider: Boolean,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    trailingVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
-    leadingVerticalAlignment: Alignment.Vertical = Alignment.Top,
-    priority: LemonadeListItemPriority = LemonadeListItemPriority.Trailing,
+    interactionSource: MutableInteractionSource,
+    trailingVerticalAlignment: Alignment.Vertical,
+    leadingVerticalAlignment: Alignment.Vertical,
+    priority: LemonadeListItemPriority,
 ) {
-    SafeArea(modifier = modifier, showDivider = showDivider) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .then(
-                    other = if (onListItemClick != null) {
-                        Modifier.interactiveBackground(
-                            interactionSource = interactionSource,
-                            voice = voice,
-                            enabled = enabled,
-                            role = role,
-                            onClick = onListItemClick,
-                        )
-                    } else {
-                        Modifier
-                    },
-                ).defaultMinSize(minHeight = LocalSizes.current.size1200)
-                .padding(
-                    horizontal = LocalSpaces.current.spacing300,
-                    vertical = LocalSpaces.current.spacing300,
-                ),
-        ) {
-            if (leadingSlot != null) {
-                Row(
-                    modifier = Modifier
-                        .align(leadingVerticalAlignment)
-                        .padding(end = LocalSpaces.current.spacing300)
-                        .padding(vertical = LocalSpaces.current.spacing50)
-                        .then(
-                            other = if (!enabled) {
-                                Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-                            } else {
-                                Modifier
-                            },
-                        ),
-                ) {
-                    leadingSlot()
-                }
-            }
-
-            val contentAlpha: Modifier = if (!enabled) {
-                Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
-            } else {
-                Modifier
-            }
-
-            if (priority == LemonadeListItemPriority.Label) {
-                // Content keeps its width; the trailing slot yields and truncates. The content is
-                // capped so the trailing slot always retains a readable floor instead of vanishing —
-                // but only when there is trailing content to keep visible.
-                val hasTrailingContent = trailingSlot != null || navigationIndicator
-                BoxWithConstraints(modifier = Modifier.weight(weight = 1f)) {
-                    val trailingFloor = LocalSizes.current.size2000
-                    val gap = LocalSpaces.current.spacing300
-                    val contentMaxWidth = if (hasTrailingContent) {
-                        (maxWidth - trailingFloor - gap).coerceAtLeast(0.dp)
-                    } else {
-                        maxWidth
-                    }
-
-                    Row(verticalAlignment = trailingVerticalAlignment) {
-                        Column(
-                            content = contentSlot,
-                            modifier = Modifier
-                                .widthIn(max = contentMaxWidth)
-                                .then(other = contentAlpha),
-                        )
-
-                        if (hasTrailingContent) {
-                            Row(
-                                horizontalArrangement = Arrangement.End,
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .weight(weight = 1f)
-                                    .padding(start = gap),
-                            ) {
-                                ListItemTrailingContent(
-                                    trailingSlot = trailingSlot,
-                                    navigationIndicator = navigationIndicator,
-                                    enabled = enabled,
-                                )
-                            }
-                        }
-                    }
-                }
-            } else {
-                // Default: the trailing slot keeps its width; the content column truncates to fit.
-                Row(
-                    modifier = Modifier.weight(weight = 1f),
-                    verticalAlignment = trailingVerticalAlignment,
-                ) {
-                    Column(
-                        content = contentSlot,
-                        modifier = Modifier
-                            .weight(weight = 1f)
-                            .then(other = contentAlpha),
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .listItemSafeArea(showDivider = showDivider)
+            .then(
+                other = if (onListItemClick != null) {
+                    Modifier.clickable(
+                        enabled = enabled,
+                        role = role,
+                        onClick = onListItemClick,
+                        interactionSource = interactionSource,
+                        indication = ListItemHighlightIndication(voice = voice),
                     )
-
-                    if (trailingSlot != null || navigationIndicator) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            ListItemTrailingContent(
-                                trailingSlot = trailingSlot,
-                                navigationIndicator = navigationIndicator,
-                                enabled = enabled,
-                            )
-                        }
-                    }
-                }
+                } else {
+                    Modifier
+                },
+            ).defaultMinSize(minHeight = LocalSizes.current.size1200)
+            .padding(
+                horizontal = LocalSpaces.current.spacing300,
+                vertical = LocalSpaces.current.spacing300,
+            ),
+    ) {
+        if (leadingSlot != null) {
+            Row(
+                modifier = Modifier
+                    .align(leadingVerticalAlignment)
+                    .padding(end = LocalSpaces.current.spacing300)
+                    .padding(vertical = LocalSpaces.current.spacing50)
+                    .then(
+                        other = if (!enabled) {
+                            Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+                        } else {
+                            Modifier
+                        },
+                    ),
+            ) {
+                leadingSlot()
             }
         }
+
+        val contentAlpha: Modifier = if (!enabled) {
+            Modifier.alpha(alpha = LocalOpacities.current.state.opacityDisabled)
+        } else {
+            Modifier
+        }
+
+        val hasTrailingContent = trailingSlot != null || navigationIndicator
+        if (!hasTrailingContent) {
+            // With nothing trailing there is no width contention, so the content column sits
+            // directly in the row. A filling weight reproduces the Trailing-priority forced
+            // width; Label priority lets the column wrap inside the remaining space.
+            Column(
+                content = contentSlot,
+                modifier = Modifier
+                    .weight(
+                        weight = 1f,
+                        fill = priority == LemonadeListItemPriority.Trailing,
+                    ).then(other = contentAlpha),
+            )
+        } else {
+            Layout(
+                modifier = Modifier.weight(weight = 1f),
+                measurePolicy = ListItemBodyMeasurePolicy(
+                    priority = priority,
+                    trailingAlignment = trailingVerticalAlignment,
+                    trailingGap = LocalSpaces.current.spacing300,
+                    trailingFloor = LocalSizes.current.size2000,
+                ),
+                content = {
+                    Column(
+                        content = contentSlot,
+                        modifier = contentAlpha,
+                    )
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        ListItemTrailingContent(
+                            trailingSlot = trailingSlot,
+                            navigationIndicator = navigationIndicator,
+                            enabled = enabled,
+                        )
+                    }
+                },
+            )
+        }
+    }
+}
+
+/**
+ * Measures the list-item body — the content column and the trailing content — without the
+ * subcomposition a `BoxWithConstraints` would cost per row. Exactly two measurables: the content
+ * at index 0 and the trailing content at index 1.
+ *
+ * [LemonadeListItemPriority.Trailing] measures the trailing content at its natural width and
+ * forces the content to exactly the remainder, matching the former weighted content column.
+ * [LemonadeListItemPriority.Label] caps the content so the trailing content always retains a
+ * [trailingFloor] of readable space, then lets the trailing content wrap into what is left after
+ * [trailingGap]; the trailing content is placed end-anchored either way.
+ *
+ * Children's alignment lines propagate through placement, and the default derived intrinsics
+ * re-run this measurement — which also gives Label-priority rows working intrinsic sizes, where
+ * the previous subcomposition threw on intrinsic measurement.
+ */
+private data class ListItemBodyMeasurePolicy(
+    private val priority: LemonadeListItemPriority,
+    private val trailingAlignment: Alignment.Vertical,
+    private val trailingGap: Dp,
+    private val trailingFloor: Dp,
+) : MeasurePolicy {
+    override fun MeasureScope.measure(
+        measurables: List<Measurable>,
+        constraints: Constraints,
+    ): MeasureResult {
+        val loose = constraints.copy(minWidth = 0, minHeight = 0)
+        val gapPx = trailingGap.roundToPx()
+        val content: Placeable
+        val trailing: Placeable
+        if (priority == LemonadeListItemPriority.Label) {
+            content = measureLabelPriorityContent(
+                measurable = measurables[0],
+                loose = loose,
+                gapPx = gapPx,
+                floorPx = trailingFloor.roundToPx(),
+            )
+            trailing = measureLabelPriorityTrailing(
+                measurable = measurables[1],
+                loose = loose,
+                gapPx = gapPx,
+                contentWidth = content.width,
+            )
+        } else {
+            trailing = measurables[1].measure(constraints = loose)
+            content = measureTrailingPriorityContent(
+                measurable = measurables[0],
+                loose = loose,
+                trailingWidth = trailing.width,
+            )
+        }
+        val gapUsed = if (priority == LemonadeListItemPriority.Label) gapPx else 0
+        val width = constraints.constrainWidth(width = content.width + gapUsed + trailing.width)
+        val height = constraints.constrainHeight(height = maxOf(content.height, trailing.height))
+        return layout(width = width, height = height) {
+            content.placeRelative(
+                x = 0,
+                y = trailingAlignment.align(size = content.height, space = height),
+            )
+            trailing.placeRelative(
+                x = width - trailing.width,
+                y = trailingAlignment.align(size = trailing.height, space = height),
+            )
+        }
+    }
+
+    private fun measureLabelPriorityContent(
+        measurable: Measurable,
+        loose: Constraints,
+        gapPx: Int,
+        floorPx: Int,
+    ): Placeable {
+        val capped = if (loose.hasBoundedWidth) {
+            loose.copy(maxWidth = (loose.maxWidth - floorPx - gapPx).coerceAtLeast(0))
+        } else {
+            loose
+        }
+        return measurable.measure(constraints = capped)
+    }
+
+    private fun measureLabelPriorityTrailing(
+        measurable: Measurable,
+        loose: Constraints,
+        gapPx: Int,
+        contentWidth: Int,
+    ): Placeable {
+        val leftover = if (loose.hasBoundedWidth) {
+            loose.copy(maxWidth = (loose.maxWidth - contentWidth - gapPx).coerceAtLeast(0))
+        } else {
+            loose
+        }
+        return measurable.measure(constraints = leftover)
+    }
+
+    private fun measureTrailingPriorityContent(
+        measurable: Measurable,
+        loose: Constraints,
+        trailingWidth: Int,
+    ): Placeable {
+        val remainder = if (loose.hasBoundedWidth) {
+            val contentWidth = (loose.maxWidth - trailingWidth).coerceAtLeast(0)
+            loose.copy(minWidth = contentWidth, maxWidth = contentWidth)
+        } else {
+            loose
+        }
+        return measurable.measure(constraints = remainder)
     }
 }
 
@@ -1008,100 +1155,42 @@ private fun RowScope.ListItemTrailingContent(
 }
 
 /**
- * Applies click handling and the animated press/hover highlight for interactive rows.
- *
- * Only used for clickable rows: a row without an `onListItemClick` can never be pressed or
- * hovered, so it needs none of this apparatus and is left untouched.
- *
- * The highlight is painted directly in the draw phase via [drawWithCache], reading the animated
- * colour at draw time (not composition time) and using the row's rounded [androidx.compose.ui.graphics.Shape]
- * outline instead of a [androidx.compose.ui.draw.clip] graphics layer. During a scroll the colour is fully
- * transparent, so the row draws nothing and pays no clip/background cost — this removes the
- * per-row draw floor seen in the scroll-jank profiling. The click indication is `null` (no
- * ripple); press feedback is the animated fill, mirroring the iOS `ListItemButtonStyle`.
+ * The outer treatment of a list-item row: the optional divider below it and the gutter padding
+ * around it. Pure modifiers, so a row composes no wrapper node for either.
  */
 @Composable
-private fun Modifier.interactiveBackground(
-    interactionSource: MutableInteractionSource,
-    voice: LemonadeListItemVoice,
-    enabled: Boolean,
-    role: Role?,
-    onClick: () -> Unit,
-): Modifier {
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val isHovering by interactionSource.collectIsHoveredAsState()
-
-    val highlightShape = LocalShapes.current.radius500
-    val transparentColor = voice.interactionBackground.copy(
-        alpha = LocalOpacities.current.base.opacity0,
-    )
-    val highlightColor by animateColorAsState(
-        targetValue = if (isHovering || isPressed) {
-            voice.interactionBackground
-        } else {
-            transparentColor
-        },
-    )
-
-    return this
-        .clickable(
-            enabled = enabled,
-            role = role,
-            onClick = onClick,
-            interactionSource = interactionSource,
-            indication = null,
-        ).drawWithCache {
-            val outline = highlightShape.createOutline(
-                size = size,
-                layoutDirection = layoutDirection,
-                density = this,
-            )
-            onDrawBehind {
-                if (highlightColor.alpha > 0f) {
-                    drawOutline(outline = outline, color = highlightColor)
-                }
-            }
-        }
+private fun Modifier.listItemSafeArea(showDivider: Boolean): Modifier {
+    val withDivider = if (showDivider) {
+        listItemDivider()
+    } else {
+        this
+    }
+    return withDivider.padding(all = LocalSpaces.current.spacing100)
 }
 
+/**
+ * Draws the row divider the way [LemonadeUi.HorizontalDivider] renders its solid variant — same
+ * thickness, colour and horizontal insets — while reserving the divider's height with padding so
+ * the row's total height matches the former divider sibling.
+ */
 @Composable
-private fun SafeArea(
-    modifier: Modifier = Modifier,
-    showDivider: Boolean,
-    content: @Composable ColumnScope.() -> Unit,
-) {
-    if (!showDivider) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            modifier = modifier.padding(all = LocalSpaces.current.spacing100),
-            content = content,
-        )
-        return
-    }
-
-    Column(
-        verticalArrangement = Arrangement.Center,
-        modifier = modifier,
-    ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(all = LocalSpaces.current.spacing100),
-            content = content,
-        )
-
-        LemonadeUi.HorizontalDivider(
-            modifier = Modifier.padding(horizontal = LocalSpaces.current.spacing400),
-        )
-    }
+private fun Modifier.listItemDivider(): Modifier {
+    val thickness = LocalBorderWidths.current.base.border25
+    val inset = LocalSpaces.current.spacing400
+    val color = LocalColors.current.border.borderNeutralLow
+    return this
+        .drawBehind {
+            val reserved = thickness.roundToPx()
+            val insetPx = inset.roundToPx().toFloat()
+            val centerY = size.height - reserved / 2f
+            drawLine(
+                color = color,
+                start = Offset(x = insetPx, y = centerY),
+                end = Offset(x = size.width - insetPx, y = centerY),
+                strokeWidth = thickness.toPx(),
+            )
+        }.padding(bottom = thickness)
 }
-
-private val LemonadeListItemVoice.interactionBackground: Color
-    @Composable get() {
-        return when (this) {
-            LemonadeListItemVoice.Neutral -> LocalColors.current.interaction.bgSubtleInteractive
-            LemonadeListItemVoice.Critical -> LocalColors.current.interaction.bgCriticalSubtleInteractive
-        }
-    }
 
 private val LemonadeListItemVoice.contentColor: Color
     @Composable get() {
@@ -1116,45 +1205,44 @@ private fun ListItemSkeleton(
     modifier: Modifier = Modifier,
     showDivider: Boolean = false,
 ) {
-    SafeArea(modifier = modifier, showDivider = showDivider) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .listItemSafeArea(showDivider = showDivider)
+            .padding(
+                horizontal = LocalSpaces.current.spacing300,
+                vertical = LocalSpaces.current.spacing300,
+            ),
+    ) {
+        LemonadeUi.CircleSkeleton(
+            size = LemonadeSkeletonSize.XLarge,
+            modifier = Modifier.padding(end = LocalSpaces.current.spacing300),
+        )
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .padding(
-                    horizontal = LocalSpaces.current.spacing300,
-                    vertical = LocalSpaces.current.spacing300,
-                ),
+            modifier = Modifier.weight(weight = 1f),
         ) {
-            LemonadeUi.CircleSkeleton(
-                size = LemonadeSkeletonSize.XLarge,
-                modifier = Modifier.padding(end = LocalSpaces.current.spacing300),
-            )
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            Column(
+                verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing100),
                 modifier = Modifier.weight(weight = 1f),
             ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(space = LocalSpaces.current.spacing100),
-                    modifier = Modifier.weight(weight = 1f),
-                ) {
-                    LemonadeUi.LineSkeleton(
-                        size = LemonadeSkeletonSize.Medium,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                    LemonadeUi.LineSkeleton(
-                        size = LemonadeSkeletonSize.Small,
-                        modifier = Modifier.fillMaxWidth(fraction = 0.6f),
-                    )
-                }
-
                 LemonadeUi.LineSkeleton(
                     size = LemonadeSkeletonSize.Medium,
-                    modifier = Modifier
-                        .padding(start = LocalSpaces.current.spacing300)
-                        .width(width = 54.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                LemonadeUi.LineSkeleton(
+                    size = LemonadeSkeletonSize.Small,
+                    modifier = Modifier.fillMaxWidth(fraction = 0.6f),
                 )
             }
+
+            LemonadeUi.LineSkeleton(
+                size = LemonadeSkeletonSize.Medium,
+                modifier = Modifier
+                    .padding(start = LocalSpaces.current.spacing300)
+                    .width(width = 54.dp),
+            )
         }
     }
 }

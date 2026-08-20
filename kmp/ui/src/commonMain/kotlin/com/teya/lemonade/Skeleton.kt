@@ -9,8 +9,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -18,11 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
@@ -218,35 +218,43 @@ private fun CoreSkeleton(
     val skeletonSize = size.toSkeletonSizeDimensions(variant = variant)
     val variantData = variant.variantData
 
+    // The gradient brush and the resolved corner radius are cached per size; each shimmer frame
+    // only pans the cached shader by translating the canvas while offsetting the rounded rect
+    // back, which samples the gradient over exactly the span the former per-frame brush covered.
     Box(
         modifier = modifier
             .height(height = skeletonSize.height)
             .width(width = skeletonSize.width)
-            .padding(vertical = variantData.verticalSpacing),
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth()
-                .clip(shape = variantData.radius)
-                .drawBehind {
-                    val width = this.size.width
-                    drawRect(
-                        brush = Brush.linearGradient(
-                            colors = listOf(baseColor, highlightColor, baseColor),
-                            start = Offset(
-                                x = width * (shimmerOffset - 0.5f),
-                                y = 0f,
-                            ),
-                            end = Offset(
-                                x = width * (shimmerOffset + 0.5f),
-                                y = 0f,
-                            ),
-                        ),
-                    )
-                },
-        )
-    }
+            .padding(vertical = variantData.verticalSpacing)
+            .drawWithCache {
+                val drawSize = this.size
+                val outline = variantData.radius.createOutline(
+                    size = drawSize,
+                    layoutDirection = layoutDirection,
+                    density = this,
+                )
+                val cornerRadius = (outline as? Outline.Rounded)
+                    ?.roundRect
+                    ?.topLeftCornerRadius
+                    ?: CornerRadius.Zero
+                val brush = Brush.linearGradient(
+                    colors = listOf(baseColor, highlightColor, baseColor),
+                    start = Offset(x = -drawSize.width / 2f, y = 0f),
+                    end = Offset(x = drawSize.width / 2f, y = 0f),
+                )
+                onDrawBehind {
+                    val panX = drawSize.width * shimmerOffset
+                    translate(left = panX) {
+                        drawRoundRect(
+                            brush = brush,
+                            topLeft = Offset(x = -panX, y = 0f),
+                            size = drawSize,
+                            cornerRadius = cornerRadius,
+                        )
+                    }
+                }
+            },
+    )
 }
 
 private val LemonadeAssetSize.dp: Dp

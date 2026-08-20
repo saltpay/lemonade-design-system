@@ -128,7 +128,6 @@ public final class com/teya/lemonade/ComposableSingletons$ListItemKt {
 	public final fun getLambda$-1242978266$ui ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-1808195552$ui ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-965205749$ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1280770520$ui ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$787311865$ui ()Lkotlin/jvm/functions/Function3;
 }
 

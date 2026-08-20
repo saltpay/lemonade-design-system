@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -63,12 +61,13 @@ public fun LemonadeUi.SymbolContainer(
         voice = voice,
         size = size,
         shape = shape,
+        clipContent = false,
         modifier = modifier,
         badgeSlot = badgeSlot,
-        contentSlot = {
+        contentSlot = { dimensions ->
             LemonadeUi.Icon(
                 icon = icon,
-                size = LocalSymbolContainerPlatformDimensions.current.lemonadeIconSize,
+                size = dimensions.lemonadeIconSize,
                 contentDescription = contentDescription,
                 tint = voice.tintColor,
             )
@@ -108,13 +107,14 @@ public fun LemonadeUi.SymbolContainer(
         voice = voice,
         size = size,
         shape = shape,
+        clipContent = false,
         modifier = modifier,
         badgeSlot = badgeSlot,
-        contentSlot = {
+        contentSlot = { dimensions ->
             LemonadeUi.Text(
                 text = text,
                 color = voice.tintColor,
-                textStyle = LocalSymbolContainerPlatformDimensions.current.textStyle,
+                textStyle = dimensions.textStyle,
             )
         },
     )
@@ -159,9 +159,10 @@ public fun LemonadeUi.SymbolContainer(
         voice = voice,
         size = size,
         shape = shape,
+        clipContent = fill,
         modifier = modifier,
         badgeSlot = badgeSlot,
-        contentSlot = {
+        contentSlot = { dimensions ->
             Image(
                 painter = painter,
                 contentDescription = contentDescription,
@@ -175,9 +176,7 @@ public fun LemonadeUi.SymbolContainer(
                     if (fill) {
                         Modifier.matchParentSize()
                     } else {
-                        Modifier.requiredSize(
-                            size = LocalSymbolContainerPlatformDimensions.current.contentSize,
-                        )
+                        Modifier.requiredSize(size = dimensions.contentSize)
                     },
                 ),
             )
@@ -222,15 +221,14 @@ public fun LemonadeUi.SymbolContainer(
         voice = voice,
         size = size,
         shape = shape,
+        clipContent = true,
         modifier = modifier,
         badgeSlot = badgeSlot,
-        contentSlot = {
+        contentSlot = { dimensions ->
             Box(
                 content = contentSlot,
                 contentAlignment = Alignment.Center,
-                modifier = Modifier.requiredSize(
-                    size = LocalSymbolContainerPlatformDimensions.current.contentSize,
-                ),
+                modifier = Modifier.requiredSize(size = dimensions.contentSize),
             )
         },
     )
@@ -238,69 +236,91 @@ public fun LemonadeUi.SymbolContainer(
 
 @Composable
 private fun CoreSymbolContainer(
-    contentSlot: @Composable BoxScope.() -> Unit,
+    contentSlot: @Composable BoxScope.(dimensions: SymbolContainerPlatformDimensions) -> Unit,
     voice: SymbolContainerVoice,
     size: SymbolContainerSize,
     shape: SymbolContainerShape,
+    clipContent: Boolean,
     modifier: Modifier = Modifier,
     badgeSlot: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     val dimensions = size.defaultSymbolContainerPlatformDimensions()
     val resolvedShape = shape.resolveShape(size)
-    CompositionLocalProvider(LocalSymbolContainerPlatformDimensions provides dimensions) {
-        if (badgeSlot != null) {
-            val density = LocalDensity.current
-            val spaces = LocalSpaces.current
-            LemonadeBadgeBox(
-                modifier = modifier,
-                badgeOffset = { badgeSize ->
-                    val startingHeight = with(density) {
-                        badgeSize.height.toDp() - dimensions.containerSize
-                    }
-                    DpOffset(
-                        x = spaces.spacing100,
-                        y = startingHeight - spaces.spacing100,
-                    )
-                },
-                badge = badgeSlot,
-                content = {
-                    Box(
-                        content = contentSlot,
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .clip(shape = resolvedShape)
-                            .background(
-                                color = voice.containerColor,
-                            ).border(
-                                width = LocalBorderWidths.current.base.border25,
-                                color = voice.borderColor,
-                                shape = resolvedShape,
-                            ).requiredSize(size = dimensions.containerSize),
-                    )
-                },
-            )
-        } else {
-            Box(
-                content = contentSlot,
-                contentAlignment = Alignment.Center,
-                modifier = modifier
-                    .clip(shape = resolvedShape)
-                    .background(
-                        color = voice.containerColor,
-                    ).border(
-                        width = LocalBorderWidths.current.base.border25,
-                        color = voice.borderColor,
-                        shape = resolvedShape,
-                    ).requiredSize(size = dimensions.containerSize),
-            )
+    if (badgeSlot != null) {
+        val density = LocalDensity.current
+        val spaces = LocalSpaces.current
+        LemonadeBadgeBox(
+            modifier = modifier,
+            badgeOffset = { badgeSize ->
+                val startingHeight = with(density) {
+                    badgeSize.height.toDp() - dimensions.containerSize
+                }
+                DpOffset(
+                    x = spaces.spacing100,
+                    y = startingHeight - spaces.spacing100,
+                )
+            },
+            badge = badgeSlot,
+            content = {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.symbolContainerSurface(
+                        voice = voice,
+                        resolvedShape = resolvedShape,
+                        containerSize = dimensions.containerSize,
+                        clipContent = clipContent,
+                    ),
+                ) {
+                    contentSlot(dimensions)
+                }
+            },
+        )
+    } else {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = modifier.symbolContainerSurface(
+                voice = voice,
+                resolvedShape = resolvedShape,
+                containerSize = dimensions.containerSize,
+                clipContent = clipContent,
+            ),
+        ) {
+            contentSlot(dimensions)
         }
     }
 }
 
-private val LocalSymbolContainerPlatformDimensions =
-    staticCompositionLocalOf<SymbolContainerPlatformDimensions> {
-        error("Local Symbol container platform dimensions not initialized")
+/**
+ * The container's fill, border and size. The fill is drawn with the shape directly instead of
+ * clipping the container, so a symbol costs no clip layer; [clipContent] opts back into the clip
+ * for the variants whose content genuinely overflows the container (fill-scaled images and
+ * arbitrary content slots). [Modifier.border] draws its stroke fully inside the shape either way,
+ * so the border geometry is identical in both branches.
+ */
+@Composable
+private fun Modifier.symbolContainerSurface(
+    voice: SymbolContainerVoice,
+    resolvedShape: Shape,
+    containerSize: Dp,
+    clipContent: Boolean,
+): Modifier {
+    val surface = if (clipContent) {
+        this
+            .clip(shape = resolvedShape)
+            .background(color = voice.containerColor)
+    } else {
+        this.background(
+            color = voice.containerColor,
+            shape = resolvedShape,
+        )
     }
+    return surface
+        .border(
+            width = LocalBorderWidths.current.base.border25,
+            color = voice.borderColor,
+            shape = resolvedShape,
+        ).requiredSize(size = containerSize)
+}
 
 private val SymbolContainerVoice.tintColor: Color
     @Composable get() {
