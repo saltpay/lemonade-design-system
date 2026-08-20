@@ -95,6 +95,21 @@ you run a converter by hand, invoke
 `~/.local/kotlin-2.3.20/kotlinc/bin/kotlin scripts/<name>.main.kts` from the
 repo root — never bare `kotlin`.
 
+## Why the pipeline looks like this
+
+[`figma-native-migration-design.md`](figma-native-migration-design.md) records the
+reasoning behind the parts that look arbitrary — **read it before changing a sort,
+a tie-break, or the permitted-reorder list in `verify-generated.sh`.** The short
+version of the two that bite:
+
+- **The canonical sort in each loader is load-bearing, not tidiness.** `org.json`'s
+  `JSONObject` is backed by a `HashMap`, so key iteration is *not* file order.
+  Remove the sort and the generated SDK becomes non-deterministic between runs.
+- **`LemonadeFontWeights` sorts by weight descending on purpose.** Its entry order
+  sets every ordinal, so it is a public ABI contract. The token carries only a
+  style name, so one mapping is the source of truth for both the emitted value and
+  the sort key.
+
 ## How the converters work
 
 - Each converter is a standalone `kotlin` script run **from the repo root** — it

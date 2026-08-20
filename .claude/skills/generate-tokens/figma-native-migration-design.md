@@ -3,6 +3,15 @@
 **Date:** 2026-08-19
 **Status:** Approved design, ready for implementation planning
 
+> **Status:** implemented and merged as the token pipeline in use today. One
+> part of this design did not survive to merge: the `ingest-tokens.sh` script
+> described under [Ingest](#ingest) was removed in favour of a documented manual
+> copy. Everything else describes the pipeline as it currently works.
+>
+> The operational guide is [`SKILL.md`](SKILL.md). This document is the record of
+> *why* — read it before changing a sort, a tie-break, or the permitted-reorder
+> list in `verify-generated.sh`.
+
 ## Problem
 
 Design tokens are authored in Figma and exported into `tokens/*.json` by a
@@ -257,32 +266,29 @@ empty.
 
 ### Ingest
 
-`ingest-tokens.sh <unzipped-export-dir>` populates `tokens/` from a downloaded
-export. It **routes by content, never by filename**, matching each incoming file
-against the committed files by `com.figma.variableId` set overlap:
+**Superseded — see the note at the top of this document.** The design called for
+an `ingest-tokens.sh` that populated `tokens/` from a downloaded export, routing
+each incoming file by `com.figma.variableId` set overlap rather than by filename.
+It was built, and it worked: all ten files routed at an overlap of **1.000**
+against the `main` baseline with a runner-up of **0.000** in every case —
+including `light` / `dark` → `theme-colors`, and `sizing` → `size` where the
+names disagree. Figma variable ids are stable across both exporters and disjoint
+between collections, so every file identified its destination unambiguously.
 
-All ten files route with an overlap of **1.000** against the `main` baseline, and
-a runner-up of **0.000** in every case — including `light` / `dark` →
-`theme-colors`, and `sizing` → `size` where the names disagree.
+It was removed before merge in favour of a documented manual copy. Two things
+made the trade reasonable: the real export is a zip of per-collection folders
+whose files are named after the *mode*, so most arrive as `Default.tokens.json`
+and a rename is unavoidable either way; and the guards it provided are largely
+covered downstream — the loaders fail loudly on a malformed export, the
+converters exit non-zero, `apiCheck` catches a truncated collection as a
+breaking change, and the Token Drift CI job catches a forgotten regeneration.
 
-Figma variable ids are stable across both exporters and disjoint between
-collections, so every file identifies its destination unambiguously.
+The gap that remains silent is a **renamed Figma mode**: copying `Day` in
+without deleting `light` leaves the converters generating a new public theme
+class alongside a stale one, with no error. `SKILL.md` calls this out.
 
-It refuses to write when:
-
-- a file's best match scores below 0.5, or the runner-up is within 0.2 of it;
-- two files claim the same destination;
-- a destination's token count drops sharply (catching a partial export with a
-  collection deselected, which would otherwise silently truncate the SDK);
-- an expected destination has no incoming file.
-
-Light and dark are disambiguated by `com.figma.modeName`. Output is written with
-normalized formatting (2-space indent, trailing newline) so diffs stay readable.
-Reference id sets come from the committed files themselves, bootstrapped at
-migration time from the plugin files' `variables[].id` — which are identical.
-
-`ingest-tokens.sh` stays **separate** from `run-converters.sh`, so a bad export
-surfaces as a reviewable `tokens/` diff before any code is generated.
+The routing-by-variable-id idea is recorded here because it is the right answer
+if this is ever revisited — filenames are not a contract, but variable ids are.
 
 ### Platform scope
 
@@ -401,6 +407,6 @@ Recorded here so they are not lost, and explicitly out of scope:
 | Risk | Mitigation |
 |---|---|
 | A future Figma change alters the DTCG output shape | Loader fails loudly on unknown `$type` or unresolvable reference rather than emitting defaults; the Token Drift CI job catches silent output changes |
-| A partial export truncates a collection | `ingest-tokens.sh` refuses on sharp token-count drops |
+| A partial export truncates a collection | Not guarded at ingest (see Ingest); a truncated collection removes public properties, which `apiCheck` reports as a breaking change |
 | A designer reorders variables in Figma | Explicit sorts make generated ordering independent of input order |
 | Primitive colours and theme fall out of sync (separate Figma files) | Loader fails loudly on an alias target missing from the primitives; verified 296/296 today |

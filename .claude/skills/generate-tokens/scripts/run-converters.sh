@@ -64,8 +64,12 @@ case "$mode" in
   *)         for a in "$@"; do files+=("$(basename "$a")"); done ;;
 esac
 
-# de-dupe
-files=($(printf '%s\n' "${files[@]}" | sort -u))
+# de-dupe. Guard the empty case: under `set -u` an empty array makes
+# "${files[@]}" an unbound-variable error, so --changed with no token
+# change would abort here instead of reaching the friendly message below.
+if [ "${#files[@]}" -gt 0 ]; then
+  files=($(printf '%s\n' "${files[@]}" | sort -u))
+fi
 
 if [ "${#files[@]}" -eq 0 ]; then
   echo "No token files to process. Pass file names, --all, or change a tokens/*.tokens.json first."
