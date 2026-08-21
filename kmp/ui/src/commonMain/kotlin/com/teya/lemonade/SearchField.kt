@@ -25,6 +25,8 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -35,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextOverflow
@@ -372,23 +375,19 @@ private fun CoreSearchFieldDecorationBox(
                 )
             },
         ) { icon ->
-            LemonadeUi.Icon(
-                icon = icon,
-                tint = LocalColors.current.content.contentPrimary,
-                contentDescription = null,
-                modifier = Modifier
-                    .then(
-                        other = if (onLeadingIconClicked != null) {
-                            Modifier.clickable(
-                                onClick = onLeadingIconClicked,
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = LocalEffects.current.interactionIndication,
-                            )
-                        } else {
-                            Modifier
-                        },
-                    ),
-            )
+            if (onLeadingIconClicked != null) {
+                SearchFieldIconTarget(
+                    icon = icon,
+                    tint = LocalColors.current.content.contentPrimary,
+                    onClick = onLeadingIconClicked,
+                )
+            } else {
+                LemonadeUi.Icon(
+                    icon = icon,
+                    tint = LocalColors.current.content.contentPrimary,
+                    contentDescription = null,
+                )
+            }
         }
 
         Box(modifier = Modifier.weight(weight = 1f)) {
@@ -410,18 +409,47 @@ private fun CoreSearchFieldDecorationBox(
             enter = fadeIn(animationSpec = SearchFieldFadeSpec),
             exit = fadeOut(animationSpec = SearchFieldFadeSpec),
         ) {
-            LemonadeUi.Icon(
+            SearchFieldIconTarget(
                 icon = LemonadeIcons.CircleXSolid,
                 tint = LocalColors.current.content.contentSecondary,
-                contentDescription = null,
-                modifier = Modifier
-                    .clickable(
-                        onClick = onInputClear,
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = LocalEffects.current.interactionIndication,
-                    ),
+                onClick = onInputClear,
             )
         }
+    }
+}
+
+// The icon keeps its regular footprint in the row, but its tap area is stretched to the field's
+// full height: the inner box deliberately violates the outer box's fixed constraints, so it
+// centers over the icon and overflows into the field's padding without moving any layout. A bare
+// icon-sized clickable is nearly impossible to hit with a finger on a terminal touchscreen, and a
+// missed tap lands on the text field and focuses it instead.
+@Composable
+private fun SearchFieldIconTarget(
+    icon: LemonadeIcons,
+    tint: Color,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier.size(size = LocalSizes.current.size500),
+    ) {
+        Box(
+            modifier = Modifier
+                .requiredSize(size = LocalSizes.current.size1100)
+                .clip(shape = LocalShapes.current.radiusFull)
+                .clickable(
+                    onClick = onClick,
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = LocalEffects.current.interactionIndication,
+                ),
+        )
+
+        LemonadeUi.Icon(
+            icon = icon,
+            tint = tint,
+            contentDescription = null,
+        )
     }
 }
 

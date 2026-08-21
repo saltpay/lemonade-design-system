@@ -13,6 +13,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -30,6 +31,7 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.requiredSizeIn
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -42,6 +44,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -50,7 +54,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -634,7 +638,8 @@ public fun LemonadeUi.TopBar(
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
-    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val searchDismissRequester = remember { FocusRequester() }
     var isSearchFocused by remember {
         mutableStateOf(false)
     }
@@ -688,6 +693,8 @@ public fun LemonadeUi.TopBar(
                         bottom = LocalSpaces.current.spacing200,
                     ),
             ) {
+                SearchFocusDecoy(focusRequester = searchDismissRequester)
+
                 AnimatedContent(
                     targetState = expandedLabel != null && !isSearchFocused,
                     transitionSpec = { expandVertically() togetherWith shrinkVertically() + fadeOut() },
@@ -727,14 +734,27 @@ public fun LemonadeUi.TopBar(
                     } else {
                         LemonadeIcons.Search
                     },
-                    onLeadingIconClicked = focusManager::clearFocus,
-                    modifier = Modifier.onFocusChanged { focusState ->
-                        isSearchFocused = focusState.isFocused
-                        state.setAnimationGesturesLock(locked = focusState.isFocused)
-                        if (focusState.isFocused) {
-                            state.expand()
+                    // Clickable only while focused: the back arrow must dismiss, but the resting
+                    // magnifier has to stay tap-through so a tap on it focuses the field. The
+                    // explicit keyboard hide covers devices where IME-inset tracking is
+                    // unsupported and the focus hand-off alone leaves the keyboard up.
+                    onLeadingIconClicked = if (isSearchFocused) {
+                        {
+                            keyboardController?.hide()
+                            searchDismissRequester.requestFocus()
                         }
+                    } else {
+                        null
                     },
+                    modifier = Modifier
+                        .clearFocusOnKeyboardDismiss { searchDismissRequester.requestFocus() }
+                        .onFocusChanged { focusState ->
+                            isSearchFocused = focusState.isFocused
+                            state.setAnimationGesturesLock(locked = focusState.isFocused)
+                            if (focusState.isFocused) {
+                                state.expand()
+                            }
+                        },
                 )
             }
         },
@@ -1059,7 +1079,8 @@ public fun LemonadeUi.TopBar(
     searchPlaceholder: String? = null,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
 ) {
-    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val searchDismissRequester = remember { FocusRequester() }
     var isSearchFocused by remember {
         mutableStateOf(false)
     }
@@ -1090,31 +1111,71 @@ public fun LemonadeUi.TopBar(
             )
         },
         collapsableSlot = { collapsableSlotModifier ->
-            CoreSearchField(
-                input = searchInput,
-                onInputChanged = onSearchChanged,
-                placeholder = searchPlaceholder,
-                leadingIcon = if (isSearchFocused) {
-                    LemonadeIcons.ArrowLeft
-                } else {
-                    LemonadeIcons.Search
-                },
-                onLeadingIconClicked = focusManager::clearFocus,
-                modifier = collapsableSlotModifier
-                    .fillMaxWidth()
-                    .padding(horizontal = LocalSpaces.current.spacing400)
-                    .padding(vertical = LocalSpaces.current.spacing300)
-                    .onFocusChanged { focusState ->
-                        isSearchFocused = focusState.isFocused
-                        state.setAnimationGesturesLock(locked = focusState.isFocused)
-                        if (focusState.isFocused) {
-                            state.expand()
-                        }
+            Box(modifier = collapsableSlotModifier) {
+                SearchFocusDecoy(focusRequester = searchDismissRequester)
+
+                CoreSearchField(
+                    input = searchInput,
+                    onInputChanged = onSearchChanged,
+                    placeholder = searchPlaceholder,
+                    leadingIcon = if (isSearchFocused) {
+                        LemonadeIcons.ArrowLeft
+                    } else {
+                        LemonadeIcons.Search
                     },
-            )
+                    // Clickable only while focused: the back arrow must dismiss, but the resting
+                    // magnifier has to stay tap-through so a tap on it focuses the field. The
+                    // explicit keyboard hide covers devices where IME-inset tracking is
+                    // unsupported and the focus hand-off alone leaves the keyboard up.
+                    onLeadingIconClicked = if (isSearchFocused) {
+                        {
+                            keyboardController?.hide()
+                            searchDismissRequester.requestFocus()
+                        }
+                    } else {
+                        null
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = LocalSpaces.current.spacing400)
+                        .padding(vertical = LocalSpaces.current.spacing300)
+                        .clearFocusOnKeyboardDismiss { searchDismissRequester.requestFocus() }
+                        .onFocusChanged { focusState ->
+                            isSearchFocused = focusState.isFocused
+                            state.setAnimationGesturesLock(locked = focusState.isFocused)
+                            if (focusState.isFocused) {
+                                state.expand()
+                            }
+                        },
+                )
+            }
         },
         bottomSlot = null,
     )
+}
+
+// On Android 8.1 and below the framework re-assigns focus whenever a window's focus is cleared —
+// even in touch mode, aiming at the previously focused rect — so `clearFocus` on the search field
+// is undone within the same frame and the field cannot be dismissed. Dismissal therefore MOVES
+// focus onto this zero-sized target instead of clearing it: the window never loses focus and the
+// legacy re-assign never runs. The same versions also grant focus to the first focusable when the
+// window opens, which lands on the field and pops the keyboard unasked — being zero-sized, the
+// decoy is invisible to that focus search, so it claims the grant back explicitly as soon as it
+// enters composition. It draws nothing and taps are unaffected.
+@Composable
+private fun SearchFocusDecoy(
+    focusRequester: FocusRequester,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .focusRequester(focusRequester = focusRequester)
+            .focusable(),
+    )
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
 }
 
 @Deprecated(
