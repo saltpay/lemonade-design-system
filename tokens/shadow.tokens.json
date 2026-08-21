@@ -39,7 +39,7 @@
         },
         "sd-xs-lv1-offset-y": {
           "$type": "number",
-          "$value": 0.5,
+          "$value": 1,
           "$extensions": {
             "com.figma.variableId": "VariableID:3145:2345",
             "com.figma.scopes": [
@@ -49,7 +49,7 @@
         },
         "sd-xs-lv1-blur": {
           "$type": "number",
-          "$value": 1,
+          "$value": 2,
           "$extensions": {
             "com.figma.variableId": "VariableID:3145:2346",
             "com.figma.scopes": [

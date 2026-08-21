@@ -58,7 +58,7 @@ public enum LemonadeShadow: CaseIterable, Sendable {
         switch self {
         case .xsmall:
             return [
-                LemonadeShadowData(blur: 1.0, spread: 0.0, offsetX: 0.0, offsetY: 0.5, color: Color("lemonade-shadow-shadow-default", bundle: .lemonade)),
+                LemonadeShadowData(blur: 2.0, spread: 0.0, offsetX: 0.0, offsetY: 1.0, color: Color("lemonade-shadow-shadow-default", bundle: .lemonade)),
             ]
         case .small:
             return [

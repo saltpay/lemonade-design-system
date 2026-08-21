@@ -21,8 +21,8 @@ class LemonadeShadows {
     this.xsmall = const <BoxShadow>[
       BoxShadow(
         color: Color(0x0C000000),
-        blurRadius: 1,
-        offset: Offset(0, 0.5),
+        blurRadius: 2,
+        offset: Offset(0, 1),
       ),
     ],
     this.small = const <BoxShadow>[
