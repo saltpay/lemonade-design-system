@@ -42,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -50,7 +51,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -634,7 +635,8 @@ public fun LemonadeUi.TopBar(
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
     bottomSlot: @Composable (BoxScope.() -> Unit)? = null,
 ) {
-    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val searchDismissRequester = remember { FocusRequester() }
     var isSearchFocused by remember {
         mutableStateOf(false)
     }
@@ -688,6 +690,8 @@ public fun LemonadeUi.TopBar(
                         bottom = LocalSpaces.current.spacing200,
                     ),
             ) {
+                SearchFocusDecoy(focusRequester = searchDismissRequester, claimFocusOnEntry = true)
+
                 AnimatedContent(
                     targetState = expandedLabel != null && !isSearchFocused,
                     transitionSpec = { expandVertically() togetherWith shrinkVertically() + fadeOut() },
@@ -727,14 +731,25 @@ public fun LemonadeUi.TopBar(
                     } else {
                         LemonadeIcons.Search
                     },
-                    onLeadingIconClicked = focusManager::clearFocus,
-                    modifier = Modifier.onFocusChanged { focusState ->
-                        isSearchFocused = focusState.isFocused
-                        state.setAnimationGesturesLock(locked = focusState.isFocused)
-                        if (focusState.isFocused) {
-                            state.expand()
+                    // Only the back arrow is clickable — the resting magnifier stays tap-through
+                    // so tapping it focuses the field.
+                    onLeadingIconClicked = if (isSearchFocused) {
+                        {
+                            keyboardController?.hide()
+                            searchDismissRequester.requestFocus()
                         }
+                    } else {
+                        null
                     },
+                    modifier = Modifier
+                        .clearFocusOnKeyboardDismiss { searchDismissRequester.requestFocus() }
+                        .onFocusChanged { focusState ->
+                            isSearchFocused = focusState.isFocused
+                            state.setAnimationGesturesLock(locked = focusState.isFocused)
+                            if (focusState.isFocused) {
+                                state.expand()
+                            }
+                        },
                 )
             }
         },
@@ -1059,7 +1074,8 @@ public fun LemonadeUi.TopBar(
     searchPlaceholder: String? = null,
     trailingSlot: @Composable (RowScope.() -> Unit)? = null,
 ) {
-    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val searchDismissRequester = remember { FocusRequester() }
     var isSearchFocused by remember {
         mutableStateOf(false)
     }
@@ -1090,28 +1106,42 @@ public fun LemonadeUi.TopBar(
             )
         },
         collapsableSlot = { collapsableSlotModifier ->
-            CoreSearchField(
-                input = searchInput,
-                onInputChanged = onSearchChanged,
-                placeholder = searchPlaceholder,
-                leadingIcon = if (isSearchFocused) {
-                    LemonadeIcons.ArrowLeft
-                } else {
-                    LemonadeIcons.Search
-                },
-                onLeadingIconClicked = focusManager::clearFocus,
-                modifier = collapsableSlotModifier
-                    .fillMaxWidth()
-                    .padding(horizontal = LocalSpaces.current.spacing400)
-                    .padding(vertical = LocalSpaces.current.spacing300)
-                    .onFocusChanged { focusState ->
-                        isSearchFocused = focusState.isFocused
-                        state.setAnimationGesturesLock(locked = focusState.isFocused)
-                        if (focusState.isFocused) {
-                            state.expand()
-                        }
+            Box(modifier = collapsableSlotModifier) {
+                SearchFocusDecoy(focusRequester = searchDismissRequester, claimFocusOnEntry = true)
+
+                CoreSearchField(
+                    input = searchInput,
+                    onInputChanged = onSearchChanged,
+                    placeholder = searchPlaceholder,
+                    leadingIcon = if (isSearchFocused) {
+                        LemonadeIcons.ArrowLeft
+                    } else {
+                        LemonadeIcons.Search
                     },
-            )
+                    // Only the back arrow is clickable — the resting magnifier stays tap-through
+                    // so tapping it focuses the field.
+                    onLeadingIconClicked = if (isSearchFocused) {
+                        {
+                            keyboardController?.hide()
+                            searchDismissRequester.requestFocus()
+                        }
+                    } else {
+                        null
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = LocalSpaces.current.spacing400)
+                        .padding(vertical = LocalSpaces.current.spacing300)
+                        .clearFocusOnKeyboardDismiss { searchDismissRequester.requestFocus() }
+                        .onFocusChanged { focusState ->
+                            isSearchFocused = focusState.isFocused
+                            state.setAnimationGesturesLock(locked = focusState.isFocused)
+                            if (focusState.isFocused) {
+                                state.expand()
+                            }
+                        },
+                )
+            }
         },
         bottomSlot = null,
     )

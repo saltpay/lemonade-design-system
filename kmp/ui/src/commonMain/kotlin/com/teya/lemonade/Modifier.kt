@@ -29,7 +29,13 @@ internal fun Modifier.modifyIf(
         },
     )
 
-internal fun Modifier.clearFocusOnKeyboardDismiss(): Modifier {
+internal fun Modifier.clearFocusOnKeyboardDismiss(): Modifier = clearFocusOnKeyboardDismiss(onKeyboardDismissed = null)
+
+/**
+ * [onKeyboardDismissed] replaces the default `clearFocus` reaction — hosts that must unfocus
+ * reliably on legacy Android hand focus to a [SearchFocusDecoy] instead.
+ */
+internal fun Modifier.clearFocusOnKeyboardDismiss(onKeyboardDismissed: (() -> Unit)?): Modifier {
     if (!supportsImeInsets()) {
         return this
     }
@@ -43,7 +49,8 @@ internal fun Modifier.clearFocusOnKeyboardDismiss(): Modifier {
 
             LaunchedEffect(imeIsVisible) {
                 when {
-                    keyboardAppearedSinceLastFocused -> focusManager.clearFocus()
+                    keyboardAppearedSinceLastFocused ->
+                        onKeyboardDismissed?.invoke() ?: focusManager.clearFocus()
                     imeIsVisible -> keyboardAppearedSinceLastFocused = true
                 }
             }

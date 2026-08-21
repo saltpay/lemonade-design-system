@@ -25,6 +25,8 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -35,8 +37,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -90,14 +94,13 @@ private val SEARCH_FIELD_MIN_WIDTH = 240.dp
  * @param placeholder - optional [String] to be displayed as the component's placeholder text.
  * @param onInputClear - Callback to be invoked when the user request the input to be cleared.
  * @param dismissible - [Boolean] flag controlling the trailing cancel button, on by default. The
- * button shows up as soon as there is something to dismiss (the field is focused or holds input),
- * and tapping it hides the keyboard, clears the focus and empties the input. Turn it off for hosts
- * that already provide their own dismissal affordance.
+ * button shows while the field is focused, and tapping it hides the keyboard and clears the focus,
+ * leaving the input untouched. Turn it off for hosts that already provide their own dismissal
+ * affordance.
  * @param onCancel - Callback to be invoked after the search has been dismissed through the cancel
- * button. The input has already been emptied by the time this runs, so use it to drop whatever the
- * query was driving, such as results or a filter. Note that the order in which this and
- * [onInputChanged] fire is not guaranteed — SwiftUI delivers the input change through the view
- * update, so do not depend on one having run when the other does.
+ * button. The input is left as typed — clearing it stays with the inner clear icon and
+ * [onInputClear] — so use this to react to the dismissal itself, such as collapsing a results
+ * overlay.
  * @param cancelContentDescription - optional [String] content description for the cancel button, for
  * accessibility. The component leaves it unset by default so the label can be localised by the
  * consumer; supply one whenever the field is [dismissible].
@@ -124,10 +127,18 @@ public fun LemonadeUi.SearchField(
     enabled: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val dismissRequester = remember { FocusRequester() }
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
+        SearchFocusDecoy(
+            focusRequester = dismissRequester,
+            claimFocusOnEntry = false,
+        )
+
         CoreSearchField(
             input = input,
             onInputChanged = onInputChanged,
@@ -140,13 +151,15 @@ public fun LemonadeUi.SearchField(
             modifier = Modifier
                 .defaultMinSize(minWidth = SEARCH_FIELD_MIN_WIDTH)
                 .weight(weight = 1f, fill = false)
-                .clearFocusOnKeyboardDismiss(),
+                .clearFocusOnKeyboardDismiss { dismissRequester.requestFocus() },
         )
 
         if (dismissible) {
             SearchCancelButton(
-                input = input,
-                onInputChanged = onInputChanged,
+                onDismiss = {
+                    keyboardController?.hide()
+                    dismissRequester.requestFocus()
+                },
                 onCancel = onCancel,
                 contentDescription = cancelContentDescription,
                 interactionSource = interactionSource,
@@ -161,21 +174,18 @@ public fun LemonadeUi.SearchField(
 // the field is not dismissible, so opting out costs no collector and no transition.
 @Composable
 private fun SearchCancelButton(
-    input: String,
-    onInputChanged: (String) -> Unit,
+    onDismiss: () -> Unit,
     onCancel: () -> Unit,
     contentDescription: String?,
     interactionSource: MutableInteractionSource,
     enabled: Boolean,
 ) {
     val isFocused by interactionSource.collectIsFocusedAsState()
-    val focusManager = LocalFocusManager.current
 
-    // The cancel button only earns its space once there is something to dismiss: an active focus or
-    // a query already typed in. That mirrors the Figma states, where the resting empty field is the
-    // only one without it.
+    // Dismissal only drops the focus, so the button only earns its space while there is focus to
+    // drop.
     AnimatedVisibility(
-        visible = enabled && (isFocused || input.isNotEmpty()),
+        visible = enabled && isFocused,
         enter = fadeIn(animationSpec = SearchFieldFadeSpec) +
             scaleIn(
                 animationSpec = SearchFieldFadeSpec,
@@ -191,13 +201,7 @@ private fun SearchCancelButton(
             icon = LemonadeIcons.Times,
             contentDescription = contentDescription,
             onClick = {
-                // `clearFocus` is what dismisses the keyboard too — it is the single dismissal
-                // idiom this module already uses (see the TopBar search leading icon).
-                focusManager.clearFocus()
-                // Deliberately not routed through `onInputClear`: that callback belongs to the
-                // inner clear icon, and a consumer who overrides it to only log would otherwise
-                // stop cancel from emptying the field.
-                onInputChanged("")
+                onDismiss()
                 onCancel()
             },
             variant = LemonadeButtonVariant.Neutral,
@@ -372,23 +376,19 @@ private fun CoreSearchFieldDecorationBox(
                 )
             },
         ) { icon ->
-            LemonadeUi.Icon(
-                icon = icon,
-                tint = LocalColors.current.content.contentPrimary,
-                contentDescription = null,
-                modifier = Modifier
-                    .then(
-                        other = if (onLeadingIconClicked != null) {
-                            Modifier.clickable(
-                                onClick = onLeadingIconClicked,
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = LocalEffects.current.interactionIndication,
-                            )
-                        } else {
-                            Modifier
-                        },
-                    ),
-            )
+            if (onLeadingIconClicked != null) {
+                SearchFieldIconTarget(
+                    icon = icon,
+                    tint = LocalColors.current.content.contentPrimary,
+                    onClick = onLeadingIconClicked,
+                )
+            } else {
+                LemonadeUi.Icon(
+                    icon = icon,
+                    tint = LocalColors.current.content.contentPrimary,
+                    contentDescription = null,
+                )
+            }
         }
 
         Box(modifier = Modifier.weight(weight = 1f)) {
@@ -410,30 +410,52 @@ private fun CoreSearchFieldDecorationBox(
             enter = fadeIn(animationSpec = SearchFieldFadeSpec),
             exit = fadeOut(animationSpec = SearchFieldFadeSpec),
         ) {
-            LemonadeUi.Icon(
+            SearchFieldIconTarget(
                 icon = LemonadeIcons.CircleXSolid,
                 tint = LocalColors.current.content.contentSecondary,
-                contentDescription = null,
-                modifier = Modifier
-                    .clickable(
-                        onClick = onInputClear,
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = LocalEffects.current.interactionIndication,
-                    ),
+                onClick = onInputClear,
             )
         }
+    }
+}
+
+// Stretches the icon's tap area to the field's full height without moving any layout: the inner
+// box deliberately overflows the fixed outer box. A bare icon-sized clickable is nearly
+// impossible to hit with a finger.
+@Composable
+private fun SearchFieldIconTarget(
+    icon: LemonadeIcons,
+    tint: Color,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier.size(size = LocalSizes.current.size500),
+    ) {
+        Box(
+            modifier = Modifier
+                .requiredSize(size = LocalSizes.current.size1100)
+                .clip(shape = LocalShapes.current.radiusFull)
+                .clickable(
+                    onClick = onClick,
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = LocalEffects.current.interactionIndication,
+                ),
+        )
+
+        LemonadeUi.Icon(
+            icon = icon,
+            tint = tint,
+            contentDescription = null,
+        )
     }
 }
 
 private data class SearchFieldPreviewData(
     val withContent: Boolean,
     val enabled: Boolean,
-) {
-    // Previews never hold focus, so the cancel button is only on screen for the enabled-with-content
-    // case. Turning it on elsewhere would render a duplicate of an existing variant, so this is
-    // derived rather than a third axis.
-    val dismissible: Boolean get() = withContent && enabled
-}
+)
 
 private class SearchFieldPreviewProvider : PreviewParameterProvider<SearchFieldPreviewData> {
     override val values: Sequence<SearchFieldPreviewData> = buildAllVariants()
@@ -464,7 +486,6 @@ private fun LemonadeSearchFieldPreview(
         onInputChanged = { /* Nothing */ },
         placeholder = "This is a placeholder",
         enabled = previewData.enabled,
-        dismissible = previewData.dismissible,
         cancelContentDescription = "Cancel search",
         input = if (previewData.withContent) {
             "Sample text"
