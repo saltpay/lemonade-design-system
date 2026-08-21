@@ -41,16 +41,17 @@ the divergence starts and where the fix is framework-agnostic.
 **Non-goals for v0**
 
 React components; a Tailwind preset; a Material UI adapter; a CSS reset; motion
-tokens (none exist in Figma). Each is deliberately deferred — see §14.
+tokens (none exist in Figma). Each is deliberately deferred — see §15.
 
 ## 3. Decisions
 
 | Decision | Choice | Rationale |
 |---|---|---|
 | v0 scope | Tokens + assets, components deferred | Let adoption reveal which components are actually needed, rather than guessing |
-| Registry | JFrog Artifactory, private | Teya's existing npm infra: `https://saltpay.jfrog.io/artifactory/api/npm/main-npm-virtual/` |
-| Scope | `@teya` | The scope new internal packages use (~98 references); `@saltpay` is legacy |
+| Registry | **Public npm** | The tokens are already public via Maven Central and an Apache-2.0 repo, so nothing new is disclosed — see §3.1. Public npm is also the only registry AI prototyping tools can resolve |
+| Scope | `@teya` if claimable, else `@teyaproduct` | `@teyaproduct` is the scope Teya demonstrably owns on public npm (`@teyaproduct/teya-blocks-*` resolve). That Teya chose it over `@teya` suggests `@teya` is taken. Verify before first publish |
 | Package | `@teya/lemonade-ds`, single package | Subpath exports let components land later without a rename. npm has no rename operation, and the name will eventually be baked into Figma `codeSyntax`, so this is decided once |
+| Publish gate | Nothing published until validated locally and signed off by the team | Public publication is effectively irreversible: npm unpublish is restricted and the name is burned either way |
 | CSS delivery | Layered, individually importable entrypoints | The base layer is custom properties only — zero selectors — so it is safe to drop into any app, MUI included, with no possibility of conflict |
 | Generator | Kotlin `.main.kts` in `scripts/`, like the other platforms | The DTCG loader is duplicated per platform and guarded by `check-loader-parity.py`. A TypeScript loader would be a fourth copy the guard cannot read — see §4.1. Style Dictionary was also rejected: the Figma export needs custom parsers regardless |
 | Division of labour | `scripts/` generates source; `web/` builds and publishes | The line the repo already draws for KMP, SwiftUI and Flutter |
@@ -60,6 +61,36 @@ tokens (none exist in Figma). Each is deliberately deferred — see §14.
 | Units | `rem` for proportional values, `px` for optical ones | See §5 |
 | Docs | Storybook | Both existing internal component libraries use it, so Teya web teams already know it; it is also where components will live later |
 | Release | Tag `lemonade-web-v*` | Matches `lemonade-kmp-v*` / `lemonade-swiftui-v*` |
+
+### 3.1 Why public, and what it exposes
+
+Verified, not assumed:
+
+- `saltpay/lemonade-design-system` is **public** and Apache-2.0 licensed.
+- KMP artifacts publish to **Maven Central** under group `com.teya.foundation` —
+  `lemonade-core`, `lemonade-tokens`, `lemonade-ui`, `lemonade-expressive`,
+  `lemonade-calendar` across Android, desktop, JVM and iOS targets, versions through
+  0.9.0, resolvable by anyone with no authentication. `lemonade-tokens` means **the
+  design tokens already ship as a public artifact**.
+- `tokens/*.tokens.json`, all 587 SVGs and the Figtree TTFs are readable in the repo
+  by anyone today.
+
+A CSS file of custom properties is therefore a re-encoding of already-public data.
+There is **no disclosure delta**. What changes is not secrecy but three other things,
+which are the real subject of the decision:
+
+1. **Discoverability** — npm is searchable in a way Maven Central and a GitHub repo
+   are not. This is also precisely why AI tooling can resolve it.
+2. **An implicit support commitment** — a versioned public package invites issues and
+   an expectation of semver and continuity. This is the genuine cost.
+3. **Public download telemetry** — npm shows weekly download counts to everyone.
+
+Nothing internal is exposed either way: no product code, no infrastructure, no
+customer data. It is colours, spacing, type and icons.
+
+**JFrog is dropped for v0.** With a public package there is no auth to arrange, so
+internal apps install it directly and no `.npmrc` entry is required. If Teya later
+wants an internal mirror, JFrog's virtual registry proxies public npm already.
 
 ## 4. Architecture
 
@@ -84,6 +115,7 @@ scripts/                                    Kotlin .main.kts, alongside kmp-* / 
   web-typography-token-converter.main.kts
   web-text-style-converter.main.kts         text-styles.json -> .lmnd-text-* classes
   web-svg-converter.main.kts                currentColor rewrite, inline-style strip
+  web-llms-txt-converter.main.kts           llms.txt token reference for AI tools — §12
   web-contrast-check.main.kts               WCAG 2.2 AA validation
   web-text-style-parity-check.main.kts      web table vs SwiftUI table
 
@@ -96,6 +128,8 @@ web/
     icons.generated.ts                      GENERATED — typed icon-name manifest
   styles/                                   GENERATED + COMMITTED
     tokens.css  fonts.css  typography.css  styles.css
+    lemonade.css                            self-contained single file — §12
+  llms.txt                                  GENERATED + COMMITTED — §12
   assets/                                   GENERATED + COMMITTED (source SVG)
     icons/*.svg  flags/*.svg  brand-logos/*.svg
   build/
@@ -166,6 +200,8 @@ the whole pipeline.
   "./fonts.css":        "./styles/fonts.css",
   "./typography.css":   "./styles/typography.css",
   "./styles.css":       "./styles/styles.css",       // barrel of the three above
+  "./lemonade.css":     "./styles/lemonade.css",     // self-contained, pasteable
+  "./llms.txt":         "./llms.txt",                // AI token reference
   "./tokens.json":      "./dist/tokens.json",        // non-JS consumers
   "./icons/*":          "./assets/icons/*",
   "./flags/*":          "./assets/flags/*",
@@ -341,8 +377,8 @@ A third hand-maintained copy would make drift near-certain. Therefore:
 
 Placing the file at the repo root rather than under `web/` is deliberate: the
 longer-term fix is for all three platforms to generate from it, and web claiming it
-as a private file would make that harder later. The longer-term fix itself That touches KMP and SwiftUI generated code and is
-**out of scope for v0** — but the parity test means drift is caught in CI rather
+as a private file would make that harder later. That change touches KMP and SwiftUI
+generated code and is **out of scope for v0** — but the parity test means drift is caught in CI rather
 than discovered in a screenshot months later.
 
 ## 8. Fonts
@@ -442,19 +478,64 @@ createTheme({ palette: { background: { default: 'var(--lmnd-color-bg-default)' }
 
 Static build deployed on merge to `main`.
 
-## 12. CI and release
+## 12. AI and prototype consumption
+
+A stated goal is that prototypes built with AI tools produce real Lemonade UI rather
+than an approximation. Public npm solves most of it, but not all — the environments
+differ in what they can do:
+
+| Environment | `npm install` | Notes |
+|---|---|---|
+| Local dev, Claude Code, CI | yes | Ordinary public install |
+| Figma Make, v0, Bolt, Lovable, StackBlitz, CodeSandbox | yes | Resolve from public npm; this is what going public unlocks |
+| **Claude artifacts** | **no** | A strict CSP blocks every external host. No install, no CDN, no fetch. Everything must be inlined in the page |
+
+Claude artifacts cannot be fixed by any registry choice, so v0 ships two extra
+build outputs that make the system usable by paste rather than install. Both fall
+out of the converters already being written.
+
+**1. `lemonade.css` — a single self-contained file.** Every custom property for both
+themes, the `.lmnd-text-*` classes and `.lmnd-icon`, with zero `@import`s, roughly
+15KB. Pasteable into a `<style>` block. Published as a package export and attached to
+each GitHub release so it can be linked without installing anything.
+
+Figtree needs no bundling in this path: it is on Google Fonts, which is the one
+external host Claude artifacts permit.
+
+**2. `llms.txt` — a compact token reference for a model's context.** This is the
+larger unlock, and the token export already contains the hard part:
+
+```json
+"content-primary":   { "$description": "Use for main text, titles, and essential content." }
+"content-secondary": { "$description": "Use for secondary text, such as body copy or supporting content." }
+```
+
+Those `$description` fields are human-written usage guidance currently unused by any
+platform. Emitted as a reference, they are what moves a model from guessing `#333` to
+choosing `var(--lmnd-color-content-secondary)` for the stated reason. Generated by
+`scripts/web-llms-txt-converter.main.kts` alongside the other converters, so it can
+never drift from the tokens it describes.
+
+Icons remain the one gap in no-install environments — 587 files cannot be pasted —
+though a model can inline the few it needs from the public repo.
+
+## 13. CI and release
 
 - **`web_ci.yml`** — on PRs touching `web/**`: typecheck, unit tests, contrast
   check, typography parity check, Storybook build, and a check that the package
   installs and imports cleanly.
-- **`web_release.yml`** — on tag `lemonade-web-v*`: build, publish to JFrog with
-  `NODE_AUTH_TOKEN`, create a GitHub release with a changelog scoped to `web/`.
-  Same shape as `kmp_release.yml`.
+- **`web_release.yml`** — on tag `lemonade-web-v*`: build, publish to **public npm**
+  with `NODE_AUTH_TOKEN` (`publishConfig.access: "public"`, as
+  `teya-blocks-react` does), create a GitHub release with a changelog scoped to
+  `web/`. Same shape as `kmp_release.yml`.
+  The workflow is written and tested with `npm publish --dry-run` and `npm pack`,
+  but **the first real publish happens only after local validation and team
+  sign-off** — see §3.
 - **`token_drift.yml`** — gains `scripts/web-*` and `web/` in its watched paths and
   its drift check. It needs **no Node**: the converters are Kotlin and the JDK is
   already set up. `check-loader-parity.py` gains web as a fourth loader.
 
-## 13. Testing
+## 14. Testing
 
 **Converters** — `scripts/web-loader-dtcg-test.main.kts`, following the existing
 `kmp-loader-dtcg-test.main.kts` pattern and run in the same CI step, covering:
@@ -470,7 +551,7 @@ functions as a snapshot test: any change to output shows up as a reviewable diff
 The contrast, loader-parity and text-style-parity checks double as product
 guarantees rather than only tests.
 
-## 14. Explicitly out of scope for v0
+## 15. Explicitly out of scope for v0
 
 | Deferred | Why, and what unblocks it |
 |---|---|
@@ -482,9 +563,10 @@ guarantees rather than only tests.
 | Icon sprite | Measured at 123KB gzipped for one icon's worth of value |
 | Shared `text-styles.json` across all platforms | Touches KMP and SwiftUI generated code. The CI parity check covers the risk in the meantime |
 
-## 15. Success criteria
+## 16. Success criteria
 
-1. `npm i @teya/lemonade-ds` from a Teya repo resolves through JFrog and installs.
+1. `npm pack` produces a tarball that installs cleanly into a scratch project from a
+   local file path, with the correct `exports` map — verified **before** any publish.
 2. A plain HTML file importing `tokens.css` renders Lemonade colours and follows OS
    dark mode with no configuration.
 3. An existing MUI app can adopt `tokens.css` with no visual regression to its
@@ -494,3 +576,7 @@ guarantees rather than only tests.
 5. Contrast and typography-parity checks pass, with any exceptions explicitly
    allowlisted.
 6. Storybook is deployed and a designer or engineer can find any token by browsing.
+7. Pasting `lemonade.css` into a bare HTML page in a Claude artifact renders Lemonade
+   colour and type, with Figtree loading from Google Fonts.
+8. An AI given `llms.txt` produces markup using semantic token names rather than
+   literal hex values.
