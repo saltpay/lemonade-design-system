@@ -60,23 +60,26 @@ fun cssBanner(): String = buildString {
  * goes under `:root`; Task 4 adds the theme selectors.
  */
 fun writeTokensCss(sections: List<Pair<String, List<CssVar>>>) {
-    val duplicates = sections
-        .flatMap { it.second }
-        .groupBy { "${it.name}" }
-        .filterValues { it.size > 1 }
     // Guards the border-selected class of bug: two tokens mapping to one property
-    // would silently drop one, and nothing downstream would notice.
-    require(duplicates.isEmpty()) {
-        "duplicate CSS custom properties within a selector: ${duplicates.keys.sorted()}"
+    // would silently drop one, and nothing downstream would notice. The same
+    // property legitimately appears across selectors (e.g. light vs dark), so the
+    // guard only rejects duplicates *within* one selector.
+    sections.forEach { (selector, vars) ->
+        val duplicates = vars.groupBy { it.name }.filterValues { it.size > 1 }
+        require(duplicates.isEmpty()) {
+            "duplicate CSS custom properties in '$selector': ${duplicates.keys.sorted()}"
+        }
     }
 
     val output = buildString {
         append(cssBanner())
         sections.forEach { (selector, vars) ->
+            val isAtRule = selector.startsWith("@")
             appendLine()
             appendLine("$selector {")
             vars.forEach { appendLine("  ${it.name}: ${it.value};") }
             appendLine("}")
+            if (isAtRule) appendLine("}")
         }
     }
 
@@ -86,11 +89,65 @@ fun writeTokensCss(sections: List<Pair<String, List<CssVar>>>) {
     println("✓ web/styles/tokens.css written (${sections.sumOf { it.second.size }} properties)")
 }
 
+/** Every semantic colour for one Figma mode, as CSS custom properties. */
+fun themeVars(mode: String): List<CssVar> {
+    val files = tokenFiles("theme-colors.")
+    // Regenerating from a subset would leave the other theme silently stale, and the
+    // drift job would stay green because the tree stays clean.
+    requireModes(files, "Light", "Dark")
+
+    val vars = mutableListOf<CssVar>()
+    readFileResourceFileByModeRaw(files, mode) { path, resolved ->
+        vars.add(
+            CssVar(
+                name = cssVar("color", leafOf(path)),
+                value = rgbValue(
+                    r = resolved.getDouble("r"),
+                    g = resolved.getDouble("g"),
+                    b = resolved.getDouble("b"),
+                    a = resolved.getDouble("a"),
+                ),
+            )
+        )
+    }
+    return vars
+}
+
+/**
+ * The four theme selectors.
+ *
+ * Light lives on bare `:root` so that importing tokens.css and setting nothing at all
+ * is already correct. Dark then applies two ways: automatically from the OS, and
+ * explicitly via the attribute, which always wins. The attribute is matched on any
+ * element rather than only `<html>`, so a dark card inside a light page works.
+ *
+ * `color-scheme` makes native scrollbars, form controls and browser UI follow the
+ * theme; without it the page is themed but the scrollbar is glaringly not.
+ */
+fun themeSections(): List<Pair<String, List<CssVar>>> {
+    val light = themeVars("Light")
+    val dark = themeVars("Dark")
+    require(light.map { it.name } == dark.map { it.name }) {
+        "light and dark themes declare different colour tokens — one export is stale"
+    }
+    val scheme = { value: String -> CssVar("color-scheme", value) }
+    return listOf(
+        ":root" to light + scheme("light"),
+        "@media (prefers-color-scheme: dark) { :root:not([data-lmnd-theme=\"light\"])" to
+            dark + scheme("dark"),
+        "[data-lmnd-theme=\"dark\"]" to dark + scheme("dark"),
+        "[data-lmnd-theme=\"light\"]" to light + scheme("light"),
+    )
+}
+
 fun main() {
     try {
         val scalars = scalarVars()
         println("✓ Loaded ${scalars.size} scalar tokens")
-        writeTokensCss(listOf(":root" to scalars))
+        val themes = themeSections()
+        println("✓ Loaded ${themes.first().second.size - 1} colours per theme")
+        val sections = listOf(":root" to scalars) + themes
+        writeTokensCss(sections)
     } catch (error: Throwable) {
         println("✗ Failed to generate web tokens: ${error.message}")
         throw error
