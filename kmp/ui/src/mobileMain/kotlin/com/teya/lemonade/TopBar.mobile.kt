@@ -731,10 +731,8 @@ public fun LemonadeUi.TopBar(
                     } else {
                         LemonadeIcons.Search
                     },
-                    // Clickable only while focused: the back arrow must dismiss, but the resting
-                    // magnifier has to stay tap-through so a tap on it focuses the field. The
-                    // explicit keyboard hide covers devices where IME-inset tracking is
-                    // unsupported and the focus hand-off alone leaves the keyboard up.
+                    // Only the back arrow is clickable — the resting magnifier stays tap-through
+                    // so tapping it focuses the field.
                     onLeadingIconClicked = if (isSearchFocused) {
                         {
                             keyboardController?.hide()
@@ -1120,10 +1118,8 @@ public fun LemonadeUi.TopBar(
                     } else {
                         LemonadeIcons.Search
                     },
-                    // Clickable only while focused: the back arrow must dismiss, but the resting
-                    // magnifier has to stay tap-through so a tap on it focuses the field. The
-                    // explicit keyboard hide covers devices where IME-inset tracking is
-                    // unsupported and the focus hand-off alone leaves the keyboard up.
+                    // Only the back arrow is clickable — the resting magnifier stays tap-through
+                    // so tapping it focuses the field.
                     onLeadingIconClicked = if (isSearchFocused) {
                         {
                             keyboardController?.hide()

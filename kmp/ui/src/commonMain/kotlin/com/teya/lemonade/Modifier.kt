@@ -32,10 +32,8 @@ internal fun Modifier.modifyIf(
 internal fun Modifier.clearFocusOnKeyboardDismiss(): Modifier = clearFocusOnKeyboardDismiss(onKeyboardDismissed = null)
 
 /**
- * [onKeyboardDismissed] replaces the default `clearFocus` reaction. Android 8.1 and below undo a
- * plain clear by re-assigning focus to the previously focused node within the same frame, so hosts
- * that must unfocus reliably there hand focus to a harmless target instead — see the TopBar
- * search's focus decoy.
+ * [onKeyboardDismissed] replaces the default `clearFocus` reaction — hosts that must unfocus
+ * reliably on legacy Android hand focus to a [SearchFocusDecoy] instead.
  */
 internal fun Modifier.clearFocusOnKeyboardDismiss(onKeyboardDismissed: (() -> Unit)?): Modifier {
     if (!supportsImeInsets()) {

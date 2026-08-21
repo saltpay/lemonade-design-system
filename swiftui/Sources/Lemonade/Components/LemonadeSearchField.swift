@@ -120,8 +120,6 @@ private struct LemonadeSearchFieldView: View {
                     icon: .times,
                     contentDescription: cancelContentDescription,
                     onClick: {
-                        // Dismissal only drops the focus — clearing the input stays with the
-                        // inner clear icon.
                         isFocused = false
                         onCancel?()
                     },

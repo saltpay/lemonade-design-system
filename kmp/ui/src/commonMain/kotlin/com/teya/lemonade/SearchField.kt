@@ -204,9 +204,6 @@ private fun SearchCancelButton(
             icon = LemonadeIcons.Times,
             contentDescription = contentDescription,
             onClick = {
-                // Dismissal hands focus to the decoy rather than clearing it (see
-                // [SearchFocusDecoy]) and never touches the input — clearing stays with the
-                // inner clear icon.
                 onDismiss()
                 onCancel()
             },
@@ -425,11 +422,9 @@ private fun CoreSearchFieldDecorationBox(
     }
 }
 
-// The icon keeps its regular footprint in the row, but its tap area is stretched to the field's
-// full height: the inner box deliberately violates the outer box's fixed constraints, so it
-// centers over the icon and overflows into the field's padding without moving any layout. A bare
-// icon-sized clickable is nearly impossible to hit with a finger on a terminal touchscreen, and a
-// missed tap lands on the text field and focuses it instead.
+// Stretches the icon's tap area to the field's full height without moving any layout: the inner
+// box deliberately overflows the fixed outer box. A bare icon-sized clickable is nearly
+// impossible to hit with a finger.
 @Composable
 private fun SearchFieldIconTarget(
     icon: LemonadeIcons,
