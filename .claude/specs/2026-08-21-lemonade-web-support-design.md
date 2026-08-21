@@ -52,7 +52,8 @@ tokens (none exist in Figma). Each is deliberately deferred — see §14.
 | Scope | `@teya` | The scope new internal packages use (~98 references); `@saltpay` is legacy |
 | Package | `@teya/lemonade-ds`, single package | Subpath exports let components land later without a rename. npm has no rename operation, and the name will eventually be baked into Figma `codeSyntax`, so this is decided once |
 | CSS delivery | Layered, individually importable entrypoints | The base layer is custom properties only — zero selectors — so it is safe to drop into any app, MUI included, with no possibility of conflict |
-| Generator | TypeScript/Node in `web/` | The web package needs a Node toolchain anyway; any web engineer can maintain it. Style Dictionary was rejected: Lemonade's Figma export needs custom parsers regardless, so the dependency buys little |
+| Generator | Kotlin `.main.kts` in `scripts/`, like the other platforms | The DTCG loader is duplicated per platform and guarded by `check-loader-parity.py`. A TypeScript loader would be a fourth copy the guard cannot read — see §4.1. Style Dictionary was also rejected: the Figma export needs custom parsers regardless |
+| Division of labour | `scripts/` generates source; `web/` builds and publishes | The line the repo already draws for KMP, SwiftUI and Flutter |
 | Build tool | `tsup` | Matches the org's pattern for new JS packages (`teya-blocks-react`); the JS surface is small |
 | Var prefix | `--lmnd-` | Short enough to type all day, distinct from `--mui-*` and `--tw-*` |
 | Theming | `data-lmnd-theme` attribute + `prefers-color-scheme` | Zero-config follows the OS; the attribute always wins and works at any depth |
@@ -62,31 +63,99 @@ tokens (none exist in Figma). Each is deliberately deferred — see §14.
 
 ## 4. Architecture
 
-Web lives in the monorepo alongside the other platforms.
+Web lives in the monorepo alongside the other platforms, and the token pipeline
+stays where the token pipeline already lives.
+
+**`scripts/` reads the design source of truth and emits platform source.**
+**`web/` builds and publishes the npm package.** That is the same division the
+repo already applies to KMP, SwiftUI and Flutter; web does not get a special case.
 
 ```
+scripts/                                    Kotlin .main.kts, alongside kmp-* / swiftui-* / flutter-*
+  web-resource-file-loading.main.kts        DTCG loader — REGISTERED in check-loader-parity.py
+  web-color-token-converter.main.kts
+  web-theme-token-converter.main.kts
+  web-spacing-token-converter.main.kts
+  web-radius-token-converter.main.kts
+  web-size-token-converter.main.kts
+  web-border-token-converter.main.kts
+  web-opacity-token-converter.main.kts
+  web-shadow-token-converter.main.kts
+  web-typography-token-converter.main.kts
+  web-text-style-converter.main.kts         text-styles.json -> .lmnd-text-* classes
+  web-svg-converter.main.kts                currentColor rewrite, inline-style strip
+  web-contrast-check.main.kts               WCAG 2.2 AA validation
+  web-text-style-parity-check.main.kts      web table vs SwiftUI table
+
 web/
-  package.json                  @teya/lemonade-ds
+  package.json                              @teya/lemonade-ds
   tsup.config.ts
   src/
-    index.ts                    public TS surface
-    tokens.generated.ts         GENERATED — DO NOT MODIFY
-    icons.generated.ts          GENERATED — typed icon-name manifest
-  text-styles.json              hand-authored composition table (see §7)
-  scripts/
-    generate-tokens.ts          tokens/*.tokens.json -> CSS + TS + JSON
-    generate-typography.ts      text-styles.json     -> CSS classes
-    generate-icons.ts           svg/**               -> optimized SVG + manifest
-    generate-fonts.ts           *.ttf                -> .woff2 + @font-face
-    check-contrast.ts           WCAG 2.2 AA validation
-    check-typography-parity.ts  web table vs SwiftUI table
-  styles/                       GENERATED
+    index.ts                                public TS surface
+    tokens.generated.ts                     GENERATED — DO NOT MODIFY
+    icons.generated.ts                      GENERATED — typed icon-name manifest
+  styles/                                   GENERATED + COMMITTED
     tokens.css  fonts.css  typography.css  styles.css
-  assets/
-    fonts/*.woff2
+  assets/                                   GENERATED + COMMITTED (source SVG)
     icons/*.svg  flags/*.svg  brand-logos/*.svg
+  build/
+    optimize-svg.mjs                        svgo   (no Kotlin equivalent exists)
+    build-fonts.mjs                         .ttf -> .woff2 + @font-face
+  dist/                                     BUILT AT PUBLISH — not committed
+    *.woff2, minified SVG, bundled JS
   .storybook/  stories/  tests/
+
+text-styles.json                            repo root — hand-authored, see §7
 ```
+
+Only two things live in `web/` that touch design assets, and both are there because
+no Kotlin path exists: `svgo` and `woff2` are Node binaries. They are asset
+*optimization* steps inside the package build, not token generation, so the pipeline
+is not fragmented — `scripts/web-svg-converter.main.kts` decides what an icon *is*
+(colour behaviour, naming, manifest), and `optimize-svg.mjs` only makes the bytes
+smaller.
+
+**What is committed, and what is built.** Converter output — the CSS, the TS, the
+JSON, and the `currentColor`-rewritten SVG source — is **committed**, which is what
+lets `token_drift.yml` diff it and what keeps that job Kotlin-only. Optimization
+output — `.woff2` files, `svgo`-minified SVG, the bundled JS — is **built during
+`web_ci.yml` and `web_release.yml` and never committed**. Binary artifacts in git
+would bloat the repo and produce meaningless diffs, and they are deterministic
+enough to rebuild. This is the line that keeps the drift job free of Node.
+
+### 4.1 Why Kotlin, not TypeScript
+
+This reverses an earlier draft of this spec, for a reason worth recording.
+
+The three existing converters do not share a DTCG parser. Each carries its own copy —
+`kmp-resource-file-loading.main.kts` (332 lines),
+`swiftui-resource-file-loading.main.kts` (363),
+`flutter-resource-file-loading.main.kts` (325). The duplication is deliberate: a
+shared module would rewire the `@file:Import` graph of 20+ scripts. Nothing else
+keeps the copies in step, so `check-loader-parity.py` does, and it runs in
+`token_drift.yml`. Its own docstring states the failure it guards:
+
+> A silent divergence is the failure this guards: the same token would produce
+> different names, values or ordering depending on the platform, and each
+> platform's own verification would still pass.
+
+A TypeScript loader would be a **fourth copy of that parser in a language the guard
+cannot read** — the check is a regex comparison over Kotlin `fun` declarations. Web
+would become the one platform able to silently disagree with the other three about a
+token's name or value, with every platform's own tests still green. Writing the
+loader in Kotlin puts web *inside* the existing protection instead of outside it.
+
+Secondary reasons, which only matter once that one holds: the whole token pipeline
+stays in one directory; `token_drift.yml` needs no Node, since it already has a JDK;
+and SVG conversion has Kotlin precedent in `scripts/svg-asset-converter.main.kts`.
+
+The cost that argued for TypeScript — "web engineers would have to edit Kotlin" — is
+smaller than it looks. Token *values* change with every Figma export; the *generator*
+changes a few times a year. It is not a daily-friction surface.
+
+**Accepted cost:** the Kotlin scripts are pinned to Kotlin 2.3.20 and crash on 2.4.0.
+Adding ~13 scripts deepens an existing, contained dependency that already applies to
+the whole pipeline.
 
 ### Published exports
 
@@ -122,10 +191,16 @@ import '@teya/lemonade-ds/typography.css'  // opt-in
 
 ## 5. Token generation
 
-`generate-tokens.ts` reads the same `tokens/*.tokens.json` the Kotlin converters
-read and emits `tokens.css`, `tokens.generated.ts` and `tokens.json`. It joins
-`run-converters.sh` and `token_drift.yml`, so a Figma export that was not
-regenerated for web fails CI exactly as it does for KMP and SwiftUI.
+The `scripts/web-*-token-converter.main.kts` set reads the same
+`tokens/*.tokens.json` the KMP and SwiftUI converters read, through
+`web-resource-file-loading.main.kts`, and emits `tokens.css`,
+`tokens.generated.ts` and `tokens.json` into `web/`.
+
+They are registered in `run-converters.sh` and covered by `token_drift.yml`, so a
+Figma export that was not regenerated for web fails CI exactly as it does for KMP
+and SwiftUI. `web-resource-file-loading.main.kts` is added to the `LOADERS` map in
+`check-loader-parity.py`, so web's DTCG parsing is held identical to the other
+three platforms' rather than being allowed to drift.
 
 ### Colour: alpha is not in the hex
 
@@ -250,10 +325,10 @@ generates or verifies them.
 
 A third hand-maintained copy would make drift near-certain. Therefore:
 
-- Web's table lives in `web/text-styles.json` as **data**, and
-  `generate-typography.ts` emits CSS classes from it.
-- `check-typography-parity.ts` parses the SwiftUI table and asserts web matches it
-  field for field, in CI.
+- The table lives at repo root as `text-styles.json` — **data, not code** — and
+  `scripts/web-text-style-converter.main.kts` emits the CSS classes from it.
+- `scripts/web-text-style-parity-check.main.kts` parses the SwiftUI table and
+  asserts web matches it field for field, in CI.
 
 ```css
 .lmnd-text-heading-large {
@@ -264,16 +339,17 @@ A third hand-maintained copy would make drift near-certain. Therefore:
 }
 ```
 
-The longer-term fix is to promote `text-styles.json` to a repo-level source that all
-three platforms generate from. That touches KMP and SwiftUI generated code and is
+Placing the file at the repo root rather than under `web/` is deliberate: the
+longer-term fix is for all three platforms to generate from it, and web claiming it
+as a private file would make that harder later. The longer-term fix itself That touches KMP and SwiftUI generated code and is
 **out of scope for v0** — but the parity test means drift is caught in CI rather
 than discovered in a screenshot months later.
 
 ## 8. Fonts
 
 Figtree is OFL-licensed, so self-hosting is fine. The repo already contains the
-TTFs. `generate-fonts.ts` converts them to `.woff2` (roughly 40% smaller) and emits
-`fonts.css`:
+TTFs. `web/build/build-fonts.mjs` converts them to `.woff2` (roughly 40% smaller)
+and emits `fonts.css`. This one is Node because no Kotlin `woff2` encoder exists:
 
 ```css
 @font-face {
@@ -292,8 +368,10 @@ parity.
 
 ## 9. Icons — 587 assets
 
-283 icons, 265 flags, 39 brand logos. `generate-icons.ts` runs `svgo` and emits
-individual optimized files plus a typed manifest.
+283 icons, 265 flags, 39 brand logos. `scripts/web-svg-converter.main.kts` decides
+what an icon *is* — colour behaviour, naming, the typed manifest — matching the
+existing `scripts/svg-asset-converter.main.kts`. `web/build/optimize-svg.mjs` then
+runs `svgo` over the result, purely to shrink the bytes.
 
 **No sprite.** Measured: all 283 icons are 393KB raw, 123KB gzipped — 123KB to
 render one arrow. The sprite pattern solved HTTP/1.1 connection limits, a problem
@@ -327,15 +405,15 @@ pages themed icons without shipping a sprite.
 ```
 
 The inline `style` beats any stylesheet rule, so rewriting only the `fill`
-attribute leaves the icon rendering black. `generate-icons.ts` must strip the inline
-`style` *and* rewrite the attribute to `currentColor`.
+attribute leaves the icon rendering black. `web-svg-converter.main.kts` must strip
+the inline `style` *and* rewrite the attribute to `currentColor`.
 
 `svgo` config is family-aware: aggressive for icons, conservative for flags and
 brand logos, where path merging can visibly distort artwork.
 
 ## 10. Accessibility validation
 
-`check-contrast.ts` walks the semantic pairs — every `content-*` against every
+`scripts/web-contrast-check.main.kts` walks the semantic pairs — every `content-*` against every
 plausible `bg-*`, and `border-*` where used as a boundary — and asserts **WCAG 2.2
 AA**: 4.5:1 for body text, 3:1 for large text and non-text boundaries.
 
@@ -372,16 +450,25 @@ Static build deployed on merge to `main`.
 - **`web_release.yml`** — on tag `lemonade-web-v*`: build, publish to JFrog with
   `NODE_AUTH_TOKEN`, create a GitHub release with a changelog scoped to `web/`.
   Same shape as `kmp_release.yml`.
-- **`token_drift.yml`** — gains Node, `web/**` in its watched paths, and `web/` in
-  its drift check.
+- **`token_drift.yml`** — gains `scripts/web-*` and `web/` in its watched paths and
+  its drift check. It needs **no Node**: the converters are Kotlin and the JDK is
+  already set up. `check-loader-parity.py` gains web as a fourth loader.
 
 ## 13. Testing
 
-Unit tests (Vitest) over the pure conversion functions: colour to `rgb()` with
-alpha, number to `rem`, weight-string to numeric, shadow composition, name
-mapping including the `border-selected` collision. Snapshot tests over the
-generated CSS so any output change is visible in review. The contrast and
-typography-parity checks double as product guarantees.
+**Converters** — `scripts/web-loader-dtcg-test.main.kts`, following the existing
+`kmp-loader-dtcg-test.main.kts` pattern and run in the same CI step, covering:
+colour to `rgb()` with alpha, number to `rem`, weight-string to numeric, shadow
+composition, and name mapping including the `border-selected` collision.
+
+**Generated output** — the CSS and TS are committed, so `token_drift.yml` already
+functions as a snapshot test: any change to output shows up as a reviewable diff.
+
+**Package** — Vitest in `web/` over the published TS surface (`tokens`,
+`textStyles`, `iconNames`) plus an install-and-import smoke test.
+
+The contrast, loader-parity and text-style-parity checks double as product
+guarantees rather than only tests.
 
 ## 14. Explicitly out of scope for v0
 
