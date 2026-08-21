@@ -42,10 +42,10 @@ final class LemonadeTokenTests: XCTestCase {
 
     func testShadowLayerValues() {
         let xsmall = LemonadeShadow.xsmall.shadowLayers[0]
-        XCTAssertEqual(xsmall.blur, 2)
+        XCTAssertEqual(xsmall.blur, 1)
         XCTAssertEqual(xsmall.spread, 0)
         XCTAssertEqual(xsmall.offsetX, 0)
-        XCTAssertEqual(xsmall.offsetY, 1)
+        XCTAssertEqual(xsmall.offsetY, 0.5)
 
         let xlarge0 = LemonadeShadow.xlarge.shadowLayers[0]
         XCTAssertEqual(xlarge0.blur, 10)
