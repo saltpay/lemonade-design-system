@@ -21,14 +21,12 @@ public extension LemonadeUi {
     ///   - onInputClear: Callback when user requests input to be cleared
     ///   - dismissible: Flag controlling the trailing cancel button, on by default. The button shows
     ///     up as soon as there is something to dismiss (the field is focused or holds input), and
-    ///     tapping it dismisses the keyboard, drops the focus and empties the input. Turn it off for
-    ///     hosts that already provide their own dismissal affordance.
+    ///     tapping it dismisses the keyboard and drops the focus, leaving the input untouched. Turn
+    ///     it off for hosts that already provide their own dismissal affordance.
     ///   - onCancel: Callback invoked after the search has been dismissed through the cancel button.
-    ///     The binding has already been emptied by the time this runs, so use it to drop whatever
-    ///     the query was driving, such as results or a filter. Note that the order in which this and
-    ///     `onInputChanged` fire is not guaranteed — the input change is delivered through
-    ///     `onChange(of:)`, i.e. the view update — so do not depend on one having run when the other
-    ///     does.
+    ///     The input is left as typed — clearing it stays with the inner clear icon and
+    ///     `onInputClear` — so use this to react to the dismissal itself, or to reset the binding
+    ///     when the host wants dismissal to also drop the query.
     ///   - cancelContentDescription: Optional content description for the cancel button, for
     ///     accessibility. The component leaves it unset by default so the label can be localised by
     ///     the consumer; supply one whenever the field is `dismissible`.
@@ -122,11 +120,9 @@ private struct LemonadeSearchFieldView: View {
                     icon: .times,
                     contentDescription: cancelContentDescription,
                     onClick: {
+                        // Dismissal only drops the focus — clearing the input stays with the
+                        // inner clear icon.
                         isFocused = false
-                        // Deliberately not routed through `onInputClear`: that callback belongs to
-                        // the inner clear icon, and a consumer who overrides it to only log would
-                        // otherwise stop cancel from emptying the field.
-                        input = ""
                         onCancel?()
                     },
                     variant: .neutral,

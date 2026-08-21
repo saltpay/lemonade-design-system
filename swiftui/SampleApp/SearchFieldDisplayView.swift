@@ -60,7 +60,7 @@ struct SearchFieldDisplayView: View {
                             cancelContentDescription: "Cancel search"
                         )
 
-                        Text("Cancelling drops the focus, hides the keyboard and empties the field. onCancel then runs for whatever the query was driving.")
+                        Text("Cancelling drops the focus and hides the keyboard; the input stays as typed. onCancel then runs for whatever the query was driving.")
                             .font(.caption)
                             .foregroundStyle(.content.contentSecondary)
                     }

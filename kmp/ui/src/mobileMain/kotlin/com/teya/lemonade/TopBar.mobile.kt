@@ -13,7 +13,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -31,7 +30,6 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.requiredSizeIn
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -45,7 +43,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -693,7 +690,7 @@ public fun LemonadeUi.TopBar(
                         bottom = LocalSpaces.current.spacing200,
                     ),
             ) {
-                SearchFocusDecoy(focusRequester = searchDismissRequester)
+                SearchFocusDecoy(focusRequester = searchDismissRequester, claimFocusOnEntry = true)
 
                 AnimatedContent(
                     targetState = expandedLabel != null && !isSearchFocused,
@@ -1112,7 +1109,7 @@ public fun LemonadeUi.TopBar(
         },
         collapsableSlot = { collapsableSlotModifier ->
             Box(modifier = collapsableSlotModifier) {
-                SearchFocusDecoy(focusRequester = searchDismissRequester)
+                SearchFocusDecoy(focusRequester = searchDismissRequester, claimFocusOnEntry = true)
 
                 CoreSearchField(
                     input = searchInput,
@@ -1152,30 +1149,6 @@ public fun LemonadeUi.TopBar(
         },
         bottomSlot = null,
     )
-}
-
-// On Android 8.1 and below the framework re-assigns focus whenever a window's focus is cleared —
-// even in touch mode, aiming at the previously focused rect — so `clearFocus` on the search field
-// is undone within the same frame and the field cannot be dismissed. Dismissal therefore MOVES
-// focus onto this zero-sized target instead of clearing it: the window never loses focus and the
-// legacy re-assign never runs. The same versions also grant focus to the first focusable when the
-// window opens, which lands on the field and pops the keyboard unasked — being zero-sized, the
-// decoy is invisible to that focus search, so it claims the grant back explicitly as soon as it
-// enters composition. It draws nothing and taps are unaffected.
-@Composable
-private fun SearchFocusDecoy(
-    focusRequester: FocusRequester,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier
-            .focusRequester(focusRequester = focusRequester)
-            .focusable(),
-    )
-
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
-    }
 }
 
 @Deprecated(

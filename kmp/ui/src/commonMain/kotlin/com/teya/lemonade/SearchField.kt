@@ -37,9 +37,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -94,13 +95,12 @@ private val SEARCH_FIELD_MIN_WIDTH = 240.dp
  * @param onInputClear - Callback to be invoked when the user request the input to be cleared.
  * @param dismissible - [Boolean] flag controlling the trailing cancel button, on by default. The
  * button shows up as soon as there is something to dismiss (the field is focused or holds input),
- * and tapping it hides the keyboard, clears the focus and empties the input. Turn it off for hosts
- * that already provide their own dismissal affordance.
+ * and tapping it hides the keyboard and clears the focus, leaving the input untouched. Turn it off
+ * for hosts that already provide their own dismissal affordance.
  * @param onCancel - Callback to be invoked after the search has been dismissed through the cancel
- * button. The input has already been emptied by the time this runs, so use it to drop whatever the
- * query was driving, such as results or a filter. Note that the order in which this and
- * [onInputChanged] fire is not guaranteed — SwiftUI delivers the input change through the view
- * update, so do not depend on one having run when the other does.
+ * button. The input is left as typed — clearing it stays with the inner clear icon and
+ * [onInputClear] — so use this to react to the dismissal itself, such as collapsing a results
+ * overlay.
  * @param cancelContentDescription - optional [String] content description for the cancel button, for
  * accessibility. The component leaves it unset by default so the label can be localised by the
  * consumer; supply one whenever the field is [dismissible].
@@ -127,10 +127,18 @@ public fun LemonadeUi.SearchField(
     enabled: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val dismissRequester = remember { FocusRequester() }
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
+        SearchFocusDecoy(
+            focusRequester = dismissRequester,
+            claimFocusOnEntry = false,
+        )
+
         CoreSearchField(
             input = input,
             onInputChanged = onInputChanged,
@@ -143,13 +151,16 @@ public fun LemonadeUi.SearchField(
             modifier = Modifier
                 .defaultMinSize(minWidth = SEARCH_FIELD_MIN_WIDTH)
                 .weight(weight = 1f, fill = false)
-                .clearFocusOnKeyboardDismiss(),
+                .clearFocusOnKeyboardDismiss { dismissRequester.requestFocus() },
         )
 
         if (dismissible) {
             SearchCancelButton(
                 input = input,
-                onInputChanged = onInputChanged,
+                onDismiss = {
+                    keyboardController?.hide()
+                    dismissRequester.requestFocus()
+                },
                 onCancel = onCancel,
                 contentDescription = cancelContentDescription,
                 interactionSource = interactionSource,
@@ -165,14 +176,13 @@ public fun LemonadeUi.SearchField(
 @Composable
 private fun SearchCancelButton(
     input: String,
-    onInputChanged: (String) -> Unit,
+    onDismiss: () -> Unit,
     onCancel: () -> Unit,
     contentDescription: String?,
     interactionSource: MutableInteractionSource,
     enabled: Boolean,
 ) {
     val isFocused by interactionSource.collectIsFocusedAsState()
-    val focusManager = LocalFocusManager.current
 
     // The cancel button only earns its space once there is something to dismiss: an active focus or
     // a query already typed in. That mirrors the Figma states, where the resting empty field is the
@@ -194,13 +204,10 @@ private fun SearchCancelButton(
             icon = LemonadeIcons.Times,
             contentDescription = contentDescription,
             onClick = {
-                // `clearFocus` is what dismisses the keyboard too — it is the single dismissal
-                // idiom this module already uses (see the TopBar search leading icon).
-                focusManager.clearFocus()
-                // Deliberately not routed through `onInputClear`: that callback belongs to the
-                // inner clear icon, and a consumer who overrides it to only log would otherwise
-                // stop cancel from emptying the field.
-                onInputChanged("")
+                // Dismissal hands focus to the decoy rather than clearing it (see
+                // [SearchFocusDecoy]) and never touches the input — clearing stays with the
+                // inner clear icon.
+                onDismiss()
                 onCancel()
             },
             variant = LemonadeButtonVariant.Neutral,

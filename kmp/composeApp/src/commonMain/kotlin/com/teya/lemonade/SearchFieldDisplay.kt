@@ -108,8 +108,8 @@ internal fun SearchFieldDisplay() {
                     )
 
                     LemonadeUi.Text(
-                        text = "Cancelling drops the focus, hides the keyboard and empties the field. " +
-                            "onCancel then runs for whatever the query was driving.",
+                        text = "Cancelling drops the focus and hides the keyboard; the input stays " +
+                            "as typed. onCancel then runs for whatever the query was driving.",
                         textStyle = LemonadeTheme.typography.bodySmallRegular,
                         color = LemonadeTheme.colors.content.contentSecondary,
                     )
