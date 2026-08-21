@@ -20,10 +20,10 @@ internal val LemonadeShadow.shadowDataSequence: Sequence<LemonadeShadowData>
     get() = when (this) {
         LemonadeShadow.Xsmall -> sequenceOf(
             LemonadeShadowData(
-                blur = 2.0f,
+                blur = 1.0f,
                 spread = 0.0f,
                 offsetX = 0.0f,
-                offsetY = 1.0f,
+                offsetY = 0.5f,
             ),
         )
         LemonadeShadow.Small -> sequenceOf(
