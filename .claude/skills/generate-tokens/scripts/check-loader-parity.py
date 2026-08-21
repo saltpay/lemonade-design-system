@@ -23,14 +23,22 @@ LOADERS = {
     "kmp": "scripts/kmp-resource-file-loading.main.kts",
     "swiftui": "scripts/swiftui-resource-file-loading.main.kts",
     "flutter": "scripts/flutter-resource-file-loading.main.kts",
+    "web": "scripts/web-resource-file-loading.main.kts",
 }
 
 BLOCK_START = "Figma native (DTCG) support"
 
 # Functions deliberately present in only some loaders, with the reason.
 EXPECTED_PARTIAL = {
-    "requireModes": ({"kmp", "swiftui"}, "Flutter has no mode-based loading"),
-    "readFileResourceFileByModeRaw": ({"swiftui"}, "only the SwiftUI asset generator needs raw token names"),
+    "requireModes": ({"kmp", "swiftui", "web"}, "Flutter has no mode-based loading"),
+    "readFileResourceFileByModeRaw": (
+        {"swiftui", "web"},
+        "the SwiftUI asset generator and the web converter need raw token names",
+    ),
+    "readFileResourceFileRaw": (
+        {"web"},
+        "only web emits kebab-case names for every token type",
+    ),
 }
 
 # SwiftUI uses its own sanitizer names for the same operation.
