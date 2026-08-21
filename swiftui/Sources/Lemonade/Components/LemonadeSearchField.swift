@@ -20,9 +20,9 @@ public extension LemonadeUi {
     ///   - placeholder: Optional placeholder text
     ///   - onInputClear: Callback when user requests input to be cleared
     ///   - dismissible: Flag controlling the trailing cancel button, on by default. The button shows
-    ///     up as soon as there is something to dismiss (the field is focused or holds input), and
-    ///     tapping it dismisses the keyboard and drops the focus, leaving the input untouched. Turn
-    ///     it off for hosts that already provide their own dismissal affordance.
+    ///     while the field is focused, and tapping it dismisses the keyboard and drops the focus,
+    ///     leaving the input untouched. Turn it off for hosts that already provide their own
+    ///     dismissal affordance.
     ///   - onCancel: Callback invoked after the search has been dismissed through the cancel button.
     ///     The input is left as typed — clearing it stays with the inner clear icon and
     ///     `onInputClear` — so use this to react to the dismissal itself, or to reset the binding
@@ -104,11 +104,10 @@ private struct LemonadeSearchFieldView: View {
             : .clear
     }
 
-    /// The cancel button only earns its space once there is something to dismiss: an active focus
-    /// or a query already typed in. That mirrors the Figma states, where the resting empty field is
-    /// the only one without it.
+    /// Dismissal only drops the focus, so the button only earns its space while there is focus to
+    /// drop.
     private var shouldShowCancel: Bool {
-        dismissible && enabled && (isFocused || !input.isEmpty)
+        dismissible && enabled && isFocused
     }
 
     var body: some View {
