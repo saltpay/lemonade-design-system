@@ -116,17 +116,32 @@ fun writeTokensTs(groups: List<Triple<String, String, List<Pair<String, String>>
     println("✓ web/src/tokens.generated.ts written")
 }
 
-/** Serialises the same scalar groups as web/tokens.json, for non-TS consumers. */
+/**
+ * Serialises the same scalar groups as web/tokens.json, for non-TS consumers.
+ *
+ * Hand-emitted rather than routed through `org.json.JSONObject`: that type is
+ * HashMap-backed and does not preserve insertion order, which would scramble
+ * this committed file's key order independently of [scalarEntries] on every
+ * regeneration. [literal] is already the trimmed numeric text (`8`, `1.5`,
+ * `999`), so writing it verbatim also avoids a Double round-trip turning
+ * integers into `8.0`.
+ */
 fun buildJsonFromEntries(
     groups: List<Triple<String, String, List<Pair<String, String>>>>,
 ): String {
-    val root = org.json.JSONObject()
-    groups.forEach { (name, _, entries) ->
-        val group = org.json.JSONObject()
-        entries.forEach { (key, literal) -> group.put(key, literal.toDouble()) }
-        root.put(name, group)
+    return buildString {
+        appendLine("{")
+        groups.forEachIndexed { groupIndex, (name, _, entries) ->
+            val groupComma = if (groupIndex == groups.lastIndex) "" else ","
+            appendLine("  \"$name\": {")
+            entries.forEachIndexed { entryIndex, (key, literal) ->
+                val entryComma = if (entryIndex == entries.lastIndex) "" else ","
+                appendLine("    \"$key\": $literal$entryComma")
+            }
+            appendLine("  }$groupComma")
+        }
+        appendLine("}")
     }
-    return root.toString(2) + "\n"
 }
 
 private val FONT_WEIGHTS = mapOf(
