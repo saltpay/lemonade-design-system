@@ -17,8 +17,11 @@ private data class ScalarSource(
     val format: (Double) -> String,
 )
 
+/** Opacity tokens are authored 0-100; CSS and the TS export both want 0-1. */
+private fun opacityScalar(raw: Double): Double = raw / 100.0
+
 /** Opacity tokens are authored 0-100; CSS wants 0-1. */
-private fun opacityValue(raw: Double): String = trimNumber(raw / 100.0)
+private fun opacityValue(raw: Double): String = trimNumber(opacityScalar(raw))
 
 private val SCALAR_SOURCES = listOf(
     ScalarSource("spacing.tokens.json", "spacing", "spacing", ::remValue),
@@ -45,6 +48,85 @@ fun scalarVars(): List<CssVar> {
         }
     }
     return vars
+}
+
+/**
+ * TS object key for a scalar token: category + the leaf's distinguishing part,
+ * camelCased. `("spacing", "spacing-200", "spacing")` -> `spacing200`;
+ * `("border-width", "focus-ring", "border")` -> `borderWidthFocusRing`.
+ *
+ * The category is folded into the key (unlike the CSS custom property, which is
+ * already namespaced by its selector) because Task 12's consumers read
+ * `tokens.spacing.spacing200`, matching the cross-platform naming already used by
+ * `LemonadeTheme.spaces.spacing0` in the Figma token metadata.
+ */
+fun tsKey(category: String, leaf: String, strip: String?): String {
+    val trimmed = if (strip != null) leaf.removePrefix("$strip-") else leaf
+    return "$category-$trimmed".split("-").mapIndexed { index, word ->
+        if (index == 0) word else word.replaceFirstChar { it.uppercase() }
+    }.joinToString("")
+}
+
+/** `border-width` -> `borderWidth`, `spacing` -> `spacing`. */
+fun tsGroupName(category: String): String =
+    category.split("-").mapIndexed { index, word ->
+        if (index == 0) word else word.replaceFirstChar { it.uppercase() }
+    }.joinToString("")
+
+/**
+ * The five scalar groups, keyed and valued for the TS/JSON exports.
+ *
+ * Unlike [scalarVars] the values here are raw numbers (px, or 0-1 for opacity),
+ * not CSS-formatted rem/px strings: the TS export exists precisely so consumers
+ * doing arithmetic get the source numbers, preserving parity with KMP and SwiftUI.
+ */
+fun scalarEntries(): List<Triple<String, String, List<Pair<String, String>>>> {
+    return SCALAR_SOURCES.map { source ->
+        val entries = mutableListOf<Pair<String, String>>()
+        readFileResourceFileRaw(tokenFile(source.fileName)) { path, resolved ->
+            val raw = (resolved.get("resolvedValue") as Number).toDouble()
+            val value = if (source.category == "opacity") opacityScalar(raw) else raw
+            entries.add(tsKey(source.category, leafOf(path), source.strip) to trimNumber(value))
+        }
+        Triple(tsGroupName(source.category), "number", entries)
+    }
+}
+
+/** Writes web/src/tokens.generated.ts: a typed `tokens` object of the five scalar groups. */
+fun writeTokensTs(groups: List<Triple<String, String, List<Pair<String, String>>>>) {
+    // Triple is (tsGroupName, tsType, entries of key to literal)
+    val output = buildString {
+        appendLine("/**")
+        append(defaultAutoGenerationMessage(scriptFilePath = SCRIPT_PATH))
+        appendLine(" */")
+        appendLine()
+        appendLine("export const tokens = {")
+        groups.forEach { (name, _, entries) ->
+            appendLine("  $name: {")
+            entries.forEach { (key, literal) -> appendLine("    $key: $literal,") }
+            appendLine("  },")
+        }
+        appendLine("} as const")
+        appendLine()
+        appendLine("export type LemonadeTokens = typeof tokens")
+    }
+    val target = File("web/src/tokens.generated.ts")
+    target.parentFile.mkdirs()
+    target.writeText(output)
+    println("✓ web/src/tokens.generated.ts written")
+}
+
+/** Serialises the same scalar groups as web/tokens.json, for non-TS consumers. */
+fun buildJsonFromEntries(
+    groups: List<Triple<String, String, List<Pair<String, String>>>>,
+): String {
+    val root = org.json.JSONObject()
+    groups.forEach { (name, _, entries) ->
+        val group = org.json.JSONObject()
+        entries.forEach { (key, literal) -> group.put(key, literal.toDouble()) }
+        root.put(name, group)
+    }
+    return root.toString(2) + "\n"
 }
 
 private val FONT_WEIGHTS = mapOf(
@@ -248,6 +330,11 @@ fun main() {
         println("✓ Loaded ${themes.first().second.size - 1} colours per theme")
         val sections = listOf(":root" to scalars) + themes
         writeTokensCss(sections)
+
+        val entries = scalarEntries()
+        writeTokensTs(entries)
+        File("web/tokens.json").writeText(buildJsonFromEntries(entries))
+        println("✓ web/tokens.json written")
     } catch (error: Throwable) {
         println("✗ Failed to generate web tokens: ${error.message}")
         throw error
