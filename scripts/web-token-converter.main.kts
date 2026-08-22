@@ -47,6 +47,106 @@ fun scalarVars(): List<CssVar> {
     return vars
 }
 
+private val FONT_WEIGHTS = mapOf(
+    "Regular" to "400",
+    "Medium" to "500",
+    "SemiBold" to "600",
+    "Bold" to "700",
+)
+
+/**
+ * A bare `Figtree` leaves every machine without the font on its browser default.
+ * The stack mirrors what the native platforms fall back to.
+ */
+private val FONT_STACK =
+    "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif"
+
+fun typographyVars(): List<CssVar> {
+    val vars = mutableListOf<CssVar>()
+    readFileResourceFileRaw(tokenFile("typography.tokens.json")) { path, resolved ->
+        val group = path.substringBefore('/')
+        val leaf = leafOf(path)
+        val raw = resolved.get("resolvedValue")
+        val declaration = when (group) {
+            "font-size" -> CssVar(
+                cssVar("font-size", leaf, "font-size"),
+                remValue((raw as Number).toDouble()),
+            )
+            "line-height" -> CssVar(
+                cssVar("line-height", leaf, "line-height"),
+                remValue((raw as Number).toDouble()),
+            )
+            "font-weight" -> CssVar(
+                cssVar("font-weight", leaf),
+                FONT_WEIGHTS[raw as String]
+                    ?: error("unmapped font weight '$raw' on '$path' — add it to FONT_WEIGHTS"),
+            )
+            "font-family" -> CssVar(
+                cssVar("font-family", leaf),
+                "\"$raw\", $FONT_STACK",
+            )
+            else -> error("unexpected typography group '$group' on token '$path'")
+        }
+        vars.add(declaration)
+    }
+    return vars
+}
+
+private val SHADOW_LEAF = Regex("""^sd-([a-z]+)-lv(\d+)-(.+)$""")
+private val SHADOW_ORDER = listOf("xs", "sm", "md", "lg", "xl")
+private val SHADOW_COLOUR_TOKEN = "Shadow/shadow-default"
+
+/**
+ * Composes the 45 scalar shadow parts into one usable value per size.
+ *
+ * The raw tokens are unusable directly — `sd-md-lv2-blur` is not something anyone
+ * writes in a stylesheet. Each size's lv1 and lv2 layers become a single comma-joined
+ * box-shadow, ordered lv1 first so the tighter layer paints nearest.
+ *
+ * The colour is emitted as var(--lmnd-color-shadow-default) rather than its resolved
+ * value, because that token differs between themes. Referencing the variable makes
+ * shadows theme-reactive for free.
+ */
+fun shadowVars(): List<CssVar> {
+    // size -> level -> part -> value
+    val parts = sortedMapOf<String, MutableMap<Int, MutableMap<String, Double>>>()
+
+    readFileResourceFileRaw(tokenFile("shadow.tokens.json")) { path, resolved ->
+        val match = SHADOW_LEAF.matchEntire(leafOf(path))
+            ?: error("shadow token '$path' does not match sd-<size>-lv<n>-<part>")
+        val (size, level, part) = match.destructured
+
+        if (part == "color") {
+            val alias = resolved.optString("aliasName")
+            require(alias == SHADOW_COLOUR_TOKEN) {
+                "shadow colour '$path' aliases '$alias', expected '$SHADOW_COLOUR_TOKEN'. " +
+                    "Shadows reference the theme colour variable; a different source needs new handling."
+            }
+            return@readFileResourceFileRaw
+        }
+
+        val value = (resolved.get("resolvedValue") as Number).toDouble()
+        parts.getOrPut(size) { mutableMapOf() }
+            .getOrPut(level.toInt()) { mutableMapOf() }[part] = value
+    }
+
+    val unknown = parts.keys - SHADOW_ORDER.toSet()
+    require(unknown.isEmpty()) { "unknown shadow sizes $unknown — add them to SHADOW_ORDER" }
+
+    return SHADOW_ORDER.filter { it in parts }.map { size ->
+        val layers = parts.getValue(size).toSortedMap().map { (_, part) ->
+            listOf(
+                pxValue(part.getValue("offset-x")),
+                pxValue(part.getValue("offset-y")),
+                pxValue(part.getValue("blur")),
+                pxValue(part.getValue("spread")),
+                "var(--lmnd-color-shadow-default)",
+            ).joinToString(" ")
+        }
+        CssVar("--lmnd-shadow-$size", layers.joinToString(", "))
+    }
+}
+
 fun cssBanner(): String = buildString {
     appendLine("/**")
     append(defaultAutoGenerationMessage(scriptFilePath = SCRIPT_PATH))
@@ -142,8 +242,8 @@ fun themeSections(): List<Pair<String, List<CssVar>>> {
 
 fun main() {
     try {
-        val scalars = scalarVars()
-        println("✓ Loaded ${scalars.size} scalar tokens")
+        val scalars = scalarVars() + typographyVars() + shadowVars()
+        println("✓ Loaded ${scalars.size} theme-neutral tokens")
         val themes = themeSections()
         println("✓ Loaded ${themes.first().second.size - 1} colours per theme")
         val sections = listOf(":root" to scalars) + themes
